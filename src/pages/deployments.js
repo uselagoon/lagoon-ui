@@ -6,8 +6,10 @@ import gql from 'graphql-tag';
 import Page from '../layouts/main'
 import Breadcrumbs from '../components/Breadcrumbs';
 import NavTabs from '../components/NavTabs';
-import EnvironmentData from '../components/Environment';
-import { bp } from '../variables';
+import DeploymentData from '../components/Deployments';
+import Logs from '../components/Logs';
+import moment from 'moment';
+import { bp, color, fontSize } from '../variables';
 
 const query = gql`
   query getEnvironment($openshiftProjectName: String!){
@@ -22,12 +24,19 @@ const query = gql`
       openshiftProjectName
       project {
         name
-        gitUrl
+      }
+      deployments {
+        id
+        name
+        status
+        started
+        remoteId
+        completed
       }
     }
   }
 `;
-const Environment = withRouter((props) => {
+const Deployments = withRouter((props) => {
   return (
     <Page>
       <Query query={query} variables={{openshiftProjectName: props.router.query.name}}>
@@ -53,17 +62,26 @@ const Environment = withRouter((props) => {
             <React.Fragment>
               <Breadcrumbs breadcrumbs={breadcrumbs}/>
               <div className='content-wrapper'>
-                <NavTabs activeTab='overview' environment={environment.openshiftProjectName}/>
-                <EnvironmentData environment={environment} />
+                <NavTabs activeTab='deployments' environment={environment.openshiftProjectName}/>
+                {!props.router.query.build &&
+                  <DeploymentData projectName={environment.openshiftProjectName} deployments={environment.deployments} />
+                }
+                {props.router.query.build &&
+                  environment.deployments
+                  .filter(deployment => deployment.name === props.router.query.build)
+                  .map(deployment =>
+                    <Logs key={deployment.name} deployment={deployment} />
+                  )
+                }
               </div>
               <style jsx>{`
-                .content-wrapper {
-                  @media ${bp.tabletUp} {
-                    display: flex;
-                    padding: 0;
-                  }
+              .content-wrapper {
+                @media ${bp.tabletUp} {
+                  display: flex;
+                  padding: 0;
                 }
-              `}</style>
+              }
+            `}</style>
             </React.Fragment>
           );
         }}
@@ -72,4 +90,4 @@ const Environment = withRouter((props) => {
   )
 });
 
-export default Environment;
+export default Deployments;
