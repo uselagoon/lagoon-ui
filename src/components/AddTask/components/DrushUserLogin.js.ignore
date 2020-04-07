@@ -5,13 +5,9 @@ import ReactSelect from 'react-select';
 import Button from 'components/Button';
 import { bp, color, fontSize } from 'lib/variables';
 
-const taskDrushCron = gql`
-  mutation taskDrushCron(
-    $environment: Int!
-  ) {
-    taskDrushCron(
-      environment: $environment
-    ) {
+const taskDrushUserLogin = gql`
+  mutation taskDrushUserLogin($environment: Int!) {
+    taskDrushUserLogin(environment: $environment) {
       id
       name
       status
@@ -25,17 +21,17 @@ const taskDrushCron = gql`
   }
 `;
 
-const DrushCron = ({
+const DrushUserLogin = ({
   pageEnvironment,
   onCompleted,
   onError,
 }) => (
   <Mutation
-    mutation={taskDrushCron}
+    mutation={taskDrushUserLogin}
     onCompleted={onCompleted}
     onError={onError}
   >
-    {(taskDrushCron, { loading, called, error, data }) => {
+    {(taskDrushUserLogin, { loading, called, error, data }) => {
       return (
         <React.Fragment>
           <div className="envSelect">
@@ -57,7 +53,7 @@ const DrushCron = ({
               required
             />
           </div>
-          <Button action={taskDrushCron}>Add task</Button>
+          <Button action={taskDrushUserLogin}>Add task</Button>
           <style jsx>{`
             .envSelect {
               margin: 10px 0;
@@ -69,4 +65,4 @@ const DrushCron = ({
   </Mutation>
 );
 
-export default DrushCron;
+export default DrushUserLogin;
