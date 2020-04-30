@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import ProblemsFragment from 'lib/fragment/Problem';
 
 export default gql`
   query getEnvironment($openshiftProjectName: String!) {
@@ -7,20 +8,15 @@ export default gql`
     ) {
       id
       name
-      created
-      updated
-      deployType
-      environmentType
-      routes
       openshiftProjectName
       project {
+        id
         name
-        gitUrl
-        productionRoutes
-        standbyRoutes
-        productionEnvironment
-        standbyProductionEnvironment
+      }
+      problems {
+        ...problemFields
       }
     }
   }
+  ${ProblemsFragment}
 `;
