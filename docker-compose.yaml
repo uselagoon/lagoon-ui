@@ -1,0 +1,102 @@
+version: '3.2'
+
+x-lagoon-project:
+  # Lagoon project name (leave `&lagoon-project` when you edit this)
+  &lagoon-project lagoon-ui-beta
+
+x-environment: &default-environment
+  LAGOON_PROJECT: *lagoon-project
+  # Route that should be used locally, if you are using pygmy, this route *must* end with .docker.amazee.io
+  LAGOON_ROUTE: &default-url http://lagoon-ui-beta.docker.amazee.io
+  # Uncomment if you like to have the system behave like in production
+  #LAGOON_ENVIRONMENT_TYPE: production
+
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: .lagoon/ui.Dockerfile
+    labels:
+      lagoon.type: node
+    # depends_on:
+    #   - 'api-db'
+    #   - 'api'
+    # command: yarn run dev
+    volumes:
+      - ./services/ui/src:/app/services/ui/src
+      - ./services/ui/.env.defaults:/app/services/ui/.env.defaults
+      - ./services/ui/.env.schema:/app/services/ui/.env.schema
+      - ./services/ui/package.json:/app/services/ui/package.json
+    ports:
+      - '8888:3000'
+    networks:
+      - amazeeio-network
+      - default
+    environment:
+      <<: *default-environment
+  api-db:
+    image: timmclifford/lagoon-api-db:facts-search
+    ports:
+      - '3306:3306'
+    networks:
+      - amazeeio-network
+      - default
+    environment:
+      <<: *default-environment
+  api:
+    build:
+      context: .
+      dockerfile: .lagoon/api.Dockerfile
+    # image: timmclifford/lagoon-api:facts-search
+    depends_on:
+      - api-db
+      - keycloak
+    ports:
+      - '3000:3000'
+    # volumes:
+    #   - ./services/api/src/mocks.js:/app/services/api/src/mocks.js
+    networks:
+      - amazeeio-network
+      - default
+    environment:
+      <<: *default-environment
+  api-redis:
+    image: uselagoon/api-redis
+    environment:
+      <<: *default-environment
+  keycloak:
+    image: uselagoon/keycloak
+    user: '111111111'
+    depends_on:
+      - keycloak-db
+    ports:
+      - '8088:8080'
+    environment:
+      <<: *default-environment
+  keycloak-db:
+    image: uselagoon/keycloak-db
+    ports:
+      - '3336:3306'
+    environment:
+      <<: *default-environment
+  local-api-data-watcher-pusher:
+    depends_on:
+      - api
+    image: uselagoon/local-api-data-watcher-pusher
+  broker:
+    image: uselagoon/broker-single
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+  webhook-handler:
+    image: uselagoon/webhook-handler
+    command: yarn run dev
+    ports:
+      - '7777:3000'
+  webhooks2tasks:
+    image: uselagoon/webhooks2tasks
+    command: yarn run dev
+
+networks:
+  amazeeio-network:
+    external: true
