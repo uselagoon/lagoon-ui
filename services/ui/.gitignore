@@ -1,0 +1,14 @@
+#dependencies
+node_modules
+
+#artifacts
+.next
+build
+storybook-static
+
+#environment
+.env
+.python-version
+
+#Debug
+yarn-error.log
