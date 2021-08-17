@@ -1,11 +1,8 @@
-#dependencies
-node_modules
+# Packages
+**/node_modules
 
-#artifacts
-.next
-build
-storybook-static
-
-#environment
+# Services
+/**/**/.env
 .env
-.python-version
+
+.DS_Store

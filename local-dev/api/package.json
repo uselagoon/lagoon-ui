@@ -1,0 +1,12 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "description": "lagoon api",
+  "author": "amazee.io <hello@amazee.io> (http://www.amazee.io)",
+  "license": "MIT",
+  "devDependencies": {
+    "faker": "^5.5.3",
+    "graphql": "^15.5.1",
+    "graphql-tools": "^4.0.6"
+  }
+}
