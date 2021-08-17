@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "local-dev-api",
   "version": "0.0.1",
-  "description": "lagoon api",
+  "description": "Local dev lagoon api",
   "author": "amazee.io <hello@amazee.io> (http://www.amazee.io)",
   "license": "MIT",
   "devDependencies": {
