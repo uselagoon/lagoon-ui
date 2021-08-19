@@ -1,6 +1,18 @@
 # Lagoon UI
 
 
+# Local dev
+
+
+# Pointing to production Lagoon endpoints for testing
+
+We can also define our local api and keycloak endpoints to point to our remote api and keycloak. This can be defined inside `.env.*` our files:
+
+```
+GRAPHQL_API=https://api.lagoon.amazeeio.cloud/graphql
+KEYCLOAK_API=https://keycloak.amazeeio.cloud/auth
+```
+
 
 ### Keycloak
 
@@ -11,10 +23,4 @@ We can include this adapter script into our application directly from the server
 
 ```
 <script src="https://keycloak.amazeeio.cloud/auth/js/keycloak.js"></script>
-```
-
-We also need to define our local keycloak to point to the remote keycloak as shown inside `.env.local`:
-
-```
-KEYCLOAK_API=https://keycloak.amazeeio.cloud/auth
 ```

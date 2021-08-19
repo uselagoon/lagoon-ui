@@ -16,7 +16,7 @@ ENV LAGOON_VERSION=$LAGOON_VERSION
 COPY --from=builder /app/node_modules /app/node_modules
 
 # Copying files from ui service
-COPY ./services/ui/  /app/
+COPY ./services/ui/ /app/
 
 # Making sure we run in production
 ENV NODE_ENV=production

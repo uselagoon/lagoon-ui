@@ -53,8 +53,8 @@ services:
       - keycloak
     ports:
       - '3000:3000'
-    # volumes:
-    #   - ./services/api/src/mocks.js:/app/services/api/src/mocks.js
+    volumes:
+      - ./services/api:/local-dev/api
     networks:
       - amazeeio-network
       - default
@@ -80,9 +80,14 @@ services:
     environment:
       <<: *default-environment
   local-api-data-watcher-pusher:
+    build:
+      context: .
+      dockerfile: .lagoon/api-data-watcher-pusher.Dockerfile
     depends_on:
       - api
-    image: uselagoon/local-api-data-watcher-pusher
+    volumes:
+      - ./local-dev/api-data:/api-data
+      - ./local-dev/api-data-watcher-pusher:/home
   broker:
     image: uselagoon/broker-single
     ports:

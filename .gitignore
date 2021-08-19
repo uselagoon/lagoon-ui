@@ -2,7 +2,14 @@
 **/node_modules
 
 # Services
+/services/api
+
+# Local dev
+/local-dev
+
+# Credentials
 /**/**/.env
 .env
 
+# Other
 .DS_Store
