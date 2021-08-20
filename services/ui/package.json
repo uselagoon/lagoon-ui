@@ -9,7 +9,7 @@
     "dev": "node server.js",
     "build": "next build src",
     "start": "NODE_ENV=production node server.js",
-    "storybook": "start-storybook -s ./src -p 6006",
+    "storybook": "start-storybook -s ./src -p 6006 --ci",
     "build-storybook": "build-storybook -s ./src",
     "serve-storybook": "storybook-server -s ./src",
     "chromatic": "npx chromatic --allow-console-errors"

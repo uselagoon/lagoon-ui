@@ -20,8 +20,6 @@ const withKeycloak = (App, initialAuth) => (props) => {
       });
     }
 
-    console.log(publicRuntimeConfig);
-
     useEffect(async () => {
       const keycloak = Keycloak({
         url: publicRuntimeConfig.KEYCLOAK_API,

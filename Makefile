@@ -1,23 +1,27 @@
-.PHONY: all
-all:
+.PHONY: install
+install: build-all install-packages
+
+.PHONY: build-all
+build-all:
 	docker-compose up -d
 
-.PHONY: ui
-ui:
+.PHONY: build-ui
+build-ui:
 	docker-compose up -d ui
 
 .PHONY: logs
 logs:
 	docker-compose logs -f
 
+.PHONY: get_creds
 get_creds:
 	@echo "API token"
 	@docker-compose exec local-api-data-watcher-pusher sh -c "/home/create_jwt.py"
 
 # Local api data watcher pusher setup
 ## @timclifford Set --depth 1 when not testing and set to 'git checkout main'
-.PHONY:	local-api-data-watcher-pusher
-local-api-data-watcher-pusher:
+.PHONY:	update-local-api-data-watcher-pusher
+update-local-api-data-watcher-pusher:
 	export LOCAL_DEV_DIR=$$(mkdir -p ./lagoon&& echo "./lagoon") \
 		&& git clone --no-checkout --filter=blob:none --sparse https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
 		&& cd "$$LOCAL_DEV_DIR" \
@@ -32,9 +36,13 @@ clean-local-dev: check_clean
 check_clean:
 	@echo -n "Are you sure? This will remove the ./local-dev repo which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
 
-.PHONY: setup-mocks
-setup-mocks:
-	yarn --cwd local-dev/api install
+.PHONY: install-packages
+install-packages:
+	yarn install
+
+.PHONY: install-mocks
+install-mocks:
+	yarn --cwd services/api install
 
 .PHONY: build-storybook
 build-storybook: setup-mocks

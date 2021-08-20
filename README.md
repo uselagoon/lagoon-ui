@@ -1,8 +1,7 @@
-# Lagoon UI
+# Lagoon UI Beta
 
 
 # Local dev
-
 
 # Pointing to production Lagoon endpoints for testing
 

@@ -54,7 +54,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./services/api:/local-dev/api
+      - ./services/api:/app/mock-data
     networks:
       - amazeeio-network
       - default

@@ -18,16 +18,17 @@ module.exports = {
     Object.keys(webpackShared.alias).forEach(name => config.resolve.alias[name] = webpackShared.alias[name]);
     // Add alias for storybook decorators and components.
     config.resolve.alias.storybook = __dirname;
-    // Add reference to local-dev api mock data    
-    config.resolve.alias.api = path.join(__dirname, '../../../', 'local-dev', 'api'),
+
+    // Add reference to api mock data    
+    config.resolve.alias.api = path.join(__dirname, '../../', 'api'),
 
     config.module.rules.push({
-        test: /\.(ts|tsx)$/,
-        use: [
-            {
-                loader: require.resolve('ts-loader'),
-            },
-        ],
+      test: /\.(ts|tsx)$/,
+      use: [
+        {
+          loader: require.resolve('ts-loader'),
+        },
+      ],
     });
 
     config.resolve.extensions.push('.ts', '.tsx');

@@ -211,16 +211,6 @@ const FactsSearch = ({ categoriesSelected }) => {
           <Grid columns={4} stackable>
             <Grid.Column>
               <MultiCreatableSelectFilter
-                title="Production Status"
-                loading={!statuses}
-                options={statusesGroup}
-                isMulti={true}
-                onFilterChange={handleStatusChange}
-                placeholder={"HTTP status codes, e.g. \"200\""}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <MultiCreatableSelectFilter
                 title="Frameworks"
                 options={frameworksGroup}
                 isMulti={true}
@@ -235,6 +225,16 @@ const FactsSearch = ({ categoriesSelected }) => {
                 isMulti={true}
                 onFilterChange={handleLanguageChange}
                 placeholder={"Programming language, e.g. \"php\""}
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <MultiCreatableSelectFilter
+                title="Production Status"
+                loading={!statuses}
+                options={statusesGroup}
+                isMulti={true}
+                onFilterChange={handleStatusChange}
+                placeholder={"HTTP status codes, e.g. \"200\""}
               />
             </Grid.Column>
             <Grid.Column>
