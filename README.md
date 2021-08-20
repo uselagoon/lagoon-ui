@@ -1,13 +1,13 @@
 # Lagoon UI 
 
-Lagoon UI that primarily only has the Lagoon API and Keycloak services required for rapid development and testing. This repo also includes storybook and the necessary mock data pulled from uselagoon/lagoon.
+Lagoon UI that primarily only has the Lagoon API and Keycloak services required for rapid development and testing the UI. This repo also includes storybook and the necessary mock data pulled from uselagoon/lagoon.
 
 ## Local dev
 
 ```
 make install        # will build all images and run the containers 
 make logs           # to tail all container logs
-make get_greds      # returns an admin API token
+make get_creds      # returns an admin API token
 ```
 
 You will need to define both the `GRAPHQL_API` and `KEYCLOAK_API` environment waribales depending on the endpoints you want to connect to, for examples:
@@ -31,7 +31,7 @@ KEYCLOAK_API=https://keycloak.amazeeio.cloud/auth
 ```
 
 ### Local data watcher pusher container
-Part of the build process will install mock data for the api-db so you have projects and environments to work from. This data is mounted to `/local-dev` and you are able to modify the content here as you please. If you make changes you will need to restart the `local-data-watcher-pusher` container which will remove all the current database content that's there and re-add again.
+Part of the build process will install mock data for the `api-db` so you have projects and environments to work from. This data is mounted to `/local-dev` and you are able to modify the content here as you please. If you make changes you will need to restart the `local-data-watcher-pusher` container which will remove all the current database content that's there and re-add again.
 
 ## Storybook
 
