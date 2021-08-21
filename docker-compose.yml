@@ -36,6 +36,8 @@ services:
       <<: *default-environment
   api-db:
     image: timmclifford/lagoon-api-db:facts-search
+    labels:
+      lagoon.type: none
     ports:
       - '3306:3306'
     networks:
@@ -51,6 +53,8 @@ services:
     depends_on:
       - api-db
       - keycloak
+    labels:
+      lagoon.type: none
     ports:
       - '3000:3000'
     volumes:
@@ -62,6 +66,8 @@ services:
       <<: *default-environment
   api-redis:
     image: uselagoon/api-redis
+    labels:
+      lagoon.type: none
     environment:
       <<: *default-environment
   keycloak:
@@ -69,12 +75,16 @@ services:
     user: '111111111'
     depends_on:
       - keycloak-db
+    labels:
+      lagoon.type: none
     ports:
       - '8088:8080'
     environment:
       <<: *default-environment
   keycloak-db:
     image: uselagoon/keycloak-db
+    labels:
+      lagoon.type: none
     ports:
       - '3336:3306'
     environment:
@@ -83,6 +93,8 @@ services:
     build:
       context: .
       dockerfile: .lagoon/api-data-watcher-pusher.Dockerfile
+    labels:
+      lagoon.type: none
     depends_on:
       - api
     volumes:
@@ -90,17 +102,23 @@ services:
       - ./local-dev/api-data-watcher-pusher:/home
   broker:
     image: uselagoon/broker-single
+    labels:
+      lagoon.type: none
     ports:
       - '15672:15672'
       - '5672:5672'
   webhook-handler:
     image: uselagoon/webhook-handler
     command: yarn run dev
+    labels:
+      lagoon.type: none
     ports:
       - '7777:3000'
   webhooks2tasks:
     image: uselagoon/webhooks2tasks
     command: yarn run dev
+    labels:
+      lagoon.type: none
 
 networks:
   amazeeio-network:
