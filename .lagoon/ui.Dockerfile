@@ -21,6 +21,9 @@ COPY ./services/ui/ /app/
 # Making sure we run in production
 ENV NODE_ENV=production
 
+ARG KEYCLOAK_API
+ENV KEYCLOAK_API=$KEYCLOAK_API
+
 # Build app
 RUN yarn run build
 
