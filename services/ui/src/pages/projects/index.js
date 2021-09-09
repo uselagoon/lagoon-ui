@@ -1,17 +1,27 @@
-import React, { useState, useEffect, memo, Suspense, lazy } from "react";
-import * as R from 'ramda';
+import React, { useState, useEffect, memo, Suspense } from "react";
 import Head from 'next/head';
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
 import { Grid, Placeholder, Label, Menu, Icon, Sidebar, Header, Divider } from 'semantic-ui-react';
 import MainNavigation from 'layouts/MainNavigation';
 import MainLayout from 'layouts/MainLayout';
 import Navigation from 'components/Navigation';
-import { bp } from 'lib/variables';
 import { MultiSelectFilter } from 'components/Filters';
 
-import AllProjectsQuery from 'lib/query/AllProjects';
 import { LoadingRowsWithSpinner } from 'components/Loading';
+
+//@TODO categories will be fetched from getFactCategories query.
+export const categories = [
+  {
+    name: 'Saas'
+  },
+  {
+    name: 'SystemProjects'
+  },
+  {
+    name: 'Paas'
+  }
+];
 
 /**
  * Displays the projects page.
@@ -19,19 +29,6 @@ import { LoadingRowsWithSpinner } from 'components/Loading';
 const ProjectsPage = () => {
   const [factCategories, setFactCategories] = useState(categories);
   const [categoriesSelected, setCategoriesSelected] = useState([]);
-
-  //@TODO categories will be fetched from getFactCategories query.
-  const categories = [
-    {
-      name: 'Saas'
-    },
-    {
-      name: 'SystemProjects'
-    },
-    {
-      name: 'Paas'
-    }
-  ];
 
   const categoryOptions = (categories) => {
     return categories && categories.map(c => ({ value: c.name, label: c.name }));
@@ -49,7 +46,12 @@ const ProjectsPage = () => {
     setCategoriesSelected(addCategoryFilter || []);
   }
 
-  const FactsSearch = React.lazy(() => import('components/FactsSearch'));
+  // const FactsSearch = React.lazy(() => import('components/FactsSearch'));
+  const FactsSearch =  dynamic(
+    () => import('components/FactsSearch'),
+    { loading: ()=> <p>loading...</p> }
+  )
+
 
   useEffect(() => {
     if (categories) {
@@ -58,7 +60,7 @@ const ProjectsPage = () => {
   }, []);
 
   return (
-  <>
+   <>
     <Head>
       <title>Projects</title>
     </Head>
@@ -86,9 +88,9 @@ const ProjectsPage = () => {
           </Grid.Column>
           <Grid.Column width={14} style={{ padding: '0 4em' }}>
             <Sidebar.Pusher>
-              <Suspense fallback={<LoadingRowsWithSpinner rows="25"/>}>
+              {/* <Suspense fallback={<LoadingRowsWithSpinner rows="25"/>}> */}
                 <FactsSearch categoriesSelected={categoriesSelected} />
-              </Suspense>
+              {/* </Suspense> */}
             </Sidebar.Pusher>
           </Grid.Column>
         </Grid.Row>

@@ -45,7 +45,9 @@ class MyApp extends App {
           <Typekit kitId="ggo2pml" />
           <script
             type="text/javascript"
-            src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
+            src={publicRuntimeConfig.KEYCLOAK_API ? 
+              `${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`
+            : 'https://keycloak.amazeeio.cloud/auth/js/keycloak.js'}
           />
         </Head>
         <Authenticator>

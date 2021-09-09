@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "outDir": "build/lib",
+    "target": "ES6",
+    "lib": ["es6", "es7", "es2017", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -10,24 +11,23 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "rootDirs": [
+      "src",
+      "stories"
+    ],
+    "baseUrl": "src",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noImplicitAny": false,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types",
-      "./generated/types",
-      "./src/api/generated/graphql"
-    ],
     "jsx": "preserve",
-    "baseUrl": "./",
     "paths": {
       "@components/*": ["./components/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "build"],
   "ts-node": {
     "transpileOnly": true
+
   }
 }

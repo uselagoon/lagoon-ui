@@ -10,6 +10,8 @@ x-environment: &default-environment
   LAGOON_ROUTE: &default-url http://lagoon-ui-beta.docker.amazee.io
   # Uncomment if you like to have the system behave like in production
   #LAGOON_ENVIRONMENT_TYPE: production
+  GRAPHQL_API: "${GRAPHQL_API}"
+  KEYCLOAK_API: "${KEYCLOAK_API}"
 
 services:
   ui:
@@ -49,7 +51,6 @@ services:
     build:
       context: .
       dockerfile: .lagoon/api.Dockerfile
-    # image: timmclifford/lagoon-api:facts-search
     depends_on:
       - api-db
       - keycloak

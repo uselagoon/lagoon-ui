@@ -29,10 +29,11 @@ const Navigation = ({ children }) => {
               Settings
             </Menu.Item>
             <Menu.Item
-              name="help"
-              href="/help"
+              name="docs"
+              target="_blank"
+              href="https://docs.lagoon.sh"
             >
-              Help
+              Docs
             </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
