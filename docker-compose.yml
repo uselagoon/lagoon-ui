@@ -132,6 +132,8 @@ services:
       lagoon.type: none
   auth-server:
     image: uselagoon/auth-server
+    labels:
+      lagoon.type: none
     command: yarn run start
     environment:
       - JWTISSUER=auth-server.dev
