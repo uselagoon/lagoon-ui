@@ -78,9 +78,12 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [activeProjectPage, setProjectActivePage] = useState(1);
   const [activeEnvironmentPage, setEnvironmentActivePage] = useState(1);
 
+  const [searchEnterValue, setSearchEnterValue] = useState('');
+
   const [statusesSelected, setStatusesSelected] = useState([]);
   const [frameworksSelected, setFrameworksSelected] = useState([]);
   const [languagesSelected, setLanguagesSelected] = useState([]);
+  const [searchInputFilter, setSearchInputFilter] = useState([]);
   const [factFilters, setFactFilters] = useState([]);
   const [connectiveSelected, setConnective] = useState('AND');
 
@@ -91,7 +94,7 @@ const FactsSearch = ({ categoriesSelected }) => {
   const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
 
   // Fetch results
-  const { data: { projectsByFactSearch } = {}, loading, error } = useQuery(projectQuery, {
+  const { data: { projectsByFactSearch } = {}, loading, error, refetch } = useQuery(projectQuery, {
     variables: {
       input: {
         filters: factFilters || [],
@@ -175,19 +178,39 @@ const FactsSearch = ({ categoriesSelected }) => {
     setConnective(connective.value);
   }
 
+  // Search
+  const handleSearch = (searchInput) => {
+    let nextFactFilter;
+
+    if (!searchInput) {
+      nextFactFilter = [];
+    }
+    else {
+      nextFactFilter = [{
+        lhsTarget: "PROJECT",
+        name: "name",
+        contains: searchInput ? searchInput : "",
+      }];
+    }
+
+    setSearchEnterValue(searchInput);
+    setSearchInputFilter(nextFactFilter || []);
+    setProjectSelected(null);
+  }
+
   useEffect(() => {
     if (!error && !loading && projectsByFactSearch) {
       setProjects(projectsByFactSearch.projects);
       setProjectsCount(projectsByFactSearch.count);
     }
 
-    if (categoriesSelected.length || statusesSelected.length || frameworksSelected.length || languagesSelected.length) {
-      setFactFilters(() => [...categoriesSelected, ...statusesSelected, ...frameworksSelected, ...languagesSelected]);
+    if (categoriesSelected.length || statusesSelected.length || frameworksSelected.length || languagesSelected.length || searchInputFilter.length) {
+      setFactFilters(() => [...categoriesSelected, ...statusesSelected, ...frameworksSelected, ...languagesSelected, ...searchInputFilter]);
     }
     else {
       setFactFilters([]);
     }
-  }, [projectsByFactSearch, statusesSelected, frameworksSelected, languagesSelected, error, loading]);
+  }, [projectsByFactSearch, statusesSelected, frameworksSelected, languagesSelected, searchInputFilter, error, loading]);
 
   return (
   <Grid.Row>
@@ -251,7 +274,7 @@ const FactsSearch = ({ categoriesSelected }) => {
       </div>
       {activeTab === 'All projects' &&
         <Suspense fallback={<LazyLoadingContent delay={250} rows={DEFAULT_PROJECTS_LIMIT}/>}>
-          <FactSearchResults results={projects} activeTab={activeTab} onProjectSelectChange={handleProjectSelectChange} loading={loading} sort={sort}/>
+          <FactSearchResults results={projects} activeTab={activeTab} handleInputSearch={handleSearch} searchEnter={searchEnterValue} onProjectSelectChange={handleProjectSelectChange} loading={loading} sort={sort}/>
           {projectsCount > 0 &&
             <Grid>
               <Grid.Row stretched>

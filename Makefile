@@ -3,6 +3,7 @@ install: build-all install-packages
 
 .PHONY: build-all
 build-all:
+	docker network inspect amazeeio-network >/dev/null 2>&1 || docker network create amazeeio-network
 	docker-compose up -d
 
 .PHONY: build-ui
@@ -30,7 +31,7 @@ update-local-api-data-watcher-pusher:
 
 .PHONY: clean-local-dev
 clean-local-dev: check_clean
-	rm -rf ./local-dev	
+	rm -rf ./local-dev
 
 .PHONY: check_clean
 check_clean:

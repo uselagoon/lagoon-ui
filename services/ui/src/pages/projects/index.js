@@ -49,7 +49,7 @@ const ProjectsPage = () => {
   // const FactsSearch = React.lazy(() => import('components/FactsSearch'));
   const FactsSearch =  dynamic(
     () => import('components/FactsSearch'),
-    { loading: ()=> <p>loading...</p> }
+    { loading: ()=> <LoadingRowsWithSpinner rows="25"/> }
   )
 
 

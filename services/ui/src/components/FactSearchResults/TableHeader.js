@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useRef } from "react";
 import css from 'styled-jsx/css';
 import { bp, color, fontSize } from 'lib/variables';
 import { Grid } from 'semantic-ui-react';
@@ -6,19 +6,24 @@ import { Grid } from 'semantic-ui-react';
 import SelectFilter from 'components/Filters';
 import ToggleDisplay from 'components/ToggleDisplay';
 
-import { LazyLoadingSpinner, LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
-
 const TableHeader = ({
   searchInput,
   onSearchInputChange,
+  onSearch,
   onDisplayToggleChange,
   onSort,
   display
 }) => {
+  const inputRef = useRef();
 
   const handleSearchInputCallback = (value) => {
     onSearchInputChange(value);
   };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    onSearch(inputRef.current.value);
+  }
 
   const handleDisplayToggleChangeCallback = () => {
     onDisplayToggleChange();
@@ -58,14 +63,17 @@ const TableHeader = ({
           />
         </Grid.Column>
         <Grid.Column>
-          <input
-            aria-labelledby="search"
-            className="searchInput"
-            type="text"
-            value={searchInput}
-            onChange={e => handleSearchInputCallback(e.target.value)}
-            placeholder="Type to search"
-          />
+          <form className="search" onSubmit={handleSearch}>
+            <input
+              ref={inputRef}
+              aria-labelledby="search"
+              className="searchInput"
+              type="text"
+              value={searchInput}
+              onChange={e => handleSearchInputCallback(e.target.value)}
+              placeholder="Project name or route..."
+            />
+          </form>
         </Grid.Column>
       </Grid>
       <style jsx>{`

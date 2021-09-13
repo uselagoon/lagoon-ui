@@ -10,8 +10,8 @@ x-environment: &default-environment
   LAGOON_ROUTE: &default-url http://lagoon-ui-beta.docker.amazee.io
   # Uncomment if you like to have the system behave like in production
   #LAGOON_ENVIRONMENT_TYPE: production
-  GRAPHQL_API: "${GRAPHQL_API}"
-  KEYCLOAK_API: "${KEYCLOAK_API}"
+  GRAPHQL_API: "${GRAPHQL_API:-http://localhost:3000/graphql}"
+  KEYCLOAK_API: "${KEYCLOAK_API:-http://localhost:8088/auth}"
 
 services:
   ui:
@@ -37,7 +37,7 @@ services:
     environment:
       <<: *default-environment
   api-db:
-    image: timmclifford/lagoon-api-db:facts-search
+    image: uselagoon/api-db
     labels:
       lagoon.type: none
     ports:
@@ -59,7 +59,17 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./services/api:/app/mock-data
+      # - ./services/api:/app/mock-data
+      - ./services/api:/services/api
+    # this will override the CMD in the dockerfile
+    # command:
+    #   - /bin/sh
+    #   - -c
+    #   - |
+    #     cp -R /app/services/api/src /services/api
+    #     rm -rf /app/services/api/src
+    #     ln -sfv /services/api/src /app/services/api/src
+    #     ./node_modules/.bin/tsc-watch --build --incremental --onSuccess "node -r dotenv-extended/config dist/index"
     networks:
       - amazeeio-network
       - default
@@ -120,6 +130,16 @@ services:
     command: yarn run dev
     labels:
       lagoon.type: none
+  auth-server:
+    image: uselagoon/auth-server
+    command: yarn run start
+    environment:
+      - JWTISSUER=auth-server.dev
+      - JWTAUDIENCE=api.dev
+    # volumes:
+      # - ./services/auth-server/src:/app/services/auth-server/src
+    ports:
+      - '3001:3000'
 
 networks:
   amazeeio-network:

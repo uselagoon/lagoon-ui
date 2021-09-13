@@ -1,8 +1,6 @@
 import React, { useState, useEffect, memo, Suspense, createRef } from "react";
 import * as R from 'ramda';
 
-import css from 'styled-jsx/css';
-import { bp, color, fontSize } from 'lib/variables';
 import moment from 'moment';
 
 import { getLastCreatedDeployment, getLastCompletedDeployment } from 'lib/util';
@@ -16,7 +14,7 @@ import TableHeader from './TableHeader';
 import ProjectLink from 'components/link/Project';
 import EnvironmentLink from 'components/link/Environment';
 
-import { Grid, Table, Message, Icon, Divider, Header, Rail, Ref } from 'semantic-ui-react';
+import { Grid, Table, Message, Icon, Header, Rail, Ref } from 'semantic-ui-react';
 import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
 import MainSidebar from 'layouts/MainSidebar';
 import Label from 'components/Label';
@@ -109,7 +107,7 @@ const ProductionDeployments = ({ environment }) => {
 /**
  * The list of projects/environments returned from FactSearch.
  */
-const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
+const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activeTab, loading, sort }) => {
   const { sortedItems, requestSort, getClassNamesFor } = useSortableResultsData(results, activeTab);
   const [toggleDisplay, setToggleDisplay] = useState('list');
 
@@ -118,7 +116,7 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
   const [projectSelected, setProjectSelected] = useState('');
   const [environmentSelected, setEnvironmentSelected] = useState('');
   const [sortSelected, setSort] = useState(sort);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState(searchEnter);
   const [filteredResults, setFilteredResults] = useState(results);
 
   const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
@@ -185,7 +183,7 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
   return (
   <>
     <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}>
-      <TableHeader searchInput={searchInput} onSearchInputChange={handleSearchInputChange} onDisplayToggleChange={changeDisplay} onSort={handleSort} display={toggleDisplay} />
+      <TableHeader searchInput={searchInput} onSearchInputChange={handleSearchInputChange} onSearch={handleInputSearch} onDisplayToggleChange={changeDisplay} onSort={handleSort} display={toggleDisplay} />
       {loading && <LoadingRowsContent delay={250} rows="25"/>}
       {!loading &&
       <Grid>

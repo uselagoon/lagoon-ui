@@ -2,3 +2,6 @@
 **/build/
 **/yarn-error.log
 **/.gitignore
+
+# Envs
+**/.env.local
