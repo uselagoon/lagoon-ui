@@ -91,7 +91,9 @@ const ProductionDeploymentsFromEnvironments = ({environments}) => {
     return null;
   }
 
-  return <div>{getFromNowTime(getLastCreatedDeployment(deployments, true))}</div>;
+  const lastCompletedDeployment = getLastCompletedDeployment(deployments, true);
+
+  return lastCompletedDeployment && <div>{getFromNowTime(lastCompletedDeployment)}</div>;
 }
 
 const ProductionDeployments = ({ environment }) => {
@@ -101,7 +103,9 @@ const ProductionDeployments = ({ environment }) => {
     return null;
   }
 
-  return <div>{getFromNowTime(getLastCreatedDeployment(deployments, true))}</div>;
+  const lastCompletedDeployment = getLastCompletedDeployment(deployments, true);
+
+  return lastCompletedDeployment && <div>{getFromNowTime(lastCompletedDeployment)}</div>;
 }
 
 /**

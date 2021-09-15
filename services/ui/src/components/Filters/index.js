@@ -83,6 +83,7 @@ export const MultiSelectFilter = ({
   onFilterChange,
   loading,
   defaultValue,
+  isDisabled,
   isMulti,
   placeholder,
   ref
@@ -120,9 +121,10 @@ export const MultiSelectFilter = ({
         styles={selectStyles}
         closeMenuOnSelect={false}
         components={animatedComponents}
-        defaultValue={defaultValue}
+        value={defaultValue}
         options={options}
         isMulti={isMulti}
+        isDisabled={isDisabled}
         placeholder={placeholder}
         onChange={handleChange}
       />

@@ -14,11 +14,13 @@ const Navigation = ({ children }) => {
         </Link>
       </Menu.Item>
       <Divider />
-        <Menu.Item>
-          <Menu.Menu>
-            {children}
-          </Menu.Menu>
-        </Menu.Item>
+        {children && 
+          <Menu.Item>
+            <Menu.Menu>
+              {children}
+            </Menu.Menu>
+          </Menu.Item>
+        }
         <Menu.Item>
           <Header size="small">User</Header>
           <Menu.Menu>

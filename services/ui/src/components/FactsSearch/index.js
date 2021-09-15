@@ -1,10 +1,7 @@
-import React, { useState, useEffect, memo, Suspense, useRef } from "react";
-import { bp, color } from 'lib/variables';
+import React, { useState, useEffect, memo, Suspense } from "react";
 import { useQuery } from "@apollo/client";
-import { NetworkStatus } from '@apollo/client';
-import { Grid, Pagination, Button, Placeholder, Icon } from 'semantic-ui-react';
+import { Grid, Pagination, Icon } from 'semantic-ui-react';
 
-import MainSidebar from 'layouts/MainSidebar';
 import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
 
 import Error from 'components/Error';
@@ -79,20 +76,20 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [activeEnvironmentPage, setEnvironmentActivePage] = useState(1);
 
   const [searchEnterValue, setSearchEnterValue] = useState('');
-
   const [statusesSelected, setStatusesSelected] = useState([]);
   const [frameworksSelected, setFrameworksSelected] = useState([]);
   const [languagesSelected, setLanguagesSelected] = useState([]);
   const [searchInputFilter, setSearchInputFilter] = useState([]);
   const [factFilters, setFactFilters] = useState([]);
-  const [connectiveSelected, setConnective] = useState('AND');
+  const [connectiveSelected, setConnective] = useState(searchEnterValue ? 'OR' : 'AND');
 
-  const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(factFilters, connectiveSelected, take, skipEnvironment);
-
+  
   // Lazy load components
   const FactSearchResults = React.lazy(() => import('components/FactSearchResults'));
   const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
-
+  
+  const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(activeTab, factFilters, connectiveSelected, take, skipEnvironment);
+ 
   // Fetch results
   const { data: { projectsByFactSearch } = {}, loading, error, refetch } = useQuery(projectQuery, {
     variables: {
@@ -191,6 +188,8 @@ const FactsSearch = ({ categoriesSelected }) => {
         name: "name",
         contains: searchInput ? searchInput : "",
       }];
+
+      setConnective('OR');
     }
 
     setSearchEnterValue(searchInput);
@@ -263,8 +262,9 @@ const FactsSearch = ({ categoriesSelected }) => {
             <Grid.Column>
               <MultiSelectFilter
                 title="Connective"
-                defaultValue={{value: connectiveSelected, label: "AND"}}
+                defaultValue={{value: connectiveSelected, label: searchEnterValue ? 'OR' : connectiveSelected}}
                 options={connectiveOptions(["AND", "OR"])}
+                isDisabled={searchEnterValue && true}
                 onFilterChange={handleConnectiveChange}
               />
             </Grid.Column>

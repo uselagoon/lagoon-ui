@@ -20,10 +20,10 @@ export const getLastCreatedDeployment = (deployments, unformatted = false) => {
   const lastCreated = sortCreated && sortCreated.slice(0,1).shift() && sortCreated.slice(0,1).shift().created;
 
   if (unformatted) {
-    return lastCreated
+    return lastCreated ? lastCreated : false
   }
   else {
-    return <>{moment.utc(lastCreated).local().format('HH:mm:ss (DD-MM-YYYY)')}</>
+    return lastCreated ? <>{moment.utc(lastCreated).local().format('HH:mm:ss (DD-MM-YYYY)')}</> : false
   }
 }
 
@@ -36,10 +36,10 @@ export const getLastCompletedDeployment = (deployments, unformatted = false) => 
   const lastCompleted = sortCompleted && sortCompleted.slice(0,1).shift() && sortCompleted.slice(0,1).shift().completed;
 
   if (unformatted) {
-    return lastCompleted
+    return lastCompleted ? lastCompleted : false
   }
   else {
-    return <>{moment.utc(lastCompleted).local().format('HH:mm:ss (DD-MM-YYYY)')}</>
+    return lastCompleted ? <>{moment.utc(lastCompleted).local().format('HH:mm:ss (DD-MM-YYYY)')}</> : false
   }
 }
 

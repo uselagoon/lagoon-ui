@@ -71,7 +71,7 @@ const TableHeader = ({
               type="text"
               value={searchInput}
               onChange={e => handleSearchInputCallback(e.target.value)}
-              placeholder="Project name or route..."
+              placeholder="Search project name or route on Enter..."
             />
           </form>
         </Grid.Column>
