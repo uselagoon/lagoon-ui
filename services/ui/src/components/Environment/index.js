@@ -5,8 +5,7 @@ import { useMutation } from '@apollo/client';
 import DeleteEnvironmentMutation from 'lib/mutation/DeleteEnvironment';
 import DeleteConfirm from 'components/DeleteConfirm';
 import { bp, color } from 'lib/variables';
-import CardContent from 'components/Card';
-import { Card, Grid, Button } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 
 import Router from 'next/router';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
@@ -119,15 +118,11 @@ const Environment = ({ environment }) => {
               <div>
                 <label>Route</label>
                 <div className="field">
-                    <div key={environment.route}>
-                      <RoutesLink
-                        environmentSlug={environment.environmentSlug}
-                        projectSlug={environment.project.name}
-                        routeSlug={environment.route.replace(/(^\w+:|^)\/\//, '')}
-                      >
-                        {environment.route}
-                      </RoutesLink>
-                    </div>
+                  <div key={environment.route}>
+                    <a className="hover-state" target="_blank" href={environment.route}>
+                      {environment.route}
+                    </a>
+                  </div>
                 </div>
               </div>
             }
@@ -285,6 +280,8 @@ const Environment = ({ environment }) => {
         display: flex;
         width: 100%;
         padding: 2em 1em;
+        background: ${color.lightestGrey};
+        margin-bottom: 2em;
 
         @media ${bp.xs_smallUp} {
           flex-wrap: wrap;

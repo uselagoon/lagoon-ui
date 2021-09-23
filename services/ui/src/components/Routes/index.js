@@ -6,20 +6,31 @@ const Routes = ({ environment }) => {
       {environment.route &&
       <div className="route">
         <label>Primary Route</label>
-        <p>{environment.route}</p>
+        <p><a className="hover-state" target="_blank" href={environment.route}>{environment.route}</a></p>
       </div>
       }
       {environment.routes &&
       <div className="routes">
         <label>Routes</label>
         {environment.routes.split(',').map((route, index) => {
-          return (<ul>
-            <li>{route}</li>
-          </ul>)
+          return (
+            <ul>
+              <li>
+                <a className="hover-state" target="_blank" href={route}>{route}</a>
+              </li>
+            </ul>
+          )
         })}
       </div>
       }
-      <style jsx>{``}</style>
+      <style jsx>{`
+        .routes {
+          ul {
+            padding-left: 0;
+          }
+        }
+        
+      `}</style>
     </div>
   );
 }

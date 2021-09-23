@@ -1,11 +1,11 @@
 import Link from 'next/link';
 
-export const getLinkData = (environmentSlug, projectSlug, routeSlug) => ({
+export const getLinkData = (environmentSlug, projectSlug) => ({
   urlObject: {
     pathname: '/routes',
     query: { openshiftProjectName: environmentSlug }
   },
-  asPath: `/project/${projectSlug}/${environmentSlug}/${routeSlug}`
+  asPath: `/projects/${projectSlug}/${environmentSlug}/routes`
 });
 
 /**
@@ -14,12 +14,11 @@ export const getLinkData = (environmentSlug, projectSlug, routeSlug) => ({
 const RoutesLink = ({
   environmentSlug,
   projectSlug,
-  routeSlug,
   children,
   className = null,
   prefetch = false
 }) => {
-  const linkData = getLinkData(environmentSlug, projectSlug, routeSlug);
+  const linkData = getLinkData(environmentSlug, projectSlug);
 
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>

@@ -82,7 +82,7 @@ export const PageProject = ({ router }) => {
                 <Navigation />
               </MainNavigation>
             </Grid.Column>
-            <Grid.Column width={14} style={{ padding: "1em 4em" }}>
+            <Grid.Column width={14} style={{ padding: "0 4em" }}>
               {error &&
                 <Message negative>
                   <Message.Header>Error: Unable to load project</Message.Header>

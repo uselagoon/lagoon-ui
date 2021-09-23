@@ -68,10 +68,9 @@ const NavTabs = ({ activeTab, environment }) => (
       <RoutesLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
-        routeSlug={environment.route}
         className={aClassName}
       >
-      <Icon link name='external'/> Routes
+        <Icon link name='external'/> Routes
       </RoutesLink>
     </li>
     <li
