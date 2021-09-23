@@ -7,7 +7,7 @@ const ResultsSummary = ({ results, count, page, numResultsPerPage }) => {
 
   return (
     <div className="project-summary-wrapper">
-      <div className="info-box">{`Search & filter projects by their active environments`}</div>
+      <div className="info-box">{`Search & filter projects and environments`}</div>
       <div className='project-summary'>
         <label>Total: {`${results && currentTotal} / ${count && count}`}</label>
       </div>

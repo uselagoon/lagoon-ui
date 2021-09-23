@@ -15,7 +15,7 @@ import EnvironmentHeader from 'components/EnvironmentHeader';
 import NavTabs from 'components/NavTabs';
 
 const Environment = React.lazy(() => import('components/Environment'));
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
 import { bp } from 'lib/variables';
 import MainSidebar from 'layouts/MainSidebar';
@@ -54,7 +54,7 @@ export const PageEnvironment = ({ router }) => {
                 <p>{`No environment found for '${router.query.environmentSlug}'`}</p>
               </Message>
             }
-            {loading && <LoadingRowsContent delay={250} rows="15"/>}
+            {loading && <LoadingEnvironmentRows depth={4} />}
             {!loading && environment &&
             <>
               <EnvironmentHeader environment={environment} />

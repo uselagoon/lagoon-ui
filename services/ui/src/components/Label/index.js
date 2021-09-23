@@ -86,12 +86,20 @@ const matchFactToIcon = (name) => {
   }
 }
 
-const Label = ({ text, icon, color, value }) => {
+const Label = ({ className, text, icon, color, value, basic, href, loading }) => {
+  if (href) {
+    return (
+      <SemanticLabel className={className} as={'a'} href={href}>
+        <Icon name={icon} color={'black'}/>{text}
+      </SemanticLabel>
+    )
+  }
+
   if (icon) {
     let foundIcon = {};
     if (icon === "Lagoon" || icon === "lagoon-category") {
       return (
-        <SemanticLabel>
+        <SemanticLabel className={className}>
           <Image className="lagoon-logo" size="mini" src="/static/images/lagoon-2.svg" avatar /><>{text}</>
         </SemanticLabel>
       )
@@ -109,14 +117,14 @@ const Label = ({ text, icon, color, value }) => {
     }
 
     return (
-      <SemanticLabel>
-        <Icon name={foundIcon.icon} color={color ? color : foundIcon.color}/>{text}
+      <SemanticLabel className={className} basic={basic} color={color}>
+        <Icon loading={loading} name={foundIcon.icon} color={color ? color : foundIcon.color}/>{text}
       </SemanticLabel>
     );
   };
 
   return (
-    <SemanticLabel>
+    <SemanticLabel className={className} basic={basic} color={color}>
       {text}
     </SemanticLabel>
   );

@@ -19,68 +19,76 @@ import { Grid, Message } from 'semantic-ui-react';
 
 import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
 import BackupsSubscription from 'lib/subscription/Backups';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
 /**
  * Displays the backups page, given the name of an openshift project.
  */
 export const PageBackups = ({ router }) => {
-  const { loading, error, data: { environment } = {}, subscribeToMore, fetchMore } = useQuery(EnvironmentWithBackupsQuery, {
+  const [environment, setEnvironment] = useState(); 
+
+  const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithBackupsQuery, {
     variables: { openshiftProjectName: router.query.environmentSlug },
     fetchPolicy: 'network-only'
   });
 
   useEffect(() => {
-    const unsubscribe = environment && subscribeToMore({
-      document: BackupsSubscription,
-      variables: { environment: environment.id },
-      updateQuery: (prevStore, { subscriptionData }) => {
-        if (!subscriptionData.data) return prevStore;
-        const prevBackups =
-          prevStore.environment.backups;
-        const incomingBackup = subscriptionData.data.backupChanged;
-        const existingIndex = prevBackups.findIndex(
-          prevBackup => prevBackup.id === incomingBackup.id
-        );
-        let newBackups;
+    if (!error && !loading && data) {
+      setEnvironment(data.environment);
+    }
 
-        // New backup.
-        if (existingIndex === -1) {
-          // Don't add new deleted backups.
-          if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
-            return prevStore;
-          }
+    if (environment) {
+      const unsubscribe = subscribeToMore({
+        document: BackupsSubscription,
+        variables: { environment: environment.id },
+        updateQuery: (prevStore, { subscriptionData }) => {
+          if (!subscriptionData.data) return prevStore;
+          const prevBackups =
+            prevStore.environment.backups;
+          const incomingBackup = subscriptionData.data.backupChanged;
+          const existingIndex = prevBackups.findIndex(
+            prevBackup => prevBackup.id === incomingBackup.id
+          );
+          let newBackups;
 
-          newBackups = [incomingBackup, ...prevBackups];
-        }
-        // Existing backup.
-        else {
-          // Updated backup
-          if (incomingBackup.deleted === '0000-00-00 00:00:00') {
-            newBackups = Object.assign([...prevBackups], {
-              [existingIndex]: incomingBackup
-            });
+          // New backup.
+          if (existingIndex === -1) {
+            // Don't add new deleted backups.
+            if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
+              return prevStore;
+            }
+
+            newBackups = [incomingBackup, ...prevBackups];
           }
-          // Deleted backup
+          // Existing backup.
           else {
-            newBackups = R.remove(existingIndex, 1, prevBackups);
+            // Updated backup
+            if (incomingBackup.deleted === '0000-00-00 00:00:00') {
+              newBackups = Object.assign([...prevBackups], {
+                [existingIndex]: incomingBackup
+              });
+            }
+            // Deleted backup
+            else {
+              newBackups = R.remove(existingIndex, 1, prevBackups);
+            }
           }
+
+          const newStore = {
+            ...prevStore,
+            environment: {
+              ...prevStore.environment,
+              backups: newBackups
+            }
+          };
+
+          return newStore;
         }
+      });
 
-        const newStore = {
-          ...prevStore,
-          environment: {
-            ...prevStore.environment,
-            backups: newBackups
-          }
-        };
-
-        return newStore;
-      }
-    });
-
-    return () => environment && unsubscribe();
-  }, [environment, subscribeToMore]);
+      return () => environment && unsubscribe();
+    }
+  }, [data, loading, error, subscribeToMore]);
 
   return (
     <>
@@ -108,7 +116,7 @@ export const PageBackups = ({ router }) => {
                   <p>{`No backups found for '${router.query.environmentSlug}'`}</p>
                 </Message>
               }
-              {loading && <LoadingRowsContent delay={250} rows="15"/>}
+              {loading && <LoadingEnvironmentRows delay={250} rows="15" type={"list"}/>}
               {!loading && environment &&
               <>
                 <Breadcrumbs>

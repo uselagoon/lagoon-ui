@@ -41,9 +41,9 @@ const TableHeader = ({
             title="Sort"
             placeholder={"Sort by..."}
             options={[
-              {value: 'name', label: 'Name'},
               {value: 'created', label: 'Recently created'},
-              {value: 'last-deployed', label: 'Last deployed'}
+              {value: 'last-deployed', label: 'Last deployed'},
+              {value: 'name', label: 'Name'}
             ]}
             onFilterChange={handleSort}
           />
@@ -71,7 +71,7 @@ const TableHeader = ({
               type="text"
               value={searchInput}
               onChange={e => handleSearchInputCallback(e.target.value)}
-              placeholder="Search project name or route on Enter..."
+              placeholder="Search projects on Enter..."
             />
           </form>
         </Grid.Column>

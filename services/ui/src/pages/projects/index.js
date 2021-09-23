@@ -46,7 +46,7 @@ const ProjectsPage = () => {
     setCategoriesSelected(addCategoryFilter || []);
   }
 
-  const FactsSearch =  dynamic(
+  const FactsSearch = dynamic(
     () => import('components/FactsSearch'),
     { loading: ()=> <LoadingRowsWithSpinner rows="25"/> }
   );

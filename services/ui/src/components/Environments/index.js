@@ -4,7 +4,6 @@ import css from 'styled-jsx/css';
 import EnvironmentLink from 'components/link/Environment';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
-import moment from 'moment';
 
 import { getLastCompletedDeployment } from 'lib/util';
 
@@ -45,14 +44,10 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
   }
 `;
 
-const Environments = ({ environments = [], display }) => {
-  if (environments.length === 0) {
-    return null;
-  }
-
+const Environments = ({ project = [], display }) => {
   return (
     <div className="environments">
-      {environments.map(environment => {
+      {project.environments.map(environment => {
         const bgImage = R.propOr(
           bgImages.none,
           environment.deployType,
@@ -68,8 +63,8 @@ const Environments = ({ environments = [], display }) => {
           }
         `;
         const isProduction = environment.environmentType == 'production' && true || false;
-        const isActive = (environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.project.productionEnvironment == environment.name) && true || false;
-        const isStandby = (environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.project.standbyProductionEnvironment == environment.name) && true || false;
+        const isActive = (project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == environment.name) && true || false;
+        const isStandby = (project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == environment.name) && true || false;
         const isPullRequest = (environment.deployType === 'pullrequest') && true;
         const hasLabel = isProduction || isActive || isStandby || false;
 
@@ -77,7 +72,7 @@ const Environments = ({ environments = [], display }) => {
           <div className="environment" key={environment.id}>
             <EnvironmentLink
               environmentSlug={environment.openshiftProjectName}
-              projectSlug={environment.project.name}
+              projectSlug={project.name}
             >
               {display === 'list' && (
                 <Box className={`${boxClassName} ${bgClassName} ${display} ${hasLabel ? 'label' : 'no-label'}`}>

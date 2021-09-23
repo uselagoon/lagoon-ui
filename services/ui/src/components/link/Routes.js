@@ -2,16 +2,16 @@ import Link from 'next/link';
 
 export const getLinkData = (environmentSlug, projectSlug, routeSlug) => ({
   urlObject: {
-    pathname: '/route',
+    pathname: '/routes',
     query: { openshiftProjectName: environmentSlug }
   },
   asPath: `/project/${projectSlug}/${environmentSlug}/${routeSlug}`
 });
 
 /**
- * Links to the primary route page given the project name and the openshift project name.
+ * Links to the primary routes page given the project name and the openshift project name.
  */
-const RouteLink = ({
+const RoutesLink = ({
   environmentSlug,
   projectSlug,
   routeSlug,
@@ -28,4 +28,4 @@ const RouteLink = ({
   );
 };
 
-export default RouteLink;
+export default RoutesLink;

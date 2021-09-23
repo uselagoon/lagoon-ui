@@ -2,20 +2,16 @@ import React, { useState, memo } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import giturlparse from 'git-url-parse';
-import Environments from 'components/Environments';
 import { Grid } from 'semantic-ui-react';
 
 import { bp, color, fontSize, lineHeight } from 'lib/variables';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { Mutation } from '@apollo/client/react/components';
-import ProjectByNameQuery from 'lib/query/ProjectByName';
-
 const ProjectDetailsHeader = ({ project }) => {
   const [copied, setCopied] = useState(false);
-  const gitUrlParsed = project && giturlparse(project.gitUrl);
+  const gitUrlParsed = project && project.gitUrl && giturlparse(project.gitUrl);
   const gitLink = gitUrlParsed && `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
-  const environmentCount = project && R.countBy(R.prop('environmentType'))(
+  const environmentCount = project && project.environments && R.countBy(R.prop('environmentType'))(
     project.environments
   );
   const developEnvironmentCount = environmentCount && R.propOr(0, 'development', environmentCount);
@@ -111,7 +107,7 @@ const ProjectDetailsHeader = ({ project }) => {
       </Grid>
       <style jsx>{`
         .details {
-          padding: 0 calc((100vw / 16) * 1);
+          padding: 2em;
 
           .field-wrapper {
             &.giturl {

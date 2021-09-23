@@ -1,16 +1,23 @@
-import { Label, Icon, Input, Menu, Header, Divider } from 'semantic-ui-react';
+import { useRouter } from 'next/router';
+
+import { Label, Icon, Menu, Header, Divider } from 'semantic-ui-react';
 import Footer from 'components/Footer';
 
 import Link from 'next/link';
+import { color } from 'lib/variables';
 
 const Navigation = ({ children }) => {
+  const router = useRouter();
+
   return (
   <>
     <Menu vertical>
       <Menu.Item header>
         <Icon name="grid layout"/>
         <Link href="/projects">
-          All Projects
+          <a className={`${router.pathname === "/projects" ? 'active' : 'not-active'}`}>
+            All Projects
+          </a>
         </Link>
       </Menu.Item>
       <Divider />
@@ -41,6 +48,11 @@ const Navigation = ({ children }) => {
         </Menu.Item>
         <Footer />
     </Menu>
+    <style jsx>{`
+      .active {
+        color: ${color.brightBlue};
+      }
+    `}</style>
   </>
   );
 };

@@ -62,7 +62,7 @@ const EnvironmentsSidebar = ({ environment }) => {
                   const deploymentStatus = getDeploymentIconFromStatus(d.status);
                   return (
                     <List.Item>
-                      <Icon name={deploymentStatus.icon} color={deploymentStatus.color} className={`deployment-status ${d.status}`} size="tiny" verticalAlign="middle" />
+                      <Icon fitted name={deploymentStatus.icon} color={deploymentStatus.color} className={`deployment-status ${d.status}`} size="tiny" verticalAlign="middle" />
                       <List.Content>
                         <DeploymentLink
                           deploymentSlug={d.name}

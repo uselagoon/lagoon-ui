@@ -11,7 +11,7 @@ import { Card, Grid, Button } from 'semantic-ui-react';
 import Router from 'next/router';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
-import RouteLink from 'components/link/Route';
+import RoutesLink from 'components/link/Routes';
 import FactsLink from 'components/link/Facts';
 
 /**
@@ -112,9 +112,7 @@ const Environment = ({ environment }) => {
       <Grid.Column>
         <Card fluid className="basic">
           <Card.Content>
-            <Card.Header>
-              Routes
-            </Card.Header>
+            <Card.Header content="Routes" sub />
           </Card.Content>
           <Card.Content>
             {environment.route &&
@@ -122,13 +120,13 @@ const Environment = ({ environment }) => {
                 <label>Route</label>
                 <div className="field">
                     <div key={environment.route}>
-                      <RouteLink
+                      <RoutesLink
                         environmentSlug={environment.environmentSlug}
                         projectSlug={environment.project.name}
                         routeSlug={environment.route.replace(/(^\w+:|^)\/\//, '')}
                       >
                         {environment.route}
-                      </RouteLink>
+                      </RoutesLink>
                     </div>
                 </div>
               </div>
@@ -205,6 +203,15 @@ const Environment = ({ environment }) => {
                         </div>
                       ))}
                     </div>
+                    <div>
+                  </div>
+                    <FactsLink
+                      environmentSlug={environment.openshiftProjectName}
+                      projectSlug={environment.project.name}
+                      className="facts-link hover-state blue"
+                    >
+                      more...
+                    </FactsLink>
                   </div>
                 }
               </div>
@@ -277,7 +284,7 @@ const Environment = ({ environment }) => {
       .environment-details {
         display: flex;
         width: 100%;
-        padding: 2em 0;
+        padding: 2em 1em;
 
         @media ${bp.xs_smallUp} {
           flex-wrap: wrap;
@@ -288,6 +295,10 @@ const Environment = ({ environment }) => {
           width: 33%;
           margin-bottom: 2em;
         }
+      }
+
+      .field {
+        padding-bottom: 1em;
       }
 
       .facts-wrapper {

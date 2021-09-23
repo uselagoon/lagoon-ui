@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Route = ({ environment }) => {
+const Routes = ({ environment }) => {
   return (
     <div>
       {environment.route &&
@@ -19,10 +19,9 @@ const Route = ({ environment }) => {
         })}
       </div>
       }
-      <style jsx>{`
-  `}</style>
+      <style jsx>{``}</style>
     </div>
   );
 }
 
-export default Route;
+export default Routes;

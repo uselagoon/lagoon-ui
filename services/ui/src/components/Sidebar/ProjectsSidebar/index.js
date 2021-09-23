@@ -1,25 +1,17 @@
 import React, { useState, memo } from 'react';
 import * as R from 'ramda';
 import Link from 'next/link';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import moment from 'moment';
-import giturlparse from 'git-url-parse';
-import Environments from 'components/Environments';
 import SiteStatus from 'components/SiteStatus';
 import ProjectLink from 'components/link/Project';
 import EnvironmentLink from 'components/link/Environment';
 
 import { Icon, Divider, Header, List, Label as SemanticLabel } from 'semantic-ui-react';
-import { bp, color, fontSize } from 'lib/variables';
 import Label from 'components/Label';
 import { getFromNowTime } from "components/Dates";
-import { getLastCompletedDeployment } from 'lib/util';
 
-import { Mutation } from '@apollo/client/react/components';
-import ProjectByNameQuery from 'lib/query/ProjectByName';
 
 const ProjectsSidebar = ({ project }) => {
-  const [copied, setCopied] = useState(false);
   const environments = [...project.environments].sort((a, b) => a.environmentType && a.environmentType === "production" ? -1 : b.environmentType && b.environmentType === "production" ? 1 : 0)
   const environmentCount = project && R.countBy(R.prop('environmentType'))(
     project.environments
@@ -36,13 +28,13 @@ const ProjectsSidebar = ({ project }) => {
         {environments && environments.map((e, index) => e.environmentType === "production" &&
          <div key={`${e.name.toLowerCase()}-${index}`} className="summary-production">
           <div className="summary-production-link">
-            <Header size='small'>
-              {e.route ? e.route.replace(/(^\w+:|^)\/\//, '') : project.name}
-              <Header.Subheader>
-                <div>{e.route && project.name}</div>
-              </Header.Subheader>
-            </Header>
             <ProjectLink className="project-link" projectSlug={project.name} key={project.id}>
+              <Header size='small'>
+                {e.route ? e.route.replace(/(^\w+:|^)\/\//, '') : project.name}
+                <Header.Subheader>
+                  <div>{e.route && project.name}</div>
+                </Header.Subheader>
+              </Header>
               <div className="icon"><Icon fitted size='large' color='grey' link name='long arrow alternate right'/></div>
             </ProjectLink>
           </div>
@@ -79,11 +71,11 @@ const ProjectsSidebar = ({ project }) => {
         }
         {environments && environments.map((e, index) =>
           <div key={e.name.toLowerCase()} className="environments">
-            <Header as={"h3"} size={"tiny"} style={{ margin: "0" }}>{e.name}</Header>
+            <div><label>{e.name}</label></div>
             <Divider />
             <div className="section environment-summary">
-              <Label className="type" icon="tree" text={e.environmentType} />
               <div><SiteStatus environment={e}/></div>
+              <Label className="type" icon="tree" text={e.environmentType} />
             </div>
             <div className="section logs">
               <div className="last-deployed-wrapper">
@@ -117,7 +109,6 @@ const ProjectsSidebar = ({ project }) => {
                         <Label
                           className="key-facts"
                           icon={f.name}
-                          color={"grey"}
                           text={`${f.name} ${f.value}`}
                           value={f.value}
                         />
@@ -152,6 +143,7 @@ const ProjectsSidebar = ({ project }) => {
             padding: 1em 0;
           }
         }
+
         .environments {
           display: flex;
           flex-direction: column;

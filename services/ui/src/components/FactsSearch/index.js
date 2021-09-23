@@ -84,14 +84,13 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [connectiveSelected, setConnective] = useState(searchEnterValue ? 'OR' : 'AND');
 
   
-  // Lazy load components
+  // Lazy load results
   const FactSearchResults = React.lazy(() => import('components/FactSearchResults'));
-  const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
   
   const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(activeTab, factFilters, connectiveSelected, take, skipEnvironment);
  
   // Fetch results
-  const { data: { projectsByFactSearch } = {}, loading, error, refetch } = useQuery(projectQuery, {
+  const { data: { projectsByFactSearch } = {}, loading, error } = useQuery(projectQuery, {
     variables: {
       input: {
         filters: factFilters || [],

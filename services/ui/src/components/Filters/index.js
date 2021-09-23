@@ -46,7 +46,7 @@ const SelectFilter = ({
         name={title.toLowerCase()}
         styles={selectStyles}
         closeMenuOnSelect={false}
-        defaultValue={defaultValue}
+        value={defaultValue}
         options={options}
         placeholder={placeholder}
         isMulti={isMulti}
@@ -61,6 +61,7 @@ const SelectFilter = ({
           }
         }
         .filter {
+          padding-right: 1em;
           margin-bottom: 1em;
           font-size: 0.9em;
 

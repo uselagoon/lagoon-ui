@@ -14,13 +14,10 @@ import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
 
 import ProjectByNameQuery from 'lib/query/ProjectByName';
-import EnvironmentHeader from 'components/EnvironmentHeader';
-import NavTabs from 'components/NavTabs';
-
 import ProjectDetailsHeader from 'components/ProjectDetailsHeader';
 const Environments = React.lazy(() => import('components/Environments'));
 
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingRowsContent, LoadingSpinner, LazyLoadingContent } from 'components/Loading';
 
 import { bp, color } from 'lib/variables';
 import ToggleDisplay from 'components/ToggleDisplay';
@@ -30,22 +27,22 @@ import Box from 'components/Box';
  * Displays a project page, given the project name.
  */
 export const PageProject = ({ router }) => {
-  const [environments, setEnvironments] = useState([]);
+  const [project, setProject] = useState([]);
   const [toggleDisplay, setToggleDisplay] = useState('list');
 
-  const { data: { project } = {}, loading, error } = useQuery(ProjectByNameQuery, {
+  const { data, loading, error } = useQuery(ProjectByNameQuery, {
     variables: {
       name: router.query.projectSlug
     }
   });
 
   const getProductionEnvironments = (environments) => {
-    if (!environments) return null;
+  if (!environments) return null;
     return environments.some(e => e.environmentType === 'production') ? environments.filter(e => e.environmentType === 'production') : false;
   }
 
   const getDevelopmentEnvironments = (environments) => {
-    if (!environments) return null;
+  if (!environments) return null;
     return environments.some(e => e.environmentType === 'development') ? environments.filter(e => e.environmentType === 'development') : false;
   }
 
@@ -59,18 +56,18 @@ export const PageProject = ({ router }) => {
   };
 
   useEffect(() => {
-    if (!error && !loading && project) {
+    if (!error && !loading && data) {
       // Sort alphabetically by environmentType and then deployType
       const environments = R.sortWith(
         [
           R.descend(R.prop('environmentType')),
           R.ascend(R.prop('deployType'))
         ],
-        project.environments
+        data.project.environments
       );
-      setEnvironments(environments);
+      setProject({ ...data.project, environments });
     }
-  }, [router, project, loading, error]);
+  }, [router, data, loading, error]);
 
   return (
     <>
@@ -98,14 +95,14 @@ export const PageProject = ({ router }) => {
                   <p>{`No project found for '${router.query.projectSlug}'`}</p>
                 </Message>
               }
-              {loading && <LoadingRowsContent delay={250} rows="15"/>}
-              {!loading && project &&
+              {loading && <LoadingSpinner />}
+              {!loading && !error && project &&
               <>
                 <Breadcrumbs>
                   <ProjectBreadcrumb projectSlug={project.name} />
                 </Breadcrumbs>
                 <div className="project-details-header">
-                  <ProjectDetailsHeader project={project} />
+                  {project && <ProjectDetailsHeader project={project} />}
                 </div>
                 <div className="environments-wrapper">
                   <div className="toggle">
@@ -113,17 +110,17 @@ export const PageProject = ({ router }) => {
                       action={changeDisplay}
                       disabled={toggleDisplay === 'list'}
                     >
-                      List view
+                      <Icon fitted color="black" name="list" />
                     </ToggleDisplay>
                     <ToggleDisplay
                       action={changeDisplay}
                       disabled={toggleDisplay === 'detailed'}
                     >
-                      Detailed view
+                      <Icon fitted color="black" name="th list" />
                     </ToggleDisplay>
                   </div>
-                  {!environments.length && <Box><p>No Environments</p></Box>}
-                  {environments.length > 0 && getProductionEnvironments(environments) &&
+                  {project.environments && !project.environments.length && <Box><p>No Environments</p></Box>}
+                  {project.environments && project.environments.length > 0 && getProductionEnvironments(project.environments) &&
                     <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
                       <div className="environments-production">
                         <div className="environments-header">
@@ -131,11 +128,11 @@ export const PageProject = ({ router }) => {
                             <h3><label>Production Environments</label></h3>
                           </div>
                         </div>
-                        <Environments environments={getProductionEnvironments(environments)} display={toggleDisplay} />
+                        <Environments project={{ ...project, environments: getProductionEnvironments(project.environments) }} display={toggleDisplay} />
                       </div>
                    </Suspense>
                   }
-                  {environments.length > 0 && getDevelopmentEnvironments(environments) &&
+                  {project.environments && project.environments.length > 0 && getDevelopmentEnvironments(project.environments) &&
                     <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
                       <div className="environments-development">
                         <div className="environments-header">
@@ -143,7 +140,7 @@ export const PageProject = ({ router }) => {
                             <h3><label>Development Environments</label></h3>
                           </div>
                         </div>
-                        <Environments environments={getDevelopmentEnvironments(environments)} display={toggleDisplay} />
+                        <Environments project={{ ...project, environments: getDevelopmentEnvironments(project.environments) }} display={toggleDisplay} />
                       </div>
                     </Suspense>
                   }
@@ -162,7 +159,7 @@ export const PageProject = ({ router }) => {
 
           .environments-wrapper {
             flex-grow: 1;
-            padding: 40px calc((100vw / 16) * 1);
+            padding: 2em 0;
           }
 
           .environments-header {

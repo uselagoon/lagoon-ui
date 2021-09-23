@@ -1,10 +1,17 @@
 import React, { useState, useEffect, memo, Suspense, createRef } from "react";
-import * as R from 'ramda';
-
 import moment from 'moment';
 
-import { getLastCreatedDeployment, getLastCompletedDeployment } from 'lib/util';
-import { getFromNowTime } from "components/Dates";
+import { 
+  getProductionEnvironmentSiteStatus,
+  ProductionDeploymentsFromEnvironments,
+  ProductionDeployments,
+  ProductionRouteFromEnvironments,
+  ProductionFrameworkFromEnvironments,
+  ProductionFramework,
+  ProductionLanguageFromEnvironments,
+  ProductionLanguage,
+  environmentCount
+} from 'lib/util';
 import stringInputFilter from './filterLogic';
 import useSortableResultsData from './sortedItems';
 import SiteStatus from 'components/SiteStatus';
@@ -19,94 +26,6 @@ import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
 import MainSidebar from 'layouts/MainSidebar';
 import Label from 'components/Label';
 
-const environmentCount = (project) => project && R.countBy(R.prop('environmentType'))(
-  project.environments
-);
-
-const getProductionEnvironmentSiteStatus = (environments) => {
-  if (!environments || environments.length === 0) {
-    return null;
-  }
-
-  const productionEnvironment = environments.filter(e => e.environmentType === "production").shift();
-  return <SiteStatus iconOnly={true} environment={productionEnvironment}/>;
-}
-
-const ProductionRouteFromEnvironments = ({ environments }) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const route = produtionEnvs.length && [...produtionEnvs].shift().route;
-
-  return (
-    route ? <>{route}</> : null
-  )
-}
-
-const ProductionFrameworkFromEnvironments = ({environments}) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const framework = produtionEnvs.length && [...produtionEnvs].shift().facts.filter(f => f.category === 'Framework');
-  const frameworkFact = framework && [...framework].shift();
-
-  return (
-    frameworkFact ?
-      <Label icon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
-  )
-}
-
-const ProductionFramework = ({ environment }) => {
-  const framework = environment && environment.facts.filter(f => f.category === 'Framework');
-  const frameworkFact = framework && [...framework].shift();
-
-  return (
-    frameworkFact ?
-      <Label icon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
-  )
-}
-
-const ProductionLanguageFromEnvironments = ({environments}) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const language = produtionEnvs.length && [...produtionEnvs].shift().facts.filter(f => f.category === 'Programming language');
-  const languageFact = language && [...language].shift();
-
-  return (
-    languageFact ?
-      <Label icon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
-  )
-}
-
-const ProductionLanguage = ({ environment }) => {
-  const language = environment && environment.facts.filter(f => f.category === 'Programming language');
-  const languageFact = language && [...language].shift();
-
-  return (
-    languageFact ?
-      <Label icon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
-  )
-}
-
-const ProductionDeploymentsFromEnvironments = ({environments}) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const deployments = produtionEnvs.length && [...produtionEnvs].shift().deployments;
-
-  if (deployments.length === 0) {
-    return null;
-  }
-
-  const lastCompletedDeployment = getLastCompletedDeployment(deployments, true);
-
-  return lastCompletedDeployment && <div>{getFromNowTime(lastCompletedDeployment)}</div>;
-}
-
-const ProductionDeployments = ({ environment }) => {
-  const deployments = environment && environment.deployments;
-
-  if (deployments.length === 0) {
-    return null;
-  }
-
-  const lastCompletedDeployment = getLastCompletedDeployment(deployments, true);
-
-  return lastCompletedDeployment && <div>{getFromNowTime(lastCompletedDeployment)}</div>;
-}
 
 /**
  * The list of projects/environments returned from FactSearch.
@@ -123,8 +42,8 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
   const [searchInput, setSearchInput] = useState(searchEnter);
   const [filteredResults, setFilteredResults] = useState(results);
 
-  const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
-  const EnvironmentsSidebar = React.lazy(() => import('components/EnvironmentsSidebar'));
+  const ProjectsSidebar = React.lazy(() => import('components/Sidebar/ProjectsSidebar'));
+  const EnvironmentsSidebar = React.lazy(() => import('components/Sidebar/EnvironmentsSidebar'));
 
   const handleSearchInputChange = (input) => {
     setSearchInput(input);
@@ -265,7 +184,7 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
                             />
                           </Header>
                           <Header.Subheader size='tiny'>
-                            {isProjectBasedSearch ? <ProductionRouteFromEnvironments environments={result.environments}/> : result.route && result.route}
+                            <ProductionRouteFromEnvironments environments={result.environments} route={result.route} searchInput={searchInput} />
                           </Header.Subheader>
                           {toggleDisplay === 'detailed' &&
                           <div style={{ margin: "1em 0" }}>
@@ -301,12 +220,12 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
                         <Table.Cell selectable textAlign={"center"}>
                           {isProjectBasedSearch &&
                             <ProjectLink className="project-link" projectSlug={result.name} key={result.id}>
-                              <Icon className="project-link" name='angle right' size='large'/>
+                              <Icon fitted className="project-link" name='angle right' size='large'/>
                             </ProjectLink>
                           }
                           {isEnvironmentsBasedSearch &&
                             <EnvironmentLink className="environment-link" projectSlug={result.project.name} environmentSlug={result.openshiftProjectName} key={result.id}>
-                              <Icon className="environment-link" name='angle right' size='large'/>
+                              <Icon fitted className="environment-link" name='angle right' size='large'/>
                             </EnvironmentLink>
                           }
                         </Table.Cell>

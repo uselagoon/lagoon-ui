@@ -28,14 +28,6 @@ export default gql`
         facts {
           ...factFields
         }
-        project {
-          id
-          name
-          productionEnvironment
-          standbyProductionEnvironment
-          problemsUi
-          factsUi
-        }
       }
     }
   }

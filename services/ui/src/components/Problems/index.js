@@ -161,11 +161,11 @@ const Problems = ({problems}) => {
         </div>
       </div>
       <div className="filters">
-          <input type="text" id="filter" placeholder="Filter problems e.g. CVE-2020-2342"
-            value={problemTerm}
-            onChange={handleTextFilterChange}
-          />
-        </div>
+        <input type="text" id="filter" placeholder="Filter problems e.g. CVE-2020-2342"
+          value={problemTerm}
+          onChange={handleTextFilterChange}
+        />
+      </div>
       <div className="header">
         <button
             type="button"
@@ -252,74 +252,6 @@ const Problems = ({problems}) => {
           }
         }
 
-        .filters-wrapper {
-          .select-filters {
-            display: flex;
-            flex-direction: column;
-            @media ${bp.wideUp} {
-              flex-flow: row;
-            }
-
-            &:first-child {
-              padding-bottom: 1em;
-            }
-          }
-        }
-
-        .text-large {
-          font-size: 1.4em;
-        }
-
-        .red {
-          color: ${color.red};
-        }
-
-        .blue {
-          color: ${color.blue};
-        }
-
-        .yellow {
-          color: ${color.lightestBlue};
-        }
-
-        .grey {
-          color: ${color.grey};
-        }
-
-        input#filter {
-          width: 100%;
-          border: none;
-          padding: 10px 20px;
-          margin: 0;
-        }
-
-        .button-sort {
-          color: #5f6f7a;
-          font-family: 'source-code-pro',sans-serif;
-          font-size: 12px;
-          font-size: 0.8125rem;
-          line-height: 1.4;
-          text-transform: uppercase;
-          text-align: center;
-          border: none;
-          background: none;
-          cursor: pointer;
-          padding: 0;
-          width: calc(100% / 6);
-
-          &.identifier {
-            text-align: left;
-          }
-
-          &.ascending:after {
-            content: ' \\25B2';
-          }
-
-          &.descending:after {
-            content: ' \\25BC';
-          }
-        }
-
         .overview {
           .overview-list {
             display: flex;
@@ -334,15 +266,6 @@ const Problems = ({problems}) => {
               margin: 0;
             }
           }
-        }
-
-        .data-none {
-          border: 1px solid ${color.white};
-          border-bottom: 1px solid ${color.lightestGrey};
-          border-radius: 3px;
-          line-height: 1.5rem;
-          padding: 8px 0 7px 0;
-          text-align: center;
         }
       `}</style>
     </div>

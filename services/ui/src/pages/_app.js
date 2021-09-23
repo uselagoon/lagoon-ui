@@ -10,8 +10,8 @@ import Favicon from 'components/Favicon';
 import Authenticator, { AuthContext } from 'lib/Authenticator';
 import ApiConnection from 'lib/ApiConnection';
 
-import '../static/nprogress.css';
 import 'semantic-ui-css/semantic.min.css';
+import '../static/nprogress.css';
 import 'components/Honeycomb/styling.css';
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();

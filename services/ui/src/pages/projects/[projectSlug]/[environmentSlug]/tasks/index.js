@@ -18,57 +18,65 @@ import { Grid, Message } from 'semantic-ui-react';
 
 import EnvironmentWithTasksQuery from 'lib/query/EnvironmentWithTasks';
 import TasksSubscription from 'lib/subscription/Tasks';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
 
 /**
  * Displays the tasks page, given the openshift project name.
  */
 export const PageTasks = ({ router }) => {
-  const { loading, error, data: { environment } = {}, subscribeToMore, fetchMore } = useQuery(EnvironmentWithTasksQuery, {
+  const [environment, setEnvironment] = useState(); 
+
+  const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithTasksQuery, {
     variables: { openshiftProjectName: router.query.environmentSlug },
     fetchPolicy: 'network-only'
   });
 
   useEffect(() => {
-    const unsubscribe = environment && subscribeToMore({
-      document: TasksSubscription,
-      variables: { environment: environment && environment.id },
-      updateQuery: (prevStore, { subscriptionData }) => {
-        if (!subscriptionData.data) return prevStore;
+    if (!error && !loading && data) {
+      setEnvironment(data.environment);
+    }
 
-        const prevTasks = prevStore.environment.tasks;
-        const incomingTask = subscriptionData.data.taskChanged;
-        const existingIndex = prevTasks.findIndex(
-          prevTask => prevTask.id === incomingTask.id
-        );
-        let newTasks;
+    if (environment) {
+      let unsubscribe = subscribeToMore({
+        document: TasksSubscription,
+        variables: { environment: environment && environment.id },
+        updateQuery: (prevStore, { subscriptionData }) => {
+          if (!subscriptionData.data) return prevStore;
 
-        // New task.
-        if (existingIndex === -1) {
-          newTasks = [incomingTask, ...prevTasks];
-        }
-        // Updated task
-        else {
-          newTasks = Object.assign([...prevTasks], {
-            [existingIndex]: incomingTask
-          });
-        }
+          const prevTasks = prevStore.environment.tasks;
+          const incomingTask = subscriptionData.data.taskChanged;
+          const existingIndex = prevTasks.findIndex(
+            prevTask => prevTask.id === incomingTask.id
+          );
+          let newTasks;
 
-        const newStore = {
-          ...prevStore,
-          environment: {
-            ...prevStore.environment,
-            tasks: newTasks
+          // New task.
+          if (existingIndex === -1) {
+            newTasks = [incomingTask, ...prevTasks];
           }
-        };
+          // Updated task
+          else {
+            newTasks = Object.assign([...prevTasks], {
+              [existingIndex]: incomingTask
+            });
+          }
 
-        return newStore;
-      }
-    });
+          const newStore = {
+            ...prevStore,
+            environment: {
+              ...prevStore.environment,
+              tasks: newTasks
+            }
+          };
 
-    return () => environment && unsubscribe();
-  }, [environment, subscribeToMore]);
+          return newStore;
+        }
+      });
+
+      return () => environment && unsubscribe();
+    }
+  }, [data, loading, error, subscribeToMore]);
 
 
   return (
@@ -97,7 +105,7 @@ export const PageTasks = ({ router }) => {
                 <p>{`No tasks found for '${router.query.environmentSlug}'`}</p>
               </Message>
             }
-            {loading && <LoadingRowsContent delay={250} rows="15"/>}
+            {loading && <LoadingEnvironmentRows delay={250} rows="15" type={"list"}/>}
             {!loading && environment &&
             <>
               <EnvironmentHeader environment={environment}/>

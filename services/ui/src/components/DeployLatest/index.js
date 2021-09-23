@@ -102,12 +102,8 @@ const DeployLatest = ({ pageEnvironment: environment, fetchMore, ...rest }) => {
             display: flex;
             flex-flow: row wrap;
             justify-content: space-between;
-            margin-bottom: 32px;
+            margin-bottom: 2em;
             padding: 15px;
-
-            @media ${bp.tabletUp} {
-              margin-bottom: 0;
-            }
 
             @media ${bp.wideUp} {
               min-width: 52%;

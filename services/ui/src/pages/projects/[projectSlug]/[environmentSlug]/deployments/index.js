@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Suspense } from "react";
-import * as R from 'ramda';
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
@@ -18,58 +17,76 @@ const Deployments = React.lazy(() => import('components/Deployments'));
 
 import EnvironmentWithDeploymentsQuery from 'lib/query/EnvironmentWithDeployments';
 import DeploymentsSubscription from 'lib/subscription/Deployments';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
-
+import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
 /**
  * Displays the deployments page, given the openshift project name.
  */
 export const PageDeployments = ({ router }) => {
-  const { loading, error, data: { environment } = {}, subscribeToMore, fetchMore } = useQuery(EnvironmentWithDeploymentsQuery, {
-    variables: { openshiftProjectName: router.query.environmentSlug },
+  const [environment, setEnvironment] = useState();
+  const [resultsLimit, setResultsLimit] = useState({ value: 0, label: "All"});
+
+  const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithDeploymentsQuery, {
+    variables: { 
+      openshiftProjectName: router.query.environmentSlug,
+      limit: resultsLimit && resultsLimit.label === 'All' ? 0 : resultsLimit.value
+    },
     fetchPolicy: 'network-only'
   });
 
+  const resultsLimitOptions = (limits) => {
+    return limits && limits.map(l => ({ value: parseInt(l), label: l}));
+  };
+
+  const handleResultsLimitChange = (limit) => {
+    setResultsLimit(limit);
+  };
+
   useEffect(() => {
-    const unsubscribe = environment && subscribeToMore({
-      document: DeploymentsSubscription,
-      variables: { environment: environment && environment.id },
-      updateQuery: (prevStore, { subscriptionData }) => {
-        if (!subscriptionData.data) return prevStore;
-        const prevDeployments =
-          prevStore.environment.deployments;
-        const incomingDeployment =
-          subscriptionData.data.deploymentChanged;
-        const existingIndex = prevDeployments.findIndex(
-          prevDeployment => prevDeployment.id === incomingDeployment.id
-        );
-        let newDeployments;
+    if (!error && !loading && data) {
+      setEnvironment(data.environment);
+    }
 
-        // New deployment.
-        if (existingIndex === -1) {
-          newDeployments = [incomingDeployment, ...prevDeployments];
-        }
-        // Updated deployment
-        else {
-          newDeployments = Object.assign([...prevDeployments], {
-            [existingIndex]: incomingDeployment
-          });
-        }
+    if (environment) {
+      let unsub = subscribeToMore({
+          document: DeploymentsSubscription,
+          variables: { environment: environment.id },
+          updateQuery: (prevStore, { subscriptionData }) => {
+            if (!subscriptionData.data) return prevStore;
+            const prevDeployments = prevStore.environment.deployments;
+            const incomingDeployment = subscriptionData.data.deploymentChanged;
+            const existingIndex = prevDeployments.findIndex(
+              prevDeployment => prevDeployment.id === incomingDeployment.id
+            );
+            let newDeployments;
 
-        const newStore = {
-          ...prevStore,
-          environment: {
-            ...prevStore.environment,
-            deployments: newDeployments
-          }
-        };
+            // New deployment.
+            if (existingIndex === -1) {
+              newDeployments = [incomingDeployment, ...prevDeployments];
+            }
+            // Updated deployment
+            else {
+              newDeployments = Object.assign([...prevDeployments], {
+                [existingIndex]: incomingDeployment
+              });
+            }
 
-        return newStore;
-      }
-    });
+            const newStore = {
+              ...prevStore,
+              environment: {
+                ...prevStore.environment,
+                deployments: newDeployments
+              }
+            };
 
-    return () => environment && unsubscribe();
-  }, [environment, subscribeToMore]);
+            return newStore;
+          },
+          onError: err => console.log(err)
+      });
+
+      return () => unsub();
+    }
+  }, [data, loading, error, subscribeToMore]);
 
   return (
     <>
@@ -97,7 +114,7 @@ export const PageDeployments = ({ router }) => {
                   <p>{`No deployments found for '${router.query.environmentSlug}'`}</p>
                 </Message>
               }
-              {loading && <LoadingRowsContent delay={250} rows="15"/>}
+              {loading && <LoadingEnvironmentRows delay={250} rows="15" type={"list"}/>}
               {!loading && environment &&
               <>
                 <EnvironmentHeader environment={environment}/>
@@ -112,7 +129,11 @@ export const PageDeployments = ({ router }) => {
                   <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
                     <Deployments
                       deployments={environment.deployments}
-                      projectName={environment.openshiftProjectName}
+                      projectSlug={environment.project.name}
+                      environmentSlug={environment.openshiftProjectName}
+                      resultsLimit={resultsLimit}
+                      resultsLimitOptions={resultsLimitOptions}
+                      handleResultsLimitChange={handleResultsLimitChange}
                     />
                   </Suspense>
                 </div>
