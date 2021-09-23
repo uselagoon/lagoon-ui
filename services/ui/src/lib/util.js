@@ -155,6 +155,7 @@ const getDeploymentIconFromStatus = (status) => {
 export {
   getLastDeployment,
   getLastCreatedDeployment,
+  getLastCompletedDeployment,
   ProductionDeploymentsFromEnvironments,
   ProductionDeployments,
   getDeploymentIconFromStatus
