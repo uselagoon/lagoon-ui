@@ -149,17 +149,6 @@ export const LoadingRowsContent = ({rows = 25}) => {
   return <Item.Group divided>{items}</Item.Group>
 };
 
-export const LoadingRowsWithSpinner = (rows = 25) => {
-  return(
-    <Item.Group divided>
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
-      </Dimmer>
-      <LoadingRowsContent rows={rows} />
-    </Item.Group>
-  )
-};
-
 export const LoadingSpinner = () => {
   return(
     <div className="loading-wrapper">

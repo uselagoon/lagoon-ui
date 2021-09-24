@@ -59,8 +59,8 @@ const languagesGroup = [
   }
 ];
 
-const DEFAULT_PROJECTS_LIMIT = 25;
-const DEFAULT_ENVIRONMENTS_LIMIT = 25;
+export const DEFAULT_PROJECTS_LIMIT = 25;
+export const DEFAULT_ENVIRONMENTS_LIMIT = 25;
 
 const FactsSearch = ({ categoriesSelected }) => {
   const [projectQuery, setProjectQuery] = useState(AllProjectsFromFacts);

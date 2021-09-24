@@ -114,7 +114,7 @@ const NavTabs = ({ activeTab, environment }) => (
         justify-content: flex-start;
         background: ${color.lightestGrey};
         border-right: 1px solid ${color.midGrey};
-        margin: 0;
+        margin: 0 0 2em;
         z-index: 10;
         padding-left: 0;
 

@@ -373,7 +373,7 @@ const GlobalStyles = ({ children }) => (
       }
 
       p {
-        margin: 0 0 1.25rem;
+        margin: 0 0 1em;
       }
 
       p a {

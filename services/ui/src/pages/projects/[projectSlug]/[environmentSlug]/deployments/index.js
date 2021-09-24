@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
+import getConfig from 'next/config';
 
 import MainLayout from 'layouts/MainLayout';
 import MainNavigation from 'layouts/MainNavigation';
@@ -19,12 +20,21 @@ import EnvironmentWithDeploymentsQuery from 'lib/query/EnvironmentWithDeployment
 import DeploymentsSubscription from 'lib/subscription/Deployments';
 import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
+
+export const DEFAULT_DEPLOYMENTS_LIMIT = 25;
+
+const { publicRuntimeConfig } = getConfig();
+const envLimit = publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT || DEFAULT_DEPLOYMENTS_LIMIT;
+const customMessage = publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT_MESSAGE;
+const deploymentsLimit = envLimit === -1 ? null : envLimit;
+
 /**
  * Displays the deployments page, given the openshift project name.
  */
 export const PageDeployments = ({ router }) => {
   const [environment, setEnvironment] = useState();
-  const [resultsLimit, setResultsLimit] = useState({ value: 0, label: "All"});
+  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit});
+  const [visibleMessage, setVisibleMessage] = useState(true);
 
   const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithDeploymentsQuery, {
     variables: { 
@@ -41,6 +51,10 @@ export const PageDeployments = ({ router }) => {
   const handleResultsLimitChange = (limit) => {
     setResultsLimit(limit);
   };
+
+  const handleDismiss = () => {
+    setVisibleMessage(false);
+  }
 
   useEffect(() => {
     if (!error && !loading && data) {
@@ -120,6 +134,13 @@ export const PageDeployments = ({ router }) => {
                 <EnvironmentHeader environment={environment}/>
                 <NavTabs activeTab="deployments" environment={environment} />
                 <div className="content">
+                  {visibleMessage && environment.deployments && deploymentsLimit < environment.deployments.length && 
+                    <Message info onDismiss={() => handleDismiss()}>
+                      <Message.Header>Results have been limited</Message.Header>
+                      <p>{`Number of results displayed is limited to ${deploymentsLimit}`}</p>
+                      <p>{customMessage && `${customMessage}`}</p>
+                    </Message>
+                  }
                   <DeployLatest pageEnvironment={environment} fetchMore={() => fetchMore({
                     variables: {
                       environment,

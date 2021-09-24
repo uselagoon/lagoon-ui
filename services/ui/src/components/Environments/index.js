@@ -38,7 +38,7 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
       }
 
       &.detailed {
-        min-height: 270px;
+        padding-bottom: 60px;
       }
     }
   }

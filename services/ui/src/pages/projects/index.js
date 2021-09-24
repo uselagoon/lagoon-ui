@@ -8,7 +8,7 @@ import MainLayout from 'layouts/MainLayout';
 import Navigation from 'components/Navigation';
 import { MultiSelectFilter } from 'components/Filters';
 
-import { LoadingRowsWithSpinner } from 'components/Loading';
+import { LoadingSpinner } from 'components/Loading';
 
 //@TODO categories will be fetched from getFactCategories query.
 export const categories = [
@@ -48,7 +48,7 @@ const ProjectsPage = () => {
 
   const FactsSearch = dynamic(
     () => import('components/FactsSearch'),
-    { loading: ()=> <LoadingRowsWithSpinner rows="25"/> }
+    { loading: () => <LoadingSpinner /> }
   );
 
   useEffect(() => {

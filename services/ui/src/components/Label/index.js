@@ -9,19 +9,18 @@ const matchFactToIcon = (name) => {
         icon: "globe",
         color: "grey"
       }
+
     case "drupal-core":
       return {
         icon: "drupal",
         color: "blue"
       };
-      break;
 
     case "laravel/framework":
       return  {
         icon: "laravel",
         color: "red"
       };
-      break;
 
     case "Lagoon":
       return  {
@@ -34,7 +33,6 @@ const matchFactToIcon = (name) => {
         icon: "php",
         color: "black"
       };
-      break;
 
     case "express":
     case "nodejs":
@@ -43,50 +41,35 @@ const matchFactToIcon = (name) => {
         icon: "node js",
         color: "green"
       };
-      break;
 
     case "python":
       return  {
         icon: "python",
         color: "grey"
       };
-      break;
 
+    case "react":
     case "reactjs":
       return  {
         icon: "react",
         color: "blue"
       };
-      break;
-
-    case "java":
-      return  {
-        icon: "java",
-        color: "orange"
-      };
-      break;
 
     case "gatsby":
-      return  {
-        icon: "gatsby",
-        color: "purple"
-      };
-      break;
-
+    case "symfony":
     case "go-lang":
+    case "java":
       return  {
-        icon: "go",
-        color: "teal"
+        icon: "info circle",
+        color: "grey"
       };
-      break;
 
     default:
-      return { icon: name, color: "grey" };
-      break;
+      return { icon: false, color: "grey" };
   }
 }
 
-const Label = ({ className, text, icon, color, value, basic, href, loading }) => {
+const Label = ({ className, text, factIcon, color, value, basic, href, loading, icon }) => {
   if (href) {
     return (
       <SemanticLabel className={className} as={'a'} href={href}>
@@ -95,9 +78,9 @@ const Label = ({ className, text, icon, color, value, basic, href, loading }) =>
     )
   }
 
-  if (icon) {
+  if (factIcon || icon) {
     let foundIcon = {};
-    if (icon === "Lagoon" || icon === "lagoon-category") {
+    if (factIcon === "Lagoon" || icon === "lagoon-category") {
       return (
         <SemanticLabel className={className}>
           <Image className="lagoon-logo" size="mini" src="/static/images/lagoon-2.svg" avatar /><>{text}</>
@@ -105,7 +88,7 @@ const Label = ({ className, text, icon, color, value, basic, href, loading }) =>
       )
     }
 
-    if (icon === "site-code-status") {
+    if (factIcon === "site-code-status") {
       const siteStatus = getSiteStatusFromCode(value);
       foundIcon = {
         icon: mapStatusToIcon(siteStatus),
@@ -113,12 +96,14 @@ const Label = ({ className, text, icon, color, value, basic, href, loading }) =>
       }
     }
     else {
-      foundIcon = matchFactToIcon(icon);
+      foundIcon = matchFactToIcon(factIcon);
     }
 
     return (
       <SemanticLabel className={className} basic={basic} color={color}>
-        <Icon loading={loading} name={foundIcon.icon} color={color ? color : foundIcon.color}/>{text}
+        {factIcon && foundIcon && foundIcon.icon && <Icon loading={loading} name={foundIcon.icon} color={color ? color : foundIcon.color}/>}
+        {icon && !factIcon && <Icon loading={loading} name={icon} color={color}/>}
+        {text}
       </SemanticLabel>
     );
   };

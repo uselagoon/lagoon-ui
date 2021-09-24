@@ -108,7 +108,7 @@ const productionEnvironment = (deployments) => {
     return <Label basic className={"deployment"} icon="times circle outline" color={"grey"} text={"Cancelled"} />;
   }
   else {
-    return lastDeployment ? <Label basic className={"deployment"} color={"green"} text="Completed" text={getFromNowTime(lastDeployment.completed)} />: null;
+    return lastDeployment ? <Label basic className={"deployment"} icon="check circle outline" color={"green"} text="Completed" text={getFromNowTime(lastDeployment.completed)} />: null;
   }
 }
 
@@ -146,7 +146,7 @@ const getDeploymentIconFromStatus = (status) => {
 
     default:
       return {
-        icon: "circle thhin",
+        icon: "circle thin",
         color: "grey"
       }
   }
@@ -170,7 +170,7 @@ const ProductionFrameworkFromEnvironments = ({environments}) => {
 
   return (
     frameworkFact ?
-      <Label icon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
+      <Label factIcon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
   )
 }
 
@@ -180,7 +180,7 @@ const ProductionFramework = ({ environment }) => {
 
   return (
     frameworkFact ?
-      <Label icon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
+      <Label factIcon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
   )
 }
 
@@ -190,7 +190,7 @@ const ProductionLanguageFromEnvironments = ({environments}) => {
   const languageFact = language && [...language].shift();
 
   return (
-    languageFact ? <Label icon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
+    languageFact ? <Label factIcon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
   )
 }
 
@@ -199,7 +199,7 @@ const ProductionLanguage = ({ environment }) => {
   const languageFact = language && [...language].shift();
 
   return (
-    languageFact ? <Label icon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
+    languageFact ? <Label factIcon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
   )
 }
 

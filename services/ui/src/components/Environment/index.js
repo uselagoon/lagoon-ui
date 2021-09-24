@@ -114,7 +114,7 @@ const Environment = ({ environment }) => {
             <Card.Header content="Routes" sub />
           </Card.Content>
           <Card.Content>
-            {environment.route &&
+            {environment.route ?
               <div>
                 <label>Route</label>
                 <div className="field">
@@ -125,7 +125,8 @@ const Environment = ({ environment }) => {
                   </div>
                 </div>
               </div>
-            }
+            : "No route"}
+            {environment.routes ?
             <div className="field">
               <label>Routes</label>
               {environment.routes
@@ -138,6 +139,7 @@ const Environment = ({ environment }) => {
                   ))
                 : ''}
             </div>
+            : ""}
             {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name && (
               <div>
                 <label>Active Environment Routes</label>
@@ -173,47 +175,50 @@ const Environment = ({ environment }) => {
           </Card.Content>
         </Card>
       </Grid.Column>
-      <Grid.Column>
-        <Card fluid className="basic">
-          <Card.Content>
-            <Card.Header>
-              <FactsLink
-                environmentSlug={environment.openshiftProjectName}
-                projectSlug={environment.project.name}
-                className="facts-link"
-              >
-                Facts
-              </FactsLink>
-            </Card.Header>
-          </Card.Content>
-          <Card.Content>
-              <div className="facts">
-                {environment.facts &&
-                  <div className="facts-wrapper">
-                    <div className="field">
-                      {environment.facts.map(fact => (
-                        <div className="fact">
-                          <div className="fact-name">{fact.name}</div>
-                          <div className="fact-value">{fact.value}</div>
-                        </div>
-                      ))}
+      {environment.facts.length > 0 &&
+        <Grid.Column>
+          <Card fluid className="basic">
+            <Card.Content>
+              <Card.Header>
+                <FactsLink
+                  environmentSlug={environment.openshiftProjectName}
+                  projectSlug={environment.project.name}
+                  className="facts-link"
+                >
+                  Facts
+                </FactsLink>
+              </Card.Header>
+            </Card.Content>
+            <Card.Content>
+                <div className="facts">
+                  {environment.facts &&
+                    <div className="facts-wrapper">
+                      <div className="field">
+                        {environment.facts.map(fact => (
+                          <div className="fact">
+                            <div className="fact-name">{fact.name}</div>
+                            <div className="fact-value">{fact.value}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div>
                     </div>
-                    <div>
-                  </div>
-                    <FactsLink
-                      environmentSlug={environment.openshiftProjectName}
-                      projectSlug={environment.project.name}
-                      className="facts-link hover-state blue"
-                    >
-                      more...
-                    </FactsLink>
-                  </div>
-                }
-              </div>
-          </Card.Content>
-        </Card>
-      </Grid.Column>
+                      <FactsLink
+                        environmentSlug={environment.openshiftProjectName}
+                        projectSlug={environment.project.name}
+                        className="facts-link hover-state blue"
+                      >
+                        more...
+                      </FactsLink>
+                    </div>
+                  }
+                </div>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+      }
     </Grid>
+    
 
     <Grid columns={2} stackable>
       {environment.services.length > 0 && (

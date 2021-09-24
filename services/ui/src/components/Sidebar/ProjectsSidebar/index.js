@@ -108,7 +108,7 @@ const ProjectsSidebar = ({ project }) => {
                       <List.Item key={f.name.toLowerCase()}>
                         <Label
                           className="key-facts"
-                          icon={f.name}
+                          factIcon={f.name}
                           text={`${f.name} ${f.value}`}
                           value={f.value}
                         />
