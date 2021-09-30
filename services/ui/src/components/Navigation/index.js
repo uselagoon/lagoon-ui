@@ -31,6 +31,24 @@ const Navigation = ({ children }) => {
         <Menu.Item>
           <Header size="small">User</Header>
           <Menu.Menu>
+             <Menu.Item
+              name="add-project"
+              href="/add/project"
+            >
+              Add Project
+            </Menu.Item>
+            <Menu.Item
+              name="add-environment"
+              href="/add/environment"
+            >
+              Add Environment
+            </Menu.Item>
+            <Menu.Item
+              name="add-envvar"
+              href="/add/envvar"
+            >
+              Add Environment Variable
+            </Menu.Item>
             <Menu.Item
               name="settings"
               href="/settings"

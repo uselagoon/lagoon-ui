@@ -14,6 +14,12 @@ build-ui:
 logs:
 	docker-compose logs -f
 
+.PHONY: re-sync-api
+re-sync-api:
+	@echo "Syncing local API src with container"
+	@docker-compose exec api sh -c "/app/services/api/api_run.sh"
+	@docker-compose exec api sh -c "touch /app/services/api/api_run.sh"
+
 .PHONY: get_creds
 get_creds:
 	@echo "API token"
@@ -27,10 +33,10 @@ update-local-api-data-watcher-pusher:
 		&& git clone --no-checkout --filter=blob:none --sparse https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
 		&& cd "$$LOCAL_DEV_DIR" \
 		&& git sparse-checkout set local-dev/api-data-watcher-pusher \
-		&& git checkout feature/facts-search-api-changes
+		&& git checkout main
 
 .PHONY: clean-local-dev
-clean-local-dev: check_clean
+clean-local-dev-dir: check_clean
 	rm -rf ./local-dev
 
 .PHONY: check_clean

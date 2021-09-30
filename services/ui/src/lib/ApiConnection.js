@@ -2,12 +2,13 @@ import React from 'react';
 import getConfig from 'next/config';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/client';
-import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
-import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
-import { getMainDefinition } from 'apollo-utilities';
 import { ApolloProvider } from '@apollo/client';
+import { ApolloLink, HttpLink } from '@apollo/client';
+
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { onError } from '@apollo/link-error';
+import { getMainDefinition } from '@apollo/client/utilities';
+
 import { AuthContext } from 'lib/Authenticator';
 import ErrorPage from 'pages/_error.js';
 

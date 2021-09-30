@@ -5,7 +5,7 @@ import SelectFilter from 'components/Filters';
 import { getDeploymentDuration } from 'components/Deployment';
 import { bp, color } from 'lib/variables';
 
-export const RESULTS_LIMIT_OPTIONS = ["25", "50", "100", "All"];
+export const RESULTS_LIMIT_OPTIONS = ["10", "25", "50", "100", "All"];
 
 /**
  * Displays a list of deployments.

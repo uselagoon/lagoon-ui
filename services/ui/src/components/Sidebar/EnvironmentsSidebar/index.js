@@ -34,7 +34,7 @@ const EnvironmentsSidebar = ({ environment }) => {
                 <div>{environment.route && environment.route.replace(/(^\w+:|^)\/\//, '')}</div>
               </Header.Subheader>
             </Header>
-            <ProjectLink className="project-link" projectSlug={environment.project.name} key={environment.project.id}>
+            <ProjectLink projectSlug={environment.project.name} key={environment.project.id}>
               <div className="icon"><Icon fitted size='large' color='grey' link name='long arrow alternate right'/></div>
             </ProjectLink>
           </div>

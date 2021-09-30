@@ -333,47 +333,10 @@ const GlobalStyles = ({ children }) => (
         }
       }
 
-      a {
-        color: ${color.black};
-        text-decoration: none;
-
-        &.hover-state {
-          position: relative;
-          transition: all 0.2s ease-in-out;
-
-          &::before,
-          &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 0;
-            height: 1px;
-            transition: all 0.2s ease-in-out;
-            transition-duration: 0.75s;
-            opacity: 0;
-          }
-          &::after {
-            left: 0;
-            background-color: ${color.linkBlue};
-          }
-          &:hover {
-            &::before,
-            &::after {
-              width: 100%;
-              opacity: 1;
-            }
-          }
-        }
-      }
-
       a.project-link {
         width: 100%;
         display: flex;
         justify-content: space-between;
-      }
-
-      p {
-        margin: 0 0 1em;
       }
 
       p a {
@@ -481,6 +444,39 @@ const GlobalStyles = ({ children }) => (
     .ui.fluid.card.basic {
       border: 1px solid #f7f7f7;
       box-shadow: none;
+    }
+  }
+
+  a {
+    color: ${color.black};
+    text-decoration: none;
+
+    &.hover-state {
+      position: relative;
+      transition: all 0.2s ease-in-out;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 0;
+        height: 1px;
+        transition: all 0.2s ease-in-out;
+        transition-duration: 0.75s;
+        opacity: 0;
+      }
+      &::after {
+        left: 0;
+        background-color: ${color.linkBlue};
+      }
+      &:hover {
+        &::before,
+        &::after {
+          width: 100%;
+          opacity: 1;
+        }
+      }
     }
   }
   `}</style>

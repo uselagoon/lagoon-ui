@@ -22,7 +22,6 @@ export {
   environmentCount
 }
 
-
 // Environments
 const getProductionEnvironments = (environments) => {
   return environments && environments.filter(e => e.environmentType === "production");
@@ -47,7 +46,11 @@ const ProductionRouteFromEnvironments = ({ environments, route, searchInput }) =
   return prodRoute ? <Highlighter searchWords={[searchInput]} autoEscape={true} textToHighlight={prodRoute}/> : null
 }
 
+const deploymentTypes = ["BRANCH", "PULLREQUEST", "PROMOTE"];
+const environmentTypes = ["PRODUCTION", "DEVELOPMENT"];
+
 export {
+  deploymentTypes, environmentTypes,
   getProductionEnvironments,
   getProductionEnvironmentSiteStatus,
   ProductionRouteFromEnvironments
@@ -208,4 +211,13 @@ export {
   ProductionFramework,
   ProductionLanguageFromEnvironments,
   ProductionLanguage
+}
+
+// Environment Variables
+const envVariableTypes = ["PROJECT", "ENVIRONMENT"];
+const envVariableScopes = ["BUILD", "RUNTIME", "GLOBAL", "CONTAINER_REGISTRY", "INTERNAL_CONTAINER_REGISTRY"];
+
+export {
+  envVariableTypes,
+  envVariableScopes
 }
