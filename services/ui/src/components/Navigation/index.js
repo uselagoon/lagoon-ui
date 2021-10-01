@@ -29,7 +29,7 @@ const Navigation = ({ children }) => {
           </Menu.Item>
         }
         <Menu.Item>
-          <Header size="small">User</Header>
+          <Header size="small">Manage</Header>
           <Menu.Menu>
              <Menu.Item
               name="add-project"
