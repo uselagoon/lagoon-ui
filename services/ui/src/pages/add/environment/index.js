@@ -121,7 +121,7 @@ export const PageAddEnvironment = ({ router }) => {
                   }
                   <Form loading={called && loading} onSubmit={handleSubmit}>
                     <Form.Group>
-                      <Form.Field required
+                      <Form.Field required loading={projectsLoading}
                         id={'project'}
                         control={Select}
                         label='Project'
