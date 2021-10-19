@@ -14,9 +14,6 @@
       // "lib/*": [
       //   "src/lib/*"
       // ],
-      "static/*": [
-        "src/static/*"
-      ],
     },
     "allowJs": true,
     "skipLibCheck": true,
