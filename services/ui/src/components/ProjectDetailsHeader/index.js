@@ -135,7 +135,7 @@ const ProjectDetailsHeader = ({ project }) => {
               }
 
               .copy {
-                background: url('/static/images/copy.svg') center center no-repeat ${color.white};
+                background: url('/images/copy.svg') center center no-repeat ${color.white};
                 background-size: 16px;
                 border-left: 1px solid ${color.lightestGrey};
                 bottom: 0;

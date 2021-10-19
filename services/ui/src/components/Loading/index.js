@@ -5,7 +5,7 @@ const ParagraphLines = ({ depth = 1 }) => {
   let lines = [];
 
   for (let i = 0; i < depth; i++) {
-    lines.push(<Placeholder>
+    lines.push(<Placeholder key={`item-${i}`}>
     <Placeholder.Paragraph>
       <Placeholder.Line length='medium' />
       <Placeholder.Line length='short' />
@@ -26,13 +26,13 @@ const TwoColContent = ({rows, depth}) => {
           <Grid columns={2} stackable>
           <Grid.Column>
             <Segment>
-              <ParagraphLines depth={depth} />
+              <ParagraphLines key={`first-col-${i}`} depth={depth} />
             </Segment>
           </Grid.Column>
 
           <Grid.Column>
             <Segment>
-              <ParagraphLines depth={depth} />
+              <ParagraphLines key={`second-col-${i}`} depth={depth} />
             </Segment>
           </Grid.Column>
         </Grid>
@@ -51,19 +51,19 @@ const ThreeColContent = ({rows}) => {
           <Grid columns={3} stackable>
           <Grid.Column>
             <Segment>
-              <ParagraphLines />
+              <ParagraphLines key={`first-col-${i}`} />
             </Segment>
           </Grid.Column>
 
           <Grid.Column>
             <Segment>
-              <ParagraphLines />
+              <ParagraphLines key={`second-col-${i}`} />
             </Segment>
           </Grid.Column>
 
           <Grid.Column>
             <Segment>
-              <ParagraphLines />
+              <ParagraphLines key={`third-col-${i}`} />
             </Segment>
           </Grid.Column>
         </Grid>
@@ -158,9 +158,6 @@ export const LoadingSpinner = () => {
 }
 
 export const LoadingEnvironmentRows = ({rows = 2, type, depth = 2}) => {
-
-  console.log('type: ', type);
-
   return (
     <Item.Group divided>
       <Segment>
@@ -180,7 +177,7 @@ export const LoadingEnvironmentRows = ({rows = 2, type, depth = 2}) => {
       : 
         <>
           <ThreeColContent rows={rows}/>
-          <TwoColContent rows={1} depth={depth} />
+          <TwoColContent rows={rows} depth={depth} />
         </>
       }
     </Item.Group>

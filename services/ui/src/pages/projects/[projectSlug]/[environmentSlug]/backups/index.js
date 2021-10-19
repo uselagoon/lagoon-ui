@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
+import getConfig from 'next/config';
 
 import MainLayout from 'layouts/MainLayout';
 import MainNavigation from 'layouts/MainNavigation';
@@ -11,26 +12,50 @@ import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
 import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
 import NavTabs from 'components/NavTabs';
+import { DEFAULT_BACKUPS_LIMIT } from 'lib/util';
+
+import { Grid, Message } from 'semantic-ui-react';
 
 const Backups = React.lazy(() => import('components/Backups'));
 
 import { bp, color } from 'lib/variables';
-import { Grid, Message } from 'semantic-ui-react';
-
 import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
 import BackupsSubscription from 'lib/subscription/Backups';
 import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
+
+
+const { publicRuntimeConfig } = getConfig();
+const envLimit = publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT || DEFAULT_BACKUPS_LIMIT;
+const customMessage = publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT_MESSAGE;
+const backupsLimit = envLimit === -1 ? null : envLimit;
 
 /**
  * Displays the backups page, given the name of an openshift project.
  */
 export const PageBackups = ({ router }) => {
   const [environment, setEnvironment] = useState(); 
+  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit });
+  const [visibleMessage, setVisibleMessage] = useState(true);
 
   const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithBackupsQuery, {
-    variables: { openshiftProjectName: router.query.environmentSlug },
+    variables: { 
+      openshiftProjectName: router.query.environmentSlug,
+      ...(resultsLimit && resultsLimit.label !== 'All' && { limit: resultsLimit.value })
+    },
     fetchPolicy: 'network-only'
   });
+
+  const resultsLimitOptions = (limits) => {
+    return limits && limits.map(l => ({ value: isNaN(l) ? 0 : parseInt(l), label: l }));
+  };
+
+  const handleResultsLimitChange = (limit) => {
+    setResultsLimit(limit);
+  };
+
+  const handleDismiss = () => {
+    setVisibleMessage(false);
+  }
 
   useEffect(() => {
     if (!error && !loading && data) {
@@ -128,6 +153,13 @@ export const PageBackups = ({ router }) => {
                 </Breadcrumbs>
                 <NavTabs activeTab="backups" environment={environment} />
                 <div className="content">
+                  {visibleMessage && environment && environment.backups && environment.backups.length <= envLimit && 
+                    <Message info onDismiss={() => handleDismiss()}>
+                      <Message.Header>Results have been limited</Message.Header>
+                      <p>{`Number of results displayed is limited to ${backupsLimit}`}</p>
+                      <p>{customMessage && `${customMessage}`}</p>
+                    </Message>
+                  }
                   <div className="notification">
                     If you need a current database or files dump, use the tasks
                     "drush sql-dump" or "drush archive-dump" in the new "Tasks"
@@ -136,6 +168,9 @@ export const PageBackups = ({ router }) => {
                   <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
                     <Backups
                       backups={environment.backups}
+                      resultsLimit={resultsLimit}
+                      resultsLimitOptions={resultsLimitOptions}
+                      handleResultsLimitChange={handleResultsLimitChange}
                       fetchMore={() => fetchMore({
                         variables: {
                           environment,

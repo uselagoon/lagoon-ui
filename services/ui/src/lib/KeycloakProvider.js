@@ -3,7 +3,7 @@ import getConfig from 'next/config';
 import withKeycloak from 'lib/withKeycloak';
 import withLocalAuth from 'lib/withLocalAuth';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 const initialAuth = { authenticated: false };
 
@@ -13,8 +13,8 @@ const ContextProvider = ({ children, auth }) => (
   <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 );
 
-const Authenticator = publicRuntimeConfig.GRAPHQL_API_TOKEN
+const KeycloakProvider = publicRuntimeConfig.GRAPHQL_API_TOKEN
   ? withLocalAuth(ContextProvider, initialAuth)
   : withKeycloak(ContextProvider, initialAuth);
 
-export default Authenticator;
+export default KeycloakProvider;

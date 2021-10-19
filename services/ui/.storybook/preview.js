@@ -5,7 +5,7 @@ import { addDecorator } from '@storybook/react';
 import withGlobalStyles from './decorators/GlobalStyles';
 
 import lagoonTheme from './lagoonTheme';
-import '../src/static/nprogress.css';
+import 'static/nprogress.css';
 import 'semantic-ui-css/semantic.min.css';
 
 export const parameters = {

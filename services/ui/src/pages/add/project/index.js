@@ -32,7 +32,7 @@ export const PageAddProject = ({ router }) => {
         name
       }
     }
-`);
+  `);
 
   const [addProjectMutation, { data, loading, error, called }] = useMutation(AddProjectMutation);
   

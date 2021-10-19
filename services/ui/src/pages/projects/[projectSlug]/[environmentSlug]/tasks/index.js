@@ -1,19 +1,19 @@
 import React, { useState, useEffect, Suspense } from "react";
-import * as R from 'ramda';
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
+import getConfig from 'next/config';
 
 import MainLayout from 'layouts/MainLayout';
 import MainNavigation from 'layouts/MainNavigation';
 import Navigation from 'components/Navigation';
 import NavTabs from 'components/NavTabs';
 import EnvironmentHeader from 'components/EnvironmentHeader';
+import { DEFAULT_TASKS_LIMIT } from 'lib/util';
 
 import AddTask from 'components/AddTask';
 const Tasks = React.lazy(() => import('components/Tasks'));
 
-import { bp } from 'lib/variables';
 import { Grid, Message } from 'semantic-ui-react';
 
 import EnvironmentWithTasksQuery from 'lib/query/EnvironmentWithTasks';
@@ -21,16 +21,38 @@ import TasksSubscription from 'lib/subscription/Tasks';
 import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
 
+const { publicRuntimeConfig } = getConfig();
+const envLimit = publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT || DEFAULT_TASKS_LIMIT;
+const customMessage = publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT_MESSAGE;
+const tasksLimit = envLimit === -1 ? null : envLimit;
+
 /**
  * Displays the tasks page, given the openshift project name.
  */
 export const PageTasks = ({ router }) => {
   const [environment, setEnvironment] = useState(); 
+  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit });
+  const [visibleMessage, setVisibleMessage] = useState(true);
 
   const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithTasksQuery, {
-    variables: { openshiftProjectName: router.query.environmentSlug },
+    variables: { 
+      openshiftProjectName: router.query.environmentSlug,
+      ...(resultsLimit && resultsLimit.label !== 'All' && { limit: resultsLimit.value })
+    },
     fetchPolicy: 'network-only'
   });
+
+  const resultsLimitOptions = (limits) => {
+    return limits && limits.map(l => ({ value: isNaN(l) ? 0 : parseInt(l), label: l }));
+  };
+
+  const handleResultsLimitChange = (limit) => {
+    setResultsLimit(limit);
+  };
+
+  const handleDismiss = () => {
+    setVisibleMessage(false);
+  }
 
   useEffect(() => {
     if (!error && !loading && data) {
@@ -77,8 +99,7 @@ export const PageTasks = ({ router }) => {
       return () => environment && unsubscribe();
     }
   }, [data, loading, error, subscribeToMore]);
-
-
+          
   return (
   <>
     <Head>
@@ -92,7 +113,7 @@ export const PageTasks = ({ router }) => {
               <Navigation />
             </MainNavigation>
           </Grid.Column>
-          <Grid.Column width={14}>
+          <Grid.Column width={14} style={{ padding: "0 4em" }}>
             {error &&
               <Message negative>
                 <Message.Header>Error: Unable to load tasks</Message.Header>
@@ -111,6 +132,13 @@ export const PageTasks = ({ router }) => {
               <EnvironmentHeader environment={environment}/>
               <NavTabs activeTab="tasks" environment={environment} />
                 <div className="content">
+                  {visibleMessage && environment && environment.tasks && environment.tasks.length == envLimit && 
+                    <Message info onDismiss={() => handleDismiss()}>
+                      <Message.Header>Results have been limited</Message.Header>
+                      <p>{`Number of results displayed is limited to ${tasksLimit}`}</p>
+                      <p>{customMessage && `${customMessage}`}</p>
+                    </Message>
+                  }
                   <AddTask pageEnvironment={environment} fetchMore={() => fetchMore({
                     variables: {
                       environment,
@@ -118,7 +146,14 @@ export const PageTasks = ({ router }) => {
                     }
                   })} />
                   <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
-                    <Tasks tasks={environment.tasks} />
+                    <Tasks 
+                      tasks={environment.tasks}
+                      environmentSlug={environment.openshiftProjectName}
+                      projectSlug={environment.project.name}
+                      resultsLimit={resultsLimit}
+                      resultsLimitOptions={resultsLimitOptions}
+                      handleResultsLimitChange={handleResultsLimitChange}
+                    />
                   </Suspense>
                 </div>
               </>

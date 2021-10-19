@@ -12,7 +12,7 @@ import { Grid, Form, Select, Icon, Checkbox, Message } from 'semantic-ui-react';
 import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
 
-import { deploymentTypes, environmentTypes } from 'lib/util';
+import { DEPLOYMENT_TYPES, ENVIRONMENT_TYPES } from 'lib/util';
 import AddEnvironmentMutation from 'lib/mutation/AddEnvironment';
 
 export const PageAddEnvironment = ({ router }) => {
@@ -144,7 +144,7 @@ export const PageAddEnvironment = ({ router }) => {
                         control={Select}
                         label='Environment Type'
                         value={environment && environment.environmentType}
-                        options={environmentTypes.map(type => ({ key: type, text: type, value: type }))}
+                        options={ENVIRONMENT_TYPES.map(type => ({ key: type, text: type, value: type }))}
                         onChange={(e, { value }) => handleChange(e, {value}, "environmentType")}
                         placeholder='Type, e.g: PRODUCTION' />
                     </Form.Group>
@@ -154,7 +154,7 @@ export const PageAddEnvironment = ({ router }) => {
                         control={Select}
                         label='Deployment Type' 
                         value={environment && environment.deployType}
-                        options={deploymentTypes.map(type => ({ key: type, text: type, value: type }))}
+                        options={DEPLOYMENT_TYPES.map(type => ({ key: type, text: type, value: type }))}
                         onChange={(e, { value }) => handleChange(e, {value}, "deployType")}
                         placeholder='Deployment type, e.g: BRANCH' />
                     </Form.Group>

@@ -1,53 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import getConfig from 'next/config';
+import { useKeycloak } from '@react-keycloak/ssr';
+import App from 'next/app';
+
 import { queryStringToObject } from 'lib/util';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-
 const withKeycloak = (App, initialAuth) => (props) => {
+    const { keycloak, initialized } = useKeycloak();
+    const { login = () => {}, authenticated } = keycloak || {};
+
     const [auth, setAuth] = useState(initialAuth);
 
     const updateAuth = (keycloak) => {
-      setAuth({
-        apiToken: keycloak.token,
-        authenticated: keycloak.authenticated,
-        logout: keycloak.logout,
-        provider: 'keycloak',
-        providerData: keycloak,
-        user: {
-          username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
+      setAuth(
+        {
+          ...keycloak, 
+          apiToken: keycloak.token,
+          authenticated: keycloak.authenticated,
+          logout: keycloak.logout,
+          provider: 'keycloak',
+          user: {
+            username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
+          }
         }
-      });
+      );
     }
 
     useEffect(async () => {
-      const keycloak = Keycloak({
-        url: publicRuntimeConfig.KEYCLOAK_API,
-        realm: 'lagoon',
-        clientId: 'lagoon-ui'
-      });
+      if (!initialized) {
+        return;
+      }
 
-      keycloak.onTokenExpired = async () => {
-        await keycloak.updateToken();
-        updateAuth(keycloak);
-      };
-
-      await keycloak.init({
-        checkLoginIframe: false,
-        promiseType: 'native',
-      });
-
-      if (!keycloak.authenticated) {
+      if (!authenticated) {
         const urlQuery = queryStringToObject(location.search);
         const options = urlQuery.idpHint ? { idpHint: urlQuery.idpHint } : {};
 
-        await keycloak.login(options);
+        login(options);
       }
 
       updateAuth(keycloak);
-    }, []);
+    }, [login, authenticated, initialized]);
 
-    return <App {...props} auth={auth} />;
+
+    // useEffect(() => {
+    //   if(!initialized){
+    //     return;
+    //   }
+
+    //   if(authenticated){
+    //     Router.replace('/projects');
+    //   }
+    // })
+
+    return initialized && keycloak.authenticated && <App {...props} auth={auth} />
 };
 
 withKeycloak.getInitialProps = ({ ctx }) => {

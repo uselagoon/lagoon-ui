@@ -61,7 +61,7 @@ export const PageEnvironment = ({ router }) => {
               <NavTabs activeTab="overview" environment={environment} />
               <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
                 <div className="content">
-                  <Environment environment={environment} />
+                  <Environment key={environment.id} environment={environment} />
                 </div>
               </Suspense>
             </>

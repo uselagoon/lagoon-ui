@@ -7,8 +7,7 @@ import Head from 'next/head';
 import MainLayout from 'layouts/MainLayout';
 import MainNavigation from 'layouts/MainNavigation';
 import Navigation from 'components/Navigation';
-import { Grid, Label, Menu, Icon, Message } from 'semantic-ui-react';
-import Link from 'next/link';
+import { Grid, Icon, Message } from 'semantic-ui-react';
 
 import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
@@ -17,7 +16,7 @@ import ProjectByNameQuery from 'lib/query/ProjectByName';
 import ProjectDetailsHeader from 'components/ProjectDetailsHeader';
 const Environments = React.lazy(() => import('components/Environments'));
 
-import { LoadingRowsContent, LoadingSpinner, LazyLoadingContent } from 'components/Loading';
+import { LoadingSpinner, LazyLoadingContent } from 'components/Loading';
 
 import { bp, color } from 'lib/variables';
 import ToggleDisplay from 'components/ToggleDisplay';

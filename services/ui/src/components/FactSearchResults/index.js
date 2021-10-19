@@ -96,10 +96,6 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
       setFilteredResults(stringInputFilter(sortedItems, searchInput));
     };
 
-    // add 500ms delay to string input
-    // const timeout = setTimeout(() => filterItems(), 500);
-    // return () => clearTimeout(timeout);
-
     filterItems();
   }, [sortedItems, searchInput]);
 

@@ -21,6 +21,15 @@ const Navigation = ({ children }) => {
         </Link>
       </Menu.Item>
       <Divider />
+      <Menu.Item header>
+        <Icon name="group"/>
+        <Link href="/groups">
+          <a className={`${router.pathname === "/groups" ? 'active' : 'not-active'}`}>
+            Groups
+          </a>
+        </Link>
+      </Menu.Item>
+      <Divider />
         {children && 
           <Menu.Item>
             <Menu.Menu>
@@ -49,6 +58,12 @@ const Navigation = ({ children }) => {
             >
               Add Environment Variable
             </Menu.Item>
+
+          </Menu.Menu>
+        </Menu.Item>
+        <Menu.Item>
+          <Header size="small">Help</Header>
+          <Menu.Menu>
             <Menu.Item
               name="settings"
               href="/settings"

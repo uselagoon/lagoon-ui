@@ -65,7 +65,7 @@ const EnvironmentsSidebar = ({ environment }) => {
                       <Icon fitted name={deploymentStatus.icon} color={deploymentStatus.color} className={`deployment-status ${d.status}`} size="tiny" verticalAlign="middle" />
                       <List.Content>
                         <DeploymentLink
-                          deploymentSlug={d.name}
+                          deploymentName={d.name}
                           environmentSlug={environment.openshiftProjectName}
                           projectSlug={environment.project.name}
                         >

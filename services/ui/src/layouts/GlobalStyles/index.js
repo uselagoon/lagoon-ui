@@ -160,7 +160,7 @@ const GlobalStyles = ({ children }) => (
       // Semantic UI overrides
       //
       .ui.left.sidebar.navigation {
-        width: 230px;
+        width: 270px;
         box-shadow: none;
         padding: 4em 0 0;
 
@@ -336,7 +336,7 @@ const GlobalStyles = ({ children }) => (
       a.project-link {
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
       }
 
       p a {

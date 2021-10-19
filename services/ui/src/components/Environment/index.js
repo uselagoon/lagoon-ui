@@ -52,13 +52,11 @@ const Environment = ({ environment }) => {
     <div className="environment-overview">
       <div className="environment-details">
         <div className="item environmentType">
-          <div>
-            <label>Environment Type</label>
-            <div className="field">
-            {environment.environmentType}
-            {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name &&
-            (" (active)")}{environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name && (" (standby)")}
-            </div>
+          <label>Environment Type</label>
+          <div className="field">
+          {environment.environmentType}
+          {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name &&
+          (" (active)")}{environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name && (" (standby)")}
           </div>
         </div>
         <div className="item deployType">
@@ -107,180 +105,179 @@ const Environment = ({ environment }) => {
        </div>
     </div>
 
-    <Grid columns={2} stackable>
-      <Grid.Column>
-        <Card fluid className="basic">
-          <Card.Content>
-            <Card.Header content="Routes" sub />
-          </Card.Content>
-          <Card.Content>
-            {environment.route ?
-              <div>
-                <label>Route</label>
-                <div className="field">
-                  <div key={environment.route}>
-                    <a className="hover-state" target="_blank" href={environment.route}>
-                      {environment.route}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            : "No route"}
-            {environment.routes ?
-            <div className="field">
-              <label>Routes</label>
-              {environment.routes
-                ? environment.routes.split(',').map(route => (
-                    <div key={route}>
-                      <a className="hover-state" target="_blank" href={route}>
-                        {route}
+      <Grid columns={2} stackable>
+        <Grid.Column>
+          <Card fluid className="basic">
+            <Card.Content>
+              <Card.Header content="Routes" />
+            </Card.Content>
+            <Card.Content>
+              {environment.route ?
+                <div>
+                  <label>Route</label>
+                  <div className="field">
+                    <div key={environment.route}>
+                      <a className="hover-state" target="_blank" href={environment.route}>
+                        {environment.route}
                       </a>
                     </div>
-                  ))
-                : ''}
-            </div>
-            : ""}
-            {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name && (
-              <div>
-                <label>Active Environment Routes</label>
-                <div className="field">
-                  {environment.project.productionRoutes
-                    ? environment.project.productionRoutes.split(',').map(route => (
-                        <div key={route}>
-                          <a className="hover-state" target="_blank" href={route}>
-                            {route}
-                          </a>
-                        </div>
-                      ))
-                    : ''}
+                  </div>
                 </div>
-              </div>
-            )}
-            {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name && (
-              <div>
-                <label>Standby Environment Routes</label>
-                <div className="field">
-                  {environment.project.standbyRoutes
-                    ? environment.project.standbyRoutes.split(',').map(route => (
-                        <div key={route}>
-                          <a className="hover-state" target="_blank" href={route}>
-                            {route}
-                          </a>
-                        </div>
-                      ))
-                    : ''}
-                </div>
-              </div>
-            )}
-          </Card.Content>
-        </Card>
-      </Grid.Column>
-      {environment.facts.length > 0 &&
-        <Grid.Column>
-          <Card fluid className="basic">
-            <Card.Content>
-              <Card.Header>
-                <FactsLink
-                  environmentSlug={environment.openshiftProjectName}
-                  projectSlug={environment.project.name}
-                  className="facts-link"
-                >
-                  Facts
-                </FactsLink>
-              </Card.Header>
-            </Card.Content>
-            <Card.Content>
-                <div className="facts">
-                  {environment.facts &&
-                    <div className="facts-wrapper">
-                      <div className="field">
-                        {environment.facts.map(fact => (
-                          <div className="fact">
-                            <div className="fact-name">{fact.name}</div>
-                            <div className="fact-value">{fact.value}</div>
-                          </div>
-                        ))}
+              : "No route"}
+              {environment.routes ?
+              <div className="field">
+                <label>Routes</label>
+                {environment.routes
+                  ? environment.routes.split(',').map((route, index) => (
+                      <div key={`${route}-${index}`}>
+                        <a className="hover-state" target="_blank" href={route}>
+                          {route}
+                        </a>
                       </div>
-                      <div>
-                    </div>
-                      <FactsLink
-                        environmentSlug={environment.openshiftProjectName}
-                        projectSlug={environment.project.name}
-                        className="facts-link hover-state blue"
-                      >
-                        more...
-                      </FactsLink>
-                    </div>
-                  }
-                </div>
-            </Card.Content>
-          </Card>
-        </Grid.Column>
-      }
-    </Grid>
-    
-
-    <Grid columns={2} stackable>
-      {environment.services.length > 0 && (
-        <Grid.Column>
-          <Card fluid className="basic">
-            <Card.Content>
-              <Card.Header>
-                Services
-              </Card.Header>
-            </Card.Content>
-            <Card.Content>
-              <div className="services">
-                <label>Services</label>
-                <div className="field">
-                  {environment.services.map(service => (
-                    <div key={service.id}>
-                      {service.name}
-                    </div>
-                  ))}
-                </div>
+                    ))
+                  : ''}
               </div>
+              : ""}
+              {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name && (
+                <div>
+                  <label>Active Environment Routes</label>
+                  <div className="field">
+                    {environment.project.productionRoutes
+                      ? environment.project.productionRoutes.split(',').map(route => (
+                          <div key={route}>
+                            <a className="hover-state" target="_blank" href={route}>
+                              {route}
+                            </a>
+                          </div>
+                        ))
+                      : ''}
+                  </div>
+                </div>
+              )}
+              {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name && (
+                <div>
+                  <label>Standby Environment Routes</label>
+                  <div className="field">
+                    {environment.project.standbyRoutes
+                      ? environment.project.standbyRoutes.split(',').map(route => (
+                          <div key={route}>
+                            <a className="hover-state" target="_blank" href={route}>
+                              {route}
+                            </a>
+                          </div>
+                        ))
+                      : ''}
+                  </div>
+                </div>
+              )}
             </Card.Content>
           </Card>
         </Grid.Column>
-      )}
-    </Grid>
-
-    <Grid>
-      <Grid.Column>
-        <div className="environment-actions">
-          {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name &&
-            <>
-              {!errorSwitchActiveStandby && calledSwitchActiveStandby && loadingSwitchActiveStandbyResult && <div>Switching Standby Environment to Active...</div>}
-              <ActiveStandbyConfirm
-                activeEnvironment={environment.project.productionEnvironment}
-                standbyEnvironment={environment.project.standbyProductionEnvironment}
-                onProceed={switchActiveBranch}
-              />
-            </>
-          }
-          {deleteEnvironmentError && <div>{deleteEnvironmentError.message}</div>}
-          {calledDeleteEnvironment && !deleteEnvironmentError && <div>Delete queued</div>}
-          {!deleteEnvironmentLoading && !deleteEnvironmentError &&
-            <DeleteConfirm
-              deleteType="environment"
-              deleteName={environment.name}
-              onDelete={() =>
-                deleteEnvironment({
-                  variables: {
-                    input: {
-                      name: environment.name,
-                      project: environment.project.name
+        {environment.facts.length > 0 &&
+          <Grid.Column>
+            <Card fluid className="basic">
+              <Card.Content>
+                <Card.Header>
+                  <FactsLink
+                    environmentSlug={environment.openshiftProjectName}
+                    projectSlug={environment.project.name}
+                    className="facts-link"
+                  >
+                    Facts
+                  </FactsLink>
+                </Card.Header>
+              </Card.Content>
+              <Card.Content>
+                  <div className="facts">
+                    {environment.facts &&
+                      <div className="facts-wrapper">
+                        <div className="field">
+                          {environment.facts.map((fact, index) => (
+                            <div key={`fact-${index}`} className="fact">
+                              <div className="fact-name">{fact.name}</div>
+                              <div className="fact-value">{fact.value}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <div>
+                      </div>
+                        <FactsLink
+                          environmentSlug={environment.openshiftProjectName}
+                          projectSlug={environment.project.name}
+                          className="facts-link hover-state blue"
+                        >
+                          more...
+                        </FactsLink>
+                      </div>
                     }
-                  }
-                })
-              }
-            />
-          }
-        </div>
-      </Grid.Column>
-    </Grid>
-    <style jsx>{`
+                  </div>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
+        }
+      </Grid>
+      
+      <Grid columns={2} stackable>
+        {environment.services.length > 0 && (
+          <Grid.Column>
+            <Card fluid className="basic">
+              <Card.Content>
+                <Card.Header>
+                  Services
+                </Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <div className="services">
+                  <label>Services</label>
+                  <div className="field">
+                    {environment.services.map(service => (
+                      <div key={service.id}>
+                        {service.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Card.Content>
+            </Card>
+          </Grid.Column>
+        )}
+      </Grid>
+
+      <Grid>
+        <Grid.Column>
+          <div className="environment-actions">
+            {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name &&
+              <>
+                {!errorSwitchActiveStandby && calledSwitchActiveStandby && loadingSwitchActiveStandbyResult && <div>Switching Standby Environment to Active...</div>}
+                <ActiveStandbyConfirm
+                  activeEnvironment={environment.project.productionEnvironment}
+                  standbyEnvironment={environment.project.standbyProductionEnvironment}
+                  onProceed={switchActiveBranch}
+                />
+              </>
+            }
+            {deleteEnvironmentError && <div>{deleteEnvironmentError.message}</div>}
+            {calledDeleteEnvironment && !deleteEnvironmentError && <div>Delete queued</div>}
+            {!deleteEnvironmentLoading && !deleteEnvironmentError &&
+              <DeleteConfirm
+                deleteType="environment"
+                deleteName={environment.name}
+                onDelete={() =>
+                  deleteEnvironment({
+                    variables: {
+                      input: {
+                        name: environment.name,
+                        project: environment.project.name
+                      }
+                    }
+                  })
+                }
+              />
+            }
+          </div>
+        </Grid.Column>
+      </Grid>
+      <style jsx>{`
       .environment-details {
         display: flex;
         width: 100%;

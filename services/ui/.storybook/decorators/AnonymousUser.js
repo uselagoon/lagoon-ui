@@ -5,7 +5,6 @@ const noUser = {
   apiToken: 'dummy-value-not-used-but-evals-to-true',
   authenticated: false,
   provider: 'local-auth',
-  providerData: {},
   user: {},
 };
 

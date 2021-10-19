@@ -9,12 +9,12 @@ import { getLastCompletedDeployment } from 'lib/util';
 
 const bgImages = {
   branch: {
-    normal: "url('/static/images/environment-branch.svg')",
-    hover: "url('/static/images/environment-branch-hover.svg')"
+    normal: "url('/images/environment-branch.svg')",
+    hover: "url('/images/environment-branch-hover.svg')"
   },
   pullrequest: {
-    normal: "url('/static/images/environment-pull-request.svg')",
-    hover: "url('/static/images/environment-pull-request-hover.svg')"
+    normal: "url('/images/environment-pull-request.svg')",
+    hover: "url('/images/environment-pull-request-hover.svg')"
   },
   none: {
     normal: 'none',

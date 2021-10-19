@@ -9,13 +9,13 @@ export default gql`
         name
         created
         gitUrl
-        environments(type: PRODUCTION, factFilter: $input) {
+        environments(factFilter: $input) {
           id
           name
           route
           openshiftProjectName
           environmentType
-          deployments {
+          deployments(limit: 5) {
             id
             name
             status
@@ -30,11 +30,6 @@ export default gql`
             keyFact
             category
             type
-            references {
-              id
-              fid
-              name
-            }
           }
         }
       }

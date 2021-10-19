@@ -98,7 +98,9 @@ const FactsSearch = ({ categoriesSelected }) => {
         take: take,
         skip: activeTab === "All projects" ? skipProject : skipEnvironment
       }
-    }
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first"
   });
 
   // Active tab

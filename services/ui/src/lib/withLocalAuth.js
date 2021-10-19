@@ -18,7 +18,6 @@ const withLocalAuth = (App, initialAuth) => {
             authenticated: true,
             logout: () => {},
             provider: 'local-auth',
-            providerData: {},
             user: {
               username: 'localadmin'
             }

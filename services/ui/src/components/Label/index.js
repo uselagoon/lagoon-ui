@@ -10,6 +10,7 @@ const matchFactToIcon = (name) => {
         color: "grey"
       }
 
+    case "drupal-version":
     case "drupal-core":
       return {
         icon: "drupal",
@@ -83,7 +84,7 @@ const Label = ({ className, text, factIcon, color, value, basic, href, loading, 
     if (factIcon === "Lagoon" || icon === "lagoon-category") {
       return (
         <SemanticLabel className={className}>
-          <Image className="lagoon-logo" size="mini" src="/static/images/lagoon-2.svg" avatar /><>{text}</>
+          <Image className="lagoon-logo" size="mini" src="/images/lagoon-2.svg" avatar /><>{text}</>
         </SemanticLabel>
       )
     }

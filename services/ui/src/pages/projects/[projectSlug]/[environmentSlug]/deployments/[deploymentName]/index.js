@@ -1,5 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
-import * as R from 'ramda';
+import React, { Suspense } from "react";
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
@@ -12,17 +11,10 @@ import EnvironmentHeader from 'components/EnvironmentHeader';
 import Deployment from 'components/Deployment';
 
 import { Grid, Message } from 'semantic-ui-react';
-import { bp } from 'lib/variables';
 
 import EnvironmentWithDeploymentQuery from 'lib/query/EnvironmentWithDeployment';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import {
-  withEnvironmentRequired,
-  withDeploymentRequired
-} from 'lib/withDataRequired';
 
 /**
  * Displays a deployment page, given the openshift project and deployment name.
@@ -55,6 +47,7 @@ export const PageDeployment = ({ router }) => {
                   <p>{`${error}`}</p>
                 </Message>
               }
+              {loading && <LoadingEnvironmentRows delay={250} rows="15" type={"list"}/>}
               {!loading && environment && !environment.deployments.length && !error &&
                 <Message>
                   <Message.Header>No deployment found</Message.Header>

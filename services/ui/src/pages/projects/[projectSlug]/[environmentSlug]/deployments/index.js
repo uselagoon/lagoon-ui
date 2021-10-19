@@ -10,8 +10,8 @@ import Navigation from 'components/Navigation';
 import NavTabs from 'components/NavTabs';
 import EnvironmentHeader from 'components/EnvironmentHeader';
 import DeployLatest from 'components/DeployLatest';
+import { DEFAULT_DEPLOYMENTS_LIMIT } from 'lib/util';
 
-import { bp } from 'lib/variables';
 import { Grid, Message } from 'semantic-ui-react';
 
 const Deployments = React.lazy(() => import('components/Deployments'));
@@ -20,8 +20,6 @@ import EnvironmentWithDeploymentsQuery from 'lib/query/EnvironmentWithDeployment
 import DeploymentsSubscription from 'lib/subscription/Deployments';
 import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
 
-
-export const DEFAULT_DEPLOYMENTS_LIMIT = 25;
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT || DEFAULT_DEPLOYMENTS_LIMIT;
@@ -33,7 +31,7 @@ const deploymentsLimit = envLimit === -1 ? null : envLimit;
  */
 export const PageDeployments = ({ router }) => {
   const [environment, setEnvironment] = useState();
-  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit});
+  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit });
   const [visibleMessage, setVisibleMessage] = useState(true);
 
   const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithDeploymentsQuery, {
@@ -45,7 +43,7 @@ export const PageDeployments = ({ router }) => {
   });
 
   const resultsLimitOptions = (limits) => {
-    return limits && limits.map(l => ({ value: parseInt(l), label: l}));
+    return limits && limits.map(l => ({ value: isNaN(l) ? 0 : parseInt(l), label: l }));
   };
 
   const handleResultsLimitChange = (limit) => {

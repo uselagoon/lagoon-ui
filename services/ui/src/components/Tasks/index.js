@@ -1,13 +1,34 @@
 import React from 'react';
 import moment from 'moment';
 import TaskLink from 'components/link/Task';
+import SelectFilter from 'components/Filters';
+import { RESULTS_LIMIT_OPTIONS } from 'lib/util';
+
 import { bp, color } from 'lib/variables';
 
 /**
  * Displays an environment's list of tasks.
  */
-const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
+const Tasks = ({ 
+  tasks,
+  environmentSlug,
+  projectSlug,
+  resultsLimit,
+  resultsLimitOptions,
+  handleResultsLimitChange
+}) => (
   <div className="tasks">
+    <div className="filters-wrapper">
+      <div className="select-filters">
+        <SelectFilter
+          title="Show"
+          loading={!resultsLimit}
+          defaultValue={{ value: resultsLimit.value, label: resultsLimit.label }}
+          options={RESULTS_LIMIT_OPTIONS && resultsLimitOptions(RESULTS_LIMIT_OPTIONS)}
+          onFilterChange={handleResultsLimitChange}
+        />
+      </div>
+    </div>
     <div className="header">
       <label>Name</label>
       <label>Created</label>
@@ -18,7 +39,7 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
       {!tasks.length && <div className="data-none">No Tasks</div>}
       {tasks.map(task => (
         <TaskLink
-          taskSlug={task.id}
+          taskId={task.id}
           environmentSlug={environmentSlug}
           projectSlug={projectSlug}
           key={task.id}
@@ -90,7 +111,7 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
         }
 
         .data-row {
-          background-image: url('/static/images/right-arrow.svg');
+          background-image: url('/images/right-arrow.svg');
           background-position: right 20px center;
           background-repeat: no-repeat;
           background-size: 18px 11px;
@@ -145,15 +166,15 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
             background-size: 10px 10px;
 
             &.active {
-              background-image: url('/static/images/in-progress.svg');
+              background-image: url('/images/in-progress.svg');
             }
 
             &.failed {
-              background-image: url('/static/images/failed.svg');
+              background-image: url('/images/failed.svg');
             }
 
             &.succeeded {
-              background-image: url('/static/images/successful.svg');
+              background-image: url('/images/successful.svg');
             }
 
             span {

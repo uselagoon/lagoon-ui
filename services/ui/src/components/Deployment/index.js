@@ -173,14 +173,14 @@ const Deployment = ({ deployment }) => {
 
             &.created {
               &::before {
-                background-image: url('/static/images/created.svg');
+                background-image: url('/images/created.svg');
                 background-size: 17px 16px;
               }
             }
 
             &.duration {
               &::before {
-                background-image: url('/static/images/duration.svg');
+                background-image: url('/images/duration.svg');
                 background-size: 17px;
               }
             }
@@ -192,43 +192,43 @@ const Deployment = ({ deployment }) => {
 
               &.new {
                 &::before {
-                  background-image: url('/static/images/pending.svg');
+                  background-image: url('/images/pending.svg');
                 }
               }
 
               &.pending {
                 &::before {
-                  background-image: url('/static/images/pending.svg');
+                  background-image: url('/images/pending.svg');
                 }
               }
 
               &.running {
                 &::before {
-                  background-image: url('/static/images/in-progress.svg');
+                  background-image: url('/images/in-progress.svg');
                 }
               }
 
               &.cancelled {
                 &::before {
-                  background-image: url('/static/images/failed.svg');
+                  background-image: url('/images/failed.svg');
                 }
               }
 
               &.error {
                 &::before {
-                  background-image: url('/static/images/failed.svg');
+                  background-image: url('/images/failed.svg');
                 }
               }
 
               &.failed {
                 &::before {
-                  background-image: url('/static/images/failed.svg');
+                  background-image: url('/images/failed.svg');
                 }
               }
 
               &.complete {
                 &::before {
-                  background-image: url('/static/images/successful.svg');
+                  background-image: url('/images/successful.svg');
                 }
               }
             }

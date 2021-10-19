@@ -12,7 +12,7 @@ const deployment = mocks.Deployment();
 
 export const Default = () => (
   <DeploymentLink
-    deploymentSlug={deployment.name}
+    deploymentName={deployment.name}
     environmentSlug={deployment.environment.openshiftProjectName}
     projectSlug={deployment.environment.project.name}
   >

@@ -79,7 +79,7 @@ const TableHeader = ({
       <style jsx>{`
         .table-header {
           .searchInput {
-            background: url('/static/images/search.png') 12px center no-repeat ${color.white};
+            background: url('/images/search.png') 12px center no-repeat ${color.white};
             background-size: 14px;
             border: 1px solid ${color.midGrey};
             height: 40px;

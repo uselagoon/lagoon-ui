@@ -23,6 +23,8 @@ export {
 }
 
 // Environments
+const RESULTS_LIMIT_OPTIONS = ["10", "25", "50", "100", "All"];
+
 const getProductionEnvironments = (environments) => {
   return environments && environments.filter(e => e.environmentType === "production");
 }
@@ -46,11 +48,12 @@ const ProductionRouteFromEnvironments = ({ environments, route, searchInput }) =
   return prodRoute ? <Highlighter searchWords={[searchInput]} autoEscape={true} textToHighlight={prodRoute}/> : null
 }
 
-const deploymentTypes = ["BRANCH", "PULLREQUEST", "PROMOTE"];
-const environmentTypes = ["PRODUCTION", "DEVELOPMENT"];
+const DEPLOYMENT_TYPES = ["BRANCH", "PULLREQUEST", "PROMOTE"];
+const ENVIRONMENT_TYPES = ["PRODUCTION", "DEVELOPMENT"];
 
 export {
-  deploymentTypes, environmentTypes,
+  RESULTS_LIMIT_OPTIONS,
+  DEPLOYMENT_TYPES, ENVIRONMENT_TYPES,
   getProductionEnvironments,
   getProductionEnvironmentSiteStatus,
   ProductionRouteFromEnvironments
@@ -58,6 +61,8 @@ export {
 
 
 // Deployments
+const DEFAULT_DEPLOYMENTS_LIMIT = 25;
+
 const getLastDeployment = (deployments) => {
   if (deployments.length === 0) {
     return null;
@@ -156,12 +161,21 @@ const getDeploymentIconFromStatus = (status) => {
 }
 
 export {
+  DEFAULT_DEPLOYMENTS_LIMIT,
   getLastDeployment,
   getLastCreatedDeployment,
   getLastCompletedDeployment,
   ProductionDeploymentsFromEnvironments,
   ProductionDeployments,
   getDeploymentIconFromStatus
+};
+
+
+// Tasks
+const DEFAULT_TASKS_LIMIT = 25;
+
+export {
+  DEFAULT_TASKS_LIMIT
 };
 
 
@@ -212,6 +226,14 @@ export {
   ProductionLanguageFromEnvironments,
   ProductionLanguage
 }
+
+// Backups
+const DEFAULT_BACKUPS_LIMIT = 25;
+
+export {
+  DEFAULT_BACKUPS_LIMIT
+};
+
 
 // Environment Variables
 const envVariableTypes = ["PROJECT", "ENVIRONMENT"];

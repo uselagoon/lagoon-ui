@@ -1,7 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react';
 import GlobalStyles from 'layouts/GlobalStyles';
 import { Grid, Sidebar, Button, Icon } from 'semantic-ui-react';
-// import { useScrollPosition } from 'lib/util';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 
 /**

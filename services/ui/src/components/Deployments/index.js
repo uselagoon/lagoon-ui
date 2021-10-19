@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import DeploymentLink from 'components/link/Deployment';
 import SelectFilter from 'components/Filters';
+import { RESULTS_LIMIT_OPTIONS } from 'lib/util';
 import { getDeploymentDuration } from 'components/Deployment';
-import { bp, color } from 'lib/variables';
 
-export const RESULTS_LIMIT_OPTIONS = ["10", "25", "50", "100", "All"];
+import { bp, color } from 'lib/variables';
 
 /**
  * Displays a list of deployments.
@@ -41,7 +41,7 @@ const Deployments = ({
         {!deployments.length && <div className="data-none">No Deployments</div>}
         {deployments.map(deployment => (
           <DeploymentLink
-            deploymentSlug={deployment.name}
+            deploymentName={deployment.name}
             environmentSlug={environmentSlug}
             projectSlug={projectSlug}
             key={deployment.id}
@@ -105,7 +105,7 @@ const Deployments = ({
           }
 
           .data-row {
-            background-image: url('/static/images/right-arrow.svg');
+            background-image: url('/images/right-arrow.svg');
             background-position: right 20px center;
             background-repeat: no-repeat;
             background-size: 18px 11px;
@@ -150,31 +150,31 @@ const Deployments = ({
               background-size: 10px 10px;
 
               &.new {
-                background-image: url('/static/images/pending.svg');
+                background-image: url('/images/pending.svg');
               }
 
               &.pending {
-                background-image: url('/static/images/pending.svg');
+                background-image: url('/images/pending.svg');
               }
 
               &.running {
-                background-image: url('/static/images/in-progress.svg');
+                background-image: url('/images/in-progress.svg');
               }
 
               &.cancelled {
-                background-image: url('/static/images/failed.svg');
+                background-image: url('/images/failed.svg');
               }
 
               &.error {
-                background-image: url('/static/images/failed.svg');
+                background-image: url('/images/failed.svg');
               }
 
               &.failed {
-                background-image: url('/static/images/failed.svg');
+                background-image: url('/images/failed.svg');
               }
 
               &.complete {
-                background-image: url('/static/images/successful.svg');
+                background-image: url('/images/successful.svg');
               }
             }
           }
