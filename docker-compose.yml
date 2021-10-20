@@ -20,10 +20,10 @@ services:
       dockerfile: .lagoon/ui.Dockerfile
     labels:
       lagoon.type: node
-    # depends_on:
-    #   - 'api-db'
-    #   - 'api'
-    # command: yarn run dev
+    depends_on:
+      - 'api-db'
+      - 'api'
+    # command: yarn run dev # change to 'yarn run start' to run as production
     volumes:
       - ./services/ui/src:/app/services/ui/src
       - ./services/ui/.env.defaults:/app/services/ui/.env.defaults
@@ -59,17 +59,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      # - ./services/api:/app/mock-data
       - ./services/api:/services/api
-    # this will override the CMD in the dockerfile
-    # command:
-    #   - /bin/sh
-    #   - -c
-    #   - |
-    #     cp -R /app/services/api/src /services/api
-    #     rm -rf /app/services/api/src
-    #     ln -sfv /services/api/src /app/services/api/src
-    #     ./node_modules/.bin/tsc-watch --build --incremental --onSuccess "node -r dotenv-extended/config dist/index"
     networks:
       - amazeeio-network
       - default
@@ -138,8 +128,6 @@ services:
     environment:
       - JWTISSUER=auth-server.dev
       - JWTAUDIENCE=api.dev
-    # volumes:
-      # - ./services/auth-server/src:/app/services/auth-server/src
     ports:
       - '3001:3000'
 
