@@ -55,7 +55,7 @@ const Header = ({ logo }) => {
 
               if (auth.authenticated) {
                 return (
-                  <Menu secondary>
+                  <Menu className="header-menu" secondary>
                     <Menu.Item
                       name="settings"
                       className="settings"

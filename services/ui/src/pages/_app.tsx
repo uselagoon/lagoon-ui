@@ -3,7 +3,9 @@ import React from 'react';
 import type { AppProps, AppContext } from 'next/app';
 import { createUrl } from 'next/app';
 import cookie from 'cookie';
-import type { IncomingMessage } from 'http';
+import Cookies from 'cookies';
+import dayjs from "dayjs";
+import type { IncomingMessage, ServerResponse } from 'http';
 
 import getConfig from 'next/config';
 import Router from 'next/router';
@@ -17,7 +19,7 @@ import KeycloakProvider from 'lib/KeycloakProvider';
 import NProgress from 'nprogress';
 import Typekit from 'react-typekit';
 import 'semantic-ui-css/semantic.min.css';
-import '../../public/nprogress.css';
+import '../../styles/nprogress.css';
 import 'components/Honeycomb/styling.css';
 
  
@@ -38,7 +40,7 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
       return (
         <>
           <Head>
-            <link rel="stylesheet" href="/normalize.css" />
+            <link rel="stylesheet" href="../../styles/normalize.css" />
             <Typekit kitId="ggo2pml" />
           </Head>
           <Component {...pageProps} errorMessage={err.toString()} url={url} />
@@ -50,19 +52,23 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
     const keycloakCfg = {
       url: publicRuntimeConfig.KEYCLOAK_API,
       realm: 'lagoon',
-      clientId: 'lagoon-ui',
-      // onLoad: 'login-required'
+      clientId: 'lagoon-ui'
     }
 
     const keycloakInitOptions = {
       checkLoginIframe: false,
       promiseType: 'native',
+      // onload:'check-sso',
+      // silentCheckSsoRedirectUri:
+      //   typeof window !== "undefined"
+      //     ? `${window.location.origin}/silent-check-sso.html`
+      //     : null,
     }
 
     return (
       <>
         <Head>
-          <link rel="stylesheet" href="/normalize.css" />
+          <link rel="stylesheet" href="../../styles/normalize.css" />
           <Typekit kitId="ggo2pml" />
         </Head>
         <SSRKeycloakProvider
@@ -70,9 +76,15 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
           persistor={SSRCookies(cookies)}
           initOptions={keycloakInitOptions}
           onEvent={async (event, error) => {
+            // token access has expired, update refresh token
             if (event === "onTokenExpired") {
-              console.log('onTokenExpired')
-              await getKeycloakInstance(null as any).updateToken(30)
+              console.log('Token expired - updating');
+              // if token expired within 5mins, then refresh
+              await getKeycloakInstance(null as any).updateToken(300)
+            }
+
+            if (event === "onAuthRefreshSuccess") {
+              console.log("Auth token refreshed");
             }
           }}
         >
@@ -89,15 +101,34 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
 
 const parseCookies = (req?: IncomingMessage) => {
   if (!req || !req.headers) {
-    return {}
+    return {};
   } 
 
-  return cookie.parse(req.headers.cookie || '')
+  return cookie.parse(req.headers.cookie || '');
 }
 
-MyApp.getInitialProps = async (context: AppContext) => {
+MyApp.getInitialProps = async ({ ctx }: AppContext) => {
+  const cookies = new Cookies(ctx?.req, ctx?.res)
+
+  // Re-set kc cookies from server and apply security headers client-side to prevent XSS/CSRF attacks
+  if (ctx?.req?.headers) {
+    cookies.set('kcToken', cookies.get('kcToken'), {
+      secure: process.env.NODE_ENV !== "development",
+      httpOnly: true,
+      sameSite: 'strict',
+      expires: dayjs().add(30, "days").toDate()
+    });
+  
+    cookies.set('kcIdToken', cookies.get('kcIdToken'), {
+      secure: process.env.NODE_ENV !== "development",
+      httpOnly: true,
+      sameSite: 'strict',
+      expires: dayjs().add(30, "days").toDate()
+    });
+  }
+
   return {
-    cookies: parseCookies(context?.ctx?.req),
+    cookies: parseCookies(ctx?.req),
   }
 }
 

@@ -96,7 +96,7 @@ export const PageDeployments = ({ router }) => {
           onError: err => console.log(err)
       });
 
-      return () => unsub();
+      return () => environment && unsub();
     }
   }, [data, loading, error, subscribeToMore]);
 
@@ -132,7 +132,7 @@ export const PageDeployments = ({ router }) => {
                 <EnvironmentHeader environment={environment}/>
                 <NavTabs activeTab="deployments" environment={environment} />
                 <div className="content">
-                  {visibleMessage && environment.deployments && environment.deployments.length == envLimit && 
+                  {visibleMessage && environment.deployments && environment.deployments.length <= envLimit && 
                     <Message info onDismiss={() => handleDismiss()}>
                       <Message.Header>Results have been limited</Message.Header>
                       <p>{`Number of results displayed is limited to ${deploymentsLimit}`}</p>

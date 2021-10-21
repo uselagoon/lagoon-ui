@@ -27,14 +27,14 @@ const SettingsPage = () => {
       <title>Settings</title>
     </Head>
     <MainLayout>
-      {error &&
+      {!loading && error &&
         <Message negative>
           <Message.Header>Error: Unable to load settings</Message.Header>
           <p>{`${error}`}</p>
         </Message>
       }
       {loading && <LoadingSpinner />}
-      {!loading &&
+      {!loading && data &&
         <div className="content-wrapper">
           <h2>SSH KEYS</h2>
           <div className="content">

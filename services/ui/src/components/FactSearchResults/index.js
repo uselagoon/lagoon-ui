@@ -248,7 +248,7 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
       <Ref innerRef={contextRef}>
         <Rail style={{ zIndex: '1', background: 'white' }} close position="right">
           {!loading &&
-          <MainSidebar innerRef={contextRef} selected={projectSelected || environmentSelected}>
+          <MainSidebar innerRef={contextRef} selected={projectSelected || environmentSelected} setProjectSelected={setProjectSelected} setEnvironmentSelected={setEnvironmentSelected}>
             {activeTab === "All projects" &&
               <div className="project-details-sidebar">
                 {loading && <LoadingRowsContent rows="5"/>}

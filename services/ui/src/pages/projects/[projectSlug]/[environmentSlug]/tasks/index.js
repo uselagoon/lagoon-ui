@@ -132,7 +132,7 @@ export const PageTasks = ({ router }) => {
               <EnvironmentHeader environment={environment}/>
               <NavTabs activeTab="tasks" environment={environment} />
                 <div className="content">
-                  {visibleMessage && environment && environment.tasks && environment.tasks.length == envLimit && 
+                  {visibleMessage && environment && environment.tasks && environment.tasks.length <= envLimit && 
                     <Message info onDismiss={() => handleDismiss()}>
                       <Message.Header>Results have been limited</Message.Header>
                       <p>{`Number of results displayed is limited to ${tasksLimit}`}</p>

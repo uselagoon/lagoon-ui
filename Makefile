@@ -45,7 +45,7 @@ check_clean:
 
 .PHONY: install-packages
 install-packages:
-	yarn install
+	yarn --cwd services/ui && yarn install
 
 .PHONY: install-mocks
 install-mocks:

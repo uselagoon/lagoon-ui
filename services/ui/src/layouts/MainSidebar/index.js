@@ -6,11 +6,13 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 /**
  * The main sidebar region that sits to the right of pages.
  */
-const MainSidebar = ({ children, selected, innerRef }) => {
+const MainSidebar = ({ children, selected, setProjectSelected, setEnvironmentSelected }) => {
   const [visible, setVisible] = useState(false);
   const [sidebarStyle, setSidebarStyle] = useState({});
 
   const handleSidebarClose = (e, data) => {
+    setProjectSelected('');
+    setEnvironmentSelected('');
     return setVisible(!visible);
   }
 

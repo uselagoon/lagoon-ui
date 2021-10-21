@@ -19,16 +19,6 @@ const ApiConnection = ({ children }) => {
   return (
     <AuthContext.Consumer>
       {auth => {
-        // Keylcoak auth is SSR now
-        // if (!auth.authenticated) {
-        //   return (
-        //     <ErrorPage
-        //       statusCode={401}
-        //       errorMessage="Please wait while we log you in..."
-        //     />
-        //   );
-        // }
-
         const httpLink = new HttpLink({
           uri: publicRuntimeConfig.GRAPHQL_API,
           headers: {
@@ -76,7 +66,20 @@ const ApiConnection = ({ children }) => {
             // Disable websockets when rendering server side.
             process.browser ? HttpWebsocketLink() : httpLink
           ]),
-          cache: new InMemoryCache()
+          cache: new InMemoryCache(),
+          defaultOptions: {
+            watchQuery: {
+              errorPolicy: "all",
+              fetchPolicy: "network-only",
+            },
+            query: {
+              errorPolicy: "all",
+              fetchPolicy: "network-only",
+            },
+            mutate: {
+              errorPolicy: "all",
+            },
+          },
         });
 
         return <ApolloProvider client={client}><ApolloHooksProvider client={client}>{children}</ApolloHooksProvider></ApolloProvider>;

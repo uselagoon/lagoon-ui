@@ -160,9 +160,9 @@ const GlobalStyles = ({ children }) => (
       // Semantic UI overrides
       //
       .ui.left.sidebar.navigation {
-        width: 270px;
+        width: 290px;
         box-shadow: none;
-        padding: 4em 0 0;
+        padding: 3.5em 0 0;
 
         .menu {
           border: none;
@@ -170,11 +170,23 @@ const GlobalStyles = ({ children }) => (
           box-shadow: none;
           margin: auto;
           width: 100%;
+          padding: 0.5em 0;
+        }
+
+        .item {
+          .header {
+            margin-bottom: 0;
+          }
         }
 
         i {
           font-size: 1.25em;
         }
+      }
+
+      .ui.secondary.header-menu.menu {
+        justify-content: flex-end;
+        margin-right: 4em;
       }
 
       .ui.right.sidebar.projects {
@@ -337,6 +349,10 @@ const GlobalStyles = ({ children }) => (
         width: 100%;
         display: flex;
         justify-content: space-evenly;
+      }
+
+      .sidebar a.project-link {
+        justify-content: space-between;
       }
 
       p a {

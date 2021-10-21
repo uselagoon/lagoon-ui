@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/ssr';
 import App from 'next/app';
+import Cookies from "js-cookie";
 
 import { queryStringToObject } from 'lib/util';
+
+
+export const destroyCookie = (key) => {
+  Cookies.remove(key);
+}
 
 const withKeycloak = (App, initialAuth) => (props) => {
     const { keycloak, initialized } = useKeycloak();
@@ -10,13 +16,25 @@ const withKeycloak = (App, initialAuth) => (props) => {
 
     const [auth, setAuth] = useState(initialAuth);
 
+    const logoutClearCookies = () => {
+      if (initialized && typeof window !== "undefined") {
+        destroyCookie('kcToken');
+        destroyCookie('kcIdToken');
+        keycloak?.logout({
+          redirectUri: window.location.origin,
+        });
+      }
+
+      return null;
+    }
+
     const updateAuth = (keycloak) => {
       setAuth(
         {
           ...keycloak, 
           apiToken: keycloak.token,
           authenticated: keycloak.authenticated,
-          logout: keycloak.logout,
+          logout: logoutClearCookies,
           provider: 'keycloak',
           user: {
             username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
@@ -39,17 +57,6 @@ const withKeycloak = (App, initialAuth) => (props) => {
 
       updateAuth(keycloak);
     }, [login, authenticated, initialized]);
-
-
-    // useEffect(() => {
-    //   if(!initialized){
-    //     return;
-    //   }
-
-    //   if(authenticated){
-    //     Router.replace('/projects');
-    //   }
-    // })
 
     return initialized && keycloak.authenticated && <App {...props} auth={auth} />
 };
