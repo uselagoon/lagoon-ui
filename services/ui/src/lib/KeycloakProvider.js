@@ -1,20 +1,28 @@
-import React from 'react';
+import { createContext, useContext } from 'react';
 import getConfig from 'next/config';
 import withKeycloak from 'lib/withKeycloak';
 import withLocalAuth from 'lib/withLocalAuth';
 
 const { publicRuntimeConfig } = getConfig();
 
-const initialAuth = { authenticated: false };
+const initialAuth = {
+  authenticated: false
+};
 
-export const AuthContext = React.createContext(initialAuth);
+export const AuthContext = createContext(initialAuth);
 
-const ContextProvider = ({ children, auth }) => (
-  <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-);
+export function KeycloakProvider({ children, auth, refreshToken }) {
+  const updatedAuth = refreshToken
+    ? { ...auth, apiToken: refreshToken }
+    : auth;
 
-const KeycloakProvider = publicRuntimeConfig.GRAPHQL_API_TOKEN
-  ? withLocalAuth(ContextProvider, initialAuth)
-  : withKeycloak(ContextProvider, initialAuth);
+  return (
+    <AuthContext.Provider value={updatedAuth}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
-export default KeycloakProvider;
+export default publicRuntimeConfig.GRAPHQL_API_TOKEN
+    ? withLocalAuth(KeycloakProvider, initialAuth)
+    : withKeycloak(KeycloakProvider, initialAuth);

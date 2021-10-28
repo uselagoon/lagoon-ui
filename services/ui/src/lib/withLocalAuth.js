@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import getConfig from 'next/config';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
-const withLocalAuth = (App, initialAuth) => {
-  return class withLocalAuth extends React.Component {
+const withLocalAuth = (App) => {
+  return class withLocalAuth extends Component {
     static getInitialProps(ctx) {
       return App.getInitialProps(ctx);
     }
