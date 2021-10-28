@@ -1,6 +1,9 @@
 import React, { useEffect} from 'react';
 import { useKeycloak } from '@react-keycloak/ssr';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+
+import StatusLayout from 'layouts/StatusLayout';
 
 const IndexPage = () => {
   const { keycloak } = useKeycloak();
@@ -9,12 +12,23 @@ const IndexPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (loggedIn) {
-      router.push('/projects')
+    if (typeof window !== undefined) {
+      if (loggedIn) {
+        router.push('/projects')
+      }
     }
   }, [loggedIn])
 
-  return <p>Redirecting...</p>
+  return (
+  <>
+    <Head>
+      <title>Lagoon</title>
+    </Head>
+    <StatusLayout>
+      <h1>Redirecting...</h1>
+    </StatusLayout>
+  </>
+  )
 };
 
 export default IndexPage;

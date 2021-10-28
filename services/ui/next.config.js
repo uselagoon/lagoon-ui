@@ -19,11 +19,11 @@ const taskBlocklist =
 module.exports = {
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/projects',
-        permanent: false,
-      },
+      // {
+      //   source: '/',
+      //   destination: '/projects',
+      //   permanent: false,
+      // },
     ]
   },
   publicRuntimeConfig: {

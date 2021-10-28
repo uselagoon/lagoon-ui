@@ -11,9 +11,8 @@ import { getMainDefinition } from '@apollo/client/utilities';
 
 
 import { AuthContext } from 'lib/KeycloakProvider';
-import ErrorPage from 'pages/_error.js';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 const ApiConnection = ({ children }) => {
   return (
