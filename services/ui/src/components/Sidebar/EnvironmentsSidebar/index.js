@@ -1,19 +1,13 @@
-import React, { useState, memo } from 'react';
-import * as R from 'ramda';
-import moment from 'moment';
+import React, { memo } from 'react';
 
 import Link from 'next/link';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import giturlparse from 'git-url-parse';
 
 import SiteStatus from 'components/SiteStatus';
 import ProjectLink from 'components/link/Project';
 import EnvironmentLink from 'components/link/Environment';
 import DeploymentLink from 'components/link/Deployment';
 import { Icon, Divider, Header, List, Label as SemanticLabel } from 'semantic-ui-react';
-import { bp, color, fontSize } from 'lib/variables';
-import Label from 'components/Label';
-import { getFromNowTime } from "components/Dates";
+import { getFromNowTime } from 'lib/util';
 import { getLastCompletedDeployment, getDeploymentIconFromStatus } from 'lib/util';
 
 

@@ -8,7 +8,7 @@ import EnvironmentLink from 'components/link/Environment';
 
 import { Icon, Divider, Header, List, Label as SemanticLabel } from 'semantic-ui-react';
 import Label from 'components/Label';
-import { getFromNowTime } from "components/Dates";
+import { getLastCompletedDeployment } from 'lib/util';
 
 
 const ProjectsSidebar = ({ project }) => {
@@ -78,14 +78,15 @@ const ProjectsSidebar = ({ project }) => {
               <Label className="type" icon="tree" text={e.environmentType} />
             </div>
             <div className="section logs">
-              <div className="last-deployed-wrapper">
-                <Label
-                  className="last-deployed"
-                  icon="clock outline"
-                  text={`Last deployed: ${e.deployments.length ?
-                      getFromNowTime(e.deployments.slice(0,1).shift().completed): ""}`}
-                />
-              </div>
+              {getLastCompletedDeployment(e.deployments) && 
+                <div className="last-deployed-wrapper">
+                  <Label
+                    className="last-deployed"
+                    icon="clock outline"
+                    text={`Last deployed: ${getLastCompletedDeployment(e.deployments, false)}`}
+                  />
+                </div>
+              }
               <div className="created-warpper">
                 <Label
                   className="created"

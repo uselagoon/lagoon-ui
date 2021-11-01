@@ -1,6 +1,5 @@
 import * as R from 'ramda';
 import moment from 'moment';
-import { getFromNowTime } from "components/Dates";
 import Highlighter from 'react-highlight-words';
 import SiteStatus from 'components/SiteStatus';
 import Label from 'components/Label';
@@ -12,6 +11,15 @@ export const queryStringToObject = R.pipe(
   R.map(R.split('=')),
   R.fromPairs
 );
+
+// Dates
+export const getFromNowTime = (date) => {
+    return moment.utc(date).fromNow();
+};
+
+export const getCreatedDate = (date) => {
+    return moment.utc(date).format('DD MM YYYY, HH:mm:ssZ');
+};
 
 // Project utilities
 const environmentCount = (project) => project && R.countBy(R.prop('environmentType'))(
@@ -80,7 +88,7 @@ const getLastCreatedDeployment = (deployments, unformatted = false) => {
     return lastCreated ? lastCreated : false
   }
   else {
-    return lastCreated ? <>{moment.utc(lastCreated).local().format('HH:mm:ss (DD-MM-YYYY)')}</> : false
+    return lastCreated ? getFromNowTime(lastCreated) : false
   }
 }
 
@@ -92,7 +100,7 @@ const getLastCompletedDeployment = (deployments, unformatted = false) => {
     return lastCompleted ? lastCompleted : false
   }
   else {
-    return lastCompleted ? <>{moment.utc(lastCompleted).local().format('HH:mm:ss (DD-MM-YYYY)')}</> : false
+    return lastCompleted ? getFromNowTime(lastCompleted) : false
   }
 }
 
