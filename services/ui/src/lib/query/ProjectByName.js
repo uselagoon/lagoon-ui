@@ -23,6 +23,7 @@ export default gql`
         openshiftProjectName
         route
         deployments {
+          created
           completed
         }
         facts {

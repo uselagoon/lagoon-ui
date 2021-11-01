@@ -1,8 +1,8 @@
 import React from 'react';
 import { bp, color, fontSize } from 'lib/variables';
 import Accordion from 'components/Accordion';
-import { getFromNowTime } from "components/Dates";
-import ContentDisplay from "components/Problem/ContentDisplay";
+import { getFromNowTime } from 'lib/util';
+import ContentDisplay from 'components/Problem/ContentDisplay';
 
 const Problem = ({ problem, display }) => {
     const fromNowDate = getFromNowTime(problem.created);

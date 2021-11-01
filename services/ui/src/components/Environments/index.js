@@ -68,6 +68,32 @@ const Environments = ({ project = [], display }) => {
         const isPullRequest = (environment.deployType === 'pullrequest') && true;
         const hasLabel = isProduction || isActive || isStandby || false;
 
+          const Labels = () => {
+            return (
+            <>
+              {isProduction && (
+                <div className="productionLabel">
+                  <span>Production</span>
+                </div>
+              )}
+              {isActive && (
+                <div className="activeLabel">
+                  <span>Active</span>
+                </div>
+              )}
+              {isStandby && (
+                <div className="standbyLabel">
+                  <span>Standby</span>
+                </div>
+              )}
+              <label>
+                {isPullRequest
+                  ? 'PR'
+                  : environment.deployType}
+              </label>
+            </>
+        )};
+
         return (
           <div className="environment" key={environment.id}>
             <EnvironmentLink
@@ -76,56 +102,32 @@ const Environments = ({ project = [], display }) => {
             >
               {display === 'list' && (
                 <Box className={`${boxClassName} ${bgClassName} ${display} ${hasLabel ? 'label' : 'no-label'}`}>
-                  {isProduction && (
-                    <div className="productionLabel">
-                      <span>Production</span>
-                    </div>
-                  )}
-                  {isActive && (
-                    <div className="activeLabel">
-                      <span>Active</span>
-                    </div>
-                  )}
-                  {isStandby && (
-                    <div className="standbyLabel">
-                      <span>Standby</span>
-                    </div>
-                  )}
-                  <label>
-                    {isPullRequest
-                      ? 'PR'
-                      : environment.deployType}
-                  </label>
+                   <Labels />
                   <h4>{environment.name}</h4>
+                  {environment.deployments.length !== 0 &&
+                  <div className="last-deployed">
+                    {getLastCompletedDeployment(environment.deployments) && 
+                      <>
+                        <div>Last deployed:</div>
+                        <div>{getLastCompletedDeployment(environment.deployments, false)}</div>
+                      </>
+                    }
+                  </div>
+                }
                 </Box>
               )}
               {display === 'detailed' && (
               <Box className={`${boxClassName} ${bgClassName} ${display} ${hasLabel ? 'label' : 'no-label'}`}>
-                 {isProduction && (
-                  <div className="productionLabel">
-                    <span>Production</span>
-                  </div>
-                )}
-                {isActive && (
-                  <div className="activeLabel">
-                    <span>Active</span>
-                  </div>
-                )}
-                {isStandby && (
-                  <div className="standbyLabel">
-                    <span>Standby</span>
-                  </div>
-                )}
-                <label>
-                  {isPullRequest
-                    ? 'PR'
-                    : environment.deployType}
-                </label>
+                <Labels />
                 <h4>{environment.name}</h4>
                 {environment.deployments.length !== 0 &&
                   <div className="last-deployed">
-                    <div>Last deployed:</div>
-                    {getLastCompletedDeployment(environment.deployments)}
+                    {getLastCompletedDeployment(environment.deployments) && 
+                      <>
+                        <div>Last deployed:</div>
+                        <div>{getLastCompletedDeployment(environment.deployments, false)}</div>
+                      </>
+                    }
                   </div>
                 }
                 {environment.facts && environment.facts.map((f, index) => {
