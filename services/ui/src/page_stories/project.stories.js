@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageProject as Project } from 'pages/projects/[projectSlug]/index.js';
 import ProjectByNameQuery from 'lib/query/ProjectByName';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: Project,

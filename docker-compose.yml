@@ -60,6 +60,7 @@ services:
       - '3000:3000'
     volumes:
       - ./services/api:/services/api
+      - ./services/mock-data:/mock-data
     networks:
       - amazeeio-network
       - default

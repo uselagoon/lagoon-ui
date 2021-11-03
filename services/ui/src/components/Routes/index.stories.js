@@ -1,6 +1,6 @@
 import React from 'react';
 import Route from './index';
-import mocks, { seed } from 'api/src/mocks';
+import mocks, { seed } from 'mock_data/mocks';
 
 export default {
   component: Route,

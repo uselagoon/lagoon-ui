@@ -1,7 +1,7 @@
 // import React from 'react';
 // import { PageDeployment as Backup } from 'pages/projects/[projectSlug]/[environmentSlug]/backups/[backupName]';
 // import EnvironmentWithBackupQuery from 'lib/query/EnvironmentWithBackup';
-// import mocks from "api/src/mocks";
+// import mocks from 'mock_data/mocks';
 
 // export default {
 //   component: Backup,
