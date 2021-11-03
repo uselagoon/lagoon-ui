@@ -14,8 +14,6 @@ module.exports = {
     'storybook-addon-next-router',
   ],
   webpackFinal: async (config, { isServer }) => {
-    // const nextConfig = require('../next.config.js');
-
     const aliases = {
       storybook: __dirname,
       components: path.join(__dirname, '../', 'src', 'components'),
