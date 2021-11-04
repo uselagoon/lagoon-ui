@@ -1,8 +1,7 @@
-const webpackShared = require('../src/webpack.shared-config');
 const path = require('path');
 
 module.exports = {
-  stories: ['../src/**/*.stories.@(js)'],
+  stories: ['../src/**/*.stories.@(js|ts|tsx)'],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-links',
@@ -12,15 +11,21 @@ module.exports = {
     '@storybook/addon-viewport',
     '@storybook/addon-postcss',
     'storybook-addon-apollo-client',
+    'storybook-addon-next-router',
   ],
   webpackFinal: async (config, { isServer }) => {
-    // Add aliases from shared config file.
-    Object.keys(webpackShared.alias).forEach(name => config.resolve.alias[name] = webpackShared.alias[name]);
-    // Add alias for storybook decorators and components.
-    config.resolve.alias.storybook = __dirname;
-
-    // Add reference to api mock data    
-    config.resolve.alias.api = path.join(__dirname, '../../', 'api'),
+    const aliases = {
+      storybook: __dirname,
+      components: path.join(__dirname, '../', 'src', 'components'),
+      layouts: path.join(__dirname, '../', 'src', 'layouts'),
+      lib: path.join(__dirname, '../', 'src', 'lib'),
+      pages: path.join(__dirname, '../', 'src', 'pages'),
+      page_stories: path.join(__dirname, '../', 'src', 'page_stories'),
+      styles: path.join(__dirname, '../', 'styles'),
+      public: path.join(__dirname, '../', 'public'),
+      mock_data: path.join(__dirname, '../../', 'mock-data')
+    };
+    Object.keys(aliases).forEach(name => config.resolve.alias[name] = aliases[name]);
 
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
@@ -34,7 +39,7 @@ module.exports = {
     config.resolve.extensions.push('.ts', '.tsx');
 
     // Debug config.
-    //console.dir(config, { depth: null });
+    // console.dir(config, { depth: null });
 
     return config
   },

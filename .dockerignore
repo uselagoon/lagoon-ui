@@ -3,7 +3,7 @@ README.md
 
 **/.next
 **/Dockerfile
-**/node_modules/
+# **/node_modules/
 **/build/
 **/yarn-error.log
 **/.gitignore

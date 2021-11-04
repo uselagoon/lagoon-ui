@@ -1,7 +1,7 @@
 import React from 'react';
 import Honeycomb from './index';
 import AllProjectsProblemsQuery from 'lib/query/AllProjectsProblems';
-import mocks from "api/src/mocks";
+import mocks from "mock_data/mocks";
 
 export default {
   component: Honeycomb,
