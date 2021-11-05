@@ -3,9 +3,9 @@ import React, { useState} from 'react';
 import type { AppProps, AppContext } from 'next/app';
 import { createUrl } from 'next/app';
 import cookie from 'cookie';
-import Cookies from 'js-cookie';
+import nookies, { setCookie } from 'nookies';
 import dayjs from "dayjs";
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage } from 'http';
 
 import getConfig from 'next/config';
 import Router from 'next/router';
@@ -22,9 +22,8 @@ import 'semantic-ui-css/semantic.min.css';
 import '../../styles/nprogress.css';
 import 'components/Honeycomb/styling.css';
 
- 
 interface AppPropsWithCookies extends AppProps {
-  cookies: unknown,
+  cookies: any,
   err: any
 }
 
@@ -69,14 +68,14 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
   }
 
   const refreshTokenUpdated = (token) => {
-    cookie.serialize("kcToken", token, {
+    setCookie(null, "kcToken", token, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       sameSite: 'strict',
       expires: dayjs().add(1, "days").toDate()
     })
 
-    cookie.serialize("kcIdToken", token, {
+    setCookie(null, "kcIdToken", token, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       sameSite: 'strict',
@@ -145,18 +144,18 @@ const parseCookies = (req?: IncomingMessage) => {
 }
 
 MyApp.getInitialProps = async ({ ctx }: AppContext) => {
-  const { kcToken,  kcIdToken } = parseCookies(ctx?.req) || "";
+  const { kcToken, kcIdToken } = parseCookies(ctx?.req) || '';
 
-  if (typeof window !== "undefined") {
-    // Re-set kc cookies from server and apply security headers client-side to prevent XSS/CSRF attacks
-    Cookies.set('kcToken', kcToken, {
+  if (typeof window === "undefined") {
+    // Re-set kc cookies on server and apply security headers to prevent XSS/CSRF attacks
+    nookies.set(ctx, 'kcToken', kcToken, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       sameSite: 'strict',
       expires: dayjs().add(1, "days").toDate()
     });
 
-    Cookies.set('kcIdToken', kcIdToken, {
+    nookies.set(ctx, 'kcIdToken', kcIdToken, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       sameSite: 'strict',
@@ -165,7 +164,7 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
   }
 
   return {
-    cookies: parseCookies(ctx?.req),
+    cookies: { kcToken, kcIdToken }
   }
 }
 
