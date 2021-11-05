@@ -41,6 +41,7 @@
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
     "next": "^10.2.2",
+    "nookies": "^2.5.2",
     "nprogress": "^0.2.0",
     "object-hash": "^2.2.0",
     "postcss-nested": "^3.0.0",
