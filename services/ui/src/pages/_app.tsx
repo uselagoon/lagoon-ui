@@ -97,7 +97,6 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
         persistor={SSRCookies(cookies)}
         initOptions={keycloakInitOptions}
         onEvent={async (event, error) => {
-
           if (error) {
             console.log(error)
           }
@@ -108,7 +107,13 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
             }
 
             // Set refresh token to be less than server access token lifespan of 5mins
-            await getKeycloakInstance(null as any).updateToken(120)
+            await getKeycloakInstance(null as any).updateToken(240).then((refreshed) => {
+              if (refreshed) {
+                console.log('Token was successfully refreshed');
+              } else {
+                console.log('Token is still valid - no refresh needed');
+              }
+            }).catch(() => console.log("Failed to refresh token"));
           }
 
           if (event === "onAuthRefreshSuccess") {
@@ -117,7 +122,6 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
             }
 
             refreshTokenUpdated(getKeycloakInstance(null as any).token)
-
           }
         }}
       >
