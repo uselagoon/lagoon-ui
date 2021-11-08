@@ -3,11 +3,12 @@ import * as R from 'ramda';
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
+import Link from 'next/link';
 
 import MainLayout from 'layouts/MainLayout';
 import MainNavigation from 'layouts/MainNavigation';
 import Navigation from 'components/Navigation';
-import { Grid, Icon, Message } from 'semantic-ui-react';
+import { Grid, Icon, Message, Menu, Header } from 'semantic-ui-react';
 
 import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
@@ -78,7 +79,22 @@ export const PageProject = ({ router }) => {
           <Grid.Row>
             <Grid.Column width={2}>
               <MainNavigation>
-                <Navigation />
+                <Navigation>
+                  <>
+                    <div className="project-menu">
+                      <Header size="small">Project</Header>
+                      <Menu.Menu>
+                        <Menu.Item
+                          name="environment-variables"
+                          href={`${router.query.projectSlug}/environment_variables`}
+                          as={Link}
+                        >
+                          Environment Variables
+                        </Menu.Item>
+                      </Menu.Menu>
+                    </div>
+                  </>
+                </Navigation>
               </MainNavigation>
             </Grid.Column>
             <Grid.Column width={14} style={{ padding: "0 4em" }}>
