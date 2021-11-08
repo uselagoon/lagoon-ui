@@ -43,22 +43,24 @@ const Navigation = ({ children }) => {
              <Menu.Item
               name="add-project"
               href="/add/project"
+              as={Link}
             >
               Add Project
             </Menu.Item>
             <Menu.Item
               name="add-environment"
               href="/add/environment"
+              as={Link}
             >
               Add Environment
             </Menu.Item>
             <Menu.Item
               name="add-envvar"
               href="/add/envvar"
+              as={Link}
             >
               Add Environment Variable
             </Menu.Item>
-
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
@@ -67,6 +69,7 @@ const Navigation = ({ children }) => {
             <Menu.Item
               name="settings"
               href="/settings"
+              as={Link}
             >
               Settings
             </Menu.Item>
