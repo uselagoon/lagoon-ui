@@ -10,9 +10,9 @@
     "build": "next build",
     "build-profile": "next build --profile",
     "start": "next start -p ${PORT:=5000}",
-    "storybook": "start-storybook -s ./src -p 6006 --ci",
-    "build-storybook": "build-storybook -s ./src",
-    "serve-storybook": "storybook-server -s ./src",
+    "storybook": "start-storybook -s ./public -p 6006 --ci",
+    "build-storybook": "build-storybook -s ./public",
+    "serve-storybook": "storybook-server -s ./public",
     "chromatic": "npx chromatic --allow-console-errors"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
     "next": "^10.2.2",
+    "nookies": "^2.5.2",
     "nprogress": "^0.2.0",
     "object-hash": "^2.2.0",
     "postcss-nested": "^3.0.0",
@@ -89,6 +90,7 @@
     "regenerator-runtime": "^0.13.3",
     "require-context.macro": "^1.2.2",
     "storybook-addon-apollo-client": "^4.0.8",
+    "storybook-addon-next-router": "^3.0.8",
     "styled-jsx-plugin-sass": "^1.0.0",
     "ts-loader": "^7.0.5"
   },

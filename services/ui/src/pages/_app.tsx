@@ -3,9 +3,9 @@ import React, { useState} from 'react';
 import type { AppProps, AppContext } from 'next/app';
 import { createUrl } from 'next/app';
 import cookie from 'cookie';
-import Cookies from 'js-cookie';
+import nookies, { setCookie } from 'nookies';
 import dayjs from "dayjs";
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage } from 'http';
 
 import getConfig from 'next/config';
 import Router from 'next/router';
@@ -22,9 +22,8 @@ import 'semantic-ui-css/semantic.min.css';
 import '../../styles/nprogress.css';
 import 'components/Honeycomb/styling.css';
 
- 
 interface AppPropsWithCookies extends AppProps {
-  cookies: unknown,
+  cookies: any,
   err: any
 }
 
@@ -59,7 +58,6 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
   }
 
   const keycloakInitOptions = {
-    rerenderOnTokenRefresh: true,
     checkLoginIframe: true,
     onload:'check-sso',
     silentCheckSsoRedirectUri:
@@ -69,19 +67,14 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
   }
 
   const refreshTokenUpdated = (token) => {
-    cookie.serialize("kcToken", token, {
-      secure: process.env.NODE_ENV !== "development",
-      httpOnly: true,
-      sameSite: 'strict',
-      expires: dayjs().add(1, "days").toDate()
-    })
-
-    cookie.serialize("kcIdToken", token, {
-      secure: process.env.NODE_ENV !== "development",
-      httpOnly: true,
-      sameSite: 'strict',
-      expires: dayjs().add(1, "days").toDate()
-    })
+    if (token && typeof window === "undefined") {
+      setCookie(null, "kcToken", token, {
+        secure: process.env.NODE_ENV !== "development",
+        httpOnly: true,
+        sameSite: 'strict',
+        expires: dayjs().add(1, "days").toDate()
+      });
+    }
 
     // Currently no way to refresh tokens server-side
     setRefreshToken(getKeycloakInstance(null as any).token)
@@ -97,7 +90,6 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
         persistor={SSRCookies(cookies)}
         initOptions={keycloakInitOptions}
         onEvent={async (event, error) => {
-
           if (error) {
             console.log(error)
           }
@@ -108,7 +100,13 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
             }
 
             // Set refresh token to be less than server access token lifespan of 5mins
-            await getKeycloakInstance(null as any).updateToken(120)
+            await getKeycloakInstance(null as any).updateToken(240).then((refreshed) => {
+              if (refreshed) {
+                console.log('Token was successfully refreshed');
+              } else {
+                console.log('Token is still valid - no refresh needed');
+              }
+            }).catch(() => console.log("Failed to refresh token"));
           }
 
           if (event === "onAuthRefreshSuccess") {
@@ -117,7 +115,6 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
             }
 
             refreshTokenUpdated(getKeycloakInstance(null as any).token)
-
           }
         }}
       >
@@ -135,24 +132,25 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
 const parseCookies = (req?: IncomingMessage) => {
   if (!req || !req.headers) {
     return {};
-  } 
-
-  return cookie.parse(req.headers.cookie || '');
+  }
+  return cookie.parse(req.headers.cookie || '')
 }
 
 MyApp.getInitialProps = async ({ ctx }: AppContext) => {
-  const { kcToken,  kcIdToken } = parseCookies(ctx?.req) || "";
+  const { kcToken, kcIdToken } = parseCookies(ctx?.req) || '';
 
-  if (typeof window !== "undefined") {
-    // Re-set kc cookies from server and apply security headers client-side to prevent XSS/CSRF attacks
-    Cookies.set('kcToken', kcToken, {
+  if (kcToken && typeof window === "undefined") {
+    // Re-set kc cookies on server and apply security headers to prevent XSS/CSRF attacks
+    nookies.set(ctx, 'kcToken', kcToken, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       sameSite: 'strict',
       expires: dayjs().add(1, "days").toDate()
     });
+  }
 
-    Cookies.set('kcIdToken', kcIdToken, {
+  if (kcIdToken && typeof window === "undefined") {
+    nookies.set(ctx, 'kcIdToken', kcIdToken, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       sameSite: 'strict',
@@ -161,7 +159,7 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
   }
 
   return {
-    cookies: parseCookies(ctx?.req),
+    cookies: { kcToken, kcIdToken }
   }
 }
 

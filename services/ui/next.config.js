@@ -49,15 +49,6 @@ module.exports = {
   //   reactRoot: 'concurrent'
   // },
   webpack(config, options) {
-    // const aliases = {
-    //   components: path.join(__dirname, 'src', 'components'),
-    //   layouts: path.join(__dirname, 'src', 'layouts'),
-    //   lib: path.join(__dirname, 'src', 'lib'),
-    //   pages: path.join(__dirname, 'src', 'pages'),
-    //   page_stories: path.join(__dirname, 'src', 'page_stories'),
-    // };
-    // Object.keys(aliases).forEach(name => config.resolve.alias[name] = aliases[name]);
-
     const originalEntry = config.entry;
     config.entry = async () => {
       const entries = await originalEntry();
