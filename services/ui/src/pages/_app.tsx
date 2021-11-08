@@ -58,7 +58,6 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
   }
 
   const keycloakInitOptions = {
-    rerenderOnTokenRefresh: true,
     checkLoginIframe: true,
     onload:'check-sso',
     silentCheckSsoRedirectUri:
@@ -68,19 +67,14 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
   }
 
   const refreshTokenUpdated = (token) => {
-    setCookie(null, "kcToken", token, {
-      secure: process.env.NODE_ENV !== "development",
-      httpOnly: true,
-      sameSite: 'strict',
-      expires: dayjs().add(1, "days").toDate()
-    })
-
-    setCookie(null, "kcIdToken", token, {
-      secure: process.env.NODE_ENV !== "development",
-      httpOnly: true,
-      sameSite: 'strict',
-      expires: dayjs().add(1, "days").toDate()
-    })
+    if (token && typeof window === "undefined") {
+      setCookie(null, "kcToken", token, {
+        secure: process.env.NODE_ENV !== "development",
+        httpOnly: true,
+        sameSite: 'strict',
+        expires: dayjs().add(1, "days").toDate()
+      });
+    }
 
     // Currently no way to refresh tokens server-side
     setRefreshToken(getKeycloakInstance(null as any).token)
@@ -138,15 +132,14 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
 const parseCookies = (req?: IncomingMessage) => {
   if (!req || !req.headers) {
     return {};
-  } 
-
-  return cookie.parse(req.headers.cookie || '');
+  }
+  return cookie.parse(req.headers.cookie || '')
 }
 
 MyApp.getInitialProps = async ({ ctx }: AppContext) => {
   const { kcToken, kcIdToken } = parseCookies(ctx?.req) || '';
 
-  if (typeof window === "undefined") {
+  if (kcToken && typeof window === "undefined") {
     // Re-set kc cookies on server and apply security headers to prevent XSS/CSRF attacks
     nookies.set(ctx, 'kcToken', kcToken, {
       secure: process.env.NODE_ENV !== "development",
@@ -154,7 +147,9 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
       sameSite: 'strict',
       expires: dayjs().add(1, "days").toDate()
     });
+  }
 
+  if (kcIdToken && typeof window === "undefined") {
     nookies.set(ctx, 'kcIdToken', kcIdToken, {
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
