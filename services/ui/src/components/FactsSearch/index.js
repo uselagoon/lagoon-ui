@@ -34,7 +34,7 @@ const statusesGroup = [
 ]
 
 const frameworks = [
-  { value: 'drupal-core', label: 'Drupal' },
+  { value: 'drupal-version', label: 'Drupal' },
   { value: 'laravel', label: 'Laravel' },
   { value: 'nodejs', label: 'NodeJS' },
   { value: 'wordpress', label: 'Wordpress' },
@@ -136,8 +136,8 @@ const FactsSearch = ({ categoriesSelected }) => {
     setProjectSelected(null);
   };
 
-  const handleFrameworkChange = (framework) => {
-    let nextFactFilter = framework && framework.map(f => {
+  const handleFrameworkChange = (frameworks) => {
+    let nextFactFilter = frameworks && frameworks.map(f => {
       const isSemVerValue = (/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/.test(f.value));
       const isSingleNumber = (/^\d+$/.test(f.value));
       let previousFrameworksSelected = frameworksSelected.slice(0,1).shift();
@@ -152,8 +152,8 @@ const FactsSearch = ({ categoriesSelected }) => {
     setProjectSelected(null);
   };
 
-  const handleLanguageChange = (language) => {
-    let nextFactFilter = language && language.map(f => {
+  const handleLanguageChange = (languages) => {
+    let nextFactFilter = languages && languages.map(f => {
       const isSemVerValue = (/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/.test(f.value));
       const isSingleNumber = (/^\d+$/.test(f.value));
       let previousLanguagesSelected = languagesSelected.slice(0,1).shift();
