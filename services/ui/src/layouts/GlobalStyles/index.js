@@ -463,6 +463,14 @@ const GlobalStyles = ({ children }) => (
         font-size: ${fontSize(13)};
         text-transform: uppercase;
       }
+      
+      .box .content > label {
+        background-color: ${color.lightestGrey};
+        border-bottom-right-radius: 20px;
+        border-top-right-radius: 20px;
+        margin-left: -20px;
+        padding: 3px 20px 2px;
+      }
 
       .ui.label.visit-icon {
         i {

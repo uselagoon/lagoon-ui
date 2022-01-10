@@ -68,7 +68,7 @@ const Environments = ({ project = [], display }) => {
         const isPullRequest = (environment.deployType === 'pullrequest') && true;
         const hasLabel = isProduction || isActive || isStandby || false;
 
-          const Labels = () => {
+        const Labels = () => {
             return (
             <>
               {isProduction && (
@@ -102,7 +102,7 @@ const Environments = ({ project = [], display }) => {
             >
               {display === 'list' && (
                 <Box className={`${boxClassName} ${bgClassName} ${display} ${hasLabel ? 'label' : 'no-label'}`}>
-                   <Labels />
+                  <Labels />
                   <h4>{environment.name}</h4>
                   {environment.deployments.length !== 0 &&
                   <div className="last-deployed">
