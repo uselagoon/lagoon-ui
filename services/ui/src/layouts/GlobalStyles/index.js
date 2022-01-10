@@ -91,7 +91,6 @@ const GlobalStyles = ({ children }) => (
       }
 
       // Colours
-
       .red {
         color: ${color.red};
       }
@@ -171,6 +170,20 @@ const GlobalStyles = ({ children }) => (
           margin: auto;
           width: 100%;
           padding: 0.5em 0;
+        }
+        
+        .submenu {
+          display: flex;
+          flex-direction: column;
+          
+          > a {
+            color: ${color.darkGrey};
+            padding: 0.5em 0;
+          }
+        }
+           
+        .active {
+          color: ${color.brightBlue};
         }
 
         .item {

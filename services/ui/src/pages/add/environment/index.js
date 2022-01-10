@@ -127,7 +127,7 @@ export const PageAddEnvironment = ({ router }) => {
                         label='Project'
                         options={projects}
                         onChange={(e, { value }) => handleChange(e, {value}, "project")}
-                        placeholder='Project ID'
+                        placeholder='Project'
                       />
                     </Form.Group>
                     <Form.Group widths='equal'>

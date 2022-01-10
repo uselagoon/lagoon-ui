@@ -11,7 +11,7 @@ const Navigation = ({ children }) => {
 
   return (
   <>
-    <Menu vertical>
+    <Menu className="sidebar-navigation" vertical>
       <Menu.Item header>
         <Icon name="grid layout"/>
         <Link href="/projects">
@@ -39,7 +39,7 @@ const Navigation = ({ children }) => {
         }
         <Menu.Item>
           <Header size="small">Manage</Header>
-          <Menu.Menu>
+          <Menu.Menu className="submenu">
              <Menu.Item
               name="add-project"
               href="/add/project"
@@ -65,7 +65,7 @@ const Navigation = ({ children }) => {
         </Menu.Item>
         <Menu.Item>
           <Header size="small">Help</Header>
-          <Menu.Menu>
+          <Menu.Menu className="submenu">
             <Menu.Item
               name="settings"
               href="/settings"
@@ -75,6 +75,7 @@ const Navigation = ({ children }) => {
             </Menu.Item>
             <Menu.Item
               name="docs"
+              as={Link}
               target="_blank"
               href="https://docs.lagoon.sh"
             >
@@ -84,11 +85,6 @@ const Navigation = ({ children }) => {
         </Menu.Item>
         <Footer />
     </Menu>
-    <style jsx>{`
-      .active {
-        color: ${color.brightBlue};
-      }
-    `}</style>
   </>
   );
 };
