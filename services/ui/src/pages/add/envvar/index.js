@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from 'next/router';
 import { useQuery, useMutation } from "@apollo/client";
-import gql from 'graphql-tag';
 import Head from 'next/head';
 
 import MainLayout from 'layouts/MainLayout';
@@ -26,6 +25,7 @@ export const PageAddEnvVar = () => {
   }
   const [envVar, setEnvVar] = useState(defaultEnvVar);
   const [scopeValidationFailed, setScopeValidationFailed] = useState(false);
+  const [errors, setErrors] = useState([])
 
   const isTypeIDValid = () => {
     if (envVar.typeId && isNaN(envVar.typeId)) {
@@ -51,6 +51,9 @@ export const PageAddEnvVar = () => {
       setScopeValidationFailed(true);
     }
     else {
+      //reset previous errors
+      setErrors([]);
+
       addEnvVarMutation({
         variables: {
           input: {
@@ -58,12 +61,18 @@ export const PageAddEnvVar = () => {
             typeId: parseInt(envVar.typeId),
             name: envVar.name,
             value: envVar.value,
-            ...(envVar.scope !== "" && { scope: envVar.scope })
+            ...(envVar.scope !== "" && {scope: envVar.scope})
           }
         }
+      }).then(r => {
+        if (r.errors) {
+         setErrors(r.errors);
+         setEnvVar({...defaultEnvVar, typeId: envVar.typeId, type: envVar.type});
+        }
+        else {
+          setEnvVar(defaultEnvVar);
+        }
       });
-  
-      setEnvVar(defaultEnvVar);
     }
   };
 
@@ -99,10 +108,14 @@ export const PageAddEnvVar = () => {
                       <Message.Header>Environment variable added</Message.Header>
                     </Message>
                   }
-                  {error &&
+                  {errors && errors.length > 0 &&
                     <Message negative>
                       <Message.Header>Error: Unable to add environment variable</Message.Header>
-                      <p>{`${error}`}</p>
+                      {errors.map((e, k) => <p key={`error-${k}`}>
+                          {`There was a problem adding environment variable with ${envVar.type} type id '${envVar.typeId}'`}
+                        </p>
+                      )}
+
                     </Message>
                   }
                   <Form loading={called && loading} onSubmit={handleSubmit}>
