@@ -27,13 +27,16 @@ get_creds:
 
 # Local api data watcher pusher setup
 ## @timclifford Set --depth 1 when not testing and set to 'git checkout main'
+## require git >=2.25
 .PHONY:	update-local-api-data-watcher-pusher
 update-local-api-data-watcher-pusher:
-	export LOCAL_DEV_DIR=$$(mkdir -p ./lagoon&& echo "./lagoon") \
-		&& git clone --no-checkout --filter=blob:none --sparse https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
+	export LOCAL_DEV_DIR=$$(mkdir -p ./tmp/ && echo "./tmp/") \
+		&& git clone --no-checkout https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
 		&& cd "$$LOCAL_DEV_DIR" \
-		&& git sparse-checkout set local-dev/api-data-watcher-pusher \
-		&& git checkout main
+		&& git sparse-checkout init --cone \
+		&& git sparse-checkout set "local-dev/api-data-watcher-pusher/" "localdev/api-data/" \
+		&& git checkout main \
+		&& find ./local-dev -maxdepth 1 -type f -delete && mv ./local-dev ../ && cd ../ && rm -rf tmp/
 
 .PHONY: clean-local-dev
 clean-local-dev-dir: check_clean

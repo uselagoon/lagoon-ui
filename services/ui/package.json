@@ -6,10 +6,10 @@
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev -p ${PORT:=3003}",
+    "dev": "next dev -p 6001",
     "build": "next build",
     "build-profile": "next build --profile",
-    "start": "next start -p ${PORT:=5000}",
+    "start": "NODE_ENV=production next start -p 6003 -H ${LAGOON_ROUTE:=localhost}",
     "storybook": "start-storybook -s ./public -p 6006 --ci",
     "build-storybook": "build-storybook -s ./public",
     "serve-storybook": "storybook-server -s ./public",
