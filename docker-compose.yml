@@ -23,7 +23,7 @@ services:
     depends_on:
       - 'api-db'
       - 'api'
-    #command: yarn run dev
+    command: yarn run start
     env_file: ./services/ui/.env.defaults
     volumes:
       - ./services/ui/src:/app/services/ui/src
@@ -31,13 +31,13 @@ services:
       - ./services/ui/.env.schema:/app/services/ui/.env.schema
       - ./services/ui/package.json:/app/services/ui/package.json
     ports:
-      - '6003:6000'
+      - '3003:3003'
     networks:
       - amazeeio-network
       - default
     environment:
       <<: *default-environment
-      LAGOON_LOCALDEV_HTTP_PORT: 6000
+      LAGOON_LOCALDEV_HTTP_PORT: 3003
   api-db:
     image: uselagoon/api-db
     labels:

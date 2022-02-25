@@ -31,7 +31,7 @@ const statusesGroup = [
 ]
 
 const frameworks = [
-  { value: 'drupal-version', label: 'Drupal' },
+  { value: 'drupal-core', label: 'Drupal' },
   { value: 'laravel', label: 'Laravel' },
   { value: 'nodejs', label: 'NodeJS' },
   { value: 'wordpress', label: 'Wordpress' },
