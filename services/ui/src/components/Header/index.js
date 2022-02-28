@@ -83,9 +83,7 @@ const Header = ({ logo }) => {
           border-bottom: 1px solid #D3DAE6;
 
           a {
-            padding: 7px 0;
-            margin: auto;
-
+            padding: 7px 15px;
             &.home {
               position: relative;
               img {
