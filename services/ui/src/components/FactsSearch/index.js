@@ -141,12 +141,17 @@ const FactsSearch = ({ categoriesSelected }) => {
     let nextFactFilter = frameworks && frameworks.map(f => {
       const isSemVerValue = (/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/.test(f.value));
       const isSingleNumber = (/^\d+$/.test(f.value));
-      let previousFrameworksSelected = frameworksSelected.slice(0,1).shift();
+      const startsWithNumber = (/^\d/.test(f.value));
+      const previousFrameworksSelected = frameworksSelected.length > 0 ? frameworksSelected.slice(0,1).shift().name : "";
+
+      if (isSingleNumber) {
+        f.value = `${f.value}.%.%`
+      }
 
       return ({
         lhsTarget: "FACT",
-        name: isSemVerValue || isSingleNumber ? previousFrameworksSelected.name : f.value,
-        contains: isSemVerValue || isSingleNumber ? f.value : ""
+        name:  isSemVerValue || isSingleNumber || startsWithNumber  ? previousFrameworksSelected : f.value,
+        contains: isSemVerValue || isSingleNumber || startsWithNumber ? f.value : ""
       });
     });
     setFrameworksSelected(nextFactFilter || []);
@@ -157,12 +162,17 @@ const FactsSearch = ({ categoriesSelected }) => {
     let nextFactFilter = languages && languages.map(f => {
       const isSemVerValue = (/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/.test(f.value));
       const isSingleNumber = (/^\d+$/.test(f.value));
-      let previousLanguagesSelected = languagesSelected.slice(0,1).shift();
+      const startsWithNumber = (/^\d/.test(f.value));
+      const previousLanguagesSelected = languagesSelected.length > 0 ? languagesSelected.slice(0,1).shift().name : "";
+
+      if (isSingleNumber) {
+        f.value = `${f.value}.%.%`
+      }
 
       return ({
         lhsTarget: "FACT",
-        name: isSemVerValue || isSingleNumber ? previousLanguagesSelected.name : f.value,
-        contains: isSemVerValue || isSingleNumber ? f.value : ""
+        name: isSemVerValue || isSingleNumber || startsWithNumber ? previousLanguagesSelected : f.value,
+        contains: isSemVerValue || isSingleNumber || startsWithNumber ? f.value : ""
       });
     });
     setLanguagesSelected(nextFactFilter || []);
@@ -238,7 +248,7 @@ const FactsSearch = ({ categoriesSelected }) => {
                 options={frameworksGroup}
                 isMulti={true}
                 onFilterChange={handleFrameworkChange}
-                placeholder={"Framework, e.g. \"Drupal\""}
+                placeholder={"Framework, e.g. \"drupal/core, 10, 9.0.1\""}
               />
             </Grid.Column>
             <Grid.Column>
@@ -247,7 +257,7 @@ const FactsSearch = ({ categoriesSelected }) => {
                 options={languagesGroup}
                 isMulti={true}
                 onFilterChange={handleLanguageChange}
-                placeholder={"Programming language, e.g. \"php\""}
+                placeholder={"Programming language, e.g. \"php, 8, 7.4\""}
               />
             </Grid.Column>
             <Grid.Column>

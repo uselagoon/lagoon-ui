@@ -24,6 +24,7 @@ const matchFactToIcon = (name) => {
       };
 
     case "Lagoon":
+    case "lagoon-category":
       return  {
         icon: "",
         color: "teal"
@@ -81,7 +82,7 @@ const Label = ({ className, text, factIcon, color, value, basic, href, loading, 
 
   if (factIcon || icon) {
     let foundIcon = {};
-    if (factIcon === "Lagoon" || icon === "lagoon-category") {
+    if (factIcon === "Lagoon" || factIcon === "lagoon-category") {
       return (
         <SemanticLabel className={className}>
           <Image className="lagoon-logo" size="mini" src="/images/lagoon-2.svg" avatar /><>{text}</>
