@@ -43,9 +43,6 @@ export default (App, initialAuth) => {
     }
 
     setAuth(keycloak) {
-
-      console.log("keylocak: ", keycloak);
-
       this.setState({
         auth: {
           apiToken: keycloak.token,
