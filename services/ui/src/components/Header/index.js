@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import getConfig from 'next/config';
-import { AuthContext } from 'lib/Authenticator';
+import { AuthContext } from 'lib/KeycloakProvider';
 import { color } from 'lib/variables';
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
 
@@ -55,7 +55,7 @@ const Header = ({ logo }) => {
 
               if (auth.authenticated) {
                 return (
-                  <Menu secondary>
+                  <Menu className="header-menu" secondary>
                     <Menu.Item
                       name="settings"
                       className="settings"

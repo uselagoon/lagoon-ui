@@ -3,6 +3,7 @@ install: build-all install-packages
 
 .PHONY: build-all
 build-all:
+	docker network inspect amazeeio-network >/dev/null 2>&1 || docker network create amazeeio-network
 	docker-compose up -d
 
 .PHONY: build-ui
@@ -12,6 +13,12 @@ build-ui:
 .PHONY: logs
 logs:
 	docker-compose logs -f
+
+.PHONY: re-sync-api
+re-sync-api:
+	@echo "Syncing local API src with container"
+	@docker-compose exec api sh -c "/app/services/api/api_run.sh"
+	@docker-compose exec api sh -c "touch /app/services/api/api_run.sh"
 
 .PHONY: get_creds
 get_creds:
@@ -26,11 +33,11 @@ update-local-api-data-watcher-pusher:
 		&& git clone --no-checkout --filter=blob:none --sparse https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
 		&& cd "$$LOCAL_DEV_DIR" \
 		&& git sparse-checkout set local-dev/api-data-watcher-pusher \
-		&& git checkout feature/facts-search-api-changes
+		&& git checkout main
 
 .PHONY: clean-local-dev
-clean-local-dev: check_clean
-	rm -rf ./local-dev	
+clean-local-dev-dir: check_clean
+	rm -rf ./local-dev
 
 .PHONY: check_clean
 check_clean:
@@ -38,7 +45,7 @@ check_clean:
 
 .PHONY: install-packages
 install-packages:
-	yarn install
+	yarn --cwd services/ui && yarn install
 
 .PHONY: install-mocks
 install-mocks:

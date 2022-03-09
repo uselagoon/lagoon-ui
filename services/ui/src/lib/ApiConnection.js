@@ -1,83 +1,90 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import getConfig from 'next/config';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/client';
-import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
-import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
-import { getMainDefinition } from 'apollo-utilities';
 import { ApolloProvider } from '@apollo/client';
-import { AuthContext } from 'lib/Authenticator';
-import ErrorPage from 'pages/_error.js';
+import { ApolloLink, HttpLink } from '@apollo/client';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { onError } from '@apollo/link-error';
+import { getMainDefinition } from '@apollo/client/utilities';
 
-const ApiConnection = ({ children }) => (
-  <AuthContext.Consumer>
-    {auth => {
-      if (!auth.authenticated) {
-        return (
-          <ErrorPage
-            statusCode={401}
-            errorMessage="Please wait while we log you in..."
-          />
-        );
-      }
 
-      const httpLink = new HttpLink({
-        uri: publicRuntimeConfig.GRAPHQL_API,
-        headers: {
-          authorization: `Bearer ${auth.apiToken}`
-        }
-      });
+import { AuthContext } from 'lib/KeycloakProvider';
 
-      const HttpWebsocketLink = () => {
-        const wsLink = new WebSocketLink({
-          uri: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(
-            /http/,
-            'ws'
-          ),
-          options: {
-            reconnect: true,
-            connectionParams: {
-              authToken: auth.apiToken
-            }
+const { publicRuntimeConfig } = getConfig();
+
+const ApiConnection = ({ children }) => {
+  return (
+    <AuthContext.Consumer>
+      {auth => {
+        const httpLink = new HttpLink({
+          uri: publicRuntimeConfig.GRAPHQL_API,
+          headers: {
+            authorization: `Bearer ${auth.apiToken}`
           }
         });
 
-        return ApolloLink.split(
-          ({ query }) => {
-            const { kind, operation } = getMainDefinition(query);
-            return (
-              kind === 'OperationDefinition' && operation === 'subscription'
-            );
-          },
-          wsLink,
-          httpLink
-        );
-      };
+        const HttpWebsocketLink = () => {
+          const wsLink = new WebSocketLink({
+            uri: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(
+              /http/,
+              'ws'
+            ),
+            options: {
+              reconnect: true,
+              connectionParams: {
+                authToken: auth.apiToken
+              }
+            }
+          });
 
-      const client = new ApolloClient({
-        link: ApolloLink.from([
-          onError(({ graphQLErrors, networkError }) => {
-            if (graphQLErrors)
-              graphQLErrors.map(({ message, locations, path }) =>
-                console.log(
-                  `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-                )
+          return ApolloLink.split(
+            ({ query }) => {
+              const { kind, operation } = getMainDefinition(query);
+              return (
+                kind === 'OperationDefinition' && operation === 'subscription'
               );
-            if (networkError) console.log('[Network error]', networkError);
-          }),
-          // Disable websockets when rendering server side.
-          process.browser ? HttpWebsocketLink() : httpLink
-        ]),
-        cache: new InMemoryCache()
-      });
+            },
+            wsLink,
+            httpLink
+          );
+        };
 
-      return <ApolloProvider client={client}><ApolloHooksProvider client={client}>{children}</ApolloHooksProvider></ApolloProvider>;
-    }}
-  </AuthContext.Consumer>
-);
+        const client = new ApolloClient({
+          link: ApolloLink.from([
+            onError(({ graphQLErrors, networkError }) => {
+              if (graphQLErrors)
+                graphQLErrors.map(({ message, locations, path }) =>
+                  console.log(
+                    `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+                  )
+                );
+              if (networkError) console.log('[Network error]', networkError);
+            }),
+            // Disable websockets when rendering server side.
+            process.browser ? HttpWebsocketLink() : httpLink
+          ]),
+          cache: new InMemoryCache(),
+          defaultOptions: {
+            watchQuery: {
+              errorPolicy: "all",
+              fetchPolicy: "network-only",
+            },
+            query: {
+              errorPolicy: "all",
+              fetchPolicy: "network-only",
+            },
+            mutate: {
+              errorPolicy: "all",
+            },
+          },
+        });
+
+        return <ApolloProvider client={client}><ApolloHooksProvider client={client}>{children}</ApolloHooksProvider></ApolloProvider>;
+      }}
+    </AuthContext.Consumer>
+  )
+};
 
 export default ApiConnection;

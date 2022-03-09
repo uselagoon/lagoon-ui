@@ -2,7 +2,7 @@ import React from 'react';
 import { PageBackups as Backups } from 'pages/projects/[projectSlug]/[environmentSlug]/backups';
 import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
 import BackupsSubscription from 'lib/subscription/Backups';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: Backups,

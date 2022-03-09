@@ -1,5 +1,5 @@
 import React from 'react';
-import mocks, { seed } from 'api/src/mocks';
+import mocks, { seed } from 'mock_data/mocks';
 import DeploymentLink from './Deployment';
 
 export default {
@@ -12,7 +12,7 @@ const deployment = mocks.Deployment();
 
 export const Default = () => (
   <DeploymentLink
-    deploymentSlug={deployment.name}
+    deploymentName={deployment.name}
     environmentSlug={deployment.environment.openshiftProjectName}
     projectSlug={deployment.environment.project.name}
   >

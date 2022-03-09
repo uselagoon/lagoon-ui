@@ -1,10 +1,82 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Item, Dimmer, Loader, Placeholder, Segment } from 'semantic-ui-react';
 
+const ParagraphLines = ({ depth = 1 }) => {
+  let lines = [];
+
+  for (let i = 0; i < depth; i++) {
+    lines.push(<Placeholder key={`item-${i}`}>
+    <Placeholder.Paragraph>
+      <Placeholder.Line length='medium' />
+      <Placeholder.Line length='short' />
+      <Placeholder.Line length='medium' />
+      <Placeholder.Line length='short' />
+    </Placeholder.Paragraph>
+  </Placeholder>)
+  }
+  return lines;
+}
+
+const TwoColContent = ({rows, depth}) => {
+  let content = [];
+
+  for (let i = 0; i < rows; i++) {
+    content.push(<Item key={`item-${i}`}>
+      <Item.Content verticalAlign='middle'>
+          <Grid columns={2} stackable>
+          <Grid.Column>
+            <Segment>
+              <ParagraphLines key={`first-col-${i}`} depth={depth} />
+            </Segment>
+          </Grid.Column>
+
+          <Grid.Column>
+            <Segment>
+              <ParagraphLines key={`second-col-${i}`} depth={depth} />
+            </Segment>
+          </Grid.Column>
+        </Grid>
+      </Item.Content>
+    </Item>)
+  }
+  return content;
+}
+
+const ThreeColContent = ({rows}) => {
+  let content = [];
+
+  for (let i = 0; i < rows; i++) {
+    content.push(<Item key={`item-${i}`}>
+      <Item.Content verticalAlign='middle'>
+          <Grid columns={3} stackable>
+          <Grid.Column>
+            <Segment>
+              <ParagraphLines key={`first-col-${i}`} />
+            </Segment>
+          </Grid.Column>
+
+          <Grid.Column>
+            <Segment>
+              <ParagraphLines key={`second-col-${i}`} />
+            </Segment>
+          </Grid.Column>
+
+          <Grid.Column>
+            <Segment>
+              <ParagraphLines key={`third-col-${i}`} />
+            </Segment>
+          </Grid.Column>
+        </Grid>
+      </Item.Content>
+    </Item>)
+  }
+  return content;
+}
+
 export const LoadingContent = () => (
   <Grid columns={3} stackable>
     <Grid.Column>
-      <Segment raised>
+      <Segment>
         <Placeholder>
           <Placeholder.Header>
               <Placeholder.Line />
@@ -19,7 +91,7 @@ export const LoadingContent = () => (
     </Grid.Column>
 
     <Grid.Column>
-      <Segment raised>
+      <Segment>
         <Placeholder>
           <Placeholder.Header>
               <Placeholder.Line />
@@ -34,7 +106,7 @@ export const LoadingContent = () => (
     </Grid.Column>
 
     <Grid.Column>
-      <Segment raised>
+      <Segment>
         <Placeholder>
           <Placeholder.Header>
               <Placeholder.Line />
@@ -50,52 +122,67 @@ export const LoadingContent = () => (
   </Grid>
 );
 
-export const LoadingRowsContent = (numRows) => {
-  let { rows } = numRows || 25;
+export const LoadingRowsContent = ({rows = 25}) => {
   let items = [];
 
   for (let i = 0; i < rows; i++) {
     items.push(
-        <Item key={`item-${i}`}>
-            <Item.Content verticalAlign='middle'>
-                <Segment>
-                    <Placeholder>
-                    <Placeholder.Header>
-                        <Placeholder.Line />
-                        <Placeholder.Line />
-                    </Placeholder.Header>
-                    <Placeholder.Paragraph>
-                        <Placeholder.Line />
-                        <Placeholder.Line />
-                    </Placeholder.Paragraph>
-                    </Placeholder>
-                </Segment>
-            </Item.Content>
-        </Item>
+      <Item key={`item-${i}`}>
+        <Item.Content verticalAlign='middle'>
+          <Segment>
+            <Placeholder>
+            <Placeholder.Header>
+              <Placeholder.Line />
+              <Placeholder.Line />
+            </Placeholder.Header>
+            <Placeholder.Paragraph>
+              <Placeholder.Line />
+              <Placeholder.Line />
+            </Placeholder.Paragraph>
+            </Placeholder>
+          </Segment>
+        </Item.Content>
+      </Item>
     )
   }
 
   return <Item.Group divided>{items}</Item.Group>
 };
 
-export const LoadingRowsWithSpinner = (numRows) => {
-  let { rows } = numRows || 25;
-  return(
-    <Item.Group divided>
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
-      </Dimmer>
-      <LoadingRowsContent rows={rows} />
-    </Item.Group>
-  )
-};
-
 export const LoadingSpinner = () => {
-    return(
-     <Loader size='tiny' active inline='centered' />
+  return(
+    <div className="loading-wrapper">
+      <Loader size='tiny' active inline='centered'>Loading</Loader>
+    </div>
   )
 }
 
+export const LoadingEnvironmentRows = ({rows = 2, type, depth = 2}) => {
+  return (
+    <Item.Group divided>
+      <Segment>
+        <Placeholder style={{ margin: "40px 0" }}>
+          <Placeholder.Line length='long' />
+          <Placeholder.Line length='full' />
+        </Placeholder>
+      </Segment>
+      <Segment>
+        <Placeholder>
+          <Placeholder.Line />
+          <Placeholder.Line />
+        </Placeholder>
+      </Segment>
+      {type === "list" ? 
+        <LoadingRowsContent rows={"25"} />
+      : 
+        <>
+          <ThreeColContent rows={rows}/>
+          <TwoColContent rows={rows} depth={depth} />
+        </>
+      }
+    </Item.Group>
+  )
+};
 
 //TODO: This can be replaced with React's useTransition method when concurrent mode is out of experimental.
 export const LazyLoadingContent = ({

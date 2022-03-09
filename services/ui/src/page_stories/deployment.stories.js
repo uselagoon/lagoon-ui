@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageDeployment as Deployment } from 'pages/projects/[projectSlug]/[environmentSlug]/deployments/[deploymentName]';
 import EnvironmentWithDeploymentQuery from 'lib/query/EnvironmentWithDeployment';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: Deployment,

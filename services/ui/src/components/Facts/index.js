@@ -235,7 +235,7 @@ const Facts = ({ facts }) => {
               }
 
               .overview {
-                .overview-list {
+                ul.overview-list {
                   display: flex;
                   justify-content: space-between;
                   padding: 10px 20px;
@@ -246,20 +246,6 @@ const Facts = ({ facts }) => {
                     display: flex;
                     flex-direction: column;
                     margin: 0;
-                  }
-                }
-              }
-
-              .filters-wrapper {
-                .select-filters {
-                  display: flex;
-                  flex-direction: column;
-                  @media ${bp.wideUp} {
-                    flex-flow: row;
-                  }
-
-                  &:first-child {
-                    padding-bottom: 1em;
                   }
                 }
               }

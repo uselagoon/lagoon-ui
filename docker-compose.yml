@@ -10,6 +10,8 @@ x-environment: &default-environment
   LAGOON_ROUTE: &default-url http://lagoon-ui-beta.docker.amazee.io
   # Uncomment if you like to have the system behave like in production
   #LAGOON_ENVIRONMENT_TYPE: production
+  GRAPHQL_API: "${GRAPHQL_API:-http://localhost:3000/graphql}"
+  KEYCLOAK_API: "${KEYCLOAK_API:-http://localhost:8088/auth}"
 
 services:
   ui:
@@ -18,10 +20,10 @@ services:
       dockerfile: .lagoon/ui.Dockerfile
     labels:
       lagoon.type: node
-    # depends_on:
-    #   - 'api-db'
-    #   - 'api'
-    # command: yarn run dev
+    depends_on:
+      - 'api-db'
+      - 'api'
+    # command: yarn run dev # change to 'yarn run start' to run as production
     volumes:
       - ./services/ui/src:/app/services/ui/src
       - ./services/ui/.env.defaults:/app/services/ui/.env.defaults
@@ -35,7 +37,7 @@ services:
     environment:
       <<: *default-environment
   api-db:
-    image: timmclifford/lagoon-api-db:facts-search
+    image: uselagoon/api-db
     labels:
       lagoon.type: none
     ports:
@@ -49,7 +51,6 @@ services:
     build:
       context: .
       dockerfile: .lagoon/api.Dockerfile
-    # image: timmclifford/lagoon-api:facts-search
     depends_on:
       - api-db
       - keycloak
@@ -58,7 +59,8 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./services/api:/app/mock-data
+      - ./services/api:/services/api
+      - ./services/mock-data:/mock-data
     networks:
       - amazeeio-network
       - default
@@ -71,12 +73,16 @@ services:
     environment:
       <<: *default-environment
   keycloak:
-    image: uselagoon/keycloak
+    build:
+      context: .
+      dockerfile: .lagoon/keycloak.Dockerfile
     user: '111111111'
     depends_on:
       - keycloak-db
     labels:
       lagoon.type: none
+    volumes:
+      - .lagoon/start.sh:/opt/jboss/tools/start.sh
     ports:
       - '8088:8080'
     environment:
@@ -119,6 +125,16 @@ services:
     command: yarn run dev
     labels:
       lagoon.type: none
+  auth-server:
+    image: uselagoon/auth-server
+    labels:
+      lagoon.type: none
+    command: yarn run start
+    environment:
+      - JWTISSUER=auth-server.dev
+      - JWTAUDIENCE=api.dev
+    ports:
+      - '3001:3000'
 
 networks:
   amazeeio-network:
