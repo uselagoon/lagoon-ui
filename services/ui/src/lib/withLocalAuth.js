@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import getConfig from 'next/config';
 
-const { publicRuntimeConfig } = getConfig();
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
-const withLocalAuth = (App) => {
-  return class withLocalAuth extends Component {
+export default (App, initialAuth) => {
+  return class withLocalAuth extends React.Component {
     static getInitialProps(ctx) {
       return App.getInitialProps(ctx);
     }
@@ -18,6 +18,7 @@ const withLocalAuth = (App) => {
             authenticated: true,
             logout: () => {},
             provider: 'local-auth',
+            providerData: {},
             user: {
               username: 'localadmin'
             }
@@ -27,5 +28,3 @@ const withLocalAuth = (App) => {
     }
   };
 };
-
-export default withLocalAuth;

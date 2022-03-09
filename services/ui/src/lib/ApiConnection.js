@@ -10,7 +10,9 @@ import { onError } from '@apollo/link-error';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 
-import { AuthContext } from 'lib/KeycloakProvider';
+// import { AuthContext } from 'lib/KeycloakProvider';
+import { AuthContext } from 'lib/Authenticator';
+import ErrorPage from 'pages/_error.js';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -18,12 +20,22 @@ const ApiConnection = ({ children }) => {
   return (
     <AuthContext.Consumer>
       {auth => {
-        const httpLink = new HttpLink({
-          uri: publicRuntimeConfig.GRAPHQL_API,
-          headers: {
-            authorization: `Bearer ${auth.apiToken}`
-          }
-        });
+        if (!auth.authenticated) {
+          return (
+            <ErrorPage
+              statusCode={401}
+              title="Login Required"
+              errorMessage="Please wait while we log you in..."
+            />
+          );
+        }
+
+      const httpLink = new HttpLink({
+        uri: publicRuntimeConfig.GRAPHQL_API,
+        headers: {
+          authorization: `Bearer ${auth.apiToken}`
+        }
+      });
 
         const HttpWebsocketLink = () => {
           const wsLink = new WebSocketLink({
