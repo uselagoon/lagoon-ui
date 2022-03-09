@@ -12,11 +12,13 @@ const matchFactToIcon = (name) => {
 
     case "drupal-version":
     case "drupal-core":
+    case "drupal/core":
       return {
         icon: "drupal",
         color: "blue"
       };
 
+    case "laravel":
     case "laravel/framework":
       return  {
         icon: "laravel",
@@ -29,6 +31,7 @@ const matchFactToIcon = (name) => {
         color: "teal"
       };
 
+    case "PHP_VERSION":
     case "php-version":
       return  {
         icon: "php",
@@ -55,8 +58,19 @@ const matchFactToIcon = (name) => {
         icon: "react",
         color: "blue"
       };
+    
+    case "wordpress":
+      return {
+        icon: "wordpress",
+        color: "grey"
+      }
 
     case "gatsby":
+      return {
+        icon: "js",
+        color: "grey"
+      }
+
     case "symfony":
     case "go-lang":
     case "java":
