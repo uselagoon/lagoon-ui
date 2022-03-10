@@ -33,7 +33,7 @@ const statusesGroup = [
 const frameworks = [
   { value: 'drupal/core', label: 'Drupal' },
   { value: 'laravel', label: 'Laravel' },
-  { value: 'nodejs', label: 'NodeJS' },
+  { value: 'node', label: 'NodeJS' },
   { value: 'wordpress', label: 'Wordpress' },
   { value: 'symfony', label: 'Symfony' }
 ];
@@ -47,7 +47,7 @@ const frameworksGroup = [
 
 const languages = [
   { value: 'PHP_VERSION', label: 'PHP' },
-  { value: 'nodejs', label: 'NodeJS' },
+  { value: 'node', label: 'NodeJS' },
   { value: 'python', label: 'Python' },
   { value: 'go', label: 'Go' }
 ];

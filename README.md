@@ -14,14 +14,11 @@ You will need to define both the `GRAPHQL_API` and `KEYCLOAK_API` environment wa
 
 ```
 # Local
-Local Dev UI: http://localhost:6001
-
 GRAPHQL_API=http://localhost:3000/graphql
 KEYCLOAK_API=http://localhost:8088/auth
 
 # Pygmy
 
-Production UI: http://lagoon-ui-beta.docker.amazee.io:6003
 GRAPHQL_API=http://lagoon-ui-beta.docker.amazee.io:3000/graphql
 KEYCLOAK_API=http://lagoon-ui-beta.docker.amazee.io:8088/auth
 

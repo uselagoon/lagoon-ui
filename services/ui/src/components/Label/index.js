@@ -41,6 +41,7 @@ const matchFactToIcon = (name) => {
 
     case "express":
     case "nodejs":
+    case "node":
     case "node-version":
       return  {
         icon: "node js",
