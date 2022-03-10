@@ -55,7 +55,7 @@ const EnvironmentsSidebar = ({ environment }) => {
                 {[...environment.deployments].sort((a, b) => a.created > b.created ? -1 : a.created < b.created ? 1 : 0).map((d, index) => {
                   const deploymentStatus = getDeploymentIconFromStatus(d.status);
                   return (
-                    <List.Item>
+                    <List.Item key={`deployment-${index}`}>
                       <Icon fitted name={deploymentStatus.icon} color={deploymentStatus.color} className={`deployment-status ${d.status}`} size="tiny" verticalAlign="middle" />
                       <List.Content>
                         <DeploymentLink

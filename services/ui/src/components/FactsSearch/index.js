@@ -33,7 +33,7 @@ const statusesGroup = [
 const frameworks = [
   { value: 'drupal-version', label: 'Drupal' },
   { value: 'laravel', label: 'Laravel' },
-  { value: 'nodejs', label: 'NodeJS' },
+  { value: 'node', label: 'NodeJS' },
   { value: 'wordpress', label: 'Wordpress' },
   { value: 'symfony', label: 'Symfony' }
 ];
@@ -46,8 +46,8 @@ const frameworksGroup = [
 ];
 
 const languages = [
-  { value: 'php-version', label: 'PHP' },
-  { value: 'nodejs', label: 'NodeJS' },
+  { value: 'PHP_VERSION', label: 'PHP' },
+  { value: 'node', label: 'NodeJS' },
   { value: 'python', label: 'Python' },
   { value: 'go', label: 'Go' }
 ];
@@ -83,12 +83,12 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [factFilters, setFactFilters] = useState([]);
   const [connectiveSelected, setConnective] = useState(searchEnterValue ? 'OR' : 'AND');
 
-  
+
   // Lazy load results
   const FactSearchResults = React.lazy(() => import('components/FactSearchResults'));
-  
+
   const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(activeTab, factFilters, connectiveSelected, take, skipEnvironment);
- 
+
   // Fetch results
   const { data: { projectsByFactSearch } = {}, loading, error } = useQuery(projectQuery, {
     variables: {

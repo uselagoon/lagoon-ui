@@ -136,13 +136,13 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
                       className={`framework ${getClassNamesFor('framework')}`}
                       onClick={() => handleSort({ value: 'framework'})}
                     >
-                      <label>Framework <SortIcon sort={'framework'} /></label>
+                      <label>Framework (Production)<SortIcon sort={'framework'} /></label>
                     </Table.HeaderCell>
                     <Table.HeaderCell
                       className={`language ${getClassNamesFor('language')}`}
                       onClick={() => handleSort({ value: 'language'})}
                     >
-                      <label>Language <SortIcon sort={'language'} /></label>
+                      <label>Language (Production)<SortIcon sort={'language'} /></label>
                     </Table.HeaderCell>
                     {activeTab === 'All projects' &&
                       <Table.HeaderCell

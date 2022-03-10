@@ -23,12 +23,13 @@ services:
     depends_on:
       - 'api-db'
       - 'api'
-    # command: yarn run dev # change to 'yarn run start' to run as production
+    command: yarn run start
     volumes:
-      - ./services/ui/src:/app/services/ui/src
-      - ./services/ui/.env.defaults:/app/services/ui/.env.defaults
-      - ./services/ui/.env.schema:/app/services/ui/.env.schema
-      - ./services/ui/package.json:/app/services/ui/package.json
+      - ./services/ui/src:/app/src
+      - ./services/ui/.env.defaults:/app/.env.defaults
+      - ./services/ui/.env.schema:/app/.env.schema
+      - ./services/ui/package.json:/app/package.json
+      - ./services/ui/api-db-seeding:/app/api-db-seeding
     ports:
       - '8888:3000'
     networks:
