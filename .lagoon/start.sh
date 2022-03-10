@@ -104,54 +104,37 @@ function configure_api_client {
     # Enable username edit
     /opt/jboss/keycloak/bin/kcadm.sh update realms/${KEYCLOAK_REALM:-master} --config $CONFIG_PATH -s editUsernameAllowed=true
 
-    auth_server_client_id=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients?clientId=auth-server --config $CONFIG_PATH)
-    if [ "$auth_server_client_id" != "[ ]" ]; then
-        echo "Client auth server is already created, skipping basic setup"
-    else
-      echo Creating client auth-server
+    echo Creating client auth-server
+    echo '{"clientId": "auth-server", "publicClient": false, "standardFlowEnabled": false, "serviceAccountsEnabled": true, "secret": "'$KEYCLOAK_AUTH_SERVER_CLIENT_SECRET'"}' | /opt/jboss/keycloak/bin/kcadm.sh create clients --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -f -
+    AUTH_SERVER_CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get  -r lagoon clients?clientId=auth-server --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
+    REALM_MANAGEMENT_CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get  -r lagoon clients?clientId=realm-management --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
+    echo Enable auth-server token exchange
+    # 1 Enable fine grained admin permissions for users
+    /opt/jboss/keycloak/bin/kcadm.sh update users-management-permissions --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s enabled=true
+    # 2 Enable fine grained admin perions for client
+    /opt/jboss/keycloak/bin/kcadm.sh update clients/$AUTH_SERVER_CLIENT_ID/management/permissions --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s enabled=true
+    # 3 Create policy for auth-server client
+    echo '{"type":"client","logic":"POSITIVE","decisionStrategy":"UNANIMOUS","name":"Client auth-server Policy","clients":["'$AUTH_SERVER_CLIENT_ID'"]}' | /opt/jboss/keycloak/bin/kcadm.sh create clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/policy/client --config $CONFIG_PATH -r lagoon -f -
+    AUTH_SERVER_CLIENT_POLICY_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/policy?name=Client+auth-server+Policy --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
+    # 4 Update user impersonate permission to add client policy (PUT)
+    IMPERSONATE_PERMISSION_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/permission?name=admin-impersonating.permission.users --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
+    /opt/jboss/keycloak/bin/kcadm.sh update clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/permission/scope/$IMPERSONATE_PERMISSION_ID --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s 'policies=["'$AUTH_SERVER_CLIENT_POLICY_ID'"]'
 
-      echo '{"clientId": "auth-server", "publicClient": false, "standardFlowEnabled": false, "serviceAccountsEnabled": true, "secret": "'$KEYCLOAK_AUTH_SERVER_CLIENT_SECRET'"}' | /opt/jboss/keycloak/bin/kcadm.sh create clients --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -f -
-      AUTH_SERVER_CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get  -r lagoon clients?clientId=auth-server --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
-      REALM_MANAGEMENT_CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get  -r lagoon clients?clientId=realm-management --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
-      echo Enable auth-server token exchange
-      # 1 Enable fine grained admin permissions for users
-      /opt/jboss/keycloak/bin/kcadm.sh update users-management-permissions --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s enabled=true
-      # 2 Enable fine grained admin permissions for client
-      /opt/jboss/keycloak/bin/kcadm.sh update clients/$AUTH_SERVER_CLIENT_ID/management/permissions --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s enabled=true
-      # 3 Create policy for auth-server client
-      echo '{"type":"client","logic":"POSITIVE","decisionStrategy":"UNANIMOUS","name":"Client auth-server Policy","clients":["'$AUTH_SERVER_CLIENT_ID'"]}' | /opt/jboss/keycloak/bin/kcadm.sh create clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/policy/client --config $CONFIG_PATH -r lagoon -f -
-      AUTH_SERVER_CLIENT_POLICY_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/policy?name=Client+auth-server+Policy --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
-      # 4 Update user impersonate permission to add client policy (PUT)
-      IMPERSONATE_PERMISSION_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/permission?name=admin-impersonating.permission.users --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
-      /opt/jboss/keycloak/bin/kcadm.sh update clients/$REALM_MANAGEMENT_CLIENT_ID/authz/resource-server/permission/scope/$IMPERSONATE_PERMISSION_ID --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s 'policies=["'$AUTH_SERVER_CLIENT_POLICY_ID'"]'
-    fi
 
 
     # Setup composite roles. Each role will include the roles to the left of it
     composite_role_names=(guest reporter developer maintainer owner)
     composites_add=()
-    for crn_key in "${!composite_role_names[@]}"; do
+    for crn_key in ${!composite_role_names[@]}; do
+        echo Creating role ${composite_role_names[$crn_key]}
+        /opt/jboss/keycloak/bin/kcadm.sh create roles --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s composite=true -s name=${composite_role_names[$crn_key]}
 
-    echo "We get here"
-        set +e
-        lagoon_role=$(/opt/jboss/keycloak/bin/kcadm.sh get roles/${composite_role_names[$crn_key]} -r lagoon --config $CONFIG_PATH)
+        for ca_key in ${!composites_add[@]}; do
+            /opt/jboss/keycloak/bin/kcadm.sh add-roles --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} --rname ${composite_role_names[$crn_key]} --rolename ${composites_add[$ca_key]}
+        done
 
-        if [[ "$lagoon_role" = Resource* ]]; then
-          set -e
-
-          echo Creating role ${composite_role_names[$crn_key]}
-          /opt/jboss/keycloak/bin/kcadm.sh create roles --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s composite=true -s name=${composite_role_names[$crn_key]}
-
-          for ca_key in "${!composites_add[@]}"; do
-              /opt/jboss/keycloak/bin/kcadm.sh add-roles --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} --rname ${composite_role_names[$crn_key]} --rolename ${composites_add[$ca_key]}
-          done
-
-          composites_add+=(${composite_role_names[$crn_key]})
-        else
-          echo "Lagoon ${composite_role_names[$crn_key]} role already exists, skipping"
-        fi
+        composites_add+=(${composite_role_names[$crn_key]})
     done
-
 
     # Setup platform wide roles.
     /opt/jboss/keycloak/bin/kcadm.sh create roles --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s name=platform-owner
@@ -171,7 +154,7 @@ function configure_api_client {
 
     # Resource Scopes
     resource_scope_names=(add add:development add:production addGroup addNoExec addNotification addOrUpdate:development addOrUpdate:production addUser delete delete:development delete:production deleteAll deleteNoExec deploy:development deploy:production drushArchiveDump:development drushArchiveDump:production drushCacheClear:development drushCacheClear:production drushRsync:destination:development drushRsync:destination:production drushRsync:source:development drushRsync:source:production drushSqlDump:development drushSqlDump:production drushSqlSync:destination:development drushSqlSync:destination:production drushSqlSync:source:development drushSqlSync:source:production environment:add:development environment:add:production environment:view:development environment:view:production getBySshKey invoke:guest invoke:developer invoke:maintainer create:advanced project:add project:view removeAll removeGroup removeNotification removeUser ssh:development ssh:production storage update update:development update:production view view:token view:user viewAll viewPrivateKey)
-    for rsn_key in "${!resource_scope_names[@]}"; do
+    for rsn_key in ${!resource_scope_names[@]}; do
         echo Creating resource scope ${resource_scope_names[$rsn_key]}
         /opt/jboss/keycloak/bin/kcadm.sh create clients/$CLIENT_ID/authz/resource-server/scope --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -s name=${resource_scope_names[$rsn_key]}
     done
@@ -1283,72 +1266,6 @@ EOF
     # {"type":"scope","logic":"POSITIVE","decisionStrategy":"UNANIMOUS","name":"Backup View","resources":["2ebb5852-6624-4dc6-8374-e1e54a7fd9c5"],"scopes":["8e78b877-f930-43ff-995f-c907af64f69f"],"policies":["d4fae4e2-ddc7-462c-b712-d68aaeb269e1"]}
 }
 
-function add_billing_modifier {
-  CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients?clientId=api --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
-  billing_modifier=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$CLIENT_ID/authz/resource-server/permission?name=Delete+All+Billing+Group+Modifiers --config $CONFIG_PATH)
-
-  if [ "$billing_modifier" != "[ ]" ]; then
-      echo "billing_modifier:add|update|delete|deleteAll already configured"
-      return 0
-  fi
-
-  echo Creating resource billing_modifier
-
-  # Add Scopes to Resource
-  echo '{"name":"billing_modifier","displayName":"billing_modifier","scopes":[{"name":"add"},{"name":"update"},{"name":"delete"},{"name":"deleteAll"}],"attributes":{},"uris":[],"ownerManagedAccess":""}' | /opt/jboss/keycloak/bin/kcadm.sh create clients/$CLIENT_ID/authz/resource-server/resource --config $CONFIG_PATH -r ${KEYCLOAK_REALM:-master} -f -
-
-
-  # Create new permission
-    /opt/jboss/keycloak/bin/kcadm.sh create clients/$CLIENT_ID/authz/resource-server/permission/scope --config $CONFIG_PATH -r lagoon -f - <<EOF
-{
-  "name": "Add Billing Modifier",
-  "type": "scope",
-  "logic": "POSITIVE",
-  "decisionStrategy": "UNANIMOUS",
-  "resources": ["billing_modifier"],
-  "scopes": ["add"],
-  "policies": ["Users role for realm is Platform Owner"]
-}
-EOF
-
-    /opt/jboss/keycloak/bin/kcadm.sh create clients/$CLIENT_ID/authz/resource-server/permission/scope --config $CONFIG_PATH -r lagoon -f - <<EOF
-{
-  "name": "Update Billing Modifier",
-  "type": "scope",
-  "logic": "POSITIVE",
-  "decisionStrategy": "UNANIMOUS",
-  "resources": ["billing_modifier"],
-  "scopes": ["update"],
-  "policies": ["Users role for realm is Platform Owner"]
-}
-EOF
-
-    /opt/jboss/keycloak/bin/kcadm.sh create clients/$CLIENT_ID/authz/resource-server/permission/scope --config $CONFIG_PATH -r lagoon -f - <<EOF
-{
-  "name": "Delete Billing Modifier",
-  "type": "scope",
-  "logic": "POSITIVE",
-  "decisionStrategy": "UNANIMOUS",
-  "resources": ["billing_modifier"],
-  "scopes": ["delete"],
-  "policies": ["Users role for realm is Platform Owner"]
-}
-EOF
-
-    /opt/jboss/keycloak/bin/kcadm.sh create clients/$CLIENT_ID/authz/resource-server/permission/scope --config $CONFIG_PATH -r lagoon -f - <<EOF
-{
-  "name": "Delete All Billing Group Modifiers",
-  "type": "scope",
-  "logic": "POSITIVE",
-  "decisionStrategy": "UNANIMOUS",
-  "resources": ["billing_modifier"],
-  "scopes": ["deleteAll"],
-  "policies": ["Users role for realm is Platform Owner"]
-}
-EOF
-
-}
-
 function add_group_viewall {
   CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients?clientId=api --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
   view_all_groups=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$CLIENT_ID/authz/resource-server/permission?name=View+All+Groups --config $CONFIG_PATH)
@@ -1736,7 +1653,25 @@ EOF
 
 }
 
+function remove_billing_modifier {
+  CLIENT_ID=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients?clientId=api --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["id"])')
+  billing_modifier=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$CLIENT_ID/authz/resource-server/permission?name=Delete+All+Billing+Group+Modifiers --config $CONFIG_PATH)
 
+  if [ "$billing_modifier" == "[ ]" ]; then
+      return 0
+  fi
+
+  echo Removing billing_modifier authz
+
+  permissions=$(/opt/jboss/keycloak/bin/kcadm.sh get clients/$CLIENT_ID/authz/resource-server/permission?resource=billing_modifier --fields id --format csv --noquotes --config $CONFIG_PATH -r lagoon)
+  for permission in $permissions
+  do
+    /opt/jboss/keycloak/bin/kcadm.sh delete clients/$CLIENT_ID/authz/resource-server/permission/$permission --config $CONFIG_PATH -r lagoon
+  done
+
+  billing_modifier_resource_id=$(/opt/jboss/keycloak/bin/kcadm.sh get -r lagoon clients/$CLIENT_ID/authz/resource-server/resource?name=billing_modifier --config $CONFIG_PATH | python3 -c 'import sys, json; print(json.load(sys.stdin)[0]["_id"])')
+  /opt/jboss/keycloak/bin/kcadm.sh delete -r lagoon clients/$CLIENT_ID/authz/resource-server/resource/$billing_modifier_resource_id --config $CONFIG_PATH
+}
 
 function configure_keycloak {
     until is_keycloak_running; do
@@ -1757,14 +1692,17 @@ function configure_keycloak {
     add_group_viewall
     add_deployment_cancel
     configure_task_cron
-    add_billing_modifier
     configure_task_uli
     configure_problems_system
     configure_facts_system
     configure_harbor_scan_system
     configure_advanced_task_system
+    remove_billing_modifier
 
     echo "Config of Keycloak done. Log in via admin user '$KEYCLOAK_ADMIN_USER' and password '$KEYCLOAK_ADMIN_PASSWORD'"
+
+    # signal config complete
+    touch /tmp/keycloak-config-complete
 }
 
 /opt/jboss/keycloak/bin/add-user-keycloak.sh --user $KEYCLOAK_ADMIN_USER --password $KEYCLOAK_ADMIN_PASSWORD

@@ -2,26 +2,28 @@ import React, { useState } from 'react';
 import { bp, color, fontSize } from 'lib/variables';
 import useSortableData from '../../lib/withSortedItems';
 import SelectFilter from 'components/Filters';
+import { Icon } from 'semantic-ui-react';
 
-const getOptionsFromFacts = (facts, key) => {
-    let uniqueOptions= facts &&
-      new Set(facts.filter(f => f[key]).map(f => f[key]));
+const getOptionsFromInsights = (insights, key) => {
+    let uniqueOptions = insights &&
+      new Set(insights.filter(f => f[key]).map(f => f[key]));
 
     return [...uniqueOptions].sort();
 };
 
-const Facts = ({ facts }) => {
-    const { sortedItems, getClassNamesFor, requestSort } = useSortableData(facts, {key: 'name', direction: 'ascending'});
+const Insights = ({ insights }) => {
+
+  console.log("insights: ", insights);
+
+    const { sortedItems, getClassNamesFor, requestSort } = useSortableData(insights, {key: 'id', direction: 'ascending'});
     const [nameSelected, setName] = useState([]);
-    const [sourceSelected, setSource] = useState([]);
-    const [categorySelected, setCategory] = useState([]);
+    const [typeSelected, setType] = useState([]);
 
     const [factTerm, setFactTerm] = useState('');
     const [hasFilter, setHasFilter] = React.useState(false);
 
-    const names = getOptionsFromFacts(facts, 'name');
-    const sources = getOptionsFromFacts(facts, 'source');
-    const categories = getOptionsFromFacts(facts, 'category');
+    const names = getOptionsFromInsights(insights, 'file');
+    const types = getOptionsFromInsights(insights, 'type');
 
     // Handlers
     const handleFactFilterChange = (event) => {
@@ -42,14 +44,9 @@ const Facts = ({ facts }) => {
         setName(values);
     };
 
-    const handleSourceChange = (source) => {
-        let values = source && source.map(s => s.value) || [];
-        setSource(values);
-    };
-
-    const handleCategoryChange = (category) => {
-        let values = category && category.map(c => c.value) || [];
-        setCategory(values);
+    const handleTypeChange = (type) => {
+        let values = type && type.map(t => t.value) || [];
+        setType(values);
     };
 
     // Options
@@ -57,12 +54,8 @@ const Facts = ({ facts }) => {
         return name && name.map(n => ({ value: n, label: n}));
     };
 
-    const sourceOptions = (sources) => {
-        return sources && sources.map(s => ({ value: s, label: s}));
-    };
-
-    const categoryOptions = (category) => {
-        return category && category.map(c => ({ value: c, label: c}));
+    const typeOptions = (type) => {
+        return type && type.map(t => ({ value: t, label: t}));
     };
 
     // Selector filtering
@@ -70,27 +63,17 @@ const Facts = ({ facts }) => {
         return (nameSelected.length > 0) ?
           Object.keys(item).some(key => {
               if (item[key] !== null) {
-                  return nameSelected.indexOf(item['name'].toString()) > -1;
+                  return nameSelected.indexOf(item['file'].toString()) > -1;
               };
           })
           : true;
     }
 
-    const matchesSourceSelector = (item) => {
-        return (sourceSelected.length > 0) ?
+    const matchesTypeSelector = (item) => {
+        return (typeSelected.length > 0) ?
           Object.keys(item).some(key => {
               if (item[key] !== null) {
-                  return sourceSelected.indexOf(item['source'].toString()) > -1;
-              };
-          })
-          : true;
-    }
-
-    const matchesCategorySelector = (item) => {
-        return (categorySelected.length > 0) ?
-          Object.keys(item).some(key => {
-              if (item[key] !== null) {
-                  return categorySelected.indexOf(item['category'].toString()) > -1;
+                  return typeSelected.indexOf(item['type'].toString()) > -1;
               };
           })
           : true;
@@ -107,14 +90,14 @@ const Facts = ({ facts }) => {
     }
 
     const shouldItemBeShown = (item) => {
-        return (matchesNameSelector(item) && matchesSourceSelector(item) && matchesCategorySelector(item)  && matchesTextFilter(item));
+        return (matchesNameSelector(item) && matchesTypeSelector(item)  && matchesTextFilter(item));
     };
 
     return (
-        <div className="facts">
+        <div className="insights">
             <div className="overview">
                 <ul className="overview-list">
-                    <li className="result"><label>Facts </label><span className="text-large">{Object.keys(sortedItems).length}</span></li>
+                    <li className="result"><label>Insights </label><span className="text-large">{Object.keys(sortedItems).length}</span></li>
                 </ul>
             </div>
             <div className="filters-wrapper">
@@ -127,88 +110,69 @@ const Facts = ({ facts }) => {
                       isMulti
                     />
                     <SelectFilter
-                      title="Source"
-                      loading={!sources}
-                      options={sources && sourceOptions(sources)}
-                      onFilterChange={handleSourceChange}
-                      isMulti
-                    />
-                    <SelectFilter
-                      title="Category"
-                      loading={!categories}
-                      options={categories && categoryOptions(categories)}
-                      onFilterChange={handleCategoryChange}
+                      title="Type"
+                      loading={!types}
+                      options={types && typeOptions(types)}
+                      onFilterChange={handleTypeChange}
                       isMulti
                     />
                 </div>
             </div>
             <div className="filters">
-                <input type="text" id="filter" placeholder="Filter facts e.g. PHP version"
+                <input type="text" id="filter" placeholder="Filter insights e.g. sbom.json"
                        value={factTerm}
                        onChange={handleFactFilterChange}
                 />
             </div>
             <div className="header">
                 <button
-                    type="button"
-                    onClick={() => handleSort('name')}
-                    className={`button-sort name ${getClassNamesFor('name')}`}
-                >
-                    Name
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleSort('source')}
-                    className={`button-sort source ${getClassNamesFor('source')}`}
-                >
-                    Source
-                </button>
-                <button
                   type="button"
-                  onClick={() => handleSort('value')}
-                  className={`button-sort value ${getClassNamesFor('value')}`}
+                  onClick={() => handleSort('file')}
+                  className={`button-sort file ${getClassNamesFor('file')}`}
                 >
-                    Value
+                    File
                 </button>
-                <button
+                 <button
                   type="button"
-                  onClick={() => handleSort('category')}
-                  className={`button-sort category ${getClassNamesFor('category')}`}
+                  onClick={() => handleSort('type')}
+                  className={`button-sort type ${getClassNamesFor('type')}`}
                 >
-                    Category
+                    Type
                 </button>
                 <button
                     type="button"
-                    onClick={() => handleSort('value')}
-                    className={`button-sort value ${getClassNamesFor('value')}`}
+                    onClick={() => handleSort('created')}
+                    className={`button-sort created ${getClassNamesFor('created')}`}
                 >
-                    Value
+                    Created
+                </button>
+                <button
+                    type="button"
+                    onClick={() => handleSort('download')}
+                    className={`button-sort download ${getClassNamesFor('download')}`}
+                >
+                    Download
                 </button>
             </div>
-            <div className="facts-container">
+            <div className="insights-container">
                 {sortedItems.filter(item => shouldItemBeShown(item)).length == 0 &&
                 <div className="data-table">
                     <div className="data-none">
-                        No Facts
+                        No insights
                     </div>
                 </div>
                 }
                 {sortedItems
                   .filter(item => shouldItemBeShown(item))
-                  .map((fact) => {
+                  .map((insight) => {
                     return (
-                        <div className="data-row row-heading" key={fact.id}>
-                            <div className="col col-1">
-                                <div className="name">{fact.name}</div>
-                                <div className="description">{fact.description}</div>
+                        <div className="data-row row-heading" key={insight.id}>
+                            <div className="col col-2">{insight.file}</div>
+                            <div className="col col-2">{insight.type}</div>
+                            <div className="col col-3">{insight.created}</div>
+                            <div className="col col-3">
+                              <a href={insight.downloadUrl} target="_blank"><Icon link name='download'/>Download</a>
                             </div>
-                            <div className="col col-2">{fact.source}</div>
-                            { fact.type == "URL"
-                              ? <div className="col col-3"><a className="external-link" href={fact.value} target="_blank">{fact.value}</a></div>
-                              : <div className="col col-3">{fact.value}</div>
-                            }
-                            <div className="col col-2">{fact.category}</div>
-                            <div className="col col-3">{fact.value}</div>
                         </div>
                     );
                 })}
@@ -381,4 +345,4 @@ const Facts = ({ facts }) => {
     );
 };
 
-export default Facts;
+export default Insights;
