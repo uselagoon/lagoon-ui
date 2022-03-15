@@ -47,6 +47,10 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
       <>
         <Head>
           <Typekit kitId="ggo2pml" />
+          <script
+            type="text/javascript"
+            src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
+          />
         </Head>
         <Component {...pageProps} errorMessage={err.toString()} url={url} />
         <Favicon />
