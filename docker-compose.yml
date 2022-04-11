@@ -74,22 +74,23 @@ services:
     environment:
       <<: *default-environment
   keycloak:
-    build:
-      context: .
-      dockerfile: .lagoon/keycloak.Dockerfile
-    user: '111111111'
+    image: lagoon/keycloak
+    # build:
+    #   context: .
+    #   dockerfile: .lagoon/keycloak.Dockerfile
+    # user: '111111111'
     depends_on:
       - keycloak-db
     labels:
       lagoon.type: none
-    volumes:
-      - .lagoon/start.sh:/opt/jboss/tools/start.sh
+    # volumes:
+    #   - .lagoon/start.sh:/opt/jboss/tools/start.sh
     ports:
       - '8088:8080'
     environment:
       <<: *default-environment
   keycloak-db:
-    image: uselagoon/keycloak-db
+    image: lagoon/keycloak-db
     labels:
       lagoon.type: none
     ports:

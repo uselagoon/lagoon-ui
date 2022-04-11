@@ -1,8 +1,11 @@
+.PHONY: all
+all: clean-local install get_creds
+
 .PHONY: install
 install: build-all install-packages
 
 .PHONY: build-all
-build-all:
+build-all: get_creds
 	docker network inspect amazeeio-network >/dev/null 2>&1 || docker network create amazeeio-network
 	docker-compose up -d
 
@@ -10,9 +13,21 @@ build-all:
 build-ui:
 	docker-compose up -d ui
 
+.PHONY: clean-local
+clean-local: check_clean
+	rm -rf ./local-dev ./services/api ./services/mock-data
+
+.PHONY: check_clean
+check_clean:
+	@echo -n "Are you sure? This will remove ./local-dev ./services/api and ./services/mock-data which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
+
+
 .PHONY: logs
 logs:
 	docker-compose logs -f
+
+
+## Syncing from Lagoon repo
 
 .PHONY: re-sync-api
 re-sync-api:
@@ -37,14 +52,6 @@ update-local-api-data-watcher-pusher:
 		&& git sparse-checkout set "local-dev/api-data-watcher-pusher/" "localdev/api-data/" \
 		&& git checkout main \
 		&& find ./local-dev -maxdepth 1 -type f -delete && mv ./local-dev ../ && cd ../ && rm -rf tmp/
-
-.PHONY: clean-local-dev
-clean-local-dev-dir: check_clean
-	rm -rf ./local-dev
-
-.PHONY: check_clean
-check_clean:
-	@echo -n "Are you sure? This will remove the ./local-dev repo which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
 
 .PHONY: install-packages
 install-packages:

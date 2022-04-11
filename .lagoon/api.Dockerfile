@@ -1,4 +1,4 @@
-FROM uselagoon/api:latest
+FROM lagoon/api:latest
 
 COPY api_run.sh /app/services/api
 RUN chmod +x /app/services/api/api_run.sh
