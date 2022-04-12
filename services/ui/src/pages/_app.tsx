@@ -22,6 +22,9 @@ import 'semantic-ui-css/semantic.min.css';
 import '../../styles/nprogress.css';
 import 'components/Honeycomb/styling.css';
 
+// temp: using old keycloak authenticator (pending keycloak updates)
+import Authenticator, { AuthContext } from 'lib/Authenticator';
+
 interface AppPropsWithCookies extends AppProps {
   cookies: any,
   err: any
@@ -35,7 +38,7 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
   const url = createUrl(router);
   const { publicRuntimeConfig } = getConfig();
 
-  const [refreshToken, setRefreshToken] = useState(null);
+  // const [refreshToken, setRefreshToken] = useState(null);
 
   // Catch runtime errors in production and skip authentication to avoid
   // infinite auth > error > auth > error loops.
@@ -51,41 +54,45 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
     );
   }
 
-  const keycloakCfg = {
-    url: publicRuntimeConfig.KEYCLOAK_API,
-    realm: 'lagoon',
-    clientId: 'lagoon-ui'
-  }
+  // const keycloakCfg = {
+  //   url: publicRuntimeConfig.KEYCLOAK_API,
+  //   realm: 'lagoon',
+  //   clientId: 'lagoon-ui'
+  // }
 
-  const keycloakInitOptions = {
-    checkLoginIframe: true,
-    onload:'check-sso',
-    silentCheckSsoRedirectUri:
-      typeof window !== "undefined"
-        ? `${window.location.origin}/silent-check-sso.html`
-        : null,
-  }
+  // const keycloakInitOptions = {
+  //   checkLoginIframe: true,
+  //   onload:'check-sso',
+  //   silentCheckSsoRedirectUri:
+  //     typeof window !== "undefined"
+  //       ? `${window.location.origin}/silent-check-sso.html`
+  //       : null,
+  // }
 
-  const refreshTokenUpdated = (token) => {
-    if (token && typeof window === "undefined") {
-      setCookie(null, "kcToken", token, {
-        secure: process.env.NODE_ENV !== "development",
-        httpOnly: true,
-        sameSite: 'strict',
-        expires: dayjs().add(1, "days").toDate()
-      });
-    }
+  // const refreshTokenUpdated = (token) => {
+  //   if (token && typeof window === "undefined") {
+  //     setCookie(null, "kcToken", token, {
+  //       secure: process.env.NODE_ENV !== "development",
+  //       httpOnly: true,
+  //       sameSite: 'strict',
+  //       expires: dayjs().add(1, "days").toDate()
+  //     });
+  //   }
 
-    // Currently no way to refresh tokens server-side
-    setRefreshToken(getKeycloakInstance(null as any).token)
-  }
+  //   // Currently no way to refresh tokens server-side
+  //   setRefreshToken(getKeycloakInstance(null as any).token)
+  // }
 
   return (
     <>
       <Head>
         <Typekit kitId="ggo2pml" />
+        <script
+          type="text/javascript"
+          src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
+        />
       </Head>
-      <SSRKeycloakProvider
+      {/* <SSRKeycloakProvider
         keycloakConfig={keycloakCfg}
         persistor={SSRCookies(cookies)}
         initOptions={keycloakInitOptions}
@@ -117,13 +124,15 @@ const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCooki
             refreshTokenUpdated(getKeycloakInstance(null as any).token)
           }
         }}
-      >
-        <KeycloakProvider refreshToken={refreshToken}>
+      > */}
+        {/* <KeycloakProvider refreshToken={refreshToken}> */}
+        <Authenticator>
           <ApiConnection>
             <Component {...pageProps} url={url} />
           </ApiConnection>
-        </KeycloakProvider>
-      </SSRKeycloakProvider>
+        {/* </KeycloakProvider> */}
+        </Authenticator>
+      {/* </SSRKeycloakProvider> */}
       <Favicon />
     </>
   );

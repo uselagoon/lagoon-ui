@@ -83,12 +83,12 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [factFilters, setFactFilters] = useState([]);
   const [connectiveSelected, setConnective] = useState(searchEnterValue ? 'OR' : 'AND');
 
-  
+
   // Lazy load results
   const FactSearchResults = React.lazy(() => import('components/FactSearchResults'));
-  
+
   const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(activeTab, factFilters, connectiveSelected, take, skipEnvironment);
- 
+
   // Fetch results
   const { data: { projectsByFactSearch } = {}, loading, error } = useQuery(projectQuery, {
     variables: {

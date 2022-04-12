@@ -1,34 +1,21 @@
-import React, { useEffect} from 'react';
-import { useKeycloak } from '@react-keycloak/ssr';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
+import React from 'react';
+import Router from 'next/router';
+import { queryStringToObject } from 'lib/util';
 
-import StatusLayout from 'layouts/StatusLayout';
-
-const IndexPage = () => {
-  const { keycloak } = useKeycloak();
-  const loggedIn = keycloak.authenticated;
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== undefined) {
-      if (loggedIn) {
-        router.push('/projects')
-      }
+export default class IndexPage extends React.Component {
+  static async getInitialProps({ req, res }) {
+    if (res) {
+      const currentUrl = new URL(req.url, `https://${req.headers.host}`);
+      res.writeHead(302, {
+        Location: `/projects${currentUrl.search}`
+      });
+      res.end();
+    } else {
+      Router.push({
+        pathname: '/projects',
+        query: queryStringToObject(location.search),
+      });
     }
-  }, [loggedIn])
-
-  return (
-  <>
-    <Head>
-      <title>Lagoon</title>
-    </Head>
-    <StatusLayout>
-      <h1>Redirecting...</h1>
-    </StatusLayout>
-  </>
-  )
-};
-
-export default IndexPage;
+    return {};
+  }
+}
