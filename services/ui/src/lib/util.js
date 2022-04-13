@@ -3,6 +3,7 @@ import moment from 'moment';
 import Highlighter from 'react-highlight-words';
 import SiteStatus from 'components/SiteStatus';
 import Label from 'components/Label';
+import { DangerousChangeType } from 'graphql';
 
 export const queryStringToObject = R.pipe(
   R.defaultTo(''),
@@ -14,7 +15,7 @@ export const queryStringToObject = R.pipe(
 
 // Dates
 export const getFromNowTime = (date) => {
-    return moment.utc(date).fromNow();
+  return moment.utc(date).fromNow();
 };
 
 export const getCreatedDate = (date) => {
@@ -93,8 +94,12 @@ const getLastCreatedDeployment = (deployments, unformatted = false) => {
 }
 
 const getLastCompletedDeployment = (deployments, unformatted = false) => {
-  const lastDeployment = deployments && getLastDeployment(deployments);
-  const lastCompleted = lastDeployment && lastDeployment.completed;
+   if (deployments.length === 0) {
+    return null;
+  }
+
+  const sortCompleted = deployments && deployments.filter(d => d.completed).sort((a, b) => Date.parse(a.completed) > Date.parse(b.completed));
+  const lastCompleted = sortCompleted && sortCompleted.slice(0,1).shift().completed;
 
   if (unformatted) {
     return lastCompleted ? lastCompleted : false
@@ -180,7 +185,7 @@ export {
 
 
 // Tasks
-const DEFAULT_TASKS_LIMIT = 25;
+const DEFAULT_TASKS_LIMIT = 0;
 
 export {
   DEFAULT_TASKS_LIMIT

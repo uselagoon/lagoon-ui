@@ -1,18 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import getConfig from 'next/config';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { ApolloProvider as ApolloHooksProvider } from '@apollo/client';
-import { ApolloProvider } from '@apollo/client';
-import { ApolloLink, HttpLink } from '@apollo/client';
-
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { onError } from '@apollo/link-error';
+import {
+  ApolloClient,
+  ApolloProvider as ApolloHooksProvider,
+  ApolloProvider,
+  InMemoryCache,
+  split,
+  HttpLink,
+  from
+} from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { setContext } from '@apollo/client/link/context';
+import { onError } from "@apollo/client/link/error"
 import { getMainDefinition } from '@apollo/client/utilities';
+import { AuthContext } from 'lib/KeycloakProvider';
 
 
-// import { AuthContext } from 'lib/KeycloakProvider';
-import { AuthContext } from 'lib/Authenticator';
-import ErrorPage from 'pages/_error.js';
+// WebSocketLink Deprecated: https://www.apollographql.com/docs/react/api/link/apollo-link-ws/
+//import { WebSocketLink } from '@apollo/client/link/ws';
+
+// Recommmended to now use the newer graphql-ws library with the accompanying GraphQLWsLink.
+////
+// Subscription library change
+// @TODO: We need to update the api to use this library server-side also
+////
+
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -21,67 +34,60 @@ const ApiConnection = ({ children }) => {
     <AuthContext.Consumer>
       {auth => {
         if (!auth.authenticated) {
+          return;
+        }
+
+        const httpLink = new HttpLink({
+          uri: publicRuntimeConfig.GRAPHQL_API,
+          headers: {
+            authorization: `Bearer ${auth.apiToken}`
+          }
+        });
+
+        const wsLink = new GraphQLWsLink(createClient({
+          url: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(/http/,'ws'),
+          connectionParams: {
+            authToken: auth.authenticated && auth.apiToken
+          },
+        }));
+
+        const splitLink = split(({query})=>{
+          const definition =  getMainDefinition(query);
           return (
-            <ErrorPage
-              statusCode={401}
-              title="Login Required"
-              errorMessage="Please wait while we log you in..."
-            />
+            definition.kind === 'OperationDefinition' && definition.operation === 'subscription' 
           );
-        }
+        }, wsLink, httpLink);
 
-      const httpLink = new HttpLink({
-        uri: publicRuntimeConfig.GRAPHQL_API,
-        headers: {
-          authorization: `Bearer ${auth.apiToken}`
-        }
-      });
 
-        const HttpWebsocketLink = () => {
-          const wsLink = new WebSocketLink({
-            uri: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(
-              /http/,
-              'ws'
-            ),
-            options: {
-              reconnect: true,
-              connectionParams: {
-                authToken: auth.apiToken
-              }
+        const authLink = setContext((_, { headers }) => {
+          return {
+            headers: {
+              ...headers,
+              authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
             }
-          });
+          }
+        });
 
-          return ApolloLink.split(
-            ({ query }) => {
-              const { kind, operation } = getMainDefinition(query);
-              return (
-                kind === 'OperationDefinition' && operation === 'subscription'
-              );
-            },
-            wsLink,
-            httpLink
-          );
-        };
+        const errorLink = onError(({graphQLErrors, networkError}) => {
+          if (graphQLErrors) {
+            graphQLErrors.forEach(({message, locations, path}) => console.log(
+              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+              ),
+            )
+          }
+          if (networkError) {
+            console.log('[NetworkError]', networkError)
+          } 
+        });
 
         const client = new ApolloClient({
-          link: ApolloLink.from([
-            onError(({ graphQLErrors, networkError }) => {
-              if (graphQLErrors)
-                graphQLErrors.map(({ message, locations, path }) =>
-                  console.log(
-                    `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-                  )
-                );
-              if (networkError) console.log('[Network error]', networkError);
-            }),
-            // Disable websockets when rendering server side.
-            process.browser ? HttpWebsocketLink() : httpLink
-          ]),
+          // link: authLink.concat(splitLink),
+          link: from([authLink, errorLink, splitLink]),
           cache: new InMemoryCache(),
           defaultOptions: {
             watchQuery: {
-              errorPolicy: "all",
-              fetchPolicy: "network-only",
+              errorPolicy: "ignore",
+              fetchPolicy: 'cache-and-network',
             },
             query: {
               errorPolicy: "all",
@@ -92,6 +98,36 @@ const ApiConnection = ({ children }) => {
             },
           },
         });
+
+        // const client = new ApolloClient({
+        //   link: ApolloLink.from([
+        //     onError(({ graphQLErrors, networkError }) => {
+        //       if (graphQLErrors)
+        //         graphQLErrors.map(({ message, locations, path }) =>
+        //           console.log(
+        //             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        //           )
+        //         );
+        //       if (networkError) console.log('[Network error]', networkError);
+        //     }),
+        //     // Disable websockets when rendering server side.
+        //     process.browser ? HttpWebsocketLink() : httpLink
+        //   ]),
+        //   cache: new InMemoryCache(),
+        //   defaultOptions: {
+        //     watchQuery: {
+        //       errorPolicy: "all",
+        //       fetchPolicy: "network-only",
+        //     },
+        //     query: {
+        //       errorPolicy: "all",
+        //       fetchPolicy: "network-only",
+        //     },
+        //     mutate: {
+        //       errorPolicy: "all",
+        //     },
+        //   },
+        // });
 
         return <ApolloProvider client={client}><ApolloHooksProvider client={client}>{children}</ApolloHooksProvider></ApolloProvider>;
       }}

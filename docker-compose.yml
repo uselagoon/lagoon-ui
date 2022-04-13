@@ -106,7 +106,7 @@ services:
     depends_on:
       - api
     volumes:
-      - ./local-dev/api-data:/api-data
+      - ./local-dev/api-data:/api-data-watcher-pusher/api-data
       - ./local-dev/api-data-watcher-pusher:/home
 
 networks:

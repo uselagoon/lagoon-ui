@@ -155,8 +155,7 @@ export const PageBackups = ({ router }) => {
                 <div className="content">
                   {visibleMessage && environment && environment.backups && environment.backups.length <= envLimit && 
                     <Message info onDismiss={() => handleDismiss()}>
-                      <Message.Header>Results have been limited</Message.Header>
-                      <p>{`Number of results displayed is limited to ${backupsLimit}`}</p>
+                      <Message.Header>{`Results have been limited (${backupsLimit})`}</Message.Header>
                       <p>{customMessage && `${customMessage}`}</p>
                     </Message>
                   }

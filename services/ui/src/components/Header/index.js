@@ -50,18 +50,26 @@ const Header = ({ logo }) => {
                   ),
                   disabled: true,
                 },
-                { key: 'logout', onClick: () => auth.logout(), text: 'Sign Out' },
+                { key: 'profile', text: 'Profile', onClick: () => auth.logout()},
+                { 
+                  key: 'logout',
+                  onClick: () =>  auth.logout(),
+                  text: 'Sign Out'
+                },
               ];
 
               if (auth.authenticated) {
                 return (
                   <Menu className="header-menu" secondary>
-                    <Menu.Item
-                      name="settings"
-                      className="settings"
-                      href="/settings"
-                      icon="cogs"
-                    />
+                    <Menu.Item>
+                      <Link
+                        name="settings"
+                        href="/settings" 
+                        className="settings"
+                      >
+                        <a><Icon name="cogs" /> Settings</a>
+                      </Link>
+                    </Menu.Item>
                     <Dropdown item trigger={trigger} options={options} />
                   </Menu>
                 );

@@ -31,4 +31,4 @@ ENV GRAPHQL_API=$GRAPHQL_API
 RUN yarn run build
 
 EXPOSE 3000
-CMD ["yarn", "run", "start"]
+CMD ["yarn", "start"]
