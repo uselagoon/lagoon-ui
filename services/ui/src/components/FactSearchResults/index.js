@@ -22,7 +22,7 @@ import ProjectLink from 'components/link/Project';
 import EnvironmentLink from 'components/link/Environment';
 
 import { Grid, Table, Message, Icon, Header, Rail, Ref } from 'semantic-ui-react';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingRowsContent } from 'components/Loading';
 import MainSidebar from 'layouts/MainSidebar';
 import Label from 'components/Label';
 
@@ -101,14 +101,13 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
 
   return (
   <>
-    <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}>
+    {/* <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}> */}
       <TableHeader searchInput={searchInput} onSearchInputChange={handleSearchInputChange} onSearch={handleInputSearch} onDisplayToggleChange={changeDisplay} onSort={handleSort} display={toggleDisplay} />
       {loading && <LoadingRowsContent delay={250} rows="25"/>}
       {!loading &&
       <Grid>
         <Grid.Row stretched>
           <Grid.Column>
-            <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}>
               <Table sortable selectable celled compact className="results-table">
                 <Table.Header>
                   <Table.Row>
@@ -230,7 +229,6 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
                   })}
                 </Table.Body>
               </Table>
-            </Suspense>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -296,7 +294,7 @@ const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activ
           padding: 1em;
         }
       `}</style>
-     </Suspense>
+     {/* </Suspense> */}
     </>
  );
 };

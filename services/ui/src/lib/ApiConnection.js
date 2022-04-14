@@ -2,11 +2,11 @@ import React from 'react';
 import getConfig from 'next/config';
 import {
   ApolloClient,
-  ApolloProvider as ApolloHooksProvider,
   ApolloProvider,
   InMemoryCache,
   split,
   HttpLink,
+  createHttpLink,
   from
 } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
@@ -26,21 +26,32 @@ import { AuthContext } from 'lib/KeycloakProvider';
 // @TODO: We need to update the api to use this library server-side also
 ////
 
-
 const { publicRuntimeConfig } = getConfig();
 
 const ApiConnection = ({ children }) => {
   return (
     <AuthContext.Consumer>
       {auth => {
-        if (!auth.authenticated) {
-          return;
+        const getAuthorizationHeader = () => {
+          return {
+            "Access-Control-Allow-Origin": "*",
+            authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
+          };
         }
+        
+        const authLink = setContext((_, { headers }) => {
+          return {
+            headers: {
+              ...headers,
+              ...getAuthorizationHeader(),
+            }
+          }
+        });
 
         const httpLink = new HttpLink({
           uri: publicRuntimeConfig.GRAPHQL_API,
           headers: {
-            authorization: `Bearer ${auth.apiToken}`
+            ...getAuthorizationHeader(),
           }
         });
 
@@ -50,23 +61,6 @@ const ApiConnection = ({ children }) => {
             authToken: auth.authenticated && auth.apiToken
           },
         }));
-
-        const splitLink = split(({query})=>{
-          const definition =  getMainDefinition(query);
-          return (
-            definition.kind === 'OperationDefinition' && definition.operation === 'subscription' 
-          );
-        }, wsLink, httpLink);
-
-
-        const authLink = setContext((_, { headers }) => {
-          return {
-            headers: {
-              ...headers,
-              authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
-            }
-          }
-        });
 
         const errorLink = onError(({graphQLErrors, networkError}) => {
           if (graphQLErrors) {
@@ -80,9 +74,23 @@ const ApiConnection = ({ children }) => {
           } 
         });
 
+        const splitLink = split(({query})=>{
+          const definition =  getMainDefinition(query);
+          return (
+            definition.kind === 'OperationDefinition' && definition.operation === 'subscription' 
+          );
+        }, wsLink, httpLink);
+
+
         const client = new ApolloClient({
-          // link: authLink.concat(splitLink),
-          link: from([authLink, errorLink, splitLink]),
+          ssrMode: typeof window === "undefined",
+          link: from([authLink, errorLink, splitLink, createHttpLink({
+            uri: publicRuntimeConfig.GRAPHQL_API,
+            credentials: 'same-origin',
+            headers: {
+              authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
+            },
+          })]),
           cache: new InMemoryCache(),
           defaultOptions: {
             watchQuery: {
@@ -99,37 +107,7 @@ const ApiConnection = ({ children }) => {
           },
         });
 
-        // const client = new ApolloClient({
-        //   link: ApolloLink.from([
-        //     onError(({ graphQLErrors, networkError }) => {
-        //       if (graphQLErrors)
-        //         graphQLErrors.map(({ message, locations, path }) =>
-        //           console.log(
-        //             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        //           )
-        //         );
-        //       if (networkError) console.log('[Network error]', networkError);
-        //     }),
-        //     // Disable websockets when rendering server side.
-        //     process.browser ? HttpWebsocketLink() : httpLink
-        //   ]),
-        //   cache: new InMemoryCache(),
-        //   defaultOptions: {
-        //     watchQuery: {
-        //       errorPolicy: "all",
-        //       fetchPolicy: "network-only",
-        //     },
-        //     query: {
-        //       errorPolicy: "all",
-        //       fetchPolicy: "network-only",
-        //     },
-        //     mutate: {
-        //       errorPolicy: "all",
-        //     },
-        //   },
-        // });
-
-        return <ApolloProvider client={client}><ApolloHooksProvider client={client}>{children}</ApolloHooksProvider></ApolloProvider>;
+        return <ApolloProvider client={client}>{children}</ApolloProvider>;
       }}
     </AuthContext.Consumer>
   )

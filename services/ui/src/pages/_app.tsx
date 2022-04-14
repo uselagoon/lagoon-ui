@@ -1,7 +1,6 @@
 import 'isomorphic-unfetch';
 import React, { useState} from 'react';
 import type { AppProps, AppContext } from 'next/app';
-import { createUrl } from 'next/app';
 import cookie from 'cookie';
 import nookies, { setCookie } from 'nookies';
 import dayjs from "dayjs";
@@ -32,7 +31,7 @@ Router.events.on('routeChangeStart', () => NProgress.start()); Router.events.on(
 export const isServer = () => typeof window !== "undefined";
 
 const MyApp = ({ Component, pageProps, router, cookies, err }: AppPropsWithCookies) => {
-  const url = createUrl(router);
+  const url = router.pathname;
   const { publicRuntimeConfig } = getConfig();
 
   const [refreshToken, setRefreshToken] = useState(null);

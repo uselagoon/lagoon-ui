@@ -27,3 +27,5 @@ const withLocalAuth = (App) => {
     }
   };
 };
+
+export default withLocalAuth;

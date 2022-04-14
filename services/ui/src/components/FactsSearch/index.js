@@ -1,11 +1,12 @@
 import React, { useState, useEffect, memo, Suspense } from "react";
 import { useQuery } from "@apollo/client";
 import { Grid, Pagination, Icon } from 'semantic-ui-react';
+import dynamic from 'next/dynamic';
 
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LazyLoadingContent } from 'components/Loading';
 
 import Error from 'components/Error';
-import SelectFilter, { MultiSelectFilter, MultiCreatableSelectFilter } from 'components/Filters';
+import { MultiSelectFilter, MultiCreatableSelectFilter } from 'components/Filters';
 import FactSearchTabs from 'components/FactSearchTabs';
 import ResultsSummary from 'components/ResultsSummary';
 
@@ -84,13 +85,11 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [connectiveSelected, setConnective] = useState(searchEnterValue ? 'OR' : 'AND');
 
 
-  // Lazy load results
-  const FactSearchResults = React.lazy(() => import('components/FactSearchResults'));
-
+  const FactSearchResults = dynamic(() => import('components/FactSearchResults'));
   const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(activeTab, factFilters, connectiveSelected, take, skipEnvironment);
 
   // Fetch results
-  const { data: { projectsByFactSearch } = {}, loading, error } = useQuery(projectQuery, {
+  const { data, loading, error } = useQuery(projectQuery, {
     variables: {
       input: {
         filters: factFilters || [],
@@ -99,8 +98,10 @@ const FactsSearch = ({ categoriesSelected }) => {
         skip: activeTab === "All projects" ? skipProject : skipEnvironment
       }
     },
+    // query will always make an initial network request, but will read from the cache after that.
     fetchPolicy: "network-only",
-    nextFetchPolicy: "cache-first"
+    nextFetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
   });
 
   // Active tab
@@ -136,6 +137,18 @@ const FactsSearch = ({ categoriesSelected }) => {
     setStatusesSelected(nextFactFilter || []);
     setProjectSelected(null);
   };
+
+  // const handleEnvTypesChange = (status) => {
+  //   let nextFactFilter = status && status.map(s => {
+  //     return ({
+  //       lhsTarget: "FACT",
+  //       name: "site-code-status",
+  //       contains: s.value
+  //     });
+  //   });
+  //   setStatusesSelected(nextFactFilter || []);
+  //   setProjectSelected(null);
+  // };
 
   const handleFrameworkChange = (frameworks) => {
     let nextFactFilter = frameworks && frameworks.map(f => {
@@ -209,9 +222,9 @@ const FactsSearch = ({ categoriesSelected }) => {
   }
 
   useEffect(() => {
-    if (!error && !loading && projectsByFactSearch) {
-      setProjects(projectsByFactSearch.projects);
-      setProjectsCount(projectsByFactSearch.count);
+    if (!error && !loading && data) {
+      setProjects(data.projectsByFactSearch.projects);
+      setProjectsCount(data.projectsByFactSearch.count);
     }
 
     if (categoriesSelected.length || statusesSelected.length || frameworksSelected.length || languagesSelected.length || searchInputFilter.length) {
@@ -220,7 +233,7 @@ const FactsSearch = ({ categoriesSelected }) => {
     else {
       setFactFilters([]);
     }
-  }, [projectsByFactSearch, statusesSelected, frameworksSelected, languagesSelected, searchInputFilter, error, loading]);
+  }, [data, statusesSelected, frameworksSelected, languagesSelected, searchInputFilter, error, loading]);
 
   return (
   <Grid.Row>
@@ -270,6 +283,15 @@ const FactsSearch = ({ categoriesSelected }) => {
                 placeholder={"HTTP status codes, e.g. \"200\""}
               />
             </Grid.Column>
+            {/* <Grid.Column>
+              <MultiCreatableSelectFilter
+                title="Environment Types"
+                options={envTypesGroup}
+                isMulti={true}
+                onFilterChange={handleEnvTypesChange}
+                placeholder={"Environment types, e.g. \"PRODUCTION, DEVELOPMENT\""}
+              />
+            </Grid.Column> */}
             <Grid.Column>
               <MultiSelectFilter
                 title="Connective"
@@ -284,7 +306,7 @@ const FactsSearch = ({ categoriesSelected }) => {
       </Suspense>
       </div>
       {activeTab === 'All projects' &&
-        <Suspense fallback={<LazyLoadingContent delay={250} rows={DEFAULT_PROJECTS_LIMIT}/>}>
+        <>
           <FactSearchResults results={projects} activeTab={activeTab} handleInputSearch={handleSearch} searchEnter={searchEnterValue} onProjectSelectChange={handleProjectSelectChange} loading={loading} sort={sort}/>
           {projectsCount > 0 &&
             <Grid>
@@ -307,33 +329,33 @@ const FactsSearch = ({ categoriesSelected }) => {
               </Grid.Row>
             </Grid>
             }
-        </Suspense>
+        </>
       }
       {activeTab === 'Environments' &&
-       <Suspense fallback={<LazyLoadingContent delay={250} rows={DEFAULT_ENVIRONMENTS_LIMIT}/>}>
-        <FactSearchResults results={environments} activeTab={activeTab} onProjectSelectChange={handleProjectSelectChange} loading={environmentsLoading} sort={sort}/>
-        {environmentsCount > 0 &&
-          <Grid>
-            <Grid.Row stretched>
-              <Grid.Column>
-                <Pagination
-                  aria-label="Environment results pagination navigation"
-                  boundaryRange={1}
-                  defaultActivePage={1}
-                  ellipsisItem={null}
-                  firstItem={null}
-                  lastItem={null}
-                  nextItem={environments.length < DEFAULT_ENVIRONMENTS_LIMIT ? null : {'name': 'nextItem', 'aria-label': 'Next item', content: <Icon name='angle right' />, icon: true } }
-                  prevItem={activeEnvironmentPage === 1 ? null : {'aria-label': 'Next item', content: <Icon name='angle left' />, icon: true } }
-                  onPageChange={onEnvironmentPaginationChange}
-                  siblingRange={1}
-                  totalPages={Math.ceil(environmentsCount / DEFAULT_ENVIRONMENTS_LIMIT)}
-                />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        }
-       </Suspense>
+        <>
+          <FactSearchResults results={environments} activeTab={activeTab} onProjectSelectChange={handleProjectSelectChange} loading={environmentsLoading} sort={sort}/>
+          {environmentsCount > 0 &&
+            <Grid>
+              <Grid.Row stretched>
+                <Grid.Column>
+                  <Pagination
+                    aria-label="Environment results pagination navigation"
+                    boundaryRange={1}
+                    defaultActivePage={1}
+                    ellipsisItem={null}
+                    firstItem={null}
+                    lastItem={null}
+                    nextItem={environments.length < DEFAULT_ENVIRONMENTS_LIMIT ? null : {'name': 'nextItem', 'aria-label': 'Next item', content: <Icon name='angle right' />, icon: true } }
+                    prevItem={activeEnvironmentPage === 1 ? null : {'aria-label': 'Next item', content: <Icon name='angle left' />, icon: true } }
+                    onPageChange={onEnvironmentPaginationChange}
+                    siblingRange={1}
+                    totalPages={Math.ceil(environmentsCount / DEFAULT_ENVIRONMENTS_LIMIT)}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          }
+        </>
       }
     <style jsx>{`
     `}</style>
