@@ -99,7 +99,7 @@ const getLastCompletedDeployment = (deployments, unformatted = false) => {
   }
 
   const sortCompleted = deployments && deployments.filter(d => d.completed).sort((a, b) => Date.parse(a.completed) > Date.parse(b.completed));
-  const lastCompleted = sortCompleted && sortCompleted.slice(0,1).shift().completed;
+  const lastCompleted = sortCompleted && sortCompleted.slice(0,1).shift() && sortCompleted.slice(0,1).shift().completed;
 
   if (unformatted) {
     return lastCompleted ? lastCompleted : false
