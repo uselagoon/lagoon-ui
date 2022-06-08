@@ -111,6 +111,8 @@ services:
     #   - ./local-dev/api-data-watcher-pusher:/home
   local-minio:
     image: minio/minio
+    labels:
+      lagoon.type: none
     entrypoint: sh
     command: -c 'mkdir -p /export/lagoon-files && mkdir -p /export/harbor-images && minio server /export --console-address ":9001" '
     ports:
@@ -121,6 +123,8 @@ services:
       - MINIO_SECRET_KEY=minio123
   broker:
     image: uselagoon/broker-single
+    labels:
+      lagoon.type: none
     restart: on-failure
     ports:
       - '15672:15672'
@@ -129,6 +133,8 @@ services:
       - amazeeio-network
   insights-handler:
     image: uselagoon/insights-handler:main
+    labels:
+      lagoon.type: none
     entrypoint: sh
     command: -c './insights-handler -rabbitmq-username=guest -rabbitmq-password=guest -rabbitmq-hostname=broker -s3-host=http://local-minio:9000 -s3-bucket=lagoon-files -s3-usessl=false -lagoon-api-host=http://api:3000/graphql -jwt-token-signing-key=super-secret-string --debug'
     networks:
