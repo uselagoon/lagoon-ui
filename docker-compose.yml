@@ -41,7 +41,7 @@ services:
       <<: *default-environment
   api-db:
     # image: uselagoon/api-db
-    image: timmclifford/lagoon-api-db:feature-insights-tab
+    image: uselagoon/api-db
     labels:
       lagoon.type: none
     ports:
