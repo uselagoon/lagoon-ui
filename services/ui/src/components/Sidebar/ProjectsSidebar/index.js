@@ -8,7 +8,7 @@ import EnvironmentLink from 'components/link/Environment';
 
 import { Icon, Divider, Header, List, Label as SemanticLabel } from 'semantic-ui-react';
 import Label from 'components/Label';
-import { getLastCompletedDeployment } from 'lib/util';
+import { getLastDeployment, getLastCompletedDeployment } from 'lib/util';
 
 
 const ProjectsSidebar = ({ project }) => {
@@ -71,39 +71,24 @@ const ProjectsSidebar = ({ project }) => {
         }
         {environments && environments.map((e, index) =>
           <div key={e.name.toLowerCase()} className="environments">
-            <div><label>{e.name}</label></div>
-            <Divider />
-            <div className="section environment-summary">
-              <div><SiteStatus environment={e}/></div>
-              <Label className="type" icon="tree" text={e.environmentType} />
+            <div>
+              <label>{e.name} ({e.environmentType})</label>
             </div>
-            <div className="section logs">
+            <Divider />
+            <div className="section deployments">
               {getLastCompletedDeployment(e.deployments) && 
-                <div className="last-deployed-wrapper">
+                <div className="last-completed-wrapper">
                   <Label
-                    className="last-deployed"
+                    className="last-completed"
                     icon="clock outline"
-                    text={`Last deployed: ${getLastCompletedDeployment(e.deployments, false)}`}
+                    text={`Last completed: ${getLastCompletedDeployment(e.deployments, false)}`}
                   />
                 </div>
               }
-              <div className="created-warpper">
-                <Label
-                  className="created"
-                  icon="clock outline"
-                  text={`Created: ${project &&
-                    moment
-                    .utc(project.created)
-                    .local()
-                    .format('DD MMM YYYY, HH:mm:ss (Z)')}`}
-                />
-              </div>
             </div>
             {e.facts && e.facts.some(f => f.keyFact) &&
               <div className="section key-facts-summary">
-                <div><label>Key facts</label></div>
-                <Divider />
-                  <List>
+                <List>
                   {[...e.facts].sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0).map((f, index) =>
                     f.keyFact &&
                       <List.Item key={f.name.toLowerCase()}>
@@ -142,6 +127,17 @@ const ProjectsSidebar = ({ project }) => {
 
           .summary-production-status {
             padding: 1em 0;
+          }
+        }
+
+        .key-facts {
+          width: 100%;
+
+          i.icon {
+            min-width: 20px;
+          }
+          img {
+            min-width: 25px;
           }
         }
 

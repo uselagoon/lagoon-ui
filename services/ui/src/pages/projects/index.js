@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import React, { useState, useEffect, Suspense } from "react";
+import Head from 'next/head';
 
 import { Grid, Sidebar, Header, Divider } from 'semantic-ui-react';
 import MainNavigation from 'layouts/MainNavigation';
@@ -10,13 +10,13 @@ import { MultiSelectFilter } from 'components/Filters';
 
 import { LoadingSpinner } from 'components/Loading';
 
-//@TODO categories will be fetched from getFactCategories query.
+//@TODO categories will be fetched from a later 'getFactCategories' query.
 export const categories = [
   {
     name: 'Saas'
   },
   {
-    name: 'SystemProjects'
+    name: 'System Projects'
   },
   {
     name: 'Paas'
@@ -46,9 +46,8 @@ const ProjectsPage = () => {
     setCategoriesSelected(addCategoryFilter || []);
   }
 
-  const FactsSearch = dynamic(
-    () => import('components/FactsSearch'),
-    { loading: () => <LoadingSpinner /> }
+  const FactsSearch = dynamic(() => import('components/FactsSearch'),
+    { suspense: true }
   );
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const ProjectsPage = () => {
                 {factCategories.length > 0 &&
                 <>
                   <div className="category-filter">
-                    <Header size="small">Projects Filter</Header>
+                    <Header size="small">Custom Filters</Header>
                     <MultiSelectFilter
                       title="Categories"
                       loading={!factCategories}
@@ -88,7 +87,9 @@ const ProjectsPage = () => {
           </Grid.Column>
           <Grid.Column width={14} style={{ padding: '0 4em' }}>
             <Sidebar.Pusher>
-              <FactsSearch categoriesSelected={categoriesSelected} />
+              <Suspense fallback={<LoadingSpinner />}>
+                <FactsSearch categoriesSelected={categoriesSelected} />
+              </Suspense>
             </Sidebar.Pusher>
           </Grid.Column>
         </Grid.Row>

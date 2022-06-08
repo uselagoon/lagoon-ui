@@ -40,35 +40,38 @@ const Navigation = ({ children }) => {
         <Menu.Item>
           <Header size="small">Manage</Header>
           <Menu.Menu>
-             <Menu.Item
-              name="add-project"
-              href="/add/project"
-            >
-              Add Project
+             <Menu.Item name="add-project">
+              <Link href="/add/project">
+                <a className={`${router.pathname === "/add/project" ? 'active' : 'not-active'}`}>
+                  Add Project
+                </a>
+              </Link>
             </Menu.Item>
-            <Menu.Item
-              name="add-environment"
-              href="/add/environment"
-            >
-              Add Environment
+            <Menu.Item name="add-environment">
+              <Link href="/add/environment">
+                <a className={`${router.pathname === "/add/environment" ? 'active' : 'not-active'}`}>
+                  Add Environment
+                </a>
+              </Link>
             </Menu.Item>
-            <Menu.Item
-              name="add-envvar"
-              href="/add/envvar"
-            >
-              Add Environment Variable
+            <Menu.Item name="add-envvar">
+              <Link href="/add/envvar">
+                <a className={`${router.pathname === "/add/envvar" ? 'active' : 'not-active'}`}>
+                  Add Environment Variable
+                </a>
+              </Link>
             </Menu.Item>
-
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
           <Header size="small">Help</Header>
           <Menu.Menu>
-            <Menu.Item
-              name="settings"
-              href="/settings"
-            >
-              Settings
+            <Menu.Item name="settings">
+              <Link href="/settings">
+                <a className={`${router.pathname === "/settings" ? 'active' : 'not-active'}`}>
+                  Settings
+                </a>
+              </Link>
             </Menu.Item>
             <Menu.Item
               name="docs"

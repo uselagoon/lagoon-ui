@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import giturlparse from 'git-url-parse';
@@ -9,12 +9,24 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const ProjectDetailsHeader = ({ project }) => {
   const [copied, setCopied] = useState(false);
-  const gitUrlParsed = project && project.gitUrl && giturlparse(project.gitUrl);
-  const gitLink = gitUrlParsed && `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
-  const environmentCount = project && project.environments && R.countBy(R.prop('environmentType'))(
-    project.environments
-  );
-  const developEnvironmentCount = environmentCount && R.propOr(0, 'development', environmentCount);
+  const [gitUrlParsed, setUrlParsed] = useState(false);
+  const [gitLink, setGitLink] = useState(false);
+  const [developEnvironmentCount, setDevelopEnvironmentCount] = useState(false);
+
+  useEffect(() => {
+    if (!project) return;
+
+    if (project) {
+      setUrlParsed(project.gitUrl && giturlparse(project.gitUrl));
+      setGitLink(gitUrlParsed && `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`);
+
+      let environmentCount = 0;
+      if (!R.isEmpty({}) && typeof(project.environments) !== 'undefined' && project.environments != null) {
+         environmentCount = R.countBy(R.prop('environmentType'))(project.environments);
+      }
+      setDevelopEnvironmentCount(R.propOr(0, 'development', environmentCount));
+    }
+  }, [project]);
 
   return (
     <div className="details">

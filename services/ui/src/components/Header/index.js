@@ -50,18 +50,26 @@ const Header = ({ logo }) => {
                   ),
                   disabled: true,
                 },
-                { key: 'logout', onClick: () => auth.logout(), text: 'Sign Out' },
+                { key: 'profile', text: 'Profile', onClick: () => auth.logout()},
+                { 
+                  key: 'logout',
+                  onClick: () =>  auth.logout(),
+                  text: 'Sign Out'
+                },
               ];
 
               if (auth.authenticated) {
                 return (
                   <Menu className="header-menu" secondary>
-                    <Menu.Item
-                      name="settings"
-                      className="settings"
-                      href="/settings"
-                      icon="cogs"
-                    />
+                    <Menu.Item>
+                      <Link
+                        name="settings"
+                        href="/settings" 
+                        className="settings"
+                      >
+                        <a><Icon name="cogs" /> Settings</a>
+                      </Link>
+                    </Menu.Item>
                     <Dropdown item trigger={trigger} options={options} />
                   </Menu>
                 );
@@ -75,7 +83,7 @@ const Header = ({ logo }) => {
         .header {
           position: fixed;
           z-index: 110;
-          height: 50px;
+          height: 55px;
           width: 100%;
           justify-content: space-between;
 
@@ -83,9 +91,7 @@ const Header = ({ logo }) => {
           border-bottom: 1px solid #D3DAE6;
 
           a {
-            padding: 7px 0;
-            margin: auto;
-
+            padding: 7px 15px;
             &.home {
               position: relative;
               img {

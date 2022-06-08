@@ -31,7 +31,7 @@ const tasksLimit = envLimit === -1 ? null : envLimit;
  */
 export const PageTasks = ({ router }) => {
   const [environment, setEnvironment] = useState(); 
-  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit });
+  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit == 0 ? "All" : envLimit });
   const [visibleMessage, setVisibleMessage] = useState(true);
 
   const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithTasksQuery, {
@@ -98,7 +98,7 @@ export const PageTasks = ({ router }) => {
 
       return () => environment && unsubscribe();
     }
-  }, [data, loading, error, subscribeToMore]);
+  }, [data, loading, error, subscribeToMore], resultsLimit);
           
   return (
   <>
@@ -134,8 +134,7 @@ export const PageTasks = ({ router }) => {
                 <div className="content">
                   {visibleMessage && environment && environment.tasks && environment.tasks.length <= envLimit && 
                     <Message info onDismiss={() => handleDismiss()}>
-                      <Message.Header>Results have been limited</Message.Header>
-                      <p>{`Number of results displayed is limited to ${tasksLimit}`}</p>
+                      <Message.Header>{`Results have been limited (${tasksLimit})`}</Message.Header>
                       <p>{customMessage && `${customMessage}`}</p>
                     </Message>
                   }

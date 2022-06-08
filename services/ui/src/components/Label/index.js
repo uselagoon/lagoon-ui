@@ -12,11 +12,13 @@ const matchFactToIcon = (name) => {
 
     case "drupal-version":
     case "drupal-core":
+    case "drupal/core":
       return {
         icon: "drupal",
         color: "blue"
       };
 
+    case "laravel":
     case "laravel/framework":
       return  {
         icon: "laravel",
@@ -24,11 +26,13 @@ const matchFactToIcon = (name) => {
       };
 
     case "Lagoon":
+    case "lagoon-category":
       return  {
         icon: "",
         color: "teal"
       };
 
+    case "PHP_VERSION":
     case "php-version":
       return  {
         icon: "php",
@@ -37,6 +41,7 @@ const matchFactToIcon = (name) => {
 
     case "express":
     case "nodejs":
+    case "node":
     case "node-version":
       return  {
         icon: "node js",
@@ -55,8 +60,19 @@ const matchFactToIcon = (name) => {
         icon: "react",
         color: "blue"
       };
+    
+    case "wordpress":
+      return {
+        icon: "wordpress",
+        color: "grey"
+      }
 
     case "gatsby":
+      return {
+        icon: "js",
+        color: "grey"
+      }
+
     case "symfony":
     case "go-lang":
     case "java":
@@ -81,7 +97,7 @@ const Label = ({ className, text, factIcon, color, value, basic, href, loading, 
 
   if (factIcon || icon) {
     let foundIcon = {};
-    if (factIcon === "Lagoon" || icon === "lagoon-category") {
+    if (factIcon === "Lagoon" || factIcon === "lagoon-category") {
       return (
         <SemanticLabel className={className}>
           <Image className="lagoon-logo" size="mini" src="/images/lagoon-2.svg" avatar /><>{text}</>

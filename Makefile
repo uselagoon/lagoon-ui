@@ -1,3 +1,6 @@
+.PHONY: all
+all: clean-local install get_creds
+
 .PHONY: install
 install: build-all install-packages
 
@@ -10,9 +13,21 @@ build-all:
 build-ui:
 	docker-compose up -d ui
 
+.PHONY: clean-local
+clean-local: check_clean
+	rm -rf ./local-dev ./services/api ./services/mock-data
+
+.PHONY: check_clean
+check_clean:
+	@echo "Are you sure? This will remove ./local-dev ./services/api and ./services/mock-data which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
+
+
 .PHONY: logs
 logs:
 	docker-compose logs -f
+
+
+## Syncing from Lagoon repo
 
 .PHONY: re-sync-api
 re-sync-api:
@@ -27,21 +42,16 @@ get_creds:
 
 # Local api data watcher pusher setup
 ## @timclifford Set --depth 1 when not testing and set to 'git checkout main'
+## require git >=2.25
 .PHONY:	update-local-api-data-watcher-pusher
 update-local-api-data-watcher-pusher:
-	export LOCAL_DEV_DIR=$$(mkdir -p ./lagoon&& echo "./lagoon") \
-		&& git clone --no-checkout --filter=blob:none --sparse https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
+	export LOCAL_DEV_DIR=$$(mkdir -p ./tmp/ && echo "./tmp/") \
+		&& git clone --no-checkout https://github.com/uselagoon/lagoon.git "$$LOCAL_DEV_DIR" \
 		&& cd "$$LOCAL_DEV_DIR" \
-		&& git sparse-checkout set local-dev/api-data-watcher-pusher \
-		&& git checkout main
-
-.PHONY: clean-local-dev
-clean-local-dev-dir: check_clean
-	rm -rf ./local-dev
-
-.PHONY: check_clean
-check_clean:
-	@echo -n "Are you sure? This will remove the ./local-dev repo which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
+		&& git sparse-checkout init --cone \
+		&& git sparse-checkout set "local-dev/api-data-watcher-pusher/" "localdev/api-data/" \
+		&& git checkout main \
+		&& find ./local-dev -maxdepth 1 -type f -delete && mv ./local-dev ../ && cd ../ && rm -rf tmp/
 
 .PHONY: install-packages
 install-packages:

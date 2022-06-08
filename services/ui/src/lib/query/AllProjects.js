@@ -19,7 +19,7 @@ export default gql`
           category
           reference
           type
-          category
+          description
         }
       }
     }

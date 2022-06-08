@@ -45,9 +45,11 @@ module.exports = {
   future: {
     webpack5: true,
   },
-  // experimental: {
-  //   reactRoot: 'concurrent'
-  // },
+  // reactStrictMode: true,
+  experimental: {
+    concurrentFeatures: true,
+    // serverComponents: true
+  },
   webpack(config, options) {
     const originalEntry = config.entry;
     config.entry = async () => {

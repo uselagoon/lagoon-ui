@@ -1,23 +1,25 @@
 import React from 'react';
 import { bp, color, fontSize } from 'lib/variables';
 
-const Groups = ({ me: { id, email, groups }}) => {
+const Groups = ({ me }) => {
+  // since empty groups returns '[null]', we need to check if array is not null
+  const hasGroups = me && me.groups.some(el => el !== null)
 
   return(
     <div className="groups">
       <div className="header">
-        <label className="name">Name</label>
-        <label className="type">Type</label>
+      <label className="name">Name</label>
+      <label className="type">Type</label>
       </div>
       <div className="data-table">
-        {!groups.length && <div className="data-none">No Groups</div>}
-        {groups.map(group => (
-          <div className="data-row" key={group.id}>
+      {!hasGroups && <div className="data-none">No Groups</div>}
+      {hasGroups && me.groups.map(group => (
+        <div className="data-row" key={group.id}>
             <div className="name">{group.name}</div>
             <div className="type">{group.type}</div>
           </div>
         ))}
-      </div>
+        </div>
         <style jsx>{`
         .header {
           @media ${bp.wideUp} {
@@ -118,7 +120,7 @@ const Groups = ({ me: { id, email, groups }}) => {
           }
         }
 
-      `}</style>
+        `}</style>
     </div>
   );
 };

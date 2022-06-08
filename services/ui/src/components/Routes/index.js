@@ -12,24 +12,25 @@ const Routes = ({ environment }) => {
       {environment.routes &&
       <div className="routes">
         <label>Routes</label>
-        {environment.routes.split(',').map((route, index) => {
-          return (
-            <ul>
-              <li>
+        <ul>
+          {environment.routes.split(',').map((route, index) => {
+            return (
+              <li key={`route-${index}`}>
                 <a className="hover-state" target="_blank" href={route}>{route}</a>
               </li>
-            </ul>
-          )
-        })}
+            )
+          })}
+        </ul>
       </div>
       }
       <style jsx>{`
         .routes {
-          ul {
-            padding-left: 0;
-          }
+          margin: 1em 0 0; 
         }
-        
+
+        ul {
+          padding-left: 0;
+        }
       `}</style>
     </div>
   );

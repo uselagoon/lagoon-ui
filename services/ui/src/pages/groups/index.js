@@ -12,9 +12,7 @@ import { Grid, Sidebar, Header, Divider } from 'semantic-ui-react';
 import MainNavigation from 'layouts/MainNavigation';
 import MainLayout from 'layouts/MainLayout';
 import Navigation from 'components/Navigation';
-
 import { LoadingSpinner } from 'components/Loading';
-
 
 import Groups from 'components/Groups';
 
