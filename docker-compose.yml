@@ -78,7 +78,7 @@ services:
     environment:
       <<: *default-environment
   keycloak:
-    image: testlagoon/keycloak:pr-3119
+    image: testlagoon/keycloak
     # build:
     #   context: .
     #   dockerfile: .lagoon/keycloak.Dockerfile
