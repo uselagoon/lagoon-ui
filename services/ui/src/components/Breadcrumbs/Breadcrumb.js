@@ -21,10 +21,10 @@ const Breadcrumb = ({ header, title, urlObject, asPath }) => (
     <style jsx>{`
       .breadcrumb {
         height: 100%;
-        padding: 32px 16px 0 46px;
+        padding: 24px 16px 0 46px;
         position: relative;
         @media ${bp.tabletUp} {
-          padding: 42px 76px 0 96px;
+          padding: 24px 76px 0 96px;
         }
 
         &::after {

@@ -56,14 +56,17 @@ export const PageProject = ({ router }) => {
 
   useEffect(() => {
     if (!error && !loading && data) {
-      // Sort alphabetically by environmentType and then deployType
-      const environments = R.sortWith(
-        [
-          R.descend(R.prop('environmentType')),
-          R.ascend(R.prop('deployType'))
-        ],
-        data.project.environments
-      );
+      let environments = {};
+      if (data.project && data.project.environments) {
+        // Sort alphabetically by environmentType and then deployType
+        environments = R.sortWith(
+          [
+            R.descend(R.prop('environmentType')),
+            R.ascend(R.prop('deployType'))
+          ],
+          data.project.environments
+        );
+      }
       setProject({ ...data.project, environments });
     }
   }, [router, data, loading, error]);

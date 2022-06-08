@@ -83,7 +83,7 @@ const Header = ({ logo }) => {
         .header {
           position: fixed;
           z-index: 110;
-          height: 50px;
+          height: 55px;
           width: 100%;
           justify-content: space-between;
 

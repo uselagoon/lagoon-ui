@@ -1,4 +1,5 @@
-FROM lagoon/api:latest
+# FROM uselagoon/api:latest
+FROM timmclifford/lagoon-api:feature-insights-tab
 
 COPY api_run.sh /app/services/api
 RUN chmod +x /app/services/api/api_run.sh

@@ -32,6 +32,8 @@ const ApiConnection = ({ children }) => {
   return (
     <AuthContext.Consumer>
       {auth => {
+        if (!auth.authenticated) return;
+
         const getAuthorizationHeader = () => {
           return {
             "Access-Control-Allow-Origin": "*",
@@ -40,11 +42,9 @@ const ApiConnection = ({ children }) => {
         }
         
         const authLink = setContext((_, { headers }) => {
-          return {
-            headers: {
-              ...headers,
-              ...getAuthorizationHeader(),
-            }
+          return  {
+            ...headers,
+            ...getAuthorizationHeader(),
           }
         });
 
@@ -84,13 +84,7 @@ const ApiConnection = ({ children }) => {
 
         const client = new ApolloClient({
           ssrMode: typeof window === "undefined",
-          link: from([authLink, errorLink, splitLink, createHttpLink({
-            uri: publicRuntimeConfig.GRAPHQL_API,
-            credentials: 'same-origin',
-            headers: {
-              authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
-            },
-          })]),
+          link: from([authLink, errorLink, splitLink]),
           cache: new InMemoryCache(),
           defaultOptions: {
             watchQuery: {

@@ -20,6 +20,7 @@ export default gql`
         fileId
         data
         type
+        size
         downloadUrl
         created
       }

@@ -29,8 +29,8 @@ KEYCLOAK_API=http://localhost:8088/auth
 
 # Pygmy
 
-GRAPHQL_API=http://lagoon-ui-beta.docker.amazee.io:3000/graphql
-KEYCLOAK_API=http://lagoon-ui-beta.docker.amazee.io:8088/auth
+GRAPHQL_API=http://lagoon-ui.docker.amazee.io:3000/graphql
+KEYCLOAK_API=http://lagoon-ui.docker.amazee.io:8088/auth
 
 # Lagoon Core (cluster)
 GRAPHQL_API=http://localhost:7070/graphql

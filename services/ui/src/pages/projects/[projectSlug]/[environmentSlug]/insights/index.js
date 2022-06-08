@@ -45,20 +45,20 @@ export const PageInsights = ({ router }) => {
                   <p>{`${error}`}</p>
                 </Message>
               }
-              {!loading && !environment && !error &&
-                <Message>
-                  <Message.Header>No insights found</Message.Header>
-                  <p>{`No insights found for '${router.query.environmentSlug}'`}</p>
-                </Message>
-              }
               {loading && <LoadingRowsContent delay={250} rows="15"/>}
               {!loading && environment &&
               <>
                 <EnvironmentHeader environment={environment}/>
                 <NavTabs activeTab="insights" environment={environment} />
                 <div className="content">
+                  {!loading && !environment.insights && !error &&
+                    <Message>
+                      <Message.Header>No insights found</Message.Header>
+                      <p>{`No insights found for '${router.query.environmentSlug}'`}</p>
+                    </Message>
+                  }
                   <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
-                    <Insights insights={environment.insights} />
+                    {environment.insights && <Insights insights={environment.insights} />}
                   </Suspense>
                 </div>
               </>

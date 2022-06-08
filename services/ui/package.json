@@ -11,7 +11,7 @@
     "seed": "node api-db-seeding/index.js",
     "build": "next build",
     "build-profile": "next build --profile",
-    "start": "NODE_ENV=production next start -p ${PORT:=3000}",
+    "start": "next start -p ${PORT:=3000}",
     "storybook": "start-storybook -s ./public -p 6006 --ci",
     "build-storybook": "build-storybook -s ./public",
     "serve-storybook": "storybook-server -s ./public",

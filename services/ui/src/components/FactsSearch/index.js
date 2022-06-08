@@ -222,7 +222,7 @@ const FactsSearch = ({ categoriesSelected }) => {
   }
 
   useEffect(() => {
-    if (!error && !loading && data) {
+    if (!error && !loading && data && data.projectsByFactSearch) {
       setProjects(data.projectsByFactSearch.projects);
       setProjectsCount(data.projectsByFactSearch.count);
     }

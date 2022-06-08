@@ -5,7 +5,7 @@ all: clean-local install get_creds
 install: build-all install-packages
 
 .PHONY: build-all
-build-all: get_creds
+build-all:
 	docker network inspect amazeeio-network >/dev/null 2>&1 || docker network create amazeeio-network
 	docker-compose up -d
 
@@ -19,7 +19,7 @@ clean-local: check_clean
 
 .PHONY: check_clean
 check_clean:
-	@echo -n "Are you sure? This will remove ./local-dev ./services/api and ./services/mock-data which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
+	@echo "Are you sure? This will remove ./local-dev ./services/api and ./services/mock-data which you may have made local changes to [y/N] " && read ans && [ $${ans:-N} = y ]
 
 
 .PHONY: logs

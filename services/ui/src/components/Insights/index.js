@@ -8,13 +8,10 @@ const getOptionsFromInsights = (insights, key) => {
     let uniqueOptions = insights &&
       new Set(insights.filter(f => f[key]).map(f => f[key]));
 
-    return [...uniqueOptions].sort();
+    return insights && [...uniqueOptions].sort();
 };
 
 const Insights = ({ insights }) => {
-
-  console.log("insights: ", insights);
-
     const { sortedItems, getClassNamesFor, requestSort } = useSortableData(insights, {key: 'id', direction: 'ascending'});
     const [nameSelected, setName] = useState([]);
     const [typeSelected, setType] = useState([]);
@@ -147,6 +144,13 @@ const Insights = ({ insights }) => {
                     Created
                 </button>
                 <button
+                    type="size"
+                    onClick={() => handleSort('size')}
+                    className={`button-sort size ${getClassNamesFor('size')}`}
+                >
+                    Size
+                </button>
+                <button
                     type="button"
                     onClick={() => handleSort('download')}
                     className={`button-sort download ${getClassNamesFor('download')}`}
@@ -170,6 +174,7 @@ const Insights = ({ insights }) => {
                             <div className="col col-2">{insight.file}</div>
                             <div className="col col-2">{insight.type}</div>
                             <div className="col col-3">{insight.created}</div>
+                            <div className="col col-3">{insight.size}</div>
                             <div className="col col-3">
                               <a href={insight.downloadUrl} target="_blank"><Icon link name='download'/>Download</a>
                             </div>
@@ -308,12 +313,8 @@ const Insights = ({ insights }) => {
                   width: 33.33%;
                 }
 
-                .col-2 {
+                .col-2, .col-3  {
                   text-align: center;
-                }
-
-                .col-3  {
-                  text-align: end;
                 }
 
                 .description {

@@ -1,5 +1,5 @@
 import 'isomorphic-unfetch';
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import type { AppProps, AppContext } from 'next/app';
 import cookie from 'cookie';
 import nookies, { setCookie } from 'nookies';

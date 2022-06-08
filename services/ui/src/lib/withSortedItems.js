@@ -29,7 +29,7 @@ const useSortableData = (initialItems, initialConfig) => {
         return sortableItems;
     }, [currentItems, sortConfig]);
 
-    if (hash(sortedItems) !== hash(currentItems)) {
+    if (sortedItems && hash(sortedItems) !== hash(currentItems)) {
         setCurrentItems(sortedItems);
     }
 
