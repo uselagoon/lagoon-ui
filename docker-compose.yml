@@ -33,13 +33,15 @@ services:
       - ./services/ui/api-db-seeding:/app/api-db-seeding
     ports:
       - '8888:3000'
+      - '3003:3003'
     networks:
       - amazeeio-network
       - default
     environment:
       <<: *default-environment
   api-db:
-    image: uselagoon/api-db
+    # image: uselagoon/api-db
+    image: timmclifford/lagoon-api-db:feature-insights-tab
     labels:
       lagoon.type: none
     ports:
@@ -76,7 +78,7 @@ services:
     environment:
       <<: *default-environment
   keycloak:
-    image: lagoon/keycloak
+    image: testlagoon/keycloak:pr-3119
     # build:
     #   context: .
     #   dockerfile: .lagoon/keycloak.Dockerfile
