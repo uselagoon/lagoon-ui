@@ -11,4 +11,5 @@ storybook-static
 .python-version
 
 #Debug
-yarn-error.log
+yarn-debug.log*
+yarn-error.log*

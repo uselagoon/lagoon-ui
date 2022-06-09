@@ -41,7 +41,7 @@ export const PageProblems = ({ router }) => {
               <Navigation />
             </MainNavigation>
           </Grid.Column>
-          <Grid.Column width={14} style={{ padding: "1em 4em" }}>
+          <Grid.Column width={14} style={{ padding: "0 4em" }}>
             {loading && <LoadingRowsContent delay={250} rows="15"/>}
             {!loading && environment &&
             <>

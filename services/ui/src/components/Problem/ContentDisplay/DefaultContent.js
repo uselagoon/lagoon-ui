@@ -1,6 +1,6 @@
 import React from "react";
 import { bp, color, fontSize } from 'lib/variables';
-import { getCreatedDate } from "components/Dates";
+import { getCreatedDate } from "lib/util";
 
 const DefaultDisplay = ({ problem }) => {
     const createdDate = getCreatedDate(problem.created);

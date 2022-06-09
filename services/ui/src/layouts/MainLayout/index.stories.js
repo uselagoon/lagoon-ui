@@ -4,7 +4,7 @@ import Lipsum from 'storybook/components/Lipsum';
 
 export default {
   component: MainLayout,
-  title: 'Components/Layouts/Main Layout',
+  title: 'Components/Layouts/MainLayout',
 }
 
 export const Default = () => (

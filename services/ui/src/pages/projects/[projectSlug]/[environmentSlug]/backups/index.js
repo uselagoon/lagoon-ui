@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import { withRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
 import Head from 'next/head';
+import getConfig from 'next/config';
 
 import MainLayout from 'layouts/MainLayout';
 import MainNavigation from 'layouts/MainNavigation';
@@ -11,76 +12,108 @@ import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
 import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
 import NavTabs from 'components/NavTabs';
+import { DEFAULT_BACKUPS_LIMIT } from 'lib/util';
+
+import { Grid, Message } from 'semantic-ui-react';
 
 const Backups = React.lazy(() => import('components/Backups'));
 
 import { bp, color } from 'lib/variables';
-import { Grid, Message } from 'semantic-ui-react';
-
 import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
 import BackupsSubscription from 'lib/subscription/Backups';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LoadingEnvironmentRows, LazyLoadingContent } from 'components/Loading';
+
+
+const { publicRuntimeConfig } = getConfig();
+const envLimit = publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT || DEFAULT_BACKUPS_LIMIT;
+const customMessage = publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT_MESSAGE;
+const backupsLimit = envLimit === -1 ? null : envLimit;
 
 /**
  * Displays the backups page, given the name of an openshift project.
  */
 export const PageBackups = ({ router }) => {
-  const { loading, error, data: { environment } = {}, subscribeToMore, fetchMore } = useQuery(EnvironmentWithBackupsQuery, {
-    variables: { openshiftProjectName: router.query.environmentSlug },
+  const [environment, setEnvironment] = useState(); 
+  const [resultsLimit, setResultsLimit] = useState({ value: parseInt(envLimit, 10), label: envLimit });
+  const [visibleMessage, setVisibleMessage] = useState(true);
+
+  const { loading, error, data, subscribeToMore, fetchMore } = useQuery(EnvironmentWithBackupsQuery, {
+    variables: { 
+      openshiftProjectName: router.query.environmentSlug,
+      ...(resultsLimit && resultsLimit.label !== 'All' && { limit: resultsLimit.value })
+    },
     fetchPolicy: 'network-only'
   });
 
+  const resultsLimitOptions = (limits) => {
+    return limits && limits.map(l => ({ value: isNaN(l) ? 0 : parseInt(l), label: l }));
+  };
+
+  const handleResultsLimitChange = (limit) => {
+    setResultsLimit(limit);
+  };
+
+  const handleDismiss = () => {
+    setVisibleMessage(false);
+  }
+
   useEffect(() => {
-    const unsubscribe = environment && subscribeToMore({
-      document: BackupsSubscription,
-      variables: { environment: environment.id },
-      updateQuery: (prevStore, { subscriptionData }) => {
-        if (!subscriptionData.data) return prevStore;
-        const prevBackups =
-          prevStore.environment.backups;
-        const incomingBackup = subscriptionData.data.backupChanged;
-        const existingIndex = prevBackups.findIndex(
-          prevBackup => prevBackup.id === incomingBackup.id
-        );
-        let newBackups;
+    if (!error && !loading && data) {
+      setEnvironment(data.environment);
+    }
 
-        // New backup.
-        if (existingIndex === -1) {
-          // Don't add new deleted backups.
-          if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
-            return prevStore;
-          }
+    if (environment) {
+      const unsubscribe = subscribeToMore({
+        document: BackupsSubscription,
+        variables: { environment: environment.id },
+        updateQuery: (prevStore, { subscriptionData }) => {
+          if (!subscriptionData.data) return prevStore;
+          const prevBackups =
+            prevStore.environment.backups;
+          const incomingBackup = subscriptionData.data.backupChanged;
+          const existingIndex = prevBackups.findIndex(
+            prevBackup => prevBackup.id === incomingBackup.id
+          );
+          let newBackups;
 
-          newBackups = [incomingBackup, ...prevBackups];
-        }
-        // Existing backup.
-        else {
-          // Updated backup
-          if (incomingBackup.deleted === '0000-00-00 00:00:00') {
-            newBackups = Object.assign([...prevBackups], {
-              [existingIndex]: incomingBackup
-            });
+          // New backup.
+          if (existingIndex === -1) {
+            // Don't add new deleted backups.
+            if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
+              return prevStore;
+            }
+
+            newBackups = [incomingBackup, ...prevBackups];
           }
-          // Deleted backup
+          // Existing backup.
           else {
-            newBackups = R.remove(existingIndex, 1, prevBackups);
+            // Updated backup
+            if (incomingBackup.deleted === '0000-00-00 00:00:00') {
+              newBackups = Object.assign([...prevBackups], {
+                [existingIndex]: incomingBackup
+              });
+            }
+            // Deleted backup
+            else {
+              newBackups = R.remove(existingIndex, 1, prevBackups);
+            }
           }
+
+          const newStore = {
+            ...prevStore,
+            environment: {
+              ...prevStore.environment,
+              backups: newBackups
+            }
+          };
+
+          return newStore;
         }
+      });
 
-        const newStore = {
-          ...prevStore,
-          environment: {
-            ...prevStore.environment,
-            backups: newBackups
-          }
-        };
-
-        return newStore;
-      }
-    });
-
-    return () => environment && unsubscribe();
-  }, [environment, subscribeToMore]);
+      return () => environment && unsubscribe();
+    }
+  }, [data, loading, error, subscribeToMore]);
 
   return (
     <>
@@ -95,7 +128,7 @@ export const PageBackups = ({ router }) => {
                 <Navigation />
               </MainNavigation>
             </Grid.Column>
-            <Grid.Column width={14} style={{ padding: "1em 4em" }}>
+            <Grid.Column width={14} style={{ padding: "0 4em" }}>
               {error &&
                 <Message negative>
                   <Message.Header>Error: Unable to load backups</Message.Header>
@@ -108,7 +141,7 @@ export const PageBackups = ({ router }) => {
                   <p>{`No backups found for '${router.query.environmentSlug}'`}</p>
                 </Message>
               }
-              {loading && <LoadingRowsContent delay={250} rows="15"/>}
+              {loading && <LoadingEnvironmentRows delay={250} rows="15" type={"list"}/>}
               {!loading && environment &&
               <>
                 <Breadcrumbs>
@@ -120,6 +153,12 @@ export const PageBackups = ({ router }) => {
                 </Breadcrumbs>
                 <NavTabs activeTab="backups" environment={environment} />
                 <div className="content">
+                  {visibleMessage && environment && environment.backups && environment.backups.length <= envLimit && 
+                    <Message info onDismiss={() => handleDismiss()}>
+                      <Message.Header>{`Results have been limited (${backupsLimit})`}</Message.Header>
+                      <p>{customMessage && `${customMessage}`}</p>
+                    </Message>
+                  }
                   <div className="notification">
                     If you need a current database or files dump, use the tasks
                     "drush sql-dump" or "drush archive-dump" in the new "Tasks"
@@ -128,6 +167,9 @@ export const PageBackups = ({ router }) => {
                   <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
                     <Backups
                       backups={environment.backups}
+                      resultsLimit={resultsLimit}
+                      resultsLimitOptions={resultsLimitOptions}
+                      handleResultsLimitChange={handleResultsLimitChange}
                       fetchMore={() => fetchMore({
                         variables: {
                           environment,

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useQuery } from "@apollo/client";
-import * as R from 'ramda';
 import Head from 'next/head';
-import { Query } from '@apollo/client/react/components';
 import MainLayout from 'layouts/MainLayout';
 import Me from 'lib/query/Me';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
+
+import { LoadingSpinner } from 'components/Loading';
 import { bp } from 'lib/variables';
+import { Grid, Message } from 'semantic-ui-react';
+
 import SshKeys from 'components/SshKeys';
 import AddSshKey from 'components/SshKeys/AddSshKey';
 
@@ -27,7 +27,14 @@ const SettingsPage = () => {
       <title>Settings</title>
     </Head>
     <MainLayout>
-      {!loading &&
+      {!loading && error &&
+        <Message negative>
+          <Message.Header>Error: Unable to load settings</Message.Header>
+          <p>{`${error}`}</p>
+        </Message>
+      }
+      {loading && <LoadingSpinner />}
+      {!loading && data &&
         <div className="content-wrapper">
           <h2>SSH KEYS</h2>
           <div className="content">

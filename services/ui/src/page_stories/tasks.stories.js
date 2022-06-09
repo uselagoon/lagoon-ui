@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageTasks as Tasks } from 'pages/projects/[projectSlug]/[environmentSlug]/tasks';
 import EnvironmentWithTasksQuery from 'lib/query/EnvironmentWithTasks';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: Tasks,

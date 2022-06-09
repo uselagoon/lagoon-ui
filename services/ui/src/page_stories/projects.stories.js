@@ -1,7 +1,7 @@
 import React from 'react';
 import ProjectsPage from 'pages/projects';
 import AllProjectsFromFacts from 'lib/query/AllProjectsFromFacts';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: ProjectsPage,
@@ -39,7 +39,7 @@ export const all_projects = ({ categoriesSelected = [{}] }) => (
 all_projects.parameters = {
   apolloClient: {
     mocks: projectsByFactSearch,
-    addTypename: false
+    addTypename: false,
   },
 };
 

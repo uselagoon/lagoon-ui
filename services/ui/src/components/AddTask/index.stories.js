@@ -1,5 +1,5 @@
 import React from 'react';
-import mocks from 'api/src/mocks';
+import mocks from 'mock_data/mocks';
 import AddTask from './index';
 
 export default {

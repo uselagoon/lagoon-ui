@@ -1,11 +1,10 @@
 import React from 'react';
-import { AuthContext } from 'lib/Authenticator';
+import { AuthContext } from 'lib/KeycloakProvider';
 
 const noUser = {
   apiToken: 'dummy-value-not-used-but-evals-to-true',
   authenticated: false,
   provider: 'local-auth',
-  providerData: {},
   user: {},
 };
 
