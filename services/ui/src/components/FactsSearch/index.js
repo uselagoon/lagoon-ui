@@ -32,11 +32,11 @@ const statusesGroup = [
 ]
 
 const frameworks = [
-  { value: 'drupal/core', label: 'Drupal' },
-  { value: 'laravel', label: 'Laravel' },
-  { value: 'node', label: 'NodeJS' },
-  { value: 'wordpress', label: 'Wordpress' },
-  { value: 'symfony', label: 'Symfony' }
+  { value: 'Drupal', label: 'Drupal' },
+  { value: 'Laravel', label: 'Laravel' },
+  { value: 'Node', label: 'NodeJS' },
+  { value: 'Wordpress', label: 'Wordpress' },
+  { value: 'Symfony', label: 'Symfony' }
 ];
 
 const frameworksGroup = [
@@ -48,9 +48,9 @@ const frameworksGroup = [
 
 const languages = [
   { value: 'PHP_VERSION', label: 'PHP' },
-  { value: 'node', label: 'NodeJS' },
-  { value: 'python', label: 'Python' },
-  { value: 'go', label: 'Go' }
+  { value: 'Node', label: 'NodeJS' },
+  { value: 'Python', label: 'Python' },
+  { value: 'Go', label: 'Go' }
 ];
 
 const languagesGroup = [
@@ -261,7 +261,7 @@ const FactsSearch = ({ categoriesSelected }) => {
                 options={frameworksGroup}
                 isMulti={true}
                 onFilterChange={handleFrameworkChange}
-                placeholder={"Framework, e.g. \"drupal/core, 10, 9.0.1\""}
+                placeholder={"Framework, e.g. \"Drupal, 10, 9.0.1\""}
               />
             </Grid.Column>
             <Grid.Column>

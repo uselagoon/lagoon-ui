@@ -77,11 +77,11 @@ VALUES
 /* Facts */
 INSERT INTO environment_fact (name, value, environment, source, description, category, key_fact)
 VALUES
-      ("drupal/core", "10.1.1", "1001", "sbom:cli", "The current Drupal version", "Framework", "1"),
+      ("Drupal", "10.1.1", "1001", "sbom:cli", "The current Drupal version", "Framework", "1"),
       ("PHP_VERSION", "7.4.1", "1001", "sbom:cli", "The current PHP version", "Programming language", "1"),
-      ("drupal/core", "9.1.1", "1002", "sbom:cli", "The current Drupal version", "Framework", "1"),
+      ("Drupal", "9.1.1", "1002", "sbom:cli", "The current Drupal version", "Framework", "1"),
       ("PHP_VERSION", "7.2.1", "1002", "sbom:cli", "The current PHP version", "Programming language", "1"),
-      ("drupal/core", "8.1.1", "1003", "sbom:cli", "The current Drupal version", "Framework", "1"),
+      ("Drupal", "8.1.1", "1003", "sbom:cli", "The current Drupal version", "Framework", "1"),
       ("PHP_VERSION", "7.2.1", "1003", "sbom:cli", "The current PHP version", "Programming language", "1"),
       ("node", "16.0.1", "1011", "sbom:cli", "The current NodeJs version", "Framework", "1"),
       ("node", "14.0.1", "1012", "sbom:cli", "The current NodeJs version", "Framework", "1"),
