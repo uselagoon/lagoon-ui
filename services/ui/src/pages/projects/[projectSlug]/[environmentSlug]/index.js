@@ -41,7 +41,7 @@ export const PageEnvironment = ({ router }) => {
               <Navigation />
             </MainNavigation>
           </Grid.Column>
-          <Grid.Column width={14} style={{ padding: "0 4em" }}>
+          <Grid.Column width={14} style={{ padding: "0 4em 2em" }}>
             {error &&
               <Message negative>
                 <Message.Header>Error: Unable to load environment</Message.Header>

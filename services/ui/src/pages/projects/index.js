@@ -85,7 +85,7 @@ const ProjectsPage = () => {
               </Navigation>
             </MainNavigation>
           </Grid.Column>
-          <Grid.Column width={14} style={{ padding: '0 4em' }}>
+          <Grid.Column width={14} style={{ padding: '0 4em 2em' }}>
             <Sidebar.Pusher>
               <Suspense fallback={<LoadingSpinner />}>
                 <FactsSearch categoriesSelected={categoriesSelected} />

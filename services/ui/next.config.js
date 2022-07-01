@@ -17,15 +17,15 @@ const taskBlocklist =
   [];
 
 module.exports = {
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/projects',
-        permanent: false,
-      },
-    ]
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/',
+  //       destination: '/projects',
+  //       permanent: true,
+  //     },
+  //   ]
+  // },
   publicRuntimeConfig: {
     GRAPHQL_API: lagoonApiRoute ? `${lagoonApiRoute}/graphql` : envApiRoute,
     GRAPHQL_API_TOKEN: process.env.GRAPHQL_API_TOKEN,

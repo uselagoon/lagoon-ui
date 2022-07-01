@@ -23,6 +23,7 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@n8tb1t/use-scroll-position": "^2.0.3",
+    "@primer/octicons-react": "^17.3.0",
     "@react-keycloak/ssr": "^3.3.0",
     "@zeit/next-css": "^1.0.1",
     "d3": "^5.15.0",

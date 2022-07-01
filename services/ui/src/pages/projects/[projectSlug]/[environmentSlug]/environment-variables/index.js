@@ -9,24 +9,26 @@ import Navigation from 'components/Navigation';
 import NavTabs from 'components/NavTabs';
 import EnvironmentHeader from 'components/EnvironmentHeader';
 
-import Insights from 'components/Insights';
+// import EnvironmentVariables from 'components/EnvironmentVariables';
 import { Grid, Message } from 'semantic-ui-react';
 
-import EnvironmentWithInsightsQuery from 'lib/query/EnvironmentWithInsights';
+import EnvironmentWithEnvVarsQuery from 'lib/query/EnvironmentWithEnvVars';
 import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
 
 /**
- * Displays the insights page, given the name of an openshift project.
+ * Displays the env var page for an environment.
  */
-export const PageInsights = ({ router }) => {
-  const { loading, error, data: { environment } = {} } = useQuery(EnvironmentWithInsightsQuery, {
+export const PageEnvironmentEnvVars = ({ router }) => {
+  const { loading, error, data: { environment } = {} } = useQuery(EnvironmentWithEnvVarsQuery, {
     variables: { openshiftProjectName: router.query.environmentSlug }
   });
+
+console.log(data);
 
   return (
   <>
     <Head>
-      <title>{`${router.query.environmentSlug} | Insights`}</title>
+      <title>{`${router.query.environmentSlug} | EnvironmentVariables`}</title>
     </Head>
       <MainLayout>
         <Grid centered padded>
@@ -39,7 +41,7 @@ export const PageInsights = ({ router }) => {
              <Grid.Column width={14} style={{ padding: "0 4em" }}>
               {error &&
                 <Message negative>
-                  <Message.Header>Error: Unable to load insights</Message.Header>
+                  <Message.Header>Error: Unable to load environment variables</Message.Header>
                   <p>{`${error}`}</p>
                 </Message>
               }
@@ -47,16 +49,18 @@ export const PageInsights = ({ router }) => {
               {!loading && environment &&
               <>
                 <EnvironmentHeader environment={environment}/>
-                <NavTabs activeTab="insights" environment={environment} />
+                <NavTabs activeTab="env-vars" environment={environment} />
                 <div className="content">
-                  {!loading && !environment.insights && !error &&
+                  {!loading && !environment.environmentVariables && !error &&
                     <Message>
-                      <Message.Header>No insights found</Message.Header>
-                      <p>{`No insights found for '${router.query.environmentSlug}'`}</p>
+                      <Message.Header>No environment variables found</Message.Header>
+                      <p>{`No environment variables found for '${router.query.environmentSlug}'`}</p>
                     </Message>
                   }
                   <Suspense fallback={<LazyLoadingContent delay={250} rows="15"/>}>
-                    {environment.insights && <Insights insights={environment.insights} />}
+                    {environment.environmentVariables && <>Test</>
+                        // <EnvVars environmentVariables={environment.environmentVariables} />
+                    }
                   </Suspense>
                 </div>
               </>
@@ -69,4 +73,4 @@ export const PageInsights = ({ router }) => {
   );
 };
 
-export default withRouter(PageInsights);
+export default withRouter(PageEnvironmentEnvVars);

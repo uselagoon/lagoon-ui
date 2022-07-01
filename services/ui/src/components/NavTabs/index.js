@@ -7,6 +7,7 @@ import TasksLink from 'components/link/Tasks';
 import ProblemsLink from 'components/link/Problems';
 import FactsLink from 'components/link/Facts';
 import InsightsLink from 'components/link/Insights';
+import EnvVarsLink from 'components/link/EnvVars';
 import RoutesLink from 'components/link/Routes';
 
 import { bp, color } from 'lib/variables';
@@ -122,6 +123,17 @@ const NavTabs = ({ activeTab, environment }) => (
         </InsightsLink>
       </li>
     {/* } */}
+    <li
+      className={`environment-variables ${activeTab == 'environment-variables' ? 'active' : ''} ${aClassName}`}
+    >
+      <EnvVarsLink
+        environmentSlug={environment.openshiftProjectName}
+        projectSlug={environment.project.name}
+        className={aClassName}
+      >
+        <Icon link name='info'/> Environment Variables
+      </EnvVarsLink>
+    </li>
     <style jsx>{`
       ul.navigation {
         display: flex;

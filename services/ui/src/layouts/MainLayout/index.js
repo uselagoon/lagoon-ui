@@ -5,9 +5,9 @@ import Header from 'components/Header';
 /**
  * The main layout includes the Lagoon UI header.
  */
-const MainLayout = ({ children }) => (
+const MainLayout = ({ projects, children }) => (
   <GlobalStyles>
-    <Header />
+    <Header projects={projects}/> 
       <div className="main">
         { children }
       </div>

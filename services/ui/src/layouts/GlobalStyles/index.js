@@ -244,10 +244,105 @@ const GlobalStyles = ({ children }) => (
         padding: 0 10px;
       }
 
+      .logo {
+        max-width: 90px;
+      }
+
+      .search-container {
+        display: flex;
+        flex: auto;
+        flex-direction: row;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-wrap: nowrap;
+        margin-right: 16px;
+        align-self: stretch;
+        align-items: center;
+        order: inherit;
+        overflow-wrap: break-word;
+
+        width: 100%;
+        padding-left: 0;
+
+        .search-wrapper {
+          display: flex;
+          flex: auto;
+          flex-direction: row;
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-wrap: nowrap;
+          align-self: stretch;
+          align-items: center;
+          max-width: 14em;
+          margin-right: 1em;
+
+          transition: 0.5s ease-in-out;
+          transition-property: max-width,padding-bottom,padding-top;
+
+          &:focus-within {
+            max-width: 38em;
+          }
+
+          .search-input {
+            flex: auto;
+            display: flex;
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+
+            .input {
+              width: 100%;
+            }
+
+            input {
+              display: flex;
+              flex: auto;
+              width: 100%;
+              max-width: 100%;
+            }
+
+            &.active, &.focus {
+              max-width: 100%;
+              width: 100%;
+            
+              input {
+                max-width: 100%;
+                width: 100%;
+              }
+            }
+
+          }
+        }
+
+        .icon-spacing {
+          padding: 10px;
+          vertical-align: text-top;
+        }
+      }
+
+      .label {
+        width: 100%;
+      }
+
       .no-padding-bottom {
         padding-bottom: 0 !important;
       }
+      
+      .ui.search {
+        width: 100%;
 
+        transition: 0.5s ease-in-out;
+        transition-property: max-width,padding-bottom,padding-top;
+      }
+      .ui.search>.results {
+        max-width: 7em;
+        width: 100%;
+      }
+      .ui.search>.results.visible {
+        max-width: 27em;
+        width: 100%;
+      }
+      
       .ui.label.deployment {
         min-width: 120px;
         padding-left: 1em;
@@ -297,12 +392,12 @@ const GlobalStyles = ({ children }) => (
         &.visible {
           right: 330px;
           left: auto;
-          -webkit-transition: -webkit-transform 500ms ease;
-          transition: -webkit-transform 500ms ease;
-          transition: right 500ms ease;
-          transition: right 500ms ease, -webkit-transform 500ms ease;
+          -webkit-transition: -webkit-transform 400ms ease;
+          transition: -webkit-transform 400ms ease;
+          transition: right 400ms ease;
+          transition: right 400ms ease, -webkit-transform 400ms ease;
           will-change: right;
-          transition-delay: 0s;
+          transition-delay: 0.1s;
         }
 
         .sidebar-button-sticky .ui.button {
