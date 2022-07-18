@@ -23,8 +23,6 @@ export const PageEnvironmentEnvVars = ({ router }) => {
     variables: { openshiftProjectName: router.query.environmentSlug }
   });
 
-console.log(data);
-
   return (
   <>
     <Head>
