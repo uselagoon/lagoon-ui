@@ -7,12 +7,9 @@ import MainNavigation from 'layouts/MainNavigation';
 import MainLayout from 'layouts/MainLayout';
 import Navigation from 'components/Navigation';
 import { MultiSelectFilter } from 'components/Filters';
+import PinnedProjects from "../components/PinnedProjects";
 
 import { LoadingSpinner } from 'components/Loading';
-
-
-import getTopProjectsSuggestions from 'components/Header/getTopProjectsSuggestions';
-
 
 //@TODO categories will be fetched from a later 'getFactCategories' query.
 export const categories = [
@@ -33,10 +30,6 @@ const IndexPage = ({ url }) => {
   const loggedIn = keycloak.authenticated;
   const [factCategories, setFactCategories] = useState([]);
   const [categoriesSelected, setCategoriesSelected] = useState([]);
-
-  const { projects, projectsLoading } = getTopProjectsSuggestions();
-
-  console.log("Top p:s ", projects)
 
   const categoryOptions = (categories) => {
     return categories && categories.map(c => ({ value: c.name, label: c.name }));
@@ -73,7 +66,7 @@ const IndexPage = ({ url }) => {
     <Head>
       <title>Home | Lagoon</title>
     </Head>
-    <MainLayout projects={projects}>
+    <MainLayout>
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={2}>
@@ -100,7 +93,7 @@ const IndexPage = ({ url }) => {
           <Grid.Column width={14} style={{ padding: '0 4em 2em' }}>
             <Sidebar.Pusher>
               <Suspense fallback={<LoadingSpinner />}>
-                <h1>Dashboard</h1>
+                <PinnedProjects />
               </Suspense>
             </Sidebar.Pusher>
           </Grid.Column>

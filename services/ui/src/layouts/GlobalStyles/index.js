@@ -339,7 +339,7 @@ const GlobalStyles = ({ children }) => (
         width: 100%;
       }
       .ui.search>.results.visible {
-        max-width: 27em;
+        max-width: 30em;
         width: 100%;
       }
       

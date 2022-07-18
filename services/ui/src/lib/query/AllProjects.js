@@ -17,7 +17,7 @@ export default gql`
           value
           source
           category
-          reference
+          # reference
           type
           description
         }

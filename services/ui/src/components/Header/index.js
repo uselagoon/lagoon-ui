@@ -1,13 +1,19 @@
 import React, { useReducer, useState, useEffect, useRef, useCallback } from 'react';
-
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import getConfig from 'next/config';
+import Link from 'next/link';
+
+import { useQuery } from "@apollo/client";
+import MostActiveProjects from 'lib/query/MostActiveProjects';
+
+import { AuthApolloClient } from 'lib/ApiConnection';
 import { AuthContext } from 'lib/KeycloakProvider';
-import { color } from 'lib/variables';
+
 import PrimaryMenu from 'components/PrimaryMenu';
+import { Search, Grid, Icon, Menu, Label, Dropdown, Dimmer, Loader } from 'semantic-ui-react';
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
 import { RepoIcon } from '@primer/octicons-react';
-import { Search, Grid, Icon, Menu, Label, Dropdown } from 'semantic-ui-react';
+import { color } from 'lib/variables';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -18,17 +24,65 @@ function regExpEscape(literal_string) {
 /**
  * Displays the header using the provided logo.
  */
-const Header = ({ projects, logo }) => {
+const Header = ({ logo }) => {
+  const apolloClient = AuthApolloClient();
+  const [resultsMenuOpen, setResultsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const { loading: loadingProjects, projectsError, data: { allProjects: projects } = {}} = apolloClient && useQuery(MostActiveProjects, {
+    variables: {},
+  }) || {};
+
+  const resultRenderer = ({ name }) => {
+    return (
+      <div name={name}>
+        <Link href={`/projects/${name}`}>
+          <a className={""}>
+            <Label>
+              <RepoIcon fill="#000" size="small" />
+              <span className="icon-spacing">{name}</span>
+            </Label>
+          </a>
+        </Link>
+      </div>
+    )
+  }
+
+  const mapToSearchResult = (results = []) => results.map(o => ({
+    childKey: o.id,
+    id: o.id,
+    name: o.name,
+    title: o.name,
+    image: '',
+    shortDesc: o.shortDescription || '',
+    fullDesc: o.fullDescription || ''
+  }));
+
   const initialState = {
     loading: false,
-    results: projects ? projects : [],
+    results: !loadingProjects ? mapToSearchResult(projects) : [],
     value: '',
   }
 
-  const [resultsMenuOpen, setResultsMenuOpen] = useState(false);
-
   const [state, dispatch] = useReducer(searchResultsReducer, [initialState]);
   const { loading, results, value } = state;
+
+
+
+  const noResults = () => {
+    if (results && results.length === 0) {
+      return "No results"
+    }
+    else {
+      return (
+        <div style={{ padding: '1em' }}>
+          <Dimmer active inverted>
+            <Loader size='mini'>Loading</Loader>
+          </Dimmer>
+        </div>
+      )
+    }
+  }
 
   function searchResultsReducer(state, action) {
     switch (action.type) {
@@ -47,45 +101,64 @@ const Header = ({ projects, logo }) => {
   }
 
   const timeoutRef = useRef();
-
   const onSearchFocus = useCallback((e, data) => {
-    clearTimeout(timeoutRef.current)
-    dispatch({ type: 'START_SEARCH', query: "" })
+    clearTimeout(timeoutRef.current);
+    dispatch({ type: 'START_SEARCH', query: "" });
+
+    // Bug: convert results into new object since some semantic-ui props are enforced
+    // https://github.com/Semantic-Org/Semantic-UI-React/issues/1141
+    const convReults = projects && mapToSearchResult(projects)
 
     timeoutRef.current = setTimeout(() => {
-      dispatch({
-        type: 'FINISH_SEARCH',
-        results: projects,
-      })
+      if (data.value == undefined || data.value == "") {
+        dispatch({
+          type: 'FINISH_SEARCH',
+          results: projects ? convReults : [],
+        })
+        return;
+      }
+      else {
+        if (data.value.length === 0) {
+          dispatch({ type: 'CLEAN_QUERY' })
+          return;
+        }
+  
+        dispatch({
+          type: 'FINISH_SEARCH',
+          results: projects ? convReults : [],
+        })
+      }
     }, 300);
 
-    setResultsMenuOpen(true)
+    setResultsMenuOpen(true);
   }, [projects]);
 
   const onSearchBlur = useCallback((e, data) => {
     setResultsMenuOpen(false)
   })
 
-
   const handleSearchChange = useCallback((e, data) => {
-    clearTimeout(timeoutRef.current)
-    dispatch({ type: 'START_SEARCH', query: data.value })
+
+    clearTimeout(timeoutRef.current);
+    dispatch({ type: 'START_SEARCH', query: data.value });
+
+    const convReults = projects && mapToSearchResult(projects)
 
     timeoutRef.current = setTimeout(() => {
-      if (data.value == undefined || data.value.length === 0) {
+      if (data.value.length === 0) {
         dispatch({ type: 'CLEAN_QUERY' })
         return;
       }
 
       const re = new RegExp(regExpEscape(data.value.length != 0 && data.value), 'i');
-      const isMatch = (result) => re.test(result.title);
+      const isMatch = (result) => re.test(result.name);
 
       dispatch({
         type: 'FINISH_SEARCH',
-        results: projects.filter(isMatch),
+        results: projects ? convReults.filter(isMatch) : [],
       })
     }, 300)
-  }, []);
+  }, [projects]);
   
   useEffect(() => {
     return () => {
@@ -93,18 +166,10 @@ const Header = ({ projects, logo }) => {
     }
   }, []);
 
-  const resultRenderer = ({ title, href }) => {
-    return (
-      <Label>
-        <RepoIcon fill="#000" size="small" />
-        <span className="icon-spacing">{title}</span>
-      </Label>
-    )
-  }
 
   return (
     <div className="header">
-      <Grid columns={4} stretched verticalAlign='middle'>
+      <Grid columns={3} stretched verticalAlign='middle'>
         <Grid.Column className="logo no-padding-bottom" width={1}>
             <Link href="/">
               <a className="home">
@@ -122,18 +187,21 @@ const Header = ({ projects, logo }) => {
         <Grid.Column className="search-container no-padding-bottom" width={7}>
           <div className="search-wrapper flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mt-3 mt-md-0">
             <Search
-              loading={loading}
+              loading={loadingProjects}
               className="search-input"
               placeholder="Search..."
               onResultSelect={(e, data) =>
-                dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
+                dispatch({ type: 'UPDATE_SELECTION', selection: data.result.name })
               }
               onSearchChange={handleSearchChange}
               onFocus={onSearchFocus}
+              disabled={!projects || loadingProjects}
               onBlur={onSearchBlur}
               resultRenderer={resultRenderer}
               results={results}
+              noResultsMessage={noResults()}
               open={resultsMenuOpen}
+              // minCharacters={0}
               value={value}
             />
           </div>
@@ -141,7 +209,6 @@ const Header = ({ projects, logo }) => {
               <PrimaryMenu />
           </div>
         </Grid.Column>
-        <Grid.Column className="no-padding-bottom" width={4}></Grid.Column>
         <Grid.Column className="no-padding-bottom" width={4}>
           <AuthContext.Consumer>
             {auth => {
@@ -161,7 +228,7 @@ const Header = ({ projects, logo }) => {
                   ),
                   disabled: true,
                 },
-                { key: 'profile', text: 'Profile', onClick: () => auth.logout()},
+                { key: 'profile', text: 'Profile', onClick: () => router.push("/profile")},
                 { 
                   key: 'logout',
                   onClick: () =>  auth.logout(),

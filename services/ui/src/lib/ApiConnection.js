@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from "react";
 import getConfig from 'next/config';
 import {
   ApolloClient,
@@ -28,83 +28,84 @@ import { AuthContext } from 'lib/KeycloakProvider';
 
 const { publicRuntimeConfig } = getConfig();
 
+export const AuthApolloClient = () => {
+  const auth = useContext(AuthContext);
+
+  if (!auth.authenticated) return;
+
+  const getAuthorizationHeader = () => {
+    return {
+      "Access-Control-Allow-Origin": "*",
+      authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
+    };
+  }
+  
+  const authLink = setContext((_, { headers }) => {
+    return  {
+      ...headers,
+      ...getAuthorizationHeader(),
+    }
+  });
+
+  const httpLink = new HttpLink({
+    uri: publicRuntimeConfig.GRAPHQL_API,
+    headers: {
+      ...getAuthorizationHeader(),
+    }
+  });
+
+  const wsLink = new GraphQLWsLink(createClient({
+    url: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(/http/,'ws'),
+    connectionParams: {
+      authToken: auth.authenticated && auth.apiToken
+    },
+  }));
+
+  const errorLink = onError(({graphQLErrors, networkError}) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({message, locations, path}) => console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+      )
+    }
+    if (networkError) {
+      console.log('[NetworkError]', networkError)
+    } 
+  });
+
+  const splitLink = split(({query})=>{
+    const definition =  getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' && definition.operation === 'subscription' 
+    );
+  }, wsLink, httpLink);
+
+
+  const client = new ApolloClient({
+    ssrMode: typeof window === "undefined",
+    link: from([authLink, errorLink, splitLink]),
+    cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: {
+        errorPolicy: "ignore",
+        fetchPolicy: 'cache-and-network',
+      },
+      query: {
+        errorPolicy: "all",
+        fetchPolicy: "network-only",
+      },
+      mutate: {
+        errorPolicy: "all",
+      },
+    },
+  });
+
+  return client;
+}
+
 const ApiConnection = ({ children }) => {
-  return (
-    <AuthContext.Consumer>
-      {auth => {
-        if (!auth.authenticated) return;
-
-        const getAuthorizationHeader = () => {
-          return {
-            "Access-Control-Allow-Origin": "*",
-            authorization: auth.authenticated ? `Bearer ${auth.apiToken}` : "",
-          };
-        }
-        
-        const authLink = setContext((_, { headers }) => {
-          return  {
-            ...headers,
-            ...getAuthorizationHeader(),
-          }
-        });
-
-        const httpLink = new HttpLink({
-          uri: publicRuntimeConfig.GRAPHQL_API,
-          headers: {
-            ...getAuthorizationHeader(),
-          }
-        });
-
-        const wsLink = new GraphQLWsLink(createClient({
-          url: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(/http/,'ws'),
-          connectionParams: {
-            authToken: auth.authenticated && auth.apiToken
-          },
-        }));
-
-        const errorLink = onError(({graphQLErrors, networkError}) => {
-          if (graphQLErrors) {
-            graphQLErrors.forEach(({message, locations, path}) => console.log(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-              ),
-            )
-          }
-          if (networkError) {
-            console.log('[NetworkError]', networkError)
-          } 
-        });
-
-        const splitLink = split(({query})=>{
-          const definition =  getMainDefinition(query);
-          return (
-            definition.kind === 'OperationDefinition' && definition.operation === 'subscription' 
-          );
-        }, wsLink, httpLink);
-
-
-        const client = new ApolloClient({
-          ssrMode: typeof window === "undefined",
-          link: from([authLink, errorLink, splitLink]),
-          cache: new InMemoryCache(),
-          defaultOptions: {
-            watchQuery: {
-              errorPolicy: "ignore",
-              fetchPolicy: 'cache-and-network',
-            },
-            query: {
-              errorPolicy: "all",
-              fetchPolicy: "network-only",
-            },
-            mutate: {
-              errorPolicy: "all",
-            },
-          },
-        });
-
-        return <ApolloProvider client={client}>{children}</ApolloProvider>;
-      }}
-    </AuthContext.Consumer>
-  )
+  const client = AuthApolloClient();
+  return client && <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
 export default ApiConnection;

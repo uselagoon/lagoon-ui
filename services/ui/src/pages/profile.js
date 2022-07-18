@@ -1,8 +1,12 @@
-import React from 'react';
-import { useQuery } from "@apollo/client";
+import React, { useEffect, useState } from 'react';
+import { useLazyQuery, useQuery } from "@apollo/client";
+import MostActiveProjects from 'lib/query/MostActiveProjects';
+import Me from 'lib/query/Me';
+import { useLocalStorage } from 'lib/useLocalStorage';
+
 import Head from 'next/head';
 import MainLayout from 'layouts/MainLayout';
-import Me from 'lib/query/Me';
+import { Dropdown } from 'semantic-ui-react';
 
 import { LoadingSpinner } from 'components/Loading';
 import { bp } from 'lib/variables';
@@ -12,14 +16,47 @@ import { Form, Message, Button } from 'semantic-ui-react';
  * Displays the user profile page.
  */
 const ProfilePage = () => {
+  const [projectsList, setProjectsList] = useState([]);
+  const [selectedProjects, setSelectedProjects] = useState("");
+  const [projectsFromLocalStorage, setProjectsFromLocalStorage] = useLocalStorage("projects", "");
 
   const { data, loading, error } = useQuery(Me, {
-      displayName: "Me",
-      fetchPolicy: "cache-and-network"
+    displayName: "Me",
+    fetchPolicy: "cache-and-network"
   });
 
+  const { loading: loadingProjects, projectsError, data: { allProjects: mostActiveProjects } = {}} = useQuery(MostActiveProjects, {
+    variables: {},
+  }) || {};
 
-console.log(data);
+  const onChange = (e, { name, value }) => {
+    setSelectedProjects(value);
+  }
+
+  const handleSubmit = () => {
+    localStorage.setItem("projects", selectedProjects);
+  };
+
+  const preloadProjects = () => {
+    let projects = "";
+    if (projectsFromLocalStorage != "") {
+      projects = projectsFromLocalStorage.split(',');
+    }
+    return projects;
+  }
+
+
+  useEffect(() => {
+    if (mostActiveProjects) {
+      setProjectsList(mostActiveProjects.map(p => ({
+        key: p.id,
+        text: p.name,
+        value: p.name
+      })));
+      // setLoadingProjects(loadingProjects);
+
+    }
+  }, [mostActiveProjects, loadingProjects, projectsError]);
 
   return (
   <>
@@ -37,19 +74,35 @@ console.log(data);
       {!loading && data &&
         <div className="content-wrapper">
           <div className="content">
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <h2>Profile</h2>
                 <Form.Field>
-                    <label>Email</label>
-                    <input placeholder='Email' value={data && data.me.email} />
+                  <label>Email</label>
+                  <input placeholder='Email' value={data && data.me.email} />
                 </Form.Field>
                 <Form.Field>
-                    <label>First Name</label>
-                    <input placeholder='First name' value={data && data.me.firstName} />
+                  <label>First Name</label>
+                  <input placeholder='First name' value={data && data.me.firstName} />
                 </Form.Field>
                 <Form.Field>
-                    <label>Last Name</label>
-                    <input placeholder='Last name' value={data && data.me.lastName} />
+                  <label>Last Name</label>
+                  <input placeholder='Last name' value={data && data.me.lastName} />
+                </Form.Field>
+                <Form.Field>
+                  <label>Pinned Projects</label>
+                    {!loadingProjects && projectsList &&
+                      <Dropdown
+                        placeholder='State'
+                        fluid
+                        multiple
+                        search
+                        selection
+                        loading={loadingProjects || projectsFromLocalStorage == null}
+                        options={projectsList}
+                        onChange={onChange}
+                        value={selectedProjects || preloadProjects()}
+                      />
+                    }
                 </Form.Field>
                 <Button type='submit'>Submit</Button>
             </Form>
