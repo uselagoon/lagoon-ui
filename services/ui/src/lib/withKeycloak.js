@@ -1,57 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import getConfig from 'next/config';
+import { useKeycloak } from '@react-keycloak/ssr';
+import StatusLayout from 'layouts/StatusLayout';
+import Cookies from "js-cookie";
 import { queryStringToObject } from 'lib/util';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-
 const withKeycloak = (App, initialAuth) => (props) => {
-    const [auth, setAuth] = useState(initialAuth);
 
-    const updateAuth = (keycloak) => {
-      setAuth({
+  const { keycloak, initialized } = useKeycloak();
+  const { login = () => {}, authenticated,  } = keycloak || {};
+  const [auth, setAuth] = useState(initialAuth);
+
+  const logoutClearCookies = () => {
+    if (initialized && typeof window !== "undefined") {
+      Cookies.remove('kcToken');
+      Cookies.remove('kcIdToken');
+
+      keycloak.logout();
+    }
+  }
+
+  const updateAuth = (keycloak) => {
+    setAuth(
+      {
+        ...keycloak,
         apiToken: keycloak.token,
         authenticated: keycloak.authenticated,
-        logout: keycloak.logout,
+        logout: (() => logoutClearCookies()),
         provider: 'keycloak',
-        providerData: keycloak,
         user: {
           username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
         }
-      });
+      }
+    );
+  }
+
+  useEffect(() => {
+    if (!initialized) return;
+   
+    if (!keycloak.authenticated) {
+      const urlQuery = queryStringToObject(location.search);
+      const options = urlQuery.idpHint ? {idpHint: urlQuery.idpHint} : {};
+        login(options);
     }
 
-    useEffect(async () => {
-      const keycloak = Keycloak({
-        url: publicRuntimeConfig.KEYCLOAK_API,
-        realm: 'lagoon',
-        clientId: 'lagoon-ui'
-      });
+    updateAuth(keycloak);
+  }, [login, keycloak, initialized]);
 
-      keycloak.onTokenExpired = async () => {
-        await keycloak.updateToken();
-        updateAuth(keycloak);
-      };
-
-      await keycloak.init({
-        checkLoginIframe: false,
-        promiseType: 'native',
-      });
-
-      if (!keycloak.authenticated) {
-        const urlQuery = queryStringToObject(location.search);
-        const options = urlQuery.idpHint ? { idpHint: urlQuery.idpHint } : {};
-
-        await keycloak.login(options);
-      }
-
-      updateAuth(keycloak);
-    }, []);
-
-    return <App {...props} auth={auth} />;
+  if (initialized && keycloak.authenticated && typeof window !== "undefined") {
+    return <App {...props} auth={auth} />
+  }
+  else {
+    return <>
+      <StatusLayout>
+        <h1 suppressHydrationWarning>Checking authentication...</h1>
+      </StatusLayout>
+    </>
+  }
 };
-
-withKeycloak.getInitialProps = ({ ctx }) => {
-  return App.getInitialProps(ctx);
-}
 
 export default withKeycloak;

@@ -1,6 +1,6 @@
 import React from 'react';
 import Problems from './index';
-import mocks, { generator } from 'api/src/mocks';
+import mocks, { generator } from 'mock_data/mocks';
 
 export default {
   component: Problems,

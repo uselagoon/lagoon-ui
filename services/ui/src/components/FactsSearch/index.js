@@ -1,14 +1,12 @@
-import React, { useState, useEffect, memo, Suspense, useRef } from "react";
-import { bp, color } from 'lib/variables';
+import React, { useState, useEffect, memo, Suspense } from "react";
 import { useQuery } from "@apollo/client";
-import { NetworkStatus } from '@apollo/client';
-import { Grid, Pagination, Button, Placeholder, Icon } from 'semantic-ui-react';
+import { Grid, Pagination, Icon } from 'semantic-ui-react';
+import dynamic from 'next/dynamic';
 
-import MainSidebar from 'layouts/MainSidebar';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { LazyLoadingContent } from 'components/Loading';
 
 import Error from 'components/Error';
-import SelectFilter, { MultiSelectFilter, MultiCreatableSelectFilter } from 'components/Filters';
+import { MultiSelectFilter, MultiCreatableSelectFilter } from 'components/Filters';
 import FactSearchTabs from 'components/FactSearchTabs';
 import ResultsSummary from 'components/ResultsSummary';
 
@@ -34,11 +32,11 @@ const statusesGroup = [
 ]
 
 const frameworks = [
-  { value: 'drupal-version', label: 'Drupal' },
-  { value: 'laravel', label: 'Laravel' },
-  { value: 'nodejs', label: 'NodeJS' },
-  { value: 'wordpress', label: 'Wordpress' },
-  { value: 'symfony', label: 'Symfony' }
+  { value: 'Drupal', label: 'Drupal' },
+  { value: 'Laravel', label: 'Laravel' },
+  { value: 'Node', label: 'NodeJS' },
+  { value: 'Wordpress', label: 'Wordpress' },
+  { value: 'Symfony', label: 'Symfony' }
 ];
 
 const frameworksGroup = [
@@ -49,10 +47,10 @@ const frameworksGroup = [
 ];
 
 const languages = [
-  { value: 'php-version', label: 'PHP' },
-  { value: 'nodejs', label: 'NodeJS' },
-  { value: 'python', label: 'Python' },
-  { value: 'go', label: 'Go' }
+  { value: 'PHP_VERSION', label: 'PHP' },
+  { value: 'Node', label: 'NodeJS' },
+  { value: 'Python', label: 'Python' },
+  { value: 'Go', label: 'Go' }
 ];
 
 const languagesGroup = [
@@ -62,8 +60,8 @@ const languagesGroup = [
   }
 ];
 
-const DEFAULT_PROJECTS_LIMIT = 25;
-const DEFAULT_ENVIRONMENTS_LIMIT = 25;
+export const DEFAULT_PROJECTS_LIMIT = 25;
+export const DEFAULT_ENVIRONMENTS_LIMIT = 25;
 
 const FactsSearch = ({ categoriesSelected }) => {
   const [projectQuery, setProjectQuery] = useState(AllProjectsFromFacts);
@@ -78,20 +76,20 @@ const FactsSearch = ({ categoriesSelected }) => {
   const [activeProjectPage, setProjectActivePage] = useState(1);
   const [activeEnvironmentPage, setEnvironmentActivePage] = useState(1);
 
+  const [searchEnterValue, setSearchEnterValue] = useState('');
   const [statusesSelected, setStatusesSelected] = useState([]);
   const [frameworksSelected, setFrameworksSelected] = useState([]);
   const [languagesSelected, setLanguagesSelected] = useState([]);
+  const [searchInputFilter, setSearchInputFilter] = useState([]);
   const [factFilters, setFactFilters] = useState([]);
-  const [connectiveSelected, setConnective] = useState('AND');
+  const [connectiveSelected, setConnective] = useState(searchEnterValue ? 'OR' : 'AND');
 
-  const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(factFilters, connectiveSelected, take, skipEnvironment);
 
-  // Lazy load components
-  const FactSearchResults = React.lazy(() => import('components/FactSearchResults'));
-  const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
+  const FactSearchResults = dynamic(() => import('components/FactSearchResults'));
+  const { environments, environmentsCount, environmentsLoading } = useEnvironmentsData(activeTab, factFilters, connectiveSelected, take, skipEnvironment);
 
   // Fetch results
-  const { data: { projectsByFactSearch } = {}, loading, error } = useQuery(projectQuery, {
+  const { data, loading, error } = useQuery(projectQuery, {
     variables: {
       input: {
         filters: factFilters || [],
@@ -99,7 +97,11 @@ const FactsSearch = ({ categoriesSelected }) => {
         take: take,
         skip: activeTab === "All projects" ? skipProject : skipEnvironment
       }
-    }
+    },
+    // query will always make an initial network request, but will read from the cache after that.
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
   });
 
   // Active tab
@@ -136,16 +138,33 @@ const FactsSearch = ({ categoriesSelected }) => {
     setProjectSelected(null);
   };
 
+  // const handleEnvTypesChange = (status) => {
+  //   let nextFactFilter = status && status.map(s => {
+  //     return ({
+  //       lhsTarget: "FACT",
+  //       name: "site-code-status",
+  //       contains: s.value
+  //     });
+  //   });
+  //   setStatusesSelected(nextFactFilter || []);
+  //   setProjectSelected(null);
+  // };
+
   const handleFrameworkChange = (frameworks) => {
     let nextFactFilter = frameworks && frameworks.map(f => {
       const isSemVerValue = (/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/.test(f.value));
       const isSingleNumber = (/^\d+$/.test(f.value));
-      let previousFrameworksSelected = frameworksSelected.slice(0,1).shift();
+      const startsWithNumber = (/^\d/.test(f.value));
+      const previousFrameworksSelected = frameworksSelected.length > 0 ? frameworksSelected.slice(0,1).shift().name : "";
+
+      if (isSingleNumber) {
+        f.value = `${f.value}.%.%`
+      }
 
       return ({
         lhsTarget: "FACT",
-        name: isSemVerValue || isSingleNumber ? previousFrameworksSelected.name : f.value,
-        contains: isSemVerValue || isSingleNumber ? f.value : ""
+        name:  isSemVerValue || isSingleNumber || startsWithNumber  ? previousFrameworksSelected : f.value,
+        contains: isSemVerValue || isSingleNumber || startsWithNumber ? f.value : ""
       });
     });
     setFrameworksSelected(nextFactFilter || []);
@@ -156,12 +175,17 @@ const FactsSearch = ({ categoriesSelected }) => {
     let nextFactFilter = languages && languages.map(f => {
       const isSemVerValue = (/^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/.test(f.value));
       const isSingleNumber = (/^\d+$/.test(f.value));
-      let previousLanguagesSelected = languagesSelected.slice(0,1).shift();
+      const startsWithNumber = (/^\d/.test(f.value));
+      const previousLanguagesSelected = languagesSelected.length > 0 ? languagesSelected.slice(0,1).shift().name : "";
+
+      if (isSingleNumber) {
+        f.value = `${f.value}.%.%`
+      }
 
       return ({
         lhsTarget: "FACT",
-        name: isSemVerValue || isSingleNumber ? previousLanguagesSelected.name : f.value,
-        contains: isSemVerValue || isSingleNumber ? f.value : ""
+        name: isSemVerValue || isSingleNumber || startsWithNumber ? previousLanguagesSelected : f.value,
+        contains: isSemVerValue || isSingleNumber || startsWithNumber ? f.value : ""
       });
     });
     setLanguagesSelected(nextFactFilter || []);
@@ -175,19 +199,41 @@ const FactsSearch = ({ categoriesSelected }) => {
     setConnective(connective.value);
   }
 
-  useEffect(() => {
-    if (!error && !loading && projectsByFactSearch) {
-      setProjects(projectsByFactSearch.projects);
-      setProjectsCount(projectsByFactSearch.count);
+  // Search
+  const handleSearch = (searchInput) => {
+    let nextFactFilter;
+
+    if (!searchInput) {
+      nextFactFilter = [];
+    }
+    else {
+      nextFactFilter = [{
+        lhsTarget: "PROJECT",
+        name: "name",
+        contains: searchInput ? searchInput : "",
+      }];
+
+      setConnective('OR');
     }
 
-    if (categoriesSelected.length || statusesSelected.length || frameworksSelected.length || languagesSelected.length) {
-      setFactFilters(() => [...categoriesSelected, ...statusesSelected, ...frameworksSelected, ...languagesSelected]);
+    setSearchEnterValue(searchInput);
+    setSearchInputFilter(nextFactFilter || []);
+    setProjectSelected(null);
+  }
+
+  useEffect(() => {
+    if (!error && !loading && data && data.projectsByFactSearch) {
+      setProjects(data.projectsByFactSearch.projects);
+      setProjectsCount(data.projectsByFactSearch.count);
+    }
+
+    if (categoriesSelected.length || statusesSelected.length || frameworksSelected.length || languagesSelected.length || searchInputFilter.length) {
+      setFactFilters(() => [...categoriesSelected, ...statusesSelected, ...frameworksSelected, ...languagesSelected, ...searchInputFilter]);
     }
     else {
       setFactFilters([]);
     }
-  }, [projectsByFactSearch, statusesSelected, frameworksSelected, languagesSelected, error, loading]);
+  }, [data, statusesSelected, frameworksSelected, languagesSelected, searchInputFilter, error, loading]);
 
   return (
   <Grid.Row>
@@ -215,7 +261,7 @@ const FactsSearch = ({ categoriesSelected }) => {
                 options={frameworksGroup}
                 isMulti={true}
                 onFilterChange={handleFrameworkChange}
-                placeholder={"Framework, e.g. \"Drupal\""}
+                placeholder={"Framework, e.g. \"Drupal, 10, 9.0.1\""}
               />
             </Grid.Column>
             <Grid.Column>
@@ -224,7 +270,7 @@ const FactsSearch = ({ categoriesSelected }) => {
                 options={languagesGroup}
                 isMulti={true}
                 onFilterChange={handleLanguageChange}
-                placeholder={"Programming language, e.g. \"php\""}
+                placeholder={"Programming language, e.g. \"php, 8, 7.4\""}
               />
             </Grid.Column>
             <Grid.Column>
@@ -237,11 +283,21 @@ const FactsSearch = ({ categoriesSelected }) => {
                 placeholder={"HTTP status codes, e.g. \"200\""}
               />
             </Grid.Column>
+            {/* <Grid.Column>
+              <MultiCreatableSelectFilter
+                title="Environment Types"
+                options={envTypesGroup}
+                isMulti={true}
+                onFilterChange={handleEnvTypesChange}
+                placeholder={"Environment types, e.g. \"PRODUCTION, DEVELOPMENT\""}
+              />
+            </Grid.Column> */}
             <Grid.Column>
               <MultiSelectFilter
                 title="Connective"
-                defaultValue={{value: connectiveSelected, label: "AND"}}
+                defaultValue={{value: connectiveSelected, label: searchEnterValue ? 'OR' : connectiveSelected}}
                 options={connectiveOptions(["AND", "OR"])}
+                isDisabled={searchEnterValue && true}
                 onFilterChange={handleConnectiveChange}
               />
             </Grid.Column>
@@ -250,8 +306,8 @@ const FactsSearch = ({ categoriesSelected }) => {
       </Suspense>
       </div>
       {activeTab === 'All projects' &&
-        <Suspense fallback={<LazyLoadingContent delay={250} rows={DEFAULT_PROJECTS_LIMIT}/>}>
-          <FactSearchResults results={projects} activeTab={activeTab} onProjectSelectChange={handleProjectSelectChange} loading={loading} sort={sort}/>
+        <>
+          <FactSearchResults results={projects} activeTab={activeTab} handleInputSearch={handleSearch} searchEnter={searchEnterValue} onProjectSelectChange={handleProjectSelectChange} loading={loading} sort={sort}/>
           {projectsCount > 0 &&
             <Grid>
               <Grid.Row stretched>
@@ -273,33 +329,33 @@ const FactsSearch = ({ categoriesSelected }) => {
               </Grid.Row>
             </Grid>
             }
-        </Suspense>
+        </>
       }
       {activeTab === 'Environments' &&
-       <Suspense fallback={<LazyLoadingContent delay={250} rows={DEFAULT_ENVIRONMENTS_LIMIT}/>}>
-        <FactSearchResults results={environments} activeTab={activeTab} onProjectSelectChange={handleProjectSelectChange} loading={environmentsLoading} sort={sort}/>
-        {environmentsCount > 0 &&
-          <Grid>
-            <Grid.Row stretched>
-              <Grid.Column>
-                <Pagination
-                  aria-label="Environment results pagination navigation"
-                  boundaryRange={1}
-                  defaultActivePage={1}
-                  ellipsisItem={null}
-                  firstItem={null}
-                  lastItem={null}
-                  nextItem={environments.length < DEFAULT_ENVIRONMENTS_LIMIT ? null : {'name': 'nextItem', 'aria-label': 'Next item', content: <Icon name='angle right' />, icon: true } }
-                  prevItem={activeEnvironmentPage === 1 ? null : {'aria-label': 'Next item', content: <Icon name='angle left' />, icon: true } }
-                  onPageChange={onEnvironmentPaginationChange}
-                  siblingRange={1}
-                  totalPages={Math.ceil(environmentsCount / DEFAULT_ENVIRONMENTS_LIMIT)}
-                />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        }
-       </Suspense>
+        <>
+          <FactSearchResults results={environments} activeTab={activeTab} onProjectSelectChange={handleProjectSelectChange} loading={environmentsLoading} sort={sort}/>
+          {environmentsCount > 0 &&
+            <Grid>
+              <Grid.Row stretched>
+                <Grid.Column>
+                  <Pagination
+                    aria-label="Environment results pagination navigation"
+                    boundaryRange={1}
+                    defaultActivePage={1}
+                    ellipsisItem={null}
+                    firstItem={null}
+                    lastItem={null}
+                    nextItem={environments.length < DEFAULT_ENVIRONMENTS_LIMIT ? null : {'name': 'nextItem', 'aria-label': 'Next item', content: <Icon name='angle right' />, icon: true } }
+                    prevItem={activeEnvironmentPage === 1 ? null : {'aria-label': 'Next item', content: <Icon name='angle left' />, icon: true } }
+                    onPageChange={onEnvironmentPaginationChange}
+                    siblingRange={1}
+                    totalPages={Math.ceil(environmentsCount / DEFAULT_ENVIRONMENTS_LIMIT)}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          }
+        </>
       }
     <style jsx>{`
     `}</style>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageFacts as Facts } from 'pages/projects/[projectSlug]/[environmentSlug]/facts';
 import EnvironmentWithFactsQuery from 'lib/query/EnvironmentWithFacts';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: Facts,

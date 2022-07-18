@@ -1,4 +1,11 @@
-**/node_modules/
+.dockerignore
+README.md
+
+**/.next
+**/Dockerfile
 **/build/
 **/yarn-error.log
 **/.gitignore
+
+# Envs
+**/.env.local

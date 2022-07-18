@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
+import { useState, useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
 
 import AllEnvironmentsFromFacts from 'lib/query/AllEnvironmentsFromFacts';
 
-const useEnvironmentsData = (factFilters = [], connectiveSelected, take, skip) => {
+const useEnvironmentsData = (activeTab, factFilters = [], connectiveSelected, take, skip) => {
   const [environments, setEnvironments] = useState([]);
   const [environmentsCount, setEnvironmentsCount] = useState(0);
 
-  const { data: { environmentsByFactSearch } = {}, loading: environmentsLoading } = useQuery(AllEnvironmentsFromFacts, {
+  const [getEnvironments, { data: { environmentsByFactSearch } = {}, loading: environmentsLoading }] = useLazyQuery(AllEnvironmentsFromFacts, {
     variables: {
       input: {
         filters: factFilters || [],
@@ -19,11 +19,15 @@ const useEnvironmentsData = (factFilters = [], connectiveSelected, take, skip) =
   });
 
   useEffect(() => {
+    if (activeTab === "Environments") {
+      getEnvironments();
+    }
+
     if (environmentsByFactSearch) {
       setEnvironments(environmentsByFactSearch.environments);
       setEnvironmentsCount(environmentsByFactSearch.count);
     }
-  }, [environmentsByFactSearch]);
+  }, [activeTab, environmentsByFactSearch]);
 
 
   return { environments, environmentsCount, environmentsLoading }

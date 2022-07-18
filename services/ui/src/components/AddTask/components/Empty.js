@@ -1,4 +1,4 @@
 import React from 'react';
 
-export default () => <React.Fragment></React.Fragment>;
-
+const Empty = () => <React.Fragment></React.Fragment>;
+export default Empty;

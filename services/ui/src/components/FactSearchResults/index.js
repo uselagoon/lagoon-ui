@@ -1,12 +1,17 @@
 import React, { useState, useEffect, memo, Suspense, createRef } from "react";
-import * as R from 'ramda';
-
-import css from 'styled-jsx/css';
-import { bp, color, fontSize } from 'lib/variables';
 import moment from 'moment';
 
-import { getLastCreatedDeployment, getLastCompletedDeployment } from 'lib/util';
-import { getFromNowTime } from "components/Dates";
+import { 
+  getProductionEnvironmentSiteStatus,
+  ProductionDeploymentsFromEnvironments,
+  ProductionDeployments,
+  ProductionRouteFromEnvironments,
+  ProductionFrameworkFromEnvironments,
+  ProductionFramework,
+  ProductionLanguageFromEnvironments,
+  ProductionLanguage,
+  environmentCount
+} from 'lib/util';
 import stringInputFilter from './filterLogic';
 import useSortableResultsData from './sortedItems';
 import SiteStatus from 'components/SiteStatus';
@@ -16,100 +21,16 @@ import TableHeader from './TableHeader';
 import ProjectLink from 'components/link/Project';
 import EnvironmentLink from 'components/link/Environment';
 
-import { Grid, Table, Message, Icon, Divider, Header, Rail, Ref } from 'semantic-ui-react';
-import { LoadingRowsContent, LazyLoadingContent } from 'components/Loading';
+import { Grid, Table, Message, Icon, Header, Rail, Ref } from 'semantic-ui-react';
+import { LoadingRowsContent } from 'components/Loading';
 import MainSidebar from 'layouts/MainSidebar';
 import Label from 'components/Label';
 
-const environmentCount = (project) => project && R.countBy(R.prop('environmentType'))(
-  project.environments
-);
-
-const getProductionEnvironmentSiteStatus = (environments) => {
-  if (!environments || environments.length === 0) {
-    return null;
-  }
-
-  const productionEnvironment = environments.filter(e => e.environmentType === "production").shift();
-  return <SiteStatus iconOnly={true} environment={productionEnvironment}/>;
-}
-
-const ProductionRouteFromEnvironments = ({ environments }) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const route = produtionEnvs.length && [...produtionEnvs].shift().route;
-
-  return (
-    route ? <>{route}</> : null
-  )
-}
-
-const ProductionFrameworkFromEnvironments = ({environments}) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const framework = produtionEnvs.length && [...produtionEnvs].shift().facts.filter(f => f.category === 'Framework');
-  const frameworkFact = framework && [...framework].shift();
-
-  return (
-    frameworkFact ?
-      <Label icon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
-  )
-}
-
-const ProductionFramework = ({ environment }) => {
-  const framework = environment && environment.facts.filter(f => f.category === 'Framework');
-  const frameworkFact = framework && [...framework].shift();
-
-  return (
-    frameworkFact ?
-      <Label icon={frameworkFact.name} text={`${frameworkFact.name} ${frameworkFact.value}`} /> : null
-  )
-}
-
-const ProductionLanguageFromEnvironments = ({environments}) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const language = produtionEnvs.length && [...produtionEnvs].shift().facts.filter(f => f.category === 'Programming language');
-  const languageFact = language && [...language].shift();
-
-  return (
-    languageFact ?
-      <Label icon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
-  )
-}
-
-const ProductionLanguage = ({ environment }) => {
-  const language = environment && environment.facts.filter(f => f.category === 'Programming language');
-  const languageFact = language && [...language].shift();
-
-  return (
-    languageFact ?
-      <Label icon={languageFact.name} text={`${languageFact.name} ${languageFact.value}`} /> : null
-  )
-}
-
-const ProductionDeploymentsFromEnvironments = ({environments}) => {
-  const produtionEnvs = environments && environments.filter(e => e.environmentType === "production");
-  const deployments = produtionEnvs.length && [...produtionEnvs].shift().deployments;
-
-  if (deployments.length === 0) {
-    return null;
-  }
-
-  return <div>{getFromNowTime(getLastCreatedDeployment(deployments, true))}</div>;
-}
-
-const ProductionDeployments = ({ environment }) => {
-  const deployments = environment && environment.deployments;
-
-  if (deployments.length === 0) {
-    return null;
-  }
-
-  return <div>{getFromNowTime(getLastCreatedDeployment(deployments, true))}</div>;
-}
 
 /**
  * The list of projects/environments returned from FactSearch.
  */
-const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
+const FactSearchResults = ({ results = [], handleInputSearch, searchEnter, activeTab, loading, sort }) => {
   const { sortedItems, requestSort, getClassNamesFor } = useSortableResultsData(results, activeTab);
   const [toggleDisplay, setToggleDisplay] = useState('list');
 
@@ -118,11 +39,11 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
   const [projectSelected, setProjectSelected] = useState('');
   const [environmentSelected, setEnvironmentSelected] = useState('');
   const [sortSelected, setSort] = useState(sort);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState(searchEnter);
   const [filteredResults, setFilteredResults] = useState(results);
 
-  const ProjectsSidebar = React.lazy(() => import('components/ProjectsSidebar'));
-  const EnvironmentsSidebar = React.lazy(() => import('components/EnvironmentsSidebar'));
+  const ProjectsSidebar = React.lazy(() => import('components/Sidebar/ProjectsSidebar'));
+  const EnvironmentsSidebar = React.lazy(() => import('components/Sidebar/EnvironmentsSidebar'));
 
   const handleSearchInputChange = (input) => {
     setSearchInput(input);
@@ -175,23 +96,18 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
       setFilteredResults(stringInputFilter(sortedItems, searchInput));
     };
 
-    // add 500ms delay to string input
-    // const timeout = setTimeout(() => filterItems(), 500);
-    // return () => clearTimeout(timeout);
-
     filterItems();
   }, [sortedItems, searchInput]);
 
   return (
   <>
-    <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}>
-      <TableHeader searchInput={searchInput} onSearchInputChange={handleSearchInputChange} onDisplayToggleChange={changeDisplay} onSort={handleSort} display={toggleDisplay} />
+    {/* <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}> */}
+      <TableHeader searchInput={searchInput} onSearchInputChange={handleSearchInputChange} onSearch={handleInputSearch} onDisplayToggleChange={changeDisplay} onSort={handleSort} display={toggleDisplay} />
       {loading && <LoadingRowsContent delay={250} rows="25"/>}
       {!loading &&
       <Grid>
         <Grid.Row stretched>
           <Grid.Column>
-            <Suspense fallback={<LazyLoadingContent delay={250} rows="25"/>}>
               <Table sortable selectable celled compact className="results-table">
                 <Table.Header>
                   <Table.Row>
@@ -219,13 +135,13 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
                       className={`framework ${getClassNamesFor('framework')}`}
                       onClick={() => handleSort({ value: 'framework'})}
                     >
-                      <label>Framework <SortIcon sort={'framework'} /></label>
+                      <label>Framework (Production)<SortIcon sort={'framework'} /></label>
                     </Table.HeaderCell>
                     <Table.HeaderCell
                       className={`language ${getClassNamesFor('language')}`}
                       onClick={() => handleSort({ value: 'language'})}
                     >
-                      <label>Language <SortIcon sort={'language'} /></label>
+                      <label>Language (Production)<SortIcon sort={'language'} /></label>
                     </Table.HeaderCell>
                     {activeTab === 'All projects' &&
                       <Table.HeaderCell
@@ -263,7 +179,7 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
                             />
                           </Header>
                           <Header.Subheader size='tiny'>
-                            {isProjectBasedSearch ? <ProductionRouteFromEnvironments environments={result.environments}/> : result.route && result.route}
+                            <ProductionRouteFromEnvironments environments={result.environments} route={result.route} searchInput={searchInput} />
                           </Header.Subheader>
                           {toggleDisplay === 'detailed' &&
                           <div style={{ margin: "1em 0" }}>
@@ -299,12 +215,12 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
                         <Table.Cell selectable textAlign={"center"}>
                           {isProjectBasedSearch &&
                             <ProjectLink className="project-link" projectSlug={result.name} key={result.id}>
-                              <Icon className="project-link" name='angle right' size='large'/>
+                              <Icon fitted className="project-link" name='angle right' size='large'/>
                             </ProjectLink>
                           }
                           {isEnvironmentsBasedSearch &&
                             <EnvironmentLink className="environment-link" projectSlug={result.project.name} environmentSlug={result.openshiftProjectName} key={result.id}>
-                              <Icon className="environment-link" name='angle right' size='large'/>
+                              <Icon fitted className="environment-link" name='angle right' size='large'/>
                             </EnvironmentLink>
                           }
                         </Table.Cell>
@@ -313,7 +229,6 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
                   })}
                 </Table.Body>
               </Table>
-            </Suspense>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -331,7 +246,7 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
       <Ref innerRef={contextRef}>
         <Rail style={{ zIndex: '1', background: 'white' }} close position="right">
           {!loading &&
-          <MainSidebar innerRef={contextRef} selected={projectSelected || environmentSelected}>
+          <MainSidebar innerRef={contextRef} selected={projectSelected || environmentSelected} setProjectSelected={setProjectSelected} setEnvironmentSelected={setEnvironmentSelected}>
             {activeTab === "All projects" &&
               <div className="project-details-sidebar">
                 {loading && <LoadingRowsContent rows="5"/>}
@@ -379,7 +294,7 @@ const FactSearchResults = ({ results = [], activeTab, loading, sort }) => {
           padding: 1em;
         }
       `}</style>
-     </Suspense>
+     {/* </Suspense> */}
     </>
  );
 };

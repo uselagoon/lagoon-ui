@@ -1,5 +1,5 @@
 import React from 'react';
-import mocks, { seed } from 'api/src/mocks';
+import mocks, { seed } from 'mock_data/mocks';
 import Task from './index';
 
 export default {

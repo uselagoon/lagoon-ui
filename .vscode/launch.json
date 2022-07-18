@@ -5,7 +5,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Lagoon UI Next: Chrome",
-      "url": "http://localhost:3003",
+      "url": "http://http://lagoon-ui.docker.amazee.io:8888",
       "webRoot": "${workspaceFolder}/src",
       "sourceMapPathOverrides": {
         "webpack:///./*": "${workspaceFolder}/src/*"

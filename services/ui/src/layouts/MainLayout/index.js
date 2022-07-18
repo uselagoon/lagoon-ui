@@ -7,7 +7,7 @@ import Header from 'components/Header';
  */
 const MainLayout = ({ children }) => (
   <GlobalStyles>
-    <Header />
+    <Header /> 
       <div className="main">
         { children }
       </div>

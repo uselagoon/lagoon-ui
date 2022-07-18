@@ -1,6 +1,6 @@
 import React from 'react';
 import ProblemsByIdentifier from './index';
-import mocks from "api/src/mocks";
+import mocks from "mock_data/mocks";
 import faker from "faker/locale/en";
 
 export default {

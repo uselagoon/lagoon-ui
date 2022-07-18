@@ -1,5 +1,5 @@
 import React from 'react';
-import mocks, { seed } from 'api/src/mocks';
+import mocks, { seed } from 'mock_data/mocks';
 import TaskLink from './Task';
 
 export default {
@@ -12,7 +12,7 @@ const task = mocks.Task();
 
 export const Default = () => (
   <TaskLink
-    taskSlug={task.id}
+    taskId={task.id}
     environmentSlug={task.environment.openshiftProjectName}
     projectSlug={task.environment.project.name}
   >

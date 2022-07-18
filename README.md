@@ -1,4 +1,4 @@
-# Lagoon UI 
+# Lagoon UI
 
 Lagoon UI that primarily only has the Lagoon API and Keycloak services required for rapid development and testing the UI. This repo also includes Storybook and the necessary mock data pulled from uselagoon/lagoon.
 
@@ -15,7 +15,7 @@ Lagoon UI that primarily only has the Lagoon API and Keycloak services required 
 ### Local Development
 
 ```
-make install        # will build all images and run the containers 
+make install        # will build all images and run the containers
 make logs           # to tail all container logs
 make get_creds      # returns an admin API token
 ```
@@ -28,8 +28,9 @@ GRAPHQL_API=http://localhost:3000/graphql
 KEYCLOAK_API=http://localhost:8088/auth
 
 # Pygmy
-GRAPHQL_API=http://lagoon-ui-beta.docker.amazee.io:3000/graphql
-KEYCLOAK_API=http://lagoon-ui-beta.docker.amazee.io:8088/auth
+
+GRAPHQL_API=http://lagoon-ui.docker.amazee.io:3000/graphql
+KEYCLOAK_API=http://lagoon-ui.docker.amazee.io:8088/auth
 
 # Lagoon Core (cluster)
 GRAPHQL_API=http://localhost:7070/graphql
@@ -56,6 +57,14 @@ We can also define our local api and keycloak endpoints to point to our remote a
 ```
 GRAPHQL_API=https://api.lagoon.amazeeio.cloud/graphql
 KEYCLOAK_API=https://keycloak.amazeeio.cloud/auth
+```
+
+## Increasing payload limits when bulk adding projects
+
+```
+// Automatically decode json.
+app.use(json({limit: '250mb'}));
+app.use(express.urlencoded({limit: '250mb'}));
 ```
 
 ### Keycloak

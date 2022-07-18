@@ -1,7 +1,7 @@
 import React from 'react';
 import PageEnvironment from 'pages/projects/[projectSlug]/[environmentSlug]/index.js';
 import EnvironmentByOpenshiftProjectNameQuery from 'lib/query/EnvironmentByOpenshiftProjectName';
-import mocks from "api/src/mocks";
+import mocks from 'mock_data/mocks';
 
 export default {
   component: PageEnvironment,

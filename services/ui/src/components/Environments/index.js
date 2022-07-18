@@ -4,18 +4,17 @@ import css from 'styled-jsx/css';
 import EnvironmentLink from 'components/link/Environment';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
-import moment from 'moment';
 
 import { getLastCompletedDeployment } from 'lib/util';
 
 const bgImages = {
   branch: {
-    normal: "url('/static/images/environment-branch.svg')",
-    hover: "url('/static/images/environment-branch-hover.svg')"
+    normal: "url('/images/environment-branch.svg')",
+    hover: "url('/images/environment-branch-hover.svg')"
   },
   pullrequest: {
-    normal: "url('/static/images/environment-pull-request.svg')",
-    hover: "url('/static/images/environment-pull-request-hover.svg')"
+    normal: "url('/images/environment-pull-request.svg')",
+    hover: "url('/images/environment-pull-request-hover.svg')"
   },
   none: {
     normal: 'none',
@@ -39,20 +38,16 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
       }
 
       &.detailed {
-        min-height: 270px;
+        padding-bottom: 60px;
       }
     }
   }
 `;
 
-const Environments = ({ environments = [], display }) => {
-  if (environments.length === 0) {
-    return null;
-  }
-
+const Environments = ({ project = [], display }) => {
   return (
     <div className="environments">
-      {environments.map(environment => {
+      {project.environments.map(environment => {
         const bgImage = R.propOr(
           bgImages.none,
           environment.deployType,
@@ -68,69 +63,71 @@ const Environments = ({ environments = [], display }) => {
           }
         `;
         const isProduction = environment.environmentType == 'production' && true || false;
-        const isActive = (environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.project.productionEnvironment == environment.name) && true || false;
-        const isStandby = (environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.project.standbyProductionEnvironment == environment.name) && true || false;
+        const isActive = (project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == environment.name) && true || false;
+        const isStandby = (project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == environment.name) && true || false;
         const isPullRequest = (environment.deployType === 'pullrequest') && true;
         const hasLabel = isProduction || isActive || isStandby || false;
+
+          const Labels = () => {
+            return (
+            <>
+              {isProduction && (
+                <div className="productionLabel">
+                  <span>Production</span>
+                </div>
+              )}
+              {isActive && (
+                <div className="activeLabel">
+                  <span>Active</span>
+                </div>
+              )}
+              {isStandby && (
+                <div className="standbyLabel">
+                  <span>Standby</span>
+                </div>
+              )}
+              <label>
+                {isPullRequest
+                  ? 'PR'
+                  : environment.deployType}
+              </label>
+            </>
+        )};
 
         return (
           <div className="environment" key={environment.id}>
             <EnvironmentLink
               environmentSlug={environment.openshiftProjectName}
-              projectSlug={environment.project.name}
+              projectSlug={project.name}
             >
               {display === 'list' && (
                 <Box className={`${boxClassName} ${bgClassName} ${display} ${hasLabel ? 'label' : 'no-label'}`}>
-                  {isProduction && (
-                    <div className="productionLabel">
-                      <span>Production</span>
-                    </div>
-                  )}
-                  {isActive && (
-                    <div className="activeLabel">
-                      <span>Active</span>
-                    </div>
-                  )}
-                  {isStandby && (
-                    <div className="standbyLabel">
-                      <span>Standby</span>
-                    </div>
-                  )}
-                  <label>
-                    {isPullRequest
-                      ? 'PR'
-                      : environment.deployType}
-                  </label>
+                   <Labels />
                   <h4>{environment.name}</h4>
+                  {environment.deployments.length !== 0 &&
+                  <div className="last-deployed">
+                    {getLastCompletedDeployment(environment.deployments) && 
+                      <>
+                        <div>Last deployed:</div>
+                        <div>{getLastCompletedDeployment(environment.deployments, false)}</div>
+                      </>
+                    }
+                  </div>
+                }
                 </Box>
               )}
               {display === 'detailed' && (
               <Box className={`${boxClassName} ${bgClassName} ${display} ${hasLabel ? 'label' : 'no-label'}`}>
-                 {isProduction && (
-                  <div className="productionLabel">
-                    <span>Production</span>
-                  </div>
-                )}
-                {isActive && (
-                  <div className="activeLabel">
-                    <span>Active</span>
-                  </div>
-                )}
-                {isStandby && (
-                  <div className="standbyLabel">
-                    <span>Standby</span>
-                  </div>
-                )}
-                <label>
-                  {isPullRequest
-                    ? 'PR'
-                    : environment.deployType}
-                </label>
+                <Labels />
                 <h4>{environment.name}</h4>
                 {environment.deployments.length !== 0 &&
                   <div className="last-deployed">
-                    <div>Last deployed:</div>
-                    {getLastCompletedDeployment(environment.deployments)}
+                    {getLastCompletedDeployment(environment.deployments) && 
+                      <>
+                        <div>Last deployed:</div>
+                        <div>{getLastCompletedDeployment(environment.deployments, false)}</div>
+                      </>
+                    }
                   </div>
                 }
                 {environment.facts && environment.facts.map((f, index) => {
