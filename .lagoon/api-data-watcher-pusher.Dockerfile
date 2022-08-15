@@ -1,4 +1,4 @@
-FROM alpine:3.13.5
+FROM alpine:3.15.4
 
 RUN apk add --no-cache \
     bash \
@@ -20,10 +20,10 @@ ENV JWTSECRET=super-secret-string \
 RUN git clone --no-checkout --filter=blob:none --sparse https://github.com/uselagoon/lagoon.git "./tmp/" \
     && cd "./tmp/" \
     && git sparse-checkout set local-dev/api-data-watcher-pusher \
-    && git checkout feature/facts-search-api-changes \
+    && git checkout main \
     && cd "/" && mv "./tmp/local-dev" "/"
 
-CMD cp -R ./local-dev/api-data-watcher-pusher/api-data / && \
+CMD cp -R ./local-dev/api-data-watcher-pusher/api-data /home/api-data && \
     cp ./local-dev/api-data-watcher-pusher/api-watch-push.sh /home/ && \
     cp ./local-dev/api-data-watcher-pusher/create_jwt.py /home/ && \
     tini -- "/home/api-watch-push.sh"

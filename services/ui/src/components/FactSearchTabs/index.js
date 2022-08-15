@@ -16,24 +16,15 @@ const FactSearchTabs = ({ activeTab, onActiveTabChange }) => {
         active={activeTab === 'All projects'}
         onClick={handleActiveTabCallback}
       >
-        <h4 className={`project-menu-link ${activeTab === 'All projects' && `active`}`}>All Projects</h4>
+        <h2 className={`project-menu-link projects ${activeTab === 'All projects' && `active`}`}>All Projects</h2>
       </Menu.Item>
       <Menu.Item
         name='Environments'
         active={activeTab === 'Environments'}
         onClick={handleActiveTabCallback}
       >
-        <h5 className={`project-menu-link ${activeTab === 'Environments' && `active`}`}>Environments</h5>
+        <h2 className={`project-menu-link environments ${activeTab === 'Environments' && `active`}`}>Environments</h2>
       </Menu.Item>
-      <style jsx>{`
-        h4 {
-          font-size: 1.5em;
-          line-height: 1;
-        }
-        // .active {
-        //   color: blue;
-        // }
-      `}</style>
     </Menu>
   )
 };

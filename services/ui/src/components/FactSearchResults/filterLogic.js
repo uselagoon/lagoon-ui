@@ -1,7 +1,10 @@
 const stringInputFilter = (results, searchInput) => results.filter(key => {
-
+  if (!searchInput) {
+    return results;
+  }
+  
   const produtionEnvs = key.environments ? key.environments.filter(e => e.environmentType === "production") : key;
-  const environment = produtionEnvs.length ? [...produtionEnvs].shift(): key;
+  const environment = produtionEnvs.length ? [...produtionEnvs].shift() : key;
 
   let filterByName = '';
   filterByName = key.name && key.name

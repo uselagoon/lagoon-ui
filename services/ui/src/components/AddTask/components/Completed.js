@@ -1,3 +1,4 @@
 import React from 'react';
 
-export default () => <div>Task added.</div>;
+const Completed = () => <div>Task added.</div>;
+export default Completed;

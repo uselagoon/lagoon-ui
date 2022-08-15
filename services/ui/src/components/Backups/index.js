@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react';
-import css from 'styled-jsx/css';
+import SelectFilter from 'components/Filters';
+import { RESULTS_LIMIT_OPTIONS } from 'lib/util';
 import moment from 'moment';
 import RestoreButton from 'components/RestoreButton';
 import { bp, color, fontSize } from 'lib/variables';
 
-const Backups = ({ backups, fetchMore }) => {
+const Backups = ({ 
+  backups,
+  resultsLimit,
+  resultsLimitOptions,
+  handleResultsLimitChange,
+  fetchMore
+}) => {
 
   useEffect(() => {
     if (fetchMore) {
@@ -14,6 +21,17 @@ const Backups = ({ backups, fetchMore }) => {
 
   return (
     <div className="backups">
+      <div className="filters-wrapper">
+        <div className="select-filters">
+          <SelectFilter
+            title="Show"
+            loading={!resultsLimit}
+            defaultValue={{ value: resultsLimit.value, label: resultsLimit.label }}
+            options={RESULTS_LIMIT_OPTIONS && resultsLimitOptions(RESULTS_LIMIT_OPTIONS)}
+            onFilterChange={handleResultsLimitChange}
+          />
+        </div>
+      </div>
       <div className="header">
         <label className="source">Source</label>
         <label className="created">Created</label>

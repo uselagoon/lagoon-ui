@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const getLinkData = (environmentSlug, projectSlug) => ({
   urlObject: {
-    pathname: '/facts',
+    pathname: '/projects/[projectSlug]/[environmentSlug]/facts',
     query: { openshiftProjectName: environmentSlug }
   },
   asPath: `/projects/${projectSlug}/${environmentSlug}/facts`

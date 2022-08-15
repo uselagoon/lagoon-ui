@@ -1,28 +1,28 @@
 import Link from 'next/link';
 
-export const getLinkData = (deploymentSlug, environmentSlug, projectSlug) => ({
+export const getLinkData = (deploymentName, environmentSlug, projectSlug) => ({
   urlObject: {
-    pathname: '/deployment',
+    pathname: '/projects/[projectSlug]/[environmentSlug]/deployments/[deploymentName]',
     query: {
       openshiftProjectName: environmentSlug,
-      deploymentName: deploymentSlug
+      deploymentName: deploymentName
     }
   },
-  asPath: `/projects/${projectSlug}/${environmentSlug}/deployments/${deploymentSlug}`
+  asPath: `/projects/${projectSlug}/${environmentSlug}/deployments/${deploymentName}`
 });
 
 /**
  * Links to the deployment page given the deployment name, the project name and the openshift project name.
  */
 const DeploymentLink = ({
-  deploymentSlug,
+  deploymentName,
   environmentSlug,
   projectSlug,
   children,
   className = null,
   prefetch = false
 }) => {
-  const linkData = getLinkData(deploymentSlug, environmentSlug, projectSlug);
+  const linkData = getLinkData(deploymentName, environmentSlug, projectSlug);
 
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>

@@ -16,7 +16,7 @@ export default gql`
           created
           gitUrl
         }
-        deployments {
+        deployments(limit: 5) {
           id
           name
           status
@@ -31,11 +31,6 @@ export default gql`
           keyFact
           category
           type
-          references {
-            id
-            fid
-            name
-          }
         }
       }
     }

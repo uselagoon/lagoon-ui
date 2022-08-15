@@ -8,7 +8,7 @@ const Footer = () => (
   <footer>
     <Segment basic size="small">
       <Header size={"small"}>
-        <Image src='/static/images/lagoon-2.svg' avatar /><span className="version">Lagoon {`${publicRuntimeConfig.LAGOON_VERSION}`}</span>
+        <Image src='/images/lagoon-2.svg' avatar /><span className="version">Lagoon {`${publicRuntimeConfig.LAGOON_VERSION}`}</span>
       </Header>
     </Segment>
     <style jsx>{`

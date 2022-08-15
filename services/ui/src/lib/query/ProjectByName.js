@@ -23,18 +23,11 @@ export default gql`
         openshiftProjectName
         route
         deployments {
+          created
           completed
         }
         facts {
           ...factFields
-        }
-        project {
-          id
-          name
-          productionEnvironment
-          standbyProductionEnvironment
-          problemsUi
-          factsUi
         }
       }
     }

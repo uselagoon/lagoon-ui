@@ -17,8 +17,8 @@ const useSortableData = (initialItems, initialConfig) => {
 
         if (sortConfig !== null) {
             sortableItems.sort((a, b) => {
-                let aParsed = a[sortConfig.key].toString().toLowerCase().trim();
-                let bParsed = b[sortConfig.key].toString().toLowerCase().trim();
+                let aParsed = a[sortConfig.key] ? a[sortConfig.key].toString().toLowerCase().trim() : "";
+                let bParsed = b[sortConfig.key] ? b[sortConfig.key].toString().toLowerCase().trim() : "";
 
                 if (aParsed < bParsed) return sortConfig.direction === 'ascending' ? -1 : 1;
                 if (aParsed > bParsed) return sortConfig.direction === 'ascending' ? 1 : -1;
@@ -29,7 +29,7 @@ const useSortableData = (initialItems, initialConfig) => {
         return sortableItems;
     }, [currentItems, sortConfig]);
 
-    if (hash(sortedItems) !== hash(currentItems)) {
+    if (sortedItems && hash(sortedItems) !== hash(currentItems)) {
         setCurrentItems(sortedItems);
     }
 

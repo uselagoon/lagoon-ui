@@ -1,6 +1,6 @@
 import React from 'react';
 import Environments from './index';
-import mocks from 'api/src/mocks';
+import mocks from 'mock_data/mocks';
 
 export default {
   component: Environments,

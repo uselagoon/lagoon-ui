@@ -8,6 +8,7 @@ const GlobalStyles = ({ children }) => (
   <>
     { children }
     <style jsx global>{`
+    :global(#__next) {
       * {
         box-sizing: border-box;
       }
@@ -23,7 +24,7 @@ const GlobalStyles = ({ children }) => (
       }
 
       .main {
-        padding-top: 50px;
+        padding-top: 55px;
       }
 
       footer {
@@ -32,7 +33,7 @@ const GlobalStyles = ({ children }) => (
         width: 100%;
       }
 
-      .content-wrapper {
+       .content-wrapper {
         background-color: ${color.almostWhite};
         flex: 1;
         flex-direction: column;
@@ -60,16 +61,108 @@ const GlobalStyles = ({ children }) => (
         }
       }
 
+      .loading-wrapper {
+        padding: 4em;
+      }
+
+      .filters-wrapper {
+        padding: 0em 1em;
+        
+        .select-filters {
+          display: flex;
+          flex-direction: column;
+
+          @media ${bp.wideUp} {
+            flex-flow: row;
+          }
+
+          .stackable {
+            width: 100%;
+          }
+
+          &:first-child {
+            padding-bottom: 1em;
+          }
+        }
+      }
+
+      .text-large {
+        font-size: 1.4em;
+      }
+
+      // Colours
+
+      .red {
+        color: ${color.red};
+      }
+
+      .blue {
+        color: ${color.blue};
+      }
+
+      .yellow {
+        color: ${color.lightestBlue};
+      }
+
+      .grey {
+        color: ${color.grey};
+      }
+
+      input#filter {
+        width: 100%;
+        border: none;
+        padding: 10px 20px;
+        margin: 0;
+      }
+
+      .button-sort {
+        color: #5f6f7a;
+        font-family: 'source-code-pro',sans-serif;
+        font-size: 12px;
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        text-transform: uppercase;
+        text-align: center;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+        width: calc(100% / 6);
+
+        &.identifier {
+          text-align: left;
+        }
+
+        &.ascending:after {
+          content: ' \\25B2';
+        }
+
+        &.descending:after {
+          content: ' \\25BC';
+        }
+      }
+
+      .data-none {
+        border: 1px solid ${color.white};
+        border-bottom: 1px solid ${color.lightestGrey};
+        border-radius: 3px;
+        line-height: 1.5rem;
+        padding: 8px 0 7px 0;
+        text-align: center;
+      }
+
       img.ui.image.lagoon-logo {
         font-size: 0.6em;
         margin-right: 5px;
       }
 
+      //
       // Semantic UI overrides
+      //
       .ui.left.sidebar.navigation {
-        width: 230px;
+        width: 12.5%;
         box-shadow: none;
-        padding: 4em 0 0;
+        padding: 3.75em 0 0;
 
         .menu {
           border: none;
@@ -77,11 +170,23 @@ const GlobalStyles = ({ children }) => (
           box-shadow: none;
           margin: auto;
           width: 100%;
+          padding: 0.5em 0;
+        }
+
+        .item {
+          .header {
+            margin-bottom: 0;
+          }
         }
 
         i {
           font-size: 1.25em;
         }
+      }
+
+      .ui.secondary.header-menu.menu {
+        justify-content: flex-end;
+        margin-right: 4em;
       }
 
       .ui.right.sidebar.projects {
@@ -139,8 +244,108 @@ const GlobalStyles = ({ children }) => (
         padding: 0 10px;
       }
 
+      .logo {
+        max-width: 90px;
+      }
+
+      .search-container {
+        display: flex;
+        flex: auto;
+        flex-direction: row;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-wrap: nowrap;
+        margin-right: 16px;
+        align-self: stretch;
+        align-items: center;
+        order: inherit;
+        overflow-wrap: break-word;
+
+        width: 100%;
+        padding-left: 0;
+
+        .search-wrapper {
+          display: flex;
+          flex: auto;
+          flex-direction: row;
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-wrap: nowrap;
+          align-self: stretch;
+          align-items: center;
+          max-width: 14em;
+          margin-right: 1em;
+
+          transition: 0.5s ease-in-out;
+          transition-property: max-width,padding-bottom,padding-top;
+
+          &:focus-within {
+            max-width: 30em;
+          }
+
+          .search-input {
+            flex: auto;
+            display: flex;
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+
+            .input {
+              width: 100%;
+            }
+
+            input {
+              display: flex;
+              flex: auto;
+              width: 100%;
+              max-width: 100%;
+            }
+
+            &.active, &.focus {
+              max-width: 100%;
+              width: 100%;
+            
+              input {
+                max-width: 100%;
+                width: 100%;
+              }
+            }
+
+          }
+        }
+
+        .icon-spacing {
+          padding: 10px;
+          vertical-align: text-top;
+        }
+      }
+
+      .label {
+        width: 100%;
+      }
+
       .no-padding-bottom {
         padding-bottom: 0 !important;
+      }
+      
+      .ui.search {
+        width: 100%;
+
+        transition: 0.5s ease-in-out;
+        transition-property: max-width,padding-bottom,padding-top;
+      }
+      .ui.search>.results {
+        max-width: 7em;
+        width: 100%;
+      }
+      .ui.search>.results.visible {
+        max-width: 30em;
+        width: 100%;
+      }
+      
+      .ui.label.deployment {
+        min-width: 120px;
+        padding-left: 1em;
       }
 
       .deployments i.icon.circle.deployment-status {
@@ -154,6 +359,19 @@ const GlobalStyles = ({ children }) => (
           50% {
             opacity: 0;
           }
+        }
+      }
+
+      .scroll-wrapper {
+        position: fixed;
+        display: inline-flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        right: 8%;
+        bottom: 2.33em;
+        
+        .scroll {
+          margin-bottom: 1em;
         }
       }
 
@@ -174,12 +392,12 @@ const GlobalStyles = ({ children }) => (
         &.visible {
           right: 330px;
           left: auto;
-          -webkit-transition: -webkit-transform 500ms ease;
-          transition: -webkit-transform 500ms ease;
-          transition: right 500ms ease;
-          transition: right 500ms ease, -webkit-transform 500ms ease;
+          -webkit-transition: -webkit-transform 400ms ease;
+          transition: -webkit-transform 400ms ease;
+          transition: right 400ms ease;
+          transition: right 400ms ease, -webkit-transform 400ms ease;
           will-change: right;
-          transition-delay: 0s;
+          transition-delay: 0.1s;
         }
 
         .sidebar-button-sticky .ui.button {
@@ -222,41 +440,14 @@ const GlobalStyles = ({ children }) => (
         }
       }
 
-      a {
-        color: ${color.black};
-        text-decoration: none;
-
-        &.hover-state {
-          position: relative;
-          transition: all 0.2s ease-in-out;
-
-          &::before,
-          &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 0;
-            height: 1px;
-            transition: all 0.2s ease-in-out;
-            transition-duration: 0.75s;
-            opacity: 0;
-          }
-          &::after {
-            left: 0;
-            background-color: ${color.linkBlue};
-          }
-          &:hover {
-            &::before,
-            &::after {
-              width: 100%;
-              opacity: 1;
-            }
-          }
-        }
+      a.project-link {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
       }
 
-      p {
-        margin: 0 0 1.25rem;
+      .sidebar a.project-link {
+        justify-content: space-between;
       }
 
       p a {
@@ -273,35 +464,44 @@ const GlobalStyles = ({ children }) => (
       }
 
       h2 {
-        font-size: ${fontSize(36)};
-        line-height: ${lineHeight(42)};
+        font-size: ${fontSize(28)};
+        line-height: ${lineHeight(32)};
         font-weight: normal;
-        margin: 0 0 38px;
+        margin: 0 0 24px;
       }
 
       h3 {
-        font-size: ${fontSize(30)};
-        line-height: ${lineHeight(42)};
+        font-size: ${fontSize(24)};
+        line-height: ${lineHeight(30)};
         font-weight: normal;
-        margin: 0 0 36px;
+        margin: 0 0 16px;
       }
 
       h4 {
-        font-size: ${fontSize(25)};
-        line-height: ${lineHeight(38)};
+        font-size: ${fontSize(20)};
+        line-height: ${lineHeight(24)};
         font-weight: normal;
         margin: 4px 0 0;
       }
 
+      .project-menu-link {
+        &.projects {
+          font-size: ${fontSize(22)};
+          line-height: ${lineHeight(24)};
+          margin: 0;
+        }
+        &.environments {
+          font-size: ${fontSize(18)};
+          line-height: ${lineHeight(24)};
+          margin: 0;
+        }
+      }
+
       ul {
         list-style: none;
-        margin: 0 0 1.25rem;
-        padding-left: 0;
 
         li {
-          background-size: 8px;
-          margin-bottom: 1.25rem;
-          padding-left: 20px;
+          padding-left: 0;
 
           a {
             text-decoration: none;
@@ -353,10 +553,44 @@ const GlobalStyles = ({ children }) => (
       }
 
     .ui.fluid.card.basic {
-      border: 1px solid #f7f7f7;
+      border: 1px solid #eee;
       box-shadow: none;
+    }
+  }
+
+  a {
+    color: ${color.black};
+    text-decoration: none;
+
+    &.hover-state {
+      position: relative;
+      transition: all 0.2s ease-in-out;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 0;
+        height: 1px;
+        transition: all 0.2s ease-in-out;
+        transition-duration: 0.75s;
+        opacity: 0;
       }
-    `}</style>
+      &::after {
+        left: 0;
+        background-color: ${color.linkBlue};
+      }
+      &:hover {
+        &::before,
+        &::after {
+          width: 100%;
+          opacity: 1;
+        }
+      }
+    }
+  }
+  `}</style>
   </>
 );
 

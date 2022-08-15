@@ -41,7 +41,7 @@ export const PageTask = ({ router }) => {
                   <Navigation />
                 </MainNavigation>
               </Grid.Column>
-              <Grid.Column width={14} style={{ padding: "1em 4em" }}>
+              <Grid.Column width={14} style={{ padding: "0 4em" }}>
               {error &&
                 <Message negative>
                   <Message.Header>Error: Unable to load task</Message.Header>

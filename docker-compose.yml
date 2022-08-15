@@ -2,14 +2,16 @@ version: '3.2'
 
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
-  &lagoon-project lagoon-ui-beta
+  &lagoon-project lagoon-ui
 
 x-environment: &default-environment
   LAGOON_PROJECT: *lagoon-project
   # Route that should be used locally, if you are using pygmy, this route *must* end with .docker.amazee.io
-  LAGOON_ROUTE: &default-url http://lagoon-ui-beta.docker.amazee.io
+  LAGOON_ROUTE: &default-url http://lagoon-ui.docker.amazee.io
   # Uncomment if you like to have the system behave like in production
   #LAGOON_ENVIRONMENT_TYPE: production
+  GRAPHQL_API: "${GRAPHQL_API:-http://localhost:3000/graphql}"
+  KEYCLOAK_API: "${KEYCLOAK_API:-http://localhost:8088/auth}"
 
 services:
   ui:
@@ -18,24 +20,28 @@ services:
       dockerfile: .lagoon/ui.Dockerfile
     labels:
       lagoon.type: node
-    # depends_on:
-    #   - 'api-db'
-    #   - 'api'
-    # command: yarn run dev
+    depends_on:
+      - 'api-db'
+      - 'api'
+    # command: yarn run start
+    command: yarn run dev
     volumes:
-      - ./services/ui/src:/app/services/ui/src
-      - ./services/ui/.env.defaults:/app/services/ui/.env.defaults
-      - ./services/ui/.env.schema:/app/services/ui/.env.schema
-      - ./services/ui/package.json:/app/services/ui/package.json
+      - ./services/ui/src:/app/src
+      - ./services/ui/.env.defaults:/app/.env.defaults
+      - ./services/ui/.env.schema:/app/.env.schema
+      - ./services/ui/package.json:/app/package.json
+      - ./services/ui/api-db-seeding:/app/api-db-seeding
     ports:
       - '8888:3000'
+      - '3003:3003'
     networks:
       - amazeeio-network
       - default
     environment:
       <<: *default-environment
   api-db:
-    image: timmclifford/lagoon-api-db:facts-search
+    # image: uselagoon/api-db
+    image: uselagoon/api-db
     labels:
       lagoon.type: none
     ports:
@@ -49,7 +55,6 @@ services:
     build:
       context: .
       dockerfile: .lagoon/api.Dockerfile
-    # image: timmclifford/lagoon-api:facts-search
     depends_on:
       - api-db
       - keycloak
@@ -58,12 +63,14 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./services/api:/app/mock-data
+      - ./services/api:/services/api
+      - ./services/mock-data:/mock-data
     networks:
       - amazeeio-network
       - default
     environment:
       <<: *default-environment
+      S3_INSIGHTS_BUCKET: "lagoon-files"
   api-redis:
     image: uselagoon/api-redis
     labels:
@@ -71,12 +78,17 @@ services:
     environment:
       <<: *default-environment
   keycloak:
-    image: uselagoon/keycloak
-    user: '111111111'
+    image: testlagoon/keycloak
+    # build:
+    #   context: .
+    #   dockerfile: .lagoon/keycloak.Dockerfile
+    # user: '111111111'
     depends_on:
       - keycloak-db
     labels:
       lagoon.type: none
+    # volumes:
+    #   - .lagoon/start.sh:/opt/jboss/tools/start.sh
     ports:
       - '8088:8080'
     environment:
@@ -90,35 +102,44 @@ services:
     environment:
       <<: *default-environment
   local-api-data-watcher-pusher:
-    build:
-      context: .
-      dockerfile: .lagoon/api-data-watcher-pusher.Dockerfile
+    image: uselagoon/local-api-data-watcher-pusher
     labels:
       lagoon.type: none
     depends_on:
       - api
-    volumes:
-      - ./local-dev/api-data:/api-data
-      - ./local-dev/api-data-watcher-pusher:/home
+    # volumes:
+    #   - ./local-dev/api-data-watcher-pusher:/home
+  local-minio:
+    image: minio/minio
+    labels:
+      lagoon.type: none
+    entrypoint: sh
+    command: -c 'mkdir -p /export/lagoon-files && mkdir -p /export/harbor-images && minio server /export --console-address ":9001" '
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
   broker:
     image: uselagoon/broker-single
     labels:
       lagoon.type: none
+    restart: on-failure
     ports:
       - '15672:15672'
       - '5672:5672'
-  webhook-handler:
-    image: uselagoon/webhook-handler
-    command: yarn run dev
+    networks:
+      - amazeeio-network
+  insights-handler:
+    image: uselagoon/insights-handler:main
     labels:
       lagoon.type: none
-    ports:
-      - '7777:3000'
-  webhooks2tasks:
-    image: uselagoon/webhooks2tasks
-    command: yarn run dev
-    labels:
-      lagoon.type: none
+    entrypoint: sh
+    command: -c './insights-handler -rabbitmq-username=guest -rabbitmq-password=guest -rabbitmq-hostname=broker -s3-host=http://local-minio:9000 -s3-bucket=lagoon-files -s3-usessl=false -lagoon-api-host=http://api:3000/graphql -jwt-token-signing-key=super-secret-string --debug'
+    networks:
+      - amazeeio-network
+      - default
 
 networks:
   amazeeio-network:

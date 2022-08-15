@@ -1,24 +1,32 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import giturlparse from 'git-url-parse';
-import Environments from 'components/Environments';
 import { Grid } from 'semantic-ui-react';
 
 import { bp, color, fontSize, lineHeight } from 'lib/variables';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { Mutation } from '@apollo/client/react/components';
-import ProjectByNameQuery from 'lib/query/ProjectByName';
-
 const ProjectDetailsHeader = ({ project }) => {
   const [copied, setCopied] = useState(false);
-  const gitUrlParsed = project && giturlparse(project.gitUrl);
-  const gitLink = gitUrlParsed && `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
-  const environmentCount = project && R.countBy(R.prop('environmentType'))(
-    project.environments
-  );
-  const developEnvironmentCount = environmentCount && R.propOr(0, 'development', environmentCount);
+  const [gitUrlParsed, setUrlParsed] = useState(false);
+  const [gitLink, setGitLink] = useState(false);
+  const [developEnvironmentCount, setDevelopEnvironmentCount] = useState(false);
+
+  useEffect(() => {
+    if (!project) return;
+
+    if (project) {
+      setUrlParsed(project.gitUrl && giturlparse(project.gitUrl));
+      setGitLink(gitUrlParsed && `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`);
+
+      let environmentCount = 0;
+      if (!R.isEmpty({}) && typeof(project.environments) !== 'undefined' && project.environments != null) {
+         environmentCount = R.countBy(R.prop('environmentType'))(project.environments);
+      }
+      setDevelopEnvironmentCount(R.propOr(0, 'development', environmentCount));
+    }
+  }, [project]);
 
   return (
     <div className="details">
@@ -111,7 +119,7 @@ const ProjectDetailsHeader = ({ project }) => {
       </Grid>
       <style jsx>{`
         .details {
-          padding: 0 calc((100vw / 16) * 1);
+          padding: 2em;
 
           .field-wrapper {
             &.giturl {
@@ -139,7 +147,7 @@ const ProjectDetailsHeader = ({ project }) => {
               }
 
               .copy {
-                background: url('/static/images/copy.svg') center center no-repeat ${color.white};
+                background: url('/images/copy.svg') center center no-repeat ${color.white};
                 background-size: 16px;
                 border-left: 1px solid ${color.lightestGrey};
                 bottom: 0;

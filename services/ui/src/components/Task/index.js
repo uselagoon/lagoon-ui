@@ -108,21 +108,21 @@ const Task = ({ task }) => (
 
           &.created {
             &::before {
-              background-image: url('/static/images/created.svg');
+              background-image: url('/images/created.svg');
               background-size: 17px 16px;
             }
           }
 
           &.command {
             &::before {
-              background-image: url('/static/images/command.svg');
+              background-image: url('/images/command.svg');
               background-size: 16px;
             }
           }
 
           &.service {
             &::before {
-              background-image: url('/static/images/service.svg');
+              background-image: url('/images/service.svg');
               background-size: 16px;
             }
           }
@@ -134,19 +134,19 @@ const Task = ({ task }) => (
 
             &.active {
               &::before {
-                background-image: url('/static/images/in-progress.svg');
+                background-image: url('/images/in-progress.svg');
               }
             }
 
             &.failed {
               &::before {
-                background-image: url('/static/images/failed.svg');
+                background-image: url('/images/failed.svg');
               }
             }
 
             &.succeeded {
               &::before {
-                background-image: url('/static/images/successful.svg');
+                background-image: url('/images/successful.svg');
               }
             }
           }
@@ -164,7 +164,7 @@ const Task = ({ task }) => (
 
           &.files {
             &::before {
-              background-image: url('/static/images/files.svg');
+              background-image: url('/images/files.svg');
             }
 
             ul.field {

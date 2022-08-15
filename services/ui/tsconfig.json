@@ -1,10 +1,23 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": false,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      // "components/*": [
+      //   "src/components/*"
+      // ],
+      // "lib/*": [
+      //   "src/lib/*"
+      // ],
+    },
+    "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -12,22 +25,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noImplicitAny": false,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types",
-      "./generated/types",
-      "./src/api/generated/graphql"
-    ],
-    "jsx": "preserve",
-    "baseUrl": "./",
-    "paths": {
-      "@components/*": ["./components/*"]
-    }
+    "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "transpileOnly": true
-  }
+  "include": [
+    "../next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

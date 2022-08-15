@@ -15,7 +15,7 @@ export default gql`
           route
           openshiftProjectName
           environmentType
-          deployments {
+          deployments(limit: 5) {
             id
             name
             status
@@ -30,11 +30,6 @@ export default gql`
             keyFact
             category
             type
-            references {
-              id
-              fid
-              name
-            }
           }
         }
       }

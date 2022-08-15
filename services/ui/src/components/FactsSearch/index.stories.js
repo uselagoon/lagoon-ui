@@ -3,7 +3,7 @@ import { Query } from '@apollo/client/react/components';
 import AllProjectsFromFacts from 'lib/query/AllProjectsFromFacts';
 import MainLayout from 'layouts/MainLayout';
 import FactSearch from './index';
-import mocks from "api/src/mocks";
+import mocks from "mock_data/mocks";
 
 export default {
   component: FactSearch,
