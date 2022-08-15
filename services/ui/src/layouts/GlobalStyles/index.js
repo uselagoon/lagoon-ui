@@ -280,7 +280,7 @@ const GlobalStyles = ({ children }) => (
           transition-property: max-width,padding-bottom,padding-top;
 
           &:focus-within {
-            max-width: 38em;
+            max-width: 30em;
           }
 
           .search-input {

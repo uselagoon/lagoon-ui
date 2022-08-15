@@ -25,11 +25,12 @@ const ProfilePage = () => {
     fetchPolicy: "cache-and-network"
   });
 
-  const { loading: loadingProjects, projectsError, data: { allProjects: mostActiveProjects } = {}} = useQuery(MostActiveProjects, {
+  const { loading: loadingProjects, projectsError, data: { uiProjects: mostActiveProjects } = {}} = useQuery(MostActiveProjects, {
     variables: {},
   }) || {};
 
   const onChange = (e, { name, value }) => {
+    e.preventDefault();
     setSelectedProjects(value);
   }
 
@@ -45,7 +46,6 @@ const ProfilePage = () => {
     return projects;
   }
 
-
   useEffect(() => {
     if (mostActiveProjects) {
       setProjectsList(mostActiveProjects.map(p => ({
@@ -53,10 +53,8 @@ const ProfilePage = () => {
         text: p.name,
         value: p.name
       })));
-      // setLoadingProjects(loadingProjects);
-
     }
-  }, [mostActiveProjects, loadingProjects, projectsError]);
+  }, [projectsFromLocalStorage, mostActiveProjects, loadingProjects, projectsError]);
 
   return (
   <>
@@ -78,21 +76,21 @@ const ProfilePage = () => {
                 <h2>Profile</h2>
                 <Form.Field>
                   <label>Email</label>
-                  <input placeholder='Email' value={data && data.me.email} />
+                  <input placeholder='Email' defaultValue={data && data.me.email} />
                 </Form.Field>
                 <Form.Field>
                   <label>First Name</label>
-                  <input placeholder='First name' value={data && data.me.firstName} />
+                  <input placeholder='First name' defaultValue={data && data.me.firstName} />
                 </Form.Field>
                 <Form.Field>
                   <label>Last Name</label>
-                  <input placeholder='Last name' value={data && data.me.lastName} />
+                  <input placeholder='Last name' defaultValue={data && data.me.lastName} />
                 </Form.Field>
                 <Form.Field>
                   <label>Pinned Projects</label>
                     {!loadingProjects && projectsList &&
                       <Dropdown
-                        placeholder='State'
+                        placeholder='Projects...'
                         fluid
                         multiple
                         search
@@ -100,11 +98,11 @@ const ProfilePage = () => {
                         loading={loadingProjects || projectsFromLocalStorage == null}
                         options={projectsList}
                         onChange={onChange}
-                        value={selectedProjects || preloadProjects()}
+                        defaultValue={preloadProjects()}
                       />
                     }
                 </Form.Field>
-                <Button type='submit'>Submit</Button>
+                <Button type='submit'>Update</Button>
             </Form>
           </div>
         </div>

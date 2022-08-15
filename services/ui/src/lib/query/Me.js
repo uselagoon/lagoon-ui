@@ -7,11 +7,11 @@ export default gql`
       firstName
       lastName
       email
-      groups {
-        id
-        name
-        type
-      }
+      # groups {
+      #   id
+      #   name
+      #   type
+      # }
       sshKeys {
         id
         name,

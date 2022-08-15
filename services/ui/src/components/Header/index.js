@@ -21,6 +21,8 @@ function regExpEscape(literal_string) {
     return literal_string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
 }
 
+const MAX_RESULTS_SHOWN = 5;
+
 /**
  * Displays the header using the provided logo.
  */
@@ -29,8 +31,11 @@ const Header = ({ logo }) => {
   const [resultsMenuOpen, setResultsMenuOpen] = useState(false);
   const router = useRouter();
 
-  const { loading: loadingProjects, projectsError, data: { allProjects: projects } = {}} = apolloClient && useQuery(MostActiveProjects, {
-    variables: {},
+  const { loading: loadingProjects, projectsError, data: { uiProjects: projects } = {}} = apolloClient && useQuery(MostActiveProjects, {
+    variables: {
+      // limit: 25,
+      // skip: 0
+    },
   }) || {};
 
   const resultRenderer = ({ name }) => {
@@ -54,8 +59,8 @@ const Header = ({ logo }) => {
     name: o.name,
     title: o.name,
     image: '',
-    shortDesc: o.shortDescription || '',
-    fullDesc: o.fullDescription || ''
+    shortdesc: o.shortDescription || '',
+    fulldesc: o.fullDescription || ''
   }));
 
   const initialState = {
@@ -66,7 +71,6 @@ const Header = ({ logo }) => {
 
   const [state, dispatch] = useReducer(searchResultsReducer, [initialState]);
   const { loading, results, value } = state;
-
 
 
   const noResults = () => {
@@ -107,13 +111,13 @@ const Header = ({ logo }) => {
 
     // Bug: convert results into new object since some semantic-ui props are enforced
     // https://github.com/Semantic-Org/Semantic-UI-React/issues/1141
-    const convReults = projects && mapToSearchResult(projects)
+    const convResults = projects ? mapToSearchResult(projects) : []
 
     timeoutRef.current = setTimeout(() => {
       if (data.value == undefined || data.value == "") {
         dispatch({
           type: 'FINISH_SEARCH',
-          results: projects ? convReults : [],
+          results: convResults
         })
         return;
       }
@@ -125,7 +129,7 @@ const Header = ({ logo }) => {
   
         dispatch({
           type: 'FINISH_SEARCH',
-          results: projects ? convReults : [],
+          results: convResults
         })
       }
     }, 300);
@@ -142,7 +146,7 @@ const Header = ({ logo }) => {
     clearTimeout(timeoutRef.current);
     dispatch({ type: 'START_SEARCH', query: data.value });
 
-    const convReults = projects && mapToSearchResult(projects)
+   const convResults = projects ? mapToSearchResult(projects) : []
 
     timeoutRef.current = setTimeout(() => {
       if (data.value.length === 0) {
@@ -155,7 +159,7 @@ const Header = ({ logo }) => {
 
       dispatch({
         type: 'FINISH_SEARCH',
-        results: projects ? convReults.filter(isMatch) : [],
+        results: projects ? convResults.filter(isMatch) : [],
       })
     }, 300)
   }, [projects]);
@@ -166,6 +170,10 @@ const Header = ({ logo }) => {
     }
   }, []);
 
+
+  if (results) {
+    results.splice(MAX_RESULTS_SHOWN)
+  }
 
   return (
     <div className="header">
