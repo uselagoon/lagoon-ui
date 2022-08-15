@@ -3,7 +3,7 @@ import { bp, color, fontSize } from 'lib/variables';
 
 const Groups = ({ me }) => {
   // since empty groups returns '[null]', we need to check if array is not null
-  const hasGroups = me && me.groups.some(el => el !== null)
+  const hasGroups = me && me.groups && me.groups.some(el => el !== null)
 
   return(
     <div className="groups">
