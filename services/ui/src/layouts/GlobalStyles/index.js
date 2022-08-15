@@ -320,9 +320,9 @@ const GlobalStyles = ({ children }) => (
         }
       }
 
-      .label {
-        width: 100%;
-      }
+      // .label {
+      //   width: 100%;
+      // }
 
       .no-padding-bottom {
         padding-bottom: 0 !important;
