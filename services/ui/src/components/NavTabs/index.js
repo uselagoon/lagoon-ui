@@ -6,6 +6,7 @@ import DeploymentsLink from 'components/link/Deployments';
 import TasksLink from 'components/link/Tasks';
 import ProblemsLink from 'components/link/Problems';
 import FactsLink from 'components/link/Facts';
+import InsightsLink from 'components/link/Insights';
 import RoutesLink from 'components/link/Routes';
 
 import { bp, color } from 'lib/variables';
@@ -108,6 +109,19 @@ const NavTabs = ({ activeTab, environment }) => (
       </FactsLink>
     </li>
     }
+    {/* {(environment.project.insightsUi == 1) &&  */}
+      <li
+        className={`insights ${activeTab == 'insights' ? 'active' : ''} ${aClassName}`}
+      >
+        <InsightsLink
+          environmentSlug={environment.openshiftProjectName}
+          projectSlug={environment.project.name}
+          className={aClassName}
+        >
+          <Icon link name='info'/> Insights
+        </InsightsLink>
+      </li>
+    {/* } */}
     <style jsx>{`
       ul.navigation {
         display: flex;

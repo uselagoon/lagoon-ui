@@ -1,64 +1,61 @@
-import React from 'react';
-import getConfig from 'next/config';
+import React, { useEffect, useState } from 'react';
+import { useKeycloak } from '@react-keycloak/ssr';
+import StatusLayout from 'layouts/StatusLayout';
+import Cookies from "js-cookie";
 import { queryStringToObject } from 'lib/util';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+const withKeycloak = (App, initialAuth) => (props) => {
 
-export default (App, initialAuth) => {
-  return class withKeycloak extends React.Component {
-    static getInitialProps(ctx) {
-      return App.getInitialProps(ctx);
+  const { keycloak, initialized } = useKeycloak();
+  const { login = () => {}, authenticated,  } = keycloak || {};
+  const [auth, setAuth] = useState(initialAuth);
+
+  const logoutClearCookies = () => {
+    if (initialized && typeof window !== "undefined") {
+      Cookies.remove('kcToken');
+      Cookies.remove('kcIdToken');
+
+      keycloak.logout();
     }
+  }
 
-    constructor(props) {
-      super(props);
-      this.state = { auth: initialAuth };
-    }
-
-    async componentDidMount() {
-      const keycloak = Keycloak({
-        url: publicRuntimeConfig.KEYCLOAK_API,
-        realm: 'lagoon',
-        clientId: 'lagoon-ui'
-      });
-
-      keycloak.onTokenExpired = async () => {
-        await keycloak.updateToken();
-        this.setAuth(keycloak);
-      };
-
-      await keycloak.init({
-        checkLoginIframe: false,
-        promiseType: 'native',
-      });
-
-      if (!keycloak.authenticated) {
-        const urlQuery = queryStringToObject(location.search);
-        const options = urlQuery.idpHint ? { idpHint: urlQuery.idpHint } : {};
-
-        await keycloak.login(options);
-      }
-
-      this.setAuth(keycloak);
-    }
-
-    setAuth(keycloak) {
-      this.setState({
-        auth: {
-          apiToken: keycloak.token,
-          authenticated: keycloak.authenticated,
-          logout: keycloak.logout,
-          provider: 'keycloak',
-          providerData: keycloak,
-          user: {
-            username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
-          },
+  const updateAuth = (keycloak) => {
+    setAuth(
+      {
+        ...keycloak,
+        apiToken: keycloak.token,
+        authenticated: keycloak.authenticated,
+        logout: (() => logoutClearCookies()),
+        provider: 'keycloak',
+        user: {
+          username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
         }
-      });
+      }
+    );
+  }
+
+  useEffect(() => {
+    if (!initialized) return;
+   
+    if (!keycloak.authenticated) {
+      const urlQuery = queryStringToObject(location.search);
+      const options = urlQuery.idpHint ? {idpHint: urlQuery.idpHint} : {};
+        login(options);
     }
 
-    render() {
-      return <App {...this.props} auth={this.state.auth} />;
-    }
-  };
+    updateAuth(keycloak);
+  }, [login, keycloak, initialized]);
+
+  if (initialized && keycloak.authenticated && typeof window !== "undefined") {
+    return <App {...props} auth={auth} />
+  }
+  else {
+    return <>
+      <StatusLayout>
+        <h1 suppressHydrationWarning>Checking authentication...</h1>
+      </StatusLayout>
+    </>
+  }
 };
+
+export default withKeycloak;

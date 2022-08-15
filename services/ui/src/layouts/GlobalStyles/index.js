@@ -24,7 +24,7 @@ const GlobalStyles = ({ children }) => (
       }
 
       .main {
-        padding-top: 50px;
+        padding-top: 55px;
       }
 
       footer {
@@ -160,9 +160,9 @@ const GlobalStyles = ({ children }) => (
       // Semantic UI overrides
       //
       .ui.left.sidebar.navigation {
-        width: 290px;
+        width: 12.5%;
         box-shadow: none;
-        padding: 3.5em 0 0;
+        padding: 3.75em 0 0;
 
         .menu {
           border: none;
@@ -372,14 +372,14 @@ const GlobalStyles = ({ children }) => (
         font-size: ${fontSize(28)};
         line-height: ${lineHeight(32)};
         font-weight: normal;
-        margin: 0 0 38px;
+        margin: 0 0 24px;
       }
 
       h3 {
         font-size: ${fontSize(24)};
         line-height: ${lineHeight(30)};
         font-weight: normal;
-        margin: 0 0 36px;
+        margin: 0 0 16px;
       }
 
       h4 {
@@ -458,7 +458,7 @@ const GlobalStyles = ({ children }) => (
       }
 
     .ui.fluid.card.basic {
-      border: 1px solid #f7f7f7;
+      border: 1px solid #eee;
       box-shadow: none;
     }
   }

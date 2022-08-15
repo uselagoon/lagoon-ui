@@ -60,7 +60,7 @@ export const PageDeployments = ({ router }) => {
     }
 
     if (environment) {
-      let unsub = subscribeToMore({
+      let unsubscribe = subscribeToMore({
           document: DeploymentsSubscription,
           variables: { environment: environment.id },
           updateQuery: (prevStore, { subscriptionData }) => {
@@ -96,7 +96,7 @@ export const PageDeployments = ({ router }) => {
           onError: err => console.log(err)
       });
 
-      return () => environment && unsub();
+      return () => environment && unsubscribe();
     }
   }, [data, loading, error, subscribeToMore]);
 
@@ -134,8 +134,7 @@ export const PageDeployments = ({ router }) => {
                 <div className="content">
                   {visibleMessage && environment.deployments && environment.deployments.length <= envLimit && 
                     <Message info onDismiss={() => handleDismiss()}>
-                      <Message.Header>Results have been limited</Message.Header>
-                      <p>{`Number of results displayed is limited to ${deploymentsLimit}`}</p>
+                      <Message.Header>{`Results have been limited (${deploymentsLimit})`}</Message.Header>
                       <p>{customMessage && `${customMessage}`}</p>
                     </Message>
                   }
