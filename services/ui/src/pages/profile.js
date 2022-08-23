@@ -25,7 +25,7 @@ const ProfilePage = () => {
     fetchPolicy: "cache-and-network"
   });
 
-  const { loading: loadingProjects, projectsError, data: { uiProjects: mostActiveProjects } = {}} = useQuery(MostActiveProjects, {
+  const { loading: loadingProjects, projectsError, data: { projects: mostActiveProjects } = {}} = useQuery(MostActiveProjects, {
     variables: {},
   }) || {};
 
