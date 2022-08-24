@@ -6,6 +6,7 @@ import DeploymentsLink from 'components/link/Deployments';
 import TasksLink from 'components/link/Tasks';
 import ProblemsLink from 'components/link/Problems';
 import FactsLink from 'components/link/Facts';
+import InsightsLink from 'components/link/Insights';
 import { bp, color } from 'lib/variables';
 import problems from '../../pages/problems';
 
@@ -100,6 +101,19 @@ const NavTabs = ({ activeTab, environment }) => (
       </FactsLink>
     </li>
     }
+    {/* {(environment.project.insightsUi == 1) && */}
+      <li
+        className={`insights ${activeTab == 'insights' ? 'active' : ''} ${aClassName}`}
+      >
+        <InsightsLink
+          environmentSlug={environment.openshiftProjectName}
+          projectSlug={environment.project.name}
+          className={aClassName}
+        >
+          Insights
+        </InsightsLink>
+      </li>
+    {/* } */}
     <style jsx>{`
       .navigation {
         background: ${color.lightestGrey};
@@ -224,6 +238,17 @@ const NavTabs = ({ activeTab, environment }) => (
 
             &.active::before {
               background-image: url('/static/images/facts-active.svg');
+            }
+          }
+
+          &.insights {
+            &::before {
+              background-image: url('/static/images/insights.svg');
+              background-size: 16px;
+            }
+
+            &.active::before {
+              background-image: url('/static/images/insights-active.svg');
             }
           }
         }

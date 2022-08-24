@@ -1,34 +1,34 @@
-ARG LAGOON_GIT_BRANCH
-ARG IMAGE_REPO
-ARG UPSTREAM_REPO
-ARG UPSTREAM_TAG
-# STAGE 1: Loading Image lagoon-node-packages-builder which contains node packages shared by all Node Services
-FROM ${IMAGE_REPO:-lagoon}/yarn-workspace-builder as yarn-workspace-builder
+# Node builder image
+FROM uselagoon/node-16-builder:latest as builder
 
-# STAGE 2: specific service Image
-FROM ${UPSTREAM_REPO:-uselagoon}/node-16:${UPSTREAM_TAG:-latest}
+COPY . /app/
+
+RUN yarn install
+
+
+# Node service image
+FROM uselagoon/node-16:latest
 
 ARG LAGOON_VERSION
 ENV LAGOON_VERSION=$LAGOON_VERSION
 
-# Copying generated node_modules from the first stage
-COPY --from=yarn-workspace-builder /app /app
+# Copy the node_modules from node builder
+COPY --from=builder /app/node_modules /app/node_modules
 
-# Setting the workdir to the service, all following commands will run from here
-WORKDIR /app/services/ui/
-
-# Copying the .env.defaults into the Workdir, as the dotenv system searches within the workdir for it
-COPY --from=yarn-workspace-builder /app/.env.defaults .
-
-# Copying files from our service
-COPY . .
-
-# Verify that all dependencies have been installed via the yarn-workspace-builder
-RUN yarn check --verify-tree
+# Copying files from ui service
+COPY . /app/
 
 # Making sure we run in production
 ENV NODE_ENV=production
 
+ARG KEYCLOAK_API
+ENV KEYCLOAK_API=$KEYCLOAK_API
+
+ARG GRAPHQL_API
+ENV GRAPHQL_API=$GRAPHQL_API
+
+# Build app
 RUN yarn run build
 
+EXPOSE 3000
 CMD ["yarn", "start"]
