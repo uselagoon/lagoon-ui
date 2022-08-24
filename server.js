@@ -119,6 +119,12 @@ app
       });
     });
 
+    server.get('/projects/:projectSlug/:environmentSlug/insights', (req, res) => {
+      app.render(req, res, '/insights', {
+        openshiftProjectName: req.params.environmentSlug
+      });
+    });
+
     server.get('*', (req, res) => {
       return handle(req, res);
     });

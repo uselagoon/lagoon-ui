@@ -1,0 +1,44 @@
+version: '3.2'
+
+x-lagoon-project:
+  # Lagoon project name (leave `&lagoon-project` when you edit this)
+  &lagoon-project lagoon-ui
+
+x-environment: &default-environment
+  LAGOON_PROJECT: *lagoon-project
+  # Route that should be used locally, if you are using pygmy, this route *must* end with .docker.amazee.io
+  LAGOON_ROUTE: &default-url http://lagoon-ui.docker.amazee.io
+  # Uncomment if you like to have the system behave like in production
+  LAGOON_ENVIRONMENT_TYPE: production
+  GRAPHQL_API: "${GRAPHQL_API:-http://localhost:3000/graphql}"
+  KEYCLOAK_API: "${KEYCLOAK_API:-http://localhost:8088/auth}"
+
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: .lagoon/ui.Dockerfile
+    labels:
+      lagoon.type: node
+    depends_on:
+      - 'api-db'
+      - 'api'
+    command: yarn run start
+    volumes:
+      - ./services/ui/src:/app/src
+      - ./services/ui/.env.defaults:/app/.env.defaults
+      - ./services/ui/.env.schema:/app/.env.schema
+      - ./services/ui/package.json:/app/package.json
+      - ./services/ui/api-db-seeding:/app/api-db-seeding
+    ports:
+      - '8888:3000'
+      - '3003:3003'
+    networks:
+      - amazeeio-network
+      - default
+    environment:
+      <<: *default-environment
+
+networks:
+  amazeeio-network:
+    external: true
