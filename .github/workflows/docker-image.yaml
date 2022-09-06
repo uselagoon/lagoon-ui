@@ -1,0 +1,105 @@
+name: Publish lagoon-ui image
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'build-image'
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout PR
+        uses: actions/checkout@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          fetch-depth: "0"
+          ref: ${{ github.event.pull_request.head.sha }}
+      -
+        name: Checkout Branch or Tag
+        uses: actions/checkout@v2
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          fetch-depth: "0"
+      -
+        name: Set version for non-tag build
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        id: version_non-tag_build
+        run: |
+          VERSION=$(echo $(git describe --abbrev=0 --tags)+$(git rev-parse --short=8 HEAD))
+          DOCKER_TAG=$(echo $(git describe --abbrev=0 --tags)-$(git rev-parse --short=8 HEAD))
+          BUILD=$(date +%FT%T%z)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+          echo "BUILD=$BUILD" >> $GITHUB_ENV
+          echo "lagoon-ui $VERSION (built: $BUILD)"
+      -
+        name: Set version for tag build
+        if: "startsWith(github.ref, 'refs/tags/')"
+        id: version_tag_build
+        run: |
+          VERSION=$(echo $(git describe --abbrev=0 --tags))
+          BUILD=$(date +%FT%T%z)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "DOCKER_TAG=$VERSION" >> $GITHUB_ENV
+          echo "BUILD=$BUILD" >> $GITHUB_ENV
+          echo "lagoon-ui $VERSION (built: $BUILD)"
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ${{ github.repository_owner }}/ui
+            ghcr.io/${{ github.repository_owner }}/ui
+          tags: |
+            # set edge tag for default branch
+            type=edge,enable={{is_default_branch}}
+            # set tag+build for default branch
+            type=raw,value=${{ env.DOCKER_TAG}},enable={{is_default_branch}}
+            # tag event
+            type=ref,event=tag
+            # pull request event
+            type=ref,event=pr
+            # pull request event
+            type=ref,event=branch
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          # platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
+          build-args: |
+            "LAGOON_VERSION=${{ env.VERSION }}"
+            "BUILD=${{ env.BUILD }}"
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
