@@ -20,10 +20,6 @@ const convertMetadataString = (data) => {
 
 const Metadata = ({ metadata }) => {    
     const metadataArray = convertMetadataString(metadata)
-    
-    console.log(metadataArray);
-
-
     const { sortedItems, getClassNamesFor, requestSort } = useSortableData(metadataArray, {key: 'name', direction: 'ascending'});
 
     const [factTerm, setFactTerm] = useState('');

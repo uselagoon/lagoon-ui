@@ -20,12 +20,6 @@ const { className: aClassName, styles: aStyles } = css.resolve`
 
 
 const LeftNavTabs = ({ activeTab, project }) => {
-
-  project = {
-    name: "high-cotton",
-    openshiftProjectName: "high-cotton"
-  }
-
   return (
   <ul className="navigation">
     <li
@@ -35,7 +29,7 @@ const LeftNavTabs = ({ activeTab, project }) => {
     >
       <ProjectChildPageLink
         childPage={'metadata'}
-        projectSlug={project.name}
+        projectSlug={project}
         className={aClassName}
       >
         Metadata
@@ -48,7 +42,7 @@ const LeftNavTabs = ({ activeTab, project }) => {
     >
       <ProjectChildPageLink
         childPage={'variables'}
-        projectSlug={project.name}
+        projectSlug={project}
         className={aClassName}
       >
         Variables
@@ -61,7 +55,7 @@ const LeftNavTabs = ({ activeTab, project }) => {
     >
       <ProjectChildPageLink
         childPage={'tasks'}
-        projectSlug={project.name}
+        projectSlug={project}
         className={aClassName}
       >
         Tasks
@@ -70,7 +64,7 @@ const LeftNavTabs = ({ activeTab, project }) => {
      <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} ${aClassName}`}>
       <ProjectChildPageLink
         childPage={'notifications'}
-        projectSlug={project.name}
+        projectSlug={project}
         className={aClassName}
       >
         Notifications
