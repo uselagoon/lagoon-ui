@@ -8,7 +8,6 @@ import ProblemsLink from 'components/link/Problems';
 import FactsLink from 'components/link/Facts';
 import InsightsLink from 'components/link/Insights';
 import { bp, color } from 'lib/variables';
-import problems from '../../pages/problems';
 
 const { className: aClassName, styles: aStyles } = css.resolve`
   a {

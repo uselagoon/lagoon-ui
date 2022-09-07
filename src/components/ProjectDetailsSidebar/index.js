@@ -114,11 +114,15 @@ const Project = ({ project }) => {
 
       <style jsx>{`
         .details {
-          display: inline-table;
-
+          display: grid;
+          grid-auto-flow: row;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          
           .field-wrapper {
             overflow: hidden;
             white-space: nowrap;
+            padding: 0 1em;
 
             &::before {
               @media ${bp.tabletUp} {

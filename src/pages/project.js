@@ -8,6 +8,7 @@ import ProjectByNameQuery from 'lib/query/ProjectByName';
 import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
 import ProjectDetailsSidebar from 'components/ProjectDetailsSidebar';
+import LeftNavTabs from 'components/LeftNavTabs';
 import Environments from 'components/Environments';
 import withQueryLoading from 'lib/withQueryLoading';
 import withQueryError from 'lib/withQueryError';
@@ -46,13 +47,16 @@ export const PageProject = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <div className="content-wrapper">
-              <div className="project-details-sidebar">
-                <ProjectDetailsSidebar project={project} />
-              </div>
-              <div className="environments-wrapper">
-                <h3>Environments</h3>
-                {!environments.length && <p>No Environments</p>}
-                <Environments environments={environments} project={project} />
+              <LeftNavTabs activeTab="" environment={[]} />
+              <div className="content">
+                <div className="project-details-header">
+                  <ProjectDetailsSidebar project={project} />
+                </div>
+                <div className="environments-wrapper">
+                  <h3>Environments</h3>
+                  {!environments.length && <p>No Environments</p>}
+                  <Environments environments={environments} project={project} />
+                </div>
               </div>
             </div>
             <style jsx>{`
@@ -63,7 +67,13 @@ export const PageProject = ({ router }) => (
                 }
               }
 
-              .project-details-sidebar {
+              .content {
+                display: flex;
+                min-width: 80%;
+                flex-direction: column;
+              }
+
+              .project-details-header {
                 background-color: ${color.lightestGrey};
                 border-right: 1px solid ${color.midGrey};
                 padding: 32px calc((100vw / 16) * 1);
@@ -73,20 +83,10 @@ export const PageProject = ({ router }) => (
                     calc(((100vw / 16) * 1.5) + 28px);
                 }
                 @media ${bp.tabletUp} {
-                  min-width: 50%;
                   padding: 48px calc(((100vw / 16) * 1) + 28px);
-                  width: 50%;
                 }
                 @media ${bp.desktopUp} {
-                  min-width: 40%;
                   padding: 48px calc((100vw / 16) * 1);
-                  width: 40%;
-                }
-                @media ${bp.wideUp} {
-                  min-width: 33.33%;
-                  min-width: calc((100vw / 16) * 5);
-                  width: 33.33%;
-                  width: calc((100vw / 16) * 5);
                 }
               }
 

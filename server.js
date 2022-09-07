@@ -42,6 +42,10 @@ app
       app.render(req, res, '/project', { projectName: req.params.projectSlug });
     });
 
+    server.get('/projects/:projectSlug/metadata', (req, res) => {
+      app.render(req, res, '/metadata', { projectName: req.params.projectSlug });
+    });
+
     server.get('/projects/:projectSlug/:environmentSlug', (req, res) => {
       app.render(req, res, '/environment', {
         openshiftProjectName: req.params.environmentSlug
