@@ -25,7 +25,7 @@ const SettingsPage = () => (
       )(({ data }) => (
         <MainLayout>
           <div className="content-wrapper">
-            <h2>SSH KEYS</h2>
+            <h2>SSH keys</h2>
             <div className="content">
               <SshKeys me={data.me || {}} />
               <AddSshKey me={data.me || {}} />
