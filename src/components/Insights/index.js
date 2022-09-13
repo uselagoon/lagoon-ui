@@ -16,12 +16,14 @@ const Insights = ({ insights }) => {
     const { sortedItems, getClassNamesFor, requestSort } = useSortableData(insights, {key: 'id', direction: 'ascending'});
     const [nameSelected, setName] = useState([]);
     const [typeSelected, setType] = useState([]);
+    const [serviceSelected, setService] = useState([]);
 
     const [factTerm, setFactTerm] = useState('');
     const [hasFilter, setHasFilter] = React.useState(false);
 
     const names = getOptionsFromInsights(insights, 'file');
     const types = getOptionsFromInsights(insights, 'type');
+    const services = getOptionsFromInsights(insights, 'service');
 
     // Handlers
     const handleFactFilterChange = (event) => {
@@ -42,6 +44,11 @@ const Insights = ({ insights }) => {
         setName(values);
     };
 
+    const handleServiceChange = (service) => {
+        let values = service && service.map(s => s.value) || [];
+        setService(values);
+    };
+
     const handleTypeChange = (type) => {
         let values = type && type.map(t => t.value) || [];
         setType(values);
@@ -50,6 +57,10 @@ const Insights = ({ insights }) => {
     // Options
     const nameOptions = (name) => {
         return name && name.map(n => ({ value: n, label: n}));
+    };
+
+    const serviceOptions = (service) => {
+        return service && service.map(s => ({ value: s, label: s}));
     };
 
     const typeOptions = (type) => {
@@ -62,6 +73,17 @@ const Insights = ({ insights }) => {
           Object.keys(item).some(key => {
               if (item[key] !== null) {
                   return nameSelected.indexOf(item['file'].toString()) > -1;
+              };
+          })
+          : true;
+    }
+
+
+    const matchesServiceSelector = (item) => {
+        return (serviceSelected.length > 0) ?
+          Object.keys(item).some(key => {
+              if (item[key] !== null) {
+                  return serviceSelected.indexOf(item['service'].toString()) > -1;
               };
           })
           : true;
@@ -88,7 +110,7 @@ const Insights = ({ insights }) => {
     }
 
     const shouldItemBeShown = (item) => {
-        return (matchesNameSelector(item) && matchesTypeSelector(item)  && matchesTextFilter(item));
+        return (matchesNameSelector(item) && matchesServiceSelector(item) && matchesTypeSelector(item)  && matchesTextFilter(item));
     };
 
     return (
@@ -105,6 +127,13 @@ const Insights = ({ insights }) => {
                       loading={!names}
                       options={names && nameOptions(names)}
                       onFilterChange={handleNameChange}
+                      isMulti
+                    />
+                    <SelectFilter
+                      title="Service"
+                      loading={!services}
+                      options={services && serviceOptions(services)}
+                      onFilterChange={handleServiceChange}
                       isMulti
                     />
                     <SelectFilter
@@ -131,6 +160,13 @@ const Insights = ({ insights }) => {
                     File
                 </button>
                  <button
+                  type="button"
+                  onClick={() => handleSort('service')}
+                  className={`button-sort service ${getClassNamesFor('service')}`}
+                >
+                    Service
+                </button>
+                <button
                   type="button"
                   onClick={() => handleSort('type')}
                   className={`button-sort type ${getClassNamesFor('type')}`}
@@ -172,6 +208,7 @@ const Insights = ({ insights }) => {
                     return (
                         <div className="data-row row-heading" key={insight.id}>
                             <div className="col col-2">{insight.file}</div>
+                            <div className="col col-2">{insight.service}</div>
                             <div className="col col-2">{insight.type}</div>
                             <div className="col col-3">{insight.created}</div>
                             <div className="col col-3">{insight.size}</div>

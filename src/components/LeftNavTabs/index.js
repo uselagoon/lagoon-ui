@@ -18,7 +18,6 @@ const { className: aClassName, styles: aStyles } = css.resolve`
   }
 `;
 
-
 const LeftNavTabs = ({ activeTab, project }) => {
   return (
   <ul className="navigation">
