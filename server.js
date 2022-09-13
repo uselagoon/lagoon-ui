@@ -42,7 +42,7 @@ app
       app.render(req, res, '/project', { projectName: req.params.projectSlug });
     });
 
-    server.get('/projects/:projectSlug/metadata', (req, res) => {
+    server.get('/projects/:projectSlug/:projectSlug-metadata', (req, res) => {
       app.render(req, res, '/metadata', { projectName: req.params.projectSlug });
     });
 

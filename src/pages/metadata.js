@@ -33,14 +33,15 @@ const metadataQuery = gql`
  * Displays a metadata page, given the openshift project name.
  */
 export const PageMetadata = ({ router }) => {
+  const project = router.query ? router.query.projectName || router.query.openshiftProjectName : ""
   return (
   <>
     <Head>
-      <title>{`${router.query.projectName} | Metadata`}</title>
+      <title>{`${project} | Metadata`}</title>
     </Head>
     <Query
       query={metadataQuery}
-      variables={{ name: router.query.projectName }}
+      variables={{ name: project }}
     >
       {R.compose(
         withQueryLoading,
@@ -48,10 +49,10 @@ export const PageMetadata = ({ router }) => {
       )(({ data: { metadata } }) => (
         <MainLayout>
           <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={metadata.projectName} />
+            <ProjectBreadcrumb projectSlug={project} />
           </Breadcrumbs>
           <div className="content-wrapper">
-            <LeftNavTabs activeTab="metadata" project={router.query.projectName} />
+            <LeftNavTabs activeTab="metadata" project={project} />
             <div className="content">
               <Metadata metadata={metadata} />
             </div>

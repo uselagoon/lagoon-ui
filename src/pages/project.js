@@ -47,7 +47,7 @@ export const PageProject = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <div className="content-wrapper">
-              <LeftNavTabs activeTab="" environment={[]} />
+              <LeftNavTabs activeTab="" project={router.query.projectName}  />
               <div className="content">
                 <div className="project-details-header">
                   <ProjectDetailsSidebar project={project} />

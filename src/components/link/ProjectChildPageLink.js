@@ -3,9 +3,9 @@ import Link from 'next/link';
 export const getLinkData = (childPage, projectSlug) => ({
   urlObject: {
     pathname: `/${childPage}`,
-    query: { openshiftProjectName: childPage }
+    query: { projectName: projectSlug }
   },
-  asPath: `/projects/${projectSlug}/${childPage}`
+  asPath: `/projects/${projectSlug}/${projectSlug}-${childPage}`
 });
 
 const ProjectChildPageLink = ({
