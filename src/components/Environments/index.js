@@ -5,7 +5,7 @@ import EnvironmentLink from 'components/link/Environment';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 import { makeSafe } from 'lib/util';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CopyButton from 'components/CopyButton';
 
 const bgImages = {
   branch: {
@@ -37,7 +37,6 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
 `;
 
 const Environments = ({ environments = [], project }) => {
-  const [copied, setCopied] = useState(false);
   if (environments.length === 0) {
     return null;
   }
@@ -104,23 +103,10 @@ const Environments = ({ environments = [], project }) => {
                 </EnvironmentLink>
                 {environment.routes
                   ? <div>
-                    {/* <span className="copied" style={copied ? { top: '4px', opacity: '0' } : null}>
-                      Copied
-                    </span> */}
-                    <CopyToClipboard
-                      text={environment.routes.split(',')[0]}
-                      onCopy={() => {
-                        setCopied(true);
-                        // const timer = setTimeout(() => {
-                        //   setCopied(false);
-                        // }, 750);
-                        // return () => clearTimeout(timer);
-                      }}
-                    >
-                      <span className="copy" />
-                    </CopyToClipboard>
+                    <CopyButton environment={environment.routes.split(',')[0]} />
                     </div>
-              : ''}
+                  : ''
+                }
               </Box>
             {bgStyles}
           </div>
@@ -283,37 +269,6 @@ const Environments = ({ environments = [], project }) => {
           border-top-right-radius: 15px;
           margin-left: -25px;
           padding: 3px 15px 2px;
-        }
-
-        .copy {
-          background: url('/static/images/copy.svg') center center
-            no-repeat ${color.white};
-          background-size: 16px;
-          border-left: 1px solid ${color.lightestGrey};
-          bottom: 0;
-          height: 33px;
-          position: absolute;
-          left: 0;
-          width: 37px;
-          transform: all 0.5s;
-          z-index: 20;
-
-          &:hover {
-            background-color: ${color.midGrey};
-            cursor: pointer;
-          }
-        }
-
-        .copied {
-          background-color: ${color.midGrey};
-          ${fontSize(9, 16)};
-          border-radius: 3px;
-          padding: 0 4px;
-          position: absolute;
-          left: 0;
-          text-transform: uppercase;
-          top: 30px;
-          transition: top 0.5s, opacity 0.75s ease-in;
         }
       `}</style>
       {boxStyles}
