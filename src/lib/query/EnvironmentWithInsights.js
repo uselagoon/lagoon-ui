@@ -18,7 +18,7 @@ export default gql`
         id
         file
         fileId
-        # data
+        service
         type
         size
         downloadUrl
