@@ -5,7 +5,11 @@ import Highlighter from 'react-highlight-words';
 import ProjectLink from 'components/link/Project';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
-import DeploymentLink from '../link/Deployment';
+import DeploymentsLink from 'components/link/Deployments';
+import DeploymentLink from 'components/link/Deployment';
+import moment from 'moment';
+import { getDeploymentDuration } from 'components/Deployment';
+import CancelDeployment from 'components/CancelDeployment';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -45,27 +49,63 @@ const DeploymentsByFilter = (input) => {
       )}
     <div className="tasks">
     <div className="header">
-      <label classname="name">Name</label>
-      <label classname="status">Status</label>
-      <label classname="openshift">Cluster</label>
-      <label className="project">Project</label>
-      <label className="environment">Environment</label>
+    <label>Project</label>
+      <label>Environment</label>
+      <label>Cluster</label>
+      <label>Name</label>
+      <label className="priority">Priority</label>
+      <label>Created</label>
+      <label>Status</label>
+      <label>Duration</label>
+      <label></label>
     </div>
     <div className="data-table">
       {filteredDeployments.map(deployment => (
-        <DeploymentLink
-          environmentSlug={deployment.environment.openshiftProjectName}
-          projectSlug={deployment.environment.project.name}
-          deploymentSlug={deployment.name}
-        >
         <div className="data-row">
-          <div className="name">{deployment.name}</div>
-          <div className="status">{deployment.status}</div>
-          <div className="openshift">{deployment.environment.openshift.name}</div>
-          <div className="project">{deployment.environment.project.name}</div>
-          <div className="environment">{deployment.environment.name}</div>
+            <div className="project">
+              <ProjectLink
+                projectSlug={deployment.environment.project.name}
+              >{deployment.environment.project.name}
+              </ProjectLink>
+            </div>
+            <div className="environment">
+              <DeploymentsLink
+                environmentSlug={deployment.environment.openshiftProjectName}
+                projectSlug={deployment.environment.project.name}
+              >{deployment.environment.name}
+              </DeploymentsLink>
+            </div>
+            <div className="cluster">
+              {deployment.environment.openshift.name}
+            </div>
+            <div className="name">
+              <DeploymentLink
+                deploymentSlug={deployment.name}
+                environmentSlug={deployment.environment.openshiftProjectName}
+                projectSlug={deployment.environment.project.name}
+                key={deployment.id}
+              >
+              {deployment.name}
+              </DeploymentLink>
+            </div>
+            <div className="priority">{deployment.priority}</div>
+            <div className="started">
+              {moment
+                .utc(deployment.created)
+                .local()
+                .format('DD MMM YYYY, HH:mm:ss (Z)')}
+            </div>
+            <div className={`status ${deployment.status}`}>
+              {deployment.status.charAt(0).toUpperCase() +
+                deployment.status.slice(1)}
+            </div>
+            <div className="duration">{getDeploymentDuration(deployment)}</div>
+            <div>
+              {['new', 'pending', 'running'].includes(deployment.status) && (
+                <CancelDeployment deployment={deployment} afterText="cancelled" beforeText="cancel" />
+              )}
+            </div>
         </div>
-        </DeploymentLink>
       ))}
       </div>
       </div>

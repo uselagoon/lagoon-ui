@@ -126,7 +126,6 @@ app
     });
 
     server.get('/all-builds', (req, res) => {
-      console.log("got here at least");
       app.render(req, res, '/all-builds', {});
     });
 
