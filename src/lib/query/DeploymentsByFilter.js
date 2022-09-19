@@ -8,6 +8,7 @@ export default gql`
       status
       environment {
         name
+        openshiftProjectName
         openshift {
           id
           name

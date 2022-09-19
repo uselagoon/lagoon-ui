@@ -5,6 +5,7 @@ import Highlighter from 'react-highlight-words';
 import ProjectLink from 'components/link/Project';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
+import DeploymentLink from '../link/Deployment';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -37,7 +38,7 @@ const DeploymentsByFilter = (input) => {
       </div>
       {!deployments.length && (
         <Box>
-          <div className="project">
+          <div className="deployment">
             <h4>No deployments</h4>
           </div>
         </Box>
@@ -52,6 +53,11 @@ const DeploymentsByFilter = (input) => {
     </div>
     <div className="data-table">
       {filteredDeployments.map(deployment => (
+        <DeploymentLink
+          environmentSlug={deployment.environment.openshiftProjectName}
+          projectSlug={deployment.environment.project.name}
+          deploymentSlug={deployment.name}
+        >
         <div className="data-row">
           <div className="name">{deployment.name}</div>
           <div className="status">{deployment.status}</div>
@@ -59,6 +65,7 @@ const DeploymentsByFilter = (input) => {
           <div className="project">{deployment.environment.project.name}</div>
           <div className="environment">{deployment.environment.name}</div>
         </div>
+        </DeploymentLink>
       ))}
       </div>
       </div>
@@ -76,30 +83,6 @@ const DeploymentsByFilter = (input) => {
           @media ${bp.tabletUp} {
             margin-top: 40px;
           }
-          .searchInput {
-            background: url('/static/images/search.png') 12px center no-repeat
-              ${color.white};
-            background-size: 14px;
-            border: 1px solid ${color.midGrey};
-            height: 40px;
-            padding: 0 12px 0 34px;
-            transition: border 0.5s ease;
-            @media ${bp.smallOnly} {
-              margin-bottom: 20px;
-              order: -1;
-              width: 100%;
-            }
-            @media ${bp.tabletUp} {
-              width: 30%;
-            }
-            &::placeholder {
-              color: ${color.midGrey};
-            }
-            &:focus {
-              border: 1px solid ${color.brightBlue};
-              outline: none;
-            }
-          }
           label {
             display: none;
             padding-left: 20px;
@@ -114,7 +97,7 @@ const DeploymentsByFilter = (input) => {
             }
           }
         }
-        .project {
+        .deployment {
           font-weight: normal;
 
           @media ${bp.tinyUp} {
