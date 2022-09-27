@@ -15,6 +15,17 @@ import withQueryError from 'lib/withQueryError';
 import { withProjectRequired } from 'lib/withDataRequired';
 import { bp, color } from 'lib/variables';
 
+
+const getProductionEnvironments = (environments) => {
+  if (!environments) return null;
+    return environments.some(e => e.environmentType === 'production') ? environments.filter(e => e.environmentType === 'production') : false;
+}
+
+const getDevelopmentEnvironments = (environments) => {
+  if (!environments) return null;
+    return environments.some(e => e.environmentType === 'development') ? environments.filter(e => e.environmentType === 'development') : false;
+}
+
 /**
  * Displays a project page, given the project name.
  */
@@ -55,7 +66,26 @@ export const PageProject = ({ router }) => (
                 <div className="environments-wrapper">
                   <h3>Environments</h3>
                   {!environments.length && <p>No Environments</p>}
-                  <Environments environments={environments} project={project} />
+                  {environments.length && environments.length > 0 && getProductionEnvironments(environments) &&
+                    <div className="environments-production">
+                      <div className="environments-header">
+                        <div className="title">
+                          <h3><label>Production Environments</label></h3>
+                        </div>
+                      </div>
+                      <Environments project={project} environments={getProductionEnvironments(environments)} display={'list'} />
+                    </div>
+                  }
+                  {environments && environments.length > 0 && getDevelopmentEnvironments(environments) &&
+                    <div className="environments-development">
+                      <div className="environments-header">
+                        <div className="title">
+                          <h3><label>Development Environments</label></h3>
+                        </div>
+                      </div>
+                      <Environments project={project} environments={getDevelopmentEnvironments(environments)} display={'list'} />
+                    </div>
+                  }
                 </div>
               </div>
             </div>
