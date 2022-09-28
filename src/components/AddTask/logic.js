@@ -12,39 +12,9 @@ const { publicRuntimeConfig } = getConfig();
 
 const withSelectedTask = withState('selectedTask', 'setSelectedTask', null);
 const withOptions = withProps(({ pageEnvironment }) => {
-  let options = [
-    {
-      label: 'Clear Drupal caches [drush cache-clear]',
-      value: 'DrushCacheClear'
-    },
-    {
-      label: 'Run Drupal cron [drush cron]',
-      value: 'DrushCron'
-    },
-    {
-      label: 'Copy database between environments [drush sql-sync]',
-      value: 'DrushSqlSync'
-    },
-    {
-      label: 'Copy files between environments [drush rsync]',
-      value: 'DrushRsyncFiles'
-    },
-    {
-      label: 'Generate database backup [drush sql-dump]',
-      value: 'DrushSqlDump'
-    },
-    {
-      label: 'Generate database and files backup (Drush 8 only) [drush archive-dump]',
-      value: 'DrushArchiveDump'
-    },
-    {
-      label: 'Generate login link [drush uli]',
-      value: 'DrushUserLogin'
-    }
-  ];
 
   // Add Advanced Task Definitions
-  let advancedTasks = pageEnvironment.advancedTasks.map(task => {
+  let options = pageEnvironment.advancedTasks.map(task => {
     let commandstring = task.command ? `[${task.command}]` : '';
     let label = task.description ? `${task.description} ${commandstring}` :'';
     return {
@@ -55,7 +25,6 @@ const withOptions = withProps(({ pageEnvironment }) => {
       confirmationText: task.confirmationText,
     }
   });
-  options = [...options, ...advancedTasks];
 
   // Remove tasks that are blocklisted.
   options = R.reject(

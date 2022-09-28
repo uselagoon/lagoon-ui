@@ -1,13 +1,6 @@
 import React from 'react';
 import ReactSelect from 'react-select';
 import withLogic from './logic';
-import DrushArchiveDump from './components/DrushArchiveDump';
-import DrushSqlDump from './components/DrushSqlDump';
-import DrushCacheClear from './components/DrushCacheClear';
-import DrushCron from './components/DrushCron';
-import DrushRsyncFiles from './components/DrushRsyncFiles';
-import DrushSqlSync from './components/DrushSqlSync';
-import DrushUserLogin from './components/DrushUserLogin';
 import Empty from './components/Empty';
 import Completed from './components/Completed';
 import Error from './components/Error';
@@ -28,13 +21,6 @@ const AddTask = ({
 }) => {
 
   const newTaskComponents = {
-    DrushArchiveDump,
-    DrushSqlDump,
-    DrushCacheClear,
-    DrushCron,
-    DrushRsyncFiles,
-    DrushSqlSync,
-    DrushUserLogin,
     Empty,
     Completed,
     Error,
