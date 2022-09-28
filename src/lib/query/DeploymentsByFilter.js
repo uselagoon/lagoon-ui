@@ -3,22 +3,23 @@ import gql from 'graphql-tag';
 export default gql`
     query deploymentsByFilter {
       deploymentsByFilter {
-      id
-      name
-      status
-      priority
-      environment {
+        id
         name
-        openshiftProjectName
-        openshift {
-          id
+        status
+        created
+        priority
+        environment {
           name
-        }
-        project {
-          id
-          name
+          openshiftProjectName
+          openshift {
+            id
+            name
+          }
+          project {
+            id
+            name
+          }
         }
       }
-    }
     }
 `;

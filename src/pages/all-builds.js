@@ -35,19 +35,19 @@ const AllBuilds = () => (
               h2 {
                 margin: 38px calc((100vw / 16) * 1) 0;
                 @media ${bp.wideUp} {
-                  margin: 62px calc((100vw / 16) * 2) 0;
+                  margin: 62px calc((100vw / 16) * 1) 0;
                 }
                 @media ${bp.extraWideUp} {
-                  margin: 62px calc((100vw / 16) * 3) 0;
+                  margin: 62px calc((100vw / 16) * 2) 0;
                 }
               }
               .content {
                 margin: 38px calc((100vw / 16) * 1);
                 @media ${bp.wideUp} {
-                  margin: 38px calc((100vw / 16) * 2);
+                  margin: 38px calc((100vw / 16) * 1);
                 }
                 @media ${bp.extraWideUp} {
-                  margin: 38px calc((100vw / 16) * 3);
+                  margin: 38px calc((100vw / 16) * 2);
                 }
               }
             }

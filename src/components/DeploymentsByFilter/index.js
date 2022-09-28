@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-import css from 'styled-jsx/css';
-import Highlighter from 'react-highlight-words';
-import ProjectLink from 'components/link/Project';
-import Box from 'components/Box';
-import { bp, color, fontSize } from 'lib/variables';
-import DeploymentsLink from 'components/link/Deployments';
-import DeploymentLink from 'components/link/Deployment';
 import moment from 'moment';
+import { bp, color } from 'lib/variables';
+import useSortableData from '../../lib/withSortedItems';
+import css from 'styled-jsx/css';
+
+import Box from 'components/Box';
 import { getDeploymentDuration } from 'components/Deployment';
 import CancelDeployment from 'components/CancelDeployment';
+import ProjectLink from 'components/link/Project';
+import DeploymentsLink from 'components/link/Deployments';
+import DeploymentLink from 'components/link/Deployment';
+import { filter } from 'ramda';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -24,97 +25,166 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
   }
 `;
 
+
 /**
  * The primary list of running deployments.
  */
-const DeploymentsByFilter = (input) => {
-  const { deployments, data } = input;
-  // console.log(data)
-  
-  //Do we actually need this?
-  const filteredDeployments = deployments.filter(key => { return true; });
+const DeploymentsByFilter = ({ deployments }) => {
+  const { sortedItems, getClassNamesFor, requestSort } = useSortableData(deployments, {key: 'created', direction: 'descending'});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [hasFilter, setHasFilter] = useState(false);
+
+  const handleSearchFilterChange = (event) => {
+    setHasFilter(false);
+
+    if (event.target.value !== null || event.target.value !== '') {
+      setHasFilter(true);
+    }
+    setSearchTerm(event.target.value);
+  };
+
+
+  const handleSort = (key) => {
+      return requestSort(key);
+  };
+
+
+  const filterResults = (item) => {
+    const lowercasedFilter = searchTerm.toLowerCase();
+
+    if (searchTerm == null || searchTerm === '') {
+      return deployments;
+    }
+    
+    return Object.keys(item).some(key => {
+      if (typeof item[key] === 'object' && item[key] !== null) { 
+        let filterKey = "";
+
+        for (const k in item[key]) {
+          if (item[key].hasOwnProperty(k) && item[key][k] !== null) {
+            if (k == "" || k == undefined) {
+              return;
+            }
+            if ((k == "project" || k == "openshift") && item[key][k].name.toString().toLowerCase().includes(lowercasedFilter)) {
+              filterKey = item[key][k].name;
+            }
+          }
+        }
+
+        return filterKey.toString().toLowerCase().includes(lowercasedFilter);
+      }
+      else {
+        if (item[key] !== null) {
+          return item[key].toString().toLowerCase().includes(lowercasedFilter);
+        }
+      }
+    });
+  };
+
 
   return (
-    <>
-      <div className="header">
-        <label>{filteredDeployments.length <= 1 ? `${filteredDeployments.length} Deployments` : `${filteredDeployments.length} Deployments`}</label>
+    <div className="builds">
+      <div className="filters">
+        <label>{sortedItems.length <= 1 ? `${sortedItems.length} Deployments` : `${sortedItems.length} Deployments`}</label>
         <label></label>
+        <input 
+          type="text" id="filter"
+          placeholder="Filter builds..."
+          value={searchTerm}
+          onChange={handleSearchFilterChange}
+        />
       </div>
       {!deployments.length && (
         <Box>
-          <div className="deployment">
+          <div className="data-none">
             <h4>No deployments</h4>
           </div>
         </Box>
       )}
-    <div className="tasks">
-    <div className="header">
-    <label>Project</label>
-      <label>Environment</label>
-      <label>Cluster</label>
-      <label>Name</label>
-      <label className="priority">Priority</label>
-      <label>Created</label>
-      <label>Status</label>
-      <label>Duration</label>
-      <label></label>
-    </div>
-    <div className="data-table">
-      {filteredDeployments.map(deployment => (
-        <div className="data-row">
-            <div className="project">
-              <ProjectLink
-                projectSlug={deployment.environment.project.name}
-              >{deployment.environment.project.name}
-              </ProjectLink>
-            </div>
-            <div className="environment">
-              <DeploymentsLink
-                environmentSlug={deployment.environment.openshiftProjectName}
-                projectSlug={deployment.environment.project.name}
-              >{deployment.environment.name}
-              </DeploymentsLink>
-            </div>
-            <div className="cluster">
-              {deployment.environment.openshift.name}
-            </div>
-            <div className="name">
-              <DeploymentLink
-                deploymentSlug={deployment.name}
-                environmentSlug={deployment.environment.openshiftProjectName}
-                projectSlug={deployment.environment.project.name}
-                key={deployment.id}
-              >
-              {deployment.name}
-              </DeploymentLink>
-            </div>
-            <div className="priority">{deployment.priority}</div>
-            <div className="started">
-              {moment
-                .utc(deployment.created)
-                .local()
-                .format('DD MMM YYYY, HH:mm:ss (Z)')}
-            </div>
-            <div className={`status ${deployment.status}`}>
-              {deployment.status.charAt(0).toUpperCase() +
-                deployment.status.slice(1)}
-            </div>
-            <div className="duration">{getDeploymentDuration(deployment)}</div>
-            <div>
-              {['new', 'pending', 'running'].includes(deployment.status) && (
-                <CancelDeployment deployment={deployment} afterText="cancelled" beforeText="cancel" />
-              )}
-            </div>
-        </div>
-      ))}
+      <div className="header">
+        <label>Project</label>
+        <label>Environment</label>
+        <label>Cluster</label>
+        <button
+          type="button"
+          onClick={() => handleSort('name')}
+          className={`button-sort name ${getClassNamesFor('name')}`}
+        >
+          Name
+        </button>
+        <label className="priority">Priority</label>
+        <button
+            type="button"
+            onClick={() => handleSort('created')}
+            className={`button-sort created ${getClassNamesFor('created')}`}
+        >
+          Created
+        </button>
+        <button
+            type="button"
+            onClick={() => handleSort('status')}
+            className={`button-sort status ${getClassNamesFor('status')}`}
+        >
+          Status
+        </button>
+        <label>Duration</label>
+        <label></label>
       </div>
+      <div className="data-table">
+        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">No Deployments</div>}
+        {sortedItems.filter(deployment => filterResults(deployment)).map((deployment) => {
+          return (
+            <div className="data-row row-heading" key={deployment.id}>
+              <div className="project">
+                <ProjectLink
+                  projectSlug={deployment.environment.project.name}
+                >{deployment.environment.project.name}
+                </ProjectLink>
+              </div>
+              <div className="environment">
+                <DeploymentsLink
+                  environmentSlug={deployment.environment.openshiftProjectName}
+                  projectSlug={deployment.environment.project.name}
+                >{deployment.environment.name}
+                </DeploymentsLink>
+              </div>
+              <div className="cluster">
+                {deployment.environment.openshift.name}
+              </div>
+              <div className="name">
+                <DeploymentLink
+                  deploymentSlug={deployment.name}
+                  environmentSlug={deployment.environment.openshiftProjectName}
+                  projectSlug={deployment.environment.project.name}
+                  key={deployment.id}
+                >
+                {deployment.name}
+                </DeploymentLink>
+              </div>
+              <div className="priority">{deployment.priority}</div>
+              <div className="started">
+                {moment
+                  .utc(deployment.created)
+                  .local()
+                  .format('DD MMM YYYY, HH:mm:ss (Z)')}
+              </div>
+              <div className={`status ${deployment.status}`}>
+                {deployment.status.charAt(0).toUpperCase() +
+                  deployment.status.slice(1)}
+              </div>
+              <div className="duration">{getDeploymentDuration(deployment)}</div>
+              <div>
+                {['new', 'pending', 'running'].includes(deployment.status) && (
+                  <CancelDeployment deployment={deployment} afterText="cancelled" beforeText="cancel" />
+                )}
+              </div>
+            </div>
+          )
+        })}
       </div>
       <style jsx>{`
         .header {
           @media ${bp.tinyUp} {
-            align-items: center;
-            display: flex;
-            justify-content: flex-end;
             margin: 0 0 14px;
           }
           @media ${bp.smallOnly} {
@@ -123,27 +193,71 @@ const DeploymentsByFilter = (input) => {
           @media ${bp.tabletUp} {
             margin-top: 40px;
           }
-          label {
+
+          display: flex;
+          justify-content: space-between;
+
+          label, button {
             display: none;
             padding-left: 20px;
             width: 50%;
             @media ${bp.tinyUp} {
               display: block;
-            }
-            &:nth-child(2) {
-              @media ${bp.tabletUp} {
-                width: 20%;
-              }
+              text-align: left;
             }
           }
         }
-        .deployment {
-          font-weight: normal;
 
-          @media ${bp.tinyUp} {
-            width: 50%;
+        input#filter {
+          width: 100%;
+          border: none;
+          padding: 10px 20px;
+          margin: 0;
+          font-style: italic;
+        }
+
+        .button-sort {
+          color: #5f6f7a;
+          position: relative;
+          font-family: 'source-code-pro',sans-serif;
+          font-size: 13px;
+          font-size: 0.8125rem;
+          line-height: 1.4;
+          text-transform: uppercase;
+          padding-left: 20px;
+          border: none;
+          background: none;
+          cursor: pointer;
+
+          &:after {
+            position: absolute;
+            right:  -18px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+          }
+
+          &.ascending:after {
+            content: ' \\25B2';
+          }
+
+          &.descending:after {
+            content: ' \\25BC';
+          }
+
+          &:first-child {
+            padding-left: 0;
           }
         }
+
+        .expanded-wrapper {
+          padding: 20px;
+          background: ${color.lightestGrey};
+          .fieldWrapper {
+            padding-bottom: 20px;
+          }
+        }
+
         .data-table {
           background-color: ${color.white};
           border: 1px solid ${color.lightestGrey};
@@ -160,19 +274,15 @@ const DeploymentsByFilter = (input) => {
           }
   
           .data-row {
-            background-image: url('/static/images/right-arrow.svg');
-            background-position: right 20px center;
-            background-repeat: no-repeat;
-            background-size: 18px 11px;
             border: 1px solid ${color.white};
             border-bottom: 1px solid ${color.lightestGrey};
             border-radius: 0;
             line-height: 1.5rem;
             padding: 8px 0 7px 0;
+
             @media ${bp.tinyUp} {
               display: flex;
               justify-content: space-between;
-              padding-right: 40px;
             }
   
             & > div {
@@ -182,10 +292,6 @@ const DeploymentsByFilter = (input) => {
               }
               @media ${bp.xs_smallUp} {
                 width: 24%;
-                &.service,
-                &.status {
-                  width: 14%;
-                }
               }
             }
   
@@ -204,15 +310,16 @@ const DeploymentsByFilter = (input) => {
             }
   
             .status {
-              @media ${bp.tinyOnly} {
-                margin-left: 20px;
+              @media ${bp.smallOnly} {
+                background: none;
+                background-size: 0;
               }
-              @media ${bp.tiny_wide} {
-                background-position: center;
-              }
-              background-position: left 7px;
+              padding-left: 0;
+              margin-left: 15px;
+              background-position: 5px 7px;
               background-repeat: no-repeat;
               background-size: 10px 10px;
+              text-indent: 20px;
   
               &.active {
                 background-image: url('/static/images/in-progress.svg');
@@ -256,7 +363,7 @@ const DeploymentsByFilter = (input) => {
         }
       `}</style>
       {boxStyles}
-    </>
+    </div>
   );
 };
 
