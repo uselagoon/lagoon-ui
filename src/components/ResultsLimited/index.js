@@ -21,10 +21,7 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     width: 200,
-  }),
-  singleValue: (provided, state) => {
-    return { ...provided, opacity, transition };
-  }
+  })
 }
 
 /**
