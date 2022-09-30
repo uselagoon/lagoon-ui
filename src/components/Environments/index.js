@@ -5,7 +5,6 @@ import EnvironmentLink from 'components/link/Environment';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 import { makeSafe } from 'lib/util';
-import CopyButton from 'components/CopyButton';
 
 const bgImages = {
   branch: {
@@ -102,8 +101,12 @@ const Environments = ({ environments = [], project }) => {
                 )}
                 </EnvironmentLink>
                 {environment.routes
-                  ? <div>
-                    <CopyButton environment={environment.routes.split(',')[0]} />
+                  ? <div className='routeLink field'>
+                      <label>
+                        <a className="hover-state" href={environment.routes.split(',')[0]} target="_blank">
+                          Route
+                        </a>
+                      </label>
                     </div>
                   : ''
                 }
@@ -269,6 +272,12 @@ const Environments = ({ environments = [], project }) => {
           border-top-right-radius: 15px;
           margin-left: -25px;
           padding: 3px 15px 2px;
+        }
+
+        .routeLink {
+          position: absolute;
+          top: 10px;
+          right: 36px;
         }
       `}</style>
       {boxStyles}
