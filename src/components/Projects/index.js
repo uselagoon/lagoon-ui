@@ -45,7 +45,7 @@ const Projects = ({ projects = [] }) => {
   return (
     <>
       <div className="header">
-      <label>{filteredProjects.length <= 1 ? `${filteredProjects.length} Project` : `${filteredProjects.length} Projects`}</label>
+        <label>{filteredProjects.length <= 1 ? `${filteredProjects.length} Project` : `${filteredProjects.length} Projects`}</label>
         <label></label>
         <input
           aria-labelledby="search"
