@@ -57,6 +57,8 @@ const Environments = ({ environments = [], project }) => {
             }
           }
         `;
+        const activeEnvironment = project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == makeSafe(environment.name);
+        const standbyEnvironment = project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == makeSafe(environment.name);
 
         return (
           <div className="environment" key={environment.id}>
@@ -70,12 +72,12 @@ const Environments = ({ environments = [], project }) => {
                     <span>Production</span>
                   </div>
                 )}
-                {project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == makeSafe(environment.name) && (
+                {activeEnvironment && (
                   <div className="activeLabel">
                     <span>Active</span>
                   </div>
                 )}
-                {project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == makeSafe(environment.name) && (
+                {standbyEnvironment && (
                   <div className="standbyLabel">
                     <span>Standby</span>
                   </div>
@@ -87,25 +89,31 @@ const Environments = ({ environments = [], project }) => {
                 </label>
                 <h4>{environment.name}</h4>
                 {environment.openshift.friendlyName != null && (
-                <label className="clusterLabel">
-                Cluster: {environment.openshift.friendlyName}
-                </label>
+                  <label className="clusterLabel">
+                    Cluster: {environment.openshift.friendlyName}
+                  </label>
                 )}
                 {environment.openshift.friendlyName != null && environment.openshift.cloudRegion != null && (
                   <br></br>
                 )}
                 {environment.openshift.cloudRegion != null && (
-                <label className="regionLabel">
-                Region: {environment.openshift.cloudRegion}
-                </label>
+                  <label className="regionLabel">
+                    Region: {environment.openshift.cloudRegion}
+                  </label>
                 )}
                 </EnvironmentLink>
-                {environment.routes
+                {environment.routes && environment.routes !== "undefined"
                   ? <div className='routeLink field'>
                       <label>
-                        <a className="hover-state" href={environment.routes.split(',')[0]} target="_blank">
-                          Route
-                        </a>
+                        { standbyEnvironment || activeEnvironment ?
+                            <a className="hover-state" href={standbyEnvironment ? project.standbyRoutes : project.productionRoutes} target="_blank">
+                              Route
+                            </a>
+                        :
+                          <a className="hover-state" href={environment.routes.split(',')[0]} target="_blank">
+                            Route
+                          </a>
+                        }
                       </label>
                     </div>
                   : ''
@@ -276,8 +284,8 @@ const Environments = ({ environments = [], project }) => {
 
         .routeLink {
           position: absolute;
-          top: 10px;
-          right: 36px;
+          top: 8px;
+          right: 50px;
         }
       `}</style>
       {boxStyles}

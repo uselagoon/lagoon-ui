@@ -11,6 +11,8 @@ export default gql`
       gitUrl
       productionEnvironment
       standbyProductionEnvironment
+      productionRoutes
+      standbyRoutes
       developmentEnvironmentsLimit
       deployTargetConfigs {
         id
@@ -27,12 +29,12 @@ export default gql`
         name
         deployType
         environmentType
+        routes
         openshiftProjectName
         openshift {
           friendlyName
           cloudRegion
         }
-        routes
       }
     }
   }
