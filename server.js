@@ -129,8 +129,8 @@ app
       });
     });
 
-    server.get('/all-builds', (req, res) => {
-      app.render(req, res, '/all-builds', {});
+    server.get('/builds', (req, res) => {
+      app.render(req, res, '/builds', {});
     });
 
     server.get('*', (req, res) => {
