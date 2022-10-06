@@ -34,10 +34,6 @@ app
       app.render(req, res, '/projects');
     });
 
-    server.get('/all-builds', (req, res) => {
-      app.render(req, res, '/all-builds');
-    });
-
     server.get('/bulkdeployment/:bulkIdSlug', (req, res) => {
       app.render(req, res, '/bulkdeployments', { bulkId: req.params.bulkIdSlug });
     });
