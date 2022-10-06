@@ -67,6 +67,7 @@ const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArgum
             switch(d.type) {
 
               case("ENVIRONMENT_SOURCE_NAME"):
+              case("ENVIRONMENT_SOURCE_NAME_EXCLUDE_SELF"):
                 return (
                   <div key={`env-text-${index}`} className="envSelect">
                     <label id="source-env">{d.displayName || d.name} :</label>
