@@ -1,1 +1,114 @@
-<svg id="Layer_24" data-name="Layer 24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 43"><defs><style>.cls-1{fill:#f5f6fa;}</style></defs><title>tasks</title><path class="cls-1" d="M25,33H7a1,1,0,0,0,0,2H25a1,1,0,0,0,0-2Z"/><path class="cls-1" d="M25,27H7a1,1,0,0,0,0,2H25a1,1,0,0,0,0-2Z"/><path class="cls-1" d="M25,21H7a1,1,0,0,0,0,2H25a1,1,0,0,0,0-2Z"/><path class="cls-1" d="M25,15H7a1,1,0,0,0,0,2H25a1,1,0,0,0,0-2Z"/><path class="cls-1" d="M30,5H26a2,2,0,0,0-2-2H19.86a4,4,0,0,0-7.72,0H8A2,2,0,0,0,6,5H2A2,2,0,0,0,0,7V41a2,2,0,0,0,2,2H30a2,2,0,0,0,2-2V7A2,2,0,0,0,30,5ZM8,5h5a1,1,0,0,0,1-1,2,2,0,0,1,4,0,1,1,0,0,0,1,1h5V8H8ZM30,41H2V7H6V8a2,2,0,0,0,2,2H24a2,2,0,0,0,2-2V7h4Z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 512 512"
+   style="enable-background:new 0 0 512 512;"
+   xml:space="preserve"
+   sodipodi:docname="box.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs53">
+	
+
+		
+	</defs><sodipodi:namedview
+   id="namedview51"
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1.0"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="1.5585938"
+   inkscape:cx="256"
+   inkscape:cy="256"
+   inkscape:window-width="2560"
+   inkscape:window-height="939"
+   inkscape:window-x="0"
+   inkscape:window-y="1112"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<g
+   id="g6"
+   style="stroke:none;stroke-opacity:1;fill:#ffffff;fill-opacity:1">
+	<g
+   id="g4"
+   style="stroke:none;stroke-opacity:1;fill:#ffffff;fill-opacity:1">
+		<path
+   d="M135.837,292.571v146.286h240.327V292.571H135.837z M344.816,407.51H167.184v-83.592h177.633V407.51z"
+   id="path2"
+   style="stroke:none;stroke-opacity:1;fill:#ffffff;fill-opacity:1" />
+	</g>
+</g>
+<path
+   d="M 0,10.449 V 135.837 H 31.347 V 501.551 H 480.653 V 135.837 H 512 V 10.449 Z M 449.306,470.204 H 62.694 V 135.837 H 449.306 Z M 480.653,104.49 H 31.347 V 41.796 h 449.306 z"
+   id="path8"
+   style="fill:#ffffff;fill-opacity:1" />
+<g
+   id="g18"
+   style="fill:#ffffff;fill-opacity:1">
+	<g
+   id="g16"
+   style="fill:#ffffff;fill-opacity:1">
+		<path
+   d="M329.143,167.184H182.857c-25.927,0-47.02,21.093-47.02,47.02s21.093,47.02,47.02,47.02h146.286    c25.927,0,47.02-21.093,47.02-47.02S355.07,167.184,329.143,167.184z M329.143,229.878H182.857    c-8.642,0-15.674-7.031-15.674-15.673s7.031-15.673,15.674-15.673h146.286c8.642,0,15.673,7.031,15.673,15.673    S337.785,229.878,329.143,229.878z"
+   id="path14"
+   style="fill:#ffffff;fill-opacity:1" />
+	</g>
+</g>
+<g
+   id="g20">
+</g>
+<g
+   id="g22">
+</g>
+<g
+   id="g24">
+</g>
+<g
+   id="g26">
+</g>
+<g
+   id="g28">
+</g>
+<g
+   id="g30">
+</g>
+<g
+   id="g32">
+</g>
+<g
+   id="g34">
+</g>
+<g
+   id="g36">
+</g>
+<g
+   id="g38">
+</g>
+<g
+   id="g40">
+</g>
+<g
+   id="g42">
+</g>
+<g
+   id="g44">
+</g>
+<g
+   id="g46">
+</g>
+<g
+   id="g48">
+</g>
+</svg>
