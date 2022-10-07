@@ -100,8 +100,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </FactsLink>
     </li>
     }
-    {/* {(environment.project.insightsUi == 1) && */}
-      <li
+    {(environment.project.factsUi == 1) && <li
         className={`insights ${activeTab == 'insights' ? 'active' : ''} ${aClassName}`}
       >
         <InsightsLink
@@ -112,6 +111,7 @@ const NavTabs = ({ activeTab, environment }) => (
           Insights
         </InsightsLink>
       </li>
+    }
     {/* } */}
     <style jsx>{`
       .navigation {

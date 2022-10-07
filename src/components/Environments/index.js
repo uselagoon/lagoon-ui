@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as R from 'ramda';
 import css from 'styled-jsx/css';
 import EnvironmentLink from 'components/link/Environment';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
+import { makeSafe } from 'lib/util';
 
 const bgImages = {
   branch: {
@@ -56,25 +57,27 @@ const Environments = ({ environments = [], project }) => {
             }
           }
         `;
+        const activeEnvironment = project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == makeSafe(environment.name);
+        const standbyEnvironment = project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == makeSafe(environment.name);
 
         return (
           <div className="environment" key={environment.id}>
-            <EnvironmentLink
-              environmentSlug={environment.openshiftProjectName}
-              projectSlug={project.name}
-            >
               <Box className={`${boxClassName} ${bgClassName}`}>
+                <EnvironmentLink
+                  environmentSlug={environment.openshiftProjectName}
+                  projectSlug={project.name}
+                >
                 {environment.environmentType == 'production' && (
                   <div className="productionLabel">
                     <span>Production</span>
                   </div>
                 )}
-                {project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == environment.name && (
+                {activeEnvironment && (
                   <div className="activeLabel">
                     <span>Active</span>
                   </div>
                 )}
-                {project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == environment.name && (
+                {standbyEnvironment && (
                   <div className="standbyLabel">
                     <span>Standby</span>
                   </div>
@@ -86,20 +89,36 @@ const Environments = ({ environments = [], project }) => {
                 </label>
                 <h4>{environment.name}</h4>
                 {environment.openshift.friendlyName != null && (
-                <label className="clusterLabel">
-                Cluster: {environment.openshift.friendlyName}
-                </label>
+                  <label className="clusterLabel">
+                    Cluster: {environment.openshift.friendlyName}
+                  </label>
                 )}
                 {environment.openshift.friendlyName != null && environment.openshift.cloudRegion != null && (
                   <br></br>
                 )}
                 {environment.openshift.cloudRegion != null && (
-                <label className="regionLabel">
-                Region: {environment.openshift.cloudRegion}
-                </label>
+                  <label className="regionLabel">
+                    Region: {environment.openshift.cloudRegion}
+                  </label>
                 )}
+                </EnvironmentLink>
+                {environment.routes && environment.routes !== "undefined"
+                  ? <div className='routeLink field'>
+                      <label>
+                        { standbyEnvironment || activeEnvironment ?
+                            <a className="hover-state" href={standbyEnvironment ? project.standbyRoutes : project.productionRoutes} target="_blank">
+                              Route
+                            </a>
+                        :
+                          <a className="hover-state" href={environment.routes.split(',')[0]} target="_blank">
+                            Route
+                          </a>
+                        }
+                      </label>
+                    </div>
+                  : ''
+                }
               </Box>
-            </EnvironmentLink>
             {bgStyles}
           </div>
         );
@@ -261,6 +280,12 @@ const Environments = ({ environments = [], project }) => {
           border-top-right-radius: 15px;
           margin-left: -25px;
           padding: 3px 15px 2px;
+        }
+
+        .routeLink {
+          position: absolute;
+          top: 8px;
+          right: 50px;
         }
       `}</style>
       {boxStyles}

@@ -74,7 +74,7 @@ const Project = ({ project }) => {
         </div>
       </div>
       )}
-      {!projectUsesDeployTargets === 0 && (
+      {!projectUsesDeployTargets && (
       <div className="field-wrapper prs">
         <div>
           <label>Pull requests enabled</label>

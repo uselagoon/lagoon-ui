@@ -3,32 +3,31 @@ import * as R from 'ramda';
 import Head from 'next/head';
 import { Query } from 'react-apollo';
 import MainLayout from 'layouts/MainLayout';
-import Me from 'lib/query/Me';
+import deploymentsByFilter from 'lib/query/DeploymentsByFilter';
+import Projects from 'components/Projects';
 import withQueryLoading from 'lib/withQueryLoading';
 import withQueryError from 'lib/withQueryError';
 import { bp } from 'lib/variables';
-import SshKeys from '../../components/SshKeys';
-import AddSshKey from '../../components/SshKeys/AddSshKey';
+import { withRouter } from 'next/router';
+import DeploymentsByFilter from '../components/DeploymentsByFilter';
 
 /**
- * Displays the user settings page.
+ * Displays the projects page.
  */
-const SettingsPage = () => (
+const AllBuilds = () => (
   <>
     <Head>
-      <title>Settings</title>
+      <title>All Builds</title>
     </Head>
-    <Query query={Me} displayName="Me" fetchPolicy="cache-and-network">
+    <Query query={deploymentsByFilter} displayName="deploymentsByFilter">
       {R.compose(
-        withQueryLoading,
-        withQueryError
+        withQueryLoading
       )(({ data }) => (
         <MainLayout>
           <div className="content-wrapper">
-            <h2>SSH keys</h2>
+            <h2>Builds</h2>
             <div className="content">
-              <SshKeys me={data.me || {}} />
-              <AddSshKey me={data.me || {}} />
+              <DeploymentsByFilter deployments={data.deploymentsByFilter || []}/>
             </div>
           </div>
           <style jsx>{`
@@ -36,19 +35,19 @@ const SettingsPage = () => (
               h2 {
                 margin: 38px calc((100vw / 16) * 1) 0;
                 @media ${bp.wideUp} {
-                  margin: 62px calc((100vw / 16) * 2) 0;
+                  margin: 62px calc((100vw / 16) * 1) 0;
                 }
                 @media ${bp.extraWideUp} {
-                  margin: 62px calc((100vw / 16) * 3) 0;
+                  margin: 62px calc((100vw / 16) * 2) 0;
                 }
               }
               .content {
                 margin: 38px calc((100vw / 16) * 1);
                 @media ${bp.wideUp} {
-                  margin: 38px calc((100vw / 16) * 2);
+                  margin: 38px calc((100vw / 16) * 1);
                 }
                 @media ${bp.extraWideUp} {
-                  margin: 38px calc((100vw / 16) * 3);
+                  margin: 38px calc((100vw / 16) * 2);
                 }
               }
             }
@@ -59,4 +58,4 @@ const SettingsPage = () => (
   </>
 );
 
-export default SettingsPage;
+export default withRouter(AllBuilds);

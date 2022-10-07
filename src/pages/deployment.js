@@ -75,17 +75,17 @@ export const PageDeployment = ({ router }) => {
           withEnvironmentRequired,
           withDeploymentRequired
         )(({ data: { environment } }) => {
-            const deployment = environment && environment.deployments[0];
+          const deployment = environment && environment.deployments[0];
 
-            useEffect(() => {
-              window.addEventListener("scroll", onScroll);
+          useEffect(() => {
+            window.addEventListener("scroll", onScroll);
 
-              if (logsContent && logsContent.current.clientHeight < document.documentElement.clientHeight) {
-                setHidden("hidden");
-              }
+            if (logsContent && logsContent.current.clientHeight < document.documentElement.clientHeight) {
+              setHidden("hidden");
+            }
 
-              return () => window.removeEventListener("scroll", onScroll);
-            }, [deployment]);
+            return () => window.removeEventListener("scroll", onScroll);
+          }, [deployment]);
 
           return (
             <MainLayout>
@@ -109,13 +109,13 @@ export const PageDeployment = ({ router }) => {
                 </div>
               </div>
               <div ref={logsEndRef} />
-              <div className="scroll-wrapper">
+              {/* <div className="scroll-wrapper">
                 {!hidden &&
                   <button className={`scroll ${!showBottom ? "top" : "bottom"}`} onClick={() => !showBottom ? scrollToTop() : scrollToBottom()}>
                     {!showBottom ? "↑" : "↓"}
                   </button>
                 }
-              </div>
+              </div> */}
               <style jsx>{`
                 .content-wrapper {
                   @media ${bp.tabletUp} {

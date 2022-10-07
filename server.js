@@ -129,6 +129,10 @@ app
       });
     });
 
+    server.get('/builds', (req, res) => {
+      app.render(req, res, '/builds', {});
+    });
+
     server.get('*', (req, res) => {
       return handle(req, res);
     });
