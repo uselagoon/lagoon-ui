@@ -2,7 +2,7 @@ import React from 'react';
 import Honeycomb from './index';
 import { Query } from 'react-apollo';
 import AllProjectsProblemsQuery from 'lib/query/AllProjectsProblems';
-import mocks, { seed } from "api/src/mocks";
+import mocks, { seed } from "../../../.storybook/mocks";
 
 export default {
   component: Honeycomb,
