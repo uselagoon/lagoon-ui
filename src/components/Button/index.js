@@ -31,6 +31,7 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
             color: ${color.white};
             cursor: pointer;
             padding: 10px 30px;
+            margin: auto;
             @media ${bp.tinyUp} {
               align-self: auto;
             }
@@ -40,7 +41,7 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
             }
 
             &.btn--disabled {
-              background-color: ${color.lightestGrey};
+              background-color: ${color.midGrey};
               color: ${color.darkGrey};
               cursor: not-allowed;
             }
@@ -53,6 +54,7 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
             color: ${color.white};
             cursor: pointer;
             padding: 10px 30px;
+            margin: auto;
             @media ${bp.tinyUp} {
               align-self: auto;
             }
@@ -62,9 +64,36 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
             }
 
             &.btn--disabled {
-              background-color: ${color.lightestGrey};
+              background-color: ${color.midGrey};
               color: ${color.darkGrey};
               cursor: not-allowed;
+            }
+          }
+          .btn-green {
+            display: inline-block;
+            background-color: ${color.green};
+            border: none;
+            border-radius: 3px;
+            color: ${color.white};
+            cursor: pointer;
+            padding: 10px 30px;
+            margin: auto;
+            @media ${bp.tinyUp} {
+              align-self: auto;
+            }
+
+            &:hover {
+              background-color: ${color.green};
+            }
+
+            &.btn--disabled {
+              background-color: ${color.midGrey};
+              color: ${color.darkGrey};
+              cursor: not-allowed;
+              border-width: 1px;
+              border-style: solid;
+              border-radius: 3px;
+              border-color: hsl(0,0%,85%);
             }
           }
         `}
