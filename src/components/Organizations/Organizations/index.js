@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import css from 'styled-jsx/css';
 import Highlighter from 'react-highlight-words';
-import OrganizationLink from 'components/link/Organization';
+import OrganizationLink from 'components/link/Organizations/Organization';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 

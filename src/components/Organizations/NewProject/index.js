@@ -7,6 +7,7 @@ import { bp, color, fontSize } from 'lib/variables';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 import Button from 'components/Button';
+import Router from 'next/router';
 import withLogic from 'components/Organizations/NewProject/logic';
 import { Query } from 'react-apollo';
 import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
@@ -107,7 +108,7 @@ const OrgNewProject = ({
                 inputProdEnv.indexOf(' ') > 0  ||
                 selectedDeployTarget === undefined
             }
-                action={() =>
+                action={() => {
                 addGroupProject({
                 variables: {
                     name: inputProjectName,
@@ -117,8 +118,10 @@ const OrgNewProject = ({
                     organization: parseInt(organizationId, 10),
                     // branches: inputBranches,
                     // pullrequests: inputPRs,
-                    }
-                })
+                }
+                });
+                Router.push(`/organizations/${organizationId}/projects`);
+                }
                 }
                 variant='green'
             >Create

@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import css from 'styled-jsx/css';
 import Highlighter from 'react-highlight-words';
-import OrgGroupsLink from 'components/link/OrgGroup';
+import OrgGroupsLink from 'components/link/Organizations/Group';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Button from 'components/Button';
 import withLogic from 'components/Organizations/Groups/logic';
+import Router from 'next/router';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -64,13 +65,15 @@ const Groups = ({ groups = [], organizationId, organizationName, setInputValue, 
                 <label className="input-padding">Group Name: <input className="inputGroup" type="text" value={inputValueGroup} onChange={setInputValue} /></label>
                 <Button
                   disabled={inputValueGroup === "" || inputValueGroup.indexOf(' ') > 0}
-                  action={() =>
+                  action={() => {
                     addGroup({
                     variables: {
                       group: inputValueGroup,
                       organization: parseInt(organizationId, 10)
                       }
-                    })
+                    });
+                    Router.push(`/organizations/${organizationId}/groups`);
+                    }
                   }
                   variant='green'
                 >Create

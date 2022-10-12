@@ -18,8 +18,6 @@ import { bp, color } from 'lib/variables';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import GroupMembers from 'components/Organizations/GroupMembers';
-import GroupMemberSideBar from 'components/Organizations/GroupMemberSideBar';
-import GroupProjectsSideBar from 'components/Organizations/GroupProjectsSideBar';
 import Organization from 'components/Organizations/Organization';
 import ProjectGroupMembers from 'components/Organizations/ProjectGroupMembers';
 import ProjectGroupsSideBar from 'components/Organizations/ProjectGroupsSideBar';
@@ -55,7 +53,7 @@ export const PageGroupProject = ({ router }) => (
           (project.name == router.query.projectName) && (
             <>
               <div className="project-details-sidebar">
-                <ProjectGroupsSideBar projectName={project.name} options={organization.groups.map(group => {return {label: group.name, value: group.name} })} />
+                <ProjectGroupsSideBar projectName={project.name} organizationId={organization.id} options={organization.groups.map(group => {return {label: group.name, value: group.name} })} />
               </div>
               <div className="projects-wrapper">
                 <ProjectGroupMembers projectName={project.name} groups={project.groups || []} />

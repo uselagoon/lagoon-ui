@@ -5,7 +5,7 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import { Query } from 'react-apollo';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/OrganizationByID';
+import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgNavTabs from 'components/Organizations/NavTabs';
@@ -15,7 +15,7 @@ import withQueryLoading from 'lib/withQueryLoading';
 import withQueryError from 'lib/withQueryError';
 import {  withOrganizationRequired } from 'lib/withDataRequired';
 import { bp } from 'lib/variables';
-import OrgProjects from '../components/Organizations/Projects';
+import OrgProjects from 'components/Organizations/Projects';
 
 /**
  * Displays the projects page, given the organization id

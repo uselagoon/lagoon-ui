@@ -61,7 +61,7 @@ export const PageGroup = ({ router }) => (
           </Breadcrumbs>
           <div className="content-wrapper">
               <div className="project-details-sidebar">
-                <GroupMemberSideBar group={group} />
+                <GroupMemberSideBar group={group} organizationId={organization.id}/>
               </div>
               <div className="groups-wrapper">
             {(!group.type.includes("project-default-group")) && (
