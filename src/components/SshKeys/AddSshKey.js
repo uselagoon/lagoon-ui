@@ -16,7 +16,7 @@ const AddSshKey = ({me: { id, email }}) => {
     setValues({...values, [name]: value});
   }
 
-  const isFormValid = values.sshKeyName !== '' && !values.sshKey.includes('\n') &&
+  const isFormValid = values.sshKeyName !== '' &&
   (
     values.sshKey.trim().startsWith('ssh-rsa') ||
     values.sshKey.trim().startsWith('ssh-ed25519') ||
@@ -82,7 +82,7 @@ const AddSshKey = ({me: { id, email }}) => {
                   className="addSshKeyInput"
                   type="text"
                   onChange={handleChange}
-                  value={values.sshKey}
+                  value={values.sshKey.includes('\n') ? values.sshKey.trim() : values.sshKey}
                   placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"/>
               </div>
 
