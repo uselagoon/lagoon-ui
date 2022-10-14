@@ -175,7 +175,7 @@ const DeploymentsByFilter = ({ deployments }) => {
               <div className="duration">{getDeploymentDuration(deployment)}</div>
               <div>
                 {['new', 'pending', 'running'].includes(deployment.status) && (
-                  <CancelDeployment deployment={deployment} afterText="cancelled" beforeText="cancel" />
+                  <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
                 )}
               </div>
             </div>
