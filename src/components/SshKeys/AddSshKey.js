@@ -82,7 +82,7 @@ const AddSshKey = ({me: { id, email }}) => {
                   className="addSshKeyInput"
                   type="text"
                   onChange={handleChange}
-                  value={values.sshKey.includes('\n') ? values.sshKey.trim() : values.sshKey}
+                  value={values.sshKey.trim()}
                   placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"/>
               </div>
 
