@@ -43,6 +43,7 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
               background-color: ${color.lightestGrey};
               color: ${color.darkGrey};
               cursor: not-allowed;
+              margin-right: 16px;
             }
           }
           .btn-red {
