@@ -1,11 +1,23 @@
 import React, { useRef, useState } from 'react';
 import { bp } from 'lib/variables';
 import LogAccordion from 'components/LogViewer/LogAccordion';
+import withState from 'recompose/withState';
+import withHandlers from 'recompose/withHandlers';
 
-const LogViewer = ({ logs, status = "NA" }) => (
+
+const withParseLogsState = withState("checkedParseState", "setParseStateChecked", true);
+
+const withParseLogsStateHandlers = withHandlers({
+  changeState: ({setParseStateChecked, checkedParseState}) => (e) => {setParseStateChecked(!checkedParseState);},
+})
+
+
+const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
   <React.Fragment>
     <div className="logs">
-      <div className="log-viewer">{ logs !== null ? logPreprocessor(logs, status) : 'Logs are not available.'}</div>
+    <div><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span class="showraw">Parse logs</span></div>
+      {checkedParseState ? (<div className="log-viewer">{ logs !== null ? logPreprocessor(logs, status) :
+       'Logs are not available.'}</div>) : (<div className="log-viewer">{logs}</div>)}
     </div>
     <style jsx>{`
       .logs {
@@ -215,4 +227,4 @@ const logPreprocessorTokenize = (logs) => {
   return tokenizedLogs;
 }
 
-export default LogViewer;
+export default withParseLogsState(withParseLogsStateHandlers(LogViewer));
