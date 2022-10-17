@@ -15,9 +15,9 @@ const withParseLogsStateHandlers = withHandlers({
 const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
   <React.Fragment>
     <div className="logs">
-    <div><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span class="showraw">Parse logs</span></div>
+    <div className="parseLogs"><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span className="showraw">Parse logs</span></div>
       {checkedParseState ? (<div className="log-viewer">{ logs !== null ? logPreprocessor(logs, status) :
-       'Logs are not available.'}</div>) : (<div className="log-viewer">{logs}</div>)}
+       'Logs are not available.'}</div>) : (<div className="log-viewer with-padding">{logs}</div>)}
     </div>
     <style jsx>{`
       .logs {
@@ -36,6 +36,15 @@ const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
           will-change: initial;
           word-break: break-all;
           word-wrap: break-word;
+          &.with-padding {
+            padding: 10px;
+          }
+        }
+        .parseLogs {
+          margin: 0 auto 10px;
+          .showraw {
+            margin-left: 10px;
+          }
         }
       }
     `}</style>
