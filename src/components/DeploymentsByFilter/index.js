@@ -83,13 +83,13 @@ const DeploymentsByFilter = ({ deployments }) => {
 
 
   return (
-    <div className="builds">
+    <div className="deployments">
       <div className="filters">
         <label>{sortedItems.length <= 1 ? `${sortedItems.length} Deployments` : `${sortedItems.length} Deployments`}</label>
         <label></label>
         <input 
           type="text" id="filter"
-          placeholder="Filter builds..."
+          placeholder="Filter Deployments..."
           value={searchTerm}
           onChange={handleSearchFilterChange}
         />
@@ -97,7 +97,7 @@ const DeploymentsByFilter = ({ deployments }) => {
       {!deployments.length && (
         <Box>
           <div className="data-none">
-            <h4>No deployments</h4>
+            <h4>No Deployments</h4>
           </div>
         </Box>
       )}
