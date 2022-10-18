@@ -131,7 +131,7 @@ const DeploymentsByFilter = ({ deployments }) => {
         <label></label>
       </div>
       <div className="data-table">
-        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">No Deployments</div>}
+        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">No deployments</div>}
         {sortedItems.filter(deployment => filterResults(deployment)).map((deployment) => {
           return (
             <div className="data-row row-heading" key={deployment.id}>
