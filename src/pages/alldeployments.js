@@ -17,7 +17,7 @@ import DeploymentsByFilter from '../components/DeploymentsByFilter';
 const AllDeployments = () => (
   <>
     <Head>
-      <title>All Deployments</title>
+      <title>All deployments</title>
     </Head>
     <Query query={deploymentsByFilter} displayName="deploymentsByFilter">
       {R.compose(

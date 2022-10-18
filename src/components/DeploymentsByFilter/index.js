@@ -89,7 +89,7 @@ const DeploymentsByFilter = ({ deployments }) => {
         <label></label>
         <input 
           type="text" id="filter"
-          placeholder="Filter Deployments..."
+          placeholder="Filter deployments..."
           value={searchTerm}
           onChange={handleSearchFilterChange}
         />
@@ -97,7 +97,7 @@ const DeploymentsByFilter = ({ deployments }) => {
       {!deployments.length && (
         <Box>
           <div className="data-none">
-            <h4>No Deployments</h4>
+            <h4>No deployments</h4>
           </div>
         </Box>
       )}
