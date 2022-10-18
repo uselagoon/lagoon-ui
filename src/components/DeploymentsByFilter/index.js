@@ -85,7 +85,7 @@ const DeploymentsByFilter = ({ deployments }) => {
   return (
     <div className="deployments">
       <div className="filters">
-        <label>{sortedItems.length <= 1 ? `${sortedItems.length} Deployments` : `${sortedItems.length} Deployments`}</label>
+        <label>{sortedItems.length == 1 ? `1 deployment` : `${sortedItems.length} deployments`}</label>
         <label></label>
         <input 
           type="text" id="filter"
