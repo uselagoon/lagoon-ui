@@ -14,7 +14,7 @@ const withParseLogsStateHandlers = withHandlers({
 const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
   <React.Fragment>
     <div className="logs">
-    <div className="parseLogs"><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span className="showraw">Parse logs</span></div>
+    <div className="parseLogs"><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span className="showraw">Prettify logs</span></div>
     { logs !== null ?
         checkedParseState ?
         (<div className="log-viewer">{logPreprocessor(logs, status)}</div>)
