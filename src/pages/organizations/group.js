@@ -22,6 +22,7 @@ import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import GroupMembers from 'components/Organizations/GroupMembers';
 import GroupMemberSideBar from 'components/Organizations/GroupMemberSideBar';
 import DeleteConfirm from 'components/DeleteConfirm';
+import Router from 'next/router';
 
 /**
  * Displays a task page, given the openshift project and task ID.
@@ -78,12 +79,14 @@ export const PageGroup = ({ router }) => (
                       <DeleteConfirm
                         deleteName={group.name}
                         deleteType="group"
-                        onDelete={() =>
+                        onDelete={() => {
                           deleteGroup({
                             variables: {
                               groupName: group.name,
                             }
                           })
+                          Router.push(`/organizations/${organization.id}/groups`)
+                        }
                         }
                       />
                     );

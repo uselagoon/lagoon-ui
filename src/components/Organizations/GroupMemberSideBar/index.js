@@ -8,7 +8,6 @@ import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 import Button from 'components/Button';
 import withLogic from 'components/Organizations/GroupMemberSideBar/logic';
-import Router from 'next/router';
 
 const ADD_GROUP_MEMBER_MUTATION = gql`
   mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!) {
@@ -47,7 +46,6 @@ let options = [
 
 const GroupMemberSideBar = ({ group,
   inputValueEmail,
-  organizationId,
   groupName,
   setInputValue,
   selectedRole,
@@ -91,8 +89,7 @@ const GroupMemberSideBar = ({ group,
                       group: group.name,
                     }
                   });
-                  //@TODO: figure out why this doesn't work
-                  Router.push(`/organizations/${organizationId}/groups/${group.name}`);
+                  window.location.reload();
                 }
                 }
                 variant='green'

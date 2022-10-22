@@ -96,13 +96,15 @@ const GroupMembers = ({ members = [], groupName }) => {
               return (
                 <RemoveUserConfirm
                   removeName={member.user.email}
-                  onRemove={() =>
+                  onRemove={() => {
                     removeUserFromGroup({
                       variables: {
                         groupName: groupName,
                         email: member.user.email
                       }
-                    })
+                    });
+                    window.location.reload();
+                  }
                   }
                 />
               );

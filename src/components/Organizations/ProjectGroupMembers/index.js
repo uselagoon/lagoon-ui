@@ -94,13 +94,15 @@ const ProjectGroupMembers = ({ groups = [], projectName }) => {
               return (
                 <RemoveProjectGroupConfirm
                   removeName={group.name}
-                  onRemove={() =>
+                  onRemove={() => {
                     removeGroupFromProject({
                       variables: {
                         groupName: group.name,
                         projectName: projectName
                       }
-                    })
+                    });
+                    window.location.reload();
+                  }
                   }
                 />
               );

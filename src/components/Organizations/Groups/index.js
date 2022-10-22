@@ -9,7 +9,6 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Button from 'components/Button';
 import withLogic from 'components/Organizations/Groups/logic';
-import Router from 'next/router';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -72,7 +71,7 @@ const Groups = ({ groups = [], organizationId, organizationName, setInputValue, 
                       organization: parseInt(organizationId, 10)
                       }
                     });
-                    Router.push(`/organizations/${organizationId}/groups`);
+                    window.location.reload();
                     }
                   }
                   variant='green'

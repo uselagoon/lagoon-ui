@@ -13,8 +13,6 @@ import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
 import withQueryLoading from 'lib/withQueryLoading';
 import withQueryError from 'lib/withQueryError';
 import { withOrganizationRequired } from 'lib/withDataRequired';
-import Router from 'next/router';
-
 
 const ADD_GROUP_PROJECT_MUTATION = gql`
   mutation addProjectToGroup($groupName: String!, $projectName: String!) {
@@ -77,7 +75,7 @@ const ProjectGroupsSideBar = ({ project,
                       groupName: selectedProject.value,
                     }
                   })
-                  Router.push(`/organizations/${organizationId}/projects/${projectName}`);
+                  window.location.reload();
                   }
                 }
                 variant='green'
