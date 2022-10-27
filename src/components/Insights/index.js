@@ -113,11 +113,13 @@ const Insights = ({ insights }) => {
         return (matchesNameSelector(item) && matchesServiceSelector(item) && matchesTypeSelector(item)  && matchesTextFilter(item));
     };
 
+    const insightsLength = sortedItems.filter(item => shouldItemBeShown(item)).length
+
     return (
         <div className="insights">
             <div className="overview">
                 <ul className="overview-list">
-                    <li className="result"><label>Insights </label><span className="text-large">{Object.keys(sortedItems).length}</span></li>
+                    <li className="result"><label>{insightsLength <= 1 ? `Insight` : `Insights`}</label><span className="text-large">{insightsLength}</span></li>
                 </ul>
             </div>
             <div className="filters-wrapper">
