@@ -1,5 +1,6 @@
 const webpackShared = require('./webpack.shared-config');
 require('dotenv-extended').load();
+const fs = require('fs');
 
 const withCSS = require('@zeit/next-css');
 
@@ -7,6 +8,13 @@ const taskBlocklist =
   (process.env.LAGOON_UI_TASK_BLOCKLIST &&
     process.env.LAGOON_UI_TASK_BLOCKLIST.split(',')) ||
   [];
+
+// Here we load the plugin registry from plugins.json
+let pluginRegistry = {};
+if(fs.existsSync("plugins.json")) {
+  const pluginString = fs.readFileSync("plugins.json");
+  pluginRegistry = JSON.parse(pluginString);
+}
 
 module.exports = withCSS({
   publicRuntimeConfig: {
@@ -22,6 +30,7 @@ module.exports = withCSS({
     LAGOON_UI_TASKS_LIMIT_MESSAGE: process.env.LAGOON_UI_TASKS_LIMIT_MESSAGE,
     LAGOON_UI_BACKUPS_LIMIT: process.env.LAGOON_UI_BACKUPS_LIMIT,
     LAGOON_UI_BACKUPS_LIMIT_MESSAGE: process.env.LAGOON_UI_BACKUPS_LIMIT_MESSAGE,
+    PLUGIN_SCRIPTS: pluginRegistry,
   },
   distDir: '../build',
   webpack(config, options) {

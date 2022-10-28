@@ -30,3 +30,24 @@ docker-compose up -d
 ```
 
 This project is tested with BrowserStack.
+
+## Plugin system
+
+The Lagoon UI supports basic plugins via a plugin registry.
+The file, in the root, "plugins.json" allows you to hook into the server side rendering to add additional CSS and Javascript files. These are simply added as "script" and "link" elements to the resulting HTML.
+We currently support adding elements to the `head` at at the end of the `body` as demonstrated below.
+
+In this example, we load two elements, a JS script and a css file into the `head`, and then we add an external library at the bottom of the `body`.
+
+```
+{
+    "head": [
+        {"type": "script", "location":"/static/custom.js"},
+        {"type": "link",   "href":"/static/plugins/custom.css"}
+        
+    ],
+    "body": [
+        {"type": "script", "location":"https://www.cornify.com/js/cornify.js"}
+    ]
+}
+```
