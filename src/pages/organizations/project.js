@@ -21,6 +21,7 @@ import GroupMembers from 'components/Organizations/GroupMembers';
 import Organization from 'components/Organizations/Organization';
 import ProjectGroupMembers from 'components/Organizations/ProjectGroupMembers';
 import ProjectGroupsSideBar from 'components/Organizations/ProjectGroupsSideBar';
+import ProjectsBreadcrumb from 'components/Breadcrumbs/Organizations/Projects';
 import OrgProjectBreadcrumb from 'components/Breadcrumbs/Organizations/Project';
 
 /**
@@ -46,6 +47,7 @@ export const PageGroupProject = ({ router }) => (
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
+            <ProjectsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
             <OrgProjectBreadcrumb projectSlug={router.query.projectName} organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
           </Breadcrumbs>
           <div className="content-wrapper">
@@ -56,7 +58,7 @@ export const PageGroupProject = ({ router }) => (
                 <ProjectGroupsSideBar projectName={project.name} organizationId={organization.id} options={organization.groups.map(group => {return {label: group.name, value: group.name} })} />
               </div>
               <div className="projects-wrapper">
-                <ProjectGroupMembers projectName={project.name} groups={project.groups || []} />
+                <ProjectGroupMembers projectName={project.name} organizationId={organization.id} organizationName={organization.name} groups={project.groups || []} />
               </div>
             </>
           )))}

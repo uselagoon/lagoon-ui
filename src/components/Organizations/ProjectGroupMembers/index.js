@@ -7,6 +7,7 @@ import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 import Button from 'components/Button';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
+import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
@@ -41,7 +42,7 @@ const REMOVE_GROUP_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectGroupMembers = ({ groups = [], projectName }) => {
+const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, projectName }) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredMembers = groups.filter(key => {
@@ -77,7 +78,12 @@ const ProjectGroupMembers = ({ groups = [], projectName }) => {
       )}
       {filteredMembers.map(group => (
       <div className="data-row" key={group.name}>
-        <div className="name">{group.name}</div>
+        <div className="name">
+          <OrgGroupsLink groupSlug={group.name}
+          organizationSlug={organizationId}
+          organizationName={organizationName}>{group.name}
+          </OrgGroupsLink>
+        </div>
         <div className="customer">
           {(group.type.includes("project-default-group")) && (<label className="default-group-label">{group.type}</label>)}
         </div>

@@ -18,6 +18,7 @@ import {
 } from 'lib/withDataRequired';
 import { bp, color } from 'lib/variables';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
+import GroupsBreadcrumb from 'components/Breadcrumbs/Organizations/Groups';
 import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import GroupMembers from 'components/Organizations/GroupMembers';
 import GroupMemberSideBar from 'components/Organizations/GroupMemberSideBar';
@@ -58,6 +59,7 @@ export const PageGroup = ({ router }) => (
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
+            <GroupsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
             <GroupBreadcrumb groupSlug={group.name} organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
           </Breadcrumbs>
           <div className="content-wrapper">
