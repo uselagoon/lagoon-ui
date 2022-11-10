@@ -5,16 +5,16 @@ import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 
 
-const withParseLogsState = withState("checkedParseState", "setParseStateChecked", true);
+// const withParseLogsState = withState("checkedParseState", "setParseStateChecked", true);
 
-const withParseLogsStateHandlers = withHandlers({
-  changeState: ({setParseStateChecked, checkedParseState}) => (e) => {setParseStateChecked(!checkedParseState);},
-})
+// const withParseLogsStateHandlers = withHandlers({
+//   changeState: ({setParseStateChecked, checkedParseState}) => (e) => {setParseStateChecked(!checkedParseState);},
+// })
 
 const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
   <React.Fragment>
     <div className="logs">
-    <div className="parseLogs"><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span className="showraw">Prettify logs</span></div>
+    {/* <div className="parseLogs"><input type="checkbox" checked={ checkedParseState } onChange={changeState}></input><span className="showraw">Prettify logs</span></div> */}
     { logs !== null ?
         checkedParseState ?
         (<div className="log-viewer">{logPreprocessor(logs, status)}</div>)
@@ -238,4 +238,4 @@ const logPreprocessorTokenize = (logs) => {
   return tokenizedLogs;
 }
 
-export default withParseLogsState(withParseLogsStateHandlers(LogViewer));
+export default LogViewer;

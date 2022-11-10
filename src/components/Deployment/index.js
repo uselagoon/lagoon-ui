@@ -5,6 +5,9 @@ import CancelDeployment from 'components/CancelDeployment';
 import BulkDeploymentLink from 'components/link/BulkDeployment';
 import LogViewer from 'components/LogViewer';
 import { bp, color, fontSize } from 'lib/variables';
+import withState from 'recompose/withState';
+import withHandlers from 'recompose/withHandlers';
+import Button from 'components/Button';
 
 export const getDeploymentDuration = deployment => {
   const deploymentStart = deployment.started || deployment.created;
@@ -19,10 +22,16 @@ export const getDeploymentDuration = deployment => {
   return duration;
 };
 
+const withParseLogsState = withState("checkedParseState", "setParseStateChecked", true);
+
+const withParseLogsStateHandlers = withHandlers({
+  changeState: ({setParseStateChecked, checkedParseState}) => (e) => {setParseStateChecked(!checkedParseState);},
+})
+
 /**
  * Displays information about a deployment.
  */
-const Deployment = ({ deployment }) => (
+const Deployment = ({ deployment, checkedParseState, changeState }) => (
   <div className="deployment">
     <div className="details">
       <div className="field-wrapper created">
@@ -51,6 +60,16 @@ const Deployment = ({ deployment }) => (
           <div className="field">{getDeploymentDuration(deployment)}</div>
         </div>
       </div>
+      <div className="field-wrapper logstatus">
+        <div>
+        <label>Log view</label>
+        <div className="field">
+          <Button action={changeState}>
+            {checkedParseState ? "View raw" : "View parsed"}
+          </Button>
+        </div>
+        </div>
+      </div>
       {deployment.bulkId &&<div className="field-wrapper bulk">
         <div>
           <label>Bulk Deployment</label>
@@ -69,7 +88,7 @@ const Deployment = ({ deployment }) => (
         <CancelDeployment deployment={deployment} />
       )}
     </div>
-    <LogViewer logs={deployment.buildLog} status={deployment.status} />
+    <LogViewer logs={deployment.buildLog} status={deployment.status} checkedParseState={checkedParseState} />
     <style jsx>{`
       .button-row {
         padding: 0px calc(100vw / 16) 20px;
@@ -231,4 +250,4 @@ const Deployment = ({ deployment }) => (
   </div>
 );
 
-export default Deployment;
+export default withParseLogsState(withParseLogsStateHandlers(Deployment));
