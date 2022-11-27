@@ -20,7 +20,7 @@ jobs:
         if: "startsWith(github.ref, 'refs/tags/')"
         id: version_tag_build
         run: |
-          LAGOON_VERSION=$(echo $(git describe --abbrev=0 --tags --match 'lagoon-core-v*'))
+          LAGOON_VERSION=$(echo $(git describe --abbrev=0 --tags --match 'core-v*'))
           UI_VERSION=$(echo $(git describe --abbrev=0 --tags --match 'v*'))
           BUILD=$(date +%FT%T%z)
           echo "LAGOON_VERSION=$LAGOON_VERSION" >> $GITHUB_ENV
