@@ -8,6 +8,8 @@ export default gql`
         status
         created
         priority
+        started
+        completed
         environment {
           name
           openshiftProjectName
