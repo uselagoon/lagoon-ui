@@ -83,13 +83,13 @@ const DeploymentsByFilter = ({ deployments }) => {
 
 
   return (
-    <div className="builds">
+    <div className="deployments">
       <div className="filters">
-        <label>{sortedItems.length <= 1 ? `${sortedItems.length} Deployments` : `${sortedItems.length} Deployments`}</label>
+        <label>{sortedItems.length == 1 ? `1 deployment` : `${sortedItems.length} deployments`}</label>
         <label></label>
         <input 
           type="text" id="filter"
-          placeholder="Filter builds..."
+          placeholder="Filter deployments..."
           value={searchTerm}
           onChange={handleSearchFilterChange}
         />
@@ -131,7 +131,7 @@ const DeploymentsByFilter = ({ deployments }) => {
         <label></label>
       </div>
       <div className="data-table">
-        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">No Deployments</div>}
+        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">No deployments</div>}
         {sortedItems.filter(deployment => filterResults(deployment)).map((deployment) => {
           return (
             <div className="data-row row-heading" key={deployment.id}>
