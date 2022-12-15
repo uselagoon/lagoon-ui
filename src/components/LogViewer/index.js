@@ -1,11 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { bp } from 'lib/variables';
 import LogAccordion from 'components/LogViewer/LogAccordion';
+import withState from 'recompose/withState';
+import withHandlers from 'recompose/withHandlers';
 
-const LogViewer = ({ logs, status = "NA" }) => (
+const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
   <React.Fragment>
     <div className="logs">
-      <div className="log-viewer">{ logs !== null ? logPreprocessor(logs, status) : 'Logs are not available.'}</div>
+    { logs !== null ?
+        checkedParseState ?
+        (<div className="log-viewer">{logPreprocessor(logs, status)}</div>)
+          : (<div className="log-viewer with-padding">{logs}</div>)
+      : (<div className="log-viewer with-padding">Logs are not available.</div>) }
     </div>
     <style jsx>{`
       .logs {
@@ -24,6 +30,15 @@ const LogViewer = ({ logs, status = "NA" }) => (
           will-change: initial;
           word-break: break-all;
           word-wrap: break-word;
+          &.with-padding {
+            padding: 10px;
+          }
+        }
+        .parseLogs {
+          margin: 0 auto 10px;
+          .showraw {
+            margin-left: 10px;
+          }
         }
       }
     `}</style>
