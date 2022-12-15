@@ -88,7 +88,7 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
         <CancelDeployment deployment={deployment} />
       )}
     </div>
-    <LogViewer logs={deployment.buildLog} status={deployment.status} checkedParseState={checkedParseState} />
+    <LogViewer logs={deployment.buildLog} status={deployment.status} checkedParseState={checkedParseState} forceLastSectionOpen={true}/>
     <style jsx>{`
       .button-row {
         padding: 0px calc(100vw / 16) 20px;
