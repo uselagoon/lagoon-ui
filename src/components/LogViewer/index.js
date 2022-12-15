@@ -4,12 +4,12 @@ import LogAccordion from 'components/LogViewer/LogAccordion';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 
-const LogViewer = ({ logs, status = "NA", checkedParseState, changeState }) => (
+const LogViewer = ({ logs, status = "NA", checkedParseState, changeState, forceLastSectionOpen = true }) => (
   <React.Fragment>
     <div className="logs">
     { logs !== null ?
         checkedParseState ?
-        (<div className="log-viewer">{logPreprocessor(logs, status)}</div>)
+        (<div className="log-viewer">{logPreprocessor(logs, status, forceLastSectionOpen)}</div>)
           : (<div className="log-viewer with-padding">{logs}</div>)
       : (<div className="log-viewer with-padding">Logs are not available.</div>) }
     </div>
@@ -60,12 +60,13 @@ const isLogStateBad = (status) => {
  *
  * @param {*} logs the actual logs we're processing
  * @param {*} status a status for the build - if not complete, we open the very last item
+ * @param {*} status a status for the build - if not complete, we open the very last item
  * @returns
  */
-const logPreprocessor = (logs, status) => {
+const logPreprocessor = (logs, status, forceLastSectionOpen = true) => {
   let ret = null;
   let statusBad = isLogStateBad(status);
-  let openLastSection = shouldLastSectionBeOpen(status);
+  let openLastSection = forceLastSectionOpen || shouldLastSectionBeOpen(status);
 
   try {
     let tokens = logPreprocessorTokenize(logs);
