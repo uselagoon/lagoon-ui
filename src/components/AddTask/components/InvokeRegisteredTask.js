@@ -32,6 +32,11 @@ const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArgum
   if(selectedTask.arguments) {
     taskArgumentsExist = true;
     argumentVariablesHaveValues = selectedTask.arguments.reduce((p, c) => {
+      //We need to make an exception for FIXED types
+      if(c["type"] == "FIXED") {
+        return p;
+      }
+      
       let hasArg = advancedTaskArguments[c['name']];
       return hasArg && p;
     }, true);
@@ -64,8 +69,16 @@ const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArgum
         <React.Fragment>
           <div className="taskArguments">
           {selectedTask.arguments && selectedTask.arguments.map((d, index) => {
+            console.log(d);
             switch(d.type) {
-
+              case("FIXED"):
+                return (
+                  <div key={`env-text-${index}`} className="envFixed">
+                  <input type="hidden" name={d.name}
+                    value={d.defaultValue}
+                  />
+                  </div>)
+              break;
               case("ENVIRONMENT_SOURCE_NAME"):
               case("ENVIRONMENT_SOURCE_NAME_EXCLUDE_SELF"):
                 return (

@@ -34,6 +34,7 @@ export default gql`
             displayName
             type
             range
+            defaultValue
           }
         }
         ... on AdvancedTaskDefinitionImage {
