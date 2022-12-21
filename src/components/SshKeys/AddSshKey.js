@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo';
 import Me from 'lib/query/Me';
 import { bp, color, fontSize } from 'lib/variables';
 import AddSshKeyMutation from '../../lib/mutation/AddSshKey';
+import { none } from 'ramda';
 
 const AddSshKey = ({me: { id, email }}) => {
 
@@ -85,8 +86,8 @@ const AddSshKey = ({me: { id, email }}) => {
                   value={values.sshKey.trim()}
                   placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"/>
               </div>
-
               <Button disabled={!isFormValid} action={addSshKeyHandler}>Add</Button>
+              <div className="sshKeyError"><span className={values.sshKey == "" || isFormValid ? 'fade' : 'fade-in'}>The SSH Key entered is invalid</span></div>
             </div>
           );
         }}
@@ -102,6 +103,23 @@ const AddSshKey = ({me: { id, email }}) => {
         .addSshKeyInput {
           width: 100%;
           margin-bottom: 15px;
+        }
+        .fade {
+          opacity: 0;
+          -webkit-transition: opacity .15s linear;
+          -o-transition: opacity .15s linear;
+          transition: opacity .15s linear;
+        }
+        .fade-in {
+          opacity: 1;
+          -webkit-transition: opacity .15s linear;
+          -o-transition: opacity .15s linear;
+          transition: opacity .15s linear;
+        }
+        .sshKeyError {
+          margin-top: 15px;
+          color: #a94442;
+          font-weight: bold;
         }
       `}</style>
     </div>
