@@ -66,6 +66,10 @@ const OrgNewProject = ({
         return <div>{error.message}</div>;
       }
 
+      if (data) {
+        Router.push(`/organizations/${organizationId}/projects`);
+      }
+
       return (
         <>
         <div className="newMember">
@@ -120,7 +124,7 @@ const OrgNewProject = ({
                     // pullrequests: inputPRs,
                 }
                 });
-                Router.push(`/organizations/${organizationId}/projects`);
+                
                 }
                 }
                 variant='green'
