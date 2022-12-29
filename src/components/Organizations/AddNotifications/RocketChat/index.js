@@ -47,7 +47,7 @@ export const AddRocketChatNotification = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add RocketChat
+      New RocketChat
       </Button></div>
       <Modal
         isOpen={open}
@@ -66,7 +66,7 @@ export const AddRocketChatNotification = ({
             }
             return (
               <div className="newMember">
-                <h4>Create rocketchat notification</h4>
+                <h4>New RocketChat notification</h4>
                 <div className="form-box">
                   <label>Notification Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
                 </div>
@@ -92,7 +92,7 @@ export const AddRocketChatNotification = ({
                       }
                     }
                     variant='green'
-                  >Add
+                  >Create
                   </Button>
                 </div>
               </div>

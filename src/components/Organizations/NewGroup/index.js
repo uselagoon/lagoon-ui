@@ -42,7 +42,7 @@ export const NewGroup = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Create Group
+        New Group
       </Button></div>
       <Modal
         isOpen={open}
@@ -61,7 +61,7 @@ export const NewGroup = ({
             }
             return (
               <div className="newMember">
-                <h4>Create Group</h4>
+                <h4>New Group</h4>
                 <div className="form-box">
                   <label>Group Name: <input className="inputEmail" type="text" value={inputValueGroup} onChange={setInputValue} /></label>
                 </div>

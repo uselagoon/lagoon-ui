@@ -46,7 +46,7 @@ export const AddWebhookNotification = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add Webhook
+      New Webhook
       </Button></div>
       <Modal
         isOpen={open}
@@ -65,7 +65,7 @@ export const AddWebhookNotification = ({
             }
             return (
               <div className="newMember">
-                <h4>Create webhook notification</h4>
+                <h4>New Webhook notification</h4>
                 <div className="form-box">
                   <label>Notification Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
                 </div>
@@ -87,7 +87,7 @@ export const AddWebhookNotification = ({
                       }
                     }
                     variant='green'
-                  >Add
+                  >Create
                   </Button>
                 </div>
               </div>

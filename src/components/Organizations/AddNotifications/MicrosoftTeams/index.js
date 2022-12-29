@@ -46,7 +46,7 @@ export const AddMicrosoftTeamsNotification = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add MicrosoftTeams
+      New MicrosoftTeams
       </Button></div>
       <Modal
         isOpen={open}
@@ -65,7 +65,7 @@ export const AddMicrosoftTeamsNotification = ({
             }
             return (
               <div className="newMember">
-                <h4>Create microsoftteams notification</h4>
+                <h4>New MicrosoftTeams notification</h4>
                 <div className="form-box">
                   <label>Notification Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
                 </div>
@@ -87,7 +87,7 @@ export const AddMicrosoftTeamsNotification = ({
                       }
                     }
                     variant='green'
-                  >Add
+                  >Create
                   </Button>
                 </div>
               </div>

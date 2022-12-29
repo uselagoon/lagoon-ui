@@ -50,7 +50,7 @@ export const AddGroupToProject = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add group to project
+        Add Group
       </Button></div>
       <Modal
         isOpen={open}
@@ -69,7 +69,7 @@ export const AddGroupToProject = ({
             }
             return (
               <div className="newMember">
-                <h4>Add group to project</h4>
+                <h4>Add Group</h4>
                 <label>Group
                 <div className="selectRole">
                   <ReactSelect
@@ -125,12 +125,6 @@ export const AddGroupToProject = ({
         input[type="text"]:focus {
           border: 2px solid ${color.linkBlue};
           outline: none;
-        }
-        optgroup,
-        select,
-        textarea {
-          font-family: 'source-sans-pro', sans-serif;
-          line-height: 1.25rem;
         }
       `}</style>
     </React.Fragment>

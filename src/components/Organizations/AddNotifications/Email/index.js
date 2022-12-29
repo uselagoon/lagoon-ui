@@ -46,7 +46,7 @@ export const AddEmailNotification = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add Email
+        New Email
       </Button></div>
       <Modal
         isOpen={open}
@@ -65,7 +65,7 @@ export const AddEmailNotification = ({
             }
             return (
               <div className="newMember">
-                <h4>Create email notification</h4>
+                <h4>New Email notification</h4>
                 <div className="form-box">
                   <label>Notification Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
                 </div>
@@ -87,7 +87,7 @@ export const AddEmailNotification = ({
                       }
                     }
                     variant='green'
-                  >Add
+                  >Create
                   </Button>
                 </div>
               </div>

@@ -47,7 +47,7 @@ export const AddNotificationToProject = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add notification to project
+        Add Notification
       </Button></div>
       <Modal
         isOpen={open}
@@ -68,8 +68,8 @@ export const AddNotificationToProject = ({
             var opts = ops.map(group => {return {label: group.__typename.split("Notification")[1].toLowerCase() + ": " + group.name, value: group.__typename.split("Notification")[1].toUpperCase() + ":" + group.name} })
             return (
               <div className="newMember">
-                <h4>Add notification to project</h4>
-                <label>Group
+                <h4>Add Notification</h4>
+                <label>Notification
                 <div className="selectRole">
                   <ReactSelect
                     menuPortalTarget={document.body} 
@@ -125,12 +125,6 @@ export const AddNotificationToProject = ({
         input[type="text"]:focus {
           border: 2px solid ${color.linkBlue};
           outline: none;
-        }
-        optgroup,
-        select,
-        textarea {
-          font-family: 'source-sans-pro', sans-serif;
-          line-height: 1.25rem;
         }
       `}</style>
     </React.Fragment>

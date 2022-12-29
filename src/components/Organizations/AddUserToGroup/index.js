@@ -69,7 +69,7 @@ export const AddUserToGroup = ({
   return (
     <React.Fragment>
       <div className="margins"><Button action={openModal}>
-        Add user to group
+        Add User
       </Button></div>
       <Modal
         isOpen={open}
@@ -88,7 +88,7 @@ export const AddUserToGroup = ({
             }
             return (
               <div className="newMember">
-                <h4>Add user to group</h4>
+                <h4>Add User</h4>
                 <div className="form-box">
                   <label>Email Address: <input className="inputEmail" type="text" value={inputValueEmail} onChange={setInputValue} /></label>
                 </div>
