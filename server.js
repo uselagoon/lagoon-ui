@@ -125,8 +125,20 @@ app
       });
     });
 
-    server.get('/builds', (req, res) => {
-      app.render(req, res, '/builds', {});
+    server.get('/alldeployments', (req, res) => {
+      app.render(req, res, '/alldeployments', {});
+    });
+
+
+    // Redirects for system - from https://www.raygesualdo.com/posts/301-redirects-with-nextjs
+    const redirects = [
+      { from: '/builds', to: '/alldeployments' },
+    ]
+    
+    redirects.forEach(({ from, to, type = 301, method = 'get' }) => {
+      server[method](from, (req, res) => {
+        res.redirect(type, to)
+      })
     });
 
     // organizations start

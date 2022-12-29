@@ -14,10 +14,10 @@ import DeploymentsByFilter from '../components/DeploymentsByFilter';
 /**
  * Displays the projects page.
  */
-const AllBuilds = () => (
+const AllDeployments = () => (
   <>
     <Head>
-      <title>All Builds</title>
+      <title>All deployments</title>
     </Head>
     <Query query={deploymentsByFilter} displayName="deploymentsByFilter">
       {R.compose(
@@ -25,7 +25,7 @@ const AllBuilds = () => (
       )(({ data }) => (
         <MainLayout>
           <div className="content-wrapper">
-            <h2>Builds</h2>
+            <h2>Deployments</h2>
             <div className="content">
               <DeploymentsByFilter deployments={data.deploymentsByFilter || []}/>
             </div>
@@ -58,4 +58,4 @@ const AllBuilds = () => (
   </>
 );
 
-export default withRouter(AllBuilds);
+export default withRouter(AllDeployments);
