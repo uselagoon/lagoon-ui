@@ -67,7 +67,7 @@ export const AddEmailNotification = ({
               <div className="newMember">
                 <h4>New Email notification</h4>
                 <div className="form-box">
-                  <label>Notification Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
+                  <label>Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
                 </div>
                 <div className="form-box">
                   <label>Email Address: <input className="inputEmail" type="text" value={inputValueWebhook} onChange={setInputWebhook} /></label>

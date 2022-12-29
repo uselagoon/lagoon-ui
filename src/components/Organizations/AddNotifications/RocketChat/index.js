@@ -68,13 +68,13 @@ export const AddRocketChatNotification = ({
               <div className="newMember">
                 <h4>New RocketChat notification</h4>
                 <div className="form-box">
-                  <label>Notification Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
+                  <label>Name: <input className="inputEmail" type="text" value={inputValueName} onChange={setInputName} /></label>
                 </div>
                 <div className="form-box">
-                  <label>Notification Webhook: <input className="inputEmail" type="text" value={inputValueWebhook} onChange={setInputWebhook} /></label>
+                  <label>Webhook: <input className="inputEmail" type="text" value={inputValueWebhook} onChange={setInputWebhook} /></label>
                 </div>
                 <div className="form-box">
-                  <label>Notification Channel: <input className="inputEmail" type="text" value={inputValueChannel} onChange={setInputChannel} /></label>
+                  <label>Channel: <input className="inputEmail" type="text" value={inputValueChannel} onChange={setInputChannel} /></label>
                 </div>
                 <div>
                   <p></p>
