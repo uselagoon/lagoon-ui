@@ -21,26 +21,16 @@ import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organiz
 import GroupsBreadcrumb from 'components/Breadcrumbs/Organizations/Groups';
 import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import GroupMembers from 'components/Organizations/GroupMembers';
-import GroupMemberSideBar from 'components/Organizations/GroupMemberSideBar';
 import DeleteConfirm from 'components/DeleteConfirm';
 import Router from 'next/router';
+import OrgNavTabs from 'components/Organizations/NavTabs';
+import AddUserToGroup from '../../components/Organizations/AddUserToGroup';
 
 /**
  * Displays a task page, given the openshift project and task ID.
  */
 
 let options = [];
-
-const DELETE_GROUP = gql`
-  mutation deleteGroup($groupName: String!) {
-    deleteGroup(input:{
-      group:{
-        name: $groupName
-      }
-    })
-  }
-`;
-
 
 export const PageGroup = ({ router }) => (
   <>
@@ -63,39 +53,15 @@ export const PageGroup = ({ router }) => (
             <GroupBreadcrumb groupSlug={group.name} organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
           </Breadcrumbs>
           <div className="content-wrapper">
-              <div className="project-details-sidebar">
-                <GroupMemberSideBar group={group} organizationId={organization.id}/>
-              </div>
+              <OrgNavTabs activeTab="groups" organization={organization} />
               <div className="groups-wrapper">
-            {(!group.type.includes("project-default-group")) && (
-                <div className="remove">
-                  <Mutation mutation={DELETE_GROUP}>
-                  {(deleteGroup, { loading, called, error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    if (called) {
-                      return <div>Success</div>;
-                    }
-                    return (
-                      <DeleteConfirm
-                        deleteName={group.name}
-                        deleteType="group"
-                        onDelete={() => {
-                          deleteGroup({
-                            variables: {
-                              groupName: group.name,
-                            }
-                          })
-                          Router.push(`/organizations/${organization.id}/groups`)
-                        }
-                        }
-                      />
-                    );
-                  }}
-                </Mutation>
+                <div className="details">
+                  <div className="field-wrapper environmentType">
+                    <AddUserToGroup
+                      group={group} organizationId={organization.id}
+                    />
+                  </div>
                 </div>
-                ) || (<div className="remove"></div>)}
                 <GroupMembers members={group.members || []} groupName={group.name} />
               </div>
           </div>
@@ -123,6 +89,43 @@ export const PageGroup = ({ router }) => (
                 // width: calc((100vw / 16) * 4);
               }
             }
+
+            .details {
+              width: 100%;
+              @media ${bp.xs_smallUp} {
+                display: flex;
+                flex-wrap: wrap;
+                min-width: 100%;
+                width: 100%;
+              }
+
+              .field-wrapper {
+                &::before {
+                  left: calc(((-100vw / 16) * 1.5) - 28px);
+                }
+                margin: 0px;
+                @media ${bp.xs_smallUp} {
+                  min-width: 50%;
+                  position: relative;
+                  width: 50%;
+                }
+                @media ${bp.wideUp} {
+                  min-width: 33.33%;
+                  width: 33.33%;
+                }
+                @media ${bp.extraWideUp} {
+                  min-width: 25%;
+                  width: 25%;
+                }
+
+                &.environmentType {
+                  &::before {
+                    background-size: 20px 20px;
+                  }
+                }
+              }
+            }
+
             .rightside-button {
               display:flex;
               justify-content:flex-end;

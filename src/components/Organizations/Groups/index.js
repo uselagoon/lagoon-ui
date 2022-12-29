@@ -9,6 +9,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Button from 'components/Button';
 import withLogic from 'components/Organizations/Groups/logic';
+import DeleteConfirm from 'components/DeleteConfirm';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -22,21 +23,20 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
   }
 `;
 
-const ADD_GROUP_MUTATION = gql`
-  mutation addGroup($group: String!, $organization: Int!) {
-    addGroup(input:{
-      name: $group
-      organization: $organization
-    }){
-      name
-    }
+const DELETE_GROUP = gql`
+  mutation deleteGroup($groupName: String!) {
+    deleteGroup(input:{
+      group:{
+        name: $groupName
+      }
+    })
   }
 `;
 
 /**
  * The primary list of groups.
  */
-const Groups = ({ groups = [], organizationId, organizationName, setInputValue, inputValueGroup }) => {
+const Groups = ({ groups = [], organizationId, organizationName }) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredGroups = groups.filter(key => {
@@ -51,39 +51,6 @@ const Groups = ({ groups = [], organizationId, organizationName, setInputValue, 
 
   return (
     <>
-    <div className="details">
-      <Mutation mutation={ADD_GROUP_MUTATION}>
-      {(addGroup, {loading, error, data}) => {
-        if (error) {
-          return <div>{error.message}</div>;
-        }
-        return (
-          <>
-            <div className="newGroup">
-              <div className="form-box">
-                <label className="input-padding">Group Name: <input className="inputGroup" type="text" value={inputValueGroup} onChange={setInputValue} /></label>
-                <Button
-                  disabled={inputValueGroup === "" || inputValueGroup.indexOf(' ') > 0}
-                  action={() => {
-                    addGroup({
-                    variables: {
-                      group: inputValueGroup,
-                      organization: parseInt(organizationId, 10)
-                      }
-                    });
-                    window.location.reload();
-                    }
-                  }
-                  variant='green'
-                >Create
-                </Button>
-              </div>
-            </div>
-          </>
-          );
-        }}
-      </Mutation>
-    </div>
       <div className="header">
         <label>Groups</label>
         <label></label>
@@ -107,23 +74,52 @@ const Groups = ({ groups = [], organizationId, organizationName, setInputValue, 
         <div className="data-none">No groups matching "{searchInput}"</div>
       )}
       {filteredGroups.map(group => (
-        <OrgGroupsLink groupSlug={group.name}
-          organizationSlug={organizationId}
-          organizationName={organizationName}
-          key={group.id}>
           <div key={group.name} className="data-row" group={group.name}>
-            <div className="group">{group.name}</div>
-            <div className="customer">
-              {(group.type.includes("project-default-group")) && (<label className="default-group-label">{group.type}</label>)}
-            </div>
-            <div className="customer">
-              Members: {group.members.length}
-            </div>
-            {/* <div className="customer">
-              Projects: {group.projects.length}
-            </div> */}
+          <div className="group">
+            <OrgGroupsLink groupSlug={group.name}
+              organizationSlug={organizationId}
+              organizationName={organizationName}
+              key={group.id}>{group.name}
+            </OrgGroupsLink>
           </div>
-        </OrgGroupsLink>
+          <div className="customer">
+            {(group.type.includes("project-default-group")) && (<label className="default-group-label">{group.type}</label>)}
+          </div>
+          <div className="customer">
+            Members: {group.members.length}
+          </div>
+          {/* <div className="customer">
+            Projects: {group.projects.length}
+          </div> */}
+          {(!group.type.includes("project-default-group")) && (
+            <div className="remove">
+              <Mutation mutation={DELETE_GROUP}>
+              {(deleteGroup, { loading, called, error, data }) => {
+                if (error) {
+                  return <div>{error.message}</div>;
+                }
+                if (data) {
+                  window.location.reload();
+                }
+                return (
+                  <DeleteConfirm
+                    deleteName={group.name}
+                    deleteType="group"
+                    onDelete={() => {
+                      deleteGroup({
+                        variables: {
+                          groupName: group.name,
+                        }
+                      })
+                    }
+                    }
+                  />
+                );
+              }}
+            </Mutation>
+            </div>
+            ) || (<div className="remove"></div>)}
+          </div>
       ))}
       </div>
     </div>

@@ -14,6 +14,7 @@ import withQueryLoading from 'lib/withQueryLoading';
 import withQueryError from 'lib/withQueryError';
 import { withOrganizationRequired } from 'lib/withDataRequired';
 import { bp } from 'lib/variables';
+import NewGroup from '../../components/Organizations/NewGroup';
 
 /**
  * Displays the groups page, given the openshift project name.
@@ -41,6 +42,12 @@ export const PageGroups = ({ router }) => (
               <div className="content-wrapper">
                 <OrgNavTabs activeTab="groups" organization={organization} />
                 <div className="groups-wrapper">
+                  <div className="details">
+                    <div className="field-wrapper environmentType">
+                      <NewGroup organizationId={organization.id}
+                      />
+                    </div>
+                  </div>
                   <Groups groups={organization.groups} organizationId={router.query.organizationSlug} organizationName={organization.name} />
                 </div>
               </div>
@@ -58,6 +65,42 @@ export const PageGroups = ({ router }) => (
                 .content {
                   padding: 32px calc((100vw / 16) * 1);
                   width: 100%;
+                }
+
+                .details {
+                  width: 100%;
+                  @media ${bp.xs_smallUp} {
+                    display: flex;
+                    flex-wrap: wrap;
+                    min-width: 100%;
+                    width: 100%;
+                  }
+    
+                  .field-wrapper {
+                    &::before {
+                      left: calc(((-100vw / 16) * 1.5) - 28px);
+                    }
+                    margin: 0px;
+                    @media ${bp.xs_smallUp} {
+                      min-width: 50%;
+                      position: relative;
+                      width: 50%;
+                    }
+                    @media ${bp.wideUp} {
+                      min-width: 33.33%;
+                      width: 33.33%;
+                    }
+                    @media ${bp.extraWideUp} {
+                      min-width: 25%;
+                      width: 25%;
+                    }
+    
+                    &.environmentType {
+                      &::before {
+                        background-size: 20px 20px;
+                      }
+                    }
+                  }
                 }
               `}</style>
             </MainLayout>

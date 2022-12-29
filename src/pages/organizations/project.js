@@ -21,10 +21,11 @@ import GroupMembers from 'components/Organizations/GroupMembers';
 import Organization from 'components/Organizations/Organization';
 import ProjectGroupMembers from 'components/Organizations/ProjectGroupMembers';
 import ProjectNotifications from 'components/Organizations/ProjectNotifications';
-import ProjectGroupsSideBar from 'components/Organizations/ProjectGroupsSideBar';
-import ProjectNotificationsSideBar from 'components/Organizations/ProjectNotificationsSideBar';
 import ProjectsBreadcrumb from 'components/Breadcrumbs/Organizations/Projects';
 import OrgProjectBreadcrumb from 'components/Breadcrumbs/Organizations/Project';
+import OrgNavTabs from 'components/Organizations/NavTabs';
+import AddGroupToProject from 'components/Organizations/AddGroupToProject';
+import AddNotificationToProject from 'components/Organizations/AddNotificationToProject';
 
 /**
  * Displays a task page, given the openshift project and task ID.
@@ -56,11 +57,20 @@ export const PageGroupProject = ({ router }) => (
           {organization.projects.map(project => (
           (project.name == router.query.projectName) && (
             <>
-              <div className="project-details-sidebar">
-                <ProjectGroupsSideBar projectName={project.name} organizationId={organization.id} options={organization.groups.map(group => {return {label: group.name, value: group.name} })} />
-                <ProjectNotificationsSideBar projectName={project.name} organizationId={organization.id} options={organization} />
-              </div>
+              <OrgNavTabs activeTab="projects" organization={organization} />
               <div className="projects-wrapper">
+                <div className="details">
+                  <div className="field-wrapper environmentType">
+                    <AddGroupToProject
+                      projectName={project.name} organizationId={organization.id} options={organization.groups.map(group => {return {label: group.name, value: group.name} })}
+                    />
+                  </div>
+                  <div className="field-wrapper environmentType">
+                    <AddNotificationToProject
+                      projectName={project.name} organizationId={organization.id} options={organization}
+                    />
+                  </div>
+                </div>
                 <ProjectGroupMembers projectName={project.name} organizationId={organization.id} organizationName={organization.name} groups={project.groups || []} />
                 <ProjectNotifications projectName={project.name} organizationId={organization.id} organizationName={organization.name} notifications={project.notifications} />
               </div>
@@ -94,6 +104,43 @@ export const PageGroupProject = ({ router }) => (
                 // width: calc((100vw / 16) * 4);
               }
             }
+
+            .details {
+              width: 100%;
+              @media ${bp.xs_smallUp} {
+                display: flex;
+                flex-wrap: wrap;
+                min-width: 100%;
+                width: 100%;
+              }
+
+              .field-wrapper {
+                &::before {
+                  left: calc(((-100vw / 16) * 1.5) - 28px);
+                }
+                margin: 0px;
+                @media ${bp.xs_smallUp} {
+                  min-width: 50%;
+                  position: relative;
+                  width: 50%;
+                }
+                @media ${bp.wideUp} {
+                  min-width: 33.33%;
+                  width: 33.33%;
+                }
+                @media ${bp.extraWideUp} {
+                  min-width: 25%;
+                  width: 25%;
+                }
+
+                &.environmentType {
+                  &::before {
+                    background-size: 20px 20px;
+                  }
+                }
+              }
+            }
+
             .rightside-button {
               display:flex; justify-content:flex-end; width:100%; padding:0;
             }
