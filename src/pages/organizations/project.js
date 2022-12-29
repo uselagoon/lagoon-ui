@@ -88,10 +88,10 @@ export const PageGroupProject = ({ router }) => (
                 width: 40%;
               }
               @media ${bp.wideUp} {
-                min-width: 20%;
-                min-width: calc((100vw / 16) * 5);
-                width: 20;
-                width: calc((100vw / 16) * 5);
+                min-width: 25%;
+                // min-width: calc((100vw / 16) * 4);
+                width: 25%;
+                // width: calc((100vw / 16) * 4);
               }
             }
             .rightside-button {
