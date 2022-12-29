@@ -302,7 +302,7 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
               {project.name}
             </div>
             <div className="notiftype">
-              <label className="teams-group-label">TEAMS</label>
+              <label className="microsoftteams-group-label">TEAMS</label>
             </div>
             <div className="notifdata">
               Webhook: {project.webhook}
@@ -424,7 +424,7 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
           border-radius: 4px;
           box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
         }
-        .teams-group-label {
+        .microsoftteams-group-label {
           color: ${color.black};
           background-color: ${color.lightestBlue};
           margin-left: 5px;

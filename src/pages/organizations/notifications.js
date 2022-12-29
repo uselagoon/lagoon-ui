@@ -30,7 +30,7 @@ export const PageOrgNotifications = ({ router }) => (
       withQueryLoading,
       withQueryError,
       withOrganizationRequired
-    )(({ data: { organization, slacks, emails, rocketchats } }) => {
+    )(({ data: { organization } }) => {
       return (
         <>
           <Head>
