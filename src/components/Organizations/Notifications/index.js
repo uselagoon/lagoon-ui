@@ -164,8 +164,8 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (called) {
-                  return <div>Success</div>;
+                if (data) {
+                  window.location.reload();
                 }
                 return (
                   <RemoveNotificationConfirm
@@ -202,8 +202,8 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (called) {
-                  return <div>Success</div>;
+                if (data) {
+                  window.location.reload();
                 }
                 return (
                   <RemoveNotificationConfirm
@@ -239,8 +239,8 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (called) {
-                  return <div>Success</div>;
+                if (data) {
+                  window.location.reload();
                 }
                 return (
                   <RemoveNotificationConfirm
@@ -276,8 +276,8 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (called) {
-                  return <div>Success</div>;
+                if (data) {
+                  window.location.reload();
                 }
                 return (
                   <RemoveNotificationConfirm
@@ -313,8 +313,8 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (called) {
-                  return <div>Success</div>;
+                if (data) {
+                  window.location.reload();
                 }
                 return (
                   <RemoveNotificationConfirm

@@ -16,6 +16,11 @@ import withQueryError from 'lib/withQueryError';
 import {  withOrganizationRequired } from 'lib/withDataRequired';
 import { bp } from 'lib/variables';
 import OrgNotifications from 'components/Organizations/Notifications';
+import AddSlackNotification from 'components/Organizations/AddNotifications/Slack';
+import AddRocketChatNotification from 'components/Organizations/AddNotifications/RocketChat';
+import AddEmailNotification from 'components/Organizations/AddNotifications/Email';
+import AddMicrosoftTeamsNotification from 'components/Organizations/AddNotifications/MicrosoftTeams';
+import AddWebhookNotification from 'components/Organizations/AddNotifications/Webhook';
 
 /**
  * Displays the projects page, given the organization id
@@ -43,6 +48,28 @@ export const PageOrgNotifications = ({ router }) => (
             <div className="content-wrapper">
               <OrgNavTabs activeTab="notifications" organization={organization} />
               <div className="notifications-wrapper">
+                <div className="details">
+                  <div className="field-wrapper environmentType">
+                    <AddSlackNotification organizationId={organization.id}
+                    />
+                  </div>
+                  <div className="field-wrapper environmentType">
+                    <AddRocketChatNotification organizationId={organization.id}
+                    />
+                  </div>
+                  <div className="field-wrapper environmentType">
+                    <AddEmailNotification organizationId={organization.id}
+                    />
+                  </div>
+                  <div className="field-wrapper environmentType">
+                    <AddMicrosoftTeamsNotification organizationId={organization.id}
+                    />
+                  </div>
+                  <div className="field-wrapper environmentType">
+                    <AddWebhookNotification organizationId={organization.id}
+                    />
+                  </div>
+                </div>
                 <OrgNotifications
                 slacks={organization.slacks}
                 emails={organization.emails}
@@ -67,6 +94,42 @@ export const PageOrgNotifications = ({ router }) => (
               .content {
                 padding: 32px calc((100vw / 16) * 1);
                 width: 100%;
+              }
+
+              .details {
+                width: 100%;
+                @media ${bp.xs_smallUp} {
+                  display: flex;
+                  flex-wrap: wrap;
+                  min-width: 100%;
+                  width: 100%;
+                }
+  
+                .field-wrapper {
+                  &::before {
+                    left: calc(((-100vw / 16) * 1.5) - 28px);
+                  }
+                  margin: 0px;
+                  @media ${bp.xs_smallUp} {
+                    min-width: 50%;
+                    position: relative;
+                    width: 50%;
+                  }
+                  @media ${bp.wideUp} {
+                    min-width: 33.33%;
+                    width: 33.33%;
+                  }
+                  @media ${bp.extraWideUp} {
+                    min-width: 20%;
+                    width: 20%;
+                  }
+  
+                  &.environmentType {
+                    &::before {
+                      background-size: 20px 20px;
+                    }
+                  }
+                }
               }
             `}</style>
           </MainLayout>
