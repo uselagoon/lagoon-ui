@@ -6,7 +6,6 @@ import OrgGroupsLink from 'components/link/Organizations/Groups';
 import OrgProjectsLink from 'components/link/Organizations/Projects';
 import { bp, color } from 'lib/variables';
 import OrganizationLink from 'components/link/Organizations/Organization';
-import OrgNewProjectLink from 'components/link/Organizations/NewProject';
 import OrgNotificationsLink from 'components/link/Organizations/Notifications';
 
 const { className: aClassName, styles: aStyles } = css.resolve`
@@ -76,19 +75,6 @@ const OrgNavTabs = ({ activeTab, organization }) => (
       >
         Notifications
       </OrgNotificationsLink>
-    </li>
-    <li
-      className={`newproject ${
-        activeTab == 'newproject' ? 'active' : ''
-      } ${aClassName}`}
-    >
-      <OrgNewProjectLink
-        organizationSlug={organization.id}
-        organizationName={organization.name}
-        className={aClassName}
-      >
-        New Project
-      </OrgNewProjectLink>
     </li>
     <style jsx>{`
       .navigation {
@@ -185,17 +171,6 @@ const OrgNavTabs = ({ activeTab, organization }) => (
           }
 
           &.notifications {
-            &::before {
-              background-image: url('/static/images/tasks.svg');
-              background-size: 21px 16px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/tasks-active.svg');
-            }
-          }
-
-          &.newproject {
             &::before {
               background-image: url('/static/images/tasks.svg');
               background-size: 21px 16px;

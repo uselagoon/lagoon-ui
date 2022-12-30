@@ -171,12 +171,6 @@ app
       });
     });
 
-    server.get('/organizations/:organizationSlug/newproject', (req, res) => {
-      app.render(req, res, '/organizations/newproject', {
-        organizationSlug: req.params.organizationSlug
-      });
-    });
-
     server.get('/organizations/:organizationSlug/projects/:projectGroupSlug', (req, res) => {
       app.render(req, res, '/organizations/project', {
         organizationSlug: req.params.organizationSlug,

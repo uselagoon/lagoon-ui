@@ -16,6 +16,7 @@ import withQueryError from 'lib/withQueryError';
 import {  withOrganizationRequired } from 'lib/withDataRequired';
 import { bp } from 'lib/variables';
 import OrgProjects from 'components/Organizations/Projects';
+import NewProject from 'components/Organizations/NewProject';
 
 /**
  * Displays the projects page, given the organization id
@@ -43,6 +44,12 @@ export const PageOrgProjects = ({ router }) => (
               <div className="content-wrapper">
                 <OrgNavTabs activeTab="projects" organization={organization} />
                 <div className="projects-wrapper">
+                  <div className="details">
+                    <div className="field-wrapper environmentType">
+                      <NewProject organizationId={organization.id} options={organization.deployTargets.map(deploytarget => {return {label: deploytarget.name, value: deploytarget.id} })}
+                      />
+                    </div>
+                  </div>
                   <OrgProjects projects={organization.projects} organizationId={organization.id} organizationName={organization.name} />
                 </div>
               </div>
