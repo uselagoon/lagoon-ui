@@ -6,6 +6,9 @@ import ProjectLink from 'components/link/Project';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import DeleteConfirm from 'components/DeleteConfirm';
 
 const { className: boxClassName, styles: boxStyles } = css.resolve`
   .box {
@@ -18,6 +21,14 @@ const { className: boxClassName, styles: boxStyles } = css.resolve`
   }
 `;
 
+
+const DELETE_PROJECT = gql`
+  mutation deleteProject($project: String!) {
+    deleteProject(input:{
+      project: $project
+    })
+  }
+`;
 /**
  * The primary list of projects.
  */
@@ -59,18 +70,45 @@ const OrgProjects = ({ projects = [], organizationId, organizationName }) => {
         <div className="data-none">No projects matching "{searchInput}"</div>
       )}
       {filteredProjects.map(project => (
-        <ProjectGroupLink projectGroupSlug={project.name}
-        organizationSlug={organizationId}
-        organizationName={organizationName}
-        key={project.id}>
         <div className="data-row" project={project.name}>
-            <div className="project">{project.name}
+            <div className="project">
+              <ProjectGroupLink projectGroupSlug={project.name}
+              organizationSlug={organizationId}
+              organizationName={organizationName}
+              key={project.id}>
+                {project.name}
+              </ProjectGroupLink>
             </div>
             <div className="customer">
               Groups: {project.groups.length}
             </div>
+            <div className="remove">
+              <Mutation mutation={DELETE_PROJECT}>
+              {(deleteProject, { loading, called, error, data }) => {
+                if (error) {
+                  return <div>{error.message}</div>;
+                }
+                if (data) {
+                  window.location.reload();
+                }
+                return (
+                  <DeleteConfirm
+                    deleteName={project.name}
+                    deleteType="project"
+                    onDelete={() => {
+                      deleteProject({
+                        variables: {
+                          project: project.name,
+                        }
+                      })
+                    }
+                    }
+                  />
+                );
+              }}
+            </Mutation>
+            </div>
         </div>
-        </ProjectGroupLink>
       ))}
       </div>
     </div>
