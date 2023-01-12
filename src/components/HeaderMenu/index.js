@@ -54,7 +54,8 @@ const HeaderMenu = ({auth}) => {
       menu={[
         <a className="settings" href="/settings">Settings</a>,
         <hr />,
-        publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (<a className="account" href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}>Your account</a>),
+        <a className="menuitem" href="/projects">Your projects</a>,
+        publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (<a className="menuitem" href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}>Your account</a>),
         <hr />,
         <a className="logout" onClick={auth.logout}>Sign out</a>
       ]}
@@ -105,21 +106,11 @@ const HeaderMenu = ({auth}) => {
             background-size: 18px;
           }
         }
-        &.account {
+        &.menuitem {
           align-items: center;
           cursor: pointer;
           display: flex;
-          &::before {
-            background-position: center center;
-            background-repeat: no-repeat;
-            content: '';
-            display: block;
-            height: 35px;
-            transition: all 0.3s ease-in-out;
-            width: 35px;
-            background-image: url('/static/images/account.svg');
-            background-size: 18px;
-          }
+          padding: 5px 10px;
         }
         &.logout {
           align-items: center;

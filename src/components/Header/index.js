@@ -30,7 +30,7 @@ const Header = ({ logo }) => (
         if (auth.authenticated) {
           return (
             <div className="authContainer">
-              <a className="alldeployments" href="/alldeployments">All deployments</a>
+              <a className="navitem" href="/alldeployments">Deployments</a>
               <HeaderMenu auth={auth}></HeaderMenu>
             </div>
           );
@@ -77,7 +77,7 @@ const Header = ({ logo }) => (
               width: 14px;
             }
           }
-          &.alldeployments {
+          &.navitem {
             align-items: center;
             border-left: 1px solid ${color.blue};
             cursor: pointer;
@@ -89,8 +89,7 @@ const Header = ({ logo }) => (
               display: block;
               height: 35px;
               transition: all 0.3s ease-in-out;
-              width: 35px;
-              background-image: url('/static/images/deployments.svg');
+              width: 0px;
               background-size: 18px;
             }
           }
