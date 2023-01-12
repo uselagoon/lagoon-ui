@@ -54,7 +54,7 @@ const HeaderMenu = ({auth}) => {
       menu={[
         <a className="settings" href="/settings">Settings</a>,
         <hr />,
-        <a className="account" href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}>Your account</a>,
+        publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (<a className="account" href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}>Your account</a>),
         <hr />,
         <a className="logout" onClick={auth.logout}>Sign out</a>
       ]}
