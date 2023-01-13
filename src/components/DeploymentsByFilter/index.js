@@ -94,13 +94,6 @@ const DeploymentsByFilter = ({ deployments }) => {
           onChange={handleSearchFilterChange}
         />
       </div>
-      {!deployments.length && (
-        <Box>
-          <div className="data-none">
-            <h4>No deployments</h4>
-          </div>
-        </Box>
-      )}
       <div className="header">
         <label>Project</label>
         <label>Environment</label>
