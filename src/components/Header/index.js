@@ -4,6 +4,7 @@ import getConfig from 'next/config';
 import { AuthContext } from 'lib/Authenticator';
 import { color } from 'lib/variables';
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
+import HeaderMenu from 'components/HeaderMenu';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -27,7 +28,12 @@ const Header = ({ logo }) => (
     <AuthContext.Consumer>
       {auth => {
         if (auth.authenticated) {
-          return (<div className="authContainer"><a className="settings" href="/settings">settings</a> <a className="logout" onClick={auth.logout}>{auth.user.username} - logout</a></div>);
+          return (
+            <div className="authContainer">
+              <a className="navitem" href="/alldeployments">Deployments</a>
+              <HeaderMenu auth={auth}></HeaderMenu>
+            </div>
+          );
         }
 
         return null;
@@ -71,7 +77,7 @@ const Header = ({ logo }) => (
               width: 14px;
             }
           }
-          &.settings {
+          &.navitem {
             align-items: center;
             border-left: 1px solid ${color.blue};
             cursor: pointer;
@@ -83,8 +89,7 @@ const Header = ({ logo }) => (
               display: block;
               height: 35px;
               transition: all 0.3s ease-in-out;
-              width: 35px;
-              background-image: url('/static/images/cog.svg');
+              width: 0px;
               background-size: 18px;
             }
           }

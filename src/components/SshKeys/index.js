@@ -18,7 +18,7 @@ const SshKeys = ({me: { id, email, sshKeys: keys }}) => {
         <label className="created">Created</label>
       </div>
       <div className="data-table">
-        {!keys.length && <div className="data-none">No SshKeys</div>}
+        {!keys.length && <div className="data-none">No SSH keys</div>}
         {keys.map(key => (
           <div className="data-row" key={key.id}>
             <div className="name">{key.id} - {key.name}</div>
