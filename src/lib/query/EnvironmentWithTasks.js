@@ -27,8 +27,6 @@ export default gql`
           service
           created
           deleted
-          adminTask
-          showUi
           confirmationText
           advancedTaskDefinitionArguments {
             id
@@ -48,8 +46,6 @@ export default gql`
           service
           created
           deleted
-          adminTask
-          showUi
           confirmationText
           advancedTaskDefinitionArguments {
             id
