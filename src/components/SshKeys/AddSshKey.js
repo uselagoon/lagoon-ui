@@ -17,7 +17,7 @@ const AddSshKey = ({me: { id, email }}) => {
     setValues({...values, [name]: value});
   }
 
-  const regex = /\s*(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521)\s(\S+=)/
+  const regex = /\s*(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521)\s(\S+)/
   // First capture group is the type of the ssh key
   // Second capture group is the actual ssh key
   // Whitespace and comments are ignored
