@@ -68,6 +68,29 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
               cursor: not-allowed;
             }
           }
+          .btn-small {
+            display: inline-block;
+            background-color: ${color.lightBlue};
+            border: none;
+            border-radius: 3px;
+            color: ${color.white};
+            cursor: pointer;
+            padding: 8px;
+            margin: 8px;
+            @media ${bp.tinyUp} {
+              align-self: auto;
+            }
+
+            &:hover {
+              background-color: ${color.blue};
+            }
+
+            &.btn--disabled {
+              background-color: ${color.lightestGrey};
+              color: ${color.darkGrey};
+              cursor: not-allowed;
+            }
+          }
         `}
       </style>
     </>
