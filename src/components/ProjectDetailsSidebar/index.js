@@ -11,9 +11,6 @@ const Project = ({ project }) => {
   const gitUrlParsed = giturlparse(project.gitUrl);
   const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
 
-console.log(gitLink);
-console.log(gitUrlParsed);
-
 
   const environmentCount = R.countBy(R.prop('environmentType'))(
     project.environments
