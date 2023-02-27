@@ -1,19 +1,19 @@
-import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
-import Head from 'next/head';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentByOpenshiftProjectNameQuery from 'lib/query/EnvironmentByOpenshiftProjectName';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import NavTabs from 'components/NavTabs';
-import Environment from 'components/Environment';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withEnvironmentRequired } from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+import React from "react";
+import * as R from "ramda";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import { Query } from "react-apollo";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentByOpenshiftProjectNameQuery from "lib/query/EnvironmentByOpenshiftProjectName";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import NavTabs from "components/NavTabs";
+import Environment from "components/Environment";
+import withQueryLoading from "lib/withQueryLoading";
+import withQueryError from "lib/withQueryError";
+import { withEnvironmentRequired } from "lib/withDataRequired";
+import { EnvironmentWrapper } from "../styles/pageStyles";
 
 /**
  * Displays an environment page, given the openshift project name.
@@ -26,7 +26,7 @@ export const PageEnvironment = ({ router }) => (
     <Query
       query={EnvironmentByOpenshiftProjectNameQuery}
       variables={{
-        openshiftProjectName: router.query.openshiftProjectName
+        openshiftProjectName: router.query.openshiftProjectName,
       }}
     >
       {R.compose(
@@ -42,20 +42,12 @@ export const PageEnvironment = ({ router }) => (
               projectSlug={environment.project.name}
             />
           </Breadcrumbs>
-          <div className="content-wrapper">
+          <EnvironmentWrapper>
             <NavTabs activeTab="overview" environment={environment} />
             <div className="content">
               <Environment environment={environment} />
             </div>
-          </div>
-          <style jsx>{`
-            .content-wrapper {
-              @media ${bp.tabletUp} {
-                display: flex;
-                padding: 0;
-              }
-            }
-          `}</style>
+          </EnvironmentWrapper>
         </MainLayout>
       ))}
     </Query>

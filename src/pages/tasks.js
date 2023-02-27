@@ -1,23 +1,23 @@
-import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
-import Head from 'next/head';
-import getConfig from 'next/config';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentWithTasksQuery from 'lib/query/EnvironmentWithTasks';
-import TasksSubscription from 'lib/subscription/Tasks';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import NavTabs from 'components/NavTabs';
-import AddTask from 'components/AddTask';
-import Tasks from 'components/Tasks';
-import ResultsLimited from 'components/ResultsLimited';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withEnvironmentRequired } from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+import React from "react";
+import * as R from "ramda";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import getConfig from "next/config";
+import { Query } from "react-apollo";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentWithTasksQuery from "lib/query/EnvironmentWithTasks";
+import TasksSubscription from "lib/subscription/Tasks";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import NavTabs from "components/NavTabs";
+import AddTask from "components/AddTask";
+import Tasks from "components/Tasks";
+import ResultsLimited from "components/ResultsLimited";
+import withQueryLoading from "lib/withQueryLoading";
+import withQueryError from "lib/withQueryError";
+import { withEnvironmentRequired } from "lib/withDataRequired";
+import { TasksWrapper } from "../styles/pageStyles";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT, 10);
@@ -27,13 +27,13 @@ let urlResultLimit = envLimit;
 if (typeof window !== "undefined") {
   let search = window.location.search;
   let params = new URLSearchParams(search);
-  let limit = params.get('limit');
+  let limit = params.get("limit");
   if (limit) {
     if (parseInt(limit.trim(), 10)) {
       urlResultLimit = parseInt(limit.trim(), 10);
     }
     if (limit == "all") {
-      urlResultLimit = -1
+      urlResultLimit = -1;
     }
   }
 }
@@ -50,7 +50,7 @@ export const PageTasks = ({ router }) => (
       query={EnvironmentWithTasksQuery}
       variables={{
         openshiftProjectName: router.query.openshiftProjectName,
-        limit: resultLimit
+        limit: resultLimit,
       }}
     >
       {R.compose(
@@ -66,7 +66,7 @@ export const PageTasks = ({ router }) => (
             const prevTasks = prevStore.environment.tasks;
             const incomingTask = subscriptionData.data.taskChanged;
             const existingIndex = prevTasks.findIndex(
-              prevTask => prevTask.id === incomingTask.id
+              (prevTask) => prevTask.id === incomingTask.id
             );
             let newTasks;
 
@@ -77,7 +77,7 @@ export const PageTasks = ({ router }) => (
             // Updated task
             else {
               newTasks = Object.assign([...prevTasks], {
-                [existingIndex]: incomingTask
+                [existingIndex]: incomingTask,
               });
             }
 
@@ -85,12 +85,12 @@ export const PageTasks = ({ router }) => (
               ...prevStore,
               environment: {
                 ...prevStore.environment,
-                tasks: newTasks
-              }
+                tasks: newTasks,
+              },
             };
 
             return newStore;
-          }
+          },
         });
 
         return (
@@ -102,7 +102,7 @@ export const PageTasks = ({ router }) => (
                 projectSlug={environment.project.name}
               />
             </Breadcrumbs>
-            <div className="content-wrapper">
+            <TasksWrapper>
               <NavTabs activeTab="tasks" environment={environment} />
               <div className="content">
                 <AddTask pageEnvironment={environment} />
@@ -114,23 +114,13 @@ export const PageTasks = ({ router }) => (
                 <ResultsLimited
                   limit={resultLimit}
                   results={environment.tasks.length}
-                  message={(!customMessage && "") || (customMessage && customMessage.replace(/['"]+/g, ''))}
+                  message={
+                    (!customMessage && "") ||
+                    (customMessage && customMessage.replace(/['"]+/g, ""))
+                  }
                 />
               </div>
-            </div>
-            <style jsx>{`
-              .content-wrapper {
-                @media ${bp.tabletUp} {
-                  display: flex;
-                  padding: 0;
-                }
-              }
-
-              .content {
-                padding: 32px calc((100vw / 16) * 1);
-                width: 100%;
-              }
-            `}</style>
+            </TasksWrapper>
           </MainLayout>
         );
       })}

@@ -1,23 +1,23 @@
-import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
-import Head from 'next/head';
-import getConfig from 'next/config';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentWithDeploymentsQuery from 'lib/query/EnvironmentWithDeployments';
-import DeploymentsSubscription from 'lib/subscription/Deployments';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import NavTabs from 'components/NavTabs';
-import DeployLatest from 'components/DeployLatest';
-import ResultsLimited from 'components/ResultsLimited';
-import Deployments from 'components/Deployments';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withEnvironmentRequired } from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+import React from "react";
+import * as R from "ramda";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import getConfig from "next/config";
+import { Query } from "react-apollo";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentWithDeploymentsQuery from "lib/query/EnvironmentWithDeployments";
+import DeploymentsSubscription from "lib/subscription/Deployments";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import NavTabs from "components/NavTabs";
+import DeployLatest from "components/DeployLatest";
+import ResultsLimited from "components/ResultsLimited";
+import Deployments from "components/Deployments";
+import withQueryLoading from "lib/withQueryLoading";
+import withQueryError from "lib/withQueryError";
+import { withEnvironmentRequired } from "lib/withDataRequired";
+import { DeploymentsWrapper } from "../styles/pageStyles";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT, 10);
@@ -27,7 +27,7 @@ let urlResultLimit = envLimit;
 if (typeof window !== "undefined") {
   let search = window.location.search;
   let params = new URLSearchParams(search);
-  let limit = params.get('limit');
+  let limit = params.get("limit");
   if (limit) {
     if (parseInt(limit.trim(), 10)) {
       urlResultLimit = parseInt(limit.trim(), 10);
@@ -49,7 +49,7 @@ export const PageDeployments = ({ router }) => {
         query={EnvironmentWithDeploymentsQuery}
         variables={{
           openshiftProjectName: router.query.openshiftProjectName,
-          limit: resultLimit
+          limit: resultLimit,
         }}
       >
         {R.compose(
@@ -66,7 +66,7 @@ export const PageDeployments = ({ router }) => {
               const incomingDeployment =
                 subscriptionData.data.deploymentChanged;
               const existingIndex = prevDeployments.findIndex(
-                prevDeployment => prevDeployment.id === incomingDeployment.id
+                (prevDeployment) => prevDeployment.id === incomingDeployment.id
               );
               let newDeployments;
 
@@ -77,7 +77,7 @@ export const PageDeployments = ({ router }) => {
               // Updated deployment
               else {
                 newDeployments = Object.assign([...prevDeployments], {
-                  [existingIndex]: incomingDeployment
+                  [existingIndex]: incomingDeployment,
                 });
               }
 
@@ -85,12 +85,12 @@ export const PageDeployments = ({ router }) => {
                 ...prevStore,
                 environment: {
                   ...prevStore.environment,
-                  deployments: newDeployments
-                }
+                  deployments: newDeployments,
+                },
               };
 
               return newStore;
-            }
+            },
           });
 
           return (
@@ -102,7 +102,7 @@ export const PageDeployments = ({ router }) => {
                   projectSlug={environment.project.name}
                 />
               </Breadcrumbs>
-              <div className="content-wrapper">
+              <DeploymentsWrapper>
                 <NavTabs activeTab="deployments" environment={environment} />
                 <div className="content">
                   <DeployLatest pageEnvironment={environment} />
@@ -114,23 +114,13 @@ export const PageDeployments = ({ router }) => {
                   <ResultsLimited
                     limit={resultLimit}
                     results={environment.deployments.length}
-                    message={(!customMessage && "") || (customMessage && customMessage.replace(/['"]+/g, ''))}
+                    message={
+                      (!customMessage && "") ||
+                      (customMessage && customMessage.replace(/['"]+/g, ""))
+                    }
                   />
                 </div>
-              </div>
-              <style jsx>{`
-                .content-wrapper {
-                  @media ${bp.tabletUp} {
-                    display: flex;
-                    padding: 0;
-                  }
-                }
-
-                .content {
-                  padding: 32px calc((100vw / 16) * 1);
-                  width: 100%;
-                }
-              `}</style>
+              </DeploymentsWrapper>
             </MainLayout>
           );
         })}
