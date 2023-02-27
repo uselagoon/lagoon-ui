@@ -17,9 +17,9 @@ if (fs.existsSync("plugins.json")) {
  
 module.exports = {
   publicRuntimeConfig: {
-    GRAPHQL_API: process.env.GRAPHQL_API,
     GRAPHQL_API_TOKEN: process.env.GRAPHQL_API_TOKEN,
-    KEYCLOAK_API: process.env.KEYCLOAK_API,
+    GRAPHQL_API:process.env.GRAPHQL_API,
+    KEYCLOAK_API:process.env.KEYCLOAK_API,
     LAGOON_UI_ICON: process.env.LAGOON_UI_ICON,
     LAGOON_UI_TASK_BLOCKLIST: taskBlocklist,
     LAGOON_VERSION: process.env.LAGOON_VERSION,

@@ -8,13 +8,12 @@ import Favicon from "components/Favicon";
 import Authenticator, { AuthContext } from "lib/Authenticator";
 import ApiConnection from "lib/ApiConnection";
 import Script from "next/script";
+import App from "next/app";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname } = useRouter();
-
-  console.warn(publicRuntimeConfig);
   // Catch runtime errors in production and skip authentication to avoid
   // infinite auth > error > auth > error loops.
   if (err) {
@@ -52,6 +51,11 @@ const LagoonApp = ({ Component, pageProps, err }) => {
       <Favicon />
     </>
   );
+};
+
+LagoonApp.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext);
+  return { ...appProps };
 };
 
 export default LagoonApp;
