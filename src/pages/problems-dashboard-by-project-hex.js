@@ -102,7 +102,7 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
           }
         </div>
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .filters-wrapper, .project-filter {
           margin: 32px calc((100vw / 16) * 1);
           @media ${bp.wideUp} {
@@ -165,7 +165,7 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
             border: 1px solid #efefef;
           }
         }
-      `}</style>
+      `}</style> */}
     </MainLayout>
   </>);
 };

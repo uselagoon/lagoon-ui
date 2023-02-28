@@ -56,7 +56,7 @@ const LogAccordion = forwardRef(({
               </>
               : null}
             <div ref={logsEndRef} />
-            <style jsx>{`
+            {/* <style jsx>{`
                 .row-heading {
                   position: relative;
                   overflow-y: hidden;
@@ -155,7 +155,7 @@ const LogAccordion = forwardRef(({
                 .log-text {
                   padding: 30px;
                 }
-            `}</style>
+            `}</style> */}
         </div>
     );
 });

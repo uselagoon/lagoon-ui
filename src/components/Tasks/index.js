@@ -41,7 +41,7 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
         </TaskLink>
       ))}
     </div>
-    <style jsx>{`
+    {/* <style jsx>{`
       .header {
         @media ${bp.tinyUp} {
           align-items: center;
@@ -184,7 +184,7 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
           }
         }
       }
-    `}</style>
+    `}</style> */}
   </div>
 );
 

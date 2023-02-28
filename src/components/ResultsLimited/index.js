@@ -54,7 +54,7 @@ const ResultsLimited = ({ limit, results, message }) => {
         required
       />}
       </div>
-      <style jsx>
+      {/* <style jsx>
         {`
           .resultsLimited {
             .results {
@@ -77,7 +77,7 @@ const ResultsLimited = ({ limit, results, message }) => {
             }
           }
         `}
-      </style>
+      </style> */}
     </div>
   ));
 };

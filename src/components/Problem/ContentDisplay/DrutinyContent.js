@@ -58,7 +58,7 @@ const DrutinyDisplay = ({ problem }) => {
                 <label>Created</label>
                 <div className="created">{createdDate}</div>
             </div>)}
-            <style jsx>{`
+            {/* <style jsx>{`
                .field-wrapper {
                     flex-direction: column;
                 }
@@ -85,7 +85,7 @@ const DrutinyDisplay = ({ problem }) => {
                       color: ${color.brightBlue};
                     }
                 }
-            `}</style>
+            `}</style> */}
         </div>
     );
 };

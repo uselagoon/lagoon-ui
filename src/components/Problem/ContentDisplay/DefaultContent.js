@@ -49,7 +49,7 @@ const DefaultDisplay = ({ problem }) => {
                     })}
                 </div>
             </div>
-            <style jsx>{`
+            {/* <style jsx>{`
                 .field-wrapper {
                     flex-direction: column;
                 }
@@ -107,7 +107,7 @@ const DefaultDisplay = ({ problem }) => {
                       transition: all 0.6s ease-in-out;
                     }
                 }
-            `}</style>
+            `}</style> */}
         </div>
     );
 };

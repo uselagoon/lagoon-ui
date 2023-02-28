@@ -168,7 +168,7 @@ const Honeycomb = ({ data, filter }) => {
                 </div>
             </>
             }
-            <style jsx>{`
+            {/* <style jsx>{`
               .content-wrapper {
                  &.results {
                    background: #f1f1f1;
@@ -217,7 +217,7 @@ const Honeycomb = ({ data, filter }) => {
                   margin: 2em calc(100vw / 2) 0;
                 }
               }
-            `}</style>
+            `}</style> */}
         </div>
     );
 };

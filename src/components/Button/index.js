@@ -21,7 +21,7 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
       >
         {children}
       </ButtonElement>
-      <style jsx>
+      {/* <style jsx>
         {`
           .btn {
             display: inline-block;
@@ -69,7 +69,7 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
             }
           }
         `}
-      </style>
+      </style> */}
     </>
   );
 };

@@ -175,7 +175,7 @@ const Environment = ({ environment }) => {
           );
         }}
       </Mutation>
-      <style jsx>{`
+      {/* <style jsx>{`
         .details {
           padding: 32px calc((100vw / 16) * 1);
           width: 100%;
@@ -274,7 +274,7 @@ const Environment = ({ environment }) => {
             }
           }
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 };

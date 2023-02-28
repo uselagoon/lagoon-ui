@@ -47,7 +47,7 @@ const Problem = ({ problem, display }) => {
                     </div>
                 </div>
             )}
-            <style jsx>{`
+            {/* <style jsx>{`
             .problem-header {
                 display: flex;
                 flex-direction: row;
@@ -66,7 +66,7 @@ const Problem = ({ problem, display }) => {
                 background: ${color.lightestGrey};
             }
         `}
-            </style>
+            </style> */}
         </>
     );
 };

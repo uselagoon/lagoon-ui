@@ -6,7 +6,7 @@ const { publicRuntimeConfig } = getConfig();
 const Footer = () => (
   <footer>
   <span className="version">Lagoon {`${publicRuntimeConfig.LAGOON_VERSION}`}</span>
-    <style jsx>{`
+    {/* <style jsx>{`
       footer {
         background: ${color.brightBlue} ${color.lightBlue};
         background: ${color.lightBlue};
@@ -42,7 +42,7 @@ const Footer = () => (
           }
         }
       }
-  `}</style>
+  `}</style> */}
   </footer>
 );
 

@@ -21,19 +21,19 @@ const bgImages = {
   }
 };
 
-const { className: boxClassName, styles: boxStyles } = css.resolve`
-  .box {
-    margin-bottom: 35px;
+// const { className: boxClassName, styles: boxStyles } = css.resolve`
+//   .box {
+//     margin-bottom: 35px;
 
-    .content {
-      background-position: right 32px bottom -6px;
-      background-repeat: no-repeat;
-      background-size: 40px 50px;
-      min-height: 122px;
-      padding: 10px 15px;
-    }
-  }
-`;
+//     .content {
+//       background-position: right 32px bottom -6px;
+//       background-repeat: no-repeat;
+//       background-size: 40px 50px;
+//       min-height: 122px;
+//       padding: 10px 15px;
+//     }
+//   }
+// `;
 
 const Environments = ({ environments = [], project }) => {
   if (environments.length === 0) {
@@ -48,15 +48,15 @@ const Environments = ({ environments = [], project }) => {
           environment.deployType,
           bgImages
         );
-        const { className: bgClassName, styles: bgStyles } = css.resolve`
-          .content {
-            background-image: ${bgImage.normal};
+        // const { className: bgClassName, styles: bgStyles } = css.resolve`
+        //   .content {
+        //     background-image: ${bgImage.normal};
 
-            &:hover {
-              background-image: ${bgImage.hover};
-            }
-          }
-        `;
+        //     &:hover {
+        //       background-image: ${bgImage.hover};
+        //     }
+        //   }
+        // `;
         const activeEnvironment = project.productionEnvironment && project.standbyProductionEnvironment && project.productionEnvironment == makeSafe(environment.name);
         const standbyEnvironment = project.productionEnvironment && project.standbyProductionEnvironment && project.standbyProductionEnvironment == makeSafe(environment.name);
 
@@ -123,7 +123,7 @@ const Environments = ({ environments = [], project }) => {
           </div>
         );
       })}
-      <style jsx>{`
+      {/* <style jsx>{`
         .environments {
           display: block;
           @media ${bp.tinyUp} {
@@ -287,8 +287,8 @@ const Environments = ({ environments = [], project }) => {
           top: 8px;
           right: 50px;
         }
-      `}</style>
-      {boxStyles}
+      `}</style> */}
+      {/* {boxStyles} */}
     </div>
   );
 };

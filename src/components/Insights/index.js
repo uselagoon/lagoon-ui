@@ -224,7 +224,7 @@ const Insights = ({ insights }) => {
                     );
                 })}
             </div>
-            <style jsx>{`
+            {/* <style jsx>{`
               .header {
                 @media ${bp.smallOnly} {
                   flex-wrap: wrap;
@@ -365,7 +365,7 @@ const Insights = ({ insights }) => {
               .row-heading {
                 background: ${color.white};
               }
-            `}</style>
+            `}</style> */}
         </div>
     );
 };

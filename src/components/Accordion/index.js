@@ -17,7 +17,7 @@ const Accordion = ({ children, defaultValue = true, minified = false, className 
             </div>
 
             {visibility ? <Fragment>{children}</Fragment> : null}
-            <style jsx>{`
+            {/* <style jsx>{`
                 .accordion-meta-heading {
                     display: flex;
                     justify-content: space-between;
@@ -75,7 +75,7 @@ const Accordion = ({ children, defaultValue = true, minified = false, className 
                       text-align: right;
                     }
                 }
-            `}</style>
+            `}</style> */}
         </div>
     );
 };

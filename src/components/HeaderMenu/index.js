@@ -60,7 +60,7 @@ const HeaderMenu = ({auth}) => {
         <a className="logout" onClick={auth.logout}>Sign out</a>
       ]}
     />
-    <style jsx>{`
+    {/* <style jsx>{`
     .dropdown-btn {
         display: flex;
         align-items: center;
@@ -129,7 +129,7 @@ const HeaderMenu = ({auth}) => {
           }
         } 
       }
-    `}</style>
+    `}</style> */}
     </>
   );
 };
@@ -147,7 +147,7 @@ const Dropdown = ({ open, trigger, menu }) => {
           </ul>
         ) : null}
       </div>
-        <style jsx>{`
+        {/* <style jsx>{`
         .dropdown {
             border-left: 1px solid ${color.blue};
             cursor: pointer;
@@ -181,7 +181,7 @@ const Dropdown = ({ open, trigger, menu }) => {
         }
         
     
-        `}</style>
+        `}</style> */}
     </>
     );
   };

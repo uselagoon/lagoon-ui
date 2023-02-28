@@ -225,7 +225,7 @@ const Problems = ({problems}) => {
           .map((problem) => <Problem key={`${problem.identifier}-${problem.id}`} problem={problem}/>)
         }
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .header {
           margin: 10px 0px;
           padding: 10px 0px;
@@ -346,7 +346,7 @@ const Problems = ({problems}) => {
           padding: 8px 0 7px 0;
           text-align: center;
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 };

@@ -9,7 +9,7 @@ const Box = ({ className = '', children }) => (
     <div className={`box ${className}`}>
       <div className={`content ${className}`}>{children}</div>
     </div>
-    <style jsx>{`
+    {/* <style jsx>{`
       .box {
         border: 1px solid ${color.lightestGrey};
         box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
@@ -46,7 +46,7 @@ const Box = ({ className = '', children }) => (
           z-index: 10;
         }
       }
-    `}</style>
+    `}</style> */}
   </>
 );
 

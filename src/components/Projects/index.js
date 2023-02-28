@@ -6,18 +6,18 @@ import ProjectLink from 'components/link/Project';
 import Box from 'components/Box';
 import { bp, color, fontSize } from 'lib/variables';
 
-const { className: boxClassName, styles: boxStyles } = css.resolve`
-  .box {
-    margin-bottom: 7px;
+// const { className: boxClassName, styles: boxStyles } = css.resolve`
+//   .box {
+//     margin-bottom: 7px;
 
-    .content {
-      padding: 9px 20px 14px;
-      @media ${bp.tinyUp} {
-        display: flex;
-      }
-    }
-  }
-`;
+//     .content {
+//       padding: 9px 20px 14px;
+//       @media ${bp.tinyUp} {
+//         display: flex;
+//       }
+//     }
+//   }
+// `;
 
 /**
  * The primary list of projects.
@@ -103,7 +103,7 @@ const Projects = ({ projects = [] }) => {
           </Box>
         </ProjectLink>
       ))}
-      <style jsx>{`
+      {/* <style jsx>{`
         .header {
           @media ${bp.tinyUp} {
             align-items: center;
@@ -179,8 +179,8 @@ const Projects = ({ projects = [] }) => {
             width: calc((100vw / 16) * 6);
           }
         }
-      `}</style>
-      {boxStyles}
+      `}</style> */}
+      {/* {boxStyles} */}
     </>
   );
 };

@@ -10,20 +10,20 @@ import InsightsLink from 'components/link/Insights';
 import { bp, color } from 'lib/variables';
 import problems from '../../pages/problems';
 
-const { className: aClassName, styles: aStyles } = css.resolve`
-  a {
-    color: ${color.darkGrey};
-    display: block;
-    padding: 20px 20px 19px 60px;
-    @media ${bp.wideUp} {
-      padding-left: calc((100vw / 16) * 1);
-    }
-  }
+// const { className: aClassName, styles: aStyles } = css.resolve`
+//   a {
+//     color: ${color.darkGrey};
+//     display: block;
+//     padding: 20px 20px 19px 60px;
+//     @media ${bp.wideUp} {
+//       padding-left: calc((100vw / 16) * 1);
+//     }
+//   }
 
-  .active a {
-    color: ${color.black};
-  }
-`;
+//   .active a {
+//     color: ${color.black};
+//   }
+// `;
 
 const NavTabs = ({ activeTab, environment }) => (
   <ul className="navigation">
@@ -114,7 +114,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </li>
     }
     {/* } */}
-    <style jsx>{`
+    {/* <style jsx>{`
       .navigation {
         background: ${color.lightestGrey};
         border-right: 1px solid ${color.midGrey};
@@ -254,7 +254,7 @@ const NavTabs = ({ activeTab, environment }) => (
         }
       }
     `}</style>
-    {aStyles}
+    {aStyles} */}
   </ul>
 );
 

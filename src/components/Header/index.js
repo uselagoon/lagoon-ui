@@ -39,7 +39,7 @@ const Header = ({ logo }) => (
         return null;
       }}
     </AuthContext.Consumer>
-    <style jsx>{`
+    {/* <style jsx>{`
       .header {
         background: ${color.brightBlue} ${color.lightBlue};
         background: ${color.lightBlue};
@@ -100,7 +100,7 @@ const Header = ({ logo }) => (
           }
         }
       }
-    `}</style>
+    `}</style> */}
   </div>
 );
 

@@ -48,7 +48,7 @@ const Deployments = ({ deployments, environmentSlug, projectSlug }) => (
         </DeploymentLink>
       ))}
     </div>
-    <style jsx>{`
+    {/* <style jsx>{`
       .header {
         @media ${bp.tinyUp} {
           align-items: center;
@@ -176,7 +176,7 @@ const Deployments = ({ deployments, environmentSlug, projectSlug }) => (
           }
         }
       }
-    `}</style>
+    `}</style> */}
   </div>
 );
 

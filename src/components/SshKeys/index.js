@@ -56,7 +56,7 @@ const SshKeys = ({me: { id, email, sshKeys: keys }}) => {
         ))}
       </div>
 
-      <style jsx>{`
+      {/* <style jsx>{`
         .header {
           @media ${bp.wideUp} {
             align-items: center;
@@ -204,7 +204,7 @@ const SshKeys = ({me: { id, email, sshKeys: keys }}) => {
           }
         }
 
-      `}</style>
+      `}</style> */}
     </div>
   );
 };

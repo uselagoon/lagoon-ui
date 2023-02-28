@@ -114,7 +114,7 @@ const Project = ({ project }) => {
       </div>
       )}
 
-      <style jsx>{`
+      {/* <style jsx>{`
         .details {
           display: inline-table;
 
@@ -291,7 +291,7 @@ const Project = ({ project }) => {
             }
           }
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 };

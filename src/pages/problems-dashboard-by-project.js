@@ -99,7 +99,7 @@ const ProblemsDashboardProductPage = () => {
             onFilterChange={handleEnvTypeChange}
           />
         </div>
-        <style jsx>{`
+        {/* <style jsx>{`
           .filters-wrapper, .project-filter {
             margin: 32px calc((100vw / 16) * 1);
             @media ${bp.wideUp} {
@@ -119,7 +119,7 @@ const ProblemsDashboardProductPage = () => {
               }
             }
           }
-        `}</style>
+        `}</style> */}
       </div>
       <div className="content-wrapper">
         {projects &&
@@ -198,7 +198,7 @@ const ProblemsDashboardProductPage = () => {
             })}</Query>
           )})}
         </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .content-wrapper {
           h2 {
             margin: 38px calc((100vw / 16) * 1) 0;
@@ -256,7 +256,7 @@ const ProblemsDashboardProductPage = () => {
             border: 1px solid #efefef;
           }
         }
-      `}</style>
+      `}</style> */}
       </div>
     </MainLayout>
   </>);

@@ -96,7 +96,7 @@ const ProblemsByProject = ({ problems, minified }) => {
                     <Problem key={`${problem.identifier}-${problem.id}`} problem={problem} />
                 ))}
             </div>
-            <style jsx>{`
+            {/* <style jsx>{`
             .header {
               @media ${bp.wideUp} {
                 display: flex;
@@ -230,7 +230,7 @@ const ProblemsByProject = ({ problems, minified }) => {
                 color: ${color.brightBlue};
               }
             }
-        `}</style>
+        `}</style> */}
         </div>
     );
 };

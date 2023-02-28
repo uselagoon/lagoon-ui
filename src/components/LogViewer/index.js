@@ -13,7 +13,7 @@ const LogViewer = ({ logs, status = "NA", checkedParseState, changeState, forceL
           : (<div className="log-viewer with-padding">{logs}</div>)
       : (<div className="log-viewer with-padding">Logs are not available.</div>) }
     </div>
-    <style jsx>{`
+    {/* <style jsx>{`
       .logs {
         padding: 0 calc(100vw / 16) 48px;
         width: 100%;
@@ -41,7 +41,7 @@ const LogViewer = ({ logs, status = "NA", checkedParseState, changeState, forceL
           }
         }
       }
-    `}</style>
+    `}</style> */}
   </React.Fragment>
 );
 

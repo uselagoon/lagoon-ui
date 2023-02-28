@@ -144,7 +144,7 @@ const ProblemsByIdentifier = ({ problems }) => {
             );
           })}
         </div>
-        <style jsx>{`
+        {/* <style jsx>{`
           .header {
             @media ${bp.wideUp} {
               display: flex;
@@ -319,7 +319,7 @@ const ProblemsByIdentifier = ({ problems }) => {
                 width: 100%;
             }
           }
-        `}</style>
+        `}</style> */}
       </div>
     );
 };
