@@ -12,7 +12,9 @@ import { bp } from 'lib/variables';
 /**
  * Displays the projects page.
  */
-const ProjectsPage = () => (
+const ProjectsPage = () => {
+
+  return (
   <>
     <Head>
       <title>Projects</title>
@@ -54,7 +56,8 @@ const ProjectsPage = () => (
         </MainLayout>
       ))}
     </Query>
-  </>
-);
+  </>)
+          }
+;
 
 export default ProjectsPage;

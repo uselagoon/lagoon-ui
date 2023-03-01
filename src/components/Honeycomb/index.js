@@ -5,7 +5,7 @@ import ProblemsByProject from 'components/ProblemsByProject';
 import { LoadingPageNoHeader } from 'pages/_loading';
 import { ErrorNoHeader } from 'pages/_error';
 import { bp, color } from 'lib/variables';
-import './styling.css';
+// import './styling.css';
 
 const config = {
     "width": 1200,
