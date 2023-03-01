@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import TaskLink from 'components/link/Task';
-import { bp, color } from 'lib/variables';
+import { bp, color, fontSize } from 'lib/variables';
 
 /**
  * Displays an environment's list of tasks.
@@ -24,7 +24,7 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
           key={task.taskName}
         >
           <div className="data-row" task={task.taskName}>
-            <div className="name">{task.name}</div>
+            <div className="name">{task.name}{task.adminOnlyView && <label className="bulk-label">admin</label>}</div>
             <div className="started">
               {moment
                 .utc(task.created)
@@ -71,6 +71,19 @@ const Tasks = ({ tasks, environmentSlug, projectSlug }) => (
               width: 14%;
             }
           }
+        }
+      }
+
+      .bulk-label {
+        color: ${color.white};
+        background-color: ${color.lightBlue};
+        ${fontSize(12)};
+        margin-left: 10px;
+        padding: 0px 5px 0px 5px;
+        border-radius: 3px;
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+        &:hover {
+          background-color: ${color.blue};
         }
       }
 

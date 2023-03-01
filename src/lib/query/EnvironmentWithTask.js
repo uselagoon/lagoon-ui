@@ -20,6 +20,7 @@ export default gql`
         created
         service
         logs
+        adminOnlyView
         files {
           id
           filename
