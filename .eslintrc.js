@@ -8,6 +8,7 @@ module.exports = {
     project: "./tsconfig.json",
     tsConfigRootDir: path.resolve(__dirname),
   },
+  ignorePatterns: ["src/**/*.stories.js"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
