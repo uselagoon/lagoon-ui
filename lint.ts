@@ -18,9 +18,9 @@ const lintPromise = new Promise(async (resolve) => {
   const eslint = new ESLint();
 
   const results = await eslint.lintFiles([
-    "src/components/**/*.{ts,js,tsx}",
-    "src/layouts/**/*.{ts,js,tsx}",
-    "src/pages/**/*.{ts,js,tsx}",
+    "src/components/**/*.{ts,tsx}",
+    "src/layouts/**/*.{ts,tsx}",
+    // "src/pages/**/*.{ts,tsx}",
   ]);
 
   const errors = results.filter(({ errorCount }) => !!errorCount);

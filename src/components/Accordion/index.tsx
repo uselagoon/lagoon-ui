@@ -20,12 +20,12 @@ const Accordion: FC<AccordionProps> = ({
 }) => {
   const [visibility, setVisibility] = useState(defaultValue);
   const accordionType = minified ? "minified" : "wide";
-  const colCountClass = columns && "cols-" + Object.keys(columns).length;
+  const colCountClass = columns && "cols-" + String(Object.keys(columns).length);
 
   return (
     <StyledAccordion className={className}>
       <div
-        className={`accordion-heading ${accordionType} ${colCountClass}`}
+        className={`accordion-heading ${accordionType} ${colCountClass ? colCountClass : ""}`}
         onClick={() => {
           setVisibility(!visibility);
           if (onToggle) onToggle(!visibility);

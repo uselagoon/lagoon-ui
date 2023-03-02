@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import { FiltersTitle } from './StyledFilters';
+import { Filter, FiltersTitle } from './StyledFilters';
 
 /**
  * Displays a select filter and sends state back to parent in a callback.

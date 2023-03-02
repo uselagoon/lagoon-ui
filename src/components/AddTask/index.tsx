@@ -1,32 +1,65 @@
-import React from 'react';
-import ReactSelect from 'react-select';
-import withLogic from './logic';
-import DrushArchiveDump from './components/DrushArchiveDump';
-import DrushSqlDump from './components/DrushSqlDump';
-import DrushCacheClear from './components/DrushCacheClear';
-import DrushCron from './components/DrushCron';
-import DrushRsyncFiles from './components/DrushRsyncFiles';
-import DrushSqlSync from './components/DrushSqlSync';
-import DrushUserLogin from './components/DrushUserLogin';
-import Empty from './components/Empty';
-import Completed from './components/Completed';
-import Error from './components/Error';
-import InvokeRegisteredTask from './components/InvokeRegisteredTask';
-import { NewTaskWrapper } from './StyledAddTask';
+import React, { FC } from "react";
+import ReactSelect, { SingleValue } from "react-select";
+import withLogic from "./logic";
+import DrushArchiveDump from "./components/DrushArchiveDump";
+import DrushSqlDump from "./components/DrushSqlDump";
+import DrushCacheClear from "./components/DrushCacheClear";
+import DrushCron from "./components/DrushCron";
+import DrushRsyncFiles from "./components/DrushRsyncFiles";
+import DrushSqlSync from "./components/DrushSqlSync";
+import DrushUserLogin from "./components/DrushUserLogin";
+import Empty from "./components/Empty";
+import Completed from "./components/Completed";
+import Error from "./components/Error";
+import InvokeRegisteredTask from "./components/InvokeRegisteredTask";
+import { NewTaskWrapper, StyledNewTask } from "./StyledAddTask";
+
+type GenericObject = Record<string, string>;
+type OptionValue = {
+  label: string;
+  value: string;
+};
+
+type Environment = {
+  id: string;
+  project: {
+    name: string;
+  };
+  openshiftProjectName: string;
+  tasks: Array<GenericObject>;
+};
+
+interface AddTaskProps {
+  pageEnvironment: Environment;
+  projectEnvironments: string[];
+  selectedTask: {
+    id: string;
+    value: string;
+    arguments: {
+      name: string;
+      displayName: string;
+    }[];
+    confirmationText: string;
+  };
+  setSelectedTask: (task: SingleValue<OptionValue>) => void;
+  onCompleted: (cb: () => void) => void;
+  onError: (cb: () => void) => void;
+  options: OptionValue[];
+}
 
 /**
  * Perform a task on the CLI environment.
  */
-const AddTask = ({
+
+const AddTask: FC<AddTaskProps> = ({
   pageEnvironment,
   projectEnvironments,
   selectedTask,
   setSelectedTask,
   onCompleted,
   onError,
-  options
+  options,
 }) => {
-
   const newTaskComponents = {
     DrushArchiveDump,
     DrushSqlDump,
@@ -38,12 +71,15 @@ const AddTask = ({
     Empty,
     Completed,
     Error,
-    InvokeRegisteredTask
+    InvokeRegisteredTask,
   };
 
   const NewTask = selectedTask
-    ? selectedTask.value ? newTaskComponents[selectedTask.value] : newTaskComponents[selectedTask]
-    : newTaskComponents[Empty];
+    ? selectedTask.value
+      ? newTaskComponents[selectedTask.value]
+      : // @ts-ignore - needs clarification
+        newTaskComponents[selectedTask]
+    : Empty;
 
   return (
     <React.Fragment>
@@ -54,7 +90,7 @@ const AddTask = ({
               aria-label="Task"
               placeholder="Select a task..."
               name="task"
-              value={options.find((o) => o.value === selectedTask)}
+              value={options.find((o) => o.value === selectedTask.value)}
               onChange={(selectedOption) => setSelectedTask(selectedOption)}
               options={options}
               required

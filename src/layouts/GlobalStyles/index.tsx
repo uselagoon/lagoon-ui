@@ -1,4 +1,3 @@
-import React from "react";
 import { bp, color, fontSize } from "lib/variables";
 import { createGlobalStyle } from "styled-components";
 

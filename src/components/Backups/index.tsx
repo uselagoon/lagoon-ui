@@ -1,9 +1,22 @@
-import React from "react";
+import React, { FC } from "react";
 import moment from "moment";
 import RestoreButton from "components/RestoreButton";
 import { BackupsHeader, DataTable } from "./StyledBackups";
 
-const Backups = ({ backups }) => (
+interface BackupsProps {
+  backups: {
+    source: string;
+    id: string;
+    created: string;
+    backupId: string;
+    restore: {
+      status: "completed" | "pending" | "failed";
+      restoreLocation: string;
+    };
+  }[];
+}
+
+const Backups: FC<BackupsProps> = ({ backups }) => (
   <div className="backups">
     <BackupsHeader>
       <label className="source">Source</label>

@@ -1,17 +1,34 @@
-import React from "react";
+import React, { FC } from "react";
 import Router from "next/router";
 import { BreadCrumbLink, StyledBreadCrumb } from "./StyledBreadCrumb";
 
-const Breadcrumb = ({ header, title, urlObject, asPath }) => (
+interface BreadcrumbProps {
+  header: string;
+  title: string;
+  urlObject: {
+    pathname: string;
+    query: {
+      [key: string]: string;
+    };
+  };
+  asPath: string;
+}
+
+const Breadcrumb: FC<BreadcrumbProps> = ({
+  header,
+  title,
+  urlObject,
+  asPath,
+}) => (
   <>
     <BreadCrumbLink
       href={asPath}
       onClick={(e) => {
         e.preventDefault();
-        Router.push(urlObject, asPath);
+        void Router.push(urlObject, asPath);
       }}
     >
-      <StyledBreadCrumb className="breadcrumb">
+      <StyledBreadCrumb>
         <div>
           <label>{header}</label>
           <h2>{title}</h2>

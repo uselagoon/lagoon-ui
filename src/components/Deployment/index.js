@@ -7,7 +7,7 @@ import LogViewer from 'components/LogViewer';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import Button from 'components/Button';
-import { ButtonRow } from './StyledDeployment';
+import { ButtonRow, DeploymentDetails, FieldWrapper } from './StyledDeployment';
 
 export const getDeploymentDuration = deployment => {
   const deploymentStart = deployment.started || deployment.created;

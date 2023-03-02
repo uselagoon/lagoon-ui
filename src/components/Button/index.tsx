@@ -1,11 +1,25 @@
-import React from 'react';
-import { bp, color } from 'lib/variables';
+import React, { FC } from "react";
+import { bp, color } from "lib/variables";
 
-const Button = ({ action = null, href = null, disabled, children, variant }) => {
-  const ButtonElement = href ? 'a' : 'button';
+interface ButtonProps {
+  action: () => void;
+  href?: string;
+  disabled?: boolean;
+  children?: string | JSX.Element | JSX.Element[];
+  variant?: string;
+}
+
+const Button: FC<ButtonProps> = ({
+  action = undefined,
+  href = undefined,
+  disabled,
+  children,
+  variant,
+}) => {
+  const ButtonElement = href ? "a" : "button";
   const onClick = action
     ? action
-    : e => {
+    : (e: React.MouseEvent) => {
         if (disabled) {
           e.preventDefault();
           return false;
@@ -17,7 +31,9 @@ const Button = ({ action = null, href = null, disabled, children, variant }) => 
         onClick={onClick}
         href={href}
         disabled={disabled}
-        className={`${variant ? `btn-${variant}` : 'btn'} ${disabled ? 'btn--disabled' : ''} `}
+        className={`${variant ? `btn-${variant}` : "btn"} ${
+          disabled ? "btn--disabled" : ""
+        } `}
       >
         {children}
       </ButtonElement>

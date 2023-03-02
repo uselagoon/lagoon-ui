@@ -42,3 +42,13 @@ export const BreadCrumbLink = styled.a`
     }
   }
 `;
+
+export const StyledBreadcrumbsWrapper = styled.div`
+  background-color: ${color.white};
+  border-bottom: 1px solid ${color.midGrey};
+
+  .breadcrumbs {
+    display: flex;
+    margin: 0 calc((100vw / 16) * 1);
+  }
+`;

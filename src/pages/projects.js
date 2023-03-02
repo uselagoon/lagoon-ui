@@ -7,6 +7,7 @@ import AllProjectsQuery from "lib/query/AllProjects";
 import Projects from "components/Projects";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
+import {CommonWrapper} from "./styles/commonPageStyles"
 
 /**
  * Displays the projects page.
