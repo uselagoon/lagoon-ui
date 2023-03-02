@@ -13,14 +13,12 @@ class MyDocument extends Document {
     const originalRenderpage = ctx.renderPage;
 
     try {
-      ctx.renderPage = () => {
+      ctx.renderPage = () =>
         originalRenderpage({
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         });
-      };
       const initialProps = await Document.getInitialProps(ctx);
-
       return {
         ...initialProps,
         styles: (

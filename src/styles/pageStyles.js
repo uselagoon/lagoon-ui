@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { bp, color } from "lib/variables";
 
 export const DeploymentWrapper = styled.div`
   @media ${bp.tabletUp} {
