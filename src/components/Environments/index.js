@@ -62,7 +62,8 @@ const Environments = ({ environments = [], project }) => {
 
         return (
           <div className="environment" key={environment.id}>
-              <Box className={`${boxClassName} ${bgClassName}`}>
+              {/* <Box className={`${boxClassName} ${bgClassName}`}> */}
+              <Box>
                 <EnvironmentLink
                   environmentSlug={environment.openshiftProjectName}
                   projectSlug={project.name}
@@ -119,7 +120,7 @@ const Environments = ({ environments = [], project }) => {
                   : ''
                 }
               </Box>
-            {bgStyles}
+            {/* {bgStyles} */}
           </div>
         );
       })}

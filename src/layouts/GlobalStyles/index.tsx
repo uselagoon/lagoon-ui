@@ -170,18 +170,14 @@ label {
 
   &::before {
     @media ${bp.xs_smallUp} {
-      background-position: top 11px right 14px;
+      background-position: center;
       background-repeat: no-repeat;
-      background-size: 20px;
+      background-size: 21px;
       border-right: 1px solid ${color.midGrey};
       content: '';
-      display: block;
+      display: flex;
       height: 60px;
-      left: 0;
-      margin-left: calc(((100vw / 16) * 1.5) - 25px);
-      margin-right: 14px;
-      padding-right: 14px;
-      position: absolute;
+      padding-right: 28px;
       width: 25px;
     }
   }

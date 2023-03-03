@@ -1,7 +1,7 @@
 import React from 'react';
-import { bp, color } from 'lib/variables';
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
+import {StyledDropdown, DropdownMenu, DropdownButton} from "./StyledHeaderMenu";
 
 const useOutsideClick = (callback) => {
     const ref = React.useRef();
@@ -50,7 +50,7 @@ const HeaderMenu = ({auth}) => {
     <>
     <Dropdown
       open={open}
-      trigger={<a ref={ref} className="dropdown-btn" onClick={handleOpen}>{auth.user.username}</a>}
+      trigger={<DropdownButton ref={ref}  onClick={handleOpen}>{auth.user.username}</DropdownButton>}
       menu={[
         <a className="settings" href="/settings">Settings</a>,
         <hr />,
@@ -60,76 +60,6 @@ const HeaderMenu = ({auth}) => {
         <a className="logout" onClick={auth.logout}>Sign out</a>
       ]}
     />
-    {/* <style jsx>{`
-    .dropdown-btn {
-        display: flex;
-        align-items: center;
-        background-color: transparent;
-        color: ${color.white};
-        cursor: pointer;
-        padding-left: 10px;
-        @media ${bp.tinyUp} {
-          align-self: auto;
-        }
-        height: 100%;
-        &::after {
-          background-position: center center;
-          background-repeat: no-repeat;
-          content: '';
-          display: inline-block;
-          transition: all 0.3s ease-in-out;
-          height: 10px;
-          width: 25px;
-          background-image: url('/static/images/profile-dropdown.svg');
-          background-size: 9px;
-        }
-    }
-    hr {
-        border: 1px solid ${color.blue};
-    }
-    a {
-        color: ${color.almostWhite};
-        &.settings {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          &::before {
-            background-position: center center;
-            background-repeat: no-repeat;
-            content: '';
-            display: block;
-            height: 35px;
-            transition: all 0.3s ease-in-out;
-            width: 35px;
-            color: ${color.white};
-            background-image: url('/static/images/cog.svg');
-            background-size: 18px;
-          }
-        }
-        &.menuitem {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          padding: 5px 10px;
-        }
-        &.logout {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          &::before {
-            background-position: center center;
-            background-repeat: no-repeat;
-            content: '';
-            display: block;
-            height: 35px;
-            transition: all 0.3s ease-in-out;
-            width: 35px;
-            background-image: url('/static/images/logout.svg');
-            background-size: 18px;
-          }
-        } 
-      }
-    `}</style> */}
     </>
   );
 };
@@ -137,51 +67,16 @@ const HeaderMenu = ({auth}) => {
 const Dropdown = ({ open, trigger, menu }) => {
     return (
     <>
-      <div className="dropdown">
+      <StyledDropdown>
         {trigger}
         {open ? (
-          <ul className="menu">
+          <DropdownMenu>
             {menu.map((menuItem, index) => (
               <li key={index} className="menu-item">{menuItem}</li>
             ))}
-          </ul>
+          </DropdownMenu>
         ) : null}
-      </div>
-        {/* <style jsx>{`
-        .dropdown {
-            border-left: 1px solid ${color.blue};
-            cursor: pointer;
-            padding: 10px 20px;
-        }
-        
-        .menu {
-            position: absolute;
-            z-index: 9;
-            list-style-type: none;
-            padding: 0;
-            right: 20px;
-            width: 200px;
-            background-color: ${color.lightBlue};
-            border: 2px solid ${color.blue};
-            border-radius: 8px;
-        }
-        .menu-item {
-            padding: 0px;
-            &:hover {
-                background-color: ${color.blue};
-            }
-        }
-    
-        .menu > li {
-            margin: 0px;
-        }
-        
-        .menu > ul {
-            padding: 0px;
-        }
-        
-    
-        `}</style> */}
+      </StyledDropdown>
     </>
     );
   };

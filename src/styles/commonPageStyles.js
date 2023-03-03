@@ -1,7 +1,14 @@
 import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
+const commonBg = `
+background-color: rgb(250, 250, 252);
+flex: 1 0 auto;
+width: 100%;
+`;
+
 export const CommonWrapper = styled.div`
+  ${commonBg}
   h2 {
     margin: 38px calc((100vw / 16) * 1) 0;
     @media ${bp.wideUp} {
@@ -11,7 +18,7 @@ export const CommonWrapper = styled.div`
       margin: 62px calc((100vw / 16) * 3) 0;
     }
   }
-  .content {
+  & > .content {
     margin: 38px calc((100vw / 16) * 1);
     @media ${bp.wideUp} {
       margin: 38px calc((100vw / 16) * 2);
@@ -23,6 +30,7 @@ export const CommonWrapper = styled.div`
 `;
 
 export const CommonWrapperMargin = styled.div`
+  ${commonBg}
   h2 {
     margin: 38px calc((100vw / 16) * 1) 0;
     @media ${bp.wideUp} {
@@ -32,7 +40,7 @@ export const CommonWrapperMargin = styled.div`
       margin: 62px calc((100vw / 16) * 2) 0;
     }
   }
-  .content {
+  & > .content {
     margin: 38px calc((100vw / 16) * 1);
     @media ${bp.wideUp} {
       margin: 38px calc((100vw / 16) * 1);
@@ -44,12 +52,13 @@ export const CommonWrapperMargin = styled.div`
 `;
 
 export const CommonWrapperWNotification = styled.div`
+  ${commonBg}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
   }
 
-  .content {
+  & > .content {
     padding: 32px calc((100vw / 16) * 1);
     width: 100%;
 
@@ -62,6 +71,7 @@ export const CommonWrapperWNotification = styled.div`
 `;
 
 export const CommonFiltersWrapper = styled.div`
+  ${commonBg}
   margin: 38px calc((100vw / 16) * 1);
   @media ${bp.wideUp} {
     margin: 38px calc((100vw / 16) * 2);

@@ -3,7 +3,15 @@ import { bp } from "lib/variables";
 
 export const StyledContentWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
 
   .content {
     margin-top: 38px;

@@ -1,24 +1,27 @@
 import Header from "components/Header";
 import Footer from "components/Footer";
 import { StyledContentWrapper } from "./StyledStatusLayout";
+import GlobalStyles from "../GlobalStyles";
 
 /**
  * The status layout includes the Lagoon UI header and grey box to wrap content.
  */
 const StatusLayout = ({ children }) => (
   <>
-    <Header />
+    <GlobalStyles />
     <StyledContentWrapper>
-      <div className="content">{children}</div>
+      <Header />
+      <main className="content">{children}</main>
+      <Footer />
     </StyledContentWrapper>
-    <Footer />
   </>
 );
 
 export const StatusLayoutNoHeader = ({ children }) => (
   <>
+    <GlobalStyles />
     <StyledContentWrapper>
-      <div className="content">{children}</div>
+      <main className="content">{children}</main>
     </StyledContentWrapper>
   </>
 );
