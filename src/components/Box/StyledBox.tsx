@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { color } from "lib/variables";
 
-export const StyledBox = styled.div`
+export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   border: 1px solid ${color.lightestGrey};
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   border-radius: 3px;
@@ -36,4 +36,15 @@ export const StyledBox = styled.div`
     transition: background-image 0.5s ease-in-out;
     z-index: 10;
   }
+  ${(props) =>
+    props.activeBgs &&
+    css`
+      .content {
+        background-image: ${props.activeBgs[0]};
+
+        &:hover {
+          background-image: ${props.activeBgs[1]};
+        }
+      }
+    `}
 `;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bp, color } from "lib/variables";
+import { commonBg } from "./commonPageStyles";
 
 export const DeploymentWrapper = styled.div`
   flex: 1;
@@ -118,12 +119,13 @@ export const TaskWrapper = styled.div`
 `;
 
 export const ProjectDetailsWrapper = styled.div`
-  flex: 1;
+
   @media ${bp.tabletUp} {
     display: flex;
     justify-content: space-between;
   }
 
+  ${commonBg}
   .project-details-sidebar {
     background-color: ${color.lightestGrey};
     border-right: 1px solid ${color.midGrey};
@@ -131,24 +133,16 @@ export const ProjectDetailsWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-start;
-/* 
-    @media ${bp.xs_smallUp} {
-      padding: 24px calc((100vw / 16) * 1) 24px
-        calc(((100vw / 16) * 1.5) + 28px);
-    } */
     @media ${bp.tabletUp} {
       min-width: 50%;
-      /* padding: 48px calc(((100vw / 16) * 1) + 28px); */
       width: 50%;
     }
     @media ${bp.desktopUp} {
       min-width: 40%;
-      /* padding: 48px calc((100vw / 16) * 1); */
       width: 40%;
     }
     @media ${bp.wideUp} {
       min-width: 33.33%;
-      /* min-width: calc((100vw / 16) * 5); */
       width: 33.33%;
       width: calc((100vw / 16) * 5);
     }

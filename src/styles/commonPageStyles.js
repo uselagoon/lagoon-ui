@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
-const commonBg = `
+export const commonBg = `
 background-color: rgb(250, 250, 252);
 flex: 1 0 auto;
 width: 100%;

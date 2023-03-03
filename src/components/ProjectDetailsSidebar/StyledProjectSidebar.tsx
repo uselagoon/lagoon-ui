@@ -4,7 +4,11 @@ import { bp, color, fontSize } from "lib/variables";
 export const ProjectDetails = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 48px 24px;
+  padding: 48px 24px 48px clamp(5%, 4vw, 20%);
+
+  @media ${bp.xlWideDown} {
+    padding: 48px 24px 48px clamp(5%, 1vw, 10%);
+  }
   width: 100%;
 `;
 

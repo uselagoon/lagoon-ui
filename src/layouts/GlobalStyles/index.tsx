@@ -188,6 +188,13 @@ label {
     }
   }
 }
+
+main{
+  background-color: ${color.almostWhite};
+  margin: 0 !important;
+  padding: 62px !important;
+ }
+
 `;
 
 export default GlobalStyles;

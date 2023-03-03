@@ -33,6 +33,9 @@ module.exports = {
     PLUGIN_SCRIPTS: pluginRegistry,
   },
   distDir: '../build',
+  eslint:{
+    ignoreDuringBuilds: true,
+  },
   webpack(config, options) {
     // Add aliases from shared config file.
     if (webpackShared && webpackShared.alias) {

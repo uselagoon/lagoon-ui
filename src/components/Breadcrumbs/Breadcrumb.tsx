@@ -28,7 +28,7 @@ const Breadcrumb: FC<BreadcrumbProps> = ({
         void Router.push(urlObject, asPath);
       }}
     >
-      <StyledBreadCrumb>
+      <StyledBreadCrumb className="breadcrumb">
         <div>
           <label>{header}</label>
           <h2>{title}</h2>
