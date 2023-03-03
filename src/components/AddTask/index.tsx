@@ -60,6 +60,7 @@ const AddTask: FC<AddTaskProps> = ({
   onError,
   options,
 }) => {
+
   const newTaskComponents = {
     DrushArchiveDump,
     DrushSqlDump,

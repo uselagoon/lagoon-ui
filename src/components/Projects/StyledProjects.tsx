@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { bp, color, fontSize } from "lib/variables";
+import { bp, color } from "lib/variables";
 
 export const ProjectsPage = styled.section`
   .box {

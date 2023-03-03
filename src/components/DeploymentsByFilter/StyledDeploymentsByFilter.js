@@ -92,107 +92,105 @@ export const DeploymentsHeader = styled.div`
 `;
 
 export const DeploymentsDataTable = styled.div`
-.data-table {
-    background-color: ${color.white};
-    border: 1px solid ${color.lightestGrey};
+  background-color: ${color.white};
+  border: 1px solid ${color.lightestGrey};
+  border-radius: 3px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+
+  .data-none {
+    border: 1px solid ${color.white};
+    border-bottom: 1px solid ${color.lightestGrey};
     border-radius: 3px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+    line-height: 1.5rem;
+    padding: 8px 0 7px 0;
+    text-align: center;
+  }
 
-    .data-none {
-      border: 1px solid ${color.white};
-      border-bottom: 1px solid ${color.lightestGrey};
-      border-radius: 3px;
-      line-height: 1.5rem;
-      padding: 8px 0 7px 0;
-      text-align: center;
+  .data-row {
+    border: 1px solid ${color.white};
+    border-bottom: 1px solid ${color.lightestGrey};
+    border-radius: 0;
+    line-height: 1.5rem;
+    padding: 8px 0 7px 0;
+
+    @media ${bp.tinyUp} {
+      display: flex;
+      justify-content: space-between;
     }
 
-    .data-row {
-      border: 1px solid ${color.white};
-      border-bottom: 1px solid ${color.lightestGrey};
-      border-radius: 0;
-      line-height: 1.5rem;
-      padding: 8px 0 7px 0;
-
+    & > div {
+      padding-left: 20px;
       @media ${bp.tinyUp} {
-        display: flex;
-        justify-content: space-between;
+        width: 20%;
       }
-
-      & > div {
-        padding-left: 20px;
-        @media ${bp.tinyUp} {
-          width: 20%;
-        }
-        @media ${bp.xs_smallUp} {
-          width: 24%;
-        }
-      }
-
-      &:hover {
-        border: 1px solid ${color.brightBlue};
-      }
-
-      &:first-child {
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-      }
-
-      &:last-child {
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
-      }
-
-      .status {
-        @media ${bp.smallOnly} {
-          background: none;
-          background-size: 0;
-        }
-        padding-left: 0;
-        margin-left: 15px;
-        background-position: 5px 7px;
-        background-repeat: no-repeat;
-        background-size: 10px 10px;
-        text-indent: 20px;
-
-        &.active {
-          background-image: url('/static/images/in-progress.svg');
-        }
-
-        &.new {
-          background-image: url('/static/images/in-progress.svg');
-        }
-
-        &.pending {
-          background-image: url('/static/images/in-progress.svg');
-        }
-
-        &.running {
-          background-image: url('/static/images/in-progress.svg');
-        }
-
-        &.failed {
-          background-image: url('/static/images/failed.svg');
-        }
-
-        &.cancelled {
-          background-image: url('/static/images/failed.svg');
-        }
-
-        &.succeeded {
-          background-image: url('/static/images/successful.svg');
-        }
-
-        &.complete {
-          background-image: url('/static/images/successful.svg');
-        }
-
-        span {
-          @media ${bp.tiny_wide} {
-            display: none;
-          }
-        }
+      @media ${bp.xs_smallUp} {
+        width: 24%;
       }
     }
 
+    &:hover {
+      border: 1px solid ${color.brightBlue};
+    }
+
+    &:first-child {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+
+    .status {
+      @media ${bp.smallOnly} {
+        background: none;
+        background-size: 0;
+      }
+      padding-left: 0;
+      margin-left: 15px;
+      background-position: 5px 7px;
+      background-repeat: no-repeat;
+      background-size: 10px 10px;
+      text-indent: 20px;
+
+      &.active {
+        background-image: url("/static/images/in-progress.svg");
+      }
+
+      &.new {
+        background-image: url("/static/images/in-progress.svg");
+      }
+
+      &.pending {
+        background-image: url("/static/images/in-progress.svg");
+      }
+
+      &.running {
+        background-image: url("/static/images/in-progress.svg");
+      }
+
+      &.failed {
+        background-image: url("/static/images/failed.svg");
+      }
+
+      &.cancelled {
+        background-image: url("/static/images/failed.svg");
+      }
+
+      &.succeeded {
+        background-image: url("/static/images/successful.svg");
+      }
+
+      &.complete {
+        background-image: url("/static/images/successful.svg");
+      }
+
+      span {
+        @media ${bp.tiny_wide} {
+          display: none;
+        }
+      }
+    }
+  }
 `;

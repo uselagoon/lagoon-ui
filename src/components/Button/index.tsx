@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { bp, color } from "lib/variables";
+import { LinkElement, ButtonElem } from "./StyledButton";
 
 interface ButtonProps {
   action: () => void;
@@ -16,7 +16,9 @@ const Button: FC<ButtonProps> = ({
   children,
   variant,
 }) => {
-  const ButtonElement = href ? "a" : "button";
+  const createClassName = () =>
+    `${variant ? `btn-${variant}` : "btn"} ${disabled ? "btn--disabled" : ""} `;
+    
   const onClick = action
     ? action
     : (e: React.MouseEvent) => {
@@ -25,69 +27,22 @@ const Button: FC<ButtonProps> = ({
           return false;
         }
       };
-  return (
-    <>
-      <ButtonElement
-        onClick={onClick}
-        href={href}
-        disabled={disabled}
-        className={`${variant ? `btn-${variant}` : "btn"} ${
-          disabled ? "btn--disabled" : ""
-        } `}
-      >
-        {children}
-      </ButtonElement>
-      {/* <style jsx>
-        {`
-          .btn {
-            display: inline-block;
-            background-color: ${color.lightBlue};
-            border: none;
-            border-radius: 3px;
-            color: ${color.white};
-            cursor: pointer;
-            padding: 10px 30px;
-            @media ${bp.tinyUp} {
-              align-self: auto;
-            }
 
-            &:hover {
-              background-color: ${color.blue};
-            }
-
-            &.btn--disabled {
-              background-color: ${color.lightestGrey};
-              color: ${color.darkGrey};
-              cursor: not-allowed;
-              margin-right: 16px;
-            }
-          }
-          .btn-red {
-            display: inline-block;
-            background-color: ${color.lightRed};
-            border: none;
-            border-radius: 3px;
-            color: ${color.white};
-            cursor: pointer;
-            padding: 10px 30px;
-            @media ${bp.tinyUp} {
-              align-self: auto;
-            }
-
-            &:hover {
-              background-color: ${color.red};
-            }
-
-            &.btn--disabled {
-              background-color: ${color.lightestGrey};
-              color: ${color.darkGrey};
-              cursor: not-allowed;
-            }
-          }
-        `}
-      </style> */}
-    </>
+  const ButtonElement = href ? (
+    <LinkElement className={createClassName()} href={href}>
+      {children}
+    </LinkElement>
+  ) : (
+    <ButtonElem
+      className={createClassName()}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
+    </ButtonElem>
   );
+
+  return <>{ButtonElement}</>;
 };
 
 export default Button;
