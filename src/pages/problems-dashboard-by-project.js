@@ -109,73 +109,125 @@ const ProblemsDashboardProductPage = () => {
           </div>
         }
         <div className="projects">
-          {projects && projects.allProjects.map(project => {
+          {projects && projects.allProjects.map((project,idx) => {
             const filterProjectSelect = projectSelect.filter(s => {
               return s.includes(project.name);
             }).toString() || '';
 
             return (
-            <Query
-              query={AllProblemsByProjectQuery}
-              variables={{
-                name: projectSelect.length ? filterProjectSelect : project.name,
-                source: source,
-                severity: severity,
-                envType: envType
-              }}
-              displayName="AllProblemsByProjectQuery"
-            >
-              {R.compose(
-                withQueryLoadingNoHeader,
-                withQueryErrorNoHeader
-              )(({data: { project }}) => {
-              const {environments, id, name} = project || [];
-              const filterProblems = environments && environments.filter(e => e instanceof Object).map(e => {
-                return e.problems;
-              });
+              <Query
+                key={`project-${idx}`}
+                query={AllProblemsByProjectQuery}
+                variables={{
+                  name: projectSelect.length
+                    ? filterProjectSelect
+                    : project.name,
+                  source: source,
+                  severity: severity,
+                  envType: envType,
+                }}
+                displayName="AllProblemsByProjectQuery"
+              >
+                {R.compose(
+                  withQueryLoadingNoHeader,
+                  withQueryErrorNoHeader
+                )(({ data: { project } }) => {
+                  const { environments, id, name } = project || [];
+                  const filterProblems =
+                    environments &&
+                    environments
+                      .filter((e) => e instanceof Object)
+                      .map((e) => {
+                        return e.problems;
+                      });
 
-              const problemsPerProject = Array.prototype.concat.apply([], filterProblems);
-              const critical = problemsPerProject.filter(p => p.severity === 'CRITICAL').length;
-              const high = problemsPerProject.filter(p => p.severity === 'HIGH').length;
-              const medium = problemsPerProject.filter(p => p.severity === 'MEDIUM').length;
-              const low = problemsPerProject.filter(p => p.severity === 'LOW').length;
+                  const problemsPerProject = Array.prototype.concat.apply(
+                    [],
+                    filterProblems
+                  );
+                  const critical = problemsPerProject.filter(
+                    (p) => p.severity === "CRITICAL"
+                  ).length;
+                  const high = problemsPerProject.filter(
+                    (p) => p.severity === "HIGH"
+                  ).length;
+                  const medium = problemsPerProject.filter(
+                    (p) => p.severity === "MEDIUM"
+                  ).length;
+                  const low = problemsPerProject.filter(
+                    (p) => p.severity === "LOW"
+                  ).length;
 
-              const columns = {name, problemCount: problemsPerProject.length};
+                  const columns = {
+                    name,
+                    problemCount: problemsPerProject.length,
+                  };
 
-              return (
-              <>
-                {environments &&
-                  <div key={name + id} className="content">
-                    <div className="project-overview">
-                        <Accordion
-                          columns={columns}
-                          defaultValue={false}
-                          className="data-row row-heading"
-                          minified={true}
-                        >
-                          {!environments.length && <div className="data-none">No Environments</div>}
-                          <div className="overview">
-                            <ul className="overview-list">
-                              <li className="result"><label>Results: </label>{Object.keys(problemsPerProject).length} Problems</li>
-                              <li className="result"><label>Critical: </label>{critical}</li>
-                              <li className="result"><label>High: </label>{high}</li>
-                              <li className="result"><label>Medium: </label>{medium}</li>
-                              <li className="result"><label>Low: </label>{low}</li>
-                            </ul>
+                  return (
+                    <>
+                      {environments && (
+                        <div key={name + id} className="content">
+                          <div className="project-overview">
+                            <Accordion
+                              columns={columns}
+                              defaultValue={false}
+                              className="data-row row-heading"
+                              minified={true}
+                            >
+                              {!environments.length && (
+                                <div className="data-none">No Environments</div>
+                              )}
+                              <div className="overview">
+                                <ul className="overview-list">
+                                  <li className="result">
+                                    <label>Results: </label>
+                                    {
+                                      Object.keys(problemsPerProject).length
+                                    }{" "}
+                                    Problems
+                                  </li>
+                                  <li className="result">
+                                    <label>Critical: </label>
+                                    {critical}
+                                  </li>
+                                  <li className="result">
+                                    <label>High: </label>
+                                    {high}
+                                  </li>
+                                  <li className="result">
+                                    <label>Medium: </label>
+                                    {medium}
+                                  </li>
+                                  <li className="result">
+                                    <label>Low: </label>
+                                    {low}
+                                  </li>
+                                </ul>
+                              </div>
+                              {environments.map((environment, idx) => (
+                                <div
+                                  key={`environment-${idx}`}
+                                  className="environment-wrapper"
+                                >
+                                  <label className="environment">
+                                    <h5>Environment: {environment.name}</h5>
+                                  </label>
+                                  <ProblemsByProject
+                                    key={environment.id}
+                                    problems={environment.problems || []}
+                                    minified={true}
+                                  />
+                                </div>
+                              ))}
+                            </Accordion>
                           </div>
-                          {environments.map(environment => (
-                            <div className="environment-wrapper">
-                              <label className="environment"><h5>Environment: {environment.name}</h5></label>
-                              <ProblemsByProject key={environment.id} problems={environment.problems || [] } minified={true}/>
-                            </div>
-                          ))}
-                        </Accordion>
-                    </div>
-                  </div>
-                }
-              </>);
-            })}</Query>
-          )})}
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
+              </Query>
+            );})}
         </div>
       </div>
     </MainLayout>

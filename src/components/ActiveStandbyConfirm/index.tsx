@@ -58,5 +58,5 @@ export const ActiveStandbyConfirm: FC<ActiveStandbyConfirmProps> = ({
     </StyledActiveStandbyConfirm>
   );
 };
-
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default withLogic(ActiveStandbyConfirm);

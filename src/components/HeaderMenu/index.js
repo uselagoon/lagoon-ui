@@ -48,18 +48,36 @@ const HeaderMenu = ({auth}) => {
 
   return (
     <>
-    <Dropdown
-      open={open}
-      trigger={<DropdownButton ref={ref}  onClick={handleOpen}>{auth.user.username}</DropdownButton>}
-      menu={[
-        <a className="settings" href="/settings">Settings</a>,
-        <hr />,
-        <a className="menuitem" href="/projects">Your projects</a>,
-        publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (<a className="menuitem" href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}>Your account</a>),
-        <hr />,
-        <a className="logout" onClick={auth.logout}>Sign out</a>
-      ]}
-    />
+      <Dropdown
+        open={open}
+        trigger={
+          <DropdownButton ref={ref} onClick={handleOpen}>
+            {auth.user.username}
+          </DropdownButton>
+        }
+        menu={[
+          <a key="settings" className="settings" href="/settings">
+            Settings
+          </a>,
+          <hr key="line"/>,
+          <a key="projects" className="menuitem" href="/projects">
+            Your projects
+          </a>,
+          publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
+            <a
+              key="account"
+              className="menuitem"
+              href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}
+            >
+              Your account
+            </a>
+          ),
+          <hr key="lastline"/>,
+          <a key="logout" className="logout" onClick={auth.logout}>
+            Sign out
+          </a>,
+        ]}
+      />
     </>
   );
 };

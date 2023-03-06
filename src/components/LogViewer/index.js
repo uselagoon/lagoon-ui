@@ -51,6 +51,7 @@ const logPreprocessor = (logs, status, forceLastSectionOpen = true) => {
 
 
 const logPreprocessorRenderLogNode = (node, visible = false, errorState = false) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const logsContentRef = useRef(null);
 
   if (node.type === "log-text") {
