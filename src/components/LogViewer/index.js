@@ -189,7 +189,7 @@ const logPreprocessorExtractSectionEndDetails = (logs) => {
 const logPreprocessorTokenize = (logs) => {
   // tokenize
   const regexp = /##############################################\n(BEGIN) (.+)\n##############################################/;
-  const beginningSectionDefaultDetails = "Logs begin";
+  const beginningSectionDefaultDetails = "Build Setup";
 
   // The regex above will split the logs into three separate token types
   // 1. standard blocks of text
