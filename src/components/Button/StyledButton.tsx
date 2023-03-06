@@ -26,6 +26,13 @@ const sharedStyles = css`
 
   &.btn-red {
     background-color: ${color.lightRed};
+    &.btn--disabled {
+      background-color: ${color.lightestGrey};
+      &:hover,
+      &:active {
+        background-color: ${color.lightestGrey};
+      }
+    }
     &:hover {
       background-color: ${color.red};
     }

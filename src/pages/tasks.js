@@ -11,13 +11,13 @@ import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
 import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
 import NavTabs from "components/NavTabs";
-import AddTask from "components/AddTask";
 import Tasks from "components/Tasks";
 import ResultsLimited from "components/ResultsLimited";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withEnvironmentRequired } from "lib/withDataRequired";
 import { TasksWrapper } from "../styles/pageStyles";
+import AddTask from "components/AddTask";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT, 10);

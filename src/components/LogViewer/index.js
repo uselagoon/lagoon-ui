@@ -1,47 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { bp } from 'lib/variables';
+import React, { useRef } from 'react';
 import LogAccordion from 'components/LogViewer/LogAccordion';
-import withState from 'recompose/withState';
-import withHandlers from 'recompose/withHandlers';
+import { StyledLogs } from './StyledLogViewer';
 
 const LogViewer = ({ logs, status = "NA", checkedParseState, changeState, forceLastSectionOpen = true }) => (
   <React.Fragment>
-    <div className="logs">
+    <StyledLogs className="logs">
     { logs !== null ?
         checkedParseState ?
         (<div className="log-viewer">{logPreprocessor(logs, status, forceLastSectionOpen)}</div>)
           : (<div className="log-viewer with-padding">{logs}</div>)
       : (<div className="log-viewer with-padding">Logs are not available.</div>) }
-    </div>
-    {/* <style jsx>{`
-      .logs {
-        padding: 0 calc(100vw / 16) 48px;
-        width: 100%;
-        .log-viewer {
-          background-color: #222222;
-          color: #d6d6d6;
-          font-family: 'Monaco', monospace;
-          font-size: 12px;
-          font-weight: 400;
-          margin: 0;
-          overflow-wrap: break-word;
-          overflow-x: scroll;
-          white-space: pre-wrap;
-          will-change: initial;
-          word-break: break-all;
-          word-wrap: break-word;
-          &.with-padding {
-            padding: 10px;
-          }
-        }
-        .parseLogs {
-          margin: 0 auto 10px;
-          .showraw {
-            margin-left: 10px;
-          }
-        }
-      }
-    `}</style> */}
+    </StyledLogs>
   </React.Fragment>
 );
 

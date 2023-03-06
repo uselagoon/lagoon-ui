@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import * as R from 'ramda';
 import Head from 'next/head';
 import { Query } from 'react-apollo';
@@ -11,7 +11,7 @@ import ProblemsByProject from "components/ProblemsByProject";
 import Accordion from "components/Accordion";
 import MainLayout from 'layouts/MainLayout';
 import SelectFilter from 'components/Filters';
-import { bp } from 'lib/variables';
+import {StyledProblemsDashBoardByProject} from "../styles/pageStyles"
 
 /**
  * Displays the problems overview page by project.
@@ -58,7 +58,7 @@ const ProblemsDashboardProductPage = () => {
   };
 
   return (
-  <>
+  <StyledProblemsDashBoardByProject>
     <Head>
       <title>Problems Dashboard By Project</title>
     </Head>
@@ -99,27 +99,6 @@ const ProblemsDashboardProductPage = () => {
             onFilterChange={handleEnvTypeChange}
           />
         </div>
-        {/* <style jsx>{`
-          .filters-wrapper, .project-filter {
-            margin: 32px calc((100vw / 16) * 1);
-            @media ${bp.wideUp} {
-              margin: 32px calc((100vw / 16) * 2);
-            }
-            @media ${bp.extraWideUp} {
-              margin: 32px calc((100vw / 16) * 3);
-            }
-            .filters {
-              @media ${bp.wideUp} {
-                display: flex;
-                justify-content: space-between;
-
-                &:first-child {
-                  padding-bottom: 1em;
-                }
-              }
-            }
-          }
-        `}</style> */}
       </div>
       <div className="content-wrapper">
         {projects &&
@@ -198,68 +177,9 @@ const ProblemsDashboardProductPage = () => {
             })}</Query>
           )})}
         </div>
-      {/* <style jsx>{`
-        .content-wrapper {
-          h2 {
-            margin: 38px calc((100vw / 16) * 1) 0;
-            @media ${bp.wideUp} {
-              margin: 62px calc((100vw / 16) * 2) 0;
-            }
-            @media ${bp.extraWideUp} {
-              margin: 62px calc((100vw / 16) * 3) 0;
-            }
-          }
-          .results {
-            padding: 5px 0 5px;
-            background: #f3f3f3;
-            margin-bottom: 1em;
-          }
-          .content {
-            margin: 0 calc((100vw / 16) * 1);
-            @media ${bp.wideUp} {
-              margin: 0 calc((100vw / 16) * 2);
-            }
-            @media ${bp.extraWideUp} {
-              margin: 0 calc((100vw / 16) * 3);
-            }
-            li.result {
-              display: inline;
-            }
-          }
-          .projects {
-            padding-bottom: 20px;
-          }
-          .project-overview {
-            background: #fff;
-          }
-          .overview {
-            .overview-list {
-              margin: 0;
-              padding: 0.8em 0;
-              background: #f3f3f3;
-            }
-          }
-          .environment-wrapper {
-            padding: 0 1em 1em;
-            background: #fefefe;
-            margin: 0 0 2em;
-
-            h5 {
-              margin: 2em 0.5em;
-              font-weight: 500;
-            }
-          }
-          .data-none {
-            display: flex;
-            justify-content: space-between;
-            padding: 1em;
-            border: 1px solid #efefef;
-          }
-        }
-      `}</style> */}
       </div>
     </MainLayout>
-  </>);
+  </StyledProblemsDashBoardByProject>);
 };
 
 export default ProblemsDashboardProductPage;

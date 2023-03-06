@@ -1,14 +1,14 @@
 import React from 'react';
-import Link from 'next/link';
 import moment from 'moment';
 import giturlparse from 'git-url-parse';
 import { Mutation } from 'react-apollo';
 import DeleteEnvironmentMutation from 'lib/mutation/DeleteEnvironment';
 import DeleteConfirm from 'components/DeleteConfirm';
-import { bp, color } from 'lib/variables';
 import Router from 'next/router';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
+import {StyledEnvironmentDetails} from "./StyledEnvironment"
+
 
 /**
  * Displays the environment information.
@@ -20,7 +20,7 @@ const Environment = ({ environment }) => {
     }/${environment.deployType === 'branch' ? `tree/${environment.name}` : `pull/${environment.name.replace(/pr-/i, '')}`}`;
 
   return (
-    <div className="details">
+    <StyledEnvironmentDetails className="details">
       <div className="field-wrapper environmentType">
         <div>
           <label>Environment Type</label>
@@ -175,107 +175,7 @@ const Environment = ({ environment }) => {
           );
         }}
       </Mutation>
-      {/* <style jsx>{`
-        .details {
-          padding: 32px calc((100vw / 16) * 1);
-          width: 100%;
-          @media ${bp.xs_smallUp} {
-            display: flex;
-            flex-wrap: wrap;
-            min-width: 100%;
-            padding-left: calc(((100vw / 16) * 1.5) + 28px);
-            padding-top: 48px;
-            width: 100%;
-          }
-          @media ${bp.tabletUp} {
-            padding: 48px calc((100vw / 16) * 1) 48px
-              calc(((100vw / 16) * 1.5) + 28px);
-          }
-          @media ${bp.extraWideUp} {
-            padding-left: calc(((100vw / 16) * 1) + 28px);
-          }
-
-          .field-wrapper {
-            &::before {
-              left: calc(((-100vw / 16) * 1.5) - 28px);
-            }
-            @media ${bp.xs_smallUp} {
-              min-width: 50%;
-              position: relative;
-              width: 50%;
-            }
-            @media ${bp.wideUp} {
-              min-width: 33.33%;
-              width: 33.33%;
-            }
-            @media ${bp.extraWideUp} {
-              min-width: 25%;
-              width: 25%;
-            }
-
-            &.environmentType {
-              &::before {
-                background-image: url('/static/images/environments.svg');
-                background-size: 20px 20px;
-              }
-            }
-
-            &.deployType {
-              &::before {
-                background-image: url('/static/images/branches.svg');
-                background-size: 15px 20px;
-              }
-            }
-
-            &.updated {
-              &::before {
-                background-image: url('/static/images/last-deploy.svg');
-                background-size: 20px 15px;
-              }
-            }
-
-            &.routes {
-              width: 100%;
-              &::before {
-                background-image: url('/static/images/url.svg');
-                background-size: 19px 19px;
-              }
-            }
-
-            &.created {
-              &::before {
-                background-image: url('/static/images/created.svg');
-                background-size: 17px 16px;
-              }
-            }
-
-            &.source {
-              width: 100%;
-
-              &::before {
-                background-image: url('/static/images/git-lab.svg');
-                background-size: 19px 17px;
-              }
-
-              .field {
-                color: ${color.linkBlue};
-                max-width: 100%;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-            }
-
-            & > div {
-              width: 100%;
-            }
-
-            .field {
-              padding-right: calc((100vw / 16) * 1);
-            }
-          }
-        }
-      `}</style> */}
-    </div>
+    </StyledEnvironmentDetails>
   );
 };
 

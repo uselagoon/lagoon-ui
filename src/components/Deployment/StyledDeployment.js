@@ -2,8 +2,20 @@ import styled from "styled-components";
 import { bp } from "lib/variables";
 
 export const FieldWrapper = styled.div`
+  display: flex;
+  > div {
+    padding-left: 14px;
+  }
   &::before {
     left: calc(((-100vw / 16) * 1.5) - 28px);
+
+    content: "";
+    display: inline-block;
+    background-repeat: no-repeat;
+    height: 60px;
+    width: 25px;
+    border-right: 1px solid rgb(235, 236, 240);
+    padding-right: 14px;
   }
   @media ${bp.xs_smallUp} {
     min-width: 50%;
@@ -103,21 +115,18 @@ export const FieldWrapper = styled.div`
 `;
 
 export const DeploymentDetails = styled.div`
-  padding: 104px calc(100vw / 16) 20px;
+  padding-inline: 5% 10%;
   width: 100%;
   @media ${bp.xs_smallUp} {
     display: flex;
     flex-wrap: wrap;
     min-width: 100%;
-    padding-left: calc(((100vw / 16) * 1.5) + 28px);
+
     position: relative;
     width: 100%;
   }
-  @media ${bp.tabletUp} {
-    padding: 120px calc(100vw / 16) 20px calc(((100vw / 16) * 1.5) + 28px);
-  }
+
   @media ${bp.extraWideUp} {
-    padding-left: calc(100vw / 16);
     padding-top: 48px;
   }
 

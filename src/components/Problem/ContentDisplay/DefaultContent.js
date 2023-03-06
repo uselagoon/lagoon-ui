@@ -1,13 +1,13 @@
 import React from "react";
-import { bp, color, fontSize } from 'lib/variables';
 import { getCreatedDate } from "components/Dates";
+import {StyledDefaultContent} from "./StyledContent";
 
 const DefaultDisplay = ({ problem }) => {
     const createdDate = getCreatedDate(problem.created);
     const data = JSON.parse(problem.data) || "";
 
     return (
-        <div className="content-display-wrapper">
+        <StyledDefaultContent className="content-display-wrapper">
             {problem.description && problem.description.length > 0 && (<div className="field-wrapper">
                 <label>Description</label>
                 <div className="description">{problem.description}</div>
@@ -49,66 +49,7 @@ const DefaultDisplay = ({ problem }) => {
                     })}
                 </div>
             </div>
-            {/* <style jsx>{`
-                .field-wrapper {
-                    flex-direction: column;
-                }
-                .rawdata {
-                    max-width: 100%;
-                    .rawdata-elements {
-                      border: 1px solid ${color.white};
-                      border-bottom: 1px solid ${color.lightestGrey};
-                      border-radius: 0;
-                      line-height: 1.5rem;
-                      padding: 8px 0 7px 0;
-                      background-color: ${color.white};
-                      border: 1px solid ${color.lightestGrey};
-                      width: 100%;
-                      @media ${bp.wideUp} {
-                        display: flex;
-                        justify-content: space-between;
-                        flex-direction: column;
-                      }
-                      & > div {
-                        padding-left: 20px;
-                        @media ${bp.wideDown} {
-                          padding-right: 40px;
-                        }
-                      }
-                      &:hover {
-                        border: 1px solid ${color.brightBlue};
-                      }
-                      &:first-child {
-                        border-top-left-radius: 3px;
-                        border-top-right-radius: 3px;
-                      }
-                      &:last-child {
-                        border-bottom-left-radius: 3px;
-                        border-bottom-right-radius: 3px;
-                      }
-                    }
-                    pre {
-                      font-family: monospace, monospace;
-                      font-size: 1em;
-                      width: 100%;
-                      white-space: pre-wrap;
-                      overflow-y: scroll;
-                    }
-                    .row-heading {
-                      cursor: pointer;
-                    }
-                    .row-data {
-                      padding: 0;
-                      margin: 0;
-                      background: #2d2d2d;
-                      color: white;
-                      font: 0.8rem Inconsolata, monospace;
-                      line-height: 2;
-                      transition: all 0.6s ease-in-out;
-                    }
-                }
-            `}</style> */}
-        </div>
+        </StyledDefaultContent>
     );
 };
 

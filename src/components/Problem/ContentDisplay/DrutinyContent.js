@@ -1,7 +1,7 @@
 import React from "react";
-import { bp, color, fontSize } from 'lib/variables';
 import { getCreatedDate } from "components/Dates";
 import TableDisplay from "components/TableDisplay";
+import { StyledDrutinyContent } from "./StyledContent";
 
 const DrutinyDisplay = ({ problem }) => {
 
@@ -12,7 +12,7 @@ const DrutinyDisplay = ({ problem }) => {
     const columns = ['Module', 'Version', 'Latest'];
 
     return (
-        <div className="content-display-wrapper">
+        <StyledDrutinyContent className="content-display-wrapper">
             {data.title && (<div className="field-wrapper">
                 <label>Title</label>
                 <div className="title">{data.title}</div>
@@ -58,35 +58,7 @@ const DrutinyDisplay = ({ problem }) => {
                 <label>Created</label>
                 <div className="created">{createdDate}</div>
             </div>)}
-            {/* <style jsx>{`
-               .field-wrapper {
-                    flex-direction: column;
-                }
-                .failure-result {
-                    white-space: pre-wrap;
-                }
-                .data-wrapper {
-                    margin-bottom: 30px;
-                }
-                .table {
-                  display: flex;
-                  flex-direction: column;
-                }
-                .data {
-                    background: #2d2d2d;
-                    padding: 20px;
-                    color: white;
-                    font: 0.8rem Inconsolata, monospace;
-                    line-height: 2;
-                    transition: all 0.6s ease-in-out;
-                    padding: 20px;
-                    width: 100%;
-                    .key {
-                      color: ${color.brightBlue};
-                    }
-                }
-            `}</style> */}
-        </div>
+        </StyledDrutinyContent>
     );
 };
 

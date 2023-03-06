@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ReactModal from "react-modal";
-import { color, bp } from "lib/variables";
 
 /**
  * A styled modal dialog.

@@ -12,8 +12,7 @@ import withQueryErrorNoHeader from "lib/withQueryErrorNoHeader";
 import ProblemsByIdentifier from "components/ProblemsByIdentifier";
 import MainLayout from "layouts/MainLayout";
 import SelectFilter from "components/Filters";
-import { ProblemsDashBoardWrapper } from "../styles/pageStyles";
-import { CommonFiltersWrapper } from "../styles/commonPageStyles";
+import { ProblemsDashBoardWrapper, ProblemDashboardFilterWrapper } from "../styles/pageStyles";
 
 /**
  * Displays the problems overview page.
@@ -63,7 +62,7 @@ const ProblemsDashboardPage = () => {
         <title>Problems Dashboard</title>
       </Head>
       <MainLayout>
-        <CommonFiltersWrapper>
+        <ProblemDashboardFilterWrapper>
           <h2>Problems Dashboard By Identifier</h2>
           <div className="filters">
             <SelectFilter
@@ -93,7 +92,7 @@ const ProblemsDashboardPage = () => {
               onFilterChange={handleEnvTypeChange}
             />
           </div>
-        </CommonFiltersWrapper>
+        </ProblemDashboardFilterWrapper>
         <Query
           query={AllProblemsQuery}
           variables={{

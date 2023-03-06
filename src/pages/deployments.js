@@ -13,11 +13,11 @@ import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
 import NavTabs from "components/NavTabs";
 import DeployLatest from "components/DeployLatest";
 import ResultsLimited from "components/ResultsLimited";
-import Deployments from "components/Deployments";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withEnvironmentRequired } from "lib/withDataRequired";
 import { DeploymentsWrapper } from "../styles/pageStyles";
+import Deployments from "components/Deployments";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT, 10);
