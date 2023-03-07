@@ -34,21 +34,24 @@ export const FieldWrapper = styled.div`
     }
   }
   &.origin {
+    width: 100%;
+    > div {
+      width: 100%;
+    }
+    .field {
+      color: ${color.linkBlue};
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 85%;
+    }
+
     &:before {
       background-image: url("/static/images/git-lab.svg");
     }
 
     & > div {
       max-width: 100%;
-    }
-
-    .field {
-      color: ${color.linkBlue};
-      max-width: 90%;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 85%;
     }
   }
 
