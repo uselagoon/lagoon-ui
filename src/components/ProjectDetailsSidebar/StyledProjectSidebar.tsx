@@ -74,25 +74,21 @@ export const FieldWrapper = styled.div`
 
     .copy-field {
       display: flex;
-      width: 90%;
-      overflow: hidden;
+      width: 100%;
+      overflow: visible;
+      transform: translateX(-13px);
     }
     .field {
       background-color: ${color.white};
-      border-right: 24px solid ${color.white};
+      border-right: 28px solid ${color.white};
       color: ${color.darkGrey};
       font-family: "source-code-pro", sans-serif;
       ${fontSize(13)};
       margin-top: 6px;
-      max-width: min-content;
       overflow: hidden;
-      padding: 6px 0 6px 15px;
+      padding: 6px 13px 6px 15px;
       position: relative;
       text-overflow: ellipsis;
-      @media ${bp.xs_smallUp} {
-        margin-left: -13px;
-        max-width: calc(100% + 14px);
-      }
     }
 
     .copy {
@@ -121,7 +117,7 @@ export const FieldWrapper = styled.div`
       position: absolute;
       right: 0;
       text-transform: uppercase;
-      top: 30px;
+      top: 20px;
       transition: top 0.5s, opacity 0.75s ease-in;
     }
   }

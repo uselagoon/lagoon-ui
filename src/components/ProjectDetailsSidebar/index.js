@@ -54,7 +54,7 @@ const Project = ({ project }) => {
           <div className="field">{project.gitUrl}</div>
           <span
             className="copied"
-            style={copied ? { top: '4px', opacity: '0' } : null}
+            style={copied ? { top: '-20px', opacity: '0' } : null}
           >
             Copied
           </span>
