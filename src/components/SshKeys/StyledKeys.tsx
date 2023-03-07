@@ -2,12 +2,34 @@ import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
 export const StyledKeys = styled.div`
+  label.fingerprint,
+  div.fingerprint {
+    flex: 4;
+    align-self: center;
+  }
+  label.type,
+  div.type {
+    flex: 2;
+    align-self: center;
+  }
+  label.name,
+  div.name {
+    flex: 1.8;
+  }
+
+  label.created,
+  div.created {
+    flex: 2;
+  }
+
   .header {
+    padding-right: calc(15% + 8px);
+    display: flex;
+
     @media ${bp.wideUp} {
       align-items: center;
       display: flex;
       margin: 0 0 14px;
-      padding-right: 40px;
     }
     @media ${bp.smallOnly} {
       flex-wrap: wrap;
@@ -21,34 +43,6 @@ export const StyledKeys = styled.div`
       padding-left: 20px;
       @media ${bp.wideUp} {
         display: block;
-      }
-
-      &.name {
-        width: 18%;
-        @media ${bp.extraWideUp} {
-          width: 18%;
-        }
-      }
-
-      &.type {
-        width: 15%;
-        @media ${bp.extraWideUp} {
-          width: 15%;
-        }
-      }
-
-      &.fingerprint {
-        width: 40%;
-        @media ${bp.extraWideUp} {
-          width: 40%;
-        }
-      }
-
-      &.created {
-        width: 25%;
-        @media ${bp.extraWideUp} {
-          width: 25%;
-        }
       }
     }
   }
@@ -74,6 +68,11 @@ export const StyledKeys = styled.div`
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
+
+      > div {
+        word-wrap: break-word;
+        word-break: break-all;
+      }
       @media ${bp.wideUp} {
         display: flex;
         justify-content: space-between;
@@ -85,37 +84,27 @@ export const StyledKeys = styled.div`
         @media ${bp.wideDown} {
           padding-right: 40px;
         }
-        @media ${bp.wideUp} {
-          &.name {
-            align-self: center;
-            width: 35%;
-            overflow-wrap: break-word;
-          }
 
-          &.type {
+        @media ${bp.wideUp} {
+          &.name,
+          &.type,
+          &.fingerprint,
+          &.created {
             align-self: center;
-            width: 20%;
+          }
+          &.name {
+            overflow-wrap: break-word;
           }
 
           &.fingerprint {
-            align-self: center;
             overflow-wrap: break-word;
-            width: 35%;
           }
-
-          &.created {
-            align-self: center;
-            width: 20%;
-            @media ${bp.extraWideUp} {
-              width: 20%;
-            }
-          }
-
           &.delete {
-            width: 25%;
-            @media ${bp.extraWideUp} {
-              width: 20%;
-            }
+            width: 15% !important;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
         }
 
