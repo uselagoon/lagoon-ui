@@ -90,8 +90,8 @@ const GroupMembers = ({ members = [], groupName }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
-              if (called) {
-                return <div>Success</div>;
+              if (data) {
+                window.location.reload();
               }
               return (
                 <RemoveUserConfirm
@@ -103,7 +103,6 @@ const GroupMembers = ({ members = [], groupName }) => {
                         email: member.user.email
                       }
                     });
-                    window.location.reload();
                   }
                   }
                 />

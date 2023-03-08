@@ -76,7 +76,6 @@ export const NewGroup = ({
                         organization: parseInt(organizationId, 10)
                         }
                       });
-                      window.location.reload();
                       }
                     }
                     variant='green'
