@@ -229,6 +229,14 @@ main{
     }
   }
 
+  #nprogress .bar {
+  background-color: ${color.linkBlue} !important;
+  position: fixed !important;
+  top: 55px !important;
+  z-index: 9999 !important;
+  width: 100% !important;
+  height: 5px !important;
+}
 `;
 
 export default GlobalStyles;

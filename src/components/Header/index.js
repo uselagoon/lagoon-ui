@@ -30,7 +30,9 @@ const Header = ({ logo }) => (
         if (auth.authenticated) {
           return (
             <div className="authContainer">
+              <Link href="/alldeployments" prefetch>
               <a className="navitem" href="/alldeployments">Deployments</a>
+              </Link>
               <HeaderMenu auth={auth}></HeaderMenu>
             </div>
           );
