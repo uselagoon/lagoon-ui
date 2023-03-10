@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
 import Button from 'components/Button';
 import withLogic from 'components/AddTask/components/logic';
-import { bp, color, fontSize } from 'lib/variables';
+import { SelectWrapper } from './Styles';
 
 const taskDrushRsyncFiles = gql`
   mutation taskDrushRsyncFiles(
@@ -45,7 +45,7 @@ const DrushRsyncFiles = ({
   >
     {(taskDrushRsyncFiles, { loading, called, error, data }) => {
       return (
-        <React.Fragment>
+        <SelectWrapper>
           <div className="warning">
             Warning! <br />
             This task replaces files. Be careful to double check the source and
@@ -97,17 +97,7 @@ const DrushRsyncFiles = ({
           >
             Run task
           </Button>
-          <style jsx>{`
-            .warning {
-              background-color: red;
-              color: white;
-              padding: 10px;
-            }
-            .envSelect {
-              margin: 10px 0;
-            }
-          `}</style>
-        </React.Fragment>
+        </SelectWrapper>
       );
     }}
   </Mutation>

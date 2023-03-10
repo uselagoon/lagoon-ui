@@ -30,9 +30,7 @@ export default class Error extends React.Component {
     return (
       <StatusLayout>
         <Head>
-          <title>
-            {statusCode}: {title}
-          </title>
+          <title>{`${statusCode}: ${title}`}</title>
         </Head>
         <h2>{title}</h2>
         {errorMessage && <p>{errorMessage}</p>}

@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  extensions: ['.js'],
+  extensions: ['.js',".jsx",".tsx"],
   alias: {
     components: path.join(__dirname, 'components'),
     layouts: path.join(__dirname, 'layouts'),

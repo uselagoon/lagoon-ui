@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactSelect from 'react-select';
-import { color } from 'lib/variables';
+import {StyledResultsLimited} from "./StyledResultsLimited"
 
 const options = [
   { value: '10', label: '10' },
@@ -10,7 +10,6 @@ const options = [
   { value: '-1', label: 'all' }
 ]
 const handleChange = (values) => {
-  console.log(values);
   window.location.href = (window.location.href.split('?')[0]) + "?limit="+values.value;
 };
 const customStyles = {
@@ -27,7 +26,7 @@ const customStyles = {
 /**
  * Button that deploys the latest environment.
  */
-const ResultsLimited = ({ limit, results, message }) => {
+const ResultsLimited = ({ limit, message }) => {
 
   return (
     // if the number of results = the limit, then display a message that the results are limited
@@ -35,7 +34,7 @@ const ResultsLimited = ({ limit, results, message }) => {
     // the number of results will never be more than the limit (see deployments.js, backups.js, and tasks.js)
     // as the limit is set here and the results returned will either be less than or equal to this limit, never more
     (
-    <div className="resultsLimited">
+    <StyledResultsLimited>
       {limit &&
         <React.Fragment>
           <div className="description">
@@ -54,31 +53,7 @@ const ResultsLimited = ({ limit, results, message }) => {
         required
       />}
       </div>
-      <style jsx>
-        {`
-          .resultsLimited {
-            .results {
-              padding: 8px;
-              display: flex;
-              justify-content: right;
-            }
-            .description {
-              background: ${color.white};
-              border: 1px solid ${color.lightestGrey};
-              border-radius: 3px;
-              box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-              justify-content: space-between;
-              margin-top: 8px;
-              padding: 8px;
-              // text-align: center;
-              display: flex;
-              justify-content: center;
-              color: ${color.darkGrey};
-            }
-          }
-        `}
-      </style>
-    </div>
+    </StyledResultsLimited>
   ));
 };
 

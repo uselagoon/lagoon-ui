@@ -1,23 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
-import Head from 'next/head';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentWithDeploymentQuery from 'lib/query/EnvironmentWithDeployment';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import DeploymentBreadcrumb from 'components/Breadcrumbs/Deployment';
-import NavTabs from 'components/NavTabs';
-import Deployment from 'components/Deployment';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
+import React, { useRef, useState } from "react";
+import * as R from "ramda";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import { Query } from "react-apollo";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentWithDeploymentQuery from "lib/query/EnvironmentWithDeployment";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import DeploymentBreadcrumb from "components/Breadcrumbs/Deployment";
+import NavTabs from "components/NavTabs";
+import Deployment from "components/Deployment";
+import withQueryLoading from "lib/withQueryLoading";
+import withQueryError from "lib/withQueryError";
 import {
   withEnvironmentRequired,
-  withDeploymentRequired
-} from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+  withDeploymentRequired,
+} from "lib/withDataRequired";
+import { DeploymentWrapper } from "../styles/pageStyles";
 
 /**
  * Displays a deployment page, given the openshift project and deployment name.
@@ -44,7 +44,9 @@ export const PageDeployment = ({ router }) => {
 
   const onScroll = () => {
     const pageTop = document.documentElement.scrollTop <= 300;
-    const pageBottom = (document.body.scrollHeight - document.documentElement.scrollTop) - 100 <= document.documentElement.clientHeight;
+    const pageBottom =
+      document.body.scrollHeight - document.documentElement.scrollTop - 100 <=
+      document.documentElement.clientHeight;
 
     if (hidden == "hidden") return;
     if (pageTop) {
@@ -55,7 +57,7 @@ export const PageDeployment = ({ router }) => {
       setShowTop(true);
       setShowBottom(false);
     }
-  }
+  };
 
   return (
     <>
@@ -66,7 +68,7 @@ export const PageDeployment = ({ router }) => {
         query={EnvironmentWithDeploymentQuery}
         variables={{
           openshiftProjectName: router.query.openshiftProjectName,
-          deploymentName: router.query.deploymentName
+          deploymentName: router.query.deploymentName,
         }}
       >
         {R.compose(
@@ -89,60 +91,17 @@ export const PageDeployment = ({ router }) => {
                   deploymentSlug={deployment.name}
                   environmentSlug={environment.openshiftProjectName}
                   projectSlug={environment.project.name}
-                  />
+                />
               </Breadcrumbs>
-              <div className="content-wrapper">
+              <DeploymentWrapper>
                 <NavTabs activeTab="deployments" environment={environment} />
                 <div ref={logsContent} className="content">
                   <Deployment deployment={deployment} />
                 </div>
-              </div>
+              </DeploymentWrapper>
               <div ref={logsEndRef} />
-              <style jsx>{`
-                .content-wrapper {
-                  @media ${bp.tabletUp} {
-                    display: flex;
-                    padding: 0;
-                  }
-                }
-
-                .content {
-                  width: 100%;
-                }
-
-                .scroll-wrapper {
-                  position: fixed;
-                  bottom: 4em;
-                  right: 2em;
-                }
-                button.scroll {
-                  padding: 0.625rem;
-                  width: 52px;
-                  color: #fff;
-                  background: #3d3d3d;
-                  border-radius: 50%;
-                  border: none;
-                  cursor: pointer;
-                  line-height: 2rem;
-                  font-size: 2rem;
-                  opacity: 0;
-
-                  -webkit-transition: opacity 2s ease-in;
-                  -moz-transition: opacity 2s ease-in;
-                  -ms-transition: opacity 2s ease-in;
-                  -o-transition: opacity 2s ease-in;
-                  transition: opacity 2s ease-in;
-
-                  &.hidden {
-                    opacity: 0;
-                  }
-                  &.top, &.bottom {
-                    opacity: 1;
-                  }
-                }
-              `}</style>
             </MainLayout>
-          )
+          );
         })}
       </Query>
     </>

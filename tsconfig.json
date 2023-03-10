@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "baseUrl": "./",
+    "paths": {
+      "components/*": ["src/components/*"],
+      "layouts/*": ["src/layouts/*"],
+      "lib/*": ["src/lib/*"],
+      "pages/*": ["src/pages/*"],
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "strictNullChecks": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "noUnusedLocals": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "ts-node": {
+    // ts-node used for linting and needs extra options
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
