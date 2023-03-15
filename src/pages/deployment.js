@@ -8,7 +8,7 @@ import ProjectBreadcrumb from "components/Breadcrumbs/Project";
 import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
 import DeploymentBreadcrumb from "components/Breadcrumbs/Deployment";
 import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavtabsSkeleton";
+import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
 import Deployment from "components/Deployment";
 import DeploymentSkeleton from "components/Deployment/DeploymentSkeleton";
 import { DeploymentWrapper } from "../styles/pageStyles";

@@ -9,7 +9,7 @@ import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
 import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
 import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavtabsSkeleton";
+import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
 import DeployLatest from "components/DeployLatest";
 import ResultsLimited from "components/ResultsLimited";
 import { DeploymentsWrapper } from "../styles/pageStyles";
