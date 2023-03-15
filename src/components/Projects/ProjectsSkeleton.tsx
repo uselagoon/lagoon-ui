@@ -40,7 +40,7 @@ const ProjectsSkeleton = () => {
           placeholder="Type to search"
         />
       </ProjectsHeader>
-      <>{[...Array(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
+      <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
     </ProjectsPage>
   );
 };

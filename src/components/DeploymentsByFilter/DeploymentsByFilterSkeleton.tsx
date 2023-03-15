@@ -73,7 +73,7 @@ const DeploymentsByFilterSkeleton = () => {
         <label></label>
       </DeploymentsHeader>
       <DeploymentsDataTable>
-        {[...Array(numberOfItems)].map(() => SkeletonRow)}
+        {[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}
       </DeploymentsDataTable>
     </Deployments>
   );
