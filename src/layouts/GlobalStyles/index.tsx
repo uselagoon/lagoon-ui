@@ -33,6 +33,12 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+.lagoon-wrapper{
+  background: rgb(250,250,252);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 a {
   color: ${color.black};

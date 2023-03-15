@@ -91,6 +91,12 @@ export const FieldWrapper = styled.div`
       text-overflow: ellipsis;
     }
 
+    &.skeleton .field{
+      padding: 0;
+      margin:0;
+      background-color: transparent;
+      border: none;
+    }
     .copy {
       background: url("/static/images/copy.svg") center center no-repeat
         ${color.white};
