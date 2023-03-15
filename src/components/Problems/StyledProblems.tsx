@@ -30,6 +30,7 @@ export const StyledProblems = styled.div`
     }
   }
 
+
   .filters-wrapper {
     .select-filters {
       display: flex;

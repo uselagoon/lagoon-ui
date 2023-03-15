@@ -8,17 +8,26 @@ import { CommonWrapper } from "../styles/commonPageStyles";
 import { TourContext } from "../tours/TourContext";
 import ProjectTour from "../tours/ProjectTour";
 import { useQuery } from "@apollo/react-hooks";
+import QueryError from "../components/errors/QueryError";
 
 /**
  * Displays the projects page.
  */
 const ProjectsPage = () => {
-  const { data, loading } = useQuery(AllProjectsQuery, {
-    displayName: "AllProjectsQuery",
-  });
 
   const { running, stepIndex, setTourState } = useContext(TourContext);
   console.warn(running, stepIndex, setTourState);
+  
+  const { data, loading, error } = useQuery(AllProjectsQuery, {
+    displayName: "AllProjectsQuery",
+  });
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+
+
   return (
     <>
       <Head>

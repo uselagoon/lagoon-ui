@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import { ESLint } from "eslint";
 import { red, yellow, blue, green } from "colors";
+import path from "path"
 
 const tsPromise = new Promise((resolve) => {
   try {
@@ -18,9 +19,9 @@ const lintPromise = new Promise(async (resolve) => {
   const eslint = new ESLint();
 
   const results = await eslint.lintFiles([
-    "src/components/**/*.{ts,tsx}",
-    "src/layouts/**/*.{ts,tsx}",
-    // "src/pages/**/*.{ts,tsx}",
+    "src/components/**/*.{ts,tsx,js}",
+    // "src/layouts/**/*.{ts,tsx}",
+    "src/pages/**/*.{ts,tsx,js}",
   ]);
 
   const errors = results.filter(({ errorCount }) => !!errorCount);
