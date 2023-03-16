@@ -7,6 +7,8 @@ export default gql`
       name
       description
       quotaProject
+      quotaGroup
+      quotaNotification
       deployTargets{
         id
         name
@@ -16,6 +18,7 @@ export default gql`
       }
       owners {
         email
+        owner
       }
       projects {
         id

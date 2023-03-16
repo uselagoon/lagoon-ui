@@ -18,13 +18,21 @@ const Organization = ({ organization }) => {
           <label>Project Quota</label>
           <div className="field">{organization.quotaProject}</div>
         </div>
+        <div>
+          <label>Group Quota</label>
+          <div className="field">{organization.quotaGroup}</div>
+        </div>
+        <div>
+          <label>Notification Quota</label>
+          <div className="field">{organization.quotaNotification}</div>
+        </div>
       </div>
       <div className="field-wrapper owners">
         <div>
-          <label>Owners</label>
+          <label>Users</label>
           <div className="field">
             {organization.owners.map(owner => (
-              <li key={owner.email}>{owner.email}</li>
+              <li key={owner.email}>{owner.email}{owner.owner ? ( <label className="owner-label">OWNER</label>) : ( <label className="viewer-label">VIEWER</label>)}</li>
             ))}
           </div>
         </div>
@@ -57,6 +65,22 @@ const Organization = ({ organization }) => {
           }
           @media ${bp.extraWideUp} {
             padding-left: calc(((100vw / 16) * 1) + 28px);
+          }
+          .owner-label {
+            color: ${color.white};
+            background-color: ${color.blue};
+            margin-left: 10px;
+            padding: 0px 5px 0px 5px;
+            border-radius: 4px;
+            box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+          }
+          .viewer-label {
+            color: ${color.black};
+            background-color: ${color.lightestBlue};
+            margin-left: 10px;
+            padding: 0px 5px 0px 5px;
+            border-radius: 4px;
+            box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
           }
           .field-wrapper {
             &::before {
