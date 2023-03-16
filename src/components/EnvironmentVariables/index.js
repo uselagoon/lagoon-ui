@@ -2,6 +2,8 @@ import React, { Fragment, useState } from "react";
 import { Mutation } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByName";
+import EnvironmentByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue";
+import { useLazyQuery } from "@apollo/react-hooks";
 import DeleteConfirm from "components/DeleteConfirm";
 import AddEnvironmentVariable from "../AddEnvironmentVariable";
 import ViewVariableValue from "../ViewVariableValue";
@@ -18,11 +20,41 @@ const EnvironmentVariables = ({ environment }) => {
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
 
+  let displayVars = environment.envVariables;
+  let displayProjectVars = environment.project.envVariables;
+
+  const [
+    getEnvVarValues,
+    { error, data: envValues },
+  ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
+    variables: { openshiftProjectName: environment.openshiftProjectName },
+  });
+  if (envValues) {
+    displayVars = envValues.environmentVars.envVariables;
+    displayProjectVars = envValues.environmentVars.project.envVariables;
+  }
+  if (error) console.log(error);
+
+  const showVarValue = (env) => {
+    try {
+      getEnvVarValues();
+      if (env == "EnvVars") {
+        setOpenEnvVars(!openEnvVars);
+      }
+      if (env == "PrjVars") {
+        setOpenPrjVars(!openPrjVars);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="details">
       <AddEnvironmentVariable
         varProject={environment.project.name}
         varEnvironment={environment.name}
+        varValues={displayVars}
       />
       <div className="field-wrapper env-vars">
         {environment.envVariables.length == 0 ? (
@@ -37,7 +69,7 @@ const EnvironmentVariables = ({ environment }) => {
             <div className="header">
               <label>Environment Variables</label>
               <Button
-                onClick={() => setOpenEnvVars(!openEnvVars)}
+                onClick={() => showVarValue("EnvVars")}
                 aria-controls="example-collapse-text"
                 aria-expanded={openEnvVars}
               >
@@ -55,26 +87,35 @@ const EnvironmentVariables = ({ environment }) => {
                 </tr>
               </thead>
               <tbody>
-                {environment.envVariables.map((envVar, index) => {
+                {displayVars.map((envVar, index) => {
                   return (
                     <Fragment key={index}>
                       <tr>
                         <td className="varName">{envVar.name}</td>
-                        <Collapse in={openEnvVars}>
-                          <td className="varValue" id={index}>
-                            {envVar.value.length <= 100
-                              ? envVar.value
-                              : `${envVar.value.substring(0, 50)}...`}
-                            {envVar.value.length > 100 ? (
-                              <ViewVariableValue
-                                variableName={envVar.name}
-                                variableValue={envVar.value}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </td>
-                        </Collapse>
+                        {envVar.value ? (
+                          <Collapse in={openEnvVars}>
+                            <td className="varValue" id={index}>
+                              {envVar.value.length <= 100
+                                ? envVar.value
+                                : `${envVar.value.substring(0, 50)}...`}
+                              {envVar.value.length > 100 ? (
+                                <ViewVariableValue
+                                  variableName={envVar.name}
+                                  variableValue={envVar.value}
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </td>
+                          </Collapse>
+                        ) : (
+                          <Collapse in={openEnvVars}>
+                            <td className="varValue" id={index}>
+                              Unauthorized: You don't have permission to view
+                              this variable.
+                            </td>
+                          </Collapse>
+                        )}
                         <td className="varDelete">
                           <Mutation mutation={DeleteEnvVariableMutation}>
                             {(
@@ -102,7 +143,7 @@ const EnvironmentVariables = ({ environment }) => {
                                 setTimeout(() => {
                                   location.reload();
                                 }, "2000");
-                              }
+                              };
 
                               return (
                                 <DeleteConfirm
@@ -125,7 +166,7 @@ const EnvironmentVariables = ({ environment }) => {
           </>
         )}
       </div>
-      {environment.project.envVariables.length == 0 ? (
+      {displayProjectVars.length == 0 ? (
         <>
           <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>No Project variable set</div>
@@ -136,7 +177,7 @@ const EnvironmentVariables = ({ environment }) => {
           <div className="header">
             <label>Project Variables</label>
             <Button
-              onClick={() => setOpenPrjVars(!openPrjVars)}
+              onClick={() => showVarValue("PrjVars")}
               aria-controls="example-collapse-text"
               aria-expanded={openPrjVars}
             >
@@ -155,26 +196,35 @@ const EnvironmentVariables = ({ environment }) => {
                 </tr>
               </thead>
               <tbody>
-                {environment.project.envVariables.map((projEnvVar, index) => {
+                {displayProjectVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
                       <tr>
                         <td className="varName">{projEnvVar.name}</td>
-                        <Collapse in={openPrjVars}>
-                          <td className="varValue">
-                            {projEnvVar.value.length <= 100
-                              ? projEnvVar.value
-                              : `${projEnvVar.value.substring(0, 50)}...`}
-                            {projEnvVar.value.length > 100 ? (
-                              <ViewVariableValue
-                                variableName={projEnvVar.name}
-                                variableValue={projEnvVar.value}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </td>
-                        </Collapse>
+                        {projEnvVar.value ? (
+                          <Collapse in={openPrjVars}>
+                            <td className="varValue" id={index}>
+                              {projEnvVar.value.length <= 100
+                                ? projEnvVar.value
+                                : `${projEnvVar.value.substring(0, 50)}...`}
+                              {projEnvVar.value.length > 100 ? (
+                                <ViewVariableValue
+                                  variableName={projEnvVar.name}
+                                  variableValue={projEnvVar.value}
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </td>
+                          </Collapse>
+                        ) : (
+                          <Collapse in={openPrjVars}>
+                            <td className="varValue" id={index}>
+                              Unauthorized: You don't have permission to view
+                              this variable.
+                            </td>
+                          </Collapse>
+                        )}
                         <td className="varDelete">
                           <Mutation mutation={DeleteEnvVariableMutation}>
                             {(
@@ -201,7 +251,7 @@ const EnvironmentVariables = ({ environment }) => {
                                 setTimeout(() => {
                                   location.reload();
                                 }, "2000");
-                              }
+                              };
 
                               return (
                                 <DeleteConfirm

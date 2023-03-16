@@ -13,6 +13,11 @@ export default gql`
       environmentType
       routes
       openshiftProjectName
+      envVariables {
+        id
+        name
+        scope
+      }
       project {
         name
         gitUrl
@@ -22,6 +27,11 @@ export default gql`
         standbyProductionEnvironment
         problemsUi
         factsUi
+        envVariables {
+          id
+          name
+          scope
+        }
       }
     }
   }

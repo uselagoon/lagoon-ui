@@ -8,13 +8,10 @@ import withLogic from "components/AddEnvironmentVariable/logic";
 import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
 
 /**
- * Adds a Project/Environment Variable.
+ * Adds a Environment Variable.
  */
 
-const targetOptions = [
-  { value: "Project", label: "Project" },
-  { value: "Environment", label: "Environment" },
-];
+const targetOptions = [{ value: "Environment", label: "Environment" }];
 
 const scopeOptions = [
   { value: "BUILD", label: "BUILD" },
@@ -28,7 +25,7 @@ const scopeOptions = [
 ];
 
 const customStyles = {
-  menu: (provided, state) => ({
+  menu: (provided) => ({
     ...provided,
     width: 400,
   }),
@@ -41,6 +38,7 @@ const customStyles = {
 export const AddEnvironmentVariable = ({
   varProject,
   varEnvironment,
+  varValues,
   inputName,
   setInputName,
   inputValue,
@@ -55,7 +53,7 @@ export const AddEnvironmentVariable = ({
 }) => {
   return (
     <React.Fragment>
-      <Button action={openModal}>Add</Button>
+      <Button action={openModal}>Add/Update</Button>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`}>
         <React.Fragment>
           <div className="var-modal">
@@ -63,10 +61,10 @@ export const AddEnvironmentVariable = ({
             {
               <ReactSelect
                 aria-label="VariableTarget"
-                placeholder="Project/Environment variable"
+                placeholder="Environment variable"
                 styles={customStyles}
                 name="targetResults"
-                value={targetOptions.find((o) => o.value === inputTarget)}
+                value={targetOptions[0]}
                 onChange={(selectedOption) =>
                   setInputTarget(selectedOption.value)
                 }
@@ -119,15 +117,20 @@ export const AddEnvironmentVariable = ({
               cancel
             </a>
             <Mutation mutation={addOrUpdateEnvVariableMutation}>
-              {(
-                addOrUpdateEnvVariableByName,
-                { loading, called, error, data }
-              ) => {
+              {(addOrUpdateEnvVariableByName, { called, error }) => {
+                let updateVar = varValues.map((varName) => {
+                  return varName.name;
+                });
+
+                updateVar = updateVar.includes(inputName);
+
                 if (error) {
                   return <div>{error.message}</div>;
                 }
 
-                if (called) {
+                if (updateVar && called) {
+                  return <div>Updating variable</div>;
+                } else if (called) {
                   return <div>Adding variable</div>;
                 }
 
@@ -148,47 +151,17 @@ export const AddEnvironmentVariable = ({
                   }, "2000");
                 };
 
-                const addOrUpdatePrjVariableHandler = () => {
-                  addOrUpdateEnvVariableByName({
-                    variables: {
-                      input: {
-                        name: inputName,
-                        value: inputValue,
-                        scope: inputScope,
-                        project: varProject,
-                      },
-                    },
-                  });
-                  setTimeout(() => {
-                    location.reload();
-                  }, "2000");
-                };
-
-                return inputTarget == "Environment" ? (
+                return (
                   <Button
                     disabled={
-                      inputName == "" ||
-                      inputValue == "" ||
-                      inputScope == "" ||
-                      inputTarget == ""
+                      inputName == "" || inputValue == "" || inputScope == ""
                     }
                     action={addOrUpdateEnvVariableHandler}
                     onClick={closeModal}
                   >
-                    Add environment variable
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={
-                      inputName == "" ||
-                      inputValue == "" ||
-                      inputScope == "" ||
-                      inputTarget == ""
-                    }
-                    action={addOrUpdatePrjVariableHandler}
-                    onClick={closeModal}
-                  >
-                    Add project variable
+                    {updateVar
+                      ? "Update environment variable"
+                      : "Add environment variable"}
                   </Button>
                 );
               }}

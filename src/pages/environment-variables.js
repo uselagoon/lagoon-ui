@@ -4,7 +4,7 @@ import { withRouter } from "next/router";
 import Head from "next/head";
 import { Query } from "react-apollo";
 import MainLayout from "layouts/MainLayout";
-import EnvironmentByOpenshiftProjectNameQuery from "lib/query/EnvironmentByOpenshiftProjectName";
+import EnvironmentByOpenshiftProjectNameWithEnvVarsQuery from "lib/query/EnvironmentByOpenshiftProjectNameWithEnvVars";
 import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
 import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
@@ -24,7 +24,7 @@ export const PageEnvironmentVariables = ({ router }) => (
       <title>{`${router.query.openshiftProjectName} | Environment Variables`}</title>
     </Head>
     <Query
-      query={EnvironmentByOpenshiftProjectNameQuery}
+      query={EnvironmentByOpenshiftProjectNameWithEnvVarsQuery}
       variables={{
         openshiftProjectName: router.query.openshiftProjectName,
       }}
