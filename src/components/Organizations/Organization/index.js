@@ -16,15 +16,15 @@ const Organization = ({ organization }) => {
       <div className="field-wrapper quotaProject">
         <div>
           <label>Project Quota</label>
-          <div className="field">{organization.quotaProject}</div>
+          <div className="field">{organization.projects.length}/{organization.quotaProject}</div>
         </div>
         <div>
           <label>Group Quota</label>
-          <div className="field">{organization.quotaGroup}</div>
+          <div className="field">{organization.groups.length}/{organization.quotaGroup}</div>
         </div>
         <div>
           <label>Notification Quota</label>
-          <div className="field">{organization.quotaNotification}</div>
+          <div className="field">{organization.slacks.length + organization.rocketchats.length + organization.teams.length + organization.emails.length + organization.webhook.length}/{organization.quotaNotification}</div>
         </div>
       </div>
       <div className="field-wrapper owners">
