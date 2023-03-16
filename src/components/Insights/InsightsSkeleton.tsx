@@ -1,6 +1,4 @@
 import React from "react";
-import SelectFilter from "components/Filters";
-import Button from "components/Button";
 
 import { StyledInsights } from "./StyledInsights";
 import Skeleton from "react-loading-skeleton";

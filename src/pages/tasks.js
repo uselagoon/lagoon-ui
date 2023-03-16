@@ -73,19 +73,13 @@ export const PageTasks = ({ router }) => {
           </Breadcrumbs>
           <TasksWrapper>
             <NavTabsSkeleton
-              activeTab="deployments"
+              activeTab="tasks"
               projectName={projectSlug}
               openshiftProjectName={openshiftProjectName}
             />
 
             <div className="content">
               <Skeleton height={"60px"} />
-
-              {/* <Tasks
-                  tasks={environment.tasks}
-                  environmentSlug={environment.openshiftProjectName}
-                  projectSlug={environment.project.name}
-                /> */}
                 <TasksSkeleton/>
 
               <ResultsLimited
