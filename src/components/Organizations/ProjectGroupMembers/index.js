@@ -87,7 +87,8 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
         <div className="customer">
           {(group.type.includes("project-default-group")) && (<label className="default-group-label">{group.type}</label>)}
         </div>
-        {(!group.type.includes("project-default-group")) && (
+        {/* even though we can't prevent users from removing the project default group from the api, we can make it harder to do from the ui */}
+        {(!group.name.includes("project-"+projectName.toLowerCase())) && (
           <div className="remove">
             <Mutation mutation={REMOVE_GROUP_FROM_PROJECT}>
             {(removeGroupFromProject, { loading, called, error, data }) => {

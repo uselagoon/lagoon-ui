@@ -10,6 +10,9 @@ import Box from 'components/Box';
  * Displays the organization information.
  */
 const Organization = ({ organization }) => {
+
+  // this is done on the API side when creating groups against the organization as project-default-groups are not counted towards the quota
+  // using the same count here to show the quota in the ui
   let groupCount = 0
   for (const pGroup in organization.groups) {
     // project-default-groups don't count towards group quotas
