@@ -17,12 +17,12 @@ const AddSshKey = ({me: { id, email }}) => {
     setValues({...values, [name]: value});
   }
 
-  const regex = /\s*(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521)\s(\S+=)/
+  const regex = /\s*(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521)\s(\S+)/
   // First capture group is the type of the ssh key
   // Second capture group is the actual ssh key
   // Whitespace and comments are ignored
 
-  const isFormValid = values.sshKeyName !== '' && values.sshKey.match(regex)
+  const isFormValid = values.sshKeyName !== '' && !values.sshKey.includes('\n') && values.sshKey.match(regex)
 
   return(
     <div className="addSshKey">
@@ -76,7 +76,7 @@ const AddSshKey = ({me: { id, email }}) => {
                   className="addSshKeyInput"
                   type="text"
                   onChange={handleChange}
-                  value={values.sshKey.trim()}
+                  value={values.sshKey}
                   placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"/>
               </div>
               <Button disabled={!isFormValid} action={addSshKeyHandler}>Add</Button>

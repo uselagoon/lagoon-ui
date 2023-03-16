@@ -10,6 +10,8 @@ const Project = ({ project }) => {
   const [copied, setCopied] = useState(false);
   const gitUrlParsed = giturlparse(project.gitUrl);
   const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
+
+
   const environmentCount = R.countBy(R.prop('environmentType'))(
     project.environments
   );

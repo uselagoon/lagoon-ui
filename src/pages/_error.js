@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next-server/head';
+import Head from 'next/head'
 import StatusLayout from 'layouts/StatusLayout';
 
 const statusCodes = {
