@@ -10,6 +10,13 @@ import Box from 'components/Box';
  * Displays the organization information.
  */
 const Organization = ({ organization }) => {
+  let groupCount = 0
+  for (const pGroup in organization.groups) {
+    // project-default-groups don't count towards group quotas
+    if (organization.groups[pGroup].type != "project-default-group") {
+      groupCount++
+    }
+  }
 
   return (
     <div className="details">
@@ -20,7 +27,7 @@ const Organization = ({ organization }) => {
         </div>
         <div>
           <label>Group Quota</label>
-          <div className="field">{organization.groups.length}/{organization.quotaGroup}</div>
+          <div className="field">{groupCount}/{organization.quotaGroup}</div>
         </div>
         <div>
           <label>Notification Quota</label>
