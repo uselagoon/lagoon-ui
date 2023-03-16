@@ -2,12 +2,10 @@ import "isomorphic-unfetch";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Head from "next/head";
-import getConfig from "next/config";
 import Typekit from "react-typekit";
 import Favicon from "components/Favicon";
 import Authenticator from "lib/Authenticator";
 import ApiConnection from "lib/ApiConnection";
-import Script from "next/script";
 import App from "next/app";
 import GlobalStyles from "../layouts/GlobalStyles";
 import { TourContextProvider } from "../tours/TourContext";
@@ -15,8 +13,8 @@ import { m, AnimatePresence, LazyMotion } from "framer-motion";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "../static/normalize.css"
 
-const { publicRuntimeConfig } = getConfig();
 
 // lazy load animation features
 const loadFeatures = () =>
@@ -65,11 +63,6 @@ const LagoonApp = ({ Component, pageProps, err }) => {
 
   return (
     <LazyMotion strict features={loadFeatures}>
-      <Script
-        src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
-        strategy="beforeInteractive"
-      />
-
       <AnimatePresence
         mode="wait"
         onExitComplete={() => {
