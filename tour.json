@@ -1,0 +1,105 @@
+{
+  "mode":"translated",
+  "routes": [
+    {
+      "pathName": "/projects",
+      "steps": [
+        {
+          "target": "h2",
+          "title": "something",
+          "content": "else"
+        },
+        {
+          "target": "h2",
+          "title": "new",
+          "content": "thing"
+        },
+        {
+          "target": "h2",
+          "title": "last",
+          "content": "thing"
+        }
+      ]
+    },
+    {
+      "pathName": "/project",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/environment",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/deployments",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/deployment",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/tasks",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/task",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/alldeployments",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "pathName": "/settings",
+      "steps": [
+        {
+          "target": "",
+          "title": "",
+          "content": ""
+        }
+      ]
+    }
+  ]
+}

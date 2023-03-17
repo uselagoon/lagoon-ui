@@ -1,5 +1,4 @@
-import React, { FC, useState } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import Highlighter from "react-highlight-words";
 import ProjectLink from "components/link/Project";
 import Box from "components/Box";
@@ -11,6 +10,7 @@ import {
   StyledRoute,
   ProjectsPage,
 } from "./StyledProjects";
+// import Tour from "../../tours/Tour"
 
 /**
  * The primary list of projects.
@@ -98,6 +98,7 @@ const Projects = ({ projects = [] }) => {
           </Box>
         </ProjectLink>
       ))}
+      {/* <Tour/> */}
     </ProjectsPage>
   );
 };

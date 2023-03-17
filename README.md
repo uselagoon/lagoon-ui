@@ -65,3 +65,38 @@ In this example, we load two elements, a JS script and a css file into the `head
     ]
 }
 ```
+
+## Tours configuration
+
+The `tour.json` file contains configuration for the tour of the Lagoon app. it has the following structure:
+
+``` 
+{
+    "mode": "translated",
+    "routes": [
+        {
+            "pathName": "/projects",
+            "steps": [
+                {
+                    "target":".someclass",
+                    "title:": "title of the tour step"
+                    "content": "description of the tour step"
+                }
+                ...
+            ]
+        }
+        ...
+    ]
+}
+
+```
+> Note: The sequence of routes defines the tour sequence.
+
+### Tour properties
+
+- `mode` (string) - "translated" or "literal", if the value is "translated", `content` and `title` will be used as keys for lookup in the translation file, otherwise directly used.
+- `routes` (array) - Array of objects, each describing a steps in the tour per route.  
+   - `pathName` (string) - route.
+   - `target` (string) - class selector for the tour step.
+   - `content` (string) - This property is used based on the `mode` property, acts as the tour step body.
+   - `title` (string) - Similar to content, only acts as the header for the tour step.
