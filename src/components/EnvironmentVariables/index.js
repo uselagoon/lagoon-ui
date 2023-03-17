@@ -192,7 +192,6 @@ const EnvironmentVariables = ({ environment }) => {
                   <Collapse in={openPrjVars}>
                     <th>Value</th>
                   </Collapse>
-                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -225,46 +224,6 @@ const EnvironmentVariables = ({ environment }) => {
                             </td>
                           </Collapse>
                         )}
-                        <td className="varDelete">
-                          <Mutation mutation={DeleteEnvVariableMutation}>
-                            {(
-                              deleteEnvVariableByName,
-                              { loading, called, error, data }
-                            ) => {
-                              if (error) {
-                                return <div>{error.message}</div>;
-                              }
-
-                              if (called) {
-                                return <div>Delete queued</div>;
-                              }
-
-                              const deletePrjVariableByNameHandler = () => {
-                                deleteEnvVariableByName({
-                                  variables: {
-                                    input: {
-                                      name: projEnvVar.name,
-                                      project: environment.project.name,
-                                    },
-                                  },
-                                });
-                                setTimeout(() => {
-                                  location.reload();
-                                }, "2000");
-                              };
-
-                              return (
-                                <DeleteConfirm
-                                  deleteType="variable"
-                                  deleteName={projEnvVar.name}
-                                  onDelete={() =>
-                                    deletePrjVariableByNameHandler()
-                                  }
-                                />
-                              );
-                            }}
-                          </Mutation>
-                        </td>
                       </tr>
                     </Fragment>
                   );
@@ -284,6 +243,10 @@ const EnvironmentVariables = ({ environment }) => {
         th {
           text-align: center;
           vertical-align: middle;
+        }
+        tr{
+          height: 57px;
+          max-height: 57px
         }
         .varName {
           max-width: 40%;
