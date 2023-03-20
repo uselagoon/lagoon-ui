@@ -16,36 +16,57 @@ import { bp, color } from "lib/variables";
  * Displays the environment variable information.
  */
 
+const hashValue = (value) => {
+  let hashedVal = "#";
+  for (let l = 0; l < value.length; l++) {
+    hashedVal += "#";
+  }
+  return hashedVal;
+};
+
 const EnvironmentVariables = ({ environment }) => {
+  let displayVars = environment.envVariables;
+  let displayProjectVars = environment.project.envVariables;
+  let initValueState = new Array(displayVars.length).fill(false);
+  let initProjectValueState = new Array(displayProjectVars.length).fill(false);
+
+  const [valueState, setValueState] = useState(initValueState);
+  const [prjValueState, setprjValueState] = useState(initProjectValueState);
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
 
-  let displayVars = environment.envVariables;
-  let displayProjectVars = environment.project.envVariables;
-
-  const [
-    getEnvVarValues,
-    { error, data: envValues },
-  ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
-    variables: { openshiftProjectName: environment.openshiftProjectName },
-  });
+  const [getEnvVarValues, { error, data: envValues }] = useLazyQuery(
+    EnvironmentByProjectNameWithEnvVarsValueQuery,
+    {
+      variables: { openshiftProjectName: environment.openshiftProjectName },
+    }
+  );
   if (envValues) {
     displayVars = envValues.environmentVars.envVariables;
     displayProjectVars = envValues.environmentVars.project.envVariables;
   }
   if (error) console.log(error);
 
+  const valuesShow = (index) => {
+    setValueState((valueState) =>
+      valueState.map((el, i) => (i === index ? true : el))
+    );
+  };
+  const prjValuesShow = (index) => {
+    setprjValueState((prjValueState) =>
+      prjValueState.map((el, i) => (i === index ? true : el))
+    );
+  };
+
   const showVarValue = (env) => {
-    try {
-      getEnvVarValues();
-      if (env == "EnvVars") {
-        setOpenEnvVars(!openEnvVars);
-      }
-      if (env == "PrjVars") {
-        setOpenPrjVars(!openPrjVars);
-      }
-    } catch (error) {
-      console.log(error);
+    getEnvVarValues();
+    if (env == "EnvVars") {
+      setOpenEnvVars(!openEnvVars);
+      setValueState(initValueState);
+    }
+    if (env == "PrjVars") {
+      setOpenPrjVars(!openPrjVars);
+      setprjValueState(initProjectValueState);
     }
   };
 
@@ -80,6 +101,7 @@ const EnvironmentVariables = ({ environment }) => {
               <thead>
                 <tr>
                   <th>Environment Variable Name</th>
+                  <th>Environment Variable Scope</th>
                   <Collapse in={openEnvVars}>
                     <th>Value</th>
                   </Collapse>
@@ -92,12 +114,31 @@ const EnvironmentVariables = ({ environment }) => {
                     <Fragment key={index}>
                       <tr>
                         <td className="varName">{envVar.name}</td>
+                        <td className="varScope">{envVar.scope}</td>
                         {envVar.value ? (
                           <Collapse in={openEnvVars}>
                             <td className="varValue" id={index}>
-                              {envVar.value.length <= 100
-                                ? envVar.value
-                                : `${envVar.value.substring(0, 50)}...`}
+                              {envVar.value.length <= 100 &&
+                              !valueState[index] ? (
+                                <a href="#" onClick={() => valuesShow(index)}>
+                                  {hashValue(envVar.value)}
+                                </a>
+                              ) : envVar.value.length <= 100 &&
+                                valueState[index] ? (
+                                <a>{envVar.value}</a>
+                              ) : envVar.value.length >= 100 &&
+                                !valueState[index] ? (
+                                <a href="#" onClick={() => valuesShow(index)}>
+                                  {hashValue(envVar.value).substring(0, 50)}...
+                                </a>
+                              ) : envVar.value.length >= 100 &&
+                                valueState[index] ? (
+                                <a href="#" onClick={() => valuesShow(index)}>
+                                  {envVar.value.substring(0, 50)}...
+                                </a>
+                              ) : (
+                                `${hashValue(envVar.value).substring(0, 50)}...`
+                              )}
                               {envVar.value.length > 100 ? (
                                 <ViewVariableValue
                                   variableName={envVar.name}
@@ -189,6 +230,7 @@ const EnvironmentVariables = ({ environment }) => {
               <thead>
                 <tr>
                   <th>Project Variable Name</th>
+                  <th>Project Variable Scope</th>
                   <Collapse in={openPrjVars}>
                     <th>Value</th>
                   </Collapse>
@@ -200,12 +242,44 @@ const EnvironmentVariables = ({ environment }) => {
                     <Fragment key={index}>
                       <tr>
                         <td className="varName">{projEnvVar.name}</td>
+                        <td className="varScope">{projEnvVar.scope}</td>
                         {projEnvVar.value ? (
                           <Collapse in={openPrjVars}>
                             <td className="varValue" id={index}>
-                              {projEnvVar.value.length <= 100
-                                ? projEnvVar.value
-                                : `${projEnvVar.value.substring(0, 50)}...`}
+                              {projEnvVar.value.length <= 100 &&
+                              !prjValueState[index] ? (
+                                <a
+                                  href="#"
+                                  onClick={() => prjValuesShow(index)}
+                                >
+                                  {hashValue(projEnvVar.value)}
+                                </a>
+                              ) : projEnvVar.value.length <= 100 &&
+                                prjValueState[index] ? (
+                                <a>{projEnvVar.value}</a>
+                              ) : projEnvVar.value.length >= 100 &&
+                                !prjValueState[index] ? (
+                                <a
+                                  href="#"
+                                  onClick={() => prjValuesShow(index)}
+                                >
+                                  {hashValue(projEnvVar.value).substring(0, 50)}
+                                  ...
+                                </a>
+                              ) : projEnvVar.value.length >= 100 &&
+                                prjValueState[index] ? (
+                                <a
+                                  href="#"
+                                  onClick={() => prjValuesShow(index)}
+                                >
+                                  {projEnvVar.value.substring(0, 50)}...
+                                </a>
+                              ) : (
+                                `${hashValue(projEnvVar.value).substring(
+                                  0,
+                                  50
+                                )}...`
+                              )}
                               {projEnvVar.value.length > 100 ? (
                                 <ViewVariableValue
                                   variableName={projEnvVar.name}
@@ -244,21 +318,22 @@ const EnvironmentVariables = ({ environment }) => {
           text-align: center;
           vertical-align: middle;
         }
-        tr{
+        tr {
           height: 57px;
-          max-height: 57px
+          max-height: 57px;
         }
-        .varName {
-          max-width: 40%;
-          width: 40%;
+        .varName,
+        .varScope {
+          max-width: 20%;
+          width: 20%;
         }
         .varValue {
           max-width: 40%;
           width: 40%;
         }
         .varDelete {
-          max-width: 20%;
-          width: 20%;
+          max-width: 10%;
+          width: 10%;
         }
         .header {
           display: flex;

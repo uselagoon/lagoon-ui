@@ -10,6 +10,8 @@ import InsightsLink from 'components/link/Insights';
 import EnvironmentVariablesLink from 'components/link/EnvironmentVariables';
 import { bp, color } from 'lib/variables';
 import problems from '../../pages/problems';
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
 const { className: aClassName, styles: aStyles } = css.resolve`
   a {
@@ -78,7 +80,7 @@ const NavTabs = ({ activeTab, environment }) => (
         Tasks
       </TasksLink>
     </li>
-    <li
+    {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && <li
       className={`environmentVariables ${activeTab == 'environmentVariables' ? 'active' : ''} ${aClassName}`}
     >
       <EnvironmentVariablesLink
@@ -89,6 +91,7 @@ const NavTabs = ({ activeTab, environment }) => (
         Variables
       </EnvironmentVariablesLink>
     </li>
+    }
     {(environment.project.problemsUi == 1) && <li
       className={`problems ${activeTab == 'problems' ? 'active' : ''} ${aClassName}`}
     >

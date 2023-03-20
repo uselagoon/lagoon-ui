@@ -19,9 +19,9 @@ export const ViewVariableValue = ({
   return (
     <Fragment>
       <div className="margins">
-        <Button variant="small" action={openModal}>
-          View full value
-        </Button>
+        <a className="hover-state" onClick={openModal}>
+          <label>View full value</label>
+        </a>
       </div>
       <Modal
         isOpen={open}
@@ -72,6 +72,9 @@ export const ViewVariableValue = ({
         .form-input {
           display: flex;
           align-items: center;
+        }
+        label {
+          color: ${color.blue};
         }
         .button-sort {
           color: ${color.blue};
