@@ -1,10 +1,12 @@
 # Node builder image
 FROM uselagoon/node-16-builder:latest as builder
 
-COPY . /app/
+WORKDIR /app/
 
+COPY package.json .
+COPY yarn.lock .
+ 
 RUN yarn install
-
 
 # Node service image
 FROM uselagoon/node-16:latest
@@ -16,7 +18,11 @@ ENV LAGOON_VERSION=$LAGOON_VERSION
 COPY --from=builder /app/node_modules /app/node_modules
 
 # Copying files from ui service
-COPY . /app/
+COPY ./src/ ./src
+COPY package.json .
+COPY yarn.lock .
+COPY server.js .
+COPY plugins.json .
 
 # Making sure we run in production
 ENV NODE_ENV=production
