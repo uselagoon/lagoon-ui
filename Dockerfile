@@ -15,17 +15,12 @@ ARG LAGOON_VERSION
 ENV LAGOON_VERSION=$LAGOON_VERSION
 
 # Copy the node_modules from node builder
-COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/ /app/
 
 # Copying files from ui service
-COPY ./src/ ./src
-COPY package.json .
-COPY yarn.lock .
+COPY ./src/ /app/src
 COPY server.js .
 COPY plugins.json .
-
-# Making sure we run in production
-ENV NODE_ENV=production
 
 ARG KEYCLOAK_API
 ENV KEYCLOAK_API=$KEYCLOAK_API
