@@ -84,7 +84,7 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
       </div>}
     </div>
     <div className="button-row">
-      {['new', 'pending', 'running'].includes(deployment.status) && (
+      {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
         <CancelDeployment deployment={deployment} />
       )}
     </div>
