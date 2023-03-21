@@ -7,17 +7,20 @@
         {
           "target": "h2",
           "title": "something",
-          "content": "else"
+          "content": "else",
+          "key":"projects_step1"
         },
         {
           "target": "h2",
           "title": "new",
-          "content": "thing"
+          "content": "thing",
+          "key":"projects_step2"
         },
         {
           "target": "h2",
           "title": "last",
-          "content": "thing"
+          "content": "thing",
+          "key":"projects_step3"
         }
       ]
     },
@@ -87,12 +90,14 @@
         {
           "target": "h2",
           "title": "test",
-          "content": "test"
+          "content": "test",
+          "key":"alldeployments_step1"
         },
         {
           "target": "h2",
           "title": "<a>something</a>",
-          "content": "<h2>something else</h2>"
+          "content": "<h2>something else</h2>",
+          "key":"alldeployments_step2"
         }
       ]
     },

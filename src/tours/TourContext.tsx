@@ -9,8 +9,8 @@ export interface TourContextType {
   skipped: boolean;
   setTourState: React.Dispatch<React.SetStateAction<TourContextType>>;
   skipTour: () => void;
-  routesToured: string[];
-  updateRoutesToured: (newRoute: string) => void;
+  routesToured: { path: string; keys: string[] }[];
+  updateRoutesToured: (newRoute: string, stepKey: string) => void;
   startTour: () => void;
   endTour: () => void;
   continueTour: () => void;
@@ -39,7 +39,7 @@ const defaultTourContextValue = {
   continueTour: () => {},
   pauseTour: () => {},
   manuallyTriggerTour: () => {},
-  allRoutesToured: () => false
+  allRoutesToured: () => false,
 };
 
 export const TourContext = createContext<TourContextType | null>(null);
@@ -53,23 +53,54 @@ export const TourContextProvider = ({
     defaultTourContextValue
   );
 
-  const updateRoutesToured = (newRoute: string) => {
-    const routeIdx = tourState.routesToured.indexOf(newRoute);
+  const updateTourInfo = (
+    updatedTourInfo: {
+      path: string;
+      keys: string[];
+    }[]
+  ) => {
+    localStorage.setItem(
+      "lagoon_tour_routesToured",
+      JSON.stringify(updatedTourInfo)
+    );
+
+    setTourState((prev) => {
+      return {
+        ...prev,
+        routesToured: updatedTourInfo,
+      };
+    });
+  };
+
+  const updateRoutesToured = (newRoute: string, stepKey: string) => {
+    const routeIdx = tourState.routesToured.findIndex(
+      (route: { path: string; keys: string[] }) => {
+        return route.path === newRoute;
+      }
+    );
+
     // update if not already in routesToured
     if (!~routeIdx) {
-      const updatedRoutesToured = [...tourState.routesToured, newRoute];
-      localStorage.setItem(
-        "lagoon_tour_routesToured",
-        JSON.stringify(updatedRoutesToured)
-      );
-      setTourState((prev) => {
-        return {
-          ...prev,
-          routesToured: JSON.parse(
-            localStorage.getItem("lagoon_tour_routesToured") || "[]"
-          ),
-        };
-      });
+      const updatedRouteInfo = {
+        path: newRoute,
+        keys: [stepKey],
+      };
+      const updatedRoutesToured = [
+        ...tourState.routesToured,
+        { ...updatedRouteInfo },
+      ];
+      updateTourInfo(updatedRoutesToured);
+    } else {
+      // or add a step key if not already there
+      const clonedRouteState = [...tourState.routesToured];
+      const foundRouteInfo = { ...tourState.routesToured[routeIdx] };
+
+      if (!foundRouteInfo.keys.includes(stepKey)) {
+        foundRouteInfo.keys = [...foundRouteInfo.keys, stepKey];
+        clonedRouteState[routeIdx] = foundRouteInfo;
+
+        updateTourInfo(clonedRouteState);
+      }
     }
   };
 
@@ -112,8 +143,17 @@ export const TourContextProvider = ({
     });
   };
 
-  const allRoutesToured = () => tourState.tourRoutes.every((tourRoute)=> tourState.routesToured.includes(tourRoute.pathName))
-
+  //check if all the routes with their corresponding steps have been toured
+  const allRoutesToured = () => {
+    const { tourRoutes, routesToured } = tourState;
+    return tourRoutes.every(({ pathName, steps }) => {
+      return routesToured.some(
+        ({ path, keys }) =>
+          path === pathName &&
+          steps.every(({ key }) => keys.includes(key as string))
+      );
+    });
+  };
   return (
     <TourContext.Provider
       value={{
@@ -126,7 +166,7 @@ export const TourContextProvider = ({
         pauseTour,
         continueTour,
         manuallyTriggerTour,
-        allRoutesToured
+        allRoutesToured,
       }}
     >
       {children}

@@ -17,6 +17,7 @@ type Step = {
   title: string;
   content: string;
   disableBeacon?: boolean;
+  key?: string;
 };
 
 const Tour = () => {
@@ -33,7 +34,7 @@ const Tour = () => {
     routesToured,
     updateRoutesToured,
     pauseTour,
-    allRoutesToured
+    allRoutesToured,
   } = useTourContext();
   const [translated, setTranslated] = useState(false);
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
@@ -46,9 +47,16 @@ const Tour = () => {
       const modifiedSteps = routes[currentIndex].steps.map((eachStep) => {
         return { ...eachStep, disableBeacon: true };
       });
+
+      // if a step was already viewed and saved locally, if the user navigates and returns, don't show it again.
+      const filteredSteps = modifiedSteps.filter(
+        ({ key }) =>
+          !routesToured.find(({ keys }) => keys.includes(key as string))
+      );
+
       setCurrentRouteTour({
         pathName: pathname,
-        steps: modifiedSteps,
+        steps: filteredSteps,
       });
     }
   };
@@ -86,44 +94,38 @@ const Tour = () => {
   }, [router.events]);
 
   const handleCallback = (data: CallBackProps) => {
-    const { action, index, lifecycle, type } = data;
-
-    console.log(action, index, lifecycle, type);
+    const { action, index, type } = data;
 
     if (action === "skip") {
       skipTour();
+      return;
     }
 
     if (type === "step:after" && action === "prev") {
-      //   setTourState((prev) => {
-      //     return { ...prev, stepIndex: prev.stepIndex - 1 };
-      //   });
-
-      console.error("PREV");
+      // actions if we need to modify what happens on back button
       return;
     }
 
     if (type === "step:after") {
-      //   setTourState((prev) => {
-      //     return { ...prev, stepIndex: prev.stepIndex + 1 };
-      //   });
-      console.error("step TEST");
+      // update which step of the route tour was shown per step completion
+      const stepKey = currentRouteTour?.steps[index].key;
+      stepKey && updateRoutesToured(pathname, stepKey);
+
       return;
     }
-
-  if (type === "step:after" && index === 1) {
-      if (action === "next") {
-        console.error("step after INDEX 1?");
-      } else {
-      }
-    }
-
     if (type === "tour:end") {
-      console.error("COMPLETE");
       pauseTour();
-      updateRoutesToured(pathname);
     }
   };
+
+  // check if every step key in current route is present in the steps[] array of the currentTour
+  const allCurrentRouteStepsToured = () =>
+    currentRouteTour?.steps.every(({ key }) =>
+      routesToured.find(
+        ({ path, keys }) =>
+          path === currentRouteTour.pathName && keys.includes(key as string)
+      )
+    ) ?? false;
 
   // user opted out of the tour or every route has been toured
   if (skipped || allRoutesToured()) return null;
@@ -131,9 +133,8 @@ const Tour = () => {
   // not present in json
   if (!currentRouteTour) return null;
 
-  // already toured
-  if (currentRouteTour && routesToured.includes(currentRouteTour.pathName))
-    return null;
+  // route already fully toured
+  if (currentRouteTour && allCurrentRouteStepsToured()) return null;
 
   // avoid runtime errors if target isn't provided in the configuration
   if (currentRouteTour.steps.some((step) => step.target === "")) return null;
@@ -151,6 +152,7 @@ const Tour = () => {
         showSkipButton
         locale={{
           skip: "Don't show again",
+          last: "Complete",
         }}
         styles={{
           options: {
