@@ -20,19 +20,18 @@ const AllDeployments = () => {
     displayName: "deploymentsByFilter",
   });
 
-  if (error) {
-    return <QueryError error={error} />;
-  }
-  
-  useEffect(()=>{
+  useEffect(() => {
     // tour only starts running if there's at least one deployment
-    if (!loading && data.deploymentsByFilter.length){
-
+    if (!loading && data.deploymentsByFilter.length) {
       setTourState((prev) => {
         return { ...prev, running: true };
       });
     }
-  },[loading])
+  }, [loading]);
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
 
   return (
     <>
