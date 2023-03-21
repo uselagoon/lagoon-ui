@@ -10,7 +10,6 @@ import {
   StyledRoute,
   ProjectsPage,
 } from "./StyledProjects";
-// import Tour from "../../tours/Tour"
 
 /**
  * The primary list of projects.
@@ -98,7 +97,6 @@ const Projects = ({ projects = [] }) => {
           </Box>
         </ProjectLink>
       ))}
-      {/* <Tour/> */}
     </ProjectsPage>
   );
 };

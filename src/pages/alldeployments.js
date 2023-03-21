@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Head from "next/head";
 import MainLayout from "layouts/MainLayout";
 import deploymentsByFilter from "lib/query/DeploymentsByFilter";
@@ -6,7 +6,6 @@ import { withRouter } from "next/router";
 import DeploymentsByFilter from "../components/DeploymentsByFilter";
 import DeploymentsByFilterSkeleton from "components/DeploymentsByFilter/DeploymentsByFilterSkeleton";
 import { CommonWrapperMargin } from "../styles/commonPageStyles";
-import { TourContext } from "../tours/TourContext";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 
@@ -17,9 +16,6 @@ const AllDeployments = () => {
   const { data, error, loading } = useQuery(deploymentsByFilter, {
     displayName: "deploymentsByFilter",
   });
-
-  const { running, stepIndex, setTourState } = useContext(TourContext);
-  console.warn(running, stepIndex, setTourState);
 
   if (error) {
     return <QueryError error={error} />;

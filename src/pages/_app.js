@@ -13,8 +13,13 @@ import { m, AnimatePresence, LazyMotion } from "framer-motion";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import "../static/normalize.css"
+import "../static/normalize.css";
 
+import Tour from "../tours/Tour";
+
+import getConfig from "next/config";
+
+const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
 
 // lazy load animation features
 const loadFeatures = () =>
@@ -75,24 +80,23 @@ const LagoonApp = ({ Component, pageProps, err }) => {
       >
         <Authenticator>
           <ApiConnection>
-            <m.div
-              className="lagoon-wrapper"
-              key={pathname}
-              initial={{ opacity: 0.65 }}
-              animate={{ opacity: 1, transition: { duration: 0.5 } }}
-              exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
-            >
-              <Head>
-                <Typekit kitId="ggo2pml" />
-              </Head>
-
-              <GlobalStyles />
-              <TourContextProvider>
+            <TourContextProvider>
+              <m.div
+                className="lagoon-wrapper"
+                key={pathname}
+                initial={{ opacity: 0.65 }}
+                animate={{ opacity: 1, transition: { duration: 0.5 } }}
+                exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
+              >
+                <Head>
+                  <Typekit kitId="ggo2pml" />
+                </Head>
+                <GlobalStyles />
                 <Component {...pageProps} url={pathname} />
-              </TourContextProvider>
-
-              <Favicon />
-            </m.div>
+                {LAGOON_UI_TOURS_ENABLED ? <Tour /> : null}
+                <Favicon />
+              </m.div>
+            </TourContextProvider>
           </ApiConnection>
         </Authenticator>
       </AnimatePresence>

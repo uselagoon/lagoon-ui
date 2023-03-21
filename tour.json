@@ -85,9 +85,9 @@
       "pathName": "/alldeployments",
       "steps": [
         {
-          "target": "",
-          "title": "",
-          "content": ""
+          "target": "h2",
+          "title": "test",
+          "content": "test"
         }
       ]
     },
