@@ -24,6 +24,7 @@ const Tour = () => {
   const { pathname } = router;
 
   const {
+    tourStarted,
     running,
     tourRoutes,
     setTourState,
@@ -31,6 +32,8 @@ const Tour = () => {
     skipTour,
     routesToured,
     updateRoutesToured,
+    pauseTour,
+    allRoutesToured
   } = useTourContext();
   const [translated, setTranslated] = useState(false);
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
@@ -74,9 +77,6 @@ const Tour = () => {
   useEffect(() => {
     const handleStepsOnRouteChange = () => {
       getCurrentRouteSteps(tourRoutes);
-      //   setTourState((prev) => {
-      //     return { ...prev, running: true };
-      //   });
     };
 
     router.events.on("routeChangeComplete", handleStepsOnRouteChange);
@@ -111,11 +111,7 @@ const Tour = () => {
       return;
     }
 
-    if (type === "tour:end") {
-      // if it is a sub-path and has a dynamic route slug to go to, do so, or skip the step entirely.
-      // if it does not have a single project, skip to /alldeployments -> /settings
-      // checks needed if there actualaly are more next route steps
-    } else if (type === "step:after" && index === 1) {
+  if (type === "step:after" && index === 1) {
       if (action === "next") {
         console.error("step after INDEX 1?");
       } else {
@@ -124,19 +120,13 @@ const Tour = () => {
 
     if (type === "tour:end") {
       console.error("COMPLETE");
-      setTourState((prev) => {
-        return { ...prev, running: false };
-      });
+      pauseTour();
       updateRoutesToured(pathname);
     }
   };
 
-  const allRoutesToured = tourRoutes.every((tourRoute) =>
-    routesToured.includes(tourRoute.pathName)
-  );
-
   // user opted out of the tour or every route has been toured
-  if (skipped || allRoutesToured) return null;
+  if (skipped || allRoutesToured()) return null;
 
   // not present in json
   if (!currentRouteTour) return null;
@@ -146,13 +136,13 @@ const Tour = () => {
     return null;
 
   // avoid runtime errors if target isn't provided in the configuration
-  if (currentRouteTour?.steps.some((step) => step.target === "")) return null;
+  if (currentRouteTour.steps.some((step) => step.target === "")) return null;
 
   return (
     running && (
       <Joyride
         callback={handleCallback}
-        run={running}
+        run={tourStarted && running}
         steps={currentRouteTour.steps}
         continuous
         disableCloseOnEsc

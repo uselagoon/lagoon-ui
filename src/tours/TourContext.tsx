@@ -3,6 +3,7 @@ import { ReactElement } from "react";
 import { Route } from "./Tour";
 
 export interface TourContextType {
+  tourStarted: boolean;
   running: boolean;
   tourRoutes: Route[];
   skipped: boolean;
@@ -10,9 +11,16 @@ export interface TourContextType {
   skipTour: () => void;
   routesToured: string[];
   updateRoutesToured: (newRoute: string) => void;
+  startTour: () => void;
+  endTour: () => void;
+  continueTour: () => void;
+  pauseTour: () => void;
+  manuallyTriggerTour: () => void;
+  allRoutesToured: () => boolean;
 }
 
 const defaultTourContextValue = {
+  tourStarted: false,
   running: false,
   tourRoutes: [],
   skipped:
@@ -26,6 +34,12 @@ const defaultTourContextValue = {
     typeof window !== "undefined" &&
     JSON.parse(localStorage.getItem("lagoon_tour_routesToured") || "[]"),
   updateRoutesToured: () => {},
+  startTour: () => {},
+  endTour: () => {},
+  continueTour: () => {},
+  pauseTour: () => {},
+  manuallyTriggerTour: () => {},
+  allRoutesToured: () => false
 };
 
 export const TourContext = createContext<TourContextType | null>(null);
@@ -38,15 +52,6 @@ export const TourContextProvider = ({
   const [tourState, setTourState] = useState<TourContextType>(
     defaultTourContextValue
   );
-
-  const skipTour = () => {
-    localStorage.setItem("lagoon_tour_skipped", "true");
-    setTourState((prev) => {
-      return { ...prev, skipped: true };
-    });
-
-    return;
-  };
 
   const updateRoutesToured = (newRoute: string) => {
     const routeIdx = tourState.routesToured.indexOf(newRoute);
@@ -68,9 +73,61 @@ export const TourContextProvider = ({
     }
   };
 
+  const skipTour = () => {
+    localStorage.setItem("lagoon_tour_skipped", "true");
+    setTourState((prev) => {
+      return { ...prev, skipped: true };
+    });
+  };
+
+  const startTour = () => {
+    setTourState((prev) => {
+      return { ...prev, tourStarted: true, running: true };
+    });
+  };
+
+  const endTour = () => {
+    setTourState((prev) => {
+      return { ...prev, tourStarted: false, running: false };
+    });
+  };
+  const pauseTour = () => {
+    setTourState((prev) => {
+      return { ...prev, running: false };
+    });
+  };
+  const continueTour = () => {
+    setTourState((prev) => {
+      return { ...prev, running: true };
+    });
+  };
+
+  // if tour was skipped or finished, still make it accessible
+  const manuallyTriggerTour = () => {
+    // reset "skipped" and "routesToured"
+    localStorage.setItem("lagoon_tour_routesToured", JSON.stringify([]));
+    localStorage.setItem("lagoon_tour_skipped", "false");
+    setTourState((prev) => {
+      return { ...prev, skipped: false, routesToured: [] };
+    });
+  };
+
+  const allRoutesToured = () => tourState.tourRoutes.every((tourRoute)=> tourState.routesToured.includes(tourRoute.pathName))
+
   return (
     <TourContext.Provider
-      value={{ ...tourState, setTourState, skipTour, updateRoutesToured }}
+      value={{
+        ...tourState,
+        setTourState,
+        skipTour,
+        updateRoutesToured,
+        startTour,
+        endTour,
+        pauseTour,
+        continueTour,
+        manuallyTriggerTour,
+        allRoutesToured
+      }}
     >
       {children}
     </TourContext.Provider>

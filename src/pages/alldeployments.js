@@ -14,18 +14,16 @@ import { useTourContext } from "../tours/TourContext";
  * Displays the projects page.
  */
 const AllDeployments = () => {
-  const { setTourState } = useTourContext();
+  const { continueTour } = useTourContext();
 
   const { data, error, loading } = useQuery(deploymentsByFilter, {
     displayName: "deploymentsByFilter",
   });
 
   useEffect(() => {
-    // tour only starts running if there's at least one deployment
+    // tour only continues on this page if there's at least one deployment
     if (!loading && data.deploymentsByFilter.length) {
-      setTourState((prev) => {
-        return { ...prev, running: true };
-      });
+      continueTour();
     }
   }, [loading]);
 

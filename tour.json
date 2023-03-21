@@ -46,7 +46,7 @@
       "steps": [
         {
           "target": "",
-          "title": "",
+          "title": "<a>something</a>",
           "content": ""
         }
       ]
@@ -88,6 +88,11 @@
           "target": "h2",
           "title": "test",
           "content": "test"
+        },
+        {
+          "target": "h2",
+          "title": "<a>something</a>",
+          "content": "<h2>something else</h2>"
         }
       ]
     },

@@ -8,27 +8,24 @@ import { CommonWrapper } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
+import RestartTourButton from "../tours/RestartTourButton";
 
 /**
  * Displays the projects page.
  */
 const ProjectsPage = () => {
+  const { startTour } = useTourContext();
 
-  const { setTourState } = useTourContext();
-  
   const { data, loading, error } = useQuery(AllProjectsQuery, {
     displayName: "AllProjectsQuery",
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     // tour only starts running if there's at least one project the user can view
-    if (!loading && data.allProjects.length){
-
-      setTourState((prev) => {
-        return { ...prev, running: true };
-      });
+    if (!loading && data.allProjects.length) {
+      startTour();
     }
-  },[loading])
+  }, [loading]);
 
   if (error) {
     return <QueryError error={error} />;
@@ -41,7 +38,9 @@ const ProjectsPage = () => {
       </Head>
       <MainLayout>
         <CommonWrapper>
-          <h2>Projects</h2>
+          <h2>
+            Projects <RestartTourButton />
+          </h2>
           <div className="content">
             {loading ? (
               <ProjectsSkeleton />
