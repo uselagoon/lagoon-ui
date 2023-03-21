@@ -74,9 +74,9 @@ const Tour = () => {
   useEffect(() => {
     const handleStepsOnRouteChange = () => {
       getCurrentRouteSteps(tourRoutes);
-    //   setTourState((prev) => {
-    //     return { ...prev, running: true };
-    //   });
+      //   setTourState((prev) => {
+      //     return { ...prev, running: true };
+      //   });
     };
 
     router.events.on("routeChangeComplete", handleStepsOnRouteChange);
@@ -84,7 +84,6 @@ const Tour = () => {
       router.events.off("routeChangeComplete", handleStepsOnRouteChange);
     };
   }, [router.events]);
-
 
   const handleCallback = (data: CallBackProps) => {
     const { action, index, lifecycle, type } = data;
@@ -135,6 +134,7 @@ const Tour = () => {
   const allRoutesToured = tourRoutes.every((tourRoute) =>
     routesToured.includes(tourRoute.pathName)
   );
+
   // user opted out of the tour or every route has been toured
   if (skipped || allRoutesToured) return null;
 
@@ -144,6 +144,9 @@ const Tour = () => {
   // already toured
   if (currentRouteTour && routesToured.includes(currentRouteTour.pathName))
     return null;
+
+  // avoid runtime errors if target isn't provided in the configuration
+  if (currentRouteTour?.steps.some((step) => step.target === "")) return null;
 
   return (
     running && (
