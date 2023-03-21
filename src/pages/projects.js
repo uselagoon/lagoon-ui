@@ -20,10 +20,6 @@ const ProjectsPage = () => {
     displayName: "AllProjectsQuery",
   });
 
-  if (error) {
-    return <QueryError error={error} />;
-  }
-
   useEffect(()=>{
     // tour only starts running if there's at least one project the user can view
     if (!loading && data.allProjects.length){
@@ -34,7 +30,9 @@ const ProjectsPage = () => {
     }
   },[loading])
 
-
+  if (error) {
+    return <QueryError error={error} />;
+  }
 
   return (
     <>

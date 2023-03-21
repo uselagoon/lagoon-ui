@@ -9,18 +9,23 @@ export interface TourContextType {
   setTourState: React.Dispatch<React.SetStateAction<TourContextType>>;
   skipTour: () => void;
   routesToured: string[];
-  updateRoutesToured: (newRoute: string)=>void;
+  updateRoutesToured: (newRoute: string) => void;
 }
 
 const defaultTourContextValue = {
   running: false,
   tourRoutes: [],
   skipped:
-   typeof window !=="undefined" && localStorage.getItem("lagoon_tour_skipped") === "true" ? true : false,
+    typeof window !== "undefined" &&
+    localStorage.getItem("lagoon_tour_skipped") === "true"
+      ? true
+      : false,
   setTourState: () => {},
   skipTour: () => {},
-  routesToured: typeof window !=="undefined" && JSON.parse(localStorage.getItem("lagoon_tour_routesToured") || "[]"),
-  updateRoutesToured: () =>{},
+  routesToured:
+    typeof window !== "undefined" &&
+    JSON.parse(localStorage.getItem("lagoon_tour_routesToured") || "[]"),
+  updateRoutesToured: () => {},
 };
 
 export const TourContext = createContext<TourContextType | null>(null);
@@ -43,17 +48,30 @@ export const TourContextProvider = ({
     return;
   };
 
-  const updateRoutesToured = (newRoute: string) =>{
+  const updateRoutesToured = (newRoute: string) => {
     const routeIdx = tourState.routesToured.indexOf(newRoute);
     // update if not already in routesToured
-    if(!~routeIdx) {
-      const updatedRoutesToured = [...tourState.routesToured,newRoute];
-      localStorage.setItem("lagoon_tour_routesToured", JSON.stringify(updatedRoutesToured));
+    if (!~routeIdx) {
+      const updatedRoutesToured = [...tourState.routesToured, newRoute];
+      localStorage.setItem(
+        "lagoon_tour_routesToured",
+        JSON.stringify(updatedRoutesToured)
+      );
+      setTourState((prev) => {
+        return {
+          ...prev,
+          routesToured: JSON.parse(
+            localStorage.getItem("lagoon_tour_routesToured") || "[]"
+          ),
+        };
+      });
     }
-  }
+  };
 
   return (
-    <TourContext.Provider value={{ ...tourState, setTourState, skipTour, updateRoutesToured }}>
+    <TourContext.Provider
+      value={{ ...tourState, setTourState, skipTour, updateRoutesToured }}
+    >
       {children}
     </TourContext.Provider>
   );

@@ -74,9 +74,9 @@ const Tour = () => {
   useEffect(() => {
     const handleStepsOnRouteChange = () => {
       getCurrentRouteSteps(tourRoutes);
-      setTourState((prev) => {
-        return { ...prev, running: true };
-      });
+    //   setTourState((prev) => {
+    //     return { ...prev, running: true };
+    //   });
     };
 
     router.events.on("routeChangeComplete", handleStepsOnRouteChange);
@@ -84,16 +84,6 @@ const Tour = () => {
       router.events.off("routeChangeComplete", handleStepsOnRouteChange);
     };
   }, [router.events]);
-
-
-  // don't run the steps if apollo is loading a query, only then set tour's running state to true
-
-  useEffect(()=>{
-
-  },[])
-   
-
-
 
 
   const handleCallback = (data: CallBackProps) => {
