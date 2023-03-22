@@ -59,7 +59,6 @@ const EnvironmentVariables = ({ environment }) => {
   };
 
   const showVarValue = (env) => {
-    if (loading) return <p>Loading ...</p>;
     getEnvVarValues();
     if (env == "EnvVars") {
       setOpenEnvVars(!openEnvVars);
@@ -116,7 +115,13 @@ const EnvironmentVariables = ({ environment }) => {
                       <tr>
                         <td className="varName">{envVar.name}</td>
                         <td className="varScope">{envVar.scope}</td>
-                        {envVar.value ? (
+                        {loading ? (
+                          <Collapse in={openEnvVars}>
+                            <td className="varValue" id={index}>
+                              <div className="loader"></div>
+                            </td>
+                          </Collapse>
+                        ) : envVar.value ? (
                           <Collapse in={openEnvVars}>
                             <td className="varValue" id={index}>
                               {envVar.value.length <= 100 &&
@@ -244,7 +249,13 @@ const EnvironmentVariables = ({ environment }) => {
                       <tr>
                         <td className="varName">{projEnvVar.name}</td>
                         <td className="varScope">{projEnvVar.scope}</td>
-                        {projEnvVar.value ? (
+                        {loading ? (
+                          <Collapse in={openPrjVars}>
+                            <td className="varValue" id={index}>
+                              <div className="loader"></div>
+                            </td>
+                          </Collapse>
+                        ) : projEnvVar.value ? (
                           <Collapse in={openPrjVars}>
                             <td className="varValue" id={index}>
                               {projEnvVar.value.length <= 100 &&
@@ -340,6 +351,30 @@ const EnvironmentVariables = ({ environment }) => {
           display: flex;
           justify-content: space-between;
           margin: 16px 0;
+        }
+        .loader {
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+        }
+        .loader:after {
+          content: " ";
+          display: block;
+          width: 24px;
+          height: 24px;
+          margin: 8px;
+          border-radius: 50%;
+          border: 2px solid ${color.blue};
+          border-color: ${color.blue} transparent ${color.blue} transparent;
+          animation: loader 1.2s linear infinite;
+        }
+        @keyframes loader {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
         .details {
           padding: 32px calc((100vw / 16) * 1);
