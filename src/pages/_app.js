@@ -44,7 +44,6 @@ const LagoonApp = ({ Component, pageProps, err }) => {
       </Head>
       <Authenticator>
         <ApiConnection>
-          <GlobalStyles />
           <Component {...pageProps} url={pathname} />
         </ApiConnection>
       </Authenticator>
