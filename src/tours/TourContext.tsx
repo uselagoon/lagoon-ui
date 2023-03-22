@@ -17,6 +17,7 @@ export interface TourContextType {
   pauseTour: () => void;
   manuallyTriggerTour: () => void;
   allRoutesToured: () => boolean;
+  shouldRevalidate: boolean;
 }
 
 const defaultTourContextValue = {
@@ -40,6 +41,7 @@ const defaultTourContextValue = {
   pauseTour: () => {},
   manuallyTriggerTour: () => {},
   allRoutesToured: () => false,
+  shouldRevalidate: false,
 };
 
 export const TourContext = createContext<TourContextType | null>(null);
@@ -139,8 +141,16 @@ export const TourContextProvider = ({
     localStorage.setItem("lagoon_tour_routesToured", JSON.stringify([]));
     localStorage.setItem("lagoon_tour_skipped", "false");
     setTourState((prev) => {
-      return { ...prev, skipped: false, routesToured: [] };
+      return { ...prev, skipped: false, routesToured: [], shouldRevalidate: true };
     });
+
+    // at the next async opportunity, flip the revalidate flag to false.
+    // tour's effect hook will have already reset the steps.
+   setTimeout(() => {
+     setTourState((prev) => {
+       return { ...prev, shouldRevalidate: false };
+     });
+   });
   };
 
   //check if all the routes with their corresponding steps have been toured

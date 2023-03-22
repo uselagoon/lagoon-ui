@@ -35,6 +35,7 @@ const Tour = () => {
     updateRoutesToured,
     pauseTour,
     allRoutesToured,
+    shouldRevalidate,
   } = useTourContext();
   const [translated, setTranslated] = useState(false);
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
@@ -93,6 +94,14 @@ const Tour = () => {
     };
   }, [router.events]);
 
+
+useEffect(() => {
+  // when manually retriggering the tour
+  if (shouldRevalidate) {
+    getCurrentRouteSteps(tourRoutes);
+  }
+}, [shouldRevalidate]);
+
   const handleCallback = (data: CallBackProps) => {
     const { action, index, type } = data;
 
@@ -132,7 +141,6 @@ const Tour = () => {
 
   // not present in json
   if (!currentRouteTour) return null;
-
   // route already fully toured
   if (currentRouteTour && allCurrentRouteStepsToured()) return null;
 
