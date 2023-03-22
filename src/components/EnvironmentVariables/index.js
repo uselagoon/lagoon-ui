@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Mutation } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByName";
+import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from "../../lib/query/Environment&ProjectByOpenshiftProjectNameWithEnvVarsValue";
 import EnvironmentByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue";
 import { useLazyQuery } from "@apollo/react-hooks";
 import DeleteConfirm from "components/DeleteConfirm";
@@ -35,17 +36,31 @@ const EnvironmentVariables = ({ environment }) => {
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
 
-  const [getEnvVarValues, { loading, error, data: envValues }] = useLazyQuery(
+  const [getEnvVarValues, { loading: envLoading, error: envError, data: envValues }] = useLazyQuery(
     EnvironmentByProjectNameWithEnvVarsValueQuery,
     {
       variables: { openshiftProjectName: environment.openshiftProjectName },
     }
   );
+  
   if (envValues) {
     displayVars = envValues.environmentVars.envVariables;
-    displayProjectVars = envValues.environmentVars.project.envVariables;
   }
-  if (error) console.log(error);
+
+  if (envError) console.log(envError);
+
+  const [getPrjEnvVarValues, { loading: prjLoading, error: prjError, data: prjEnvValues }] = useLazyQuery(
+    EnvironmentProjectByProjectNameWithEnvVarsValueQuery,
+    {
+      variables: { openshiftProjectName: environment.openshiftProjectName },
+    }
+  );
+  
+  if (prjEnvValues) {
+    displayProjectVars = prjEnvValues.environmentVars.project.envVariables;
+  }
+
+  if (prjError) console.log(prjError);
 
   const valuesShow = (index) => {
     setValueState((valueState) =>
@@ -58,16 +73,16 @@ const EnvironmentVariables = ({ environment }) => {
     );
   };
 
-  const showVarValue = (env) => {
+  const showVarValue = () => {
     getEnvVarValues();
-    if (env == "EnvVars") {
-      setOpenEnvVars(!openEnvVars);
-      setValueState(initValueState);
-    }
-    if (env == "PrjVars") {
-      setOpenPrjVars(!openPrjVars);
-      setprjValueState(initProjectValueState);
-    }
+    setOpenEnvVars(!openEnvVars);
+    setValueState(initValueState);
+  };
+
+  const showPrjVarValue = () => {
+    getPrjEnvVarValues();
+    setOpenPrjVars(!openPrjVars);
+    setprjValueState(initProjectValueState);
   };
 
   return (
@@ -90,7 +105,7 @@ const EnvironmentVariables = ({ environment }) => {
             <div className="header">
               <label>Environment Variables</label>
               <Button
-                onClick={() => showVarValue("EnvVars")}
+                onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
                 aria-expanded={openEnvVars}
               >
@@ -115,7 +130,7 @@ const EnvironmentVariables = ({ environment }) => {
                       <tr>
                         <td className="varName">{envVar.name}</td>
                         <td className="varScope">{envVar.scope}</td>
-                        {loading ? (
+                        {envLoading ? (
                           <Collapse in={openEnvVars}>
                             <td className="varValue" id={index}>
                               <div className="loader"></div>
@@ -224,7 +239,7 @@ const EnvironmentVariables = ({ environment }) => {
           <div className="header">
             <label>Project Variables</label>
             <Button
-              onClick={() => showVarValue("PrjVars")}
+              onClick={() => showPrjVarValue()}
               aria-controls="example-collapse-text"
               aria-expanded={openPrjVars}
             >
@@ -249,7 +264,7 @@ const EnvironmentVariables = ({ environment }) => {
                       <tr>
                         <td className="varName">{projEnvVar.name}</td>
                         <td className="varScope">{projEnvVar.scope}</td>
-                        {loading ? (
+                        {prjLoading ? (
                           <Collapse in={openPrjVars}>
                             <td className="varValue" id={index}>
                               <div className="loader"></div>
