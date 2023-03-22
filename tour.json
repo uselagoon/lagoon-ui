@@ -1,5 +1,5 @@
 {
-  "mode":"translated",
+  "mode":"direct",
   "routes": [
     {
       "pathName": "/projects",
