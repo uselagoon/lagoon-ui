@@ -84,7 +84,7 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
       </FieldWrapper>}
     </DeploymentDetails>
     <ButtonRow>
-      {['new', 'pending', 'running'].includes(deployment.status) && (
+    {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
         <CancelDeployment deployment={deployment} />
       )}
     </ButtonRow>
