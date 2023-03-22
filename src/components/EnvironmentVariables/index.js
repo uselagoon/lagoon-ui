@@ -35,7 +35,7 @@ const EnvironmentVariables = ({ environment }) => {
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
 
-  const [getEnvVarValues, { error, data: envValues }] = useLazyQuery(
+  const [getEnvVarValues, { loading, error, data: envValues }] = useLazyQuery(
     EnvironmentByProjectNameWithEnvVarsValueQuery,
     {
       variables: { openshiftProjectName: environment.openshiftProjectName },
@@ -59,6 +59,7 @@ const EnvironmentVariables = ({ environment }) => {
   };
 
   const showVarValue = (env) => {
+    if (loading) return <p>Loading ...</p>;
     getEnvVarValues();
     if (env == "EnvVars") {
       setOpenEnvVars(!openEnvVars);
