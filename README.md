@@ -79,8 +79,9 @@ The `tour.json` file contains configuration for the tour of the Lagoon app. it h
             "steps": [
                 {
                     "target":".someclass",
-                    "title:": "title of the tour step"
-                    "content": "description of the tour step"
+                    "title:": "title of the tour step",
+                    "content": "description of the tour step",
+                    "key": "unique step identifier per route"
                 }
                 ...
             ]
@@ -90,13 +91,15 @@ The `tour.json` file contains configuration for the tour of the Lagoon app. it h
 }
 
 ```
-> Note: The sequence of routes defines the tour sequence.
+> Note: The sequence of routes is self paced, meaning the users see information once as they traverse the app in an explanatory way
 
 ### Tour properties
 
 - `mode` (string) - "translated" or "literal", if the value is "translated", `content` and `title` will be used as keys for lookup in the translation file, otherwise directly used.
 - `routes` (array) - Array of objects, each describing a steps in the tour per route.  
    - `pathName` (string) - route.
-   - `target` (string) - class selector for the tour step.
+   - `target` (string) - css selector for the tour step.
    - `content` (string) - This property is used based on the `mode` property, acts as the tour step body.
    - `title` (string) - Similar to content, only acts as the header for the tour step.
+   - `key` (string) - identifier of steps per route, needs to be unique for each object in the `steps` array.
+   - `placement` (string) (optional) - tooltip placement defined in react-joyride [docs](https://docs.react-joyride.com/step) 

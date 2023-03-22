@@ -151,12 +151,13 @@ const Tour = () => {
         showProgress
         showSkipButton
         locale={{
-          skip: "Don't show again",
+          skip: "Skip the tour",
           last: "Complete",
         }}
         styles={{
           options: {
             primaryColor: color.blue,
+            width:"40vw"
           },
         }}
       />

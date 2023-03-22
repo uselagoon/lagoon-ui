@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as R from "ramda";
 import { withRouter } from "next/router";
 import Head from "next/head";
@@ -14,14 +14,22 @@ import { useQuery } from "@apollo/react-hooks";
 import ProjectNotFound from "../components/errors/ProjectNotFound";
 import SidebarSkeleton from "components/ProjectDetailsSidebar/SidebarSkeleton";
 import QueryError from "../components/errors/QueryError";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays a project page, given the project name.
  */
 export const PageProject = ({ router }) => {
+  const {continueTour} = useTourContext();
   const { data, error, loading } = useQuery(ProjectByNameQuery, {
     variables: { name: router.query.projectName },
   });
+
+  useEffect(() => {
+    if (!loading) {
+      continueTour();
+    }
+  }, [loading]);
 
   if (loading) {
     return (
@@ -46,6 +54,7 @@ export const PageProject = ({ router }) => {
       </>
     );
   }
+
 
   if (error) {
     return <QueryError error={error} />;

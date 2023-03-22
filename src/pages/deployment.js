@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { withRouter } from "next/router";
 import Head from "next/head";
 import MainLayout from "layouts/MainLayout";
@@ -16,6 +16,7 @@ import QueryError from "../components/errors/QueryError";
 import { useQuery } from "@apollo/react-hooks";
 import EnvironmentNotFound from "components/errors/EnvironmentNotFound";
 import DeploymentNotFound from "components/errors/DeploymentNotFound";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays a deployment page, given the openshift project and deployment name.
@@ -25,12 +26,19 @@ export const PageDeployment = ({ router }) => {
   const logsTopRef = useRef(null);
   const logsEndRef = useRef(null);
 
+  const { continueTour } = useTourContext();
   const { data, error, loading } = useQuery(EnvironmentWithDeploymentQuery, {
     variables: {
       openshiftProjectName: router.query.openshiftProjectName,
       deploymentName: router.query.deploymentName,
     },
   });
+
+  useEffect(() => {
+    if (!loading && data?.environment) {
+      continueTour();
+    }
+  }, [loading]);
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];

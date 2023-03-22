@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "next/router";
 import Head from "next/head";
 import MainLayout from "layouts/MainLayout";
@@ -16,17 +16,25 @@ import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import TaskNotFound from "../components/errors/TaskNotFound";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays a task page, given the openshift project and task ID.
  */
 export const PageTask = ({ router }) => {
+  const { continueTour } = useTourContext();
   const { data, error, loading } = useQuery(EnvironmentWithTaskQuery, {
     variables: {
       openshiftProjectName: router.query.openshiftProjectName,
       taskName: router.query.taskName,
     },
   });
+
+  useEffect(() => {
+    if (!loading && data?.environment?.tasks[0]) {
+        continueTour();
+    }
+  }, [loading]);
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];

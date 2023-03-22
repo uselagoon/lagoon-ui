@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "next/router";
 import Head from "next/head";
 import getConfig from "next/config";
@@ -19,6 +19,7 @@ import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import Skeleton from "react-loading-skeleton";
+import { useTourContext } from "../tours/TourContext";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT, 10);
@@ -41,6 +42,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  * Displays the deployments page, given the openshift project name.
  */
 export const PageDeployments = ({ router }) => {
+  const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(
     EnvironmentWithDeploymentsQuery,
     {
@@ -50,6 +52,13 @@ export const PageDeployments = ({ router }) => {
       },
     }
   );
+
+
+  useEffect(() => {
+    if (!loading && data?.environment) {
+      continueTour();
+    }
+  }, [loading]);
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];

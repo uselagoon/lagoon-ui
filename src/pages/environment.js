@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "next/router";
 import Head from "next/head";
 import MainLayout from "layouts/MainLayout";
@@ -14,11 +14,13 @@ import { EnvironmentWrapper } from "../styles/pageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import QueryError from "../components/errors/QueryError";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays an environment page, given the openshift project name.
  */
 export const PageEnvironment = ({ router }) => {
+  const { continueTour } = useTourContext();
   const { data, error, loading } = useQuery(
     EnvironmentByOpenshiftProjectNameQuery,
     {
@@ -27,6 +29,12 @@ export const PageEnvironment = ({ router }) => {
       },
     }
   );
+
+  useEffect(() => {
+    if (!loading && data?.environment) {
+      continueTour();
+    }
+  }, [loading]);
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];

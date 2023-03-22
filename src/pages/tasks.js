@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "next/router";
 import Head from "next/head";
 import getConfig from "next/config";
@@ -19,6 +19,7 @@ import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import { useQuery } from "@apollo/react-hooks";
 import Skeleton from "react-loading-skeleton";
+import { useTourContext } from "../tours/TourContext";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT, 10);
@@ -43,6 +44,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  * Displays the tasks page, given the openshift project name.
  */
 export const PageTasks = ({ router }) => {
+  const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(
     EnvironmentWithTasksQuery,
     {
@@ -52,6 +54,15 @@ export const PageTasks = ({ router }) => {
       },
     }
   );
+
+
+  useEffect(() => {
+    if (!loading && data?.environment?.tasks.length) {
+      setTimeout(() => {
+        continueTour();
+      }, 1000);
+    }
+  }, [loading]);
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];

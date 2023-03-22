@@ -35,7 +35,7 @@ const Projects = ({ projects = [] }) => {
   });
 
   return (
-    <ProjectsPage>
+    <ProjectsPage id="projects">
       <ProjectsHeader>
         <label>
           {filteredProjects.length <= 1

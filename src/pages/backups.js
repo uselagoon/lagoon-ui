@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as R from "ramda";
 import { withRouter } from "next/router";
 import Head from "next/head";
@@ -18,6 +18,7 @@ import { CommonWrapperWNotification } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import { useTourContext } from "../tours/TourContext";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT, 10);
@@ -40,6 +41,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  * Displays the backups page, given the name of an openshift project.
  */
 export const PageBackups = ({ router }) => {
+  const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(
     EnvironmentWithBackupsQuery,
     {
@@ -49,6 +51,12 @@ export const PageBackups = ({ router }) => {
       },
     }
   );
+
+  useEffect(() => {
+    if (!loading && data?.environment?.backups?.length) {
+      continueTour();
+    }
+  }, [loading]);
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];
