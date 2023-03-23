@@ -21,6 +21,11 @@ export const StyledHeader = styled.header`
           &.home {
             background: ${color.blue};
             position: relative;
+            img {
+              display: block;
+              height: 28px;
+              width: auto;
+            }
             &::after {
               background: ${color.blue};
               clip-path: polygon(0 0,100% 0,0 105%,0 100%);

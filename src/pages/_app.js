@@ -7,7 +7,6 @@ import Favicon from "components/Favicon";
 import Authenticator from "lib/Authenticator";
 import ApiConnection from "lib/ApiConnection";
 import App from "next/app";
-import GlobalStyles from "../layouts/GlobalStyles";
 import { TourContextProvider } from "../tours/TourContext";
 import { m, AnimatePresence, LazyMotion } from "framer-motion";
 import NProgress from "nprogress";
@@ -91,7 +90,6 @@ const LagoonApp = ({ Component, pageProps, err }) => {
                 <Head>
                   <Typekit kitId="ggo2pml" />
                 </Head>
-                <GlobalStyles />
                 <Component {...pageProps} url={pathname} />
                 {LAGOON_UI_TOURS_ENABLED ? <Tour /> : null}
                 <Favicon />
