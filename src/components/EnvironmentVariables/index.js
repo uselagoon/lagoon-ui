@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Mutation } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByName";
-import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from "../../lib/query/Environment&ProjectByOpenshiftProjectNameWithEnvVarsValue";
+import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentAndProjectByOpenshiftProjectNameWithEnvVarsValue";
 import EnvironmentByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue";
 import { useLazyQuery } from "@apollo/react-hooks";
 import DeleteConfirm from "components/DeleteConfirm";

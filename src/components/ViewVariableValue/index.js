@@ -1,7 +1,5 @@
 import React, { Fragment } from "react";
 import Modal from "components/Modal";
-import Button from "components/Button";
-import Table from "react-bootstrap/Table";
 import { bp, color } from "lib/variables";
 import withLogic from "components/ViewVariableValue/logic";
 
