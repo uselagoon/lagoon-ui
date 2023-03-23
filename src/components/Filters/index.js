@@ -1,7 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import { bp } from 'lib/variables';
-import { color } from 'lib/variables';
+import { Filter, FiltersTitle } from './StyledFilters';
 
 /**
  * Displays a select filter and sends state back to parent in a callback.
@@ -31,8 +30,8 @@ const SelectFilter = ({ title, options, onFilterChange, loading, defaultValue, i
     };
 
     return (
-      <div className="filter">
-        <label id={`${title.toLowerCase()}-label`} className="title">{title}</label>
+      <Filter>
+        <FiltersTitle id={`${title.toLowerCase()}-label`}>{title}</FiltersTitle>
         <Select
             instanceId={title.toLowerCase()}
             aria-label={title}
@@ -44,26 +43,7 @@ const SelectFilter = ({ title, options, onFilterChange, loading, defaultValue, i
             isMulti={isMulti}
             onChange={handleChange}
         />
-        <style jsx>{`
-            .title {
-              margin: auto 0;
-              @media ${bp.wideUp} {
-                margin: auto 15px;
-              }
-            }
-            .filter {
-              margin-bottom: 1em;
-
-              @media ${bp.wideUp} {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                flex: 2 1 auto;
-                margin: 0;
-              }
-            }
-        `}</style>
-      </div>
+      </Filter>
     );
 };
 

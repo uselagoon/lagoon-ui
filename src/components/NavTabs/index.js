@@ -1,5 +1,4 @@
 import React from 'react';
-import css from 'styled-jsx/css';
 import EnvironmentLink from 'components/link/Environment';
 import BackupsLink from 'components/link/Backups';
 import DeploymentsLink from 'components/link/Deployments';
@@ -7,35 +6,20 @@ import TasksLink from 'components/link/Tasks';
 import ProblemsLink from 'components/link/Problems';
 import FactsLink from 'components/link/Facts';
 import InsightsLink from 'components/link/Insights';
-import { bp, color } from 'lib/variables';
-import problems from '../../pages/problems';
+import {StyledNavigation} from "./StylednavTabs";
 
-const { className: aClassName, styles: aStyles } = css.resolve`
-  a {
-    color: ${color.darkGrey};
-    display: block;
-    padding: 20px 20px 19px 60px;
-    @media ${bp.wideUp} {
-      padding-left: calc((100vw / 16) * 1);
-    }
-  }
-
-  .active a {
-    color: ${color.black};
-  }
-`;
 
 const NavTabs = ({ activeTab, environment }) => (
-  <ul className="navigation">
+  <StyledNavigation className="navigation">
     <li
       className={`overview ${
         activeTab == 'overview' ? 'active' : ''
-      } ${aClassName}`}
+      } deployLink`}
     >
       <EnvironmentLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
-        className={aClassName}
+        className="deployLink"
       >
         Overview
       </EnvironmentLink>
@@ -43,12 +27,12 @@ const NavTabs = ({ activeTab, environment }) => (
     <li
       className={`deployments ${
         activeTab == 'deployments' ? 'active' : ''
-      } ${aClassName}`}
+      } deployLink`}
     >
       <DeploymentsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
-        className={aClassName}
+        className="deployLink"
       >
         Deployments
       </DeploymentsLink>
@@ -56,206 +40,65 @@ const NavTabs = ({ activeTab, environment }) => (
     <li
       className={`backups ${
         activeTab == 'backups' ? 'active' : ''
-      } ${aClassName}`}
+      } deployLink`}
     >
       <BackupsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
-        className={aClassName}
+        className="deployLink"
       >
         Backups
       </BackupsLink>
     </li>
     <li
-      className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${aClassName}`}
+      className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${"deployLink"}`}
     >
       <TasksLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
-        className={aClassName}
+        className="deployLink"
       >
         Tasks
       </TasksLink>
     </li>
     {(environment.project.problemsUi == 1) && <li
-      className={`problems ${activeTab == 'problems' ? 'active' : ''} ${aClassName}`}
+      className={`problems ${activeTab == 'problems' ? 'active' : ''} deployLink`}
     >
       <ProblemsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
-          className={aClassName}
+          className="deployLink"
       >
         Problems
       </ProblemsLink>
     </li>
     }
     {(environment.project.factsUi == 1) && <li
-      className={`facts ${activeTab == 'facts' ? 'active' : ''} ${aClassName}`}
+      className={`facts ${activeTab == 'facts' ? 'active' : ''} ${"deployLink"}`}
     >
       <FactsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
-        className={aClassName}
+        className="deployLink"
       >
         Facts
       </FactsLink>
     </li>
     }
     {(environment.project.factsUi == 1) && <li
-        className={`insights ${activeTab == 'insights' ? 'active' : ''} ${aClassName}`}
+        className={`insights ${activeTab == 'insights' ? 'active' : ''} deployLink`}
       >
         <InsightsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
-          className={aClassName}
+          className="deployLink"
         >
           Insights
         </InsightsLink>
       </li>
     }
-    {/* } */}
-    <style jsx>{`
-      .navigation {
-        background: ${color.lightestGrey};
-        border-right: 1px solid ${color.midGrey};
-        margin: 0;
-        z-index: 10;
-        @media ${bp.tabletUp} {
-          min-width: 30%;
-          padding-bottom: 60px;
-        }
-        @media ${bp.wideUp} {
-          min-width: 25%;
-        }
 
-        li {
-          border-bottom: 1px solid ${color.midGrey};
-          margin: 0;
-          padding: 0;
-          position: relative;
-
-          &:hover {
-            background-color: ${color.white};
-          }
-
-          &::before {
-            background-color: ${color.linkBlue};
-            background-position: center center;
-            background-repeat: no-repeat;
-            content: '';
-            display: block;
-            height: 59px;
-            left: 0;
-            position: absolute;
-            top: 0;
-            transition: all 0.3s ease-in-out;
-            width: 45px;
-          }
-
-          a {
-            color: ${color.darkGrey};
-            display: block;
-            padding: 20px 20px 19px 60px;
-            @media ${bp.wideUp} {
-              padding-left: calc((100vw / 16) * 1);
-            }
-          }
-
-          &.active {
-            &::before {
-              background-color: ${color.almostWhite};
-            }
-
-            background-color: ${color.almostWhite};
-            border-right: 1px solid ${color.almostWhite};
-            width: calc(100% + 1px);
-
-            a {
-              color: ${color.black};
-            }
-          }
-
-          &.overview {
-            &::before {
-              background-image: url('/static/images/overview.svg');
-              background-size: 18px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/overview-active.svg');
-            }
-          }
-
-          &.deployments {
-            &::before {
-              background-image: url('/static/images/deployments.svg');
-              background-size: 21px 16px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/deployments-active.svg');
-            }
-          }
-
-          &.backups {
-            &::before {
-              background-image: url('/static/images/backups.svg');
-              background-size: 19px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/backups-active.svg');
-            }
-          }
-
-          &.tasks {
-            &::before {
-              background-image: url('/static/images/tasks.svg');
-              background-size: 16px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/tasks-active.svg');
-            }
-          }
-
-          &.problems {
-            &::before {
-              background-image: url('/static/images/problems.svg');
-              background-size: 16px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/problems-active.svg');
-            }
-          }
-
-          &.facts {
-            &::before {
-              background-image: url('/static/images/facts.svg');
-              background-size: 16px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/facts-active.svg');
-            }
-          }
-
-          &.insights {
-            &::before {
-              background-image: url('/static/images/insights.svg');
-              background-size: 16px;
-            }
-
-            &.active::before {
-              background-image: url('/static/images/insights-active.svg');
-            }
-          }
-        }
-      }
-    `}</style>
-    {aStyles}
-  </ul>
+  </StyledNavigation>
 );
 
 export default NavTabs;

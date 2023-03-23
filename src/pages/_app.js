@@ -9,6 +9,7 @@ import Authenticator, { AuthContext } from "lib/Authenticator";
 import ApiConnection from "lib/ApiConnection";
 import Script from "next/script";
 import App from "next/app";
+import GlobalStyles from "../layouts/GlobalStyles";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
@@ -20,7 +21,6 @@ const LagoonApp = ({ Component, pageProps, err }) => {
     return (
       <>
         <Head>
-          <link rel="stylesheet" href="/static/normalize.css" />
           <Typekit kitId="ggo2pml" />
         </Head>
         <Component
@@ -40,7 +40,6 @@ const LagoonApp = ({ Component, pageProps, err }) => {
         strategy="beforeInteractive"
       />
       <Head>
-        <link rel="stylesheet" href="/static/normalize.css" />
         <Typekit kitId="ggo2pml" />
       </Head>
       <Authenticator>

@@ -15,3 +15,6 @@ build-storybook.log
 .env
 .python-version
 docker-compose.override.yml
+
+# ts linter
+*.tsbuildinfo

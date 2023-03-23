@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
 import Button from 'components/Button';
-import { bp, color, fontSize } from 'lib/variables';
+import { SelectWrapper } from './Styles';
 
 const taskDrushUserLogin = gql`
   mutation taskDrushUserLogin($environment: Int!) {
@@ -30,9 +30,9 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id
     }}
   >
-    {(taskDrushUserLogin, { loading, called, error, data }) => {
+    {(taskDrushUserLogin) => {
       return (
-        <React.Fragment>
+        <SelectWrapper>
           <div className="envSelect">
             <label id="dest-env">Environment:</label>
             <ReactSelect
@@ -53,12 +53,7 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
             />
           </div>
           <Button action={taskDrushUserLogin}>Run task</Button>
-          <style jsx>{`
-            .envSelect {
-              margin: 10px 0;
-            }
-          `}</style>
-        </React.Fragment>
+        </SelectWrapper>
       );
     }}
   </Mutation>

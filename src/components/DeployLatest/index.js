@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Button from 'components/Button';
-import { bp, color, fontSize } from 'lib/variables';
+import { NewDeployment } from './StyledDeployLatest';
 
 const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
   mutation deployEnvironmentLatest($environmentId: Int!) {
@@ -36,7 +36,7 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
   }
 
   return (
-    <div className="newDeployment">
+    <NewDeployment>
       {!deploymentsEnabled && (
         <React.Fragment>
           <div className="description">
@@ -90,41 +90,7 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
           </Mutation>
         </React.Fragment>
       )}
-      <style jsx>
-        {`
-          .newDeployment {
-            align-items: center;
-            background: ${color.white};
-            border: 1px solid ${color.lightestGrey};
-            border-radius: 3px;
-            box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            padding: 15px;
-
-            @media ${bp.tabletUp} {
-              margin-bottom: 0;
-            }
-
-            @media ${bp.wideUp} {
-              min-width: 52%;
-            }
-
-            .description {
-              color: ${color.darkGrey};
-            }
-
-            .deploy_result {
-              margin-top: 20px;
-              text-align: right;
-              width: 100%;
-            }
-          }
-        `}
-      </style>
-    </div>
+    </NewDeployment>
   );
 };
 

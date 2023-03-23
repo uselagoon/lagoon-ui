@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { bp, color, fontSize } from 'lib/variables';
 import useSortableData from './sortedItems';
 import Problem from 'components/Problem';
+import {StyledProblemsByProject} from "./StyledProblemsByProject";
 
 const ProblemsByProject = ({ problems, minified }) => {
     const { sortedItems, getClassNamesFor, requestSort } = useSortableData(problems, {key: 'id', direction: 'ascending'});
@@ -36,7 +36,7 @@ const ProblemsByProject = ({ problems, minified }) => {
     };
 
     return (
-        <div className="problems">
+        <StyledProblemsByProject className="problems">
             <div className="filters">
                 <input
                     type="text"
@@ -96,142 +96,7 @@ const ProblemsByProject = ({ problems, minified }) => {
                     <Problem key={`${problem.identifier}-${problem.id}`} problem={problem} />
                 ))}
             </div>
-            <style jsx>{`
-            .header {
-              @media ${bp.wideUp} {
-                display: flex;
-                margin: 0 0 14px;
-              }
-              @media ${bp.smallOnly} {
-                flex-wrap: wrap;
-              }
-              @media ${bp.tabletUp} {
-                margin-top: 20px;
-              }
-
-              display: flex;
-
-              label {
-                display: none;
-                padding-left: 20px;
-                @media ${bp.wideUp} {
-                  display: block;
-                }
-              }
-            }
-
-            input#filter {
-              width: 100%;
-              border: none;
-              padding: 10px 20px;
-              margin: 0;
-            }
-
-            .button-sort {
-              color: ${color.darkGrey};
-              font-family: 'source-code-pro',sans-serif;
-              font-size: 13px;
-              font-size: 0.8125rem;
-              line-height: 1.4;
-              text-transform: uppercase;
-              border: none;
-              background: none;
-              cursor: pointer;
-              min-width: 16.66%;
-
-              &.ascending:after {
-                content: ' \\25B2';
-              }
-
-              &.descending:after {
-                content: ' \\25BC';
-              }
-            }
-
-            .more {
-              background: none;
-              border: none;
-              color: ${color.brightBlue};
-              padding: 5px 0;
-              text-transform: uppercase;
-              font-size: 0.8em;
-              cursor: pointer;
-            }
-
-            .data-table {
-              background-color: ${color.white};
-              border: 1px solid ${color.lightestGrey};
-              border-radius: 3px;
-              box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-
-              .data-none {
-                border: 1px solid ${color.white};
-                border-bottom: 1px solid ${color.lightestGrey};
-                border-radius: 3px;
-                line-height: 1.5rem;
-                padding: 8px 0 7px 0;
-                text-align: center;
-              }
-
-              .data-row {
-                border: 1px solid ${color.white};
-                border-bottom: 1px solid ${color.lightestGrey};
-                border-radius: 0;
-                line-height: 1.5rem;
-                padding: 8px 0 7px 0;
-                @media ${bp.wideUp} {
-                  display: flex;
-                  justify-content: space-between;
-                  padding-right: 15px;
-                }
-
-                & > div {
-                  padding-left: 20px;
-                  @media ${bp.wideDown} {
-                    padding-right: 40px;
-                  }
-                  @media ${bp.wideUp} {
-
-                  }
-
-                }
-
-                &:hover {
-                  border: 1px solid ${color.brightBlue};
-                }
-
-                &:first-child {
-                  border-top-left-radius: 3px;
-                  border-top-right-radius: 3px;
-                }
-
-                &:last-child {
-                  border-bottom-left-radius: 3px;
-                  border-bottom-right-radius: 3px;
-                }
-              }
-
-              .row-heading {
-                cursor: pointer;
-              }
-            }
-
-            .data {
-              padding: 20px;
-              margin: 0;
-              color: ${color.white};
-              font: 0.8rem Inconsolata, monospace;
-              line-height: 2;
-              transition: all 0.6s ease-in-out;
-              padding: 20px;
-              width: 100%;
-
-              .key {
-                color: ${color.brightBlue};
-              }
-            }
-        `}</style>
-        </div>
+        </StyledProblemsByProject>
     );
 };
 

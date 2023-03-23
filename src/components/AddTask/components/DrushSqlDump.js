@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
 import Button from 'components/Button';
-import { bp, color, fontSize } from 'lib/variables';
+import { SelectWrapper } from './Styles';
 
 const taskDrushSqlDump = gql`
   mutation taskDrushSqlDump($environment: Int!) {
@@ -30,9 +30,9 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id
     }}
   >
-    {(taskDrushSqlDump, { loading, called, error, data }) => {
+    {(taskDrushSqlDump) => {
       return (
-        <React.Fragment>
+        <SelectWrapper>
           <div className="envSelect">
             <label id="dest-env">Environment:</label>
             <ReactSelect
@@ -53,12 +53,7 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => (
             />
           </div>
           <Button action={taskDrushSqlDump}>Run task</Button>
-          <style jsx>{`
-            .envSelect {
-              margin: 10px 0;
-            }
-          `}</style>
-        </React.Fragment>
+        </SelectWrapper>
       );
     }}
   </Mutation>

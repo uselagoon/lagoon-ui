@@ -31,6 +31,20 @@ docker-compose up -d
 
 This project is tested with BrowserStack.
 
+## Linting
+
+The linter is configured for both JS and TypeScript files, with the latter being much stricter.
+It runs during the build step but can also be ran during development by `yarn lint`
+
+Linter and TS configs are both located in the root of the project as `.eslintrc.js` and `tsconfig.json`
+
+
+## Styling
+
+Lagoon-UI uses styled-components and it's recommended to use separete files for styling for each component.
+`<style jsx>` tags are allowed but nesting is not.
+
+
 ## Plugin system
 
 The Lagoon UI supports basic plugins via a plugin registry.
