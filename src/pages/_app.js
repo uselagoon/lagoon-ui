@@ -11,10 +11,19 @@ import Script from "next/script";
 import App from "next/app";
 import GlobalStyles from "../layouts/GlobalStyles";
 
+import { initI18n } from "../i18n/i18n";
+import { useTranslation } from "react-i18next";
+
+
+initI18n();
+
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname } = useRouter();
+
+   const {i18n} = useTranslation();
+   void i18n.changeLanguage("italian");
   // Catch runtime errors in production and skip authentication to avoid
   // infinite auth > error > auth > error loops.
   if (err) {
