@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
 import Button from 'components/Button';
 import { bp, color, fontSize } from 'lib/variables';
+import { SelectWrapper } from './Styles';
 
 const taskDrushCron = gql`
   mutation taskDrushCron($environment: Int!) {
@@ -30,9 +31,9 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id
     }}
   >
-    {(taskDrushCron, { loading, called, error, data }) => {
+    {(taskDrushCron) => {
       return (
-        <React.Fragment>
+        <SelectWrapper>
           <div className="envSelect">
             <label id="dest-env">Environment:</label>
             <ReactSelect
@@ -53,12 +54,7 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
             />
           </div>
           <Button action={taskDrushCron}>Run task</Button>
-          <style jsx>{`
-            .envSelect {
-              margin: 10px 0;
-            }
-          `}</style>
-        </React.Fragment>
+        </SelectWrapper>
       );
     }}
   </Mutation>

@@ -3,9 +3,9 @@ import Modal from "components/Modal";
 import Button from "components/Button";
 import ReactSelect from "react-select";
 import { Mutation } from "react-apollo";
-import { color } from "lib/variables";
 import withLogic from "components/AddEnvironmentVariable/logic";
 import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
+import { NewEnvironmentVariable, NewEnvironmentVariableModal } from './StyledAddEnvironmentVariable';
 
 /**
  * Adds a Environment Variable.
@@ -24,17 +24,6 @@ const scopeOptions = [
   },
 ];
 
-const customStyles = {
-  menu: (provided) => ({
-    ...provided,
-    width: 400,
-  }),
-  control: (provided) => ({
-    ...provided,
-    width: 400,
-  }),
-};
-
 export const AddEnvironmentVariable = ({
   varProject,
   varEnvironment,
@@ -45,24 +34,22 @@ export const AddEnvironmentVariable = ({
   setInputValue,
   inputScope,
   setInputScope,
-  inputTarget,
   setInputTarget,
   open,
   openModal,
   closeModal,
 }) => {
   return (
-    <React.Fragment>
+    <NewEnvironmentVariable>
       <Button action={openModal}>Add/Update</Button>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`}>
-        <React.Fragment>
+      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
+        <NewEnvironmentVariableModal>
           <div className="var-modal">
             <label htmlFor="varName">Select variable target</label>
             {
               <ReactSelect
                 aria-label="VariableTarget"
                 placeholder="Environment variable"
-                styles={customStyles}
                 name="targetResults"
                 value={targetOptions[0]}
                 onChange={(selectedOption) =>
@@ -79,7 +66,6 @@ export const AddEnvironmentVariable = ({
               <ReactSelect
                 aria-label="Scope"
                 placeholder="Select a variable scope"
-                styles={customStyles}
                 name="results"
                 value={scopeOptions.find((o) => o.value === inputScope)}
                 onChange={(selectedOption) =>
@@ -167,30 +153,9 @@ export const AddEnvironmentVariable = ({
               }}
             </Mutation>
           </div>
-        </React.Fragment>
+        </NewEnvironmentVariableModal>
       </Modal>
-      <style jsx>{`
-        .var-modal {
-          padding: 10px 0;
-        }
-        input {
-          margin-right: 10px;
-          width: 100%;
-        }
-        a.hover-state {
-          margin-right: 10px;
-          color: ${color.blue};
-        }
-        .form-input {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .add-var-btn {
-          margin-top: 16px;
-        }
-      `}</style>
-    </React.Fragment>
+    </NewEnvironmentVariable>
   );
 };
 

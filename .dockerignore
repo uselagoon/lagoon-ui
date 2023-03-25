@@ -6,6 +6,8 @@ README.md
 **/build/
 **/yarn-error.log
 **/.gitignore
+node_modules
+build
 
 # Envs
 **/.env.local

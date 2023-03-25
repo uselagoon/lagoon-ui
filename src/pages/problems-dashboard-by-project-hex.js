@@ -3,12 +3,12 @@ import * as R from 'ramda';
 import Head from 'next/head';
 import { useQuery } from "@apollo/react-hooks";
 import AllProjectsProblemsQuery from 'lib/query/AllProjectsProblems';
-import getSeverityEnumQuery, {getProjectOptions, getSourceOptions} from 'components/Filters/helpers';
+import getSeverityEnumQuery, { getSourceOptions} from 'components/Filters/helpers';
 import { LoadingPageNoHeader } from 'pages/_loading';
 import Honeycomb from "components/Honeycomb";
 import MainLayout from 'layouts/MainLayout';
 import SelectFilter from 'components/Filters';
-import { bp } from 'lib/variables';
+import {ProblemsByDashBoard} from "../styles/pageStyles"
 
 /**
  *  Displays problems page by project.
@@ -54,7 +54,7 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
   };
 
   return (
-  <>
+  <ProblemsByDashBoard>
     <Head>
       <title>Problems Dashboard By Project</title>
     </Head>
@@ -102,72 +102,8 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
           }
         </div>
       </div>
-      <style jsx>{`
-        .filters-wrapper, .project-filter {
-          margin: 32px calc((100vw / 16) * 1);
-          @media ${bp.wideUp} {
-            margin: 32px calc((100vw / 16) * 2);
-          }
-          @media ${bp.extraWideUp} {
-            margin: 32px calc((100vw / 16) * 3);
-          }
-          .filters {
-            display: flex;
-            flex-direction: column;
-            @media ${bp.wideUp} {
-              flex-flow: row;
-            }
-
-            &:first-child {
-              padding-bottom: 1em;
-            }
-          }
-        }
-        .extra-filters {
-          padding: 0 15px;
-        }
-        .content-wrapper {
-          h2 {
-            margin: 38px calc((100vw / 16) * 1) 0;
-            @media ${bp.wideUp} {
-              margin: 62px calc((100vw / 16) * 2) 0;
-            }
-            @media ${bp.extraWideUp} {
-              margin: 62px calc((100vw / 16) * 3) 0;
-            }
-          }
-          .content {
-            background: #fff;
-            margin: 0 calc((100vw / 16) * 1);
-            @media ${bp.wideUp} {
-              margin: 0 calc((100vw / 16) * 2);
-            }
-            @media ${bp.extraWideUp} {
-              margin: 0 calc((100vw / 16) * 3);
-            }
-            li.result {
-              display: inline;
-            }
-          }
-          .environment-wrapper {
-            padding: 0 1em 1em;
-            background: #fefefe;
-            margin: 0 0 2em;
-
-            h4 {
-              font-weight: 500;
-            }
-          }
-          .data-none {
-            display: flex;
-            justify-content: space-between;
-            padding: 1em;
-            border: 1px solid #efefef;
-          }
-        }
-      `}</style>
     </MainLayout>
-  </>);
+  </ProblemsByDashBoard>);
 };
 
 export default ProblemsDashboardByProjectPageHexDisplay;

@@ -31,6 +31,7 @@ export const bp = {
   smallOnly: `all and (max-width: ${(BP_TABLET - 1) / 16}em)`,
   tabletDown: `all and (max-width: ${(BP_DESKTOP - 1) / 16}em)`,
   wideDown: `all and (max-width: ${(BP_WIDE - 1) / 16}em)`,
+  xlWideDown: `all and (max-width: ${(BP_EXTRAWIDE + 150) / 16}em)`,
 
   tinyUp: `all and (min-width: ${BP_TINY / 16}em)`,
   xs_smallUp: `all and (min-width: ${(BP_XS) / 16}em)`,

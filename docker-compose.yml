@@ -20,21 +20,15 @@ services:
       dockerfile: Dockerfile
     labels:
       lagoon.type: node
-    command: yarn run start
+    command: yarn run dev
     volumes:
       - ./src:/app/src
       - ./.env.defaults:/app/.env.defaults
       - ./.env.schema:/app/.env.schema
       - ./package.json:/app/package.json
     ports:
-      - '8888:3000'
       - '3003:3003'
     networks:
-      - amazeeio-network
       - default
     environment:
       <<: *default-environment
-
-networks:
-  amazeeio-network:
-    external: true

@@ -1,22 +1,22 @@
-import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
-import Head from 'next/head';
-import getConfig from 'next/config';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
-import BackupsSubscription from 'lib/subscription/Backups';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import NavTabs from 'components/NavTabs';
-import Backups from 'components/Backups';
-import ResultsLimited from 'components/ResultsLimited';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withEnvironmentRequired } from 'lib/withDataRequired';
-import { bp, color } from 'lib/variables';
+import React from "react";
+import * as R from "ramda";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import getConfig from "next/config";
+import { Query } from "react-apollo";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentWithBackupsQuery from "lib/query/EnvironmentWithBackups";
+import BackupsSubscription from "lib/subscription/Backups";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import NavTabs from "components/NavTabs";
+import Backups from "components/Backups";
+import ResultsLimited from "components/ResultsLimited";
+import withQueryLoading from "lib/withQueryLoading";
+import withQueryError from "lib/withQueryError";
+import { withEnvironmentRequired } from "lib/withDataRequired";
+import { CommonWrapperWNotification } from "../styles/commonPageStyles";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT, 10);
@@ -26,7 +26,7 @@ let urlResultLimit = envLimit;
 if (typeof window !== "undefined") {
   let search = window.location.search;
   let params = new URLSearchParams(search);
-  let limit = params.get('limit');
+  let limit = params.get("limit");
   if (limit) {
     if (parseInt(limit.trim(), 10)) {
       urlResultLimit = parseInt(limit.trim(), 10);
@@ -47,7 +47,7 @@ export const PageBackups = ({ router }) => (
       query={EnvironmentWithBackupsQuery}
       variables={{
         openshiftProjectName: router.query.openshiftProjectName,
-        limit: resultLimit
+        limit: resultLimit,
       }}
     >
       {R.compose(
@@ -63,14 +63,14 @@ export const PageBackups = ({ router }) => (
             const prevBackups = prevStore.environment.backups;
             const incomingBackup = subscriptionData.data.backupChanged;
             const existingIndex = prevBackups.findIndex(
-              prevBackup => prevBackup.id === incomingBackup.id
+              (prevBackup) => prevBackup.id === incomingBackup.id
             );
             let newBackups;
 
             // New backup.
             if (existingIndex === -1) {
               // Don't add new deleted backups.
-              if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
+              if (incomingBackup.deleted !== "0000-00-00 00:00:00") {
                 return prevStore;
               }
 
@@ -79,9 +79,9 @@ export const PageBackups = ({ router }) => (
             // Existing backup.
             else {
               // Updated backup
-              if (incomingBackup.deleted === '0000-00-00 00:00:00') {
+              if (incomingBackup.deleted === "0000-00-00 00:00:00") {
                 newBackups = Object.assign([...prevBackups], {
-                  [existingIndex]: incomingBackup
+                  [existingIndex]: incomingBackup,
                 });
               }
               // Deleted backup
@@ -94,12 +94,12 @@ export const PageBackups = ({ router }) => (
               ...prevStore,
               environment: {
                 ...prevStore.environment,
-                backups: newBackups
-              }
+                backups: newBackups,
+              },
             };
 
             return newStore;
-          }
+          },
         });
 
         return (
@@ -111,7 +111,7 @@ export const PageBackups = ({ router }) => (
                 projectSlug={environment.project.name}
               />
             </Breadcrumbs>
-            <div className="content-wrapper">
+            <CommonWrapperWNotification>
               <NavTabs activeTab="backups" environment={environment} />
               <div className="content">
                 <div className="notification">
@@ -123,29 +123,13 @@ export const PageBackups = ({ router }) => (
                 <ResultsLimited
                   limit={resultLimit}
                   results={environment.backups.length}
-                  message={(!customMessage && "") || (customMessage && customMessage.replace(/['"]+/g, ''))}
+                  message={
+                    (!customMessage && "") ||
+                    (customMessage && customMessage.replace(/['"]+/g, ""))
+                  }
                 />
               </div>
-            </div>
-            <style jsx>{`
-              .content-wrapper {
-                @media ${bp.tabletUp} {
-                  display: flex;
-                  padding: 0;
-                }
-              }
-
-              .content {
-                padding: 32px calc((100vw / 16) * 1);
-                width: 100%;
-              }
-
-              .notification {
-                background-color: ${color.lightBlue};
-                color: ${color.white};
-                padding: 10px 20px;
-              }
-            `}</style>
+            </CommonWrapperWNotification>
           </MainLayout>
         );
       })}
