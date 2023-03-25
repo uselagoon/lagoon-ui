@@ -17,6 +17,16 @@ export const StyledEnvironmentVariableDetails = styled.div`
   @media ${bp.extraWideUp} {
     padding-left: calc(((100vw / 16) * 1) + 28px);
   }
+  .showHide {
+    margin-left: 16px !important;
+    width: 30px !important;
+  }
+  .showHideContainer a {
+    vertical-align: middle;
+  }
+  span {
+    overflow: visible !important;
+  }
   .field-wrapper {
     &::before {
       left: calc(((-100vw / 16) * 1.5) - 28px);

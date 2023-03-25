@@ -108,11 +108,11 @@ export const StyledNavigation = styled.ul`
     
     &.environmentVariables {
       &::before {
-        background-image: url('/static/images/overview.svg');
-        background-size: 18px;
+        background-image: url('/static/images/variables.svg');
+        background-size: 22px;
       }
       &.active::before {
-        background-image: url('/static/images/overview-active.svg');
+        background-image: url('/static/images/variables-active.svg');
       }
     }
     

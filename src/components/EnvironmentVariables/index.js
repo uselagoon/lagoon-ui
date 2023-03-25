@@ -12,16 +12,18 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
 import {StyledEnvironmentVariableDetails} from "./StyledEnvironmentVariables"
-
+import Image from 'next/image'
+import show from "../../static/images/show.svg"
+import hide from "../../static/images/hide.svg"
 
 /**
  * Displays the environment variable information.
  */
 
 const hashValue = (value) => {
-  let hashedVal = "*";
+  let hashedVal = "●";
   for (let l = 0; l < value.length; l++) {
-    hashedVal += "*";
+    hashedVal += "●";
   }
   return hashedVal;
 };
@@ -68,9 +70,19 @@ const EnvironmentVariables = ({ environment }) => {
       valueState.map((el, i) => (i === index ? true : el))
     );
   };
+  const valuesHide = (index) => {
+    setValueState((valueState) =>
+      valueState.map((el, i) => (i === index ? false : el))
+    );
+  };
   const prjValuesShow = (index) => {
     setprjValueState((prjValueState) =>
       prjValueState.map((el, i) => (i === index ? true : el))
+    );
+  };
+  const prjValuesHide = (index) => {
+    setprjValueState((prjValueState) =>
+      prjValueState.map((el, i) => (i === index ? false : el))
     );
   };
 
@@ -142,22 +154,36 @@ const EnvironmentVariables = ({ environment }) => {
                             <td className="varValue" id={index}>
                               {envVar.value.length <= 100 &&
                               !valueState[index] ? (
-                                <a href="#" onClick={() => valuesShow(index)}>
+                                <div className="showHideContainer">
                                   {hashValue(envVar.value)}
-                                </a>
+                                  <a href="#" onClick={() => valuesShow(index)}>
+                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : envVar.value.length <= 100 &&
                                 valueState[index] ? (
-                                <a>{envVar.value}</a>
+                                <div className="showHideContainer">
+                                  {envVar.value}
+                                  <a href="#" onClick={() => valuesHide(index)}>
+                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : envVar.value.length >= 100 &&
                                 !valueState[index] ? (
-                                <a href="#" onClick={() => valuesShow(index)}>
-                                  {hashValue(envVar.value).substring(0, 50)}
-                                </a>
+                                <div className="showHideContainer">
+                                  {hashValue(envVar.value).substring(0, 20)}
+                                  <a href="#" onClick={() => valuesShow(index)}>
+                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : envVar.value.length >= 100 &&
                                 valueState[index] ? (
-                                <a href="#" onClick={() => valuesShow(index)}>
-                                  {envVar.value.substring(0, 50)}...
-                                </a>
+                                <div className="showHideContainer">
+                                  {envVar.value.substring(0, 25)}
+                                  <a href="#" onClick={() => valuesHide(index)}>
+                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : (
                                 `${hashValue(envVar.value).substring(0, 50)}...`
                               )}
@@ -276,32 +302,36 @@ const EnvironmentVariables = ({ environment }) => {
                             <td className="varValue" id={index}>
                               {projEnvVar.value.length <= 100 &&
                               !prjValueState[index] ? (
-                                <a
-                                  href="#"
-                                  onClick={() => prjValuesShow(index)}
-                                >
+                                <div className="showHideContainer">
                                   {hashValue(projEnvVar.value)}
-                                </a>
+                                  <a href="#" onClick={() => prjValuesShow(index)}>
+                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : projEnvVar.value.length <= 100 &&
                                 prjValueState[index] ? (
-                                <a>{projEnvVar.value}</a>
+                                <div className="showHideContainer">
+                                  {projEnvVar.value}
+                                  <a href="#" onClick={() => prjValuesHide(index)}>
+                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : projEnvVar.value.length >= 100 &&
                                 !prjValueState[index] ? (
-                                <a
-                                  href="#"
-                                  onClick={() => prjValuesShow(index)}
-                                >
-                                  {hashValue(projEnvVar.value).substring(0, 50)}
-                                  
-                                </a>
+                                <div className="showHideContainer">
+                                  {hashValue(projEnvVar.value).substring(0, 30)}
+                                  <a href="#" onClick={() => prjValuesShow(index)}>
+                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : projEnvVar.value.length >= 100 &&
                                 prjValueState[index] ? (
-                                <a
-                                  href="#"
-                                  onClick={() => prjValuesShow(index)}
-                                >
-                                  {projEnvVar.value.substring(0, 50)}...
-                                </a>
+                                <div className="showHideContainer">
+                                  {projEnvVar.value.substring(0, 40)}
+                                  <a href="#" onClick={() => prjValuesHide(index)}>
+                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  </a>
+                                </div>
                               ) : (
                                 `${hashValue(projEnvVar.value).substring(
                                   0,
