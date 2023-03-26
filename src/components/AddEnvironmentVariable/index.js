@@ -11,8 +11,6 @@ import { NewEnvironmentVariable, NewEnvironmentVariableModal } from './StyledAdd
  * Adds a Environment Variable.
  */
 
-const targetOptions = [{ value: "Environment", label: "Environment" }];
-
 const scopeOptions = [
   { value: "BUILD", label: "BUILD" },
   { value: "RUNTIME", label: "RUNTIME" },
@@ -34,7 +32,6 @@ export const AddEnvironmentVariable = ({
   setInputValue,
   inputScope,
   setInputScope,
-  setInputTarget,
   open,
   openModal,
   closeModal,
@@ -45,20 +42,15 @@ export const AddEnvironmentVariable = ({
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
         <NewEnvironmentVariableModal>
           <div className="var-modal">
-            <label htmlFor="varName">Select variable target</label>
-            {
-              <ReactSelect
-                aria-label="VariableTarget"
-                placeholder="Environment variable"
-                name="targetResults"
-                value={targetOptions[0]}
-                onChange={(selectedOption) =>
-                  setInputTarget(selectedOption.value)
-                }
-                options={targetOptions}
-                required
-              />
-            }
+            <label htmlFor="varName">Variable target</label>
+            <input
+              id="variableTargetID"
+              name="variableTarget"
+              className="variable-target"
+              type="text"
+              value="Environment"
+              readOnly
+            />
           </div>
           <div className="var-modal">
             <label htmlFor="varName">Variable Scope</label>

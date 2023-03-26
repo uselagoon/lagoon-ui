@@ -5,7 +5,6 @@ import withHandlers from "recompose/withHandlers";
 const withInputValue = withState("inputValue", "setInputValue", "");
 const withInputName = withState("inputName", "setInputName", "");
 const withInputScope = withState("inputScope", "setInputScope", "");
-const withInputTarget = withState("inputTarget", "setInputTarget", "");
 
 const withInputHandlers = withHandlers({
   setInputValue: ({ setInputValue }) => (event) =>
@@ -24,7 +23,6 @@ export default compose(
   withInputValue,
   withInputName,
   withInputScope,
-  withInputTarget,
   withInputHandlers,
   withModalState,
   withModalHandlers

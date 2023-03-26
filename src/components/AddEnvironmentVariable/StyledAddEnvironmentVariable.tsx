@@ -23,6 +23,9 @@ export const NewEnvironmentVariableModal = styled.div`
   .var-modal {
     padding: 10px 0;
   }
+  .variable-target{
+    padding: 4px 8px;
+  }
   input {
     margin-right: 10px;
     width: 100%;
