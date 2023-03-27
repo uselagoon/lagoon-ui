@@ -4,7 +4,8 @@ import getConfig from 'next/config';
 import { AuthContext } from 'lib/Authenticator';
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
 import HeaderMenu from 'components/HeaderMenu';
-import {StyledHeader} from "./StyledHeader";
+import { StyledHeader } from "./StyledHeader";
+import ThemeToggler  from "./ThemeToggler";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -25,6 +26,7 @@ const Header = ({ logo }) => (
         />
       </a>
     </Link>
+    <ThemeToggler/>
     <AuthContext.Consumer>
       {auth => {
         if (auth.authenticated) {

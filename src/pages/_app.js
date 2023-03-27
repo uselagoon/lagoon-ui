@@ -1,6 +1,6 @@
 import "isomorphic-unfetch";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { createContext } from "react";
 import Head from "next/head";
 import getConfig from "next/config";
 import Typekit from "react-typekit";
@@ -12,14 +12,16 @@ import App from "next/app";
 
 // theming
 import useTheme from "lib/useTheme";
-import {darkTheme,lightTheme} from "../styles/theme";
+import { darkTheme, lightTheme } from "../styles/theme";
 import { ThemeProvider } from "styled-components";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
+export const AppContext = createContext();
+
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname } = useRouter();
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const lagoonTheme = theme === "light" ? lightTheme : darkTheme;
 
   // Catch runtime errors in production and skip authentication to avoid
@@ -41,21 +43,23 @@ const LagoonApp = ({ Component, pageProps, err }) => {
   }
 
   return (
-    <ThemeProvider theme={lagoonTheme}>
-      <Script
-        src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
-        strategy="beforeInteractive"
-      />
-      <Head>
-        <Typekit kitId="ggo2pml" />
-      </Head>
-      <Authenticator>
-        <ApiConnection>
-          <Component {...pageProps} url={pathname} />
-        </ApiConnection>
-      </Authenticator>
-      <Favicon />
-    </ThemeProvider>
+    <AppContext.Provider value={{ theme, toggleTheme }}>
+      <ThemeProvider theme={lagoonTheme}>
+        <Script
+          src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
+          strategy="beforeInteractive"
+        />
+        <Head>
+          <Typekit kitId="ggo2pml" />
+        </Head>
+        <Authenticator>
+          <ApiConnection>
+            <Component {...pageProps} url={pathname} />
+          </ApiConnection>
+        </Authenticator>
+        <Favicon />
+      </ThemeProvider>
+    </AppContext.Provider>
   );
 };
 
