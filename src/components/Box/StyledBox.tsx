@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { color } from "lib/variables";
 
 export const StyledBox = styled.div<{ activeBgs?: string[] }>`
-  border: 1px solid ${color.lightestGrey};
+  border: 2px solid ${props => props.theme.boxBorder};
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   transition: all 0.3s ease;
   border-radius: 3px;
@@ -21,7 +21,7 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   }
 
   &:hover {
-    border: 1px solid ${color.brightBlue};
+    border: 2px solid ${color.brightBlue};
 
     &::after {
       box-shadow: 0px 12px 40px 0px rgba(73, 127, 250, 0.5);

@@ -46,7 +46,7 @@ export const SearchInput = styled.input`
   background: url("/static/images/search.png") 12px center no-repeat
     ${props => props.theme.inputBg};
   background-size: 14px;
-  border: 1px solid ${color.midGrey};
+  border: 1px solid #46505d;
   height: 40px;
   padding: 0 12px 0 34px;
   transition: border 0.5s ease;

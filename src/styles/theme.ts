@@ -11,7 +11,11 @@ export const darkTheme: DefaultTheme = {
 
   labelColor: "#dee2e5",
   inputBg: "#3B3B3B",
+  inputBorder: "#46505d",
+  boxBorder:"#21262C",
+
   headerFooterGradient: "linear-gradient(to right, #24aec4 0%, #2a6dfe 25%)",
+  selectionBg: "#f6f9ff",
 };
 
 export const lightTheme: DefaultTheme = {
@@ -22,5 +26,8 @@ export const lightTheme: DefaultTheme = {
   modalOverlayBg: "#fafafcbf",
   labelColor: color.darkGrey,
   inputBg: color.white,
+  inputBorder: color.midGrey,
+  boxBorder:color.lightestGrey,
   headerFooterGradient: `linear-gradient(to right, ${color.brightBlue} 0%,${color.lightBlue} 25%)`,
+  selectionBg: "#497ffa4d",
 };

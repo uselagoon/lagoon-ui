@@ -3,19 +3,16 @@ import {
   createGlobalStyle,
   DefaultTheme,
   GlobalStyleComponent,
-  LagoonTheme,
 } from "styled-components";
 
 /**
  * Applies styles globally to any component nested inside it.
  */
 
-type GlobalStylesProps = {
-  theme: LagoonTheme;
-};
+
 
 const GlobalStyles: GlobalStyleComponent<
-  GlobalStylesProps,
+  {},
   DefaultTheme
 > = createGlobalStyle`
 * {
@@ -83,7 +80,10 @@ a {
     }
   }
 }
-
+mark {
+  background-color: ${props => props.theme.selectionBg};
+  color: #000;
+}
 .bulk-label a:link { color: ${color.white}; }
 .bulk-label a:visited { color: ${color.white}; }
 .bulk-label a:hover { color: ${color.white}; }

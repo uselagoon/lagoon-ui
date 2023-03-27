@@ -8,6 +8,9 @@ export  interface LagoonTheme {
   labelColor: string;
   headerFooterGradient: string;
   inputBg: string;
+  inputBorder:string;
+  boxBorder:string;
+  selectionBg: string;
 }
 
 declare module "styled-components" {
