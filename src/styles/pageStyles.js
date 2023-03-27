@@ -3,7 +3,7 @@ import { bp, color } from "lib/variables";
 import { commonBg } from "./commonPageStyles";
 
 export const ProblemsByDashBoard = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   .filters-wrapper,
   .project-filter {
     margin: 32px calc((100vw / 16) * 1);
@@ -39,7 +39,7 @@ export const ProblemsByDashBoard = styled.div`
       }
     }
     .content {
-      background: #fff;
+      background: ${props => props.theme.backgroundColor};
       margin: 0 calc((100vw / 16) * 1);
       @media ${bp.wideUp} {
         margin: 0 calc((100vw / 16) * 2);
@@ -92,7 +92,7 @@ export const ProblemsByDashBoard = styled.div`
 `;
 export const DeploymentWrapper = styled.div`
   flex: 1;
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -104,7 +104,7 @@ export const DeploymentWrapper = styled.div`
 `;
 
 export const DeploymentsWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -118,7 +118,7 @@ export const DeploymentsWrapper = styled.div`
 `;
 
 export const EnvironmentWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -127,7 +127,7 @@ export const EnvironmentWrapper = styled.div`
 `;
 
 export const ProblemsDashBoardWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   flex: 1;
   h2 {
     margin: 38px calc((100vw / 16) * 1) 0;
@@ -155,7 +155,7 @@ export const ProblemsDashBoardWrapper = styled.div`
 `;
 
 export const TasksWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -168,7 +168,7 @@ export const TasksWrapper = styled.div`
 `;
 
 export const TaskWrapper = styled.div`
-  ${commonBg};
+   ${(props) => commonBg(props.theme.backgroundColor)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -186,7 +186,7 @@ export const ProjectDetailsWrapper = styled.div`
     justify-content: space-between;
   }
 
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgroundColor)}
   .project-details-sidebar {
     background-color: ${color.lightestGrey};
     border-right: 1px solid ${color.midGrey};
@@ -268,7 +268,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
       padding-bottom: 20px;
     }
     .project-overview {
-      background: #fff;
+      background: ${props=> props.theme.backgroundColor};
     }
     .overview {
       .overview-list {

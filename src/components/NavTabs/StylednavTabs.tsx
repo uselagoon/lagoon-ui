@@ -50,11 +50,10 @@ export const StyledNavigation = styled.ul`
 
     &.active {
       &::before {
-        background-color: ${color.almostWhite};
+        background-color: ${(props)=>props.theme.backgroundColor};
       }
-
-      background-color: ${color.almostWhite};
-      border-right: 1px solid ${color.almostWhite};
+      background-color: ${(props)=>props.theme.backgroundColor};
+      border-right: 1px solid ${(props)=>props.theme.backgroundColor};
       width: calc(100% + 1px);
 
       a {

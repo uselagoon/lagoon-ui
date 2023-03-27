@@ -4,6 +4,7 @@ import { color } from "lib/variables";
 export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   border: 1px solid ${color.lightestGrey};
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
   border-radius: 3px;
   position: relative;
   width: 100%;
@@ -28,7 +29,7 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   }
 
   .content {
-    background-color: ${color.white};
+    background: ${props => props.theme.backgroundColor};
     height: 100%;
     overflow: hidden;
     padding: 16px 20px;
