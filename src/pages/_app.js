@@ -17,7 +17,7 @@ import { ThemeProvider } from "styled-components";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
-export const AppContext = createContext();
+export const AppContext = createContext(null);
 
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname } = useRouter();

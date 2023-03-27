@@ -4,8 +4,15 @@ import { useContext } from "react";
 import styled from "styled-components";
 import { AppContext } from "../../pages/_app";
 
+type AppContextType = {
+  theme: string;
+  toggleTheme: () => void;
+};
+
 const ThemeToggler = () => {
-  const { theme, toggleTheme } = useContext(AppContext);
+  const { theme, toggleTheme } = (useContext(
+    AppContext
+  ) as unknown) as AppContextType;
 
   return (
     <StyledToggler>
