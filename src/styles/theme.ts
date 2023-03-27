@@ -3,7 +3,7 @@ import { LagoonTheme } from "styled-components";
 
 export const darkTheme: LagoonTheme = {
   colorScheme: "dark",
-  backgroundColor: "#121212",
+  backgroundColor: "#0E1117",
 
   primaryTextColor: "#e5e5e5",
 
