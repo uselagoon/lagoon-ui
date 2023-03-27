@@ -48,6 +48,11 @@ export const StyledEnvironments = styled.div`
         margin-left: 0;
       }
     }
+    & .box .content{
+      label{
+        background: ${props => props.theme.boxBorder};
+      }
+    }
   }
 
   .productionLabel {

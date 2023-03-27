@@ -189,7 +189,7 @@ export const ProjectDetailsWrapper = styled.div`
   ${(props) => commonBg(props.theme.backgroundColor)}
   .project-details-sidebar {
     background-color: ${color.lightestGrey};
-    border-right: 1px solid ${color.midGrey};
+    border-right: ${props => props.theme.colorScheme === "dark" ? `2px solid ${props.theme.boxBorder}`: `1px solid ${color.midGrey}`};
     width: 100%;
     display: flex;
     justify-content: center;
@@ -212,6 +212,7 @@ export const ProjectDetailsWrapper = styled.div`
   .environments-wrapper {
     flex-grow: 1;
     padding: 40px calc((100vw / 16) * 1);
+    background: ${props => props.theme.environmentBg};
   }
 `;
 

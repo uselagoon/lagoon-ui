@@ -44,8 +44,8 @@ export const BreadCrumbLink = styled.a`
 `;
 
 export const StyledBreadcrumbsWrapper = styled.div`
-  background-color: ${color.white};
-  border-bottom: 1px solid ${color.midGrey};
+  background-color: ${props => props.theme.colorScheme === "dark" ? props.theme.backgroundColor : color.white};
+  border-bottom:${props => props.theme.colorScheme === "dark" ? `2px solid ${props.theme.boxBorder}` : `1px solid ${color.midGrey}`};;
 
   .breadcrumbs {
     display: flex;

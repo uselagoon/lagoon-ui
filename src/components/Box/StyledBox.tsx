@@ -29,7 +29,7 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   }
 
   .content {
-    background: ${props => props.theme.backgroundColor};
+    background: ${props => props.theme.boxBackground};
     height: 100%;
     overflow: hidden;
     padding: 16px 20px;
