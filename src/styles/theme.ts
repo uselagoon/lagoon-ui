@@ -1,7 +1,7 @@
 import { color } from "lib/variables";
-import { LagoonTheme } from "styled-components";
+import { DefaultTheme } from "styled-components";
 
-export const darkTheme: LagoonTheme = {
+export const darkTheme: DefaultTheme = {
   colorScheme: "dark",
   backgroundColor: "#0E1117",
 
@@ -14,7 +14,7 @@ export const darkTheme: LagoonTheme = {
   headerFooterGradient: "linear-gradient(to right, #24aec4 0%, #2a6dfe 25%)",
 };
 
-export const lightTheme: LagoonTheme = {
+export const lightTheme: DefaultTheme = {
   colorScheme: "light",
   backgroundColor: color.almostWhite,
 

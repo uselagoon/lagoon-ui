@@ -1,13 +1,15 @@
 import "styled-components";
 
+export  interface LagoonTheme {
+  colorScheme: "dark" | "light";
+  backgroundColor: string;
+  primaryTextColor: string;
+  modalOverlayBg: string;
+  labelColor: string;
+  headerFooterGradient: string;
+  inputBg: string;
+}
+
 declare module "styled-components" {
-  export type LagoonTheme = {
-    colorScheme: "dark" | "light";
-    backgroundColor: string;
-    primaryTextColor: string;
-    modalOverlayBg: string;
-    labelColor: string;
-    headerFooterGradient: string;
-    inputBg: string;
-  };
+  export interface DefaultTheme extends LagoonTheme {}
 }
