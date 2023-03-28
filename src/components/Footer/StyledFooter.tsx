@@ -4,7 +4,7 @@ import { color } from "lib/variables";
 export const StyledFooter = styled.footer`
         background: ${color.brightBlue} ${color.lightBlue};
         background: ${color.lightBlue};
-        background: ${props => props.theme.headerFooterGradient};
+        background: ${props => props.theme.gradients.headerFooterGradient};
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${color.lightBlue}',GradientType=1 );
         display: flex;
         justify-content: space-between;

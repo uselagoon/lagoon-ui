@@ -44,7 +44,7 @@ export const ProjectsHeader = styled.div`
 
 export const SearchInput = styled.input`
   background: url("/static/images/search.png") 12px center no-repeat
-    ${props => props.theme.inputBg};
+    ${props => props.theme.backgrounds.input};
   background-size: 14px;
   border: 1px solid #46505d;
   height: 40px;

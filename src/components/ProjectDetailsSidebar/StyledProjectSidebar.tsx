@@ -4,7 +4,7 @@ import { bp, color, fontSize } from "lib/variables";
 export const ProjectDetails = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.secondaryBg};
+  background-color: ${props => props.theme.backgrounds.secondary};
   padding: 48px 24px 48px clamp(5%, 4vw, 20%);
 
   @media ${bp.xlWideDown} {

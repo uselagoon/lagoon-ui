@@ -50,7 +50,7 @@ export const StyledEnvironments = styled.div`
     }
     & .box .content{
       label{
-        background: ${props => props.theme.boxBorder};
+        background: ${props => props.theme.borders.box};
       }
     }
   }

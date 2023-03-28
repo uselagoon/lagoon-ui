@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { color } from "lib/variables";
 
 export const StyledBox = styled.div<{ activeBgs?: string[] }>`
-  border: 2px solid ${props => props.theme.boxBorder};
+  border: 2px solid ${props => props.theme.borders.box};
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   transition: all 0.3s ease;
   border-radius: 3px;
@@ -29,7 +29,7 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   }
 
   .content {
-    background: ${props => props.theme.boxBackground};
+    background: ${props => props.theme.backgrounds.box};
     height: 100%;
     overflow: hidden;
     padding: 16px 20px;
