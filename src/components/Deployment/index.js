@@ -4,7 +4,10 @@ import momentDurationFormatSetup from 'moment-duration-format';
 import CancelDeployment from 'components/CancelDeployment';
 import BulkDeploymentLink from 'components/link/BulkDeployment';
 import LogViewer from 'components/LogViewer';
-import { bp, color, fontSize } from 'lib/variables';
+import withState from 'recompose/withState';
+import withHandlers from 'recompose/withHandlers';
+import Button from 'components/Button';
+import { ButtonRow, DeploymentDetails, FieldWrapper } from './StyledDeployment';
 
 export const getDeploymentDuration = deployment => {
   const deploymentStart = deployment.started || deployment.created;
@@ -19,13 +22,19 @@ export const getDeploymentDuration = deployment => {
   return duration;
 };
 
+const withParseLogsState = withState("checkedParseState", "setParseStateChecked", true);
+
+const withParseLogsStateHandlers = withHandlers({
+  changeState: ({setParseStateChecked, checkedParseState}) => (e) => {setParseStateChecked(!checkedParseState);},
+})
+
 /**
  * Displays information about a deployment.
  */
-const Deployment = ({ deployment }) => (
+const Deployment = ({ deployment, checkedParseState, changeState }) => (
   <div className="deployment">
-    <div className="details">
-      <div className="field-wrapper created">
+    <DeploymentDetails>
+      <FieldWrapper className="created">
         <div>
           <label>Created</label>
           <div className="field">
@@ -35,8 +44,8 @@ const Deployment = ({ deployment }) => (
               .format('DD MMM YYYY, HH:mm:ss (Z)')}
           </div>
         </div>
-      </div>
-      <div className={`field-wrapper status ${deployment.status}`}>
+      </FieldWrapper>
+      <FieldWrapper className={`status ${deployment.status}`}>
         <div>
           <label>Status</label>
           <div className="field">
@@ -44,14 +53,24 @@ const Deployment = ({ deployment }) => (
               deployment.status.slice(1)}
           </div>
         </div>
-      </div>
-      <div className="field-wrapper duration">
+      </FieldWrapper>
+      <FieldWrapper className="duration">
         <div>
           <label>Duration</label>
           <div className="field">{getDeploymentDuration(deployment)}</div>
         </div>
-      </div>
-      {deployment.bulkId &&<div className="field-wrapper bulk">
+      </FieldWrapper>
+      <FieldWrapper className="logstatus">
+        <div>
+        <label>Log view</label>
+        <div className="field">
+          <Button action={changeState}>
+            {checkedParseState ? "View raw" : "View parsed"}
+          </Button>
+        </div>
+        </div>
+      </FieldWrapper>
+      {deployment.bulkId &&<FieldWrapper className="bulk">
         <div>
           <label>Bulk Deployment</label>
           <div className="field">
@@ -62,173 +81,15 @@ const Deployment = ({ deployment }) => (
           </BulkDeploymentLink>
           </div>
         </div>
-      </div>}
-    </div>
-    <div className="button-row">
-      {['new', 'pending', 'running'].includes(deployment.status) && (
+      </FieldWrapper>}
+    </DeploymentDetails>
+    <ButtonRow>
+    {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
         <CancelDeployment deployment={deployment} />
       )}
-    </div>
-    <LogViewer logs={deployment.buildLog} status={deployment.status} />
-    <style jsx>{`
-      .button-row {
-        padding: 0px calc(100vw / 16) 20px;
-        width: 100%;
-        @media ${bp.xs_smallUp} {
-          display: flex;
-          flex-wrap: wrap;
-          min-width: 100%;
-          padding-left: calc(((100vw / 16) * 1.5) + 28px);
-          position: relative;
-          width: 100%;
-        }
-        @media ${bp.tabletUp} {
-          padding: 0 calc(100vw / 16) 20px calc(((100vw / 16) * 1.5) + 28px);
-        }
-        @media ${bp.extraWideUp} {
-          padding-left: calc(100vw / 16);
-        }
-      }
-      .details {
-        padding: 104px calc(100vw / 16) 20px;
-        width: 100%;
-        @media ${bp.xs_smallUp} {
-          display: flex;
-          flex-wrap: wrap;
-          min-width: 100%;
-          padding-left: calc(((100vw / 16) * 1.5) + 28px);
-          position: relative;
-          width: 100%;
-        }
-        @media ${bp.tabletUp} {
-          padding: 120px calc(100vw / 16) 20px calc(((100vw / 16) * 1.5) + 28px);
-        }
-        @media ${bp.extraWideUp} {
-          padding-left: calc(100vw / 16);
-          padding-top: 48px;
-        }
-
-        h3 {
-          width: 100%;
-          @media ${bp.xs_smallUp} {
-            left: calc(100vw / 16);
-            position: absolute;
-            top: 32px;
-          }
-          @media ${bp.tabletUp} {
-            top: 48px;
-          }
-          @media ${bp.extraWideUp} {
-            min-width: 25%;
-            padding-right: 60px;
-            position: initial;
-            width: 25%;
-          }
-        }
-
-        .field-wrapper {
-          &::before {
-            left: calc(((-100vw / 16) * 1.5) - 28px);
-          }
-          @media ${bp.xs_smallUp} {
-            min-width: 50%;
-            position: relative;
-            width: 50%;
-          }
-          @media ${bp.desktopUp} {
-            min-width: 33.33%;
-            min-width: calc(100% / 3);
-            width: 33.33%;
-            width: calc(100% / 3);
-          }
-          @media ${bp.extraWideUp} {
-            min-width: 25%;
-            width: 25%;
-          }
-
-          &.created {
-            &::before {
-              background-image: url('/static/images/created.svg');
-              background-size: 17px 16px;
-            }
-          }
-
-          &.duration {
-            &::before {
-              background-image: url('/static/images/duration.svg');
-              background-size: 17px;
-            }
-          }
-
-          &.status {
-            &::before {
-              background-size: 14px;
-            }
-
-            &.new {
-              &::before {
-                background-image: url('/static/images/pending.svg');
-              }
-            }
-
-            &.pending {
-              &::before {
-                background-image: url('/static/images/pending.svg');
-              }
-            }
-
-            &.running {
-              &::before {
-                background-image: url('/static/images/in-progress.svg');
-              }
-            }
-
-            &.cancelled {
-              &::before {
-                background-image: url('/static/images/failed.svg');
-              }
-            }
-
-            &.error {
-              &::before {
-                background-image: url('/static/images/failed.svg');
-              }
-            }
-
-            &.failed {
-              &::before {
-                background-image: url('/static/images/failed.svg');
-              }
-            }
-
-            &.complete {
-              &::before {
-                background-image: url('/static/images/successful.svg');
-              }
-            }
-          }
-
-          &.bulk {
-            &::before {
-              background-image: url('/static/images/tasks-dark.svg');
-              background-size: 14px;
-            }
-          }
-
-          & > div {
-            width: 100%;
-          }
-
-          .field {
-            padding-right: calc((100vw / 16) * 1);
-            @media ${bp.extraWideUp} {
-              padding-right: calc((100vw / 16) * 0.5);
-            }
-          }
-        }
-      }
-    `}</style>
+    </ButtonRow>
+    <LogViewer logs={deployment.buildLog} status={deployment.status} checkedParseState={checkedParseState} forceLastSectionOpen={true}/>
   </div>
 );
 
-export default Deployment;
+export default withParseLogsState(withParseLogsStateHandlers(Deployment));

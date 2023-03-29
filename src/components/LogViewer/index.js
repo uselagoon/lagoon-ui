@@ -1,32 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { bp } from 'lib/variables';
+import React, { useRef } from 'react';
 import LogAccordion from 'components/LogViewer/LogAccordion';
+import { StyledLogs } from './StyledLogViewer';
 
-const LogViewer = ({ logs, status = "NA" }) => (
+const LogViewer = ({ logs, status = "NA", checkedParseState, changeState, forceLastSectionOpen = true }) => (
   <React.Fragment>
-    <div className="logs">
-      <div className="log-viewer">{ logs !== null ? logPreprocessor(logs, status) : 'Logs are not available.'}</div>
-    </div>
-    <style jsx>{`
-      .logs {
-        padding: 0 calc(100vw / 16) 48px;
-        width: 100%;
-        .log-viewer {
-          background-color: #222222;
-          color: #d6d6d6;
-          font-family: 'Monaco', monospace;
-          font-size: 12px;
-          font-weight: 400;
-          margin: 0;
-          overflow-wrap: break-word;
-          overflow-x: scroll;
-          white-space: pre-wrap;
-          will-change: initial;
-          word-break: break-all;
-          word-wrap: break-word;
-        }
-      }
-    `}</style>
+    <StyledLogs className="logs">
+    { logs !== null ?
+        checkedParseState ?
+        (<div className="log-viewer">{logPreprocessor(logs, status, forceLastSectionOpen)}</div>)
+          : (<div className="log-viewer with-padding">{logs}</div>)
+      : (<div className="log-viewer with-padding">Logs are not available.</div>) }
+    </StyledLogs>
   </React.Fragment>
 );
 
@@ -45,12 +29,13 @@ const isLogStateBad = (status) => {
  *
  * @param {*} logs the actual logs we're processing
  * @param {*} status a status for the build - if not complete, we open the very last item
+ * @param {*} status a status for the build - if not complete, we open the very last item
  * @returns
  */
-const logPreprocessor = (logs, status) => {
+const logPreprocessor = (logs, status, forceLastSectionOpen = true) => {
   let ret = null;
   let statusBad = isLogStateBad(status);
-  let openLastSection = shouldLastSectionBeOpen(status);
+  let openLastSection = forceLastSectionOpen || shouldLastSectionBeOpen(status);
 
   try {
     let tokens = logPreprocessorTokenize(logs);
@@ -66,6 +51,7 @@ const logPreprocessor = (logs, status) => {
 
 
 const logPreprocessorRenderLogNode = (node, visible = false, errorState = false) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const logsContentRef = useRef(null);
 
   if (node.type === "log-text") {
@@ -173,7 +159,7 @@ const logPreprocessorExtractSectionEndDetails = (logs) => {
 const logPreprocessorTokenize = (logs) => {
   // tokenize
   const regexp = /##############################################\n(BEGIN) (.+)\n##############################################/;
-  const beginningSectionDefaultDetails = "Logs begin";
+  const beginningSectionDefaultDetails = "Build Setup";
 
   // The regex above will split the logs into three separate token types
   // 1. standard blocks of text

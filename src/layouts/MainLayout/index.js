@@ -1,16 +1,17 @@
-import GlobalStyles from 'layouts/GlobalStyles';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+import Header from "components/Header";
+import Footer from "components/Footer";
+import GlobalStyles from "../GlobalStyles";
 
 /**
  * The main layout includes the Lagoon UI header.
  */
 const MainLayout = ({ children }) => (
-  <GlobalStyles>
+  <>
+    <GlobalStyles />
     <Header />
-    { children }
+    {children}
     <Footer />
-  </GlobalStyles>
+  </>
 );
 
 export default MainLayout;

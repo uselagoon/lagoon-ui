@@ -1,5 +1,4 @@
 import React from 'react';
-import { bp, color, fontSize } from 'lib/variables';
 import Accordion from 'components/Accordion';
 import { getFromNowTime } from "components/Dates";
 import ContentDisplay from "components/Problem/ContentDisplay";
@@ -47,26 +46,6 @@ const Problem = ({ problem, display }) => {
                     </div>
                 </div>
             )}
-            <style jsx>{`
-            .problem-header {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 20px;
-                background: ${color.white};
-                p {
-                    margin-bottom: 0;
-                }
-            }
-            .problem-wrapper {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                padding: 20px;
-                background: ${color.lightestGrey};
-            }
-        `}
-            </style>
         </>
     );
 };

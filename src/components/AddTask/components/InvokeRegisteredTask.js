@@ -6,6 +6,7 @@ import Button from 'components/Button';
 import withState from 'recompose/withState';
 import * as R from "ramda";
 import { CustomTaskConfirm } from './CustomTaskConfirm';
+import { StyledRegisteredTasks } from './Styles';
 
 const mutationInvokeRegisteredTask = gql`
   mutation invokeRegisteredTask($environment: Int!, $taskRegistration: Int!, $argumentValues: [AdvancedTaskDefinitionArgumentValueInput]) {
@@ -59,9 +60,9 @@ const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArgum
       })(),
     }}
   >
-    {(mutationInvokeRegisteredTask, { loading, called, error, data }) => {
+    {(mutationInvokeRegisteredTask) => {
       return (
-        <React.Fragment>
+        <StyledRegisteredTasks>
           <div className="taskArguments">
           {selectedTask.arguments && selectedTask.arguments.map((d, index) => {
             switch(d.type) {
@@ -114,33 +115,7 @@ const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArgum
             closeModal={()=>{setIsConfirmOpen(false);}}
           /> || <Button disabled={taskArgumentsExist && !argumentVariablesHaveValues} action={mutationInvokeRegisteredTask}>Run task</Button>
           }
-          <style jsx>{`
-            .envSelect {
-              margin: 10px 0;
-            }
-            .envText {
-              display: block;
-              margin: 10px 0;
-            }
-            .envText label {
-              display: block;
-            }
-            .envText input {
-              width: 100%;
-              margin-bottom: 15px;
-              padding: 8px 2px;
-              border-color: rgb(204, 204, 204);
-              border-radius: 4px;
-              border-style: solid;
-              border-width: 1px;
-            }
-            .warning {
-              background-color: red;
-              color: white;
-              padding: 10px;
-            }
-          `}</style>
-        </React.Fragment>
+        </StyledRegisteredTasks>
       );
     }}
   </Mutation>
