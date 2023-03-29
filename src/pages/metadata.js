@@ -10,13 +10,12 @@ import gql from 'graphql-tag';
 
 import Breadcrumbs from 'components/Breadcrumbs';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
 import LeftNavTabs from 'components/LeftNavTabs';
 import Metadata from 'components/Metadata';
 import withQueryLoading from 'lib/withQueryLoading';
 import withQueryError from 'lib/withQueryError';
-import { withEnvironmentRequired } from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+import { MetadataWrapper } from "../styles/pageStyles";
+
 
 
 const metadataQuery = gql`
@@ -51,25 +50,13 @@ export const PageMetadata = ({ router }) => {
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={project} />
           </Breadcrumbs>
-          <div className="content-wrapper">
+          <MetadataWrapper className="content-wrapper">
             <LeftNavTabs activeTab="metadata" project={project} />
             <div className="content">
-              <Metadata metadata={metadata} />
+              {console.log(metadata)}
+              {/* <Metadata metadata={metadata} /> */}
             </div>
-          </div>
-          <style jsx>{`
-            .content-wrapper {
-              @media ${bp.tabletUp} {
-                display: flex;
-                padding: 0;
-              }
-            }
-
-            .content {
-              padding: 32px calc((100vw / 16) * 1);
-              width: 100%;
-            }
-          `}</style>
+          </MetadataWrapper>
         </MainLayout>
       ))}
     </Query>

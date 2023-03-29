@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
 
-export const StyledNavigation = styled.ul`
+export const StyledLeftNavTabs = styled.ul`
   background: ${color.lightestGrey};
   border-right: 1px solid ${color.midGrey};
   margin: 0;
   z-index: 10;
+
   @media ${bp.tabletUp} {
     min-width: 30%;
     padding-bottom: 60px;
@@ -13,22 +14,19 @@ export const StyledNavigation = styled.ul`
   @media ${bp.wideUp} {
     min-width: 25%;
   }
-
   li {
     border-bottom: 1px solid ${color.midGrey};
     margin: 0;
     padding: 0;
     position: relative;
-
     &:hover {
       background-color: ${color.white};
     }
-
     &::before {
       background-color: ${color.linkBlue};
       background-position: center center;
       background-repeat: no-repeat;
-      content: "";
+      content: '';
       display: block;
       height: 59px;
       left: 0;
@@ -37,7 +35,6 @@ export const StyledNavigation = styled.ul`
       transition: all 0.3s ease-in-out;
       width: 45px;
     }
-
     a {
       color: ${color.darkGrey};
       display: block;
@@ -46,95 +43,42 @@ export const StyledNavigation = styled.ul`
         padding-left: calc((100vw / 16) * 1);
       }
     }
-
     &.active {
       &::before {
         background-color: ${color.almostWhite};
       }
-
       background-color: ${color.almostWhite};
       border-right: 1px solid ${color.almostWhite};
       width: calc(100% + 1px);
-
       a {
         color: ${color.black};
       }
     }
-
     &.overview {
       &::before {
-        background-image: url("/static/images/overview.svg");
+        background-image: url('/static/images/overview.svg');
         background-size: 18px;
       }
-
       &.active::before {
-        background-image: url("/static/images/overview-active.svg");
+        background-image: url('/static/images/overview-active.svg');
       }
     }
-
-    &.deployments {
+    &.environments {
       &::before {
-        background-image: url("/static/images/deployments.svg");
-        background-size: 21px 16px;
+        background-image: url("/static/images/environments-sidebar.svg");
+        background-size: 21px;
       }
-
       &.active::before {
-        background-image: url("/static/images/deployments-active.svg");
+        background-image: url('/static/images/environments-active.svg');
       }
     }
-
-    &.backups {
+    &.variables {
       &::before {
-        background-image: url("/static/images/backups.svg");
-        background-size: 19px;
+        background-image: url('/static/images/variables.svg');
+        background-size: 22px;
       }
-
       &.active::before {
-        background-image: url("/static/images/backups-active.svg");
-      }
-    }
-
-    &.tasks {
-      &::before {
-        background-image: url("/static/images/tasks.svg");
-        background-size: 16px;
-      }
-
-      &.active::before {
-        background-image: url("/static/images/tasks-active.svg");
-      }
-    }
-
-    &.problems {
-      &::before {
-        background-image: url("/static/images/problems.svg");
-        background-size: 16px;
-      }
-
-      &.active::before {
-        background-image: url("/static/images/problems-active.svg");
-      }
-    }
-
-    &.facts {
-      &::before {
-        background-image: url("/static/images/facts.svg");
-        background-size: 16px;
-      }
-
-      &.active::before {
-        background-image: url("/static/images/facts-active.svg");
-      }
-    }
-
-    &.insights {
-      &::before {
-        background-image: url("/static/images/insights.svg");
-        background-size: 16px;
-      }
-
-      &.active::before {
-        background-image: url("/static/images/insights-active.svg");
+        background-image: url('/static/images/variables-active.svg');
       }
     }
   }

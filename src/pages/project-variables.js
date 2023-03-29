@@ -17,7 +17,7 @@ import { ProjectDetailsWrapper, ProjectWrapper } from "../styles/pageStyles";
 /**
  * Displays a project page, given the project name.
  */
-export const PageProject = ({ router }) => (
+export const PageProjectVariables = ({ router }) => (
   <>
     <Head>
       <title>{`${router.query.projectName} | Project`}</title>
@@ -46,10 +46,10 @@ export const PageProject = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <ProjectWrapper>
-            <LeftNavTabs activeTab="overview" project={router.query.projectName} />
+            <LeftNavTabs activeTab="variables" project={router.query.projectName} />
             <ProjectDetailsWrapper>
-              <div className="project-details-header">
-                <ProjectDetailsSidebar project={project} />
+              <div className="environments-wrapper">
+                  <h3>Soon..</h3>
               </div>
             </ProjectDetailsWrapper>
             </ProjectWrapper>
@@ -60,4 +60,4 @@ export const PageProject = ({ router }) => (
   </>
 );
 
-export default withRouter(PageProject);
+export default withRouter(PageProjectVariables);

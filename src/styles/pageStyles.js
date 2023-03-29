@@ -90,6 +90,21 @@ export const ProblemsByDashBoard = styled.div`
     }
   }
 `;
+
+export const MetadataWrapper = styled.div`
+  .content-wrapper {
+    @media ${bp.tabletUp} {
+      display: flex;
+      padding: 0;
+    }
+  }
+
+  .content {
+    padding: 32px calc((100vw / 16) * 1);
+    width: 100%;
+  }
+`;
+
 export const DeploymentWrapper = styled.div`
   flex: 1;
   ${commonBg};
@@ -123,6 +138,26 @@ export const EnvironmentWrapper = styled.div`
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
+  }
+`;
+
+export const VariableWrapper = styled.div`
+  ${commonBg};
+  flex: 1;
+  @media ${bp.tabletUp} {
+    display: flex;
+    padding: 0;
+  }
+  & > .content {
+    width: 100%;
+  }
+  .notification {
+    background-color: ${color.lightBlue};
+    color: ${color.white};
+    padding: 10px 20px;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
   }
 `;
 
@@ -180,35 +215,49 @@ export const TaskWrapper = styled.div`
   }
 `;
 
+export const ProjectWrapper = styled.div`
+  ${commonBg};
+  flex: 1;
+  @media ${bp.tabletUp} {
+    display: flex;
+    padding: 0;
+  }
+
+  & > .content {
+    width: 100%;
+  }
+`;
+
 export const ProjectDetailsWrapper = styled.div`
+  display: flex;
+  min-width: 80%;
+  flex-direction: column;
+  
   @media ${bp.tabletUp} {
     display: flex;
     justify-content: space-between;
   }
 
-  ${commonBg};
-  .project-details-sidebar {
-    background-color: ${color.lightestGrey};
-    border-right: 1px solid ${color.midGrey};
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    @media ${bp.tabletUp} {
-      min-width: 50%;
-      width: 50%;
-    }
-    @media ${bp.desktopUp} {
-      min-width: 40%;
-      width: 40%;
-    }
-    @media ${bp.wideUp} {
-      min-width: 33.33%;
-      width: 33.33%;
-      width: calc((100vw / 16) * 5);
-    }
+  .environments-production, .environments-development {
+    max-width: 75%
   }
 
+  ${commonBg};
+  .project-details-header {
+    border-right: 1px solid ${color.midGrey};
+    padding: 32px calc((100vw / 16) * 1);
+    width: 100%;
+    @media ${bp.xs_smallUp} {
+      padding: 24px calc((100vw / 16) * 1) 24px
+        calc(((100vw / 16) * 1.5) + 28px);
+    }
+    @media ${bp.tabletUp} {
+      padding: 48px calc(((100vw / 16) * 1) + 28px);
+    }
+    @media ${bp.desktopUp} {
+      padding: 48px calc((100vw / 50) * 1);
+    }
+  }
   .environments-wrapper {
     flex-grow: 1;
     padding: 40px calc((100vw / 16) * 1);

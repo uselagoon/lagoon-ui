@@ -2,14 +2,10 @@ import styled from "styled-components";
 import { bp, color, fontSize } from "lib/variables";
 
 export const ProjectDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 48px 24px 48px clamp(5%, 4vw, 20%);
-
-  @media ${bp.xlWideDown} {
-    padding: 48px 24px 48px clamp(5%, 1vw, 10%);
-  }
-  width: 100%;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 45ch 45ch 45ch;
+  grid-template-rows: repeat(2, 1fr);
 `;
 
 export const FieldWrapper = styled.div`
@@ -19,6 +15,7 @@ export const FieldWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  padding: 0 1em;
 
   > div {
     margin-left: 14px;

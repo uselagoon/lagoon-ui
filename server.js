@@ -42,8 +42,12 @@ app
       app.render(req, res, '/project', { projectName: req.params.projectSlug });
     });
 
-    server.get('/projects/:projectSlug/:projectSlug-metadata', (req, res) => {
-      app.render(req, res, '/metadata', { projectName: req.params.projectSlug });
+    server.get('/projects/:projectSlug/:projectSlug-environments', (req, res) => {
+      app.render(req, res, '/environments', { projectName: req.params.projectSlug });
+    });
+
+    server.get('/projects/:projectSlug/:projectSlug-variables', (req, res) => {
+      app.render(req, res, '/project-variables', { projectName: req.params.projectSlug });
     });
 
     server.get('/projects/:projectSlug/:environmentSlug', (req, res) => {
