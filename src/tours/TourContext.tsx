@@ -14,10 +14,12 @@ export interface TourContextType {
   startTour: () => void;
   endTour: () => void;
   continueTour: () => void;
-  pauseTour: () => void;
+  pauseTour: (shouldRevalidate?: boolean) => void;
   manuallyTriggerTour: () => void;
   allRoutesToured: () => boolean;
   shouldRevalidate: boolean;
+  allCurrentStepsTraversed: boolean;
+  updateCurrentStepsTraversed: (allTraversed: boolean) => void;
 }
 
 const defaultTourContextValue = {
@@ -42,6 +44,8 @@ const defaultTourContextValue = {
   manuallyTriggerTour: () => {},
   allRoutesToured: () => false,
   shouldRevalidate: false,
+  allCurrentStepsTraversed: false,
+  updateCurrentStepsTraversed: () => {},
 };
 
 export const TourContext = createContext<TourContextType | null>(null);
@@ -71,6 +75,16 @@ export const TourContextProvider = ({
         ...prev,
         routesToured: updatedTourInfo,
       };
+    });
+  };
+
+  const flipRevalidation = () => {
+    // at the next async opportunity, flip the revalidate flag to false.
+    // tour's effect hook will have already reset the steps.
+    setTimeout(() => {
+      setTourState((prev) => {
+        return { ...prev, shouldRevalidate: false };
+      });
     });
   };
 
@@ -124,14 +138,33 @@ export const TourContextProvider = ({
       return { ...prev, tourStarted: false, running: false };
     });
   };
-  const pauseTour = () => {
+  // when called by clicking "x" with shouldRevalidate, it will prepare updated yet unviewed steps when tour gets continued
+  const pauseTour = (shouldRevalidate?: boolean) => {
     setTourState((prev) => {
-      return { ...prev, running: false };
+      return {
+        ...prev,
+        running: false,
+        ...(shouldRevalidate && { shouldRevalidate }),
+      };
     });
+
+    if (shouldRevalidate) {
+      flipRevalidation();
+    }
   };
+
   const continueTour = () => {
     setTourState((prev) => {
-      return { ...prev, running: true };
+      return {
+        ...prev,
+        running: true,
+      };
+    });
+  };
+
+  const updateCurrentStepsTraversed = (allTraversed: boolean) => {
+    setTourState((prev) => {
+      return { ...prev, allCurrentStepsTraversed: allTraversed };
     });
   };
 
@@ -141,16 +174,16 @@ export const TourContextProvider = ({
     localStorage.setItem("lagoon_tour_routesToured", JSON.stringify([]));
     localStorage.setItem("lagoon_tour_skipped", "false");
     setTourState((prev) => {
-      return { ...prev, skipped: false, routesToured: [], shouldRevalidate: true };
+      return {
+        ...prev,
+        skipped: false,
+        routesToured: [],
+        shouldRevalidate: true,
+        running: true,
+        tourStarted: true,
+      };
     });
-
-    // at the next async opportunity, flip the revalidate flag to false.
-    // tour's effect hook will have already reset the steps.
-   setTimeout(() => {
-     setTourState((prev) => {
-       return { ...prev, shouldRevalidate: false };
-     });
-   });
+    flipRevalidation();
   };
 
   //check if all the routes with their corresponding steps have been toured
@@ -164,6 +197,7 @@ export const TourContextProvider = ({
       );
     });
   };
+
   return (
     <TourContext.Provider
       value={{
@@ -177,6 +211,7 @@ export const TourContextProvider = ({
         continueTour,
         manuallyTriggerTour,
         allRoutesToured,
+        updateCurrentStepsTraversed,
       }}
     >
       {children}

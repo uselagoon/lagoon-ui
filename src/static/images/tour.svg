@@ -1,9 +1,9 @@
-<svg fill="#4578e6" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 416.979 416.979" xml:space="preserve" stroke="#4578e6">
+<svg width="800px" height="800px" viewBox="0 0 48.00 48.00" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+<g stroke-width="0"/>
 
-<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+<g stroke-linecap="round" stroke-linejoin="round"/>
 
-<g id="SVGRepo_iconCarrier"> <g> <path d="M356.004,61.156c-81.37-81.47-213.377-81.551-294.848-0.182c-81.47,81.371-81.552,213.379-0.181,294.85 c81.369,81.47,213.378,81.551,294.849,0.181C437.293,274.636,437.375,142.626,356.004,61.156z M237.6,340.786 c0,3.217-2.607,5.822-5.822,5.822h-46.576c-3.215,0-5.822-2.605-5.822-5.822V167.885c0-3.217,2.607-5.822,5.822-5.822h46.576 c3.215,0,5.822,2.604,5.822,5.822V340.786z M208.49,137.901c-18.618,0-33.766-15.146-33.766-33.765 c0-18.617,15.147-33.766,33.766-33.766c18.619,0,33.766,15.148,33.766,33.766C242.256,122.755,227.107,137.901,208.49,137.901z"/> </g> </g>
+<g> <path d="M9 23H39V34C39 35.1046 38.1046 36 37 36H11C9.89543 36 9 35.1046 9 34V23Z" fill="#2F88FF" stroke="#000000" stroke-width="2.5" stroke-linejoin="round"/> <path d="M9 8C9 6.89543 9.89543 6 11 6H37C38.1046 6 39 6.89543 39 8V23H9V8Z" stroke="#000000" stroke-width="2.5" stroke-linejoin="round"/> <path d="M15 42C13.3431 42 12 40.6569 12 39V36H18V39C18 40.6569 16.6569 42 15 42Z" fill="#2F88FF" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M33 42C31.3431 42 30 40.6569 30 39V36H36V39C36 40.6569 34.6569 42 33 42Z" fill="#2F88FF" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M6 12V16" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/> <path d="M42 12V16" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/> <circle cx="15" cy="30" r="2" fill="white"/> <circle cx="33" cy="30" r="2" fill="white"/> <path d="M31 6L22 16" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/> <path d="M38 7L33 13" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/> </g>
 
 </svg>

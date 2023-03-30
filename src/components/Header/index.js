@@ -6,6 +6,7 @@ import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
 import HeaderMenu from 'components/HeaderMenu';
 import {StyledHeader} from "./StyledHeader";
 import Image from 'next/image';
+import TourControlBtn from '../../tours/TourControlBtn';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -33,6 +34,7 @@ const Header = ({ logo }) => (
         />
       </a>
     </Link>
+    <TourControlBtn />
     <AuthContext.Consumer>
       {(auth) => {
         if (auth.authenticated) {

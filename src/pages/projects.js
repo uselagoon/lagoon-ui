@@ -8,7 +8,6 @@ import { CommonWrapper } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
-import RestartTourButton from "../tours/RestartTourButton";
 
 /**
  * Displays the projects page.
@@ -39,7 +38,7 @@ const ProjectsPage = () => {
       <MainLayout>
         <CommonWrapper>
           <h2>
-            Projects <RestartTourButton />
+            Projects
           </h2>
           <div className="content">
             {loading ? (

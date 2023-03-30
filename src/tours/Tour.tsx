@@ -36,6 +36,7 @@ const Tour = () => {
     pauseTour,
     allRoutesToured,
     shouldRevalidate,
+    updateCurrentStepsTraversed,
   } = useTourContext();
   const [translated, setTranslated] = useState(false);
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
@@ -79,7 +80,7 @@ const Tour = () => {
 
   // initial configuration from tour.json and set the context vals.
   useEffect(() => {
-    getTourConfig();
+    void getTourConfig();
   }, []);
 
   // each path change sets the joyride steps per route
@@ -94,13 +95,19 @@ const Tour = () => {
     };
   }, [router.events]);
 
+  useEffect(() => {
+    // when manually retriggering the tour
+    if (shouldRevalidate) {
+      getCurrentRouteSteps(tourRoutes);
+    }
+  }, [shouldRevalidate]);
 
-useEffect(() => {
-  // when manually retriggering the tour
-  if (shouldRevalidate) {
-    getCurrentRouteSteps(tourRoutes);
-  }
-}, [shouldRevalidate]);
+  useEffect(() => {
+    if (currentRouteTour) {
+      // used for manual tour button visibility.
+      updateCurrentStepsTraversed(allCurrentRouteStepsToured());
+    }
+  }, [routesToured, currentRouteTour]);
 
   const handleCallback = (data: CallBackProps) => {
     const { action, index, type } = data;
@@ -108,6 +115,11 @@ useEffect(() => {
     if (action === "skip") {
       skipTour();
       return;
+    }
+
+    if (action === "close") {
+      // when "X" is clicked the tour on the route pauses, navigating to other routes continues it.
+      pauseTour(true);
     }
 
     if (type === "step:after" && action === "prev") {
@@ -141,8 +153,11 @@ useEffect(() => {
 
   // not present in json
   if (!currentRouteTour) return null;
+
   // route already fully toured
-  if (currentRouteTour && allCurrentRouteStepsToured()) return null;
+  if (currentRouteTour && allCurrentRouteStepsToured()) {
+    return null;
+  }
 
   // avoid runtime errors if target isn't provided in the configuration
   if (currentRouteTour.steps.some((step) => step.target === "")) return null;
@@ -165,7 +180,7 @@ useEffect(() => {
         styles={{
           options: {
             primaryColor: color.blue,
-            width:"40vw"
+            width: "40vw",
           },
         }}
       />

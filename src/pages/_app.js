@@ -19,6 +19,7 @@ import Tour from "../tours/Tour";
 import getConfig from "next/config";
 
 const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
+const tourEnabled = LAGOON_UI_TOURS_ENABLED === "enabled";
 
 // lazy load animation features
 const loadFeatures = () =>
@@ -91,7 +92,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
                   <Typekit kitId="ggo2pml" />
                 </Head>
                 <Component {...pageProps} url={pathname} />
-                {LAGOON_UI_TOURS_ENABLED ? <Tour /> : null}
+                {tourEnabled ? <Tour /> : null}
                 <Favicon />
               </m.div>
             </TourContextProvider>
