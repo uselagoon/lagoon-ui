@@ -17,6 +17,14 @@ export const FieldWrapper = styled.div`
   align-items: flex-start;
   padding: 0 1em;
 
+  a.deptargets {
+    color: ${color.blue};
+
+    .active a {
+      color: ${color.lightBlue};
+    }
+  }
+
   > div {
     margin-left: 14px;
   }

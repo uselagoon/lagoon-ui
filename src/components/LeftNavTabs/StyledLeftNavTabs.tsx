@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { bp, color } from 'lib/variables';
+import { bp, color } from "lib/variables";
 
 export const StyledLeftNavTabs = styled.ul`
   background: ${color.lightestGrey};
@@ -26,7 +26,7 @@ export const StyledLeftNavTabs = styled.ul`
       background-color: ${color.linkBlue};
       background-position: center center;
       background-repeat: no-repeat;
-      content: '';
+      content: "";
       display: block;
       height: 59px;
       left: 0;
@@ -56,29 +56,29 @@ export const StyledLeftNavTabs = styled.ul`
     }
     &.overview {
       &::before {
-        background-image: url('/static/images/overview.svg');
+        background-image: url("/static/images/overview.svg");
         background-size: 18px;
       }
       &.active::before {
-        background-image: url('/static/images/overview-active.svg');
+        background-image: url("/static/images/overview-active.svg");
       }
     }
-    &.environments {
+    &.deploy-targets {
       &::before {
-        background-image: url("/static/images/environments-sidebar.svg");
-        background-size: 21px;
+        background-image: url("/static/images/target-sidebar.svg");
+        background-size: 22px;
       }
       &.active::before {
-        background-image: url('/static/images/environments-active.svg');
+        background-image: url("/static/images/target-sidebar-active.svg");
       }
     }
     &.variables {
       &::before {
-        background-image: url('/static/images/variables.svg');
+        background-image: url("/static/images/variables.svg");
         background-size: 22px;
       }
       &.active::before {
-        background-image: url('/static/images/variables-active.svg');
+        background-image: url("/static/images/variables-active.svg");
       }
     }
   }

@@ -7,17 +7,17 @@ import MainLayout from "layouts/MainLayout";
 import ProjectByNameQuery from "lib/query/ProjectByName";
 import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import ProjectDetailsSidebar from "components/ProjectDetailsSidebar";
 import LeftNavTabs from "components/LeftNavTabs";
+import DeployTargets from "components/DeployTargets";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withProjectRequired } from "lib/withDataRequired";
-import { ProjectDetailsWrapper, ProjectWrapper } from "../styles/pageStyles";
+import { ProjectWrapper } from "../styles/pageStyles";
 
 /**
- * Displays a list of all variables for a project.
+ * Displays a list of all Deploy Targets for a project.
  */
-export const PageProjectVariables = ({ router }) => (
+export const PageDeployTargets = ({ router }) => (
   <>
     <Head>
       <title>{`${router.query.projectName} | Project`}</title>
@@ -46,12 +46,8 @@ export const PageProjectVariables = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <ProjectWrapper>
-              <LeftNavTabs activeTab="variables" project={project} />
-              <ProjectDetailsWrapper>
-                <div className="environments-wrapper">
-                  <h3>Soon..</h3>
-                </div>
-              </ProjectDetailsWrapper>
+              <LeftNavTabs activeTab="deploy-targets" project={project} />
+              <DeployTargets project={project} />
             </ProjectWrapper>
           </MainLayout>
         );
@@ -60,4 +56,4 @@ export const PageProjectVariables = ({ router }) => (
   </>
 );
 
-export default withRouter(PageProjectVariables);
+export default withRouter(PageDeployTargets);
