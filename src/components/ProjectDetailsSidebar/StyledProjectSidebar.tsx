@@ -15,7 +15,7 @@ export const ProjectDetails = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
   @media ${bp.extraWideUp} {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 35%;
   }
   @media (min-width: 2400px) {
     grid-template-columns: repeat(4, 1fr);
@@ -35,7 +35,10 @@ export const FieldWrapper = styled.div`
     width: calc(50% + 24px);
   }
   @media ${bp.extraWideUp} {
-    width: calc(70% + 32px);
+    width: calc(85% + 70px);
+    &:nth-child(3) {
+      width: calc(70% + 30px);
+    }
   }
   .deptargets.hover-state {
     color: ${color.linkBlue};
@@ -77,6 +80,7 @@ export const FieldWrapper = styled.div`
   &.giturl {
     margin-bottom: 24px;
     overflow: visible;
+    white-space: nowrap;
     @media ${bp.xs_smallUp} {
       margin-bottom: 36px;
     }
@@ -136,7 +140,7 @@ export const FieldWrapper = styled.div`
       position: absolute;
       right: 0;
       text-transform: uppercase;
-      top: 30px;
+      top: 20px;
       transition: top 0.5s, opacity 0.75s ease-in;
     }
   }
@@ -160,6 +164,7 @@ export const FieldWrapper = styled.div`
   &.envlimit {
     &:before {
       background-image: url("/static/images/environments-in-use.svg");
+      height: 84px;
     }
   }
 

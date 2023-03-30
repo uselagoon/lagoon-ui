@@ -243,6 +243,10 @@ export const ProjectDetailsWrapper = styled.div`
     max-width: 75%;
   }
 
+  .title h3 {
+    margin: 0 0 12px;
+  }
+
   ${commonBg};
   .project-details-header {
     border-right: 1px solid ${color.midGrey};
@@ -257,10 +261,9 @@ export const ProjectDetailsWrapper = styled.div`
   }
   .environments-wrapper {
     flex-grow: 1;
-    padding: 0 calc((100vw / 20) * 1);
+    padding: 48px calc((100vw / 50) * 1) 0px calc((100vw / 50) * 1);
     @media ${bp.xs_smallUp} {
-      padding: 24px calc((100vw / 20) * 1) 24px
-        calc(((100vw / 20) * 1.5) + 28px);
+      padding: 0px calc((100vw / 16) * 1) 40px calc((100vw / 16) * 1);
     }
     @media ${bp.tabletUp} {
       padding: 0 calc(((100vw / 20) * 1) + 28px) 48px;
