@@ -230,37 +230,44 @@ export const ProjectWrapper = styled.div`
 
 export const ProjectDetailsWrapper = styled.div`
   display: flex;
-  min-width: 80%;
+  min-width: 75%;
   flex-direction: column;
-  
+
   @media ${bp.tabletUp} {
     display: flex;
     justify-content: space-between;
   }
 
-  .environments-production, .environments-development {
-    max-width: 75%
+  .environments-production,
+  .environments-development {
+    max-width: 75%;
   }
 
   ${commonBg};
   .project-details-header {
     border-right: 1px solid ${color.midGrey};
     padding: 32px calc((100vw / 16) * 1);
-    width: 100%;
-    @media ${bp.xs_smallUp} {
-      padding: 24px calc((100vw / 16) * 1) 24px
-        calc(((100vw / 16) * 1.5) + 28px);
-    }
+    max-width: 75%;
     @media ${bp.tabletUp} {
       padding: 48px calc(((100vw / 16) * 1) + 28px);
     }
     @media ${bp.desktopUp} {
-      padding: 48px calc((100vw / 50) * 1);
+      padding: 48px calc((100vw / 50) * 1) 0;
     }
   }
   .environments-wrapper {
     flex-grow: 1;
-    padding: 40px calc((100vw / 16) * 1);
+    padding: 0 calc((100vw / 20) * 1);
+    @media ${bp.xs_smallUp} {
+      padding: 24px calc((100vw / 20) * 1) 24px
+        calc(((100vw / 20) * 1.5) + 28px);
+    }
+    @media ${bp.tabletUp} {
+      padding: 0 calc(((100vw / 20) * 1) + 28px) 48px;
+    }
+    @media ${bp.desktopUp} {
+      padding: 0 calc((100vw / 30) * 1) 48px;
+    }
   }
 `;
 

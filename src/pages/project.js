@@ -67,7 +67,6 @@ export const PageProject = ({ router }) => (
                   <ProjectDetailsSidebar project={project} />
                 </div>
                 <div className="environments-wrapper">
-                  <h3>Environments</h3>
                   {!environments.length && <p>No Environments</p>}
                   {environments.length &&
                     environments.length > 0 &&

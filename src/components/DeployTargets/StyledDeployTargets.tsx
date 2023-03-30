@@ -21,18 +21,6 @@ export const DeployTargetWrapper = styled.div`
     flex: 2;
   }
 
-  div.dt-pr {
-    background-position: left 40% bottom 50%;
-    background-repeat: no-repeat;
-    background-size: 10px 10px;
-  }
-
-  div.dt-pr.false {
-    background-image: url(/static/images/failed.svg);
-  }
-  div.dt-pr.true {
-    background-image: url(/static/images/successful.svg);
-  }
   & > .content {
     margin: 38px calc((100vw / 16) * 1);
     @media ${bp.wideUp} {

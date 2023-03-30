@@ -20,9 +20,7 @@ const DeployTargets = ({ project }) => {
             </div>
             <div className="dt-branch">{depTarget.branches}</div>
             <div
-              className={[
-                depTarget.pullrequests == "true" ? "dt-pr true" : "dt-pr false",
-              ]}
+              className="dt-pr"
             >
               {depTarget.pullrequests}
             </div>

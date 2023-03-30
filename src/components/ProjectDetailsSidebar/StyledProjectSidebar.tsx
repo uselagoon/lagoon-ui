@@ -4,27 +4,42 @@ import { bp, color, fontSize } from "lib/variables";
 export const ProjectDetails = styled.div`
   display: grid;
   grid-auto-flow: row;
-  grid-template-columns: 45ch 45ch 45ch;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  @media ${bp.xs_smallUp} {
+    grid-template-columns: 1fr;
+  }
+  @media ${bp.tabletUp} {
+    grid-template-columns: 1f;
+  }
+  @media ${bp.desktopUp} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media ${bp.extraWideUp} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 2400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 export const FieldWrapper = styled.div`
-  width: clamp(23rem, 95%, 24.375rem);
-  overflow: hidden;
-  white-space: nowrap;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0 1em;
-
-  a.deptargets {
-    color: ${color.blue};
-
-    .active a {
-      color: ${color.lightBlue};
-    }
+  width: 100%;
+  @media ${bp.xs_smallUp} {
+    width: calc(50% + 24px);
   }
 
+  @media ${bp.tabletUp} {
+    width: 100%;
+  }
+  @media ${bp.desktopUp} {
+    width: calc(50% + 24px);
+  }
+  @media ${bp.extraWideUp} {
+    width: calc(70% + 32px);
+  }
+  .deptargets.hover-state {
+    color: ${color.linkBlue};
+  }
   > div {
     margin-left: 14px;
   }
@@ -39,7 +54,6 @@ export const FieldWrapper = styled.div`
     }
   }
   &.origin {
-    width: 100%;
     > div {
       width: 100%;
     }
@@ -122,7 +136,7 @@ export const FieldWrapper = styled.div`
       position: absolute;
       right: 0;
       text-transform: uppercase;
-      top: 20px;
+      top: 30px;
       transition: top 0.5s, opacity 0.75s ease-in;
     }
   }
