@@ -20,6 +20,12 @@ export interface TourContextType {
   shouldRevalidate: boolean;
   allCurrentStepsTraversed: boolean;
   updateCurrentStepsTraversed: (allTraversed: boolean) => void;
+  updateTourInfo: (
+    updatedTourInfo: {
+      path: string;
+      keys: string[];
+    }[]
+  ) => void;
 }
 
 const defaultTourContextValue = {
@@ -46,6 +52,7 @@ const defaultTourContextValue = {
   shouldRevalidate: false,
   allCurrentStepsTraversed: false,
   updateCurrentStepsTraversed: () => {},
+  updateTourInfo: () => {},
 };
 
 export const TourContext = createContext<TourContextType | null>(null);
@@ -212,6 +219,7 @@ export const TourContextProvider = ({
         manuallyTriggerTour,
         allRoutesToured,
         updateCurrentStepsTraversed,
+        updateTourInfo,
       }}
     >
       {children}

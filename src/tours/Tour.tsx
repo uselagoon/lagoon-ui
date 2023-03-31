@@ -37,6 +37,7 @@ const Tour = () => {
     allRoutesToured,
     shouldRevalidate,
     updateCurrentStepsTraversed,
+    updateTourInfo,
   } = useTourContext();
   const [translated, setTranslated] = useState(false);
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
@@ -50,15 +51,35 @@ const Tour = () => {
         return { ...eachStep, disableBeacon: true };
       });
 
-      // if a step was already viewed and saved locally, if the user navigates and returns, don't show it again.
-      const filteredSteps = modifiedSteps.filter(
+      // if a step was already viewed and saved locally, if the user navigates elsewhere and returns, don't show it again.
+      const unseenSteps = modifiedSteps.filter(
         ({ key }) =>
           !routesToured.find(({ keys }) => keys.includes(key as string))
       );
 
+      const alreadySeenSteps = modifiedSteps.filter(({ key }) =>
+        routesToured.find(({ keys }) => keys.includes(key as string))
+      );
+
+      // browser stored hashes that don't match any of the json step hashes get removed.
+      const currentRouteIdxInCache = routesToured.findIndex(
+        ({ path }) => path === pathname
+      );
+      if (~currentRouteIdxInCache) {
+        const clonedToured = [...routesToured];
+        // filter out old hash remnants
+        const updatedKeys = routesToured[
+          currentRouteIdxInCache
+        ].keys.filter((hashString) =>
+          alreadySeenSteps.some((step) => step.key === hashString)
+        );
+        clonedToured[currentRouteIdxInCache].keys = updatedKeys;
+        updateTourInfo(clonedToured);
+      }
+
       setCurrentRouteTour({
         pathName: pathname,
-        steps: filteredSteps,
+        steps: unseenSteps,
       });
     }
   };
