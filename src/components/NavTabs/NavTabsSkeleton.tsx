@@ -4,6 +4,7 @@ import BackupsLink from "components/link/Backups";
 import DeploymentsLink from "components/link/Deployments";
 import TasksLink from "components/link/Tasks";
 import { StyledNavigation } from "./StylednavTabs";
+import Skeleton from "react-loading-skeleton";
 
 interface NavSkeletonProps {
   activeTab: string;
@@ -67,6 +68,8 @@ const NavTabsSkeleton: FC<NavSkeletonProps> = ({
         Tasks
       </TasksLink>
     </li>
+    <Skeleton style={{ height: "50px", lineHeight: "0.5" }} />
+    <Skeleton style={{ height: "50px", lineHeight: "0.5" }} />
   </StyledNavigation>
 );
 
