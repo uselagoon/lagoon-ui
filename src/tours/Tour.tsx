@@ -141,6 +141,7 @@ const Tour = () => {
     if (action === "close") {
       // when "X" is clicked the tour on the route pauses, navigating to other routes continues it.
       pauseTour(true);
+      return;
     }
 
     if (type === "step:after" && action === "prev") {

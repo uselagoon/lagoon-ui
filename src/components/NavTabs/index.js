@@ -73,7 +73,8 @@ const NavTabs = ({ activeTab, environment }) => (
       </ProblemsLink>
     </li>
     }
-    {(environment.project.factsUi == 1) && <li
+    {(environment.project.factsUi == 1) && 
+    <li
       className={`facts ${activeTab == 'facts' ? 'active' : ''} ${"deployLink"}`}
     >
       <FactsLink
