@@ -92,7 +92,7 @@ The `tour.json` file contains configuration for the tour of the Lagoon app. it h
 ```
 > Note: The sequence of routes is self paced, meaning the users see information once as they traverse the app in an explanatory way
 
-Tour steps use content hashes as keys, so if `content` changes, or a new step is added, the tour will automatically show it to the user.
+Tour steps use content hashes as keys, so if `content` or `title` changes, or a new step is added, the tour will automatically show it to the user.
 
 > Make sure to run this command after updating the tour.json step contents.
 

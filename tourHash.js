@@ -17,7 +17,7 @@ for (let i = 0; i < routes.length; i++) {
   const routeSteps = routes[i].steps;
   for (let k = 0; k < routeSteps.length; k++) {
     const step = routeSteps[k];
-    const stepHash = crypto.MD5(step.content).toString();
+    const stepHash = crypto.MD5(step.content+step.title).toString();
     routeSteps[k].key = stepHash;
   }
 }
