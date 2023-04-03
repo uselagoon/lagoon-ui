@@ -65,7 +65,7 @@ export const StyledEnvironments = styled.div`
     transform: translateY(-50%) rotate(-90deg);
 
     &::after {
-      border-top: 1px solid ${color.grey};
+      border-top: 1px solid ${props => props.theme.colorScheme === "dark" ? "transparent" : `${color.grey}`};
       content: "";
       display: block;
       position: relative;
@@ -76,7 +76,7 @@ export const StyledEnvironments = styled.div`
     }
 
     span {
-      background-color: ${color.white};
+      background: ${props => props.theme.backgrounds.boxLabel};
       padding: 0 16px;
       z-index: 0;
     }
@@ -92,7 +92,7 @@ export const StyledEnvironments = styled.div`
     transform: translateY(-50%) rotate(-90deg);
 
     &::after {
-      border-top: 1px solid ${color.grey};
+      border-top: 1px solid ${props => props.theme.colorScheme === "dark" ? "transparent" : `${color.grey}`};
       content: "";
       display: block;
       position: relative;
@@ -103,7 +103,7 @@ export const StyledEnvironments = styled.div`
     }
 
     span {
-      background-color: ${color.white};
+      background: ${props => props.theme.backgrounds.boxLabel};
       padding: 0 16px;
       z-index: 0;
     }
@@ -117,9 +117,8 @@ export const StyledEnvironments = styled.div`
     text-transform: uppercase;
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
-
     &::after {
-      border-top: 1px solid ${color.grey};
+      border-top: 1px solid ${props => props.theme.colorScheme === "dark" ? "transparent" : `${color.grey}`};
       content: "";
       display: block;
       position: relative;
@@ -130,7 +129,7 @@ export const StyledEnvironments = styled.div`
     }
 
     span {
-      background-color: ${color.white};
+      background: ${props => props.theme.backgrounds.boxLabel};
       padding: 0 16px;
       z-index: 0;
     }

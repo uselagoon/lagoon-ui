@@ -15,9 +15,8 @@ const ThemeToggler = () => {
   ) as unknown) as AppContextType;
 
   return (
-    <StyledToggler>
+    <StyledToggler onClick={toggleTheme}>
       <Image
-        onClick={toggleTheme}
         alt="toggle"
         height={28}
         width={28}
@@ -36,14 +35,20 @@ const StyledToggler = styled.span`
   display: inline-flex;
   margin-left: auto;
   margin-right: 16px;
-  align-self: stretch;
+  align-self: center;
   align-items: center;
-  padding-inline: 12px;
+  padding: 6px;
   user-select: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  height: max-content;
+  &:hover {
+    background-color: ${color.lightestBlue};
+  }
   &:active {
     background-color: ${color.lightBlue};
+    border: 2px solid ${color.lightestBlue};
   }
 `;

@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
 export const StyledNewTask = styled.div`
-  background: ${color.white};
-  border: 1px solid ${color.lightestGrey};
+  background: ${props => props.theme.backgrounds.primary};
+  border: 1px solid ${props => props.theme.borders.box};
   border-radius: 3px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   display: flex;
@@ -11,6 +11,10 @@ export const StyledNewTask = styled.div`
   margin-bottom: 32px;
   padding: 32px 20px;
   width: 100%;
+ 
+  [id^=react-select]{
+    color: black;
+  }
   @media ${bp.tabletUp} {
     margin-bottom: 0;
   }

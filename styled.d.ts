@@ -3,22 +3,6 @@ import "styled-components";
 export  interface LagoonTheme {
   colorScheme: "dark" | "light";
 
-
-  // backgroundColor: string;
-  // secondaryBg: string;
-  // primaryTextColor: string;
-  // modalOverlayBg: string;
-  // labelColor: string;
-  // inputBg: string;
-  // inputBorder:string;
-  // boxBorder:string;
-  // selectionBg: string;
-  // tableBg: string;
-  // boxBackground: string;
-  // environmentBg: string;
-  // sidebarBg: string;
-
-
   backgrounds:{
     primary:string;
     secondary: string;
@@ -26,23 +10,30 @@ export  interface LagoonTheme {
     modalOverlay: string;
     input:string;
     sidebar: string;
-    environment:string;
     box: string;
     table:string;
+    tableLight: string;
+    breadCrumbs: string;
+    breadCrumb: string;
+    content: string;
+    boxLabel: string;
+    copy: string;
 
   },
   texts:{
     primary:string;
-
     label:string;
-
+    navigation: string;
+    description: string;
+    accordionHeading: string;
   },
-  highlights:{
+  highlights:{  
     selection: string;
   }
   borders:{
     input:string;
     box: string;
+    tableRow: string;
 
   }
   gradients:{
