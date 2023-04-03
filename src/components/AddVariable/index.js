@@ -3,9 +3,9 @@ import Modal from "components/Modal";
 import Button from "components/Button";
 import ReactSelect from "react-select";
 import { Mutation } from "react-apollo";
-import withLogic from "components/AddEnvironmentVariable/logic";
+import withLogic from "components/AddVariable/logic";
 import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
-import { NewEnvironmentVariable, NewEnvironmentVariableModal } from './StyledAddEnvironmentVariable';
+import { NewVariable, NewVariableModal } from "./StyledAddVariable";
 
 /**
  * Adds a Environment Variable.
@@ -22,10 +22,11 @@ const scopeOptions = [
   },
 ];
 
-export const AddEnvironmentVariable = ({
+export const AddVariable = ({
   varProject,
   varEnvironment,
   varValues,
+  varTarget,
   inputName,
   setInputName,
   inputValue,
@@ -37,10 +38,15 @@ export const AddEnvironmentVariable = ({
   closeModal,
 }) => {
   return (
-    <NewEnvironmentVariable>
+    <NewVariable>
       <Button action={openModal}>Add/Update</Button>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
-        <NewEnvironmentVariableModal>
+      <Modal
+        isOpen={open}
+        onRequestClose={closeModal}
+        contentLabel={`Confirm`}
+        variant={"large"}
+      >
+        <NewVariableModal>
           <div className="var-modal">
             <label htmlFor="varName">Variable target</label>
             <input
@@ -48,7 +54,7 @@ export const AddEnvironmentVariable = ({
               name="variableTarget"
               className="variable-target"
               type="text"
-              value="Environment"
+              value={varTarget}
               readOnly
             />
           </div>
@@ -137,18 +143,23 @@ export const AddEnvironmentVariable = ({
                     action={addOrUpdateEnvVariableHandler}
                     onClick={closeModal}
                   >
-                    {updateVar
-                      ? "Update environment variable"
-                      : "Add environment variable"}
+                    {varTarget == "Environment"
+                      ? updateVar
+                        ? "Update environment variable"
+                        : "Add environment variable"
+                      : updateVar
+                      ? "Update project variable"
+                      : "Add project variable"
+                    }
                   </Button>
                 );
               }}
             </Mutation>
           </div>
-        </NewEnvironmentVariableModal>
+        </NewVariableModal>
       </Modal>
-    </NewEnvironmentVariable>
+    </NewVariable>
   );
 };
 
-export default withLogic(AddEnvironmentVariable);
+export default withLogic(AddVariable);

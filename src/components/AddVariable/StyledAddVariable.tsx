@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { color } from "lib/variables";
 
-export const NewEnvironmentVariable = styled.div`
+export const NewVariable = styled.div`
   .var-modal {
     padding: 10px 0;
   }
@@ -19,7 +19,7 @@ export const NewEnvironmentVariable = styled.div`
   }
 `;
 
-export const NewEnvironmentVariableModal = styled.div`
+export const NewVariableModal = styled.div`
   .var-modal {
     padding: 10px 0;
   }

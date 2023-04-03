@@ -13,7 +13,7 @@ import EnvironmentVariables from "components/EnvironmentVariables";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withEnvironmentRequired } from "lib/withDataRequired";
-import { EnvironmentVariableWrapper } from "../styles/pageStyles";
+import { VariableWrapper } from "../styles/pageStyles";
 
 /**
  * Displays the variables page, given the name of a project.
@@ -42,7 +42,7 @@ export const PageEnvironmentVariables = ({ router }) => (
               projectSlug={environment.project.name}
             />
           </Breadcrumbs>
-          <EnvironmentVariableWrapper>
+          <VariableWrapper>
             <NavTabs
               activeTab="environmentVariables"
               environment={environment}
@@ -54,7 +54,7 @@ export const PageEnvironmentVariables = ({ router }) => (
               </div>
               <EnvironmentVariables environment={environment} />
             </div>
-          </EnvironmentVariableWrapper>
+          </VariableWrapper>
         </MainLayout>
       ))}
     </Query>

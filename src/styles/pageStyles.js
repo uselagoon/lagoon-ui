@@ -90,6 +90,7 @@ export const ProblemsByDashBoard = styled.div`
     }
   }
 `;
+
 export const DeploymentWrapper = styled.div`
   flex: 1;
   ${commonBg};
@@ -126,7 +127,7 @@ export const EnvironmentWrapper = styled.div`
   }
 `;
 
-export const EnvironmentVariableWrapper = styled.div`
+export const VariableWrapper = styled.div`
   ${commonBg};
   flex: 1;
   @media ${bp.tabletUp} {
@@ -141,7 +142,7 @@ export const EnvironmentVariableWrapper = styled.div`
     color: ${color.white};
     padding: 10px 20px;
     text-align: center;
-    width: 80%;
+    width: 84%;
     margin: 0 auto;
   }
 `;
@@ -200,38 +201,62 @@ export const TaskWrapper = styled.div`
   }
 `;
 
+export const ProjectWrapper = styled.div`
+  ${commonBg};
+  flex: 1;
+  @media ${bp.tabletUp} {
+    display: flex;
+    padding: 0;
+  }
+
+  & > .content {
+    width: 100%;
+  }
+`;
+
 export const ProjectDetailsWrapper = styled.div`
+  display: flex;
+  min-width: 75%;
+  flex-direction: column;
+
   @media ${bp.tabletUp} {
     display: flex;
     justify-content: space-between;
   }
 
-  ${commonBg};
-  .project-details-sidebar {
-    background-color: ${color.lightestGrey};
-    border-right: 1px solid ${color.midGrey};
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    @media ${bp.tabletUp} {
-      min-width: 50%;
-      width: 50%;
-    }
-    @media ${bp.desktopUp} {
-      min-width: 40%;
-      width: 40%;
-    }
-    @media ${bp.wideUp} {
-      min-width: 33.33%;
-      width: 33.33%;
-      width: calc((100vw / 16) * 5);
-    }
+  .environments-production,
+  .environments-development {
+    max-width: 75%;
   }
 
+  .title h3 {
+    margin: 0 0 12px;
+  }
+
+  ${commonBg};
+  .project-details-header {
+    border-right: 1px solid ${color.midGrey};
+    padding: 32px calc((100vw / 16) * 1);
+    max-width: 75%;
+    @media ${bp.tabletUp} {
+      padding: 48px calc(((100vw / 16) * 1) + 28px);
+    }
+    @media ${bp.desktopUp} {
+      padding: 48px calc((100vw / 50) * 1) 0;
+    }
+  }
   .environments-wrapper {
     flex-grow: 1;
-    padding: 40px calc((100vw / 16) * 1);
+    padding: 48px calc((100vw / 50) * 1) 0px calc((100vw / 50) * 1);
+    @media ${bp.xs_smallUp} {
+      padding: 0px calc((100vw / 16) * 1) 40px calc((100vw / 16) * 1);
+    }
+    @media ${bp.tabletUp} {
+      padding: 0 calc(((100vw / 20) * 1) + 28px) 48px;
+    }
+    @media ${bp.desktopUp} {
+      padding: 0 calc((100vw / 30) * 1) 48px;
+    }
   }
 `;
 

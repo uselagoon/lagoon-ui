@@ -7,32 +7,17 @@ import MainLayout from "layouts/MainLayout";
 import ProjectByNameQuery from "lib/query/ProjectByName";
 import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import ProjectDetailsSidebar from "components/ProjectDetailsSidebar";
-import Environments from "components/Environments";
 import LeftNavTabs from "components/LeftNavTabs";
+import DeployTargets from "components/DeployTargets";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withProjectRequired } from "lib/withDataRequired";
-import { ProjectDetailsWrapper, ProjectWrapper } from "../styles/pageStyles";
-
-const getProductionEnvironments = (environments) => {
-  if (!environments) return null;
-  return environments.some((e) => e.environmentType === "production")
-    ? environments.filter((e) => e.environmentType === "production")
-    : false;
-};
-
-const getDevelopmentEnvironments = (environments) => {
-  if (!environments) return null;
-  return environments.some((e) => e.environmentType === "development")
-    ? environments.filter((e) => e.environmentType === "development")
-    : false;
-};
+import { ProjectWrapper } from "../styles/pageStyles";
 
 /**
- * Displays a project page, given the project name.
+ * Displays a list of all Deploy Targets for a project.
  */
-export const PageProject = ({ router }) => (
+export const PageDeployTargets = ({ router }) => (
   <>
     <Head>
       <title>{`${router.query.projectName} | Project`}</title>
@@ -61,20 +46,8 @@ export const PageProject = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <ProjectWrapper>
-              <LeftNavTabs activeTab="overview" project={project} />
-              <ProjectDetailsWrapper>
-                <div className="project-details-header">
-                  <ProjectDetailsSidebar project={project} />
-                </div>
-                <div className="environments-wrapper">
-                  <div className="environments-production">
-                    <Environments
-                      environments={environments}
-                      project={project}
-                    />
-                  </div>
-                </div>
-              </ProjectDetailsWrapper>
+              <LeftNavTabs activeTab="deploy-targets" project={project} />
+              <DeployTargets project={project} />
             </ProjectWrapper>
           </MainLayout>
         );
@@ -83,4 +56,4 @@ export const PageProject = ({ router }) => (
   </>
 );
 
-export default withRouter(PageProject);
+export default withRouter(PageDeployTargets);

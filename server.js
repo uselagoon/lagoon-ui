@@ -42,6 +42,14 @@ app
       app.render(req, res, '/project', { projectName: req.params.projectSlug });
     });
 
+    server.get('/projects/:projectSlug/:projectSlug-deploy-targets', (req, res) => {
+      app.render(req, res, '/deploy-targets', { projectName: req.params.projectSlug });
+    });
+
+    server.get('/projects/:projectSlug/:projectSlug-variables', (req, res) => {
+      app.render(req, res, '/project-variables', { projectName: req.params.projectSlug });
+    });
+
     server.get('/projects/:projectSlug/:environmentSlug', (req, res) => {
       app.render(req, res, '/environment', {
         openshiftProjectName: req.params.environmentSlug

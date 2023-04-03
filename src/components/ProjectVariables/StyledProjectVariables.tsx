@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
-export const StyledEnvironmentVariableDetails = styled.div`
+export const StyledProjectVariablesDetails = styled.div`
   padding: 32px calc((100vw / 16) * 1);
   width: 100%;
   @media ${bp.xs_smallUp} {
