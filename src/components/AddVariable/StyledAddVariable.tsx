@@ -23,7 +23,7 @@ export const NewVariableModal = styled.div`
   .var-modal {
     padding: 10px 0;
   }
-  .variable-target{
+  .variable-target {
     padding: 4px 8px;
   }
   input {

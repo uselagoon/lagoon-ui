@@ -19,7 +19,6 @@ export default gql`
         id
         name
         scope
-        value
       }
       deployTargetConfigs {
         id

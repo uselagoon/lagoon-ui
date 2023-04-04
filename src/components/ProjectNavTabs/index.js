@@ -1,11 +1,11 @@
 import React from "react";
 import ProjectChildPageLink from "components/link/ProjectChildPageLink";
 import ProjectLink from "components/link/Project";
-import { StyledLeftNavTabs } from "./StyledLeftNavTabs";
+import { StyledProjectNavTabs } from "./StyledProjectNavTabs";
 
-const LeftNavTabs = ({ activeTab, project }) => {
+const ProjectNavTabs = ({ activeTab, project }) => {
   return (
-    <StyledLeftNavTabs className="navigation">
+    <StyledProjectNavTabs className="navigation">
       <li
         className={`overview ${
           activeTab == "overview" ? "active" : ""
@@ -41,8 +41,8 @@ const LeftNavTabs = ({ activeTab, project }) => {
           </ProjectChildPageLink>
         </li>
       )}
-    </StyledLeftNavTabs>
+    </StyledProjectNavTabs>
   );
 };
 
-export default LeftNavTabs;
+export default ProjectNavTabs;

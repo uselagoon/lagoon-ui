@@ -7,7 +7,7 @@ import MainLayout from "layouts/MainLayout";
 import ProjectByNameQuery from "lib/query/ProjectByName";
 import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import LeftNavTabs from "components/LeftNavTabs";
+import ProjectNavTabs from "components/ProjectNavTabs";
 import DeployTargets from "components/DeployTargets";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
@@ -46,7 +46,7 @@ export const PageDeployTargets = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <ProjectWrapper>
-              <LeftNavTabs activeTab="deploy-targets" project={project} />
+              <ProjectNavTabs activeTab="deploy-targets" project={project} />
               <DeployTargets project={project} />
             </ProjectWrapper>
           </MainLayout>

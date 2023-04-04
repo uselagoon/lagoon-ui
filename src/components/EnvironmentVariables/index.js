@@ -11,10 +11,10 @@ import ViewVariableValue from "../ViewVariableValue";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
-import {StyledEnvironmentVariableDetails} from "./StyledEnvironmentVariables"
-import Image from 'next/image'
-import show from "../../static/images/show.svg"
-import hide from "../../static/images/hide.svg"
+import { StyledEnvironmentVariableDetails } from "./StyledEnvironmentVariables";
+import Image from "next/image";
+import show from "../../static/images/show.svg";
+import hide from "../../static/images/hide.svg";
 
 /**
  * Displays the environment variable information.
@@ -39,26 +39,26 @@ const EnvironmentVariables = ({ environment }) => {
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
 
-  const [getEnvVarValues, { loading: envLoading, error: envError, data: envValues }] = useLazyQuery(
-    EnvironmentByProjectNameWithEnvVarsValueQuery,
-    {
-      variables: { openshiftProjectName: environment.openshiftProjectName },
-    }
-  );
-  
+  const [
+    getEnvVarValues,
+    { loading: envLoading, error: envError, data: envValues },
+  ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
+    variables: { openshiftProjectName: environment.openshiftProjectName },
+  });
+
   if (envValues) {
     displayVars = envValues.environmentVars.envVariables;
   }
 
   if (envError) console.log(envError);
 
-  const [getPrjEnvVarValues, { loading: prjLoading, error: prjError, data: prjEnvValues }] = useLazyQuery(
-    EnvironmentProjectByProjectNameWithEnvVarsValueQuery,
-    {
-      variables: { openshiftProjectName: environment.openshiftProjectName },
-    }
-  );
-  
+  const [
+    getPrjEnvVarValues,
+    { loading: prjLoading, error: prjError, data: prjEnvValues },
+  ] = useLazyQuery(EnvironmentProjectByProjectNameWithEnvVarsValueQuery, {
+    variables: { openshiftProjectName: environment.openshiftProjectName },
+  });
+
   if (prjEnvValues) {
     displayProjectVars = prjEnvValues.environmentVars.project.envVariables;
   }
@@ -158,7 +158,12 @@ const EnvironmentVariables = ({ environment }) => {
                                 <div className="showHideContainer">
                                   {hashValue(envVar.value).substring(0, 25)}
                                   <a href="#" onClick={() => valuesShow(index)}>
-                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={show}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : envVar.value.length <= 100 &&
@@ -166,7 +171,12 @@ const EnvironmentVariables = ({ environment }) => {
                                 <div className="showHideContainer">
                                   {envVar.value}
                                   <a href="#" onClick={() => valuesHide(index)}>
-                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={hide}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : envVar.value.length >= 100 &&
@@ -174,7 +184,12 @@ const EnvironmentVariables = ({ environment }) => {
                                 <div className="showHideContainer">
                                   {hashValue(envVar.value).substring(0, 25)}
                                   <a href="#" onClick={() => valuesShow(index)}>
-                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={show}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : envVar.value.length >= 100 &&
@@ -182,7 +197,12 @@ const EnvironmentVariables = ({ environment }) => {
                                 <div className="showHideContainer">
                                   ${envVar.value.substring(0, 25)}..
                                   <a href="#" onClick={() => valuesHide(index)}>
-                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={hide}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : (
@@ -213,7 +233,9 @@ const EnvironmentVariables = ({ environment }) => {
                               { loading, called, error, data }
                             ) => {
                               if (error) {
-                                return <div>{error.message}</div>;
+                                console.log(error)
+                                return <div>Unauthorized: You don't have permission to delete
+                                this variable.</div>;
                               }
 
                               if (called) {
@@ -305,32 +327,64 @@ const EnvironmentVariables = ({ environment }) => {
                               !prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
-                                  <a href="#" onClick={() => prjValuesShow(index)}>
-                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  <a
+                                    href="#"
+                                    onClick={() => prjValuesShow(index)}
+                                  >
+                                    <Image
+                                      src={show}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : projEnvVar.value.length <= 100 &&
                                 prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {projEnvVar.value}
-                                  <a href="#" onClick={() => prjValuesHide(index)}>
-                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  <a
+                                    href="#"
+                                    onClick={() => prjValuesHide(index)}
+                                  >
+                                    <Image
+                                      src={hide}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : projEnvVar.value.length >= 100 &&
                                 !prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
-                                  <a href="#" onClick={() => prjValuesShow(index)}>
-                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  <a
+                                    href="#"
+                                    onClick={() => prjValuesShow(index)}
+                                  >
+                                    <Image
+                                      src={show}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : projEnvVar.value.length >= 100 &&
                                 prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   ${projEnvVar.value.substring(0, 25)}..
-                                  <a href="#" onClick={() => prjValuesHide(index)}>
-                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                  <a
+                                    href="#"
+                                    onClick={() => prjValuesHide(index)}
+                                  >
+                                    <Image
+                                      src={hide}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : (

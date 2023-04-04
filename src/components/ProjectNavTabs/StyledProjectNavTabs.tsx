@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
-export const StyledLeftNavTabs = styled.ul`
+export const StyledProjectNavTabs = styled.ul`
   background: ${color.lightestGrey};
   border-right: 1px solid ${color.midGrey};
   margin: 0;

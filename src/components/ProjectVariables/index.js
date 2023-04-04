@@ -10,10 +10,10 @@ import ViewVariableValue from "../ViewVariableValue";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
-import Image from 'next/image'
-import show from "../../static/images/show.svg"
-import hide from "../../static/images/hide.svg"
-import {StyledProjectVariablesDetails} from "./StyledProjectVariables"
+import Image from "next/image";
+import show from "../../static/images/show.svg";
+import hide from "../../static/images/hide.svg";
+import { StyledProjectVariablesDetails } from "./StyledProjectVariables";
 
 /**
  * Displays the projects variable information.
@@ -34,13 +34,13 @@ const ProjectVariables = ({ project }) => {
   const [valueState, setValueState] = useState(initValueState);
   const [openPrjVars, setOpenPrjVars] = useState(false);
 
-  const [getPrjEnvVarValues, { loading: prjLoading, error: prjError, data: prjEnvValues }] = useLazyQuery(
-    ProjectByNameWithEnvVarsValueQuery,
-    {
-      variables: { openshiftProjectName: project.openshiftProjectName },
-    }
-  );
-  
+  const [
+    getPrjEnvVarValues,
+    { loading: prjLoading, error: prjError, data: prjEnvValues },
+  ] = useLazyQuery(ProjectByNameWithEnvVarsValueQuery, {
+    variables: { openshiftProjectName: project.openshiftProjectName },
+  });
+
   if (prjEnvValues) {
     displayVars = prjEnvValues.project.envVariables;
   }
@@ -52,13 +52,13 @@ const ProjectVariables = ({ project }) => {
       valueState.map((el, i) => (i === index ? true : el))
     );
   };
-  
+
   const valuesHide = (index) => {
     setValueState((valueState) =>
       valueState.map((el, i) => (i === index ? false : el))
     );
   };
-  
+
   const showVarValue = () => {
     getPrjEnvVarValues();
     setOpenPrjVars(!openPrjVars);
@@ -74,6 +74,7 @@ const ProjectVariables = ({ project }) => {
       />
       {displayVars.length == 0 ? (
         <>
+          <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>No Project variable set</div>
         </>
       ) : (
@@ -121,7 +122,12 @@ const ProjectVariables = ({ project }) => {
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
                                   <a href="#" onClick={() => valuesShow(index)}>
-                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={show}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : projEnvVar.value.length <= 100 &&
@@ -129,7 +135,12 @@ const ProjectVariables = ({ project }) => {
                                 <div className="showHideContainer">
                                   {projEnvVar.value}
                                   <a href="#" onClick={() => valuesHide(index)}>
-                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={hide}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : projEnvVar.value.length >= 100 &&
@@ -137,7 +148,12 @@ const ProjectVariables = ({ project }) => {
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
                                   <a href="#" onClick={() => valuesShow(index)}>
-                                    <Image src={show} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={show}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : projEnvVar.value.length >= 100 &&
@@ -145,7 +161,12 @@ const ProjectVariables = ({ project }) => {
                                 <div className="showHideContainer">
                                   ${projEnvVar.value.substring(0, 25)}..
                                   <a href="#" onClick={() => valuesHide(index)}>
-                                    <Image src={hide} className="showHide" style={{ all: 'unset' }} alt=""/>
+                                    <Image
+                                      src={hide}
+                                      className="showHide"
+                                      style={{ all: "unset" }}
+                                      alt=""
+                                    />
                                   </a>
                                 </div>
                               ) : (
@@ -179,7 +200,9 @@ const ProjectVariables = ({ project }) => {
                               { loading, called, error, data }
                             ) => {
                               if (error) {
-                                return <div>{error.message}</div>;
+                                console.log(error)
+                                return <div>Unauthorized: You don't have permission to delete
+                                this variable.</div>;
                               }
 
                               if (called) {

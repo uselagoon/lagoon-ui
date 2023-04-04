@@ -19,11 +19,7 @@ const DeployTargets = ({ project }) => {
                 : depTarget.deployTarget.name}
             </div>
             <div className="dt-branch">{depTarget.branches}</div>
-            <div
-              className="dt-pr"
-            >
-              {depTarget.pullrequests}
-            </div>
+            <div className="dt-pr">{depTarget.pullrequests}</div>
           </div>
         ))}
       </div>

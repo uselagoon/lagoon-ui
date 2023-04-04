@@ -1,8 +1,10 @@
 import React from "react";
 import Modal from "components/Modal";
 import withLogic from "components/ViewVariableValue/logic";
-import {StyledViewVariableValue, StyledViewVariableValueModal} from "./StyledViewVariableValue"
-
+import {
+  StyledViewVariableValue,
+  StyledViewVariableValueModal,
+} from "./StyledViewVariableValue";
 
 /**
  * Displays the value of the selected variable.

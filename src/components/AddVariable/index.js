@@ -109,7 +109,9 @@ export const AddVariable = ({
                 updateVar = updateVar.includes(inputName);
 
                 if (error) {
-                  return <div>{error.message}</div>;
+                  console.log(error)
+                  return <div>Unauthorized: You don't have permission to create
+                  this variable.</div>;
                 }
 
                 if (updateVar && called) {

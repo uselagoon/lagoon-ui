@@ -9,7 +9,7 @@ import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
 import ProjectDetailsSidebar from "components/ProjectDetailsSidebar";
 import Environments from "components/Environments";
-import LeftNavTabs from "components/LeftNavTabs";
+import ProjectNavTabs from "components/ProjectNavTabs";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withProjectRequired } from "lib/withDataRequired";
@@ -61,7 +61,7 @@ export const PageProject = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <ProjectWrapper>
-              <LeftNavTabs activeTab="overview" project={project} />
+              <ProjectNavTabs activeTab="overview" project={project} />
               <ProjectDetailsWrapper>
                 <div className="project-details-header">
                   <ProjectDetailsSidebar project={project} />

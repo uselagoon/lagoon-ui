@@ -6,14 +6,13 @@ import { Query } from "react-apollo";
 import MainLayout from "layouts/MainLayout";
 import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import LeftNavTabs from "components/LeftNavTabs";
+import ProjectNavTabs from "components/ProjectNavTabs";
 import withQueryLoading from "lib/withQueryLoading";
 import withQueryError from "lib/withQueryError";
 import { withProjectRequired } from "lib/withDataRequired";
 import { VariableWrapper, ProjectWrapper } from "../styles/pageStyles";
-import ProjectVariables from "components/ProjectVariables"
+import ProjectVariables from "components/ProjectVariables";
 import ProjectByNameWithEnvVarsQuery from "lib/query/ProjectByNameWithEnvVars";
-
 
 /**
  * Displays a list of all variables for a project.
@@ -38,7 +37,7 @@ export const PageProjectVariables = ({ router }) => (
               <ProjectBreadcrumb projectSlug={project.name} />
             </Breadcrumbs>
             <ProjectWrapper>
-              <LeftNavTabs activeTab="variables" project={project} />
+              <ProjectNavTabs activeTab="variables" project={project} />
               <VariableWrapper>
                 <div className="content">
                   <div className="notification">
