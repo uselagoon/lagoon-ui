@@ -15,7 +15,7 @@ const TasksLink = ({
   environmentSlug,
   projectSlug,
   children,
-  className = null,
+  className = "",
   prefetch = false
 }) => {
   const linkData = getLinkData(environmentSlug, projectSlug);

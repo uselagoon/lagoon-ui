@@ -4,6 +4,8 @@ import { commonBg } from "./commonPageStyles";
 
 export const ProblemsByDashBoard = styled.div`
   ${(props) => commonBg(props.theme.backgrounds.content)}
+  display: flex;
+  flex-direction: column;
   .filters-wrapper,
   .project-filter {
     margin: 32px calc((100vw / 16) * 1);
@@ -32,6 +34,7 @@ export const ProblemsByDashBoard = styled.div`
     padding: 0 15px;
   }
   .content-wrapper {
+    flex: 1 0 auto;
     h2 {
       margin: 38px calc((100vw / 16) * 1) 0;
       @media ${bp.wideUp} {

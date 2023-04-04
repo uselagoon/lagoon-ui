@@ -1,28 +1,62 @@
 import "isomorphic-unfetch";
 import { useRouter } from "next/router";
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 import Head from "next/head";
-import getConfig from "next/config";
 import Typekit from "react-typekit";
 import Favicon from "components/Favicon";
-import Authenticator, { AuthContext } from "lib/Authenticator";
+import Authenticator from "lib/Authenticator";
 import ApiConnection from "lib/ApiConnection";
-import Script from "next/script";
 import App from "next/app";
-
 // theming
 import useTheme from "lib/useTheme";
 import { darkTheme, lightTheme } from "../styles/theme";
 import { ThemeProvider } from "styled-components";
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+// transitions
+import { m, AnimatePresence, LazyMotion } from "framer-motion";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import "../static/normalize.css";
+
+// tours
+import { TourContextProvider } from "../tours/TourContext";
+import Tour from "../tours/Tour";
+
+import getConfig from "next/config";
+
+const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
+const tourEnabled = LAGOON_UI_TOURS_ENABLED === "enabled";
+
+// lazy load animation features
+const loadFeatures = () =>
+  import("components/common/features").then((res) => res.default);
 
 export const AppContext = createContext(null);
 
 const LagoonApp = ({ Component, pageProps, err }) => {
-  const { pathname } = useRouter();
+  const { pathname, events } = useRouter();
   const { theme, toggleTheme } = useTheme();
   const lagoonTheme = theme === "light" ? lightTheme : darkTheme;
+  NProgress.configure({ showSpinner: false });
+
+  useEffect(() => {
+    const startTransition = () => {
+      NProgress.start();
+    };
+    const endTransition = () => {
+      NProgress.done();
+    };
+
+    events.on("routeChangeStart", startTransition);
+    events.on("routeChangeComplete", endTransition);
+    events.on("routeChangeError", endTransition);
+
+    return () => {
+      events.off("routeChangeStart", startTransition);
+      events.off("routeChangeComplete", endTransition);
+    };
+  }, [events]);
 
   // Catch runtime errors in production and skip authentication to avoid
   // infinite auth > error > auth > error loops.
@@ -43,23 +77,43 @@ const LagoonApp = ({ Component, pageProps, err }) => {
   }
 
   return (
-    <AppContext.Provider value={{ theme, toggleTheme }}>
-      <ThemeProvider theme={lagoonTheme}>
-        <Script
-          src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
-          strategy="beforeInteractive"
-        />
-        <Head>
-          <Typekit kitId="ggo2pml" />
-        </Head>
-        <Authenticator>
-          <ApiConnection>
-            <Component {...pageProps} url={pathname} />
-          </ApiConnection>
-        </Authenticator>
-        <Favicon />
-      </ThemeProvider>
-    </AppContext.Provider>
+    <LazyMotion strict features={loadFeatures}>
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "auto",
+          });
+        }}
+      >
+        <AppContext.Provider value={{ theme, toggleTheme }}>
+          <ThemeProvider theme={lagoonTheme}>
+            <Authenticator>
+              <ApiConnection>
+                <TourContextProvider>
+                  <m.div
+                    className="lagoon-wrapper"
+                    key={pathname}
+                    initial={{ opacity: 0.65 }}
+                    animate={{ opacity: 1, transition: { duration: 0.5 } }}
+                    exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
+                  >
+                    <Head>
+                      <Typekit kitId="ggo2pml" />
+                    </Head>
+                    <Component {...pageProps} url={pathname} />
+                    {tourEnabled ? <Tour /> : null}
+                    <Favicon />
+                  </m.div>
+                </TourContextProvider>
+              </ApiConnection>
+            </Authenticator>
+          </ThemeProvider>
+        </AppContext.Provider>
+      </AnimatePresence>
+    </LazyMotion>
   );
 };
 

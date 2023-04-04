@@ -47,6 +47,12 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+.lagoon-wrapper{
+  background: rgb(250,250,252);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 a {
   color: ${props => props.theme.texts.primary};
@@ -249,6 +255,14 @@ main{
     }
   }
 
+  #nprogress .bar {
+  background-color: ${color.linkBlue} !important;
+  position: fixed !important;
+  top: 55px !important;
+  z-index: 9999 !important;
+  width: 100% !important;
+  height: 5px !important;
+}
 `;
 
 export default GlobalStyles;

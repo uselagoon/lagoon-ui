@@ -92,6 +92,12 @@ export const FieldWrapper = styled.div`
       text-overflow: ellipsis;
     }
 
+    &.skeleton .field{
+      padding: 0;
+      margin:0;
+      background-color: transparent;
+      border: none;
+    }
     .copy {
       background: url("/static/images/copy.svg") center center no-repeat
         ${color.white};
@@ -101,7 +107,7 @@ export const FieldWrapper = styled.div`
       height: 33px;
       position: absolute;
       right: 0;
-      width: 37px;
+      width: 40px;
       transition: all 0.5s;
 
       &:hover {
@@ -114,7 +120,7 @@ export const FieldWrapper = styled.div`
       background-color: ${props => props.theme.backgrounds.copy};
       ${fontSize(9, 16)};
       border-radius: 3px;
-      padding: 0 4px;
+      padding: 0 2px;
       position: absolute;
       right: 0;
       text-transform: uppercase;

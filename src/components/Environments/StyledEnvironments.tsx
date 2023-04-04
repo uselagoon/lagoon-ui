@@ -176,5 +176,8 @@ export const StyledEnvironments = styled.div`
       min-height: 122px;
       padding: 10px 15px;
     }
+    &.skeleton{
+      padding-bottom: 0;
+    }
   }
 `;

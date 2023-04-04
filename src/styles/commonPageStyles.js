@@ -19,6 +19,7 @@ export const CommonWrapper = styled.div`
     }
   }
   & > .content {
+    min-height: 80vh;
     margin: 38px calc((100vw / 16) * 1);
     @media ${bp.wideUp} {
       margin: 38px calc((100vw / 16) * 2);
@@ -41,6 +42,7 @@ export const CommonWrapperMargin = styled.div`
     }
   }
   & > .content {
+    min-height: 80vh;
     margin: 38px calc((100vw / 16) * 1);
     @media ${bp.wideUp} {
       margin: 38px calc((100vw / 16) * 1);
@@ -59,6 +61,7 @@ export const CommonWrapperWNotification = styled.div`
   }
 
   & > .content {
+    min-height: 80vh;
     padding: 32px calc((100vw / 16) * 1);
     width: 100%;
 
