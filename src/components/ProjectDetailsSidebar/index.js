@@ -3,7 +3,6 @@ import * as R from 'ramda';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import moment from 'moment';
 import giturlparse from 'git-url-parse';
-import Environments from 'components/Environments';
 
 
 import {FieldWrapper, ProjectDetails} from "./StyledProjectSidebar"

@@ -5,6 +5,8 @@ import { AuthContext } from 'lib/Authenticator';
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
 import HeaderMenu from 'components/HeaderMenu';
 import {StyledHeader} from "./StyledHeader";
+import Image from 'next/image';
+import TourControlBtn from '../../tours/TourControlBtn';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -15,22 +17,32 @@ const Header = ({ logo }) => (
   <StyledHeader>
     <Link href="/">
       <a className="home">
-	  <img
+        <Image
           alt="Home"
-          src={logo ? logo : `data:image/svg+xml;utf8,${
-            publicRuntimeConfig.LAGOON_UI_ICON
-              ? publicRuntimeConfig.LAGOON_UI_ICON
-              : encodeURIComponent(lagoonLogo)
-          }`}
+          width={75}
+          height={28}
+          layout="fixed"
+          src={
+            logo
+              ? logo
+              : `data:image/svg+xml;utf8,${
+                  publicRuntimeConfig.LAGOON_UI_ICON
+                    ? publicRuntimeConfig.LAGOON_UI_ICON
+                    : encodeURIComponent(lagoonLogo)
+                }`
+          }
         />
       </a>
     </Link>
+    <TourControlBtn />
     <AuthContext.Consumer>
-      {auth => {
+      {(auth) => {
         if (auth.authenticated) {
           return (
             <div className="authContainer">
-              <a className="navitem" href="/alldeployments">Deployments</a>
+              <Link href="/alldeployments" prefetch>
+                <a className="navitem">Deployments</a>
+              </Link>
               <HeaderMenu auth={auth}></HeaderMenu>
             </div>
           );

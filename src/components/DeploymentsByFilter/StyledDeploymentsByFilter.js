@@ -128,6 +128,9 @@ export const DeploymentsDataTable = styled.div`
       }
     }
 
+    &.skeleton{
+      padding: 20px 0;
+    }
     &:hover {
       border: 1px solid ${color.brightBlue};
     }
