@@ -3,7 +3,7 @@ import { DefaultTheme } from "styled-components";
 
 export const darkTheme: DefaultTheme = {
   colorScheme: "dark",
-  
+
   backgrounds: {
     primary: "#0E1117",
     secondary: "#151922",
@@ -37,6 +37,10 @@ export const darkTheme: DefaultTheme = {
   },
   gradients: {
     headerFooterGradient: "linear-gradient(to right, #24aec4 0%, #2a6dfe 25%)",
+  },
+  skeleton: {
+    base: "#202020",
+    highlight: "#444",
   },
 };
 
@@ -76,5 +80,9 @@ export const lightTheme: DefaultTheme = {
   },
   gradients: {
     headerFooterGradient: `linear-gradient(to right, ${color.brightBlue} 0%,${color.lightBlue} 25%)`,
+  },
+  skeleton: {
+    base: "#ebebeb",
+    highlight: "#f5f5f5",
   },
 };

@@ -18,7 +18,6 @@ export  interface LagoonTheme {
     content: string;
     boxLabel: string;
     copy: string;
-
   },
   texts:{
     primary:string;
@@ -39,7 +38,10 @@ export  interface LagoonTheme {
   gradients:{
     headerFooterGradient: string;
   }
-
+  skeleton: {
+    base: string;
+    highlight: string;
+  }
 
 }
 

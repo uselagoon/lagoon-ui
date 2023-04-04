@@ -59,3 +59,8 @@ export const StyledHeader = styled.header`
           }
     }
 `;
+
+export const ControlButtons = styled.div`
+  margin-left: auto;
+  align-self: center;
+`;
