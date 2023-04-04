@@ -7,7 +7,7 @@ const ThemedSkeletonWrapper = ({ children }: { children: ReactNode }) => {
   const cachedTheme = localStorage.getItem("theme");
   const { theme } = useTheme();
 
-  // use localstorage first to avoid flickers if toggling theme too much;
+  // use localstorage first to avoid flickers if toggling theme too quickly;
   const currentTheme = cachedTheme ? cachedTheme : theme;
 
   const {

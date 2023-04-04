@@ -17,6 +17,7 @@ import QueryError from "../components/errors/QueryError";
 import TaskNotFound from "../components/errors/TaskNotFound";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import { useTourContext } from "../tours/TourContext";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays a task page, given the openshift project and task ID.
@@ -32,7 +33,7 @@ export const PageTask = ({ router }) => {
 
   useEffect(() => {
     if (!loading && data?.environment?.tasks[0]) {
-        continueTour();
+      continueTour();
     }
   }, [loading]);
 
@@ -45,24 +46,26 @@ export const PageTask = ({ router }) => {
           <title>{`${router.query.taskName} | Task`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
-          </Breadcrumbs>
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb
+                environmentSlug={openshiftProjectName}
+                projectSlug={projectSlug}
+              />
+            </Breadcrumbs>
 
-          <TaskWrapper>
-            <NavTabsSkeleton
-              activeTab="tasks"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-            <TaskSkeleton />
-            </div>
-          </TaskWrapper>
+            <TaskWrapper>
+              <NavTabsSkeleton
+                activeTab="tasks"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
+              <div className="content">
+                <TaskSkeleton />
+              </div>
+            </TaskWrapper>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

@@ -1,7 +1,8 @@
 import React from "react";
 import Box from "components/Box";
 import { StyledEnvironments } from "./StyledEnvironments";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
+import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
 
 const EnvironmentsSkeleton = () => {
   const BoxWithSkeleton = (
@@ -19,12 +20,12 @@ const EnvironmentsSkeleton = () => {
     </div>
   );
   return (
-    <SkeletonTheme baseColor="#d2d2d2" highlightColor="#e1e1e1">
+    <ThemedSkeletonWrapper>
       <StyledEnvironments className="environments">
         {BoxWithSkeleton}
         {BoxWithSkeleton}
       </StyledEnvironments>
-    </SkeletonTheme>
+    </ThemedSkeletonWrapper>
   );
 };
 

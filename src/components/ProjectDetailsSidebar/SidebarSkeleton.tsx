@@ -1,10 +1,11 @@
 import React from "react";
 import { FieldWrapper, ProjectDetails } from "./StyledProjectSidebar";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
+import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
 
 const ProjectSkeleton = () => {
   return (
-    <SkeletonTheme baseColor="#d2d2d2" highlightColor="#e1e1e1">
+    <ThemedSkeletonWrapper>
       <ProjectDetails className="details">
         <FieldWrapper className="field-wrapper created">
           <div>
@@ -26,7 +27,10 @@ const ProjectSkeleton = () => {
           <div>
             <label>Git URL</label>
             <div className="field">
-              <Skeleton style={{ minWidth: "300px", maxWidth: "300px" }} height={20} />
+              <Skeleton
+                style={{ minWidth: "300px", maxWidth: "300px" }}
+                height={20}
+              />
             </div>
           </div>
         </FieldWrapper>
@@ -40,7 +44,7 @@ const ProjectSkeleton = () => {
           </div>
         </FieldWrapper>
       </ProjectDetails>
-    </SkeletonTheme>
+    </ThemedSkeletonWrapper>
   );
 };
 

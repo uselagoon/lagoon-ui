@@ -14,6 +14,7 @@ import { CommonWrapperWNotification } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays the insights page, given the name of an openshift project.
@@ -32,24 +33,26 @@ export const PageInsights = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Insights`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
-          </Breadcrumbs>
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb
+                environmentSlug={openshiftProjectName}
+                projectSlug={projectSlug}
+              />
+            </Breadcrumbs>
 
-          <CommonWrapperWNotification>
-            <NavTabsSkeleton
-              activeTab="insights"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <InsightsSkeleton />
-            </div>
-          </CommonWrapperWNotification>
+            <CommonWrapperWNotification>
+              <NavTabsSkeleton
+                activeTab="insights"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
+              <div className="content">
+                <InsightsSkeleton />
+              </div>
+            </CommonWrapperWNotification>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

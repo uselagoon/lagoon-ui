@@ -39,7 +39,7 @@ export const darkTheme: DefaultTheme = {
     headerFooterGradient: "linear-gradient(to right, #24aec4 0%, #2a6dfe 25%)",
   },
   skeleton: {
-    base: "#202020",
+    base: "#353535",
     highlight: "#444",
   },
 };

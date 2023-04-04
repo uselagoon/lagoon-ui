@@ -17,6 +17,7 @@ import { useQuery } from "@apollo/react-hooks";
 import EnvironmentNotFound from "components/errors/EnvironmentNotFound";
 import DeploymentNotFound from "components/errors/DeploymentNotFound";
 import { useTourContext } from "../tours/TourContext";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays a deployment page, given the openshift project and deployment name.
@@ -45,7 +46,7 @@ export const PageDeployment = ({ router }) => {
     const openshiftProjectName = router.query.openshiftProjectName;
     const deploymentName = router.query.deploymentName;
     return (
-      <>
+      <ThemedSkeletonWrapper>
         <Head>
           <title>{`${router.query.deploymentName} | Deployment`}</title>
         </Head>
@@ -70,11 +71,11 @@ export const PageDeployment = ({ router }) => {
             />
 
             <div className="content">
-           <DeploymentSkeleton />
+              <DeploymentSkeleton />
             </div>
           </DeploymentWrapper>
         </MainLayout>
-      </>
+      </ThemedSkeletonWrapper>
     );
   }
 
