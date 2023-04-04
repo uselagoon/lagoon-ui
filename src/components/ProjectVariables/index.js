@@ -38,7 +38,7 @@ const ProjectVariables = ({ project }) => {
     getPrjEnvVarValues,
     { loading: prjLoading, error: prjError, data: prjEnvValues },
   ] = useLazyQuery(ProjectByNameWithEnvVarsValueQuery, {
-    variables: { openshiftProjectName: project.openshiftProjectName },
+    variables: { name: project.name },
   });
 
   if (prjEnvValues) {
