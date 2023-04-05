@@ -11,8 +11,6 @@ import { useTourContext } from "../tours/TourContext";
 
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-
-import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
 
