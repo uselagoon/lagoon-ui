@@ -167,3 +167,7 @@ export const ButtonRow = styled.div`
     padding-left: calc(100vw / 16);
   }
 `;
+
+export const SkeletonWrapper = styled.div`
+  padding: 0 calc(100vw / 16) 48px;
+`;

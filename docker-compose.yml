@@ -12,6 +12,7 @@ x-environment: &default-environment
   LAGOON_ENVIRONMENT_TYPE: production
   GRAPHQL_API: "${GRAPHQL_API:-http://localhost:3000/graphql}"
   KEYCLOAK_API: "${KEYCLOAK_API:-http://localhost:8088/auth}"
+  LAGOON_UI_TOURS_ENABLED: enabled
 
 services:
   ui:

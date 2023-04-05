@@ -1,39 +1,58 @@
-import React from "react";
-import * as R from "ramda";
+import React, { useEffect } from "react";
 import Head from "next/head";
-import { Query } from "react-apollo";
 import MainLayout from "layouts/MainLayout";
 import deploymentsByFilter from "lib/query/DeploymentsByFilter";
-import Projects from "components/Projects";
-import withQueryLoading from "lib/withQueryLoading";
-import withQueryError from "lib/withQueryError";
 import { withRouter } from "next/router";
 import DeploymentsByFilter from "../components/DeploymentsByFilter";
+import DeploymentsByFilterSkeleton from "components/DeploymentsByFilter/DeploymentsByFilterSkeleton";
 import { CommonWrapperMargin } from "../styles/commonPageStyles";
+import { useQuery } from "@apollo/react-hooks";
+import QueryError from "../components/errors/QueryError";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays the projects page.
  */
-const AllDeployments = () => (
-  <>
-    <Head>
-      <title>All deployments</title>
-    </Head>
-    <Query query={deploymentsByFilter} displayName="deploymentsByFilter">
-      {R.compose(withQueryLoading)(({ data }) => (
-        <MainLayout>
-          <CommonWrapperMargin>
-            <h2>Deployments</h2>
-            <div className="content">
+const AllDeployments = () => {
+  const { continueTour } = useTourContext();
+
+  const { data, error, loading } = useQuery(deploymentsByFilter, {
+    displayName: "deploymentsByFilter",
+  });
+
+  useEffect(() => {
+    // tour only continues on this page if there's at least one deployment
+    if (!loading && data.deploymentsByFilter.length) {
+      continueTour();
+    }
+  }, [loading]);
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>All deployments</title>
+      </Head>
+
+      <MainLayout>
+        <CommonWrapperMargin>
+          <h2>Deployments</h2>
+          <div className="content">
+            {loading ? (
+              <DeploymentsByFilterSkeleton />
+            ) : (
               <DeploymentsByFilter
                 deployments={data.deploymentsByFilter || []}
               />
-            </div>
-          </CommonWrapperMargin>
-        </MainLayout>
-      ))}
-    </Query>
-  </>
-);
+            )}
+          </div>
+        </CommonWrapperMargin>
+      </MainLayout>
+    </>
+  );
+};
 
 export default withRouter(AllDeployments);

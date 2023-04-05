@@ -2,10 +2,13 @@
 // Event handlers like onClick can't be added to this file
 
 // ./pages/_document.js
-import Document, { Html, Head, Main, NextScript} from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 import Plugins from "../components/Plugins/components/Plugins";
 // styled-components
 import { ServerStyleSheet } from "styled-components";
+
+import Script from "next/script";
+import getConfig from "next/config";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -34,10 +37,15 @@ class MyDocument extends Document {
   }
 
   render() {
+    const { publicRuntimeConfig } = getConfig();
+    
     return (
       <Html>
         <Head>
-          <link rel="stylesheet" href="/static/normalize.css" />
+        <Script
+            src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
+            strategy="beforeInteractive"
+          />
           <Plugins hook="head" />
         </Head>
         <body>
