@@ -45,7 +45,7 @@ const ProjectsPage = () => {
       <MainLayout>
         <CommonWrapper>
           <h2>
-            Projects
+            {t("projects.test")}
           </h2>
           <div className="content">
             {loading ? (

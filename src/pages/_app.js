@@ -33,7 +33,12 @@ const loadFeatures = () =>
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname, events } = useRouter();
   const {i18n} = useTranslation();
-  void i18n.changeLanguage("italian");
+  
+  useEffect(()=>{
+    void i18n.changeLanguage("italian");
+
+  },[]);
+
 
   NProgress.configure({ showSpinner: false });
 
