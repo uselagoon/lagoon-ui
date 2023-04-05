@@ -131,6 +131,10 @@ export const DeploymentsDataTable = styled.div`
       }
     }
 
+    & > div.project, div.environment{
+      white-space: pre-line;
+      word-break: break-all;
+    }
     &.skeleton{
       padding: 20px 0;
     }

@@ -9,8 +9,6 @@ import DeploymentsLink from 'components/link/Deployments';
 import DeploymentLink from 'components/link/Deployment';
 import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
-
-
 /**
  * The primary list of running deployments.
  */
@@ -18,6 +16,33 @@ const DeploymentsByFilter = ({ deployments }) => {
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(deployments, {key: 'created', direction: 'descending'});
   const [searchTerm, setSearchTerm] = useState('');
   const [hasFilter, setHasFilter] = useState(false);
+
+  const formatString = (textToEdit, labelClassToQuery) => {
+    // if the string is bigger than the data-row container, then add new lines.
+    const getTextWidth = (string) => {
+      // gets the width of a string that *will* be rendered
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context.font = getComputedStyle(document.body).font;
+      return context.measureText(string).width;
+    };
+
+    const editString = (string) => {
+      // find all "-" or "/" and replace with line breaks prefixed by the symbol found.
+      const regex = /[-\/]/g;
+      return string.replace(regex, (match) => match + "\n");
+    };
+
+    const labelWidth = document.querySelector(
+      `.data-row > .${labelClassToQuery}`
+    ).clientWidth;
+
+    if (labelWidth < getTextWidth(textToEdit)) {
+      return editString(textToEdit);
+    }
+    return textToEdit;
+  };
+
 
   const handleSearchFilterChange = (event) => {
     setHasFilter(false);
@@ -114,16 +139,16 @@ const DeploymentsByFilter = ({ deployments }) => {
           return (
             <div className="data-row row-heading" key={deployment.id}>
               <div className="project">
-                <ProjectLink
-                  projectSlug={deployment.environment.project.name}
-                >{deployment.environment.project.name}
+                <ProjectLink projectSlug={deployment.environment.project.name}>
+                  {formatString(deployment.environment.project.name, "project")}
                 </ProjectLink>
               </div>
               <div className="environment">
                 <DeploymentsLink
                   environmentSlug={deployment.environment.openshiftProjectName}
                   projectSlug={deployment.environment.project.name}
-                >{deployment.environment.name}
+                >
+                  {formatString(deployment.environment.name, "environment")}
                 </DeploymentsLink>
               </div>
               <div className="cluster">
@@ -136,7 +161,7 @@ const DeploymentsByFilter = ({ deployments }) => {
                   projectSlug={deployment.environment.project.name}
                   key={deployment.id}
                 >
-                {deployment.name}
+                  {deployment.name}
                 </DeploymentLink>
               </div>
               <div className="priority">{deployment.priority}</div>
@@ -144,20 +169,28 @@ const DeploymentsByFilter = ({ deployments }) => {
                 {moment
                   .utc(deployment.created)
                   .local()
-                  .format('DD MMM YYYY, HH:mm:ss (Z)')}
+                  .format("DD MMM YYYY, HH:mm:ss (Z)")}
               </div>
               <div className={`status ${deployment.status}`}>
                 {deployment.status.charAt(0).toUpperCase() +
                   deployment.status.slice(1)}
               </div>
-              <div className="duration">{getDeploymentDuration(deployment)}</div>
+              <div className="duration">
+                {getDeploymentDuration(deployment)}
+              </div>
               <div>
-                {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
-                  <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
+                {["new", "pending", "queued", "running"].includes(
+                  deployment.status
+                ) && (
+                  <CancelDeployment
+                    deployment={deployment}
+                    afterText="Cancelled"
+                    beforeText="Cancel"
+                  />
                 )}
               </div>
             </div>
-          )
+          );
         })}
       </DeploymentsDataTable>
     </Deployments>
