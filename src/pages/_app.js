@@ -16,7 +16,6 @@ import "../static/normalize.css";
 
 import { initI18n } from "../i18n/i18n";
 import { useTranslation } from "react-i18next";
-
 import Tour from "../tours/Tour";
 
 import getConfig from "next/config";
@@ -38,7 +37,6 @@ const LagoonApp = ({ Component, pageProps, err }) => {
     void i18n.changeLanguage("italian");
 
   },[]);
-
 
   NProgress.configure({ showSpinner: false });
 
