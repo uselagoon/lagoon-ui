@@ -1,6 +1,6 @@
 import { useTranslation as useI18Translate } from "react-i18next";
 import i18next, { changeLanguage } from "i18next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 enum supportedLanguages {
   ENGLISH = "english",
