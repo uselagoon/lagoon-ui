@@ -8,16 +8,15 @@ import { CommonWrapper } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
+import useTranslation from "lib/useTranslation";
 
-import { useTranslation } from "react-i18next";
-import i18next from "i18next";
 
 /**
  * Displays the projects page.
  */
 const ProjectsPage = () => {
 
-  const {t} = useTranslation(i18next.language);
+  const t = useTranslation();
 
   const { startTour } = useTourContext();
 
