@@ -34,6 +34,11 @@ export const NewVariableModal = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    span {
+      color: ${color.blue};
+      cursor: pointer;
+    }
   }
   .add-var-btn {
     margin-top: 16px;

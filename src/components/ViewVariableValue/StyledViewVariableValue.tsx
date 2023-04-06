@@ -45,8 +45,9 @@ export const StyledViewVariableValueModal = styled.div`
     display: flex;
     align-items: center;
 
-    a {
+    span {
       color: ${color.blue};
+      cursor: pointer;
     }
   }
   .button-sort {

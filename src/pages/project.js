@@ -15,20 +15,6 @@ import withQueryError from "lib/withQueryError";
 import { withProjectRequired } from "lib/withDataRequired";
 import { ProjectDetailsWrapper, ProjectWrapper } from "../styles/pageStyles";
 
-const getProductionEnvironments = (environments) => {
-  if (!environments) return null;
-  return environments.some((e) => e.environmentType === "production")
-    ? environments.filter((e) => e.environmentType === "production")
-    : false;
-};
-
-const getDevelopmentEnvironments = (environments) => {
-  if (!environments) return null;
-  return environments.some((e) => e.environmentType === "development")
-    ? environments.filter((e) => e.environmentType === "development")
-    : false;
-};
-
 /**
  * Displays a project page, given the project name.
  */

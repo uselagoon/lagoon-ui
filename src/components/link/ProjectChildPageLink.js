@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const getLinkData = (childPage, projectSlug) => ({
   urlObject: {
-    pathname: `/projects/[projectSlug]/[projectSlug]-[childPage]`,
+    pathname: "/project-variables",
     query: { projectName: projectSlug }
   },
   asPath: `/projects/${projectSlug}/${projectSlug}-${childPage}`

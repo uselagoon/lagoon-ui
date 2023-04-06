@@ -109,7 +109,7 @@ export const AddVariable = ({
                 updateVar = updateVar.includes(inputName);
 
                 if (error) {
-                  console.log(error)
+                  console.error(error)
                   return <div>Unauthorized: You don't have permission to create
                   this variable.</div>;
                 }
@@ -134,7 +134,7 @@ export const AddVariable = ({
                   });
                   setTimeout(() => {
                     location.reload();
-                  }, "2000");
+                  }, 2000);
                 };
 
                 return (

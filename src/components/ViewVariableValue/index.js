@@ -44,9 +44,9 @@ export const ViewVariableValue = ({
           </div>
 
           <div className="form-input">
-            <a href="#" className="hover-state margins" onClick={closeModal}>
+            <span className="hover-state margins" onClick={closeModal}>
               Close
-            </a>
+            </span>
           </div>
         </StyledViewVariableValueModal>
       </Modal>

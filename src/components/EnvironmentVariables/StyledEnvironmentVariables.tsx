@@ -21,11 +21,15 @@ export const StyledEnvironmentVariableDetails = styled.div`
     margin-left: 16px !important;
     width: 30px !important;
   }
-  .showHideContainer a {
+  .showHideContainer span {
     vertical-align: middle;
   }
   span {
     overflow: visible !important;
+  }
+  .unauthorized-add-var {
+    margin-top: 8px;
+    padding: 4px;
   }
   .field-wrapper {
     &::before {
@@ -100,6 +104,9 @@ export const StyledEnvironmentVariableDetails = styled.div`
   .varDelete {
     max-width: 10%;
     width: 10%;
+  }
+  .varValue span {
+    cursor: pointer;
   }
   .header {
     display: flex;

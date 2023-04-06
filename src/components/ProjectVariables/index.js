@@ -45,7 +45,7 @@ const ProjectVariables = ({ project }) => {
     displayVars = prjEnvValues.project.envVariables;
   }
 
-  if (prjError) console.log(prjError);
+  if (prjError) console.error(prjError);
 
   const valuesShow = (index) => {
     setValueState((valueState) =>
@@ -121,53 +121,53 @@ const ProjectVariables = ({ project }) => {
                               !valueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
-                                  <a href="#" onClick={() => valuesShow(index)}>
+                                  <span onClick={() => valuesShow(index)}>
                                     <Image
                                       src={show}
                                       className="showHide"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
-                                  </a>
+                                  </span>
                                 </div>
                               ) : projEnvVar.value.length <= 100 &&
                                 valueState[index] ? (
                                 <div className="showHideContainer">
                                   {projEnvVar.value}
-                                  <a href="#" onClick={() => valuesHide(index)}>
+                                  <span onClick={() => valuesHide(index)}>
                                     <Image
                                       src={hide}
                                       className="showHide"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
-                                  </a>
+                                  </span>
                                 </div>
                               ) : projEnvVar.value.length >= 100 &&
                                 !valueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
-                                  <a href="#" onClick={() => valuesShow(index)}>
+                                  <span onClick={() => valuesShow(index)}>
                                     <Image
                                       src={show}
                                       className="showHide"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
-                                  </a>
+                                  </span>
                                 </div>
                               ) : projEnvVar.value.length >= 100 &&
                                 valueState[index] ? (
                                 <div className="showHideContainer">
                                   ${projEnvVar.value.substring(0, 25)}..
-                                  <a href="#" onClick={() => valuesHide(index)}>
+                                  <span onClick={() => valuesHide(index)}>
                                     <Image
                                       src={hide}
                                       className="showHide"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
-                                  </a>
+                                  </span>
                                 </div>
                               ) : (
                                 `${hashValue(projEnvVar.value).substring(
@@ -200,7 +200,7 @@ const ProjectVariables = ({ project }) => {
                               { loading, called, error, data }
                             ) => {
                               if (error) {
-                                console.log(error)
+                                console.error(error)
                                 return <div>Unauthorized: You don't have permission to delete
                                 this variable.</div>;
                               }
@@ -220,7 +220,7 @@ const ProjectVariables = ({ project }) => {
                                 });
                                 setTimeout(() => {
                                   location.reload();
-                                }, "2000");
+                                }, 2000);
                               };
 
                               return (

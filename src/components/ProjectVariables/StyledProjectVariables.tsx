@@ -21,8 +21,12 @@ export const StyledProjectVariablesDetails = styled.div`
     margin-left: 16px !important;
     width: 30px !important;
   }
-  .showHideContainer a {
+  .showHideContainer span {
     vertical-align: middle;
+  }
+  .unauthorized-add-var {
+    margin-top: 8px;
+    padding: 4px;
   }
   span {
     overflow: visible !important;
@@ -96,6 +100,9 @@ export const StyledProjectVariablesDetails = styled.div`
     min-width: 30%
     max-width: 35%;
     width: 35%;
+  }
+  .varValue span {
+    cursor: pointer;
   }
   .varDelete {
     max-width: 10%;
