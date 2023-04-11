@@ -31,6 +31,9 @@ export const StyledEnvironmentVariableDetails = styled.div`
     margin-top: 8px;
     padding: 4px;
   }
+  button .deployLink.hover-state {
+    color: #fff;
+  }
   .field-wrapper {
     &::before {
       left: calc(((-100vw / 16) * 1.5) - 28px);
@@ -112,6 +115,15 @@ export const StyledEnvironmentVariableDetails = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
+    align-items: center;
+  }
+  .header-buttons {
+    display: flex;
+    margin: 0 4px;
+
+    button {
+      margin-right: 4px;
+    }
   }
   .loader {
     display: inline-block;

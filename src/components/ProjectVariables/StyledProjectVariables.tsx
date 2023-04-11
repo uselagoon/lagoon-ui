@@ -112,6 +112,15 @@ export const StyledProjectVariablesDetails = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
+    align-items: center;
+  }
+  .header-buttons {
+    display: flex;
+    margin: 0 4px;
+
+    button {
+      margin-right: 4px;
+    }
   }
   .loader {
     display: inline-block;

@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "components/Modal";
-import Button from "components/Button";
+import Button from "react-bootstrap/Button";
 import ReactSelect from "react-select";
 import { Mutation } from "react-apollo";
 import withLogic from "components/AddVariable/logic";
@@ -39,7 +39,7 @@ export const AddVariable = ({
 }) => {
   return (
     <NewVariable>
-      <Button action={openModal}>Add/Update</Button>
+      <Button onClick={openModal}>Add/Update</Button>
       <Modal
         isOpen={open}
         onRequestClose={closeModal}
@@ -47,16 +47,10 @@ export const AddVariable = ({
         variant={"large"}
       >
         <NewVariableModal>
-          <div className="var-modal">
-            <label htmlFor="varName">Variable target</label>
-            <input
-              id="variableTargetID"
-              name="variableTarget"
-              className="variable-target"
-              type="text"
-              value={varTarget}
-              readOnly
-            />
+          <div className="variable-target">
+            <span className="variable-target">
+              Add/Update {varTarget} Variable
+            </span>
           </div>
           <div className="var-modal">
             <label htmlFor="varName">Variable Scope</label>
@@ -109,9 +103,13 @@ export const AddVariable = ({
                 updateVar = updateVar.includes(inputName);
 
                 if (error) {
-                  console.error(error)
-                  return <div>Unauthorized: You don't have permission to create
-                  this variable.</div>;
+                  console.error(error);
+                  return (
+                    <div>
+                      Unauthorized: You don't have permission to create this
+                      variable.
+                    </div>
+                  );
                 }
 
                 if (updateVar && called) {
@@ -142,8 +140,7 @@ export const AddVariable = ({
                     disabled={
                       inputName == "" || inputValue == "" || inputScope == ""
                     }
-                    action={addOrUpdateEnvVariableHandler}
-                    onClick={closeModal}
+                    onClick={addOrUpdateEnvVariableHandler}
                   >
                     {varTarget == "Environment"
                       ? updateVar
@@ -151,8 +148,7 @@ export const AddVariable = ({
                         : "Add environment variable"
                       : updateVar
                       ? "Update project variable"
-                      : "Add project variable"
-                    }
+                      : "Add project variable"}
                   </Button>
                 );
               }}

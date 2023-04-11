@@ -24,7 +24,10 @@ export const NewVariableModal = styled.div`
     padding: 10px 0;
   }
   .variable-target {
-    padding: 4px 8px;
+    text-align: center;
+    color: #5f6f7a;
+    font-family: "source-code-pro", sans-serif;
+    font-weight: bold;
   }
   input {
     margin-right: 10px;

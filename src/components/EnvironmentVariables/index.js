@@ -6,7 +6,7 @@ import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from "../../lib/quer
 import EnvironmentByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue";
 import { useLazyQuery } from "@apollo/react-hooks";
 import DeleteConfirm from "components/DeleteConfirm";
-import AddEnvironmentVariable from "../AddVariable";
+import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -15,6 +15,7 @@ import { StyledEnvironmentVariableDetails } from "./StyledEnvironmentVariables";
 import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
+import ProjectVariablesLink from "components/link/ProjectVariables";
 
 /**
  * Displays the environment variable information.
@@ -100,12 +101,6 @@ const EnvironmentVariables = ({ environment }) => {
 
   return (
     <StyledEnvironmentVariableDetails className="details">
-      <AddEnvironmentVariable
-        varProject={environment.project.name}
-        varEnvironment={environment.name}
-        varValues={displayVars}
-        varTarget="Environment"
-      />
       <div className="field-wrapper env-vars">
         {environment.envVariables.length == 0 ? (
           <>
@@ -118,13 +113,21 @@ const EnvironmentVariables = ({ environment }) => {
           <>
             <div className="header">
               <label>Environment Variables</label>
-              <Button
-                onClick={() => showVarValue()}
-                aria-controls="example-collapse-text"
-                aria-expanded={openEnvVars}
-              >
-                {!openEnvVars ? "Show values" : "Hide values"}
-              </Button>
+              <div className="header-buttons">
+                <AddVariable
+                  varProject={environment.project.name}
+                  varEnvironment={environment.name}
+                  varValues={displayVars}
+                  varTarget="Environment"
+                />
+                <Button
+                  onClick={() => showVarValue()}
+                  aria-controls="example-collapse-text"
+                  aria-expanded={openEnvVars}
+                >
+                  {!openEnvVars ? "Show values" : "Hide values"}
+                </Button>
+              </div>
             </div>
             <Table striped bordered hover>
               <thead>
@@ -233,9 +236,13 @@ const EnvironmentVariables = ({ environment }) => {
                               { loading, called, error, data }
                             ) => {
                               if (error) {
-                                console.error(error)
-                                return <div>Unauthorized: You don't have permission to delete
-                                this variable.</div>;
+                                console.error(error);
+                                return (
+                                  <div>
+                                    Unauthorized: You don't have permission to
+                                    delete this variable.
+                                  </div>
+                                );
                               }
 
                               if (called) {
@@ -288,13 +295,23 @@ const EnvironmentVariables = ({ environment }) => {
           <hr style={{ margin: "30px 0" }} />
           <div className="header">
             <label>Project Variables</label>
-            <Button
-              onClick={() => showPrjVarValue()}
-              aria-controls="example-collapse-text"
-              aria-expanded={openPrjVars}
-            >
-              {!openPrjVars ? "Show values" : "Hide values"}
-            </Button>
+            <div className="header-buttons">
+              <Button>
+                <ProjectVariablesLink
+                  projectSlug={environment.project.name}
+                  className="deployLink hover-state"
+                >
+                  Edit
+                </ProjectVariablesLink>
+              </Button>
+              <Button
+                onClick={() => showPrjVarValue()}
+                aria-controls="example-collapse-text"
+                aria-expanded={openPrjVars}
+              >
+                {!openPrjVars ? "Show values" : "Hide values"}
+              </Button>
+            </div>
           </div>
           <div className="field-wrapper env-vars">
             <Table striped bordered hover>
@@ -327,10 +344,7 @@ const EnvironmentVariables = ({ environment }) => {
                               !prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
-                                  <span
-                                   
-                                    onClick={() => prjValuesShow(index)}
-                                  >
+                                  <span onClick={() => prjValuesShow(index)}>
                                     <Image
                                       src={show}
                                       className="showHide"
@@ -343,10 +357,7 @@ const EnvironmentVariables = ({ environment }) => {
                                 prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {projEnvVar.value}
-                                  <span
-                                   
-                                    onClick={() => prjValuesHide(index)}
-                                  >
+                                  <span onClick={() => prjValuesHide(index)}>
                                     <Image
                                       src={hide}
                                       className="showHide"
@@ -359,10 +370,7 @@ const EnvironmentVariables = ({ environment }) => {
                                 !prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
-                                  <span
-                                   
-                                    onClick={() => prjValuesShow(index)}
-                                  >
+                                  <span onClick={() => prjValuesShow(index)}>
                                     <Image
                                       src={show}
                                       className="showHide"
@@ -375,10 +383,7 @@ const EnvironmentVariables = ({ environment }) => {
                                 prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   ${projEnvVar.value.substring(0, 25)}..
-                                  <span
-                                   
-                                    onClick={() => prjValuesHide(index)}
-                                  >
+                                  <span onClick={() => prjValuesHide(index)}>
                                     <Image
                                       src={hide}
                                       className="showHide"

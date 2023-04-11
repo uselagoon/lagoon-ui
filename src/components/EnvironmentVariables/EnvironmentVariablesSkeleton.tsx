@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 
 const EnvironmentVariablesSkeleton = () => {
-  const numberOfVariableFields = 3
+  const numberOfVariableFields = 3;
 
   const skeletonItem = (
     <tr>
@@ -24,10 +24,12 @@ const EnvironmentVariablesSkeleton = () => {
 
   return (
     <StyledEnvironmentVariableDetails>
-      <AddEnvironmentVariable />
       <div className="header">
         <label>Environment Variables</label>
-        <Button>Show values</Button>
+        <div className="header-buttons">
+          <AddEnvironmentVariable />
+          <Button>Show values</Button>
+        </div>
       </div>
       <div className="field-wrapper env-vars">
         <Table striped bordered hover>
@@ -48,7 +50,10 @@ const EnvironmentVariablesSkeleton = () => {
       <hr style={{ margin: "30px 0" }} />
       <div className="header">
         <label>Project Variables</label>
-        <Button>Show values</Button>
+        <div className="header-buttons">
+          <Button>Edit</Button>
+          <Button>Show values</Button>
+        </div>
       </div>
       <div className="field-wrapper env-vars">
         <Table striped bordered hover>

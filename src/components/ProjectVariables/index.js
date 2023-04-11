@@ -67,11 +67,6 @@ const ProjectVariables = ({ project }) => {
 
   return (
     <StyledProjectVariablesDetails className="details">
-      <AddEnvironmentVariable
-        varProject={project.name}
-        varValues={displayVars}
-        varTarget="Project"
-      />
       {displayVars.length == 0 ? (
         <>
           <hr style={{ margin: "30px 0" }} />
@@ -81,13 +76,20 @@ const ProjectVariables = ({ project }) => {
         <>
           <div className="header">
             <label>Project Variables</label>
-            <Button
-              onClick={() => showVarValue()}
-              aria-controls="example-collapse-text"
-              aria-expanded={openPrjVars}
-            >
-              {!openPrjVars ? "Show values" : "Hide values"}
-            </Button>
+            <div className="header-buttons">
+              <AddEnvironmentVariable
+                varProject={project.name}
+                varValues={displayVars}
+                varTarget="Project"
+              />
+              <Button
+                onClick={() => showVarValue()}
+                aria-controls="example-collapse-text"
+                aria-expanded={openPrjVars}
+              >
+                {!openPrjVars ? "Show values" : "Hide values"}
+              </Button>
+            </div>
           </div>
           <div className="field-wrapper env-vars">
             <Table striped bordered hover>
@@ -200,9 +202,13 @@ const ProjectVariables = ({ project }) => {
                               { loading, called, error, data }
                             ) => {
                               if (error) {
-                                console.error(error)
-                                return <div>Unauthorized: You don't have permission to delete
-                                this variable.</div>;
+                                console.error(error);
+                                return (
+                                  <div>
+                                    Unauthorized: You don't have permission to
+                                    delete this variable.
+                                  </div>
+                                );
                               }
 
                               if (called) {
