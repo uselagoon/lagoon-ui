@@ -8,12 +8,13 @@ import Router from 'next/router';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
 import {StyledEnvironmentDetails} from "./StyledEnvironment"
-
+import useTranslation from "lib/useTranslation";
 
 /**
  * Displays the environment information.
  */
 const Environment = ({ environment }) => {
+  const t = useTranslation();
   const gitUrlParsed = giturlparse(environment.project.gitUrl);
   const gitBranchLink = `${gitUrlParsed.resource}/${
     gitUrlParsed.full_name
@@ -23,7 +24,7 @@ const Environment = ({ environment }) => {
     <StyledEnvironmentDetails className="details">
       <div className="field-wrapper environmentType">
         <div>
-          <label>Environment Type</label>
+          <label>{t("environment.envType")}</label>
           <div className="field">
           {environment.environmentType}
           {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name &&
@@ -33,13 +34,13 @@ const Environment = ({ environment }) => {
       </div>
       <div className="field-wrapper deployType">
         <div>
-          <label>Deployment Type</label>
+          <label>{t("environment.deployType")}</label>
           <div className="field">{environment.deployType}</div>
         </div>
       </div>
       <div className="field-wrapper created">
         <div>
-          <label>Created</label>
+          <label>{t("environment.created")}</label>
           <div className="field">
             {moment
               .utc(environment.created)
@@ -50,7 +51,7 @@ const Environment = ({ environment }) => {
       </div>
       <div className="field-wrapper updated">
         <div>
-          <label>Last Deploy</label>
+          <label>{t("environment.lastDeploy")}</label>
           <div className="field">
             {moment
               .utc(environment.updated)
@@ -61,7 +62,7 @@ const Environment = ({ environment }) => {
       </div>
       <div className="field-wrapper source">
         <div>
-          <label>Source</label>
+          <label>{t("environment.source")}</label>
           <div className="field">
             <a
               className="hover-state"
@@ -76,7 +77,7 @@ const Environment = ({ environment }) => {
       <div className="field-wrapper routes">
         {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.productionEnvironment == environment.name && (
         <div>
-          <label>Active Environment Routes</label>
+          <label>{t("environment.activeRoutes")}</label>
           <div className="field">
             {environment.project.productionRoutes
               ? environment.project.productionRoutes.split(',').map(route => (
@@ -91,7 +92,7 @@ const Environment = ({ environment }) => {
         </div>)}
         {environment.project.productionEnvironment && environment.project.standbyProductionEnvironment && environment.environmentType == 'production' && environment.project.standbyProductionEnvironment == environment.name && (
         <div>
-          <label>Standby Environment Routes</label>
+          <label>{t("environment.standbyRoutes")}</label>
           <div className="field">
             {environment.project.standbyRoutes
               ? environment.project.standbyRoutes.split(',').map(route => (
@@ -105,7 +106,7 @@ const Environment = ({ environment }) => {
           </div>
         </div>)}
         <div>
-          <label>Routes</label>
+          <label>{t("environment.routes")}</label>
           <div className="field">
             {environment.routes
               ? environment.routes.split(',').map(route => (
@@ -134,7 +135,7 @@ const Environment = ({ environment }) => {
           }
 
           if (!error && called && loading) {
-            return <div>Switching Standby Environment to Active...</div>;
+            return <div>{t("environment.switching")}</div>;
           }
 
           return (
@@ -154,7 +155,7 @@ const Environment = ({ environment }) => {
           }
 
           if (called) {
-            return <div>Delete queued</div>;
+            return <div>{t("environment.deleteQueued")}</div>;
           }
 
           return (

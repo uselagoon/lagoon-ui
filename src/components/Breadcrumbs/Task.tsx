@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { getLinkData } from "components/link/Task";
 import Breadcrumb from "components/Breadcrumbs/Breadcrumb";
+import useTranslation from "lib/useTranslation";
 
 interface TaskBreadcrumbProps {
   taskName: string;
@@ -15,9 +16,10 @@ const TaskBreadcrumb: FC<TaskBreadcrumbProps> = ({
   environmentSlug,
   projectSlug,
 }) => {
+  const t = useTranslation();
   const linkData = getLinkData(taskSlug, environmentSlug, projectSlug);
 
-  return <Breadcrumb header="Task" title={taskName} {...linkData} />;
+  return <Breadcrumb header={t("breadcrumbs.task")} title={taskName} {...linkData} />;
 };
 
 export default TaskBreadcrumb;

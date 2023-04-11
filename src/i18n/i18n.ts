@@ -26,12 +26,13 @@ export const initI18n = () => {
             resources:dictionary,
             keySeparator: ".",
             detection: lngDetectorOptions,
-            fallbackLng:"combined",
+            fallbackLng:"translations",
             load: "languageOnly", // no region
             ns: ["english","italian"], // more to be added as we add support for other languages
             interpolation:{
                 escapeValue: false,
             },
+            fallbackNS:"english", // if there's no translation in a specific language config, translation defaults to english
             debug: false
         })
 }

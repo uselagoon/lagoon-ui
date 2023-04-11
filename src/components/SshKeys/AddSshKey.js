@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import css from 'styled-jsx/css';
 import Button from 'components/Button';
 import { Mutation } from 'react-apollo';
 import Me from 'lib/query/Me';
-import { bp, color, fontSize } from 'lib/variables';
 import AddSshKeyMutation from '../../lib/mutation/AddSshKey';
-import { none } from 'ramda';
+import useTranslation from "lib/useTranslation"
+
 
 const AddSshKey = ({me: { id, email }}) => {
+
+  const t = useTranslation();
 
   const defaultValues = {sshKeyName: '', sshKey: ''};
   const [values, setValues] = useState(defaultValues);
@@ -48,7 +49,7 @@ const AddSshKey = ({me: { id, email }}) => {
           };
 
           if (!error && called && loading) {
-            return <div>Adding SSH Key...</div>;
+            return <div>{t("settings.addingKey")}</div>;
           }
 
           return (
@@ -57,7 +58,7 @@ const AddSshKey = ({me: { id, email }}) => {
               { error ? <div className="error">{error.message.replace('GraphQL error:', '').trim()}</div> : "" }
 
               <div>
-                <label htmlFor="sshKeyName">SSH Key Name</label>
+                <label htmlFor="sshKeyName">{t("settings.keyName")}</label>
                 <input
                   id="sshKeyName"
                   name="sshKeyName"
@@ -69,7 +70,7 @@ const AddSshKey = ({me: { id, email }}) => {
               </div>
 
               <div>
-                <label htmlFor="sshKey">SSH Key</label>
+                <label htmlFor="sshKey">{t("settings.sshKey")}</label>
                 <textarea
                   id='sshKey'
                   name='sshKey'
@@ -77,11 +78,11 @@ const AddSshKey = ({me: { id, email }}) => {
                   type="text"
                   onChange={handleChange}
                   value={values.sshKey}
-                  placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"/>
+                  placeholder={t("placeholders.sshKey")}/>
               </div>
-              <Button disabled={!isFormValid} action={addSshKeyHandler}>Add</Button>
+              <Button disabled={!isFormValid} action={addSshKeyHandler}>{t("settings.add")}</Button>
               <div className="sshKeyError">
-                <span className={values.sshKey == "" || isFormValid ? 'fade' : 'fade-in'}>{values.sshKeyName == "" ? 'Please enter a SSH Key name' : 'The SSH Key entered is invalid'}</span>
+                <span className={values.sshKey == "" || isFormValid ? 'fade' : 'fade-in'}>{values.sshKeyName == "" ? t("settings.enterKey") : t("settings.invalidKey")}</span>
               </div>
             </div>
           );

@@ -11,6 +11,7 @@ import { useTourContext } from "../tours/TourContext";
 import useTranslation from "lib/useTranslation";
 
 
+
 /**
  * Displays the projects page.
  */
@@ -35,6 +36,7 @@ const ProjectsPage = () => {
     return <QueryError error={error} />;
   }
 
+
   return (
     <>
       <Head>
@@ -43,7 +45,7 @@ const ProjectsPage = () => {
       <MainLayout>
         <CommonWrapper>
           <h2>
-            {t("projects.test")}
+            {t("projects.title")}
           </h2>
           <div className="content">
             {loading ? (

@@ -9,7 +9,7 @@ import DeploymentsLink from 'components/link/Deployments';
 import DeploymentLink from 'components/link/Deployment';
 import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
-
+import useTranslation from "lib/useTranslation";
 
 /**
  * The primary list of running deployments.
@@ -18,6 +18,8 @@ const DeploymentsByFilter = ({ deployments }) => {
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(deployments, {key: 'created', direction: 'descending'});
   const [searchTerm, setSearchTerm] = useState('');
   const [hasFilter, setHasFilter] = useState(false);
+
+  const t = useTranslation();
 
   const handleSearchFilterChange = (event) => {
     setHasFilter(false);
@@ -74,42 +76,42 @@ const DeploymentsByFilter = ({ deployments }) => {
         <label></label>
         <input 
           type="text" id="filter"
-          placeholder="Filter deployments..."
+          placeholder={t("placeholders.deploymentFilter")}
           value={searchTerm}
           onChange={handleSearchFilterChange}
         />
       </div>
       <DeploymentsHeader>
-        <label>Project</label>
-        <label>Environment</label>
-        <label>Cluster</label>
+        <label>{t("allDeployments.project")}</label>
+        <label>{t("allDeployments.environment")}</label>
+        <label>{t("allDeployments.cluster")}</label>
         <button
           type="button"
           onClick={() => handleSort('name')}
           className={`button-sort name ${getClassNamesFor('name')}`}
         >
-          Name
+          {t("allDeployments.name")}
         </button>
-        <label className="priority">Priority</label>
+        <label className="priority">{t("allDeployments.priority")}</label>
         <button
             type="button"
             onClick={() => handleSort('created')}
             className={`button-sort created ${getClassNamesFor('created')}`}
         >
-          Created
+          {t("allDeployments.created")}
         </button>
         <button
             type="button"
             onClick={() => handleSort('status')}
             className={`button-sort status ${getClassNamesFor('status')}`}
         >
-          Status
+          {t("allDeployments.status")}
         </button>
-        <label>Duration</label>
+        <label>{t("allDeployments.duration")}</label>
         <label></label>
       </DeploymentsHeader>
       <DeploymentsDataTable>
-        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">No deployments</div>}
+        {!sortedItems.filter(deployment => filterResults(deployment)).length && <div className="data-none">{t("allDeployments.noDeployments")}</div>}
         {sortedItems.filter(deployment => filterResults(deployment)).map((deployment) => {
           return (
             <div className="data-row row-heading" key={deployment.id}>
@@ -153,7 +155,7 @@ const DeploymentsByFilter = ({ deployments }) => {
               <div className="duration">{getDeploymentDuration(deployment)}</div>
               <div>
                 {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
-                  <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
+                  <CancelDeployment deployment={deployment} afterText={t("allDeployments.cancelled")} beforeText={t("allDeployments.cancel")} />
                 )}
               </div>
             </div>

@@ -15,11 +15,12 @@ import ProjectNotFound from "../components/errors/ProjectNotFound";
 import SidebarSkeleton from "components/ProjectDetailsSidebar/SidebarSkeleton";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
-
+import useTranslation from "lib/useTranslation";
 /**
  * Displays a project page, given the project name.
  */
 export const PageProject = ({ router }) => {
+  const t = useTranslation();
   const {continueTour} = useTourContext();
   const { data, error, loading } = useQuery(ProjectByNameQuery, {
     variables: { name: router.query.projectName },
@@ -46,7 +47,7 @@ export const PageProject = ({ router }) => {
               <SidebarSkeleton />
             </div>
             <div className="environments-wrapper">
-              <h3>Environments</h3>
+              <h3>{t("project.environments")}</h3>
               <EnvironmentsSkeleton />
             </div>
           </ProjectDetailsWrapper>
@@ -86,8 +87,8 @@ export const PageProject = ({ router }) => {
             <ProjectDetailsSidebar project={project} />
           </div>
           <div className="environments-wrapper">
-            <h3>Environments</h3>
-            {!environments.length && <p>No Environments</p>}
+            <h3>{t("project.environments")}</h3>
+            {!environments.length && <p>{t("project.noEnvironments")}</p>}
             <Environments environments={environments} project={project} />
           </div>
         </ProjectDetailsWrapper>

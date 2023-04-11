@@ -7,11 +7,13 @@ import AddSshKey from "../../components/SshKeys/AddSshKey";
 import { CommonWrapper } from "../../styles/commonPageStyles";
 import QueryError from "../../components/errors/QueryError";
 import { useQuery } from "@apollo/react-hooks";
+import useTranslation from "lib/useTranslation";
 
 /**
  * Displays the user settings page.
  */
 const SettingsPage = () => {
+  const t = useTranslation();
   const { data, loading, error } = useQuery(Me, {
     displayName: "Me",
     fetchPolicy: "cache-and-network",
@@ -28,7 +30,7 @@ const SettingsPage = () => {
       </Head>
       <MainLayout>
         <CommonWrapper>
-          <h2>SSH keys</h2>
+          <h2>{t("settings.title")}</h2>
           <div className="content">
             <SshKeys me={data?.me || {}} loading={loading} />
             <AddSshKey me={data?.me || {}} />

@@ -4,6 +4,7 @@ import EnvironmentLink from 'components/link/Environment';
 import Box from 'components/Box';
 import { makeSafe } from 'lib/util';
 import {StyledEnvironments} from "./StyledEnvironments";
+import useTranslation from "lib/useTranslation";
 
 const bgImages = {
   branch: {
@@ -21,6 +22,7 @@ const bgImages = {
 };
 
 const Environments = ({ environments = [], project }) => {
+  const t = useTranslation();
   if (environments.length === 0) {
     return null;
   }
@@ -45,28 +47,28 @@ const Environments = ({ environments = [], project }) => {
                 >
                 {environment.environmentType == 'production' && (
                   <div className="productionLabel">
-                    <span>Production</span>
+                    <span>{t("project.production")}</span>
                   </div>
                 )}
                 {activeEnvironment && (
                   <div className="activeLabel">
-                    <span>Active</span>
+                    <span>{t("project.active")}</span>
                   </div>
                 )}
                 {standbyEnvironment && (
                   <div className="standbyLabel">
-                    <span>Standby</span>
+                    <span>{t("project.standby")}</span>
                   </div>
                 )}
                 <label>
-                  Type: {environment.deployType === 'pullrequest'
+                {t("project.type")}: {environment.deployType === 'pullrequest'
                     ? 'PR'
                     : environment.deployType}
                 </label>
                 <h4>{environment.name}</h4>
                 {environment.openshift.friendlyName != null && (
                   <label className="clusterLabel">
-                    Cluster: {environment.openshift.friendlyName}
+                    {t("project.cluster")}: {environment.openshift.friendlyName}
                   </label>
                 )}
                 {environment.openshift.friendlyName != null && environment.openshift.cloudRegion != null && (
@@ -74,7 +76,7 @@ const Environments = ({ environments = [], project }) => {
                 )}
                 {environment.openshift.cloudRegion != null && (
                   <label className="regionLabel">
-                    Region: {environment.openshift.cloudRegion}
+                    {t("project.region")}: {environment.openshift.cloudRegion}
                   </label>
                 )}
                 </EnvironmentLink>
@@ -83,11 +85,11 @@ const Environments = ({ environments = [], project }) => {
                       <label>
                         { standbyEnvironment || activeEnvironment ?
                             <a className="hover-state" href={standbyEnvironment ? project.standbyRoutes : project.productionRoutes} target="_blank">
-                              Route
+                              {t("project.route")}
                             </a>
                         :
                           <a className="hover-state" href={environment.routes.split(',')[0]} target="_blank">
-                            Route
+                            {t("project.route")}
                           </a>
                         }
                       </label>

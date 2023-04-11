@@ -1,13 +1,15 @@
 import React from "react";
 import { StyledEnvironmentDetails } from "./StyledEnvironment";
 import Skeleton from "react-loading-skeleton";
+import useTranslation from "lib/useTranslation";
 
 const EnvironmentSkeleton = () => {
+  const t = useTranslation();
   return (
     <StyledEnvironmentDetails className="details">
       <div className="field-wrapper environmentType">
         <div>
-          <label>Environment Type</label>
+          <label>{t("environment.envType")}</label>
           <div className="field">
             <Skeleton />
           </div>
@@ -15,7 +17,7 @@ const EnvironmentSkeleton = () => {
       </div>
       <div className="field-wrapper deployType">
         <div>
-          <label>Deployment Type</label>
+          <label>{t("environment.deployType")}</label>
           <div className="field">
             <Skeleton />
           </div>
@@ -23,7 +25,7 @@ const EnvironmentSkeleton = () => {
       </div>
       <div className="field-wrapper created">
         <div>
-          <label>Created</label>
+          <label>{t("environment.created")}</label>
           <div className="field">
             <Skeleton count={2} />
           </div>
@@ -31,7 +33,7 @@ const EnvironmentSkeleton = () => {
       </div>
       <div className="field-wrapper updated">
         <div>
-          <label>Last Deploy</label>
+          <label>{t("environment.lastDeploy")}</label>
           <div className="field">
             <Skeleton count={2} />
           </div>
@@ -39,7 +41,7 @@ const EnvironmentSkeleton = () => {
       </div>
       <div className="field-wrapper source">
         <div>
-          <label>Source</label>
+          <label>{t("environment.source")}</label>
           <div className="field">
             <Skeleton width={"50%"} />
           </div>
@@ -47,7 +49,7 @@ const EnvironmentSkeleton = () => {
       </div>
       <div className="field-wrapper routes">
         <div>
-          <label>Routes</label>
+          <label>{t("environment.routes")}</label>
           <div className="field">
             <Skeleton width={"50%"} />
           </div>

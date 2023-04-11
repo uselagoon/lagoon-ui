@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { getLinkData } from "components/link/Deployment";
 import Breadcrumb from "components/Breadcrumbs/Breadcrumb";
+import useTranslation from "lib/useTranslation";
 
 interface DeploymentBreadcrumbProps {
   deploymentSlug: string;
@@ -13,10 +14,11 @@ const DeploymentBreadcrumb: FC<DeploymentBreadcrumbProps> = ({
   environmentSlug,
   projectSlug,
 }) => {
+  const t = useTranslation();
   const linkData = getLinkData(deploymentSlug, environmentSlug, projectSlug);
 
   return (
-    <Breadcrumb header="Deployment" title={deploymentSlug} {...linkData} />
+    <Breadcrumb header={t("breadcrumbs.deployment")} title={deploymentSlug} {...linkData} />
   );
 };
 

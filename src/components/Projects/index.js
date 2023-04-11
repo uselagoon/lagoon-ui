@@ -10,11 +10,13 @@ import {
   StyledRoute,
   ProjectsPage,
 } from "./StyledProjects";
+import useTranslation from "lib/useTranslation";
 
 /**
  * The primary list of projects.
  */
 const Projects = ({ projects = [] }) => {
+  const t = useTranslation();
   const [searchInput, setSearchInput] = useState("");
 
   const filteredProjects = projects.filter((key) => {
@@ -39,8 +41,8 @@ const Projects = ({ projects = [] }) => {
       <ProjectsHeader>
         <label>
           {filteredProjects.length <= 1
-            ? `${filteredProjects.length} Project`
-            : `${filteredProjects.length} Projects`}
+            ? `${filteredProjects.length} ${t("projects.project")}`
+            : `${filteredProjects.length} ${t("projects.projects")}`}
         </label>
         <label></label>
         <SearchInput
@@ -49,21 +51,21 @@ const Projects = ({ projects = [] }) => {
           type="text"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
-          placeholder="Type to search"
+          placeholder={t("placeholders.search")}
           disabled={projects.length === 0}
         />
       </ProjectsHeader>
       {!projects.length && (
         <Box className="box">
           <div className="project">
-            <h4>No projects</h4>
+            <h4>{t("projects.noProjects")}</h4>
           </div>
         </Box>
       )}
       {searchInput && !filteredProjects.length && (
         <Box className="box">
           <div className="project">
-            <h4>No projects matching "{searchInput}"</h4>
+            <h4>{t("projects.noMatch")} "{searchInput}"</h4>
           </div>
         </Box>
       )}

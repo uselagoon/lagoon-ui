@@ -6,9 +6,11 @@ import DeleteSshKeyById from 'lib/mutation/DeleteSshKeyById';
 import Me from 'lib/query/Me';
 import {StyledKeys} from "./StyledKeys"
 import Skeleton from 'react-loading-skeleton';
+import useTranslation from "lib/useTranslation";
 
 const SshKeys = ( {me: { id, email, sshKeys: keys }, loading} ) => {
 
+  const t = useTranslation();
   const [isLoading, setIsLoading] = useState(loading);
 
   useEffect(()=>{
@@ -19,15 +21,15 @@ const SshKeys = ( {me: { id, email, sshKeys: keys }, loading} ) => {
   return(
     <StyledKeys>
       <div className="header">
-        <label className="name">Name</label>
-        <label className="type">Type</label>
-        <label className="fingerprint">Fingerprint</label>
-        <label className="created">Created</label>
+        <label className="name">{t("settings.name")}</label>
+        <label className="type">{t("settings.type")}</label>
+        <label className="fingerprint">{t("settings.fingerprint")}</label>
+        <label className="created">{t("settings.created")}</label>
       </div>
       {isLoading ? 
       <Skeleton count={5} height={25}/> :
       <div className="data-table">
-        {!keys?.length && <div className="data-none">No SSH keys</div>}
+        {!keys?.length && <div className="data-none">{t("settings.noKeys")}</div>}
 
         {keys && keys.map(key => (
           <div className="data-row" key={key.id}>
@@ -47,7 +49,7 @@ const SshKeys = ( {me: { id, email, sshKeys: keys }, loading} ) => {
                   }
 
                   if (called) {
-                    return <div>Deleting SSH Key...</div>;
+                    return <div>{t("settings.deletingKey")}</div>;
                   }
                   return (
                     <Button variant='red' action={() => deleteSshKeyById({
@@ -56,7 +58,7 @@ const SshKeys = ( {me: { id, email, sshKeys: keys }, loading} ) => {
                           id: key.id,
                         }
                       }
-                    })}>Delete</Button>
+                    })}>{t("settings.delete")}</Button>
                   );
                 }}
               </Mutation>

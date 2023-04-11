@@ -9,11 +9,14 @@ import { CommonWrapperMargin } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
+import useTranslation from "lib/useTranslation";
 
 /**
  * Displays the projects page.
  */
 const AllDeployments = () => {
+  const t = useTranslation();
+
   const { continueTour } = useTourContext();
 
   const { data, error, loading } = useQuery(deploymentsByFilter, {
@@ -39,7 +42,7 @@ const AllDeployments = () => {
 
       <MainLayout>
         <CommonWrapperMargin>
-          <h2>Deployments</h2>
+          <h2>{t("allDeployments.title")}</h2>
           <div className="content">
             {loading ? (
               <DeploymentsByFilterSkeleton />
