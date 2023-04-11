@@ -63,15 +63,6 @@ export const StyledProjectNavTabs = styled.ul`
         background-image: url("/static/images/overview-active.svg");
       }
     }
-    &.deploy-targets {
-      &::before {
-        background-image: url("/static/images/target-sidebar.svg");
-        background-size: 22px;
-      }
-      &.active::before {
-        background-image: url("/static/images/target-sidebar-active.svg");
-      }
-    }
     &.variables {
       &::before {
         background-image: url("/static/images/variables.svg");
@@ -79,6 +70,15 @@ export const StyledProjectNavTabs = styled.ul`
       }
       &.active::before {
         background-image: url("/static/images/variables-active.svg");
+      }
+    }
+    &.deployTargets {
+      &::before {
+        background-image: url("/static/images/target-sidebar.svg");
+        background-size: 22px;
+      }
+      &.active::before {
+        background-image: url("/static/images/target-sidebar-active.svg");
       }
     }
   }

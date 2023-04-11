@@ -1,5 +1,4 @@
-import React, { FC, useState } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import Highlighter from "react-highlight-words";
 import ProjectLink from "components/link/Project";
 import Box from "components/Box";
@@ -36,7 +35,7 @@ const Projects = ({ projects = [] }) => {
   });
 
   return (
-    <ProjectsPage>
+    <ProjectsPage id="projects">
       <ProjectsHeader>
         <label>
           {filteredProjects.length <= 1

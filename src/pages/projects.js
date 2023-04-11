@@ -1,38 +1,54 @@
-import React from "react";
-import * as R from "ramda";
+import React, { useEffect } from "react";
 import Head from "next/head";
-import { Query } from "react-apollo";
 import MainLayout from "layouts/MainLayout";
 import AllProjectsQuery from "lib/query/AllProjects";
 import Projects from "components/Projects";
-import withQueryLoading from "lib/withQueryLoading";
-import withQueryError from "lib/withQueryError";
+import ProjectsSkeleton from "components/Projects/ProjectsSkeleton";
 import { CommonWrapper } from "../styles/commonPageStyles";
+import { useQuery } from "@apollo/react-hooks";
+import QueryError from "../components/errors/QueryError";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays the projects page.
  */
 const ProjectsPage = () => {
+  const { startTour } = useTourContext();
+
+  const { data, loading, error } = useQuery(AllProjectsQuery, {
+    displayName: "AllProjectsQuery",
+  });
+
+  useEffect(() => {
+    // tour only starts running if there's at least one project the user can view
+    if (!loading && data.allProjects.length) {
+      startTour();
+    }
+  }, [loading]);
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
   return (
     <>
       <Head>
         <title>Projects</title>
       </Head>
-      <Query query={AllProjectsQuery} displayName="AllProjectsQuery">
-        {R.compose(
-          withQueryLoading,
-          withQueryError
-        )(({ data }) => (
-          <MainLayout>
-            <CommonWrapper>
-              <h2>Projects</h2>
-              <div className="content">
-                <Projects projects={data.allProjects || []} />
-              </div>
-            </CommonWrapper>
-          </MainLayout>
-        ))}
-      </Query>
+      <MainLayout>
+        <CommonWrapper>
+          <h2>
+            Projects
+          </h2>
+          <div className="content">
+            {loading ? (
+              <ProjectsSkeleton />
+            ) : (
+              <Projects projects={data.allProjects || []} />
+            )}
+          </div>
+        </CommonWrapper>
+      </MainLayout>
     </>
   );
 };

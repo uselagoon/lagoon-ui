@@ -103,7 +103,7 @@ const ProjectDetailsSidebar = ({ project }) => {
               <ProjectChildPageLink
                 childPage={"deploy-targets"}
                 projectSlug={project.name}
-                className="deployLink deptargets hover-state"
+                className="deployLink deployTargets hover-state"
               >
                 View
               </ProjectChildPageLink>

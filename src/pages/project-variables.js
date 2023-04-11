@@ -1,58 +1,91 @@
 import React from "react";
-import * as R from "ramda";
 import { withRouter } from "next/router";
 import Head from "next/head";
-import { Query } from "react-apollo";
 import MainLayout from "layouts/MainLayout";
 import Breadcrumbs from "components/Breadcrumbs";
 import ProjectBreadcrumb from "components/Breadcrumbs/Project";
 import ProjectNavTabs from "components/ProjectNavTabs";
-import withQueryLoading from "lib/withQueryLoading";
-import withQueryError from "lib/withQueryError";
-import { withProjectRequired } from "lib/withDataRequired";
 import { VariableWrapper, ProjectWrapper } from "../styles/pageStyles";
 import ProjectVariables from "components/ProjectVariables";
+import { useQuery } from "@apollo/react-hooks";
+import ProjectVariablesSkeleton from "components/ProjectVariables/ProjectVariablesSkeleton";
 import ProjectByNameWithEnvVarsQuery from "lib/query/ProjectByNameWithEnvVars";
+import QueryError from "../components/errors/QueryError";
+import ProjectNotFound from "../components/errors/ProjectNotFound";
+import ProjectNavTabsSkeleton from "components/ProjectNavTabs/ProjectNavTabsSkeleton";
 
 /**
  * Displays a list of all variables for a project.
  */
-export const PageProjectVariables = ({ router }) => (
+export const PageProjectVariables = ({ router }) => {
+  const { data, error, loading } = useQuery(ProjectByNameWithEnvVarsQuery, {
+    variables: { name: router.query.projectName },
+  });
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+  const project = data?.project;
+
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>{`${router.query.projectName} | Project`}</title>
+        </Head>
+        <MainLayout>
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={router.query.projectName} />
+          </Breadcrumbs>
+          <ProjectWrapper>
+          <ProjectNavTabsSkeleton
+              activeTab="variables"
+              projectName={router.query.projectName}
+            />
+            <VariableWrapper>
+              <div className="content">
+                <div className="notification">
+                  A deployment is required to apply any changes to Project
+                  variables.
+                </div>
+                <ProjectVariablesSkeleton />
+              </div>
+            </VariableWrapper>
+          </ProjectWrapper>
+        </MainLayout>
+      </>
+    );
+  }
+
+  if (!project) {
+    return <ProjectNotFound variables={{ name: router.query.projectName }} />;
+  }
+
+  return (
   <>
     <Head>
       <title>{`${router.query.projectName} | Project`}</title>
     </Head>
-    <Query
-      query={ProjectByNameWithEnvVarsQuery}
-      variables={{ name: router.query.projectName }}
-    >
-      {R.compose(
-        withQueryLoading,
-        withQueryError,
-        withProjectRequired
-      )(({ data: { project } }) => {
-        return (
-          <MainLayout>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={project.name} />
-            </Breadcrumbs>
-            <ProjectWrapper>
-              <ProjectNavTabs activeTab="variables" project={project} />
-              <VariableWrapper>
-                <div className="content">
-                  <div className="notification">
-                    A deployment is required to apply any changes to Project
-                    variables.
-                  </div>
-                  <ProjectVariables project={project} />
-                </div>
-              </VariableWrapper>
-            </ProjectWrapper>
-          </MainLayout>
-        );
-      })}
-    </Query>
+    <MainLayout>
+      <Breadcrumbs>
+        <ProjectBreadcrumb projectSlug={project.name} />
+      </Breadcrumbs>
+      <ProjectWrapper>
+        <ProjectNavTabs activeTab="variables" project={project} />
+        <VariableWrapper>
+          <div className="content">
+            <div className="notification">
+              A deployment is required to apply any changes to Project
+              variables.
+            </div>
+            <ProjectVariables project={project} />
+          </div>
+        </VariableWrapper>
+      </ProjectWrapper>
+    </MainLayout>
   </>
-);
+  );
+};
 
 export default withRouter(PageProjectVariables);

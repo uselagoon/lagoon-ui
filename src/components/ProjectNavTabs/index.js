@@ -1,6 +1,7 @@
 import React from "react";
-import ProjectChildPageLink from "components/link/ProjectChildPageLink";
+import ProjectVariablesLink from 'components/link/ProjectVariables';
 import ProjectLink from "components/link/Project";
+import DeployTargetsLink from "components/link/DeployTargets";
 import { StyledProjectNavTabs } from "./StyledProjectNavTabs";
 
 const ProjectNavTabs = ({ activeTab, project }) => {
@@ -18,27 +19,25 @@ const ProjectNavTabs = ({ activeTab, project }) => {
           activeTab == "variables" ? "active" : ""
         } deployLink`}
       >
-        <ProjectChildPageLink
-          childPage={"variables"}
+        <ProjectVariablesLink
           projectSlug={project.name}
           className="deployLink"
         >
           Variables
-        </ProjectChildPageLink>
+        </ProjectVariablesLink>
       </li>
       {project.deployTargetConfigs.length > 0 && (
         <li
-          className={`deploy-targets ${
-            activeTab == "deploy-targets" ? "active" : ""
+          className={`deployTargets ${
+            activeTab == "deployTargets" ? "active" : ""
           } deployLink`}
         >
-          <ProjectChildPageLink
-            childPage={"deploy-targets"}
+          <DeployTargetsLink
             projectSlug={project.name}
             className="deployLink"
           >
             Deploy Targets
-          </ProjectChildPageLink>
+          </DeployTargetsLink>
         </li>
       )}
     </StyledProjectNavTabs>

@@ -7,7 +7,7 @@ import { StyledBox } from "./StyledBox";
 
 interface BoxProps {
   className?: string;
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
   activeBgs?: string[]; // if present, they act as hover backgrounds
 }
 const Box: FC<BoxProps> = ({ className = "", activeBgs, children }) => (

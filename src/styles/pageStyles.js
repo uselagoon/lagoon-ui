@@ -3,6 +3,8 @@ import { bp, color } from "lib/variables";
 import { commonBg } from "./commonPageStyles";
 
 export const ProblemsByDashBoard = styled.div`
+  display: flex;
+  flex-direction: column;
   ${commonBg};
   .filters-wrapper,
   .project-filter {
@@ -29,6 +31,7 @@ export const ProblemsByDashBoard = styled.div`
     padding: 0 15px;
   }
   .content-wrapper {
+    flex: 1 0 auto;
     h2 {
       margin: 38px calc((100vw / 16) * 1) 0;
       @media ${bp.wideUp} {
@@ -224,8 +227,7 @@ export const ProjectDetailsWrapper = styled.div`
     justify-content: space-between;
   }
 
-  .environments-production,
-  .environments-development {
+  .environments-all {
     max-width: 75%;
   }
 

@@ -1,13 +1,11 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export const getLinkData = (bulkIdSlug) => ({
   urlObject: {
-    pathname: '/bulkdeployment',
-    query: {
-      bulkId: bulkIdSlug
-    }
+    pathname: "/bulkdeployments",
+    query: { bulkId: bulkIdSlug },
   },
-  asPath: `/bulkdeployment/${bulkIdSlug}`
+  asPath: `/bulkdeployment/${bulkIdSlug}`,
 });
 
 /**
@@ -17,7 +15,7 @@ const BulkDeploymentLink = ({
   bulkIdSlug,
   children,
   className = null,
-  prefetch = false
+  prefetch = false,
 }) => {
   const linkData = getLinkData(bulkIdSlug);
 
