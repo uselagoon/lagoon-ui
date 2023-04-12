@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import moment from "moment";
 import RestoreButton from "components/RestoreButton";
 import { BackupsHeader, DataTable } from "./StyledBackups";
+import useTranslation from "lib/useTranslation";
 
 interface BackupsProps {
   backups: {
@@ -16,16 +17,18 @@ interface BackupsProps {
   }[];
 }
 
-const Backups: FC<BackupsProps> = ({ backups }) => (
-  <div className="backups">
+const Backups: FC<BackupsProps> = ({ backups }) => {
+  const t = useTranslation();
+
+ return (<div className="backups">
     <BackupsHeader>
-      <label className="source">Source</label>
-      <label className="created">Created</label>
-      <label className="backupid">Backup id</label>
+      <label className="source">{t("backups.label.source")}</label>
+      <label className="created">{t("backups.label.created")}</label>
+      <label className="backupid">{t("backups.label.backupID")}</label>
     </BackupsHeader>
 
     <DataTable>
-      {!backups.length && <div className="data-none">No Backups</div>}
+      {!backups.length && <div className="data-none">{t("backups.noBackups")}</div>}
       {backups.map((backup) => (
         <div className="data-row" key={backup.id}>
           <div className="source">{backup.source}</div>
@@ -44,6 +47,6 @@ const Backups: FC<BackupsProps> = ({ backups }) => (
       ))}
     </DataTable>
   </div>
-);
+)};
 
 export default Backups;

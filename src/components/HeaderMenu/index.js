@@ -7,6 +7,7 @@ import {
   DropdownButton,
 } from "./StyledHeaderMenu";
 import Link from "next/link";
+import useTranslation from "lib/useTranslation";
 
 const useOutsideClick = (callback) => {
   const ref = React.useRef();
@@ -31,6 +32,7 @@ const useOutsideClick = (callback) => {
 };
 
 const HeaderMenu = ({ auth }) => {
+  const t = useTranslation();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOutside = () => {
@@ -65,13 +67,13 @@ const HeaderMenu = ({ auth }) => {
         menu={[
           <Link key="settings" href="/settings" prefetch>
             <a key="settings" className="settings">
-              Settings
+              {t("header.nav.settings")}
             </a>
           </Link>,
           <hr key="line" />,
           <Link key="projects" href="/projects" prefetch>
             <a key="projects" className="menuitem">
-              Your projects
+              {t("header.nav.projects")}
             </a>
           </Link>,
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
@@ -80,13 +82,13 @@ const HeaderMenu = ({ auth }) => {
               passHref
             >
               <a key="account" className="menuitem">
-                Your account
+                {t("header.nav.account")}
               </a>
             </Link>
           ),
           <hr key="lastline" />,
           <a key="logout" className="logout" onClick={auth.logout}>
-            Sign out
+            {t("header.nav.signOut")}
           </a>,
         ]}
       />

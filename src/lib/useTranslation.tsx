@@ -3,8 +3,8 @@ import i18next, { changeLanguage } from "i18next";
 import { useEffect } from "react";
 
 export enum supportedLanguages {
-  ENGLISH = "english",
-  ITALIAN = "italian",
+  ENGLISH = "en",
+  ITALIAN = "it",
 }
 
 const useTranslation = () => {
@@ -16,7 +16,7 @@ const useTranslation = () => {
       )
     ) {
       // default to english
-      void changeLanguage("english");
+      void changeLanguage("en");
     }
   }, []);
 

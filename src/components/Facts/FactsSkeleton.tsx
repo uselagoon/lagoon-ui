@@ -1,8 +1,10 @@
+import useTranslation from "lib/useTranslation";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import { Header, StyledFacts } from "./StyledFacts";
 
 const FactsSkeleton = () => {
+  const t = useTranslation();
   const factsCount = 10;
 
   return (
@@ -11,23 +13,23 @@ const FactsSkeleton = () => {
         <input
           type="text"
           id="filter"
-          placeholder="Filter facts e.g. PHP version"
+          placeholder={t("placeholders.facts") as unknown as string}
           value={undefined}
         />
       </div>
       <Header>
         <button type="button" className="button-sort name">
-          Name
+          {t("facts.name")}
         </button>
         <button type="button" className="button-sort value">
-          Source
+          {t("facts.source")}
         </button>
         <button type="button" className="button-sort value">
-          Value
+          {t("facts.value")}
         </button>
       </Header>
       <div className="data-table">
-        {[...Array<undefined>(factsCount)].map((_,idx) => (
+        {[...Array<undefined>(factsCount)].map((_, idx) => (
           <div className="data-row row-heading" key={idx}>
             <div className="col col-1">
               <div className="name">

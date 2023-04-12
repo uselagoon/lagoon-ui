@@ -13,12 +13,14 @@ import ProblemsByIdentifier from "components/ProblemsByIdentifier";
 import MainLayout from "layouts/MainLayout";
 import SelectFilter from "components/Filters";
 import { ProblemsDashBoardWrapper, ProblemDashboardFilterWrapper } from "../styles/pageStyles";
+import useTranslation from "lib/useTranslation";
 
 /**
  * Displays the problems overview page.
  *
  */
 const ProblemsDashboardPage = () => {
+  const t = useTranslation();
   const [source, setSource] = useState([]);
   const [severity, setSeverity] = useState(["CRITICAL"]);
   const [envType, setEnvType] = useState("PRODUCTION");
@@ -63,17 +65,17 @@ const ProblemsDashboardPage = () => {
       </Head>
       <MainLayout>
         <ProblemDashboardFilterWrapper>
-          <h2>Problems Dashboard By Identifier</h2>
+          <h2>{t("problemsDashboard.title")}</h2>
           <div className="filters">
             <SelectFilter
-              title="Source"
+              title={t("problemsDashboard.filters.source")}
               loading={sourceLoading}
               options={sources && sourceOptions(sources.sources)}
               onFilterChange={handleSourceChange}
               isMulti
             />
             <SelectFilter
-              title="Severity"
+              title={t("problemsDashboard.filters.severity")}
               loading={severityLoading}
               options={
                 severities && severityOptions(severities.__type.enumValues)
@@ -83,7 +85,7 @@ const ProblemsDashboardPage = () => {
               isMulti
             />
             <SelectFilter
-              title="Type"
+              title={t("problemsDashboard.filters.type")}
               defaultValue={{ value: "PRODUCTION", label: "Production" }}
               options={[
                 { value: "PRODUCTION", label: "Production" },
@@ -139,32 +141,32 @@ const ProblemsDashboardPage = () => {
                     <div className="overview">
                       <ul className="overview-list">
                         <li className="result">
-                          <label>Results: </label>
+                          <label>{t("problemsDashboard.label.results")}: </label>
                           {problems && Object.keys(problems).length} Problems
                         </li>
                         <li className="result">
-                          <label>Critical: </label>
+                          <label>{t("problemsDashboard.label.critical")}: </label>
                           {critical}
                         </li>
                         <li className="result">
-                          <label>High: </label>
+                          <label>{t("problemsDashboard.label.high")}: </label>
                           {high}
                         </li>
                         <li className="result">
-                          <label>Medium: </label>
+                          <label>{t("problemsDashboard.label.medium")}: </label>
                           {medium}
                         </li>
                         <li className="result">
-                          <label>Low: </label>
+                          <label>{t("problemsDashboard.label.low")}: </label>
                           {low}
                         </li>
                       </ul>
                       <ul className="overview-list">
                         <li className="result">
-                          <label>Showing: </label>
+                          <label>{t("problemsDashboard.label.showing")}: </label>
                           {envType.charAt(0).toUpperCase() +
                             envType.slice(1).toLowerCase()}{" "}
-                          environments
+                          {t("general.environments")}
                         </li>
                       </ul>
                     </div>

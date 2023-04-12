@@ -18,7 +18,9 @@ import { CommonWrapperWNotification } from "../styles/commonPageStyles";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+
 import { useTourContext } from "../tours/TourContext";
+import useTranslation from "lib/useTranslation";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT, 10);
@@ -41,6 +43,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  * Displays the backups page, given the name of an openshift project.
  */
 export const PageBackups = ({ router }) => {
+  const  t = useTranslation();
   const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(
     EnvironmentWithBackupsQuery,
@@ -83,9 +86,7 @@ export const PageBackups = ({ router }) => {
             />
             <div className="content">
               <div className="notification">
-                If you need a current database or files dump, use the tasks
-                "drush sql-dump" or "drush archive-dump" in the new "Tasks"
-                section!
+              {t("backups.notification")}
               </div>
               <BackupsSkeleton />
               <ResultsLimited
@@ -182,8 +183,7 @@ export const PageBackups = ({ router }) => {
           <NavTabs activeTab="backups" environment={environment} />
           <div className="content">
             <div className="notification">
-              If you need a current database or files dump, use the tasks "drush
-              sql-dump" or "drush archive-dump" in the new "Tasks" section!
+              {t("backups.notification")}
             </div>
             <Backups backups={environment.backups} />
             <ResultsLimited

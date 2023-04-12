@@ -4,6 +4,7 @@ import DeploymentLink from "components/link/Deployment";
 import BulkDeploymentLink from "components/link/BulkDeployment";
 import { getDeploymentDuration } from "components/Deployment";
 import { StyledDeployments } from "./StyledDeployments";
+import useTranslation from "lib/useTranslation";
 
 interface DeploymentsProps {
   deployments: {
@@ -23,13 +24,15 @@ const Deployments: FC<DeploymentsProps> = ({
   deployments,
   environmentSlug,
   projectSlug,
-}) => (
-  <StyledDeployments>
+}) => {
+  const t = useTranslation();
+
+  return (<StyledDeployments>
     <div className="header">
-      <label>Name</label>
-      <label>Created</label>
-      <label>Status</label>
-      <label>Duration</label>
+      <label>{t("deployments.label.name")}</label>
+      <label>{t("deployments.label.created")}</label>
+      <label>{t("deployments.label.status")}</label>
+      <label>{t("deployments.label.duration")}</label>
     </div>
     <div className="data-table">
       {!deployments.length && <div className="data-none">No Deployments</div>}
@@ -66,7 +69,7 @@ const Deployments: FC<DeploymentsProps> = ({
         </DeploymentLink>
       ))}
     </div>
-  </StyledDeployments>
-);
+  </StyledDeployments>)
+  };
 
 export default Deployments;

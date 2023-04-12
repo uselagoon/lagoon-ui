@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import ProblemsByProject from 'components/ProblemsByProject';
 import { LoadingPageNoHeader } from 'pages/_loading';
 import { ErrorNoHeader } from 'pages/_error';
+import useTranslation from "lib/useTranslation";
 
 const config = {
     "width": 1200,
@@ -14,6 +15,7 @@ const config = {
 };
 
 const Honeycomb = ({ data, filter }) => {
+    const t = useTranslation();
     const { projectsProblems } = data || [];
     const [projects, setProjects] = useState(projects);
     const [projectInView, setProjectInView] = useState(false);
@@ -92,7 +94,7 @@ const Honeycomb = ({ data, filter }) => {
             {projects &&
             <div className="content-wrapper results">
                 <div className="content">
-                    <label>Projects: {projects.length}</label>
+                    <label>{t("general.projects")}: {projects.length}</label>
                 </div>
             </div>
             }
@@ -136,7 +138,7 @@ const Honeycomb = ({ data, filter }) => {
                         <div className="content">
                             {projectInView ?
                                 <>
-                                    <div className="project"><label>Project: {projectInView.name}</label></div>
+                                    <div className="project"><label>{t("general.project")}: {projectInView.name}</label></div>
                                     {projectInView.environments && projectInView.environments.map(environment => {
                                         const problems = Array.prototype.concat.apply([], environment.problems);
 
@@ -159,7 +161,7 @@ const Honeycomb = ({ data, filter }) => {
                                         )
                                     })}
                                 </>
-                                : <div className="project">No project selected</div>
+                                : <div className="project">{t("general.noProjectSelected")}</div>
                             }
                         </div>
                     </div>

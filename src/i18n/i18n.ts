@@ -28,11 +28,11 @@ export const initI18n = () => {
             detection: lngDetectorOptions,
             fallbackLng:"translations",
             load: "languageOnly", // no region
-            ns: ["english","italian"], // more to be added as we add support for other languages
+            ns: ["en","it"], // more to be added as we add support for other languages
             interpolation:{
                 escapeValue: false,
             },
-            fallbackNS:"english", // if there's no translation in a specific language config, translation defaults to english
+            fallbackNS:"en", // if there's no translation in a specific language config, translation defaults to english - can be toggled during dev to see default behavior
             debug: false
         })
 }

@@ -13,6 +13,7 @@ import Completed from "./components/Completed";
 import Error from "./components/Error";
 import InvokeRegisteredTask from "./components/InvokeRegisteredTask";
 import { NewTaskWrapper, StyledNewTask } from "./StyledAddTask";
+import useTranslation from "lib/useTranslation";
 
 /**
  * Perform a task on the CLI environment.
@@ -26,6 +27,7 @@ const AddTask = ({
   onError,
   options,
 }) => {
+  const t = useTranslation();
   const newTaskComponents = {
     DrushArchiveDump,
     DrushSqlDump,
@@ -46,6 +48,7 @@ const AddTask = ({
       : newTaskComponents[selectedTask]
     : newTaskComponents[Empty];
 
+
   return (
     <React.Fragment>
       <NewTaskWrapper>
@@ -53,7 +56,7 @@ const AddTask = ({
           <div className="selectTask">
             <ReactSelect
               aria-label="Task"
-              placeholder="Select a task..."
+              placeholder={t("placeholders.selectTask")}
               name="task"
               value={options.find((o) => o.value === selectedTask)}
               onChange={(selectedOption) => setSelectedTask(selectedOption)}

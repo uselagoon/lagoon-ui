@@ -12,11 +12,13 @@ import Accordion from "components/Accordion";
 import MainLayout from 'layouts/MainLayout';
 import SelectFilter from 'components/Filters';
 import {StyledProblemsDashBoardByProject} from "../styles/pageStyles"
+import useTranslation from "lib/useTranslation";
 
 /**
  * Displays the problems overview page by project.
  */
 const ProblemsDashboardProductPage = () => {
+  const t = useTranslation();
   const [projectSelect, setProjectSelect] = useState([]);
   const [source, setSource] = useState([]);
   const [severity, setSeverity] = useState(['CRITICAL']);
@@ -66,31 +68,32 @@ const ProblemsDashboardProductPage = () => {
       <div className="filters-wrapper">
         <div className="filters">
           <SelectFilter
-              title="Project"
+              title={t("problemsByProject.filters.project")}
               loading={projectsLoading}
               options={projects && projectOptions(projects.allProjects)}
               onFilterChange={handleProjectChange}
               isMulti
             />
           <SelectFilter
-              title="Severity"
+              title={t("problemsByProject.filters.severity")}
               loading={severityLoading}
               options={severities && severityOptions(severities.__type.enumValues)}
               defaultValue={{value: "CRITICAL", label: "CRITICAL"}}
               onFilterChange={handleSeverityChange}
               isMulti
           />
+
         </div>
         <div className="filters">
           <SelectFilter
-            title="Source"
+            title={t("problemsByProject.filters.source")}
             loading={sourceLoading}
             options={sources && sourceOptions(sources.sources)}
             onFilterChange={handleSourceChange}
             isMulti
           />
           <SelectFilter
-            title="EnvType"
+            title={t("problemsByProject.filters.envType")}
             defaultValue={{value: 'PRODUCTION', label: 'Production'}}
             options={[
               {value: 'PRODUCTION', label: 'Production'},
@@ -104,7 +107,7 @@ const ProblemsDashboardProductPage = () => {
         {projects &&
           <div className="results">
             <div className="content">
-              <label>Projects: {projects.allProjects.length}</label>
+              <label>{t("general.projects")}: {projects.allProjects.length}</label>
             </div>
           </div>
         }

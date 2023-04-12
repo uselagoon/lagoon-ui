@@ -4,6 +4,7 @@ import SelectFilter from 'components/Filters';
 import Button from 'components/Button';
 // import { Icon } from 'semantic-ui-react';
 import {StyledInsights} from "./StyledInsights"
+import useTranslation from "lib/useTranslation";
 
 const getOptionsFromInsights = (insights, key) => {
     let uniqueOptions = insights &&
@@ -13,6 +14,7 @@ const getOptionsFromInsights = (insights, key) => {
 };
 
 const Insights = ({ insights }) => {
+    const t = useTranslation();
     const { sortedItems, getClassNamesFor, requestSort } = useSortableData(insights, {key: 'id', direction: 'ascending'});
     const [nameSelected, setName] = useState([]);
     const [typeSelected, setType] = useState([]);
@@ -116,115 +118,123 @@ const Insights = ({ insights }) => {
     const insightsLength = sortedItems.filter(item => shouldItemBeShown(item)).length
 
     return (
-        <StyledInsights>
-            <div className="overview">
-                <ul className="overview-list">
-                    <li className="result"><label>{insightsLength <= 1 ? `Insight` : `Insights`}</label><span className="text-large">{insightsLength}</span></li>
-                </ul>
+      <StyledInsights>
+        <div className="overview">
+          <ul className="overview-list">
+            <li className="result">
+              <label>
+                {insightsLength <= 1
+                  ? t("insights.insight")
+                  : t("insights.insights")}
+              </label>
+              <span className="text-large">{insightsLength}</span>
+            </li>
+          </ul>
+        </div>
+        <div className="filters-wrapper">
+          <div className="select-filters">
+            <SelectFilter
+              title={t("insights.filters.name")}
+              loading={!names}
+              options={names && nameOptions(names)}
+              onFilterChange={handleNameChange}
+              isMulti
+            />
+            <SelectFilter
+              title={t("insights.filters.service")}
+              loading={!services}
+              options={services && serviceOptions(services)}
+              onFilterChange={handleServiceChange}
+              isMulti
+            />
+            <SelectFilter
+              title={t("insights.filters.type")}
+              loading={!types}
+              options={types && typeOptions(types)}
+              onFilterChange={handleTypeChange}
+              isMulti
+            />
+          </div>
+        </div>
+        <div className="filters">
+          <input
+            type="text"
+            id="filter"
+            placeholder={t("placeholders.insights")}
+            value={factTerm}
+            onChange={handleFactFilterChange}
+          />
+        </div>
+        <div className="header">
+          <button
+            type="button"
+            onClick={() => handleSort("file")}
+            className={`button-sort file ${getClassNamesFor("file")}`}
+          >
+            {t("insights.file")}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSort("service")}
+            className={`button-sort service ${getClassNamesFor("service")}`}
+          >
+            {t("insights.service")}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSort("type")}
+            className={`button-sort type ${getClassNamesFor("type")}`}
+          >
+            {t("insights.type")}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSort("created")}
+            className={`button-sort created ${getClassNamesFor("created")}`}
+          >
+            {t("insights.created")}
+          </button>
+          <button
+            type="size"
+            onClick={() => handleSort("size")}
+            className={`button-sort size ${getClassNamesFor("size")}`}
+          >
+            {t("insights.size")}
+          </button>
+          <button
+            type="button"
+            className={`button-sort download ${getClassNamesFor("download")}`}
+          >
+            {t("insights.download")}
+          </button>
+        </div>
+        <div className="insights-container">
+          {sortedItems.filter((item) => shouldItemBeShown(item)).length ==
+            0 && (
+            <div className="data-table">
+              <div className="data-none">{t("insights.noInsights")}</div>
             </div>
-            <div className="filters-wrapper">
-                <div className="select-filters">
-                    <SelectFilter
-                      title="Name"
-                      loading={!names}
-                      options={names && nameOptions(names)}
-                      onFilterChange={handleNameChange}
-                      isMulti
-                    />
-                    <SelectFilter
-                      title="Service"
-                      loading={!services}
-                      options={services && serviceOptions(services)}
-                      onFilterChange={handleServiceChange}
-                      isMulti
-                    />
-                    <SelectFilter
-                      title="Type"
-                      loading={!types}
-                      options={types && typeOptions(types)}
-                      onFilterChange={handleTypeChange}
-                      isMulti
-                    />
+          )}
+          {sortedItems
+            .filter((item) => shouldItemBeShown(item))
+            .map((insight) => {
+              return (
+                <div className="data-row row-heading" key={insight.id}>
+                  <div className="col col-2">{insight.file}</div>
+                  <div className="col col-2">{insight.service}</div>
+                  <div className="col col-2">{insight.type}</div>
+                  <div className="col col-3">{insight.created}</div>
+                  <div className="col col-3">{insight.size}</div>
+                  <div className="col col-3">
+                    <a href={insight.downloadUrl} target="_blank">
+                      <Button>{t("general.download")}</Button>
+                    </a>
+                  </div>
                 </div>
-            </div>
-            <div className="filters">
-                <input type="text" id="filter" placeholder="Filter insights e.g. sbom.json"
-                       value={factTerm}
-                       onChange={handleFactFilterChange}
-                />
-            </div>
-            <div className="header">
-                <button
-                  type="button"
-                  onClick={() => handleSort('file')}
-                  className={`button-sort file ${getClassNamesFor('file')}`}
-                >
-                    File
-                </button>
-                 <button
-                  type="button"
-                  onClick={() => handleSort('service')}
-                  className={`button-sort service ${getClassNamesFor('service')}`}
-                >
-                    Service
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSort('type')}
-                  className={`button-sort type ${getClassNamesFor('type')}`}
-                >
-                    Type
-                </button>
-                <button
-                    type="button"
-                    onClick={() => handleSort('created')}
-                    className={`button-sort created ${getClassNamesFor('created')}`}
-                >
-                    Created
-                </button>
-                <button
-                    type="size"
-                    onClick={() => handleSort('size')}
-                    className={`button-sort size ${getClassNamesFor('size')}`}
-                >
-                    Size
-                </button>
-                <button
-                    type="button"
-                    className={`button-sort download ${getClassNamesFor('download')}`}
-                >
-                    Download
-                </button>
-            </div>
-            <div className="insights-container">
-                {sortedItems.filter(item => shouldItemBeShown(item)).length == 0 &&
-                <div className="data-table">
-                    <div className="data-none">
-                        No insights
-                    </div>
-                </div>
-                }
-                {sortedItems
-                  .filter(item => shouldItemBeShown(item))
-                  .map((insight) => {
-                    return (
-                        <div className="data-row row-heading" key={insight.id}>
-                            <div className="col col-2">{insight.file}</div>
-                            <div className="col col-2">{insight.service}</div>
-                            <div className="col col-2">{insight.type}</div>
-                            <div className="col col-3">{insight.created}</div>
-                            <div className="col col-3">{insight.size}</div>
-                            <div className="col col-3">
-                              <a href={insight.downloadUrl} target="_blank">
-                                {/* <Icon link name='download'/>Download */}
-                                <Button>Download</Button>
-                              </a>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </StyledInsights>
+              );
+            })}
+        </div>
+      </StyledInsights>
     );
 };
 

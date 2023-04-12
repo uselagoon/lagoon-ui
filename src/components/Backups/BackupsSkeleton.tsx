@@ -1,8 +1,11 @@
+import useTranslation from "lib/useTranslation";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import { BackupsHeader, DataTable } from "./StyledBackups";
 
 const Backups = () => {
+  const t = useTranslation();
+  
   const numberOfBackupFields =
     typeof window !== "undefined"
       ? Math.floor((window.innerHeight * 8) / 10 / 65)
@@ -29,9 +32,9 @@ const Backups = () => {
   return (
     <div className="backups">
       <BackupsHeader>
-        <label className="source">Source</label>
-        <label className="created">Created</label>
-        <label className="backupid">Backup id</label>
+        <label className="source">{t("backups.label.source")}</label>
+        <label className="created">{t("backups.label.created")}</label>
+        <label className="backupid">{t("backups.label.backupID")}</label>
       </BackupsHeader>
 
       <DataTable>

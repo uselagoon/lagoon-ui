@@ -8,6 +8,7 @@ import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import Button from 'components/Button';
 import { ButtonRow, DeploymentDetails, FieldWrapper } from './StyledDeployment';
+import useTranslation from 'lib/useTranslation';
 
 export const getDeploymentDuration = deployment => {
   const deploymentStart = deployment.started || deployment.created;
@@ -31,12 +32,14 @@ const withParseLogsStateHandlers = withHandlers({
 /**
  * Displays information about a deployment.
  */
-const Deployment = ({ deployment, checkedParseState, changeState }) => (
-  <div className="deployment">
+const Deployment = ({ deployment, checkedParseState, changeState }) => {
+const t = useTranslation();
+
+  return (<div className="deployment">
     <DeploymentDetails>
       <FieldWrapper className="created">
         <div>
-          <label>Created</label>
+          <label>{t("deployment.label.created")}</label>
           <div className="field">
             {moment
               .utc(deployment.created)
@@ -47,7 +50,7 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
       </FieldWrapper>
       <FieldWrapper className={`status ${deployment.status}`}>
         <div>
-          <label>Status</label>
+          <label>{t("deployment.label.status")}</label>
           <div className="field">
             {deployment.status.charAt(0).toUpperCase() +
               deployment.status.slice(1)}
@@ -56,16 +59,16 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
       </FieldWrapper>
       <FieldWrapper className="duration">
         <div>
-          <label>Duration</label>
+          <label>{t("deployment.label.duration")}</label>
           <div className="field">{getDeploymentDuration(deployment)}</div>
         </div>
       </FieldWrapper>
       <FieldWrapper className="logstatus">
         <div>
-        <label>Log view</label>
+        <label>{t("deployment.label.logView")}</label>
         <div className="field">
           <Button action={changeState}>
-            {checkedParseState ? "View raw" : "View parsed"}
+            {checkedParseState ? t("deployment.raw") : t("deployment.parsed") }
           </Button>
         </div>
         </div>
@@ -90,6 +93,6 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
     </ButtonRow>
     <LogViewer logs={deployment.buildLog} status={deployment.status} checkedParseState={checkedParseState} forceLastSectionOpen={true}/>
   </div>
-);
+)};
 
 export default withParseLogsState(withParseLogsStateHandlers(Deployment));

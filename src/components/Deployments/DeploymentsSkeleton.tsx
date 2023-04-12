@@ -1,8 +1,11 @@
+import useTranslation from "lib/useTranslation";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import { StyledDeployments } from "./StyledDeployments";
 
 const DeploymentsSkeleton = () => {
+  const t = useTranslation();
+
   const numberOfDeploymentFields =
     typeof window !== "undefined"
       ? Math.floor((window.innerHeight * 8) / 10 / 65)
@@ -28,10 +31,10 @@ const DeploymentsSkeleton = () => {
   return (
     <StyledDeployments>
       <div className="header">
-        <label>Name</label>
-        <label>Created</label>
-        <label>Status</label>
-        <label>Duration</label>
+        <label>{t("deployments.label.name")}</label>
+        <label>{t("deployments.label.created")}</label>
+        <label>{t("deployments.label.status")}</label>
+        <label>{t("deployments.label.duration")}</label>
       </div>
       <div className="data-table">
         {[...Array<undefined>(numberOfDeploymentFields)].map(

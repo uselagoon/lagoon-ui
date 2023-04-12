@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Button from 'components/Button';
 import { NewDeployment } from './StyledDeployLatest';
+import useTranslation from "lib/useTranslation";
 
 const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
   mutation deployEnvironmentLatest($environmentId: Int!) {
@@ -14,6 +15,7 @@ const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
  * Button that deploys the latest environment.
  */
 const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
+  const t = useTranslation();
   let deploymentsEnabled = true;
 
   if (
@@ -40,47 +42,54 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
       {!deploymentsEnabled && (
         <React.Fragment>
           <div className="description">
-            Manual deployments are not available for this environment.
+            {t("deployments.deployLatest.noManualDeployments")}
           </div>
-          <Button disabled>Deploy</Button>
+          <Button disabled>{t("deployments.deployLatest.deploy")}</Button>
         </React.Fragment>
       )}
       {deploymentsEnabled && (
         <React.Fragment>
           <div className="description">
-            {environment.deployType === 'branch' &&
-              `Start a new deployment of branch ${environment.deployBaseRef}.`}
-            {environment.deployType === 'pullrequest' &&
-              `Start a new deployment of pull request ${
-                environment.deployTitle
-              }.`}
-            {environment.deployType === 'promote' &&
-              `Start a new deployment from environment ${
-                environment.project.name
-              }-${environment.deployBaseRef}.`}
+            {environment.deployType === "branch" &&
+              t("deployments.deployLatest.branchDeployment", {
+                branch: environment.deployBaseRef,
+              })}
+
+            {environment.deployType === "pullrequest" &&
+              t("deployments.deployLatest.prDeployment", {
+                title: environment.deployTitle,
+              })}
+
+            {environment.deployType === "promote" &&
+              t("deployments.deployLatest.promote", {
+                project: environment.project.name,
+                ref: environment.deployBaseRef,
+              })}
           </div>
           <Mutation
             mutation={DEPLOY_ENVIRONMENT_LATEST_MUTATION}
             variables={{
-              environmentId: environment.id
+              environmentId: environment.id,
             }}
           >
             {(deploy, { loading, error, data }) => {
               const success =
-                data && data.deployEnvironmentLatest === 'success';
+                data && data.deployEnvironmentLatest === "success";
               return (
                 <React.Fragment>
                   <Button action={deploy} disabled={loading}>
-                    Deploy
+                    {t("deployments.deployLatest.deploy")}
                   </Button>
 
                   {success && (
-                    <div className="deploy_result">Deployment queued.</div>
+                    <div className="deploy_result">
+                      {t("deployments.deployLatest.deploymentQueued")}
+                    </div>
                   )}
 
                   {error && (
                     <div className="deploy_result">
-                      <p>There was a problem deploying.</p>
+                      <p>{t("deployments.deployLatest.deploymentProblem")}</p>
                       <p>{error.message}</p>
                     </div>
                   )}

@@ -9,6 +9,7 @@ import {
   BulkDeploymentsDataTable,
   BulkDeploymentsHeader,
 } from "./StyledBulkDeployments";
+import useTranslation from "lib/useTranslation";
 
 /**
  * Displays a list of deployments.
@@ -30,20 +31,22 @@ interface BulkDeploymentsProps {
   }[];
 }
 
-const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
-  <div className="deployments">
+const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => {
+  const t = useTranslation();
+  
+  return (<div className="deployments">
     <BulkDeploymentsHeader>
-      <label>Project</label>
-      <label>Environment</label>
-      <label>Name</label>
-      <label className="priority">Priority</label>
-      <label>Created</label>
-      <label>Status</label>
-      <label>Duration</label>
+      <label>{t("bulkDeployments.label.project")}</label>
+      <label>{t("bulkDeployments.label.environment")}</label>
+      <label>{t("bulkDeployments.label.name")}</label>
+      <label className="priority">{t("bulkDeployments.label.priority")}</label>
+      <label>{t("bulkDeployments.label.created")}</label>
+      <label>{t("bulkDeployments.label.status")}</label>
+      <label>{t("bulkDeployments.label.duration")}</label>
       <label></label>
     </BulkDeploymentsHeader>
     <BulkDeploymentsDataTable>
-      {!deployments.length && <div className="data-none">No Deployments</div>}
+      {!deployments.length && <div className="data-none">{t("bulkDeployments.noDeployments")}</div>}
       {deployments.map((deployment, idx) => (
         <div className="data-row" key={idx} data-deployment={deployment.id}>
           <div className="project">
@@ -85,15 +88,15 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
             {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
               <CancelDeployment
                 deployment={deployment}
-                afterText="Cancelled"
-                beforeText="Cancel"
+                afterText={t("general.cancelled") as unknown as string}
+                beforeText={t("general.cancel") as unknown as string}
               />
             )}
           </div>
         </div>
       ))}
     </BulkDeploymentsDataTable>
-  </div>
-);
+  </div>)
+  };
 
 export default BulkDeployments;

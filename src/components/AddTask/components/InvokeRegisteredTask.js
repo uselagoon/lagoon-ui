@@ -7,6 +7,7 @@ import withState from 'recompose/withState';
 import * as R from "ramda";
 import { CustomTaskConfirm } from './CustomTaskConfirm';
 import { StyledRegisteredTasks } from './Styles';
+import useTranslation from "lib/useTranslation";
 
 const mutationInvokeRegisteredTask = gql`
   mutation invokeRegisteredTask($environment: Int!, $taskRegistration: Int!, $argumentValues: [AdvancedTaskDefinitionArgumentValueInput]) {
@@ -25,7 +26,7 @@ const mutationInvokeRegisteredTask = gql`
 `;
 
 const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArguments, setAdvancedTaskArguments,  onCompleted, onError, isConfirmOpen, setIsConfirmOpen }) => {
-
+  const t = useTranslation();
 
   let taskArgumentsExist = false;
   let argumentVariablesHaveValues = true;
@@ -113,7 +114,7 @@ const InvokeRegisteredTask = ({ pageEnvironment, selectedTask, advancedTaskArgum
             open={isConfirmOpen}
             openModal={()=>{setIsConfirmOpen(true);}}
             closeModal={()=>{setIsConfirmOpen(false);}}
-          /> || <Button disabled={taskArgumentsExist && !argumentVariablesHaveValues} action={mutationInvokeRegisteredTask}>Run task</Button>
+          /> || <Button disabled={taskArgumentsExist && !argumentVariablesHaveValues} action={mutationInvokeRegisteredTask}>{t("tasks.addTask.run")}</Button>
           }
         </StyledRegisteredTasks>
       );

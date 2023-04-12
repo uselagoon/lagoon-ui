@@ -2,19 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head'
 import StatusLayout from 'layouts/StatusLayout';
-
-const statusCodes = {
-  400: 'Bad Request',
-  401: 'Not Authenticated',
-  404: 'This page could not be found',
-  500: 'Internal Server Error',
-  501: 'Not Implemented'
-};
+import i18next from 'i18next';
 
 /**
  * Displays an error page, given a status code and optional error message.
  */
 export default class Error extends React.Component {
+  
   static displayName = 'ErrorPage';
 
   static getInitialProps({ res, err }) {
@@ -24,8 +18,16 @@ export default class Error extends React.Component {
   }
 
   render() {
+
+    const statusCodes = {
+      400: i18next.t("errors.badRequest"),
+      401: i18next.t("errors.noAuth"),
+      404: i18next.t("errors.notFound"),
+      500: i18next.t("errors.internalError"),
+      501: i18next.t("errors.notImplemented"),
+    };
     const { statusCode, errorMessage } = this.props;
-    const title = this.props.title || statusCodes[statusCode] || 'An unexpected error has occurred';
+    const title = this.props.title || statusCodes[statusCode] || i18next.t("errors.unexpected");
 
     return (
       <StatusLayout>
