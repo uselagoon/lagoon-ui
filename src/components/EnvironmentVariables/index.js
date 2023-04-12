@@ -104,6 +104,14 @@ const EnvironmentVariables = ({ environment }) => {
       <div className="field-wrapper env-vars">
         {environment.envVariables.length == 0 ? (
           <>
+            <div className="header no-vars">
+              <AddVariable
+                varProject={environment.project.name}
+                varEnvironment={environment.name}
+                varValues={displayVars}
+                varTarget="Environment"
+              />
+            </div>
             <hr style={{ margin: "30px 0" }} />
             <div style={{ textAlign: "center" }}>
               No Environment variable set
@@ -289,6 +297,7 @@ const EnvironmentVariables = ({ environment }) => {
         <>
           <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>No Project variable set</div>
+          <hr style={{ margin: "30px 0" }} />
         </>
       ) : (
         <>

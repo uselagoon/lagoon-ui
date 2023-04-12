@@ -8,7 +8,7 @@ import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVar
 import { NewVariable, NewVariableModal } from "./StyledAddVariable";
 
 /**
- * Adds a Environment Variable.
+ * Adds a Variable.
  */
 
 const scopeOptions = [

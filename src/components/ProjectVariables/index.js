@@ -5,7 +5,7 @@ import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByNam
 import ProjectByNameWithEnvVarsValueQuery from "../../lib/query/ProjectByNameWithEnvVarsValue";
 import { useLazyQuery } from "@apollo/react-hooks";
 import DeleteConfirm from "components/DeleteConfirm";
-import AddEnvironmentVariable from "../AddVariable";
+import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -69,15 +69,23 @@ const ProjectVariables = ({ project }) => {
     <StyledProjectVariablesDetails className="details">
       {displayVars.length == 0 ? (
         <>
+            <div className="header no-vars">
+              <AddVariable
+                varProject={project.name}
+                varValues={displayVars}
+                varTarget="Project"
+              />
+            </div>
           <hr style={{ margin: "30px 0" }} />
-          <div style={{ textAlign: "center" }}>No Project variable set</div>
+          <div style={{ textAlign: "center" }}>No Project variables set</div>
+          <hr style={{ margin: "30px 0" }} />
         </>
       ) : (
         <>
           <div className="header">
             <label>Project Variables</label>
             <div className="header-buttons">
-              <AddEnvironmentVariable
+              <AddVariable
                 varProject={project.name}
                 varValues={displayVars}
                 varTarget="Project"

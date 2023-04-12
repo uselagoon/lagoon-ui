@@ -116,6 +116,10 @@ export const StyledEnvironmentVariableDetails = styled.div`
     justify-content: space-between;
     margin: 16px 0;
     align-items: center;
+
+    &.no-vars {
+      justify-content: flex-end;
+    }
   }
   .header-buttons {
     display: flex;
