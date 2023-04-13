@@ -105,8 +105,7 @@ export const StyledProjectVariablesDetails = styled.div`
     cursor: pointer;
   }
   .varDelete {
-    max-width: 10%;
-    width: 10%;
+    width: 5%;
   }
   .header {
     display: flex;

@@ -15,6 +15,7 @@ import { StyledEnvironmentVariableDetails } from "./StyledEnvironmentVariables";
 import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
+import deleteVariable from "../../static/images/delete.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
 
 /**
@@ -140,8 +141,8 @@ const EnvironmentVariables = ({ environment }) => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Environment Variable Name</th>
-                  <th>Environment Variable Scope</th>
+                  <th>Name</th>
+                  <th>Scope</th>
                   <Collapse in={openEnvVars}>
                     <th>Value</th>
                   </Collapse>
@@ -276,6 +277,8 @@ const EnvironmentVariables = ({ environment }) => {
                                 <DeleteConfirm
                                   deleteType="variable"
                                   deleteName={envVar.name}
+                                  deleteFormat="svg"
+                                  deleteImg={deleteVariable}
                                   onDelete={() =>
                                     deleteEnvVariableByNameHandler()
                                   }
@@ -326,8 +329,8 @@ const EnvironmentVariables = ({ environment }) => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Project Variable Name</th>
-                  <th>Project Variable Scope</th>
+                  <th>Name</th>
+                  <th>Scope</th>
                   <Collapse in={openPrjVars}>
                     <th>Value</th>
                   </Collapse>

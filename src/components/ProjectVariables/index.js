@@ -13,6 +13,7 @@ import Collapse from "react-bootstrap/Collapse";
 import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
+import deleteVariable from "../../static/images/delete.svg";
 import { StyledProjectVariablesDetails } from "./StyledProjectVariables";
 
 /**
@@ -103,8 +104,8 @@ const ProjectVariables = ({ project }) => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Project Variable Name</th>
-                  <th>Project Variable Scope</th>
+                  <th>Name</th>
+                  <th>Scope</th>
                   <Collapse in={openPrjVars}>
                     <th>Value</th>
                   </Collapse>
@@ -241,6 +242,8 @@ const ProjectVariables = ({ project }) => {
                                 <DeleteConfirm
                                   deleteType="variable"
                                   deleteName={projEnvVar.name}
+                                  deleteFormat="svg"
+                                  deleteImg={deleteVariable}
                                   onDelete={() =>
                                     deleteEnvVariableByNameHandler()
                                   }

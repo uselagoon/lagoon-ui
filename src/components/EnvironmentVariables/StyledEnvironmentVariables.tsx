@@ -105,8 +105,7 @@ export const StyledEnvironmentVariableDetails = styled.div`
     width: 35%;
   }
   .varDelete {
-    max-width: 10%;
-    width: 10%;
+    width: 5%;
   }
   .varValue span {
     cursor: pointer;

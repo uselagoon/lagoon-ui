@@ -3,6 +3,7 @@ import Modal from 'components/Modal';
 import Button from 'components/Button';
 import { color } from 'lib/variables';
 import withLogic from 'components/DeleteConfirm/logic';
+import Image from "next/image";
 
 /**
  * Confirms the deletion of the specified name and type.
@@ -11,6 +12,8 @@ export const DeleteConfirm = ({
   deleteType,
   deleteName,
   onDelete,
+  deleteFormat,
+  deleteImg,
   inputValue,
   setInputValue,
   open,
@@ -19,9 +22,22 @@ export const DeleteConfirm = ({
 }) => {
   return (
     <React.Fragment>
-      <Button variant='red' action={openModal}>
-        Delete
-      </Button>
+      {
+        deleteFormat == "svg" ?
+        <div className="deleteConfirmImg">
+          <span onClick={() => openModal()}>
+            <Image
+              src={deleteImg}
+              alt=""
+            />
+          </span>
+        </div>
+        : 
+        <Button variant='red' action={openModal}>
+          Delete
+        </Button>
+      }
+      
       <Modal
         isOpen={open}
         onRequestClose={closeModal}
@@ -65,6 +81,9 @@ export const DeleteConfirm = ({
         .form-input {
           display: flex;
           align-items: center;
+        }
+        .deleteConfirmImg span {
+          cursor: pointer;
         }
       `}</style>
     </React.Fragment>
