@@ -1,31 +1,31 @@
 {
-  "mode": "direct",
+  "mode": "translated",
   "routes": [
     {
       "pathName": "/projects",
       "steps": [
         {
           "target": "h2",
-          "title": "Welcome to Lagoon!",
-          "content": "This tour is intended to show you around and give helpful tips on things you can do with lagoon! You will discover guides per page, so feel free to explore. You can always skip the tour",
+          "title": "tours.projects.stepOne.title",
+          "content": "tours.projects.stepOne.content",
           "key": "d40d1d191a83dda818cdedd9254527d2"
         },
         {
           "target": ".authContainer a.navitem",
-          "title": "View all deployments",
-          "content": "You can easily access all of your deployments here",
+          "title": "tours.projects.stepTwo.title",
+          "content": "tours.projects.stepTwo.content",
           "key": "d37849d1c1c54f18e24132e0be6b69ba"
         },
         {
           "target": ".authContainer > div",
-          "title": "Personal settings",
-          "content": "You can access your projects and settings (SSH keys) by clicking this menu",
+          "title": "tours.projects.stepThree.title",
+          "content": "tours.projects.stepThree.content",
           "key": "ece6be4b39dbd5d7caa85f054513158d"
         },
         {
           "target": "#projects > a",
-          "title": "The projects page",
-          "content": "This is the index page of Lagoon, showing projects you have access to, click on any of them to find out more",
+          "title": "tours.projects.stepFour.title",
+          "content": "tours.projects.stepFour.content",
           "key": "d7c1ef78894350de9f5aec6e29272c77"
         }
       ]
@@ -35,15 +35,15 @@
       "steps": [
         {
           "target": ".project-details-sidebar",
-          "title": "Project Sidebar",
-          "content": "Each project has a sidebar with useful information",
+          "title": "tours.project.stepOne.title",
+          "content": "tours.project.stepOne.content",
           "placement": "right-start",
           "key": "de19c1f391f180d9690644be4ce4286e"
         },
         {
           "target": "h3",
-          "title": "Project Environments",
-          "content": "You can view project routes, specific details, deployments, backups and tasks per environment",
+          "title": "tours.project.stepTwo.title",
+          "content": "tours.project.stepTwo.content",
           "placement": "bottom",
           "key": "e139a70bd2b7e109b3e12e20d6c1e378"
         }
@@ -54,29 +54,29 @@
       "steps": [
         {
           "target": ".navigation li.overview",
-          "title": "Overview Tab",
-          "content": "Detailed overview of the environment you're seeing now",
+          "title": "tours.environment.stepOne.title",
+          "content": "tours.environment.stepOne.content",
           "placement": "right-start",
           "key": "bbd58967c38838731bc0ad1215ab4fa5"
         },
         {
           "target": ".navigation li.deployments",
-          "title": "Deployments Tab",
-          "content": "Takes you to the deployments page with logviewer",
+          "title": "tours.environment.stepTwo.title",
+          "content": "tours.environment.stepTwo.content",
           "placement": "right-start",
           "key": "7f02781d015277d1057150b3c0fdc193"
         },
         {
           "target": ".navigation li.backups",
-          "title": "Backups Tab",
-          "content": "Retrieve and download backups",
+          "title": "tours.environment.stepThree.title",
+          "content": "tours.environment.stepThree.content",
           "placement": "right-start",
           "key": "749c80335827d8412d14645fdbf9c0b1"
         },
         {
           "target": ".navigation li.tasks",
-          "title": "Tasks Tab",
-          "content": "Execute tasks per environment, or view previously executed ones",
+          "title": "tours.environment.stepFour.title",
+          "content": "tours.environment.stepFour.content",
           "placement": "right-start",
           "key": "23272b5f5c423ffa7af7003871ce2ec8"
         }
@@ -87,15 +87,15 @@
       "steps": [
         {
           "target": ".description+button",
-          "title": "Start a deployment",
-          "content": "You can always start a new deployment of the current branch",
+          "title": "tours.deployments.stepOne.title",
+          "content": "tours.deployments.stepOne.content",
           "placement": "left",
           "key": "a45465dd17f60eecae901d3bde50dc68"
         },
         {
           "target": ".data-table a:first-child",
-          "title": "View a previous deployment",
-          "content": "Or have a look at a previous deployment",
+          "title": "tours.deployments.stepTwo.title",
+          "content": "tours.deployments.stepTwo.content",
           "placement": "bottom",
           "key": "25589df4e48b611af32678128d64aede"
         }
@@ -106,22 +106,22 @@
       "steps": [
         {
           "target": ".deployment > div:first-child",
-          "title": "Deployment details",
-          "content": "Here you can see general information about your deployment",
+          "title": "tours.deployment.stepOne.title",
+          "content": "tours.deployment.stepOne.content",
           "placement": "bottom",
           "key": "03159c68cf42b899281bb6179d9a9ebb"
         },
         {
           "target": ".log-viewer",
-          "title": "Deployment logs",
-          "content": "And with the logviewer, you can see individual deployment steps by expanding them",
+          "title": "tours.deployment.stepTwo.title",
+          "content": "tours.deployment.stepTwo.content",
           "placement": "top-start",
           "key": "3f9cd778064c84b2dc997bb912aafcf5"
         },
         {
           "target": ".breadcrumbs a:nth-child(2)",
-          "title": "Navigating",
-          "content": "You can always navigate by clicking on the breadcrumbs",
+          "title": "tours.deployment.stepThree.title",
+          "content": "tours.deployment.stepThree.content",
           "placement": "bottom",
           "key": "9094217d17656cbcb7014f91ddd8dbbb"
         }
@@ -132,8 +132,8 @@
       "steps": [
         {
           "target": ".backups .data-row:first-child .download",
-          "title": "Downloading a backup",
-          "content": "You can retrieve and download the backup by clicking here",
+          "title": "tours.backups.stepOne.title",
+          "content": "tours.backups.stepOne.content",
           "placement": "left",
           "key": "8883aa04c4cb327a7287e0f9833101e6"
         }
@@ -144,15 +144,15 @@
       "steps": [
         {
           "target": ".selectTask",
-          "title": "Running a task",
-          "content": "Select and run a task from here",
+          "title": "tours.tasks.stepOne.title",
+          "content": "tours.tasks.stepOne.content",
           "placement": "bottom",
           "key": "995682642e7dc36008f5ad16e5a9d0d6"
         },
         {
           "target": ".tasks .data-table a:first-child",
-          "title": "Viewing a task",
-          "content": "Or view a previously ran task by clicking here",
+          "title": "tours.tasks.stepTwo.title",
+          "content": "tours.tasks.stepTwo.content",
           "placement": "bottom",
           "key": "bbe01156892b5f4bf41eddfef9c0fefd"
         }
@@ -163,15 +163,15 @@
       "steps": [
         {
           "target": ".log-viewer",
-          "title": "Task logs",
-          "content": "Raw task logs",
+          "title": "tours.task.stepOne.title",
+          "content": "tours.task.stepOne.content",
           "placement": "top-start",
           "key": "66af0ea434dbf8a524c23332ad5b5f41"
         },
         {
           "target": ".breadcrumbs a:nth-child(2)",
-          "title": "Navigating",
-          "content": "You can always navigate back by clicking on the breadcrumbs",
+          "title": "tours.task.stepTwo.title",
+          "content": "tours.task.stepTwo.content",
           "placement": "bottom",
           "key": "a55445ff5d9904dc7e2b6dc5137df951"
         }
@@ -182,14 +182,14 @@
       "steps": [
         {
           "target": "h2",
-          "title": "All deployments",
-          "content": "This is where you have all your deployments",
+          "title": "tours.allDeployments.stepOne.title",
+          "content": "tours.allDeployments.stepOne.content",
           "key": "8904cc610a9a967bc23e4e1dde940881"
         },
         {
           "target": ".project a",
-          "title": "Deployment detail",
-          "content": "Click on an individual deployment name to know more details",
+          "title": "tours.allDeployments.stepTwo.title",
+          "content": "tours.allDeployments.stepTwo.content",
           "key": "a6d799c717733edea38c6df02758b855"
         }
       ]
