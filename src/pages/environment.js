@@ -15,6 +15,7 @@ import { useQuery } from "@apollo/react-hooks";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays an environment page, given the openshift project name.
@@ -45,24 +46,26 @@ export const PageEnvironment = ({ router }) => {
           <title>{`${openshiftProjectName} | Environment`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
-          </Breadcrumbs>
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb
+                environmentSlug={openshiftProjectName}
+                projectSlug={projectSlug}
+              />
+            </Breadcrumbs>
 
-          <EnvironmentWrapper>
-            <NavTabsSkeleton
-              activeTab="overview"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <EnvironmentSkeleton />
-            </div>
-          </EnvironmentWrapper>
+            <EnvironmentWrapper>
+              <NavTabsSkeleton
+                activeTab="overview"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
+              <div className="content">
+                <EnvironmentSkeleton />
+              </div>
+            </EnvironmentWrapper>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

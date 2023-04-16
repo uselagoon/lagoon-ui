@@ -18,6 +18,7 @@ import DeploymentsSkeleton from "components/Deployments/DeploymentsSkeleton";
 import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 import Skeleton from "react-loading-skeleton";
 import { useTourContext } from "../tours/TourContext";
 
@@ -53,7 +54,6 @@ export const PageDeployments = ({ router }) => {
     }
   );
 
-
   useEffect(() => {
     if (!loading && data?.environment) {
       continueTour();
@@ -79,23 +79,25 @@ export const PageDeployments = ({ router }) => {
           </Breadcrumbs>
 
           <DeploymentsWrapper>
-            <NavTabsSkeleton
-              activeTab="deployments"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <Skeleton height={70} />
-
-              <DeploymentsSkeleton />
-              <ResultsLimited
-                limit={resultLimit}
-                message={
-                  (!customMessage && "") ||
-                  (customMessage && customMessage.replace(/['"]+/g, ""))
-                }
+            <ThemedSkeletonWrapper>
+              <NavTabsSkeleton
+                activeTab="deployments"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
               />
-            </div>
+              <div className="content">
+                <Skeleton height={70} />
+
+                <DeploymentsSkeleton />
+                <ResultsLimited
+                  limit={resultLimit}
+                  message={
+                    (!customMessage && "") ||
+                    (customMessage && customMessage.replace(/['"]+/g, ""))
+                  }
+                />
+              </div>
+            </ThemedSkeletonWrapper>
           </DeploymentsWrapper>
         </MainLayout>
       </>

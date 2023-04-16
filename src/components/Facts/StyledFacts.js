@@ -55,8 +55,8 @@ export const StyledFacts = styled.div`
   .data-row {
     display: flex;
     justify-content: space-between;
-    border: 1px solid ${color.white};
-    border-bottom: 1px solid ${color.lightestGrey};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
 
@@ -104,7 +104,7 @@ export const StyledFacts = styled.div`
   }
 
   .row-heading {
-    background: ${color.white};
+    background-color: ${props => props.theme.backgrounds.table};
   }
 `;
 

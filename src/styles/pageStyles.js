@@ -3,9 +3,9 @@ import { bp, color } from "lib/variables";
 import { commonBg } from "./commonPageStyles";
 
 export const ProblemsByDashBoard = styled.div`
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   display: flex;
   flex-direction: column;
-  ${commonBg};
   .filters-wrapper,
   .project-filter {
     margin: 32px calc((100vw / 16) * 1);
@@ -18,6 +18,9 @@ export const ProblemsByDashBoard = styled.div`
     .filters {
       display: flex;
       flex-direction: column;
+      [id^="react-select"] {
+        color: ${color.black};
+      }
       @media ${bp.wideUp} {
         flex-flow: row;
       }
@@ -42,7 +45,7 @@ export const ProblemsByDashBoard = styled.div`
       }
     }
     .content {
-      background: #fff;
+      background: ${(props) => props.theme.backgrounds.content};
       margin: 0 calc((100vw / 16) * 1);
       @media ${bp.wideUp} {
         margin: 0 calc((100vw / 16) * 2);
@@ -67,20 +70,23 @@ export const ProblemsByDashBoard = styled.div`
       display: flex;
       justify-content: space-between;
       padding: 1em;
-      border: 1px solid #efefef;
+      border: 1px solid ${(props) => props.theme.borders.tableRow};
     }
   }
 
   .project {
     padding: 20px;
-    background: rgb(255, 255, 255);
+    background: ${(props) => props.theme.backgrounds.secondary};
     margin-bottom: 20px;
   }
   .content-wrapper {
     .results {
       margin-bottom: 20px;
       .content {
-        background: rgb(241, 241, 241) !important;
+        background: ${(props) =>
+          props.theme.colorScheme === "dark"
+            ? `${props.theme.backgrounds.secondary}`
+            : "#f1f1f1"} !important;
         padding: 0px 15px;
         .label {
           color: rgb(95, 111, 122);
@@ -95,7 +101,7 @@ export const ProblemsByDashBoard = styled.div`
 `;
 export const DeploymentWrapper = styled.div`
   flex: 1;
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -107,7 +113,7 @@ export const DeploymentWrapper = styled.div`
 `;
 
 export const DeploymentsWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -121,7 +127,7 @@ export const DeploymentsWrapper = styled.div`
 `;
 
 export const EnvironmentWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -130,7 +136,7 @@ export const EnvironmentWrapper = styled.div`
 `;
 
 export const ProblemsDashBoardWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   h2 {
     margin: 38px calc((100vw / 16) * 1) 0;
@@ -158,7 +164,7 @@ export const ProblemsDashBoardWrapper = styled.div`
 `;
 
 export const TasksWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -171,7 +177,7 @@ export const TasksWrapper = styled.div`
 `;
 
 export const TaskWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -189,10 +195,13 @@ export const ProjectDetailsWrapper = styled.div`
     justify-content: space-between;
   }
 
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   .project-details-sidebar {
-    background-color: ${color.lightestGrey};
-    border-right: 1px solid ${color.midGrey};
+    background-color: ${(props) => props.theme.backgrounds.sidebar};
+    border-right: ${(props) =>
+      props.theme.colorScheme === "dark"
+        ? `2px solid ${props.theme.borders.box}`
+        : `1px solid ${color.midGrey}`};
     width: 100%;
     display: flex;
     justify-content: center;
@@ -215,6 +224,7 @@ export const ProjectDetailsWrapper = styled.div`
   .environments-wrapper {
     flex-grow: 1;
     padding: 40px calc((100vw / 16) * 1);
+    background: ${(props) => props.theme.backgrounds.content};
   }
 `;
 
@@ -229,6 +239,9 @@ export const StyledProblemsDashBoardByProject = styled.div`
       margin: 32px calc((100vw / 16) * 3);
     }
     .filters {
+      [id^="react-select"] {
+        color: ${color.black};
+      }
       @media ${bp.wideUp} {
         display: flex;
         justify-content: space-between;
@@ -271,7 +284,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
       padding-bottom: 20px;
     }
     .project-overview {
-      background: #fff;
+      background: ${(props) => props.theme.backgrounds.content};
     }
     .overview {
       .overview-list {
@@ -312,6 +325,9 @@ export const ProblemDashboardFilterWrapper = styled.div`
     justify-content: space-between;
     padding-bottom: 1em;
     flex-direction: column;
+    [id^="react-select"] {
+      color: ${color.black};
+    }
     @media ${bp.wideUp} {
       flex-flow: row;
     }

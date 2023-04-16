@@ -8,6 +8,7 @@ import {
   ProjectsPage,
 } from "./StyledProjects";
 import Skeleton from "react-loading-skeleton";
+import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
 
 const ProjectsSkeleton = () => {
   const RenderSkeletonBox = (index: number) => {
@@ -26,21 +27,28 @@ const ProjectsSkeleton = () => {
     typeof window !== "undefined"
       ? Math.floor((window.innerHeight * 8) / 10 / 65)
       : 10;
+
   return (
     <ProjectsPage>
-      <ProjectsHeader>
-        <label>
-          <Skeleton width={"20%"} />
-        </label>
-        <label></label>
-        <SearchInput
-          aria-labelledby="search"
-          className="searchInput"
-          type="text"
-          placeholder="Type to search"
-        />
-      </ProjectsHeader>
-      <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
+      <ThemedSkeletonWrapper>
+        <ProjectsHeader>
+          <label>
+            <Skeleton width={"20%"} />
+          </label>
+          <label></label>
+          <SearchInput
+            aria-labelledby="search"
+            className="searchInput"
+            type="text"
+            placeholder="Type to search"
+          />
+        </ProjectsHeader>
+        <>
+          {[...Array<undefined>(numberOfItems)].map((_, idx) =>
+            RenderSkeletonBox(idx)
+          )}
+        </>
+      </ThemedSkeletonWrapper>
     </ProjectsPage>
   );
 };

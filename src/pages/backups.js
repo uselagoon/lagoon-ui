@@ -19,6 +19,7 @@ import { useQuery } from "@apollo/react-hooks";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import { useTourContext } from "../tours/TourContext";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT, 10);
@@ -68,35 +69,37 @@ export const PageBackups = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Backups`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
-          </Breadcrumbs>
-          <CommonWrapperWNotification>
-            <NavTabsSkeleton
-              activeTab="backups"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <div className="notification">
-                If you need a current database or files dump, use the tasks
-                "drush sql-dump" or "drush archive-dump" in the new "Tasks"
-                section!
-              </div>
-              <BackupsSkeleton />
-              <ResultsLimited
-                limit={resultLimit}
-                message={
-                  (!customMessage && "") ||
-                  (customMessage && customMessage.replace(/['"]+/g, ""))
-                }
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb
+                environmentSlug={openshiftProjectName}
+                projectSlug={projectSlug}
               />
-            </div>
-          </CommonWrapperWNotification>
+            </Breadcrumbs>
+            <CommonWrapperWNotification>
+              <NavTabsSkeleton
+                activeTab="backups"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
+              <div className="content">
+                <div className="notification">
+                  If you need a current database or files dump, use the tasks
+                  "drush sql-dump" or "drush archive-dump" in the new "Tasks"
+                  section!
+                </div>
+                <BackupsSkeleton />
+                <ResultsLimited
+                  limit={resultLimit}
+                  message={
+                    (!customMessage && "") ||
+                    (customMessage && customMessage.replace(/['"]+/g, ""))
+                  }
+                />
+              </div>
+            </CommonWrapperWNotification>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );
