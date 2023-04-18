@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { HexGrid, Layout, Hexagon, Text, GridGenerator } from 'react-hexgrid';
+import dynamic from "next/dynamic";
+// import { HexGrid, Layout, Hexagon, Text, GridGenerator } from 'react-hexgrid';
+const {HexGrid, Layout, Hexagon, Text, GridGenerator} = dynamic(import('react-hexgrid'), { ssr: false })
 import * as R from 'ramda';
 import ProblemsByProject from 'components/ProblemsByProject';
 import { LoadingPageNoHeader } from 'pages/_loading';
 import { ErrorNoHeader } from 'pages/_error';
 
+
+console.warn(GridGenerator);
 const config = {
     "width": 1200,
     "height": 100,

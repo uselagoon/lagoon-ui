@@ -1,14 +1,12 @@
 const path = require("path");
-
 module.exports = {
-  extends: ["next"],
+  extends: ["next", "plugin:storybook/recommended"],
   rules: {
     "import/no-anonymous-default-export": "off",
     "react/no-unescaped-entities": "off",
     "react/display-name": "off",
   },
   ignorePatterns: ["src/**/*.stories.js"],
-
   overrides: [
     {
       files: ["src/**/*.ts", "src/**/*.tsx"],

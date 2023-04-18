@@ -60,7 +60,7 @@ const withOptions = withProps(({ pageEnvironment }) => {
   // Remove tasks that are blocklisted.
   options = R.reject(
     option =>
-      R.contains(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST),
+      R.includes(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST),
     options
   );
 
