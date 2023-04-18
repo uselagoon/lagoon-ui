@@ -1,25 +1,26 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
-import { StyledProjectVariablesDetails } from "./StyledProjectVariables";
-import AddEnvironmentVariable from "../AddVariable";
-import Table from "react-bootstrap/Table";
+import {
+  StyledProjectVariablesDetails,
+  StyledProjectVariableTable,
+} from "./StyledProjectVariables";
 import Button from "react-bootstrap/Button";
 
 const ProjectVariablesSkeleton = () => {
-  const numberOfVariableFields = 4;
+  const numberOfVariableFields = 3;
 
   const skeletonItem = (
-    <tr>
-      <td className="name">
-        <Skeleton width={"30%"} />
-      </td>
-      <td className="scope">
-        <Skeleton width={"30%"} />
-      </td>
-      <td className="delete">
-        <Skeleton width={"20%"} />
-      </td>
-    </tr>
+    <div className="data-row">
+      <div className="name">
+        <Skeleton width={"90%"} />
+      </div>
+      <div className="scope">
+        <Skeleton width={"90%"} />
+      </div>
+      <div className="delete">
+        <Skeleton width={"90%"} />
+      </div>
+    </div>
   );
 
   return (
@@ -31,22 +32,18 @@ const ProjectVariablesSkeleton = () => {
           <Button>Show values</Button>
         </div>
       </div>
-      <div className="field-wrapper env-vars">
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Project Variable Name</th>
-              <th>Project Variable Scope</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array<undefined>(numberOfVariableFields)].map(
-              () => skeletonItem
-            )}
-          </tbody>
-        </Table>
-      </div>
+      <StyledProjectVariableTable>
+        <div className="table-header">
+            <div className="name"><label>Name</label></div>
+            <div className="scope"><label>Scope</label></div>
+            <div className="delete"><label>Delete</label></div>
+        </div>
+        <div className="data-table">
+          {[...Array<undefined>(numberOfVariableFields)].map(
+            () => skeletonItem
+          )}
+        </div>
+      </StyledProjectVariableTable>
     </StyledProjectVariablesDetails>
   );
 };

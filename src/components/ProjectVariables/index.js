@@ -14,7 +14,7 @@ import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import deleteVariable from "../../static/images/delete.svg";
-import { StyledProjectVariablesDetails } from "./StyledProjectVariables";
+import { StyledProjectVariablesDetails, StyledProjectVariableTable } from "./StyledProjectVariables";
 
 /**
  * Displays the projects variable information.
@@ -33,7 +33,7 @@ const ProjectVariables = ({ project }) => {
   let initValueState = new Array(displayVars.length).fill(false);
 
   const [valueState, setValueState] = useState(initValueState);
-  const [openPrjVars, setOpenPrjVars] = useState(false);
+  const [openPrjVars, setOpenPrjVars] = useState(false);  
 
   const [
     getPrjEnvVarValues,
@@ -101,33 +101,31 @@ const ProjectVariables = ({ project }) => {
             </div>
           </div>
           <div className="field-wrapper env-vars">
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Scope</th>
-                  <Collapse in={openPrjVars}>
-                    <th>Value</th>
-                  </Collapse>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
+            <StyledProjectVariableTable> 
+            <div className={openPrjVars ? "values-present table-header" : "table-header"}>
+            <div className="name"><label>Name</label></div>
+            <div className="scope"><label>Scope</label></div>
+                <Collapse in={openPrjVars}>
+                  <div className="value"><label>Value</label></div>
+                </Collapse>
+                <div className="delete"><label>Delete</label></div>
+            </div>
+            <div className="data-table">
                 {displayVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <tr>
-                        <td className="varName">{projEnvVar.name}</td>
-                        <td className="varScope">{projEnvVar.scope}</td>
+                      <div className={openPrjVars ? "values-present data-row" : "data-row"}>
+                        <div className="varName">{projEnvVar.name}</div>
+                        <div className="varScope">{projEnvVar.scope}</div>
                         {prjLoading ? (
                           <Collapse in={openPrjVars}>
-                            <td className="varValue" id={index}>
+                            <div className="varValue" id={index}>
                               <div className="loader"></div>
-                            </td>
+                            </div>
                           </Collapse>
                         ) : projEnvVar.value ? (
                           <Collapse in={openPrjVars}>
-                            <td className="varValue" id={index}>
+                            <div className="varValue" id={index}>
                               {projEnvVar.value.length <= 100 &&
                               !valueState[index] ? (
                                 <div className="showHideContainer">
@@ -194,17 +192,17 @@ const ProjectVariables = ({ project }) => {
                               ) : (
                                 ""
                               )}
-                            </td>
+                            </div>
                           </Collapse>
                         ) : (
                           <Collapse in={openPrjVars}>
-                            <td className="varValue" id={index}>
+                            <div className="varValue" id={index}>
                               Unauthorized: You don't have permission to view
                               this variable.
-                            </td>
+                            </div>
                           </Collapse>
                         )}
-                        <td className="varDelete">
+                        <div className="varDelete">
                           <Mutation mutation={DeleteEnvVariableMutation}>
                             {(
                               deleteEnvVariableByName,
@@ -251,13 +249,13 @@ const ProjectVariables = ({ project }) => {
                               );
                             }}
                           </Mutation>
-                        </td>
-                      </tr>
+                        </div>
+                      </div>
                     </Fragment>
                   );
                 })}
-              </tbody>
-            </Table>
+              </div>
+              </StyledProjectVariableTable>
           </div>
         </>
       )}
