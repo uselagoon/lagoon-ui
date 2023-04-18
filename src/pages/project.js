@@ -48,7 +48,7 @@ export const PageProject = ({ router }) => {
               projectName={router.query.projectName}
             />
           <ProjectDetailsWrapper>
-            <div className="project-details-header">
+            <div className="project-details-sidebar">
               <SidebarSkeleton />
             </div>
             <div className="environments-wrapper">
@@ -92,7 +92,7 @@ export const PageProject = ({ router }) => {
             <ProjectWrapper>
               <ProjectNavTabs activeTab="overview" project={project} />
               <ProjectDetailsWrapper>
-                <div className="project-details-header">
+                <div className="project-details-sidebar">
                   <ProjectDetailsSidebar project={project} />
                 </div>
                 <div className="environments-wrapper">

@@ -7,6 +7,7 @@ import AddSshKey from "../../components/SshKeys/AddSshKey";
 import { CommonWrapper } from "../../styles/commonPageStyles";
 import QueryError from "../../components/errors/QueryError";
 import { useQuery } from "@apollo/react-hooks";
+import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays the user settings page.
@@ -27,13 +28,15 @@ const SettingsPage = () => {
         <title>Settings</title>
       </Head>
       <MainLayout>
-        <CommonWrapper>
-          <h2>SSH keys</h2>
-          <div className="content">
-            <SshKeys me={data?.me || {}} loading={loading} />
-            <AddSshKey me={data?.me || {}} />
-          </div>
-        </CommonWrapper>
+        <ThemedSkeletonWrapper>
+          <CommonWrapper>
+            <h2>SSH keys</h2>
+            <div className="content">
+              <SshKeys me={data?.me || {}} loading={loading} />
+              <AddSshKey me={data?.me || {}} />
+            </div>
+          </CommonWrapper>
+        </ThemedSkeletonWrapper>
       </MainLayout>
     </>
   );

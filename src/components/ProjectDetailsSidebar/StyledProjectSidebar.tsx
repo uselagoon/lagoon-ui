@@ -5,6 +5,7 @@ export const ProjectDetails = styled.div`
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: 1fr;
+  background-color: ${props => props.theme.backgrounds.sidebar};
   @media ${bp.xs_smallUp} {
     grid-template-columns: 1fr;
   }
@@ -139,7 +140,7 @@ export const FieldWrapper = styled.div`
     }
 
     .copied {
-      background-color: ${color.midGrey};
+      background-color: ${props => props.theme.backgrounds.copy};
       ${fontSize(9, 16)};
       border-radius: 3px;
       padding: 0 2px;

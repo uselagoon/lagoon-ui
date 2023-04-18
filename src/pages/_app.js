@@ -1,19 +1,26 @@
 import "isomorphic-unfetch";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { createContext, useEffect } from "react";
 import Head from "next/head";
 import Typekit from "react-typekit";
 import Favicon from "components/Favicon";
 import Authenticator from "lib/Authenticator";
 import ApiConnection from "lib/ApiConnection";
 import App from "next/app";
-import { TourContextProvider } from "../tours/TourContext";
+// theming
+import useTheme from "lib/useTheme";
+import { darkTheme, lightTheme } from "../styles/theme";
+import { ThemeProvider } from "styled-components";
+
+// transitions
 import { m, AnimatePresence, LazyMotion } from "framer-motion";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "../static/normalize.css";
 
+// tours
+import { TourContextProvider } from "../tours/TourContext";
 import Tour from "../tours/Tour";
 
 import getConfig from "next/config";
@@ -25,9 +32,12 @@ const tourEnabled = LAGOON_UI_TOURS_ENABLED === "enabled";
 const loadFeatures = () =>
   import("components/common/features").then((res) => res.default);
 
+export const AppContext = createContext(null);
+
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname, events } = useRouter();
-
+  const { theme, toggleTheme } = useTheme();
+  const lagoonTheme = theme === "light" ? lightTheme : darkTheme;
   NProgress.configure({ showSpinner: false });
 
   useEffect(() => {
@@ -52,7 +62,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
   // infinite auth > error > auth > error loops.
   if (err) {
     return (
-      <>
+      <ThemeProvider theme={lagoonTheme}>
         <Head>
           <Typekit kitId="ggo2pml" />
         </Head>
@@ -62,7 +72,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
           url={pathname}
         />
         <Favicon />
-      </>
+      </ThemeProvider>
     );
   }
 
@@ -78,26 +88,30 @@ const LagoonApp = ({ Component, pageProps, err }) => {
           });
         }}
       >
-        <Authenticator>
-          <ApiConnection>
-            <TourContextProvider>
-              <m.div
-                className="lagoon-wrapper"
-                key={pathname}
-                initial={{ opacity: 0.65 }}
-                animate={{ opacity: 1, transition: { duration: 0.5 } }}
-                exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
-              >
-                <Head>
-                  <Typekit kitId="ggo2pml" />
-                </Head>
-                <Component {...pageProps} url={pathname} />
-                {tourEnabled ? <Tour /> : null}
-                <Favicon />
-              </m.div>
-            </TourContextProvider>
-          </ApiConnection>
-        </Authenticator>
+        <AppContext.Provider value={{ theme, toggleTheme }}>
+          <ThemeProvider theme={lagoonTheme}>
+            <Authenticator>
+              <ApiConnection>
+                <TourContextProvider>
+                  <m.div
+                    className="lagoon-wrapper"
+                    key={pathname}
+                    initial={{ opacity: 0.65 }}
+                    animate={{ opacity: 1, transition: { duration: 0.5 } }}
+                    exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
+                  >
+                    <Head>
+                      <Typekit kitId="ggo2pml" />
+                    </Head>
+                    <Component {...pageProps} url={pathname} />
+                    {tourEnabled ? <Tour /> : null}
+                    <Favicon />
+                  </m.div>
+                </TourContextProvider>
+              </ApiConnection>
+            </Authenticator>
+          </ThemeProvider>
+        </AppContext.Provider>
       </AnimatePresence>
     </LazyMotion>
   );

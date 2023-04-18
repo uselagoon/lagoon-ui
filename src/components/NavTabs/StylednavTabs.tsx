@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
 export const StyledNavigation = styled.ul`
-  background: ${color.lightestGrey};
-  border-right: 1px solid ${color.midGrey};
+  background: ${props => props.theme.backgrounds.sidebar};
+  border-right: 1px solid ${props => props.theme.borders.input};
   margin: 0;
   z-index: 10;
   @media ${bp.tabletUp} {
@@ -15,13 +15,14 @@ export const StyledNavigation = styled.ul`
   }
 
   li {
-    border-bottom: 1px solid ${color.midGrey};
+    border-bottom: 1px solid ${props => props.theme.borders.input};
     margin: 0;
     padding: 0;
     position: relative;
+    transition: all 0.2s ease;
 
     &:hover {
-      background-color: ${color.white};
+      background-color: ${color.white} !important;
     }
 
     &::before {
@@ -39,7 +40,7 @@ export const StyledNavigation = styled.ul`
     }
 
     a {
-      color: ${color.darkGrey};
+      color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
       @media ${bp.wideUp} {
@@ -49,15 +50,14 @@ export const StyledNavigation = styled.ul`
 
     &.active {
       &::before {
-        background-color: ${color.almostWhite};
+        /* background-color: ${color.white}; */
       }
-
-      background-color: ${color.almostWhite};
-      border-right: 1px solid ${color.almostWhite};
+      background-color: ${props => props.theme.backgrounds.content};
+      border-right: 1px solid ${(props)=>props.theme.backgrounds.content};
       width: calc(100% + 1px);
 
       a {
-        color: ${color.black};
+        color: ${props => props.theme.texts.navigation};
       }
     }
 
@@ -151,11 +151,15 @@ export const StyledNavigation = styled.ul`
 
   .deployLink {
     a {
-      color: ${color.darkGrey};
+      color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
+      transition: color 0.2s ease;
       @media ${bp.wideUp} {
         padding-left: calc((100vw / 16) * 1);
+      }
+      &:hover{
+        color: ${color.darkGrey};
       }
     }
 

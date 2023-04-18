@@ -40,18 +40,19 @@ export const StyledDeployments = styled.div`
   }
 
   .data-table {
-    background-color: ${color.white};
-    border: 1px solid ${color.lightestGrey};
+    background-color: ${props => props.theme.backgrounds.table};
+    border: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
 
     .data-none {
-      border: 1px solid ${color.white};
-      border-bottom: 1px solid ${color.lightestGrey};
+      border: 1px solid ${props => props.theme.borders.tableRow};
+      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
       text-align: center;
+      transition: all 0.3s ease;
     }
 
     .data-row {
@@ -59,11 +60,12 @@ export const StyledDeployments = styled.div`
       background-position: right 20px center;
       background-repeat: no-repeat;
       background-size: 18px 11px;
-      border: 1px solid ${color.white};
-      border-bottom: 1px solid ${color.lightestGrey};
+      border: 1px solid ${props => props.theme.borders.tableRow};
+      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
+      transition: all 0.3s ease;
       @media ${bp.tinyUp} {
         display: flex;
         justify-content: space-between;

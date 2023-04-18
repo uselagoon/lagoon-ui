@@ -20,6 +20,7 @@ import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import { useQuery } from "@apollo/react-hooks";
 import Skeleton from "react-loading-skeleton";
 import { useTourContext } from "../tours/TourContext";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT, 10);
@@ -75,6 +76,8 @@ export const PageTasks = ({ router }) => {
         </Head>
 
         <MainLayout>
+                
+        <ThemedSkeletonWrapper>
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={projectSlug} />
             <EnvironmentBreadcrumb
@@ -102,6 +105,8 @@ export const PageTasks = ({ router }) => {
               />
             </div>
           </TasksWrapper>
+                
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

@@ -11,6 +11,7 @@ import { CommonWrapper } from "../styles/commonPageStyles";
 import QueryError from "../components/errors/QueryError";
 import { useQuery } from "@apollo/react-hooks";
 import Skeleton from "react-loading-skeleton";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays the bulk deployments page.
@@ -31,6 +32,8 @@ const BulkDeploymentsPage = ({ router }) => {
       </Head>
 
       <MainLayout>
+              
+      <ThemedSkeletonWrapper>
         <Breadcrumbs>
           <BulkDeploymentBreadcrumb
             title={
@@ -56,6 +59,8 @@ const BulkDeploymentsPage = ({ router }) => {
             )}
           </div>
         </CommonWrapper>
+              
+        </ThemedSkeletonWrapper>
       </MainLayout>
     </>
   );
