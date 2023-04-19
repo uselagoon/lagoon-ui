@@ -5,7 +5,7 @@ import ReactSelect from "react-select";
 import { Mutation } from "react-apollo";
 import withLogic from "components/AddVariable/logic";
 import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
-import { NewVariable, NewVariableModal } from "./StyledAddVariable";
+import { NewVariable, NewVariableModal, custom } from "./StyledAddVariable";
 
 /**
  * Adds a Variable.
@@ -27,6 +27,7 @@ export const AddVariable = ({
   varEnvironment,
   varValues,
   varTarget,
+  noVars,
   inputName,
   setInputName,
   inputValue,
@@ -39,7 +40,11 @@ export const AddVariable = ({
 }) => {
   return (
     <NewVariable>
-      <Button onClick={openModal}>Add/Update</Button>
+      <Button onClick={openModal}>
+        {
+          noVars? "Add" : "Add/Update"
+        }
+      </Button>
       <Modal
         isOpen={open}
         onRequestClose={closeModal}
@@ -49,13 +54,16 @@ export const AddVariable = ({
         <NewVariableModal>
           <div className="variable-target">
             <span className="variable-target">
-              Add/Update {varTarget} Variable
+              {
+                noVars? `Add ${varTarget} Variable` : `Add/Update ${varTarget} Variable`
+              }
             </span>
           </div>
           <div className="var-modal">
             <label htmlFor="varName">Variable Scope</label>
             {
               <ReactSelect
+                classNamePrefix="react-select"
                 aria-label="Scope"
                 placeholder="Select a variable scope"
                 name="results"

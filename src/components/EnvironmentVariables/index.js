@@ -111,11 +111,12 @@ const EnvironmentVariables = ({ environment }) => {
                 varEnvironment={environment.name}
                 varValues={displayVars}
                 varTarget="Environment"
+                noVars="Add"
               />
             </div>
             <hr style={{ margin: "30px 0" }} />
             <div style={{ textAlign: "center" }}>
-              No Environment variable set
+              <label>No Environment variables set</label>
             </div>
           </>
         ) : (
@@ -138,7 +139,7 @@ const EnvironmentVariables = ({ environment }) => {
                 </Button>
               </div>
             </div>
-            <Table striped bordered hover>
+            <Table striped bordered>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -297,11 +298,24 @@ const EnvironmentVariables = ({ environment }) => {
         )}
       </div>
       {displayProjectVars.length == 0 ? (
-        <>
-          <hr style={{ margin: "30px 0" }} />
-          <div style={{ textAlign: "center" }}>No Project variable set</div>
-          <hr style={{ margin: "30px 0" }} />
-        </>
+            <>
+            <hr style={{ margin: "30px 0" }} />
+            <div className="header no-vars">
+            <Button>
+                <ProjectVariablesLink
+                  projectSlug={environment.project.name}
+                  className="deployLink hover-state"
+                >
+                  Add
+                </ProjectVariablesLink>
+              </Button>
+            </div>
+            <hr style={{ margin: "30px 0" }} />
+            <div style={{ textAlign: "center" }}>
+              <label>No Project variables set</label>
+            </div>
+            <hr style={{ margin: "30px 0" }} />
+          </>
       ) : (
         <>
           <hr style={{ margin: "30px 0" }} />

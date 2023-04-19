@@ -80,6 +80,12 @@ export const StyledEnvironmentVariableDetails = styled.div`
       width: 100%;
     }
   }
+  table {
+    background-color: ${props => props.theme.backgrounds.table};
+  }
+  td, tr {
+    color: ${props => props.theme.texts.accordionHeading} !important;
+  }
   tr,
   th {
     text-align: center;

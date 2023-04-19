@@ -53,7 +53,7 @@ export const lightTheme: DefaultTheme = {
     tertiary: "#F3F3F3",
     modalOverlay: "#fafafcbf",
     input: color.white,
-    sidebar: color.lightestGrey,
+    sidebar: color.almostWhite,
     table: color.white,
     tableLight: color.lightestGrey,
     box: color.white,

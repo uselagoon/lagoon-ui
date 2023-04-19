@@ -137,7 +137,7 @@ export const EnvironmentWrapper = styled.div`
 `;
 
 export const VariableWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -211,7 +211,7 @@ export const TaskWrapper = styled.div`
 `;
 
 export const ProjectWrapper = styled.div`
-  ${commonBg};
+  ${(props) => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -243,7 +243,7 @@ export const ProjectDetailsWrapper = styled.div`
 
   ${(props) => commonBg(props.theme.backgrounds.content)}
   .project-details-sidebar {
-    background-color: ${(props) => props.theme.backgrounds.sidebar};
+    background-color: ${(props) => props.theme.backgrounds.content};
     border-right: ${(props) =>
       props.theme.colorScheme === "dark"
         ? `2px solid ${props.theme.borders.box}`

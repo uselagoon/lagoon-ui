@@ -50,4 +50,8 @@ export const NewVariableModal = styled.div`
     margin-right: 10px;
     color: ${color.blue};
   }
+  .react-select__control, .react-select__menu, .react-select__option, .react-select__single-value {
+    background:${(props) => props.theme.backgrounds.primary};
+    color: ${props => props.theme.texts.primary};
+  }
 `;

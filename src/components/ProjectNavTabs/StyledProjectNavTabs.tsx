@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
 export const StyledProjectNavTabs = styled.ul`
-  background: ${color.lightestGrey};
-  border-right: 1px solid ${color.midGrey};
+  background: ${props => props.theme.backgrounds.sidebar};
+  border-right: 1px solid ${props => props.theme.borders.input};
   margin: 0;
   z-index: 10;
 
@@ -15,7 +15,7 @@ export const StyledProjectNavTabs = styled.ul`
     min-width: 25%;
   }
   li {
-    border-bottom: 1px solid ${color.midGrey};
+    border-bottom: 1px solid ${props => props.theme.borders.input};
     margin: 0;
     padding: 0;
     position: relative;
@@ -36,7 +36,7 @@ export const StyledProjectNavTabs = styled.ul`
       width: 45px;
     }
     a {
-      color: ${color.darkGrey};
+      color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
       @media ${bp.wideUp} {
@@ -45,13 +45,16 @@ export const StyledProjectNavTabs = styled.ul`
     }
     &.active {
       &::before {
-        background-color: ${color.almostWhite};
+        // background-color: ${color.almostWhite};
       }
-      background-color: ${color.almostWhite};
-      border-right: 1px solid ${color.almostWhite};
+      &:hover {
+        background-color: white;
+      }
+      background-color: ${props => props.theme.backgrounds.content};
+      border-right: 1px solid ${(props)=>props.theme.backgrounds.content};
       width: calc(100% + 1px);
       a {
-        color: ${color.black};
+        color: ${props => props.theme.texts.navigation};
       }
     }
     &.overview {
@@ -85,11 +88,14 @@ export const StyledProjectNavTabs = styled.ul`
 
   .deployLink {
     a {
-      color: ${color.darkGrey};
+      color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
       @media ${bp.wideUp} {
         padding-left: calc((100vw / 16) * 1);
+      }
+      &:hover{
+        color: ${color.darkGrey};
       }
     }
 

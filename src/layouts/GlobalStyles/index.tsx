@@ -236,7 +236,7 @@ main{
   transform: translate(-50%, -50%);
   border: 1px solid ${color.midGrey};
 
-  background: ${color.white};
+  background:${(props) => props.theme.backgrounds.primary};
 
   overflow: auto;
   -webkit-overflow-scrolling: touch;

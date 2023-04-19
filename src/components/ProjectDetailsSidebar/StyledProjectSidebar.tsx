@@ -5,7 +5,7 @@ export const ProjectDetails = styled.div`
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: 1fr;
-  background-color: ${props => props.theme.backgrounds.sidebar};
+  background-color: ${props => props.theme.backgrounds.content};
   @media ${bp.xs_smallUp} {
     grid-template-columns: 1fr;
   }
