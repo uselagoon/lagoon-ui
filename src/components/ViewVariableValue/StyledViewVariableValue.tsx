@@ -79,6 +79,6 @@ export const StyledViewVariableValueModal = styled.div`
     }
   }
   .row-heading {
-    background: ${color.white};
+    background-color: ${props => props.theme.backgrounds.table};
   }
 `;
