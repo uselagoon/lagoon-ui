@@ -2,8 +2,8 @@ import { bp, color } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledNavigation = styled.ul`
-  background: ${(props) => props.theme.backgrounds.sidebar};
-  border-right: 1px solid ${(props) => props.theme.borders.input};
+  background: ${props => props.theme.backgrounds.sidebar};
+  border-right: 1px solid ${props => props.theme.borders.input};
   margin: 0;
   z-index: 10;
   @media ${bp.tabletUp} {
@@ -15,7 +15,7 @@ export const StyledNavigation = styled.ul`
   }
 
   li {
-    border-bottom: 1px solid ${(props) => props.theme.borders.input};
+    border-bottom: 1px solid ${props => props.theme.borders.input};
     margin: 0;
     padding: 0;
     position: relative;
@@ -40,7 +40,7 @@ export const StyledNavigation = styled.ul`
     }
 
     a {
-      color: ${(props) => props.theme.texts.navigation};
+      color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
       @media ${bp.wideUp} {
@@ -52,12 +52,12 @@ export const StyledNavigation = styled.ul`
       &::before {
         /* background-color: ${color.white}; */
       }
-      background-color: ${(props) => props.theme.backgrounds.content};
-      border-right: 1px solid ${(props) => props.theme.backgrounds.content};
+      background-color: ${props => props.theme.backgrounds.content};
+      border-right: 1px solid ${props => props.theme.backgrounds.content};
       width: calc(100% + 1px);
 
       a {
-        color: ${(props) => props.theme.texts.navigation};
+        color: ${props => props.theme.texts.navigation};
       }
     }
 
@@ -141,7 +141,7 @@ export const StyledNavigation = styled.ul`
 
   .deployLink {
     a {
-      color: ${(props) => props.theme.texts.navigation};
+      color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
       transition: color 0.2s ease;

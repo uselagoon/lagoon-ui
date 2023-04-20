@@ -4,9 +4,9 @@ import styled from 'styled-components';
 export const NewDeployment = styled.div`
   align-items: center;
 
-  background: ${(props) =>
+  background: ${props =>
     props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.secondary}` : `${props.theme.backgrounds.primary}`};
-  border: 1px solid ${(props) => props.theme.borders.box};
+  border: 1px solid ${props => props.theme.borders.box};
   border-radius: 3px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   display: flex;
@@ -24,7 +24,7 @@ export const NewDeployment = styled.div`
   }
 
   .description {
-    color: ${(props) => props.theme.texts.description};
+    color: ${props => props.theme.texts.description};
   }
 
   .deploy_result {

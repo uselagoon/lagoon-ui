@@ -21,7 +21,7 @@ export const StyledBreadCrumb = styled.div`
     left: -36px;
     width: 1px;
     height: 200%;
-    background: ${(props) => props.theme.backgrounds.breadCrumb};
+    background: ${props => props.theme.backgrounds.breadCrumb};
     transform-origin: 100% 0;
     transform: skew(-12deg) translateY(-20%);
   }
@@ -48,8 +48,8 @@ export const BreadCrumbLink = styled.a`
 
 export const StyledBreadcrumbsWrapper = styled.div`
   padding: 1vw 0.75vw;
-  background-color: ${(props) => props.theme.backgrounds.breadCrumbs};
-  border-bottom: ${(props) =>
+  background-color: ${props => props.theme.backgrounds.breadCrumbs};
+  border-bottom: ${props =>
     props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};
   overflow: hidden;
   @media ${bp.tabletUp} {

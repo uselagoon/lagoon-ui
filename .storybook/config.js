@@ -58,14 +58,14 @@ addDecorator(withA11y);
 addDecorator(withKnobs);
 addDecorator(withApiConnection);
 addDecorator(withGlobalStyles);
-addDecorator((Story) => <Story />);
+addDecorator(Story => <Story />);
 
 const loaderFn = () => {
   const allExports = [];
 
   // Automatically import all *.stories.js in these folders.
   const storiesSrc = requireContext('../src', true, /\.stories\.js$/);
-  storiesSrc.keys().forEach((fname) => allExports.push(storiesSrc(fname)));
+  storiesSrc.keys().forEach(fname => allExports.push(storiesSrc(fname)));
   allExports.push(require('./Home.stories'));
 
   return allExports;

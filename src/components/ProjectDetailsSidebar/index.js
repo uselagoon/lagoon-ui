@@ -84,7 +84,7 @@ const Project = ({ project }) => {
         <FieldWrapper className="field-wrapper target">
           <div>
             <label>Deploy Targets</label>
-            {project.deployTargetConfigs.map((depTarget) => (
+            {project.deployTargetConfigs.map(depTarget => (
               <div key={depTarget.id}>
                 <div>
                   <label className="field1">

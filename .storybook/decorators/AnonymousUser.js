@@ -10,4 +10,4 @@ const noUser = {
   user: {},
 };
 
-export default (storyFn) => <AuthContext.Provider value={noUser}>{storyFn()}</AuthContext.Provider>;
+export default storyFn => <AuthContext.Provider value={noUser}>{storyFn()}</AuthContext.Provider>;

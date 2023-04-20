@@ -31,7 +31,7 @@ const LogAccordion = forwardRef(
       <StyledLogAccordion className={className}>
         <div
           className={`accordion-heading`}
-          onClick={(e) => {
+          onClick={e => {
             setVisibility(!visibility);
             if (onToggle) onToggle(!visibility);
           }}

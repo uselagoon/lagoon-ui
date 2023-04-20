@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import hash from 'object-hash';
 
-const useSortableProblemsData = (initialItems) => {
+const useSortableProblemsData = initialItems => {
   const initialConfig = { key: 'identifier', direction: 'ascending' };
   const [sortConfig, setSortConfig] = React.useState(initialConfig);
   const [currentItems, setCurrentItems] = useState(initialItems);
 
-  const getClassNamesFor = (name) => {
+  const getClassNamesFor = name => {
     if (!sortConfig) return;
     return (sortConfig.key === name && sortConfig.direction) || 'no-sort';
   };
@@ -49,7 +49,7 @@ const useSortableProblemsData = (initialItems) => {
     setCurrentItems(sortedItems);
   }
 
-  const requestSort = (key) => {
+  const requestSort = key => {
     let direction = key !== 'created' ? 'ascending' : 'descending';
 
     if (sortConfig && sortConfig.key === key && sortConfig.direction === direction) {

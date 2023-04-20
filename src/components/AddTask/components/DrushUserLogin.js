@@ -32,7 +32,7 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushUserLogin) => {
+    {taskDrushUserLogin => {
       return (
         <SelectWrapper>
           <div className="envSelect">

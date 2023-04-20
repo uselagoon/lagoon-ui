@@ -5,7 +5,7 @@ module.exports = async ({ config, mode }) => {
   // 'PRODUCTION' is used when building the static version of storybook.
 
   // Add aliases from shared config file.
-  Object.keys(webpackShared.alias).forEach((name) => (config.resolve.alias[name] = webpackShared.alias[name]));
+  Object.keys(webpackShared.alias).forEach(name => (config.resolve.alias[name] = webpackShared.alias[name]));
   // Add alias for storybook decorators and components.
   config.resolve.alias.storybook = __dirname;
 

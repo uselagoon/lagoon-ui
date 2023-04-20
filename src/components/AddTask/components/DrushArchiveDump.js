@@ -32,7 +32,7 @@ const DrushArchiveDump = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushArchiveDump) => {
+    {taskDrushArchiveDump => {
       return (
         <SelectWrapper>
           <div className="envSelect">

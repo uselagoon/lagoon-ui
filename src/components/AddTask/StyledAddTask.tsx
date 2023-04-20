@@ -2,8 +2,8 @@ import { bp, color } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledNewTask = styled.div`
-  background: ${(props) => props.theme.backgrounds.primary};
-  border: 1px solid ${(props) => props.theme.borders.box};
+  background: ${props => props.theme.backgrounds.primary};
+  border: 1px solid ${props => props.theme.borders.box};
   border-radius: 3px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   display: flex;

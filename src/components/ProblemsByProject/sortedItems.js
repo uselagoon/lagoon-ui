@@ -6,7 +6,7 @@ const useSortableData = (initialItems, initialConfig) => {
   const [sortConfig, setSortConfig] = React.useState(initialConfig);
   const [currentItems, setCurrentItems] = useState(initialItems);
 
-  const getClassNamesFor = (name) => {
+  const getClassNamesFor = name => {
     if (!sortConfig) return;
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
@@ -45,7 +45,7 @@ const useSortableData = (initialItems, initialConfig) => {
     setCurrentItems(sortedItems);
   }
 
-  const requestSort = (key) => {
+  const requestSort = key => {
     let direction = 'ascending';
 
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {

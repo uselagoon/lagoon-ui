@@ -5,7 +5,7 @@ import withState from 'recompose/withState';
 
 const { publicRuntimeConfig } = getConfig();
 
-const generateElementsForPlugins = (def) => {
+const generateElementsForPlugins = def => {
   if (def.type) {
     switch (def.type) {
       case 'script':
@@ -19,7 +19,7 @@ const generateElementsForPlugins = (def) => {
   return null;
 };
 
-const Plugins = (props) => {
+const Plugins = props => {
   const { hook = '' } = props;
   let retPlugins = [];
   const plugins = publicRuntimeConfig.PLUGIN_SCRIPTS;
@@ -30,14 +30,14 @@ const Plugins = (props) => {
   switch (hook) {
     case 'head':
       if (plugins.head && plugins.head.length > 0) {
-        plugins.head.forEach((element) => {
+        plugins.head.forEach(element => {
           retPlugins.push(generateElementsForPlugins(element));
         });
       }
       break;
     case 'body':
       if (plugins.body && plugins.body.length > 0) {
-        plugins.body.forEach((element) => {
+        plugins.body.forEach(element => {
           retPlugins.push(generateElementsForPlugins(element));
         });
       }

@@ -20,7 +20,7 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath }) =
   <>
     <BreadCrumbLink
       href={asPath}
-      onClick={(e) => {
+      onClick={e => {
         e.preventDefault();
         void Router.push(urlObject, asPath);
       }}

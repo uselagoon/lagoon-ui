@@ -6,7 +6,7 @@ const withInputValue = withState('inputValue', 'setInputValue', '');
 const withInputHandlers = withHandlers({
   setInputValue:
     ({ setInputValue }) =>
-    (event) =>
+    event =>
       setInputValue(event.target.value),
 });
 

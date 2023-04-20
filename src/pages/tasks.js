@@ -126,7 +126,7 @@ export const PageTasks = ({ router }) => {
       if (!subscriptionData.data) return prevStore;
       const prevTasks = prevStore.environment.tasks;
       const incomingTask = subscriptionData.data.taskChanged;
-      const existingIndex = prevTasks.findIndex((prevTask) => prevTask.id === incomingTask.id);
+      const existingIndex = prevTasks.findIndex(prevTask => prevTask.id === incomingTask.id);
       let newTasks;
 
       // New task.

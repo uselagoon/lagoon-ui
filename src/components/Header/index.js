@@ -43,7 +43,7 @@ const Header = ({ logo }) => (
       <ThemeToggler />
     </ControlButtons>
     <AuthContext.Consumer>
-      {(auth) => {
+      {auth => {
         if (auth.authenticated) {
           return (
             <div className="authContainer">

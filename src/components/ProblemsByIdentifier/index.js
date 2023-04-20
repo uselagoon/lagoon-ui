@@ -13,7 +13,7 @@ const ProblemsByIdentifier = ({ problems }) => {
   const [hasFilter, setHasFilter] = React.useState(false);
   const [moreProjectsLimit, setMoreProjectsLimit] = React.useState(5);
 
-  const handleProblemFilterChange = (event) => {
+  const handleProblemFilterChange = event => {
     setHasFilter(false);
 
     if (event.target.value !== null || event.target.value !== '') {
@@ -22,17 +22,17 @@ const ProblemsByIdentifier = ({ problems }) => {
     setProblemTerm(event.target.value);
   };
 
-  const handleSort = (key) => {
+  const handleSort = key => {
     return requestSort(key);
   };
 
-  const filterResults = (item) => {
+  const filterResults = item => {
     const lowercasedFilter = problemTerm.toLowerCase();
     if (problemTerm == null || problemTerm === '') {
       return problems;
     }
 
-    return Object.keys(item).some((key) => {
+    return Object.keys(item).some(key => {
       if (item[key] !== null) {
         return item[key].toString().toLowerCase().includes(lowercasedFilter);
       }
@@ -85,10 +85,10 @@ const ProblemsByIdentifier = ({ problems }) => {
         </button>
       </IdentifierHeader>
       <div className="data-table">
-        {!sortedItems.filter((item) => filterResults(item)).length && <div className="data-none">No Problems</div>}
+        {!sortedItems.filter(item => filterResults(item)).length && <div className="data-none">No Problems</div>}
         {sortedItems
-          .filter((item) => filterResults(item))
-          .map((item) => {
+          .filter(item => filterResults(item))
+          .map(item => {
             const { identifier, source, severity, problems, environment } = item;
             const { description, associatedPackage, links } = problems[0] || '';
 
@@ -96,7 +96,7 @@ const ProblemsByIdentifier = ({ problems }) => {
               identifier: identifier,
               source,
               severity,
-              projectsAffected: (problems && problems.filter((p) => p != null).length) || 0,
+              projectsAffected: (problems && problems.filter(p => p != null).length) || 0,
             };
 
             return (
@@ -131,9 +131,9 @@ const ProblemsByIdentifier = ({ problems }) => {
                       <label>Projects:Environments affected:</label>
                       {problems &&
                         problems
-                          .filter((p) => p != null)
+                          .filter(p => p != null)
                           .slice(0, moreProjectsLimit)
-                          .map((problem) => {
+                          .map(problem => {
                             const {
                               id,
                               name: envName,
@@ -155,8 +155,8 @@ const ProblemsByIdentifier = ({ problems }) => {
                               </div>
                             );
                           })}
-                      {problems && problems.filter((p) => p != null).length > moreProjectsLimit && (
-                        <button className="button more" onClick={(e) => onLoadMore(e)}>
+                      {problems && problems.filter(p => p != null).length > moreProjectsLimit && (
+                        <button className="button more" onClick={e => onLoadMore(e)}>
                           More...
                         </button>
                       )}

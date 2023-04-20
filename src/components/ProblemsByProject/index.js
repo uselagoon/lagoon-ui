@@ -14,7 +14,7 @@ const ProblemsByProject = ({ problems, minified }) => {
   const [problemTerm, setProblemTerm] = useState('');
   const [hasFilter, setHasFilter] = React.useState(false);
 
-  const handleProblemFilterChange = (event) => {
+  const handleProblemFilterChange = event => {
     setHasFilter(false);
 
     if (event.target.value !== null || event.target.value !== '') {
@@ -23,17 +23,17 @@ const ProblemsByProject = ({ problems, minified }) => {
     setProblemTerm(event.target.value);
   };
 
-  const handleSort = (key) => {
+  const handleSort = key => {
     return requestSort(key);
   };
 
-  const filterResults = (item) => {
+  const filterResults = item => {
     const lowercasedFilter = problemTerm.toLowerCase();
     if (problemTerm == null || problemTerm === '') {
       return problems;
     }
 
-    return Object.keys(item).some((key) => {
+    return Object.keys(item).some(key => {
       if (item[key] !== null) {
         return item[key].toString().toLowerCase().includes(lowercasedFilter);
       }
@@ -96,12 +96,12 @@ const ProblemsByProject = ({ problems, minified }) => {
         </button>
       </div>
       <div className="data-table">
-        {sortedItems.filter((problem) => filterResults(problem)).length == 0 && (
+        {sortedItems.filter(problem => filterResults(problem)).length == 0 && (
           <div className="data-none">No Problems</div>
         )}
         {sortedItems
-          .filter((problem) => filterResults(problem))
-          .map((problem) => (
+          .filter(problem => filterResults(problem))
+          .map(problem => (
             <Problem key={`${problem.identifier}-${problem.id}`} problem={problem} />
           ))}
       </div>

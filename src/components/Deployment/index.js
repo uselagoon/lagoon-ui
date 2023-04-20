@@ -11,7 +11,7 @@ import withState from 'recompose/withState';
 
 import { ButtonRow, DeploymentDetails, FieldWrapper } from './StyledDeployment';
 
-export const getDeploymentDuration = (deployment) => {
+export const getDeploymentDuration = deployment => {
   const deploymentStart = deployment.started || deployment.created;
   const durationStart = (deploymentStart && moment.utc(deploymentStart)) || moment.utc();
   const durationEnd = (deployment.completed && moment.utc(deployment.completed)) || moment.utc();
@@ -25,7 +25,7 @@ const withParseLogsState = withState('checkedParseState', 'setParseStateChecked'
 const withParseLogsStateHandlers = withHandlers({
   changeState:
     ({ setParseStateChecked, checkedParseState }) =>
-    (e) => {
+    e => {
       setParseStateChecked(!checkedParseState);
     },
 });

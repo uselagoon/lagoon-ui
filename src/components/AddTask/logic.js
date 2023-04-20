@@ -46,7 +46,7 @@ const withOptions = withProps(({ pageEnvironment }) => {
   ];
 
   // Add Advanced Task Definitions
-  let advancedTasks = pageEnvironment.advancedTasks.map((task) => {
+  let advancedTasks = pageEnvironment.advancedTasks.map(task => {
     let commandstring = task.command ? `[${task.command}]` : '';
     let label = task.description ? `${task.description} ${commandstring}` : '';
     return {
@@ -60,7 +60,7 @@ const withOptions = withProps(({ pageEnvironment }) => {
   options = [...options, ...advancedTasks];
 
   // Remove tasks that are blocklisted.
-  options = R.reject((option) => R.contains(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST), options);
+  options = R.reject(option => R.contains(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST), options);
 
   // Currently all tasks require the environment to have a 'cli' service,
   // but this can be made dynamic if that changes.
@@ -85,7 +85,7 @@ const withNewTaskHanders = withHandlers({
     },
 });
 
-const withProjectEnvironments = (BaseComponent) =>
+const withProjectEnvironments = BaseComponent =>
   class GetProjectEnvironments extends React.Component {
     query = gql`
       query getProject($name: String!) {

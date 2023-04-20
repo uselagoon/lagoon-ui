@@ -34,7 +34,7 @@ export const StyledInsights = styled.div`
       justify-content: space-between;
       padding: 10px 20px;
       margin: 0 0 20px;
-      background-color: ${(props) => props.theme.backgrounds.tertiary};
+      background-color: ${props => props.theme.backgrounds.tertiary};
       li.result {
         display: flex;
         flex-direction: column;
@@ -94,8 +94,8 @@ export const StyledInsights = styled.div`
   .data-row {
     display: flex;
     justify-content: space-between;
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     @media ${bp.smallOnly} {
@@ -136,14 +136,14 @@ export const StyledInsights = styled.div`
     }
   }
   .data-none {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
     text-align: center;
   }
   .row-heading {
-    background-color: ${(props) => props.theme.backgrounds.table};
+    background-color: ${props => props.theme.backgrounds.table};
   }
 `;

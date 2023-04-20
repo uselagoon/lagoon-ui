@@ -125,12 +125,12 @@ app
       return handle(req, res);
     });
 
-    server.listen(port, (err) => {
+    server.listen(port, err => {
       if (err) throw err;
       console.log('> Ready on http://localhost:' + port);
     });
   })
-  .catch((ex) => {
+  .catch(ex => {
     console.error(ex.stack);
     process.exit(1);
   });

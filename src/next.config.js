@@ -33,7 +33,7 @@ module.exports = {
   webpack(config, options) {
     // Add aliases from shared config file.
     if (webpackShared && webpackShared.alias) {
-      Object.keys(webpackShared.alias).forEach((name) => (config.resolve.alias[name] = webpackShared.alias[name]));
+      Object.keys(webpackShared.alias).forEach(name => (config.resolve.alias[name] = webpackShared.alias[name]));
     }
 
     const originalEntry = config.entry;

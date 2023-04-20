@@ -23,7 +23,7 @@ const DeploymentsByFilter = ({ deployments }) => {
 
   const formatString = (textToEdit, labelClassToQuery) => {
     // if the string is bigger than the data-row container, then add new lines.
-    const getTextWidth = (string) => {
+    const getTextWidth = string => {
       // gets the width of a string that *will* be rendered
       const canvas = new OffscreenCanvas(500, 200);
       const context = canvas.getContext('2d');
@@ -33,13 +33,13 @@ const DeploymentsByFilter = ({ deployments }) => {
 
     const labelWidth = document.querySelector(`.data-row > .${labelClassToQuery}`).getBoundingClientRect().width;
 
-    const editString = (string) => {
+    const editString = string => {
       // find all "-" or "/" and replace with line breaks prefixed by the symbol found.
       const regex = /[-\/]/g;
-      return string.replace(regex, (match) => match + '\n');
+      return string.replace(regex, match => match + '\n');
     };
 
-    const combine = (strings) => {
+    const combine = strings => {
       let combined = '';
       let line = '';
 
@@ -70,7 +70,7 @@ const DeploymentsByFilter = ({ deployments }) => {
     return textToEdit;
   };
 
-  const handleSearchFilterChange = (event) => {
+  const handleSearchFilterChange = event => {
     setHasFilter(false);
 
     if (event.target.value !== null || event.target.value !== '') {
@@ -79,18 +79,18 @@ const DeploymentsByFilter = ({ deployments }) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSort = (key) => {
+  const handleSort = key => {
     return requestSort(key);
   };
 
-  const filterResults = (item) => {
+  const filterResults = item => {
     const lowercasedFilter = searchTerm.toLowerCase();
 
     if (searchTerm == null || searchTerm === '') {
       return deployments;
     }
 
-    return Object.keys(item).some((key) => {
+    return Object.keys(item).some(key => {
       if (typeof item[key] === 'object' && item[key] !== null) {
         let filterKey = '';
 
@@ -161,12 +161,12 @@ const DeploymentsByFilter = ({ deployments }) => {
           <label>Duration</label>
           <label></label>
         </DeploymentsHeader>
-        {!sortedItems.filter((deployment) => filterResults(deployment)).length && (
+        {!sortedItems.filter(deployment => filterResults(deployment)).length && (
           <div className="data-none">No deployments</div>
         )}
         {sortedItems
-          .filter((deployment) => filterResults(deployment))
-          .map((deployment) => {
+          .filter(deployment => filterResults(deployment))
+          .map(deployment => {
             return (
               <div className="data-row row-heading" key={deployment.id}>
                 <div className="project">

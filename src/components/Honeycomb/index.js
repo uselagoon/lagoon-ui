@@ -32,21 +32,21 @@ const Honeycomb = ({ data, filter }) => {
     y: parseInt(display.hexSize * layout.height),
   };
 
-  const handleHexClick = (project) => {
+  const handleHexClick = project => {
     const { environments, id, name } = project || [];
     const problems =
       environments &&
       environments
-        .filter((e) => e instanceof Object)
-        .map((e) => {
+        .filter(e => e instanceof Object)
+        .map(e => {
           return e.problems;
         });
 
     const problemsPerProject = Array.prototype.concat.apply([], problems);
-    const critical = problemsPerProject.filter((p) => p.severity === 'CRITICAL').length;
-    const high = problemsPerProject.filter((p) => p.severity === 'HIGH').length;
-    const medium = problemsPerProject.filter((p) => p.severity === 'MEDIUM').length;
-    const low = problemsPerProject.filter((p) => p.severity === 'LOW').length;
+    const critical = problemsPerProject.filter(p => p.severity === 'CRITICAL').length;
+    const high = problemsPerProject.filter(p => p.severity === 'HIGH').length;
+    const medium = problemsPerProject.filter(p => p.severity === 'MEDIUM').length;
+    const low = problemsPerProject.filter(p => p.severity === 'LOW').length;
 
     setProjectInView({
       name: name,
@@ -55,19 +55,19 @@ const Honeycomb = ({ data, filter }) => {
     });
   };
 
-  const flattenProblems = (project) => {
+  const flattenProblems = project => {
     const { environments } = project || [];
     const filterProblems =
       environments &&
       environments
-        .filter((e) => e instanceof Object)
-        .map((e) => {
+        .filter(e => e instanceof Object)
+        .map(e => {
           return e.problems;
         });
     return Array.prototype.concat.apply([], filterProblems);
   };
 
-  const sortByProjects = (projects) => {
+  const sortByProjects = projects => {
     return (
       projects &&
       projects.sort((a, b) => {
@@ -79,7 +79,7 @@ const Honeycomb = ({ data, filter }) => {
     );
   };
 
-  const getClassName = (critical) => {
+  const getClassName = critical => {
     if (critical === 0) {
       return 'no-critical';
     }
@@ -105,7 +105,7 @@ const Honeycomb = ({ data, filter }) => {
 
     const filterProjects = !filter.showCleanProjects
       ? projectsProblems &&
-        projectsProblems.filter((p) => {
+        projectsProblems.filter(p => {
           return !R.isEmpty(flattenProblems(p));
         })
       : projectsProblems && projectsProblems;
@@ -134,13 +134,13 @@ const Honeycomb = ({ data, filter }) => {
                 const filterProblems =
                   environments &&
                   environments
-                    .filter((e) => e instanceof Object)
-                    .map((e) => {
+                    .filter(e => e instanceof Object)
+                    .map(e => {
                       return e.problems;
                     });
 
                 const problemsPerProject = Array.prototype.concat.apply([], filterProblems);
-                const critical = problemsPerProject.filter((p) => p.severity === 'CRITICAL').length;
+                const critical = problemsPerProject.filter(p => p.severity === 'CRITICAL').length;
                 const problemCount = problemsPerProject.length || 0;
 
                 const HexText = () => {
@@ -177,7 +177,7 @@ const Honeycomb = ({ data, filter }) => {
                       <label>Project: {projectInView.name}</label>
                     </div>
                     {projectInView.environments &&
-                      projectInView.environments.map((environment) => {
+                      projectInView.environments.map(environment => {
                         const problems = Array.prototype.concat.apply([], environment.problems);
 
                         return (
@@ -193,25 +193,25 @@ const Honeycomb = ({ data, filter }) => {
                                   <li className="result">
                                     <label>Critical </label>
                                     <span className="text-large red">
-                                      {problems.filter((p) => p.severity === 'CRITICAL').length}
+                                      {problems.filter(p => p.severity === 'CRITICAL').length}
                                     </span>
                                   </li>
                                   <li className="result">
                                     <label>High </label>
                                     <span className="text-large blue">
-                                      {problems.filter((p) => p.severity === 'HIGH').length}
+                                      {problems.filter(p => p.severity === 'HIGH').length}
                                     </span>
                                   </li>
                                   <li className="result">
                                     <label>Medium </label>
                                     <span className="text-large yellow">
-                                      {problems.filter((p) => p.severity === 'MEDIUM').length}
+                                      {problems.filter(p => p.severity === 'MEDIUM').length}
                                     </span>
                                   </li>
                                   <li className="result">
                                     <label>Low </label>
                                     <span className="text-large grey">
-                                      {problems.filter((p) => p.severity === 'LOW').length}
+                                      {problems.filter(p => p.severity === 'LOW').length}
                                     </span>
                                   </li>
                                 </ul>

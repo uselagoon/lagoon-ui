@@ -31,7 +31,7 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, projectSlug }) => (
     </div>
     <TasksTable className="data-table">
       {!tasks.length && <div className="data-none">No Tasks</div>}
-      {tasks.map((task) => (
+      {tasks.map(task => (
         <TaskLink
           taskSlug={task.taskName}
           environmentSlug={environmentSlug}

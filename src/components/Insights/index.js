@@ -8,7 +8,7 @@ import useSortableData from '../../lib/withSortedItems';
 import { StyledInsights } from './StyledInsights';
 
 const getOptionsFromInsights = (insights, key) => {
-  let uniqueOptions = insights && new Set(insights.filter((f) => f[key]).map((f) => f[key]));
+  let uniqueOptions = insights && new Set(insights.filter(f => f[key]).map(f => f[key]));
 
   return insights && [...uniqueOptions].sort();
 };
@@ -30,7 +30,7 @@ const Insights = ({ insights }) => {
   const services = getOptionsFromInsights(insights, 'service');
 
   // Handlers
-  const handleFactFilterChange = (event) => {
+  const handleFactFilterChange = event => {
     setHasFilter(false);
 
     if (event.target.value !== null || event.target.value !== '') {
@@ -39,42 +39,42 @@ const Insights = ({ insights }) => {
     setFactTerm(event.target.value);
   };
 
-  const handleSort = (key) => {
+  const handleSort = key => {
     return requestSort(key);
   };
 
-  const handleNameChange = (name) => {
-    let values = (name && name.map((n) => n.value)) || [];
+  const handleNameChange = name => {
+    let values = (name && name.map(n => n.value)) || [];
     setName(values);
   };
 
-  const handleServiceChange = (service) => {
-    let values = (service && service.map((s) => s.value)) || [];
+  const handleServiceChange = service => {
+    let values = (service && service.map(s => s.value)) || [];
     setService(values);
   };
 
-  const handleTypeChange = (type) => {
-    let values = (type && type.map((t) => t.value)) || [];
+  const handleTypeChange = type => {
+    let values = (type && type.map(t => t.value)) || [];
     setType(values);
   };
 
   // Options
-  const nameOptions = (name) => {
-    return name && name.map((n) => ({ value: n, label: n }));
+  const nameOptions = name => {
+    return name && name.map(n => ({ value: n, label: n }));
   };
 
-  const serviceOptions = (service) => {
-    return service && service.map((s) => ({ value: s, label: s }));
+  const serviceOptions = service => {
+    return service && service.map(s => ({ value: s, label: s }));
   };
 
-  const typeOptions = (type) => {
-    return type && type.map((t) => ({ value: t, label: t }));
+  const typeOptions = type => {
+    return type && type.map(t => ({ value: t, label: t }));
   };
 
   // Selector filtering
-  const matchesNameSelector = (item) => {
+  const matchesNameSelector = item => {
     return nameSelected.length > 0
-      ? Object.keys(item).some((key) => {
+      ? Object.keys(item).some(key => {
           if (item[key] !== null) {
             return nameSelected.indexOf(item['file'].toString()) > -1;
           }
@@ -82,9 +82,9 @@ const Insights = ({ insights }) => {
       : true;
   };
 
-  const matchesServiceSelector = (item) => {
+  const matchesServiceSelector = item => {
     return serviceSelected.length > 0
-      ? Object.keys(item).some((key) => {
+      ? Object.keys(item).some(key => {
           if (item[key] !== null) {
             return serviceSelected.indexOf(item['service'].toString()) > -1;
           }
@@ -92,9 +92,9 @@ const Insights = ({ insights }) => {
       : true;
   };
 
-  const matchesTypeSelector = (item) => {
+  const matchesTypeSelector = item => {
     return typeSelected.length > 0
-      ? Object.keys(item).some((key) => {
+      ? Object.keys(item).some(key => {
           if (item[key] !== null) {
             return typeSelected.indexOf(item['type'].toString()) > -1;
           }
@@ -102,9 +102,9 @@ const Insights = ({ insights }) => {
       : true;
   };
 
-  const matchesTextFilter = (item) => {
+  const matchesTextFilter = item => {
     return factTerm != null || factTerm !== ''
-      ? Object.keys(item).some((key) => {
+      ? Object.keys(item).some(key => {
           if (item[key] !== null) {
             return item[key].toString().toLowerCase().includes(factTerm.toLowerCase());
           }
@@ -112,13 +112,13 @@ const Insights = ({ insights }) => {
       : true;
   };
 
-  const shouldItemBeShown = (item) => {
+  const shouldItemBeShown = item => {
     return (
       matchesNameSelector(item) && matchesServiceSelector(item) && matchesTypeSelector(item) && matchesTextFilter(item)
     );
   };
 
-  const insightsLength = sortedItems.filter((item) => shouldItemBeShown(item)).length;
+  const insightsLength = sortedItems.filter(item => shouldItemBeShown(item)).length;
 
   return (
     <StyledInsights>
@@ -205,14 +205,14 @@ const Insights = ({ insights }) => {
         </button>
       </div>
       <div className="insights-container">
-        {sortedItems.filter((item) => shouldItemBeShown(item)).length == 0 && (
+        {sortedItems.filter(item => shouldItemBeShown(item)).length == 0 && (
           <div className="data-table">
             <div className="data-none">No insights</div>
           </div>
         )}
         {sortedItems
-          .filter((item) => shouldItemBeShown(item))
-          .map((insight) => {
+          .filter(item => shouldItemBeShown(item))
+          .map(insight => {
             return (
               <div className="data-row row-heading" key={insight.id}>
                 <div className="col col-2">{insight.file}</div>

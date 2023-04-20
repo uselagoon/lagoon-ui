@@ -33,7 +33,7 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushCron) => {
+    {taskDrushCron => {
       return (
         <SelectWrapper>
           <div className="envSelect">

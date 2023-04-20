@@ -48,8 +48,8 @@ const DrushSqlSync = ({
               aria-labelledby="source-env"
               placeholder="Select environment..."
               name="source-environment"
-              value={options.find((o) => o.value === selectedSourceEnv)}
-              onChange={(selectedOption) => setSelectedSourceEnv(selectedOption.value)}
+              value={options.find(o => o.value === selectedSourceEnv)}
+              onChange={selectedOption => setSelectedSourceEnv(selectedOption.value)}
               options={options}
               required
             />

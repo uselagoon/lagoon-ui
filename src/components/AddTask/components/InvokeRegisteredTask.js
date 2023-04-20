@@ -78,7 +78,7 @@ const InvokeRegisteredTask = ({
         })(),
       }}
     >
-      {(mutationInvokeRegisteredTask) => {
+      {mutationInvokeRegisteredTask => {
         return (
           <StyledRegisteredTasks>
             <div className="taskArguments">
@@ -98,13 +98,13 @@ const InvokeRegisteredTask = ({
                               label: R.prop(d.name, advancedTaskArguments),
                               value: R.prop(d.name, advancedTaskArguments),
                             }}
-                            onChange={(selectedOption) => {
+                            onChange={selectedOption => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
                                 [d.name]: selectedOption.value,
                               });
                             }}
-                            options={d.range.map((opt) => ({ label: opt, value: opt }))}
+                            options={d.range.map(opt => ({ label: opt, value: opt }))}
                           />
                         </div>
                       );
@@ -118,7 +118,7 @@ const InvokeRegisteredTask = ({
                             type="text"
                             name="{d.name}"
                             value={R.prop(d.name, advancedTaskArguments)}
-                            onChange={(event) => {
+                            onChange={event => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
                                 [d.name]: event.target.value,

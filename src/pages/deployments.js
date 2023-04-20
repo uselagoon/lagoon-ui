@@ -121,7 +121,7 @@ export const PageDeployments = ({ router }) => {
       if (!subscriptionData.data) return prevStore;
       const prevDeployments = prevStore.environment.deployments;
       const incomingDeployment = subscriptionData.data.deploymentChanged;
-      const existingIndex = prevDeployments.findIndex((prevDeployment) => prevDeployment.id === incomingDeployment.id);
+      const existingIndex = prevDeployments.findIndex(prevDeployment => prevDeployment.id === incomingDeployment.id);
       let newDeployments;
 
       // New deployment.

@@ -32,7 +32,7 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushSqlDump) => {
+    {taskDrushSqlDump => {
       return (
         <SelectWrapper>
           <div className="envSelect">

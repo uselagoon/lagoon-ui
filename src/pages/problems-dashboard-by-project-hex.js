@@ -34,25 +34,25 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
     },
   });
 
-  const handleEnvTypeChange = (envType) => setEnvType(envType.value);
+  const handleEnvTypeChange = envType => setEnvType(envType.value);
   const handleShowAllProjectsCheck = () => setShowCleanProjects(!showCleanProjects);
 
-  const handleSourceChange = (source) => {
-    let values = (source && source.map((s) => s.value)) || [];
+  const handleSourceChange = source => {
+    let values = (source && source.map(s => s.value)) || [];
     setSource(values);
   };
 
-  const handleSeverityChange = (severity) => {
-    let values = (severity && severity.map((s) => s.value)) || [];
+  const handleSeverityChange = severity => {
+    let values = (severity && severity.map(s => s.value)) || [];
     setSeverity(values);
   };
 
-  const sourceOptions = (sources) => {
-    return sources && sources.map((s) => ({ value: s, label: s }));
+  const sourceOptions = sources => {
+    return sources && sources.map(s => ({ value: s, label: s }));
   };
 
-  const severityOptions = (enums) => {
-    return enums && enums.map((s) => ({ value: s.name, label: s.name }));
+  const severityOptions = enums => {
+    return enums && enums.map(s => ({ value: s.name, label: s.name }));
   };
 
   return (

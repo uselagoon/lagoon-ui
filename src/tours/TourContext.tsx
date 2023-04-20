@@ -63,7 +63,7 @@ export const TourContextProvider = ({ children }: { children: ReactElement[] }) 
   ) => {
     localStorage.setItem('lagoon_tour_routesToured', JSON.stringify(updatedTourInfo));
 
-    setTourState((prev) => {
+    setTourState(prev => {
       return {
         ...prev,
         routesToured: updatedTourInfo,
@@ -75,7 +75,7 @@ export const TourContextProvider = ({ children }: { children: ReactElement[] }) 
     // at the next async opportunity, flip the revalidate flag to false.
     // tour's effect hook will have already reset the steps.
     setTimeout(() => {
-      setTourState((prev) => {
+      setTourState(prev => {
         return { ...prev, shouldRevalidate: false };
       });
     });
@@ -110,25 +110,25 @@ export const TourContextProvider = ({ children }: { children: ReactElement[] }) 
 
   const skipTour = () => {
     localStorage.setItem('lagoon_tour_skipped', 'true');
-    setTourState((prev) => {
+    setTourState(prev => {
       return { ...prev, skipped: true };
     });
   };
 
   const startTour = () => {
-    setTourState((prev) => {
+    setTourState(prev => {
       return { ...prev, tourStarted: true, running: true };
     });
   };
 
   const endTour = () => {
-    setTourState((prev) => {
+    setTourState(prev => {
       return { ...prev, tourStarted: false, running: false };
     });
   };
   // when called by clicking "x" with shouldRevalidate, it will prepare updated yet unviewed steps when tour gets continued
   const pauseTour = (shouldRevalidate?: boolean) => {
-    setTourState((prev) => {
+    setTourState(prev => {
       return {
         ...prev,
         running: false,
@@ -142,7 +142,7 @@ export const TourContextProvider = ({ children }: { children: ReactElement[] }) 
   };
 
   const continueTour = () => {
-    setTourState((prev) => {
+    setTourState(prev => {
       return {
         ...prev,
         running: true,
@@ -151,7 +151,7 @@ export const TourContextProvider = ({ children }: { children: ReactElement[] }) 
   };
 
   const updateCurrentStepsTraversed = (allTraversed: boolean) => {
-    setTourState((prev) => {
+    setTourState(prev => {
       return { ...prev, allCurrentStepsTraversed: allTraversed };
     });
   };
@@ -161,7 +161,7 @@ export const TourContextProvider = ({ children }: { children: ReactElement[] }) 
     // reset "skipped" and "routesToured"
     localStorage.setItem('lagoon_tour_routesToured', JSON.stringify([]));
     localStorage.setItem('lagoon_tour_skipped', 'false');
-    setTourState((prev) => {
+    setTourState(prev => {
       return {
         ...prev,
         skipped: false,

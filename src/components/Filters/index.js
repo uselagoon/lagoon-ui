@@ -8,18 +8,18 @@ import { Filter, FiltersTitle } from './StyledFilters';
  *
  */
 const SelectFilter = ({ title, options, onFilterChange, loading, defaultValue, isMulti }) => {
-  const handleChange = (values) => {
+  const handleChange = values => {
     onFilterChange(values);
   };
 
   const selectStyles = {
-    container: (styles) => {
+    container: styles => {
       return {
         ...styles,
         width: '100%',
       };
     },
-    control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+    control: styles => ({ ...styles, backgroundColor: 'white' }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       return {
         ...styles,

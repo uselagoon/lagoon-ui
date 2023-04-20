@@ -46,9 +46,9 @@ const Tour = () => {
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
 
   const getCurrentRouteSteps = (routes: Route[]) => {
-    const currentIndex = routes.findIndex((route) => pathname === route.pathName);
+    const currentIndex = routes.findIndex(route => pathname === route.pathName);
     if (!!~currentIndex) {
-      const modifiedSteps = routes[currentIndex].steps.map((eachStep) => {
+      const modifiedSteps = routes[currentIndex].steps.map(eachStep => {
         return { ...eachStep, disableBeacon: true };
       });
 
@@ -66,8 +66,8 @@ const Tour = () => {
       if (~currentRouteIdxInCache) {
         const clonedToured = [...routesToured];
         // filter out old hash remnants
-        const updatedKeys = routesToured[currentRouteIdxInCache].keys.filter((hashString) =>
-          alreadySeenSteps.some((step) => step.key === hashString)
+        const updatedKeys = routesToured[currentRouteIdxInCache].keys.filter(hashString =>
+          alreadySeenSteps.some(step => step.key === hashString)
         );
         clonedToured[currentRouteIdxInCache].keys = updatedKeys;
         updateTourInfo(clonedToured);
@@ -84,7 +84,7 @@ const Tour = () => {
     const TourConfig = (await import('../../tour.json')).default;
 
     // save tour info to context
-    setTourState((prev) => {
+    setTourState(prev => {
       return { ...prev, tourRoutes: TourConfig.routes };
     });
 
@@ -175,7 +175,7 @@ const Tour = () => {
   }
 
   // avoid runtime errors if target isn't provided in the configuration
-  if (currentRouteTour.steps.some((step) => step.target === '')) return null;
+  if (currentRouteTour.steps.some(step => step.target === '')) return null;
 
   return (
     running && (

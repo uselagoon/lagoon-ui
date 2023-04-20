@@ -34,7 +34,7 @@ export const PageProblems = ({ router }) => (
       )(({ data: { environment } }) => {
         const problems =
           environment.problems &&
-          environment.problems.map((problem) => {
+          environment.problems.map(problem => {
             return {
               ...problem,
               environment: {

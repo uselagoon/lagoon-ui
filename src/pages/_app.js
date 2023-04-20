@@ -29,7 +29,7 @@ const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
 const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
 
 // lazy load animation features
-const loadFeatures = () => import('components/common/features').then((res) => res.default);
+const loadFeatures = () => import('components/common/features').then(res => res.default);
 
 export const AppContext = createContext(null);
 
@@ -112,7 +112,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
   );
 };
 
-LagoonApp.getInitialProps = async (appContext) => {
+LagoonApp.getInitialProps = async appContext => {
   const appProps = await App.getInitialProps(appContext);
   return { ...appProps };
 };

@@ -39,7 +39,7 @@ const auth = {
   },
 };
 
-export default (storyFn) => {
+export default storyFn => {
   // Generate consistent results by seeding the mocks generator before each
   // story.
   seed();

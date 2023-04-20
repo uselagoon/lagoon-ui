@@ -56,8 +56,8 @@ const AddTask = ({
               aria-label="Task"
               placeholder="Select a task..."
               name="task"
-              value={options.find((o) => o.value === selectedTask)}
-              onChange={(selectedOption) => setSelectedTask(selectedOption)}
+              value={options.find(o => o.value === selectedTask)}
+              onChange={selectedOption => setSelectedTask(selectedOption)}
               options={options}
               required
             />

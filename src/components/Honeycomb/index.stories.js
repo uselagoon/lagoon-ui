@@ -16,7 +16,7 @@ export const Default = ({ projects }) => {
 };
 Default.story = {
   decorators: [
-    (storyFn) => (
+    storyFn => (
       <Query query={AllProjectsProblemsQuery} displayName="AllProjectsProblemsQuery">
         {({ data: projectsProblems }) => projectsProblems && storyFn({ projects: projectsProblems })}
       </Query>

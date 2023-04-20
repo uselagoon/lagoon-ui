@@ -20,12 +20,12 @@ const LogViewer = ({ logs, status = 'NA', checkedParseState, changeState, forceL
   </React.Fragment>
 );
 
-const shouldLastSectionBeOpen = (status) => {
+const shouldLastSectionBeOpen = status => {
   const openstates = ['RUNNING', 'ERROR', 'FAILED'];
   return openstates.includes(status.toUpperCase());
 };
 
-const isLogStateBad = (status) => {
+const isLogStateBad = status => {
   const badstates = ['ERROR', 'FAILED'];
   return badstates.includes(status.toUpperCase());
 };
@@ -87,7 +87,7 @@ const logPreprocessorRenderLogNode = (node, visible = false, errorState = false)
         defaultValue={visible}
       >
         <div key={node.key + 'section'} className="section-details">
-          {node.nodes.map((element) => {
+          {node.nodes.map(element => {
             return logPreprocessorRenderLogNode(element);
           })}
         </div>
@@ -153,7 +153,7 @@ const logPreprocessorProcessParse = (tokens, sectionMetadata) => {
 
 // Rather than parsing section end details into their own tokens, we'll simply extract the metadata
 // from the logs as a whole, and use it to enhance the 'section' type
-const logPreprocessorExtractSectionEndDetails = (logs) => {
+const logPreprocessorExtractSectionEndDetails = logs => {
   let ret = new Map();
   // STEP Initial Environment Setup: Completed at 2022-08-29 08:00:07 (UTC) Duration 00:00:02 Elapsed 00:00:02
   const regexp =
@@ -179,7 +179,7 @@ const logPreprocessorExtractSectionEndDetails = (logs) => {
   return ret;
 };
 
-const logPreprocessorTokenize = (logs) => {
+const logPreprocessorTokenize = logs => {
   // tokenize
   const regexp =
     /##############################################\n(BEGIN) (.+)\n##############################################/;

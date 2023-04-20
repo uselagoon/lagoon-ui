@@ -51,7 +51,7 @@ export const bp = {
   wide_extraWide: `all and (min-width: ${BP_WIDE / 16}em) and (max-width: ${(BP_EXTRAWIDE - 1) / 16}em)`,
 };
 
-export const pxToRem = (pxValue) => `${pxValue / 16}rem`;
+export const pxToRem = pxValue => `${pxValue / 16}rem`;
 
 export const fontSize = (sizeInPx, lineHeight) => `
   font-size: ${sizeInPx}px;

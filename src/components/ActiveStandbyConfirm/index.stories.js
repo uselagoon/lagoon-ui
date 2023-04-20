@@ -8,7 +8,7 @@ export default {
   component: ActiveStandbyBaseComponent,
   title: 'Components/ActiveStandby and Confirm',
   decorators: [
-    (storyFn) => {
+    storyFn => {
       const [open, setOpen] = useState(true);
       const actionOpen = action('open-modal');
       const actionClose = action('close-modal');

@@ -7,8 +7,8 @@ import withState from 'recompose/withState';
 
 const withSelectedSourceEnv = withState('selectedSourceEnv', 'setSelectedSourceEnv', '');
 const withEnvironments = withProps(({ projectEnvironments, pageEnvironment }) => {
-  const allButCurrentEnvironments = projectEnvironments.filter((env) => env.id !== pageEnvironment.id);
-  const options = allButCurrentEnvironments.map((env) => ({
+  const allButCurrentEnvironments = projectEnvironments.filter(env => env.id !== pageEnvironment.id);
+  const options = allButCurrentEnvironments.map(env => ({
     label: env.name,
     value: env.id,
   }));
@@ -20,8 +20,8 @@ const withEnvironments = withProps(({ projectEnvironments, pageEnvironment }) =>
 const withEnvHandlers = withHandlers({
   getEnvName:
     ({ projectEnvironments }) =>
-    (id) => {
-      const environmentObj = projectEnvironments.find((env) => env.id === id);
+    id => {
+      const environmentObj = projectEnvironments.find(env => env.id === id);
       if (!environmentObj) {
         return null;
       }

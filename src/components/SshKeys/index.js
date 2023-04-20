@@ -31,7 +31,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading }) => {
           {!keys?.length && <div className="data-none">No SSH keys</div>}
 
           {keys &&
-            keys.map((key) => (
+            keys.map(key => (
               <div className="data-row" key={key.id}>
                 <div className="name">
                   {key.id} - {key.name}

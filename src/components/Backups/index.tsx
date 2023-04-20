@@ -28,7 +28,7 @@ const Backups: FC<BackupsProps> = ({ backups }) => (
 
     <DataTable>
       {!backups.length && <div className="data-none">No Backups</div>}
-      {backups.map((backup) => (
+      {backups.map(backup => (
         <div className="data-row" key={backup.id}>
           <div className="source">{backup.source}</div>
           <div className="created">{moment.utc(backup.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>

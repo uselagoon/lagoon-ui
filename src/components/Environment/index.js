@@ -78,7 +78,7 @@ const Environment = ({ environment }) => {
               <label>Active Environment Routes</label>
               <div className="field">
                 {environment.project.productionRoutes
-                  ? environment.project.productionRoutes.split(',').map((route) => (
+                  ? environment.project.productionRoutes.split(',').map(route => (
                       <div key={route}>
                         <a className="hover-state" target="_blank" href={route}>
                           {route}
@@ -97,7 +97,7 @@ const Environment = ({ environment }) => {
               <label>Standby Environment Routes</label>
               <div className="field">
                 {environment.project.standbyRoutes
-                  ? environment.project.standbyRoutes.split(',').map((route) => (
+                  ? environment.project.standbyRoutes.split(',').map(route => (
                       <div key={route}>
                         <a className="hover-state" target="_blank" href={route}>
                           {route}
@@ -112,7 +112,7 @@ const Environment = ({ environment }) => {
           <label>Routes</label>
           <div className="field">
             {environment.routes
-              ? environment.routes.split(',').map((route) => (
+              ? environment.routes.split(',').map(route => (
                   <div key={route}>
                     <a className="hover-state" target="_blank" href={route}>
                       {route}

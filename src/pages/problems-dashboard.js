@@ -27,27 +27,27 @@ const ProblemsDashboardPage = () => {
   const { data: severities, loading: severityLoading } = useQuery(getSeverityEnumQuery);
   const { data: sources, loading: sourceLoading } = useQuery(getSourceOptions);
 
-  const handleEnvTypeChange = (envType) => setEnvType(envType.value);
+  const handleEnvTypeChange = envType => setEnvType(envType.value);
 
-  const handleSourceChange = (source) => {
-    let values = (source && source.map((s) => s.value)) || [];
+  const handleSourceChange = source => {
+    let values = (source && source.map(s => s.value)) || [];
     setSource(values);
   };
 
-  const handleSeverityChange = (severity) => {
-    let values = (severity && severity.map((s) => s.value)) || [];
+  const handleSeverityChange = severity => {
+    let values = (severity && severity.map(s => s.value)) || [];
     setSeverity(values);
   };
 
-  const sourceOptions = (sources) => {
-    return sources && sources.map((s) => ({ value: s, label: s }));
+  const sourceOptions = sources => {
+    return sources && sources.map(s => ({ value: s, label: s }));
   };
 
-  const severityOptions = (enums) => {
-    return enums && enums.map((s) => ({ value: s.name, label: s.name }));
+  const severityOptions = enums => {
+    return enums && enums.map(s => ({ value: s.name, label: s.name }));
   };
 
-  const groupByProblemIdentifier = (problems) =>
+  const groupByProblemIdentifier = problems =>
     problems &&
     problems.reduce((arr, problem) => {
       arr[problem.identifier] = arr[problem.identifier] || [];
@@ -107,7 +107,7 @@ const ProblemsDashboardPage = () => {
             const problemsById = groupByProblemIdentifier(problems) || [];
             const problemIdentifiers =
               problemsById &&
-              Object.keys(problemsById).map((p) => {
+              Object.keys(problemsById).map(p => {
                 const problem = problemsById[p][0];
 
                 return {
@@ -118,10 +118,10 @@ const ProblemsDashboardPage = () => {
                 };
               }, []);
 
-            const critical = problems && problems.filter((p) => p.severity === 'CRITICAL').length;
-            const high = problems && problems.filter((p) => p.severity === 'HIGH').length;
-            const medium = problems && problems.filter((p) => p.severity === 'MEDIUM').length;
-            const low = problems && problems.filter((p) => p.severity === 'LOW').length;
+            const critical = problems && problems.filter(p => p.severity === 'CRITICAL').length;
+            const high = problems && problems.filter(p => p.severity === 'HIGH').length;
+            const medium = problems && problems.filter(p => p.severity === 'MEDIUM').length;
+            const low = problems && problems.filter(p => p.severity === 'LOW').length;
 
             return (
               <>

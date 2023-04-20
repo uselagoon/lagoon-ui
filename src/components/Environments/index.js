@@ -29,7 +29,7 @@ const Environments = ({ environments = [], project }) => {
 
   return (
     <StyledEnvironments className="environments">
-      {environments.map((environment) => {
+      {environments.map(environment => {
         const bgImage = R.propOr(bgImages.none, environment.deployType, bgImages);
         const activeEnvironment =
           project.productionEnvironment &&

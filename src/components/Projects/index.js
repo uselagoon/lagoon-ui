@@ -19,7 +19,7 @@ import {
 const Projects = ({ projects = [] }) => {
   const [searchInput, setSearchInput] = useState('');
 
-  const filteredProjects = projects.filter((key) => {
+  const filteredProjects = projects.filter(key => {
     const sortByName = key.name.toLowerCase().includes(searchInput.trim().toLowerCase());
     let sortByUrl = '';
     if (key.environments[0] !== void 0) {
@@ -42,7 +42,7 @@ const Projects = ({ projects = [] }) => {
           className="searchInput"
           type="text"
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          onChange={e => setSearchInput(e.target.value)}
           placeholder="Type to search"
           disabled={projects.length === 0}
         />
@@ -61,7 +61,7 @@ const Projects = ({ projects = [] }) => {
           </div>
         </Box>
       )}
-      {filteredProjects.map((project) => (
+      {filteredProjects.map(project => (
         <ProjectLink projectSlug={project.name} key={project.id}>
           <Box className="box">
             <StyledProject>

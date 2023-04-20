@@ -7,11 +7,11 @@ import { DropdownButton, DropdownMenu, StyledDropdown } from './StyledHeaderMenu
 
 const { publicRuntimeConfig } = getConfig();
 
-const useOutsideClick = (callback) => {
+const useOutsideClick = callback => {
   const ref = React.useRef();
 
   React.useEffect(() => {
-    const handleClick = (event) => {
+    const handleClick = event => {
       if (ref.current && !ref.current.contains(event.target)) {
         setTimeout(() => {
           callback();

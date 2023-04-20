@@ -121,7 +121,7 @@ export const PageBackups = ({ router }) => {
       if (!subscriptionData.data) return prevStore;
       const prevBackups = prevStore.environment.backups;
       const incomingBackup = subscriptionData.data.backupChanged;
-      const existingIndex = prevBackups.findIndex((prevBackup) => prevBackup.id === incomingBackup.id);
+      const existingIndex = prevBackups.findIndex(prevBackup => prevBackup.id === incomingBackup.id);
       let newBackups;
 
       // New backup.

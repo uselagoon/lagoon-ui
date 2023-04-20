@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export const getLinkData = (bulkIdSlug) => ({
+export const getLinkData = bulkIdSlug => ({
   urlObject: {
     pathname: '/bulkdeployments',
     query: { bulkId: bulkIdSlug },

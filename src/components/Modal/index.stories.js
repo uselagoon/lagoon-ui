@@ -10,7 +10,7 @@ export default {
   component: Modal,
   title: 'Components/Modal',
   decorators: [
-    (storyFn) => {
+    storyFn => {
       const [open, setOpen] = useState(true);
       const isOpen = boolean('Open modal', true) && open;
       const actionClose = action('close-modal');

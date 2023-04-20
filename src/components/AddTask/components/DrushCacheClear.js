@@ -32,7 +32,7 @@ const DrushCacheClear = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushCacheClear) => {
+    {taskDrushCacheClear => {
       return (
         <SelectWrapper>
           <div className="envSelect">

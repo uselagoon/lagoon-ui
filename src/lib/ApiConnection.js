@@ -18,7 +18,7 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const ApiConnection = ({ children }) => (
   <AuthContext.Consumer>
-    {(auth) => {
+    {auth => {
       if (!auth.authenticated) {
         return <ErrorPage statusCode={401} title="Login Required" errorMessage="Please wait while we log you in..." />;
       }

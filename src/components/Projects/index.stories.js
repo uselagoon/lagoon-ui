@@ -13,7 +13,7 @@ export default {
 export const Default = ({ projects }) => <Projects projects={projects} />;
 Default.story = {
   decorators: [
-    (storyFn) => (
+    storyFn => (
       <Query query={AllProjectsQuery} displayName="AllProjectsQuery">
         {({ data }) => storyFn({ projects: data.allProjects })}
       </Query>

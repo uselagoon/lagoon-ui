@@ -12,7 +12,7 @@ const Facts = ({ facts }) => {
   const [factTerm, setFactTerm] = useState('');
   const [hasFilter, setHasFilter] = React.useState(false);
 
-  const handleFactFilterChange = (event) => {
+  const handleFactFilterChange = event => {
     setHasFilter(false);
 
     if (event.target.value !== null || event.target.value !== '') {
@@ -21,18 +21,18 @@ const Facts = ({ facts }) => {
     setFactTerm(event.target.value);
   };
 
-  const handleSort = (key) => {
+  const handleSort = key => {
     return requestSort(key);
   };
 
-  const filterResults = (item) => {
+  const filterResults = item => {
     const lowercasedFilter = factTerm.toLowerCase();
 
     if (factTerm == null || factTerm === '') {
       return facts;
     }
 
-    return Object.keys(item).some((key) => {
+    return Object.keys(item).some(key => {
       if (item[key] !== null) {
         return item[key].toString().toLowerCase().includes(lowercasedFilter);
       }
@@ -74,10 +74,10 @@ const Facts = ({ facts }) => {
         </button>
       </Header>
       <div className="data-table">
-        {!sortedItems.filter((fact) => filterResults(fact)).length && <div className="data-none">No Facts</div>}
+        {!sortedItems.filter(fact => filterResults(fact)).length && <div className="data-none">No Facts</div>}
         {sortedItems
-          .filter((fact) => filterResults(fact))
-          .map((fact) => {
+          .filter(fact => filterResults(fact))
+          .map(fact => {
             return (
               <div className="data-row row-heading" key={fact.id}>
                 <div className="col col-1">

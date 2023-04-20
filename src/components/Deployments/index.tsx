@@ -31,7 +31,7 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
     </div>
     <div className="data-table">
       {!deployments.length && <div className="data-none">No Deployments</div>}
-      {deployments.map((deployment) => (
+      {deployments.map(deployment => (
         <DeploymentLink
           deploymentSlug={deployment.name}
           environmentSlug={environmentSlug}

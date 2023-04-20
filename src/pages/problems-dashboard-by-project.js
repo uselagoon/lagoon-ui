@@ -29,35 +29,35 @@ const ProblemsDashboardProductPage = () => {
   const { data: severities, loading: severityLoading } = useQuery(getSeverityEnumQuery);
   const { data: sources, loading: sourceLoading } = useQuery(getSourceOptions);
 
-  const handleProjectChange = (project) => {
-    let values = (project && project.map((p) => p.value)) || [];
+  const handleProjectChange = project => {
+    let values = (project && project.map(p => p.value)) || [];
     setProjectSelect(values);
   };
 
-  const handleEnvTypeChange = (envType) => {
+  const handleEnvTypeChange = envType => {
     setEnvType(envType.value);
   };
 
-  const handleSourceChange = (source) => {
-    let values = (source && source.map((s) => s.value)) || [];
+  const handleSourceChange = source => {
+    let values = (source && source.map(s => s.value)) || [];
     setSource(values);
   };
 
-  const handleSeverityChange = (severity) => {
-    let values = (severity && severity.map((s) => s.value)) || [];
+  const handleSeverityChange = severity => {
+    let values = (severity && severity.map(s => s.value)) || [];
     setSeverity(values);
   };
 
-  const projectOptions = (projects) => {
-    return projects && projects.map((p) => ({ value: p.name, label: p.name }));
+  const projectOptions = projects => {
+    return projects && projects.map(p => ({ value: p.name, label: p.name }));
   };
 
-  const sourceOptions = (sources) => {
-    return sources && sources.map((s) => ({ value: s, label: s }));
+  const sourceOptions = sources => {
+    return sources && sources.map(s => ({ value: s, label: s }));
   };
 
-  const severityOptions = (enums) => {
-    return enums && enums.map((s) => ({ value: s.name, label: s.name }));
+  const severityOptions = enums => {
+    return enums && enums.map(s => ({ value: s.name, label: s.name }));
   };
 
   return (
@@ -116,7 +116,7 @@ const ProblemsDashboardProductPage = () => {
               projects.allProjects.map((project, idx) => {
                 const filterProjectSelect =
                   projectSelect
-                    .filter((s) => {
+                    .filter(s => {
                       return s.includes(project.name);
                     })
                     .toString() || '';
@@ -141,16 +141,16 @@ const ProblemsDashboardProductPage = () => {
                       const filterProblems =
                         environments &&
                         environments
-                          .filter((e) => e instanceof Object)
-                          .map((e) => {
+                          .filter(e => e instanceof Object)
+                          .map(e => {
                             return e.problems;
                           });
 
                       const problemsPerProject = Array.prototype.concat.apply([], filterProblems);
-                      const critical = problemsPerProject.filter((p) => p.severity === 'CRITICAL').length;
-                      const high = problemsPerProject.filter((p) => p.severity === 'HIGH').length;
-                      const medium = problemsPerProject.filter((p) => p.severity === 'MEDIUM').length;
-                      const low = problemsPerProject.filter((p) => p.severity === 'LOW').length;
+                      const critical = problemsPerProject.filter(p => p.severity === 'CRITICAL').length;
+                      const high = problemsPerProject.filter(p => p.severity === 'HIGH').length;
+                      const medium = problemsPerProject.filter(p => p.severity === 'MEDIUM').length;
+                      const low = problemsPerProject.filter(p => p.severity === 'LOW').length;
 
                       const columns = {
                         name,

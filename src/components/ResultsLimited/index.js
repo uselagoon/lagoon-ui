@@ -10,7 +10,7 @@ const options = [
   { value: '100', label: '100' },
   { value: '-1', label: 'all' },
 ];
-const handleChange = (values) => {
+const handleChange = values => {
   window.location.href = window.location.href.split('?')[0] + '?limit=' + values.value;
 };
 const customStyles = {
@@ -18,7 +18,7 @@ const customStyles = {
     ...provided,
     width: 200,
   }),
-  control: (provided) => ({
+  control: provided => ({
     ...provided,
     width: 200,
   }),

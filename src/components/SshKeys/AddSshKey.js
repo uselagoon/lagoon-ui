@@ -13,7 +13,7 @@ const AddSshKey = ({ me: { id, email } }) => {
   const defaultValues = { sshKeyName: '', sshKey: '' };
   const [values, setValues] = useState(defaultValues);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };

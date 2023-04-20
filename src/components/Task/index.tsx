@@ -49,7 +49,7 @@ const Task: FC<TaskProps> = ({ task }) => (
           <div>
             <label>Files</label>
             <ul className="field">
-              {task.files.map((file) => (
+              {task.files.map(file => (
                 <li key={file.id}>
                   <a href={file.download}>{file.filename}</a>
                 </li>
