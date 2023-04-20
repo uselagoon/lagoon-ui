@@ -1,7 +1,9 @@
-import React, { FC } from "react";
-import moment from "moment";
-import RestoreButton from "components/RestoreButton";
-import { BackupsHeader, DataTable } from "./StyledBackups";
+import React, { FC } from 'react';
+
+import RestoreButton from 'components/RestoreButton';
+import moment from 'moment';
+
+import { BackupsHeader, DataTable } from './StyledBackups';
 
 interface BackupsProps {
   backups: {
@@ -10,7 +12,7 @@ interface BackupsProps {
     created: string;
     backupId: string;
     restore: {
-      status: "completed" | "pending" | "failed";
+      status: 'completed' | 'pending' | 'failed';
       restoreLocation: string;
     };
   }[];
@@ -29,12 +31,7 @@ const Backups: FC<BackupsProps> = ({ backups }) => (
       {backups.map((backup) => (
         <div className="data-row" key={backup.id}>
           <div className="source">{backup.source}</div>
-          <div className="created">
-            {moment
-              .utc(backup.created)
-              .local()
-              .format("DD MMM YYYY, HH:mm:ss (Z)")}
-          </div>
+          <div className="created">{moment.utc(backup.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
 
           <div className="backupid">{backup.backupId}</div>
           <div className="download">

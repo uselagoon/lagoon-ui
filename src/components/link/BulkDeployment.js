@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export const getLinkData = (bulkIdSlug) => ({
   urlObject: {
-    pathname: "/bulkdeployments",
+    pathname: '/bulkdeployments',
     query: { bulkId: bulkIdSlug },
   },
   asPath: `/bulkdeployment/${bulkIdSlug}`,
@@ -11,12 +11,7 @@ export const getLinkData = (bulkIdSlug) => ({
 /**
  * Links to the deployment page given the deployment name, the project name and the openshift project name.
  */
-const BulkDeploymentLink = ({
-  bulkIdSlug,
-  children,
-  className = null,
-  prefetch = false,
-}) => {
+const BulkDeploymentLink = ({ bulkIdSlug, children, className = null, prefetch = false }) => {
   const linkData = getLinkData(bulkIdSlug);
 
   return (

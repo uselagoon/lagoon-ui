@@ -1,7 +1,8 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
-import { Header, StyledFacts } from "./StyledFacts";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
+import { Header, StyledFacts } from './StyledFacts';
 
 const FactsSkeleton = () => {
   const factsCount = 10;
@@ -10,12 +11,7 @@ const FactsSkeleton = () => {
     <StyledFacts>
       <ThemedSkeletonWrapper>
         <div className="filters">
-          <input
-            type="text"
-            id="filter"
-            placeholder="Filter facts e.g. PHP version"
-            value={undefined}
-          />
+          <input type="text" id="filter" placeholder="Filter facts e.g. PHP version" value={undefined} />
         </div>
         <Header>
           <button type="button" className="button-sort name">

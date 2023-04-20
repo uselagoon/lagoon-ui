@@ -1,9 +1,10 @@
-import React, { FC } from "react";
-import Modal from "components/Modal";
-import Button from "components/Button";
+import React, { FC } from 'react';
+import ReactMarkdown from 'react-markdown';
 
-import ReactMarkdown from "react-markdown";
-import { StyledCustomTaskConfirm } from "./Styles";
+import Button from 'components/Button';
+import Modal from 'components/Modal';
+
+import { StyledCustomTaskConfirm } from './Styles';
 
 interface CustomTaskConfirmProps {
   taskText: string;

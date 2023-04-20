@@ -1,8 +1,11 @@
-import { color } from "lib/variables";
-import Image from "next/image";
-import { useContext } from "react";
-import styled from "styled-components";
-import { AppContext } from "../../pages/_app";
+import { useContext } from 'react';
+
+import Image from 'next/image';
+
+import { color } from 'lib/variables';
+import styled from 'styled-components';
+
+import { AppContext } from '../../pages/_app';
 
 type AppContextType = {
   theme: string;
@@ -10,9 +13,7 @@ type AppContextType = {
 };
 
 const ThemeToggler = () => {
-  const { theme, toggleTheme } = (useContext(
-    AppContext
-  ) as unknown) as AppContextType;
+  const { theme, toggleTheme } = useContext(AppContext) as unknown as AppContextType;
 
   return (
     <StyledToggler onClick={toggleTheme}>
@@ -20,11 +21,7 @@ const ThemeToggler = () => {
         alt="toggle"
         height={28}
         width={28}
-        src={`${
-          theme === "dark"
-            ? "/static/images/sun.svg"
-            : "/static/images/moon.svg"
-        }`}
+        src={`${theme === 'dark' ? '/static/images/sun.svg' : '/static/images/moon.svg'}`}
       />
     </StyledToggler>
   );

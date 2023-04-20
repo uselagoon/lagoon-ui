@@ -1,18 +1,18 @@
 import React from 'react';
+
 import withAnonymousUser from 'storybook/decorators/AnonymousUser';
-import Header from './index';
+
 import newLogo from './amazeeio.svg';
+import Header from './index';
 
 export default {
   component: Header,
   title: 'Components/Header',
-}
+};
 
 export const Default = () => <Header />;
 
-export const OverriddenLogo = () => (
-  <Header logo={newLogo} />
-);
+export const OverriddenLogo = () => <Header logo={newLogo} />;
 OverriddenLogo.story = {
   parameters: {
     docs: {
@@ -25,7 +25,7 @@ OverriddenLogo.story = {
 
 export const AnonymousUser = () => <Header />;
 AnonymousUser.story = {
-  decorators: [ withAnonymousUser ],
+  decorators: [withAnonymousUser],
   parameters: {
     docs: {
       storyDescription: 'When no user is logged in.',

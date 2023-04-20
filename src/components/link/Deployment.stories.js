@@ -1,5 +1,7 @@
 import React from 'react';
+
 import mocks, { seed } from 'api/src/mocks';
+
 import DeploymentLink from './Deployment';
 
 export default {

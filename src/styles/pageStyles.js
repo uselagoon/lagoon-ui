@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
-import { commonBg } from "./commonPageStyles";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
+
+import { commonBg } from './commonPageStyles';
 
 export const ProblemsByDashBoard = styled.div`
   ${(props) => commonBg(props.theme.backgrounds.content)}
@@ -18,7 +19,7 @@ export const ProblemsByDashBoard = styled.div`
     .filters {
       display: flex;
       flex-direction: column;
-      [id^="react-select"] {
+      [id^='react-select'] {
         color: ${color.black};
       }
       @media ${bp.wideUp} {
@@ -84,9 +85,7 @@ export const ProblemsByDashBoard = styled.div`
       margin-bottom: 20px;
       .content {
         background: ${(props) =>
-          props.theme.colorScheme === "dark"
-            ? `${props.theme.backgrounds.secondary}`
-            : "#f1f1f1"} !important;
+          props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.secondary}` : '#f1f1f1'} !important;
         padding: 0px 15px;
         .label {
           color: rgb(95, 111, 122);
@@ -199,9 +198,7 @@ export const ProjectDetailsWrapper = styled.div`
   .project-details-sidebar {
     background-color: ${(props) => props.theme.backgrounds.sidebar};
     border-right: ${(props) =>
-      props.theme.colorScheme === "dark"
-        ? `2px solid ${props.theme.borders.box}`
-        : `1px solid ${color.midGrey}`};
+      props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};
     width: 100%;
     display: flex;
     justify-content: center;
@@ -239,7 +236,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
       margin: 32px calc((100vw / 16) * 3);
     }
     .filters {
-      [id^="react-select"] {
+      [id^='react-select'] {
         color: ${color.black};
       }
       @media ${bp.wideUp} {
@@ -325,7 +322,7 @@ export const ProblemDashboardFilterWrapper = styled.div`
     justify-content: space-between;
     padding-bottom: 1em;
     flex-direction: column;
-    [id^="react-select"] {
+    [id^='react-select'] {
       color: ${color.black};
     }
     @media ${bp.wideUp} {

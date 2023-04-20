@@ -1,14 +1,14 @@
 // _document is only rendered on the server side and not on the client side
 // Event handlers like onClick can't be added to this file
-
 // ./pages/_document.js
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import Plugins from "../components/Plugins/components/Plugins";
-// styled-components
-import { ServerStyleSheet } from "styled-components";
+import getConfig from 'next/config';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 
-import Script from "next/script";
-import getConfig from "next/config";
+// styled-components
+import { ServerStyleSheet } from 'styled-components';
+
+import Plugins from '../components/Plugins/components/Plugins';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -18,8 +18,7 @@ class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderpage({
-          enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+          enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
         });
       const initialProps = await Document.getInitialProps(ctx);
       return {
@@ -38,14 +37,11 @@ class MyDocument extends Document {
 
   render() {
     const { publicRuntimeConfig } = getConfig();
-    
+
     return (
       <Html>
         <Head>
-        <Script
-            src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`}
-            strategy="beforeInteractive"
-          />
+          <Script src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`} strategy="beforeInteractive" />
           <Plugins hook="head" />
         </Head>
         <body>

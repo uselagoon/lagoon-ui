@@ -1,9 +1,11 @@
-import React, { FC } from "react";
-import Modal from "components/Modal";
-import Button from "components/Button";
+import React, { FC } from 'react';
+
 // @TODO: add this once the logic exists
-import withLogic from "components/ActiveStandbyConfirm/logic";
-import { StyledActiveStandbyConfirm } from "./StyledActiveStandbyConfirm";
+import withLogic from 'components/ActiveStandbyConfirm/logic';
+import Button from 'components/Button';
+import Modal from 'components/Modal';
+
+import { StyledActiveStandbyConfirm } from './StyledActiveStandbyConfirm';
 
 /**
  * Confirms the deletion of the specified name and type.
@@ -43,8 +45,7 @@ export const ActiveStandbyConfirm: FC<ActiveStandbyConfirmProps> = ({
             Are you sure you want to do this?
             <br />
             <br />
-            Upon confirmation you will be taken to the task page to monitor
-            execution.
+            Upon confirmation you will be taken to the task page to monitor execution.
           </p>
 
           <div className="form-input">

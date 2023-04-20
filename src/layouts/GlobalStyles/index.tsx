@@ -1,26 +1,17 @@
-import { bp, color, fontSize } from "lib/variables";
-import {
-  createGlobalStyle,
-  DefaultTheme,
-  GlobalStyleComponent,
-} from "styled-components";
+import { bp, color, fontSize } from 'lib/variables';
+import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
 
 /**
  * Applies styles globally to any component nested inside it.
  */
 
-
-
-const GlobalStyles: GlobalStyleComponent<
-  {},
-  DefaultTheme
-> = createGlobalStyle`
+const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
 
 :root {
-  color-scheme: ${props => props.theme.colorScheme};
+  color-scheme: ${(props) => props.theme.colorScheme};
 }
 
 html, body {
@@ -28,7 +19,7 @@ html, body {
 }
 
 body {
-  color: ${props => props.theme.texts.primary};
+  color: ${(props) => props.theme.texts.primary};
   font-family: 'source-sans-pro', sans-serif;
   ${fontSize(16)};
   height: 100%;
@@ -55,7 +46,7 @@ body {
 }
 
 a {
-  color: ${props => props.theme.texts.primary};
+  color: ${(props) => props.theme.texts.primary};
   text-decoration: none;
 
   &.hover-state {
@@ -87,7 +78,7 @@ a {
   }
 }
 mark {
-  background-color: ${props => props.theme.highlights.selection};
+  background-color: ${(props) => props.theme.highlights.selection};
   color: #000;
 }
 .bulk-label a:link { color: ${color.white}; }
@@ -244,7 +235,7 @@ main{
   outline: none;
   padding: 20px;
 
-  color: ${props => props.theme.texts.primary};
+  color: ${(props) => props.theme.texts.primary};
 
   max-width: 90vw;
    @media ${bp.desktopUp} {

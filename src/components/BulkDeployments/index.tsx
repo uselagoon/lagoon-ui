@@ -1,14 +1,13 @@
-import React, { FC } from "react";
-import moment from "moment";
-import ProjectLink from "components/link/Project";
-import DeploymentsLink from "components/link/Deployments";
-import DeploymentLink from "components/link/Deployment";
-import CancelDeployment from "components/CancelDeployment";
-import { getDeploymentDuration } from "components/Deployment";
-import {
-  BulkDeploymentsDataTable,
-  BulkDeploymentsHeader,
-} from "./StyledBulkDeployments";
+import React, { FC } from 'react';
+
+import CancelDeployment from 'components/CancelDeployment';
+import { getDeploymentDuration } from 'components/Deployment';
+import DeploymentLink from 'components/link/Deployment';
+import DeploymentsLink from 'components/link/Deployments';
+import ProjectLink from 'components/link/Project';
+import moment from 'moment';
+
+import { BulkDeploymentsDataTable, BulkDeploymentsHeader } from './StyledBulkDeployments';
 
 /**
  * Displays a list of deployments.
@@ -70,24 +69,14 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
             </DeploymentLink>
           </div>
           <div className="priority">{deployment.priority}</div>
-          <div className="started">
-            {moment
-              .utc(deployment.created)
-              .local()
-              .format("DD MMM YYYY, HH:mm:ss (Z)")}
-          </div>
+          <div className="started">{moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
           <div className={`status ${deployment.status}`}>
-            {deployment.status.charAt(0).toUpperCase() +
-              deployment.status.slice(1)}
+            {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
           </div>
           <div className="duration">{getDeploymentDuration(deployment)}</div>
           <div>
             {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
-              <CancelDeployment
-                deployment={deployment}
-                afterText="Cancelled"
-                beforeText="Cancel"
-              />
+              <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
             )}
           </div>
         </div>

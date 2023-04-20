@@ -1,15 +1,10 @@
-import React from "react";
-import {
-  BulkDeploymentsDataTable,
-  BulkDeploymentsHeader,
-} from "./StyledBulkDeployments";
-import Skeleton from "react-loading-skeleton";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import { BulkDeploymentsDataTable, BulkDeploymentsHeader } from './StyledBulkDeployments';
 
 const BulkDeploymentsSkeleton = () => {
-  const numberOfItems =
-    typeof window !== "undefined"
-      ? Math.floor((window.innerHeight * 8) / 10 / 65)
-      : 10;
+  const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
   const rowItem = (
     <div className="data-row">
       <div className="project">
@@ -47,9 +42,7 @@ const BulkDeploymentsSkeleton = () => {
         <label>Duration</label>
         <label></label>
       </BulkDeploymentsHeader>
-      <BulkDeploymentsDataTable>
-        {[...Array<undefined>(numberOfItems)].map(() => rowItem)}
-      </BulkDeploymentsDataTable>
+      <BulkDeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => rowItem)}</BulkDeploymentsDataTable>
     </div>
   );
 };

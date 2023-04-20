@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Favicon from './index';
 
 export default {

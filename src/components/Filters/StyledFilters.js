@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp } from "lib/variables";
+import { bp } from 'lib/variables';
+import styled from 'styled-components';
 
 export const FiltersTitle = styled.label`
   margin: auto 0;

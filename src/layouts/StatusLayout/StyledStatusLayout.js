@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { bp } from "lib/variables";
+import { bp } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  main{
+  main {
     flex: 1;
     display: flex;
     flex-direction: column;

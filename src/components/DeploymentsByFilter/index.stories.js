@@ -1,6 +1,8 @@
 import React from 'react';
 import { Query } from 'react-apollo';
+
 import AllProjectsQuery from 'lib/query/AllProjects';
+
 import Projects from './index';
 
 export default {
@@ -11,9 +13,9 @@ export default {
 export const Default = ({ projects }) => <Projects projects={projects} />;
 Default.story = {
   decorators: [
-    storyFn => (
+    (storyFn) => (
       <Query query={AllProjectsQuery} displayName="AllProjectsQuery">
-        {({data}) => storyFn({projects: data.allProjects})}
+        {({ data }) => storyFn({ projects: data.allProjects })}
       </Query>
     ),
   ],

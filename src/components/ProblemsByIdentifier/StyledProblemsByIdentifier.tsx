@@ -1,40 +1,40 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const IdentifierHeader = styled.div`
-    @media ${bp.wideUp} {
-      display: flex;
-      margin: 0 0 14px;
-    }
-    @media ${bp.smallOnly} {
-      flex-wrap: wrap;
-    }
-    @media ${bp.tabletUp} {
-      margin-top: 20px;
-    }
-
+  @media ${bp.wideUp} {
     display: flex;
-    justify-content: space-between;
+    margin: 0 0 14px;
+  }
+  @media ${bp.smallOnly} {
+    flex-wrap: wrap;
+  }
+  @media ${bp.tabletUp} {
+    margin-top: 20px;
+  }
 
-    label {
-      display: none;
-      padding-left: 20px;
-      @media ${bp.wideUp} {
-        display: block;
-      }
+  display: flex;
+  justify-content: space-between;
+
+  label {
+    display: none;
+    padding-left: 20px;
+    @media ${bp.wideUp} {
+      display: block;
     }
-    .identifier {
-      width: 45%;
-    }
-    .source {
-      width: 20%;
-    }
-    .severity {
-      width: 18%;
-    }
-    .projectsAffected {
-      width: 17.5%;
-    }
+  }
+  .identifier {
+    width: 45%;
+  }
+  .source {
+    width: 20%;
+  }
+  .severity {
+    width: 18%;
+  }
+  .projectsAffected {
+    width: 17.5%;
+  }
 `;
 
 export const StyledProblemsByIdentifier = styled.div`
@@ -46,7 +46,7 @@ export const StyledProblemsByIdentifier = styled.div`
   }
   .button-sort {
     color: #5f6f7a;
-    font-family: "source-code-pro", sans-serif;
+    font-family: 'source-code-pro', sans-serif;
     font-size: 13px;
     font-size: 0.8125rem;
     line-height: 1.4;
@@ -61,11 +61,11 @@ export const StyledProblemsByIdentifier = styled.div`
     }
 
     &.ascending:after {
-      content: " \\25B2";
+      content: ' \\25B2';
     }
 
     &.descending:after {
-      content: " \\25BC";
+      content: ' \\25BC';
     }
   }
 
@@ -105,14 +105,14 @@ export const StyledProblemsByIdentifier = styled.div`
   }
 
   .data-table {
-    background-color: ${props => props.theme.backgrounds.table};
-    border: 1px solid ${props => props.theme.borders.tableRow};
+    background-color: ${(props) => props.theme.backgrounds.table};
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
     border-radius: 3px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
 
     .data-none {
-      border: 1px solid ${props => props.theme.borders.tableRow};
-      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      border: 1px solid ${(props) => props.theme.borders.tableRow};
+      border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
@@ -120,8 +120,8 @@ export const StyledProblemsByIdentifier = styled.div`
     }
 
     .data-row {
-      border: 1px solid ${props => props.theme.borders.tableRow};
-      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      border: 1px solid ${(props) => props.theme.borders.tableRow};
+      border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;

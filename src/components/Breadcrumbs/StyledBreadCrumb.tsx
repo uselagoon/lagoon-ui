@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledBreadCrumb = styled.div`
   height: max-content;
@@ -9,20 +9,19 @@ export const StyledBreadCrumb = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    label{
-      font-size: clamp(0.5rem, 1vw ,0.815rem);
+    label {
+      font-size: clamp(0.5rem, 1vw, 0.815rem);
     }
-
   }
-  
+
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -36px;
     width: 1px;
     height: 200%;
-    background: ${props => props.theme.backgrounds.breadCrumb};
+    background: ${(props) => props.theme.backgrounds.breadCrumb};
     transform-origin: 100% 0;
     transform: skew(-12deg) translateY(-20%);
   }
@@ -49,14 +48,14 @@ export const BreadCrumbLink = styled.a`
 
 export const StyledBreadcrumbsWrapper = styled.div`
   padding: 1vw 0.75vw;
-  background-color: ${props => props.theme.backgrounds.breadCrumbs};
-  border-bottom:${props => props.theme.colorScheme === "dark" ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};;
-  overflow:hidden;
+  background-color: ${(props) => props.theme.backgrounds.breadCrumbs};
+  border-bottom: ${(props) =>
+    props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};
+  overflow: hidden;
   @media ${bp.tabletUp} {
-  
     padding: 1.75vw 0 1.25vw;
   }
-  
+
   .breadcrumbs {
     display: flex;
     margin: 0 calc((100vw / 16) * 1);

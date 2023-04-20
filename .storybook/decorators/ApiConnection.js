@@ -1,18 +1,18 @@
 import React from 'react';
-import { action } from '@storybook/addon-actions';
-import { AuthContext } from 'lib/Authenticator';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
-import { SchemaLink } from 'apollo-link-schema';
 import { ApolloProvider } from 'react-apollo';
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
-import typeDefs from 'api/dist/typeDefs';
-import mocks, { seed } from 'api/src/mocks';
 
+import { action } from '@storybook/addon-actions';
+import typeDefs from 'api/dist/typeDefs';
 import introspectionQueryResultData from 'api/src/fragmentTypes.json';
+import mocks, { seed } from 'api/src/mocks';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { SchemaLink } from 'apollo-link-schema';
+import { addMockFunctionsToSchema, makeExecutableSchema } from 'graphql-tools';
+import { AuthContext } from 'lib/Authenticator';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData
+  introspectionQueryResultData,
 });
 
 // Make a GraphQL schema without resolvers.
@@ -23,8 +23,8 @@ addMockFunctionsToSchema({ schema, mocks });
 
 // Create a mocked Apollo client for the ApolloProvider.
 const client = new ApolloClient({
-  cache: new InMemoryCache({fragmentMatcher}),
-  link: new SchemaLink({ schema })
+  cache: new InMemoryCache({ fragmentMatcher }),
+  link: new SchemaLink({ schema }),
 });
 
 // Mock the src/lib/Authenticator and lib/withLocalAuth.
@@ -39,15 +39,13 @@ const auth = {
   },
 };
 
-export default storyFn => {
+export default (storyFn) => {
   // Generate consistent results by seeding the mocks generator before each
   // story.
   seed();
   return (
     <AuthContext.Provider value={auth}>
-      <ApolloProvider client={client}>
-        {storyFn()}
-      </ApolloProvider>
+      <ApolloProvider client={client}>{storyFn()}</ApolloProvider>
     </AuthContext.Provider>
   );
 };

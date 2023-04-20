@@ -1,20 +1,16 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
-import Button from 'components/Button';
+
 import withLogic from 'components/AddTask/components/logic';
+import Button from 'components/Button';
+import gql from 'graphql-tag';
+
 import { SelectWrapper } from './Styles';
 
 const taskDrushRsyncFiles = gql`
-  mutation taskDrushRsyncFiles(
-    $sourceEnvironment: Int!
-    $destinationEnvironment: Int!
-  ) {
-    taskDrushRsyncFiles(
-      sourceEnvironment: $sourceEnvironment
-      destinationEnvironment: $destinationEnvironment
-    ) {
+  mutation taskDrushRsyncFiles($sourceEnvironment: Int!, $destinationEnvironment: Int!) {
+    taskDrushRsyncFiles(sourceEnvironment: $sourceEnvironment, destinationEnvironment: $destinationEnvironment) {
       id
       name
       status
@@ -36,20 +32,15 @@ const DrushRsyncFiles = ({
   onCompleted,
   onError,
   options,
-  getEnvName
+  getEnvName,
 }) => (
-  <Mutation
-    mutation={taskDrushRsyncFiles}
-    onCompleted={onCompleted}
-    onError={onError}
-  >
+  <Mutation mutation={taskDrushRsyncFiles} onCompleted={onCompleted} onError={onError}>
     {(taskDrushRsyncFiles, { loading, called, error, data }) => {
       return (
         <SelectWrapper>
           <div className="warning">
             Warning! <br />
-            This task replaces files. Be careful to double check the source and
-            destination environment!
+            This task replaces files. Be careful to double check the source and destination environment!
           </div>
           <div className="envSelect">
             <label id="source-env">Source:</label>
@@ -57,10 +48,8 @@ const DrushRsyncFiles = ({
               aria-labelledby="source-env"
               placeholder="Select environment..."
               name="source-environment"
-              value={options.find(o => o.value === selectedSourceEnv)}
-              onChange={selectedOption =>
-                setSelectedSourceEnv(selectedOption.value)
-              }
+              value={options.find((o) => o.value === selectedSourceEnv)}
+              onChange={(selectedOption) => setSelectedSourceEnv(selectedOption.value)}
               options={options}
               required
             />
@@ -72,13 +61,13 @@ const DrushRsyncFiles = ({
               name="dest-environment"
               value={{
                 label: pageEnvironment.name,
-                value: pageEnvironment.id
+                value: pageEnvironment.id,
               }}
               options={[
                 {
                   label: pageEnvironment.name,
-                  value: pageEnvironment.id
-                }
+                  value: pageEnvironment.id,
+                },
               ]}
               isDisabled
               required
@@ -89,8 +78,8 @@ const DrushRsyncFiles = ({
               taskDrushRsyncFiles({
                 variables: {
                   sourceEnvironment: selectedSourceEnv,
-                  destinationEnvironment: pageEnvironment.id
-                }
+                  destinationEnvironment: pageEnvironment.id,
+                },
               })
             }
             disabled={!selectedSourceEnv}

@@ -1,0 +1,9 @@
+{
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "printWidth": 120,
+  "tabWidth": 2,
+  "importOrder": ["^react(.*)$", "^next(.*)$", "<THIRD_PARTY_MODULES>", "^src/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

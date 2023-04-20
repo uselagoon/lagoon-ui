@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const BackupsHeader = styled.div`
   @media ${bp.wideUp} {
@@ -46,14 +46,14 @@ export const BackupsHeader = styled.div`
 `;
 
 export const DataTable = styled.div`
-  background-color: ${props => props.theme.backgrounds.table};
-  border: 1px solid ${props => props.theme.borders.tableRow};
+  background-color: ${(props) => props.theme.backgrounds.table};
+  border: 1px solid ${(props) => props.theme.borders.tableRow};
   border-radius: 3px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
 
   .data-none {
-    border: 1px solid ${props => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -61,8 +61,8 @@ export const DataTable = styled.div`
   }
 
   .data-row {
-    border: 1px solid ${props => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;

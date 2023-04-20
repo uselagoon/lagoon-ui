@@ -1,35 +1,35 @@
-import React, { useEffect } from "react";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import EnvironmentByOpenshiftProjectNameQuery from "lib/query/EnvironmentByOpenshiftProjectName";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
-import Environment from "components/Environment";
-import EnvironmentSkeleton from "components/Environment/EnvironmentSkeleton";
-import { EnvironmentWrapper } from "../styles/pageStyles";
-import { useQuery } from "@apollo/react-hooks";
-import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
-import QueryError from "../components/errors/QueryError";
-import { useTourContext } from "../tours/TourContext";
-import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
+import React, { useEffect } from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Environment from 'components/Environment';
+import EnvironmentSkeleton from 'components/Environment/EnvironmentSkeleton';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentByOpenshiftProjectNameQuery from 'lib/query/EnvironmentByOpenshiftProjectName';
+
+import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
+import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
+import { EnvironmentWrapper } from '../styles/pageStyles';
+import { useTourContext } from '../tours/TourContext';
 
 /**
  * Displays an environment page, given the openshift project name.
  */
 export const PageEnvironment = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading } = useQuery(
-    EnvironmentByOpenshiftProjectNameQuery,
-    {
-      variables: {
-        openshiftProjectName: router.query.openshiftProjectName,
-      },
-    }
-  );
+  const { data, error, loading } = useQuery(EnvironmentByOpenshiftProjectNameQuery, {
+    variables: {
+      openshiftProjectName: router.query.openshiftProjectName,
+    },
+  });
 
   useEffect(() => {
     if (!loading && data?.environment) {
@@ -49,10 +49,7 @@ export const PageEnvironment = ({ router }) => {
           <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb
-                environmentSlug={openshiftProjectName}
-                projectSlug={projectSlug}
-              />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
             </Breadcrumbs>
 
             <EnvironmentWrapper>

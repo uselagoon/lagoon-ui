@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState } from "react";
-import { ReactElement } from "react";
-import { Route } from "./Tour";
+import React, { createContext, useContext, useState } from 'react';
+import { ReactElement } from 'react';
+
+import { Route } from './Tour';
 
 export interface TourContextType {
   tourStarted: boolean;
@@ -32,16 +33,10 @@ const defaultTourContextValue = {
   tourStarted: false,
   running: false,
   tourRoutes: [],
-  skipped:
-    typeof window !== "undefined" &&
-    localStorage.getItem("lagoon_tour_skipped") === "true"
-      ? true
-      : false,
+  skipped: typeof window !== 'undefined' && localStorage.getItem('lagoon_tour_skipped') === 'true' ? true : false,
   setTourState: () => {},
   skipTour: () => {},
-  routesToured:
-    typeof window !== "undefined" &&
-    JSON.parse(localStorage.getItem("lagoon_tour_routesToured") || "[]"),
+  routesToured: typeof window !== 'undefined' && JSON.parse(localStorage.getItem('lagoon_tour_routesToured') || '[]'),
   updateRoutesToured: () => {},
   startTour: () => {},
   endTour: () => {},
@@ -57,14 +52,8 @@ const defaultTourContextValue = {
 
 export const TourContext = createContext<TourContextType | null>(null);
 
-export const TourContextProvider = ({
-  children,
-}: {
-  children: ReactElement[];
-}) => {
-  const [tourState, setTourState] = useState<TourContextType>(
-    defaultTourContextValue
-  );
+export const TourContextProvider = ({ children }: { children: ReactElement[] }) => {
+  const [tourState, setTourState] = useState<TourContextType>(defaultTourContextValue);
 
   const updateTourInfo = (
     updatedTourInfo: {
@@ -72,10 +61,7 @@ export const TourContextProvider = ({
       keys: string[];
     }[]
   ) => {
-    localStorage.setItem(
-      "lagoon_tour_routesToured",
-      JSON.stringify(updatedTourInfo)
-    );
+    localStorage.setItem('lagoon_tour_routesToured', JSON.stringify(updatedTourInfo));
 
     setTourState((prev) => {
       return {
@@ -96,11 +82,9 @@ export const TourContextProvider = ({
   };
 
   const updateRoutesToured = (newRoute: string, stepKey: string) => {
-    const routeIdx = tourState.routesToured.findIndex(
-      (route: { path: string; keys: string[] }) => {
-        return route.path === newRoute;
-      }
-    );
+    const routeIdx = tourState.routesToured.findIndex((route: { path: string; keys: string[] }) => {
+      return route.path === newRoute;
+    });
 
     // update if not already in routesToured
     if (!~routeIdx) {
@@ -108,10 +92,7 @@ export const TourContextProvider = ({
         path: newRoute,
         keys: [stepKey],
       };
-      const updatedRoutesToured = [
-        ...tourState.routesToured,
-        { ...updatedRouteInfo },
-      ];
+      const updatedRoutesToured = [...tourState.routesToured, { ...updatedRouteInfo }];
       updateTourInfo(updatedRoutesToured);
     } else {
       // or add a step key if not already there
@@ -128,7 +109,7 @@ export const TourContextProvider = ({
   };
 
   const skipTour = () => {
-    localStorage.setItem("lagoon_tour_skipped", "true");
+    localStorage.setItem('lagoon_tour_skipped', 'true');
     setTourState((prev) => {
       return { ...prev, skipped: true };
     });
@@ -178,8 +159,8 @@ export const TourContextProvider = ({
   // if tour was skipped or finished, still make it accessible
   const manuallyTriggerTour = () => {
     // reset "skipped" and "routesToured"
-    localStorage.setItem("lagoon_tour_routesToured", JSON.stringify([]));
-    localStorage.setItem("lagoon_tour_skipped", "false");
+    localStorage.setItem('lagoon_tour_routesToured', JSON.stringify([]));
+    localStorage.setItem('lagoon_tour_skipped', 'false');
     setTourState((prev) => {
       return {
         ...prev,
@@ -198,9 +179,7 @@ export const TourContextProvider = ({
     const { tourRoutes, routesToured } = tourState;
     return tourRoutes.every(({ pathName, steps }) => {
       return routesToured.some(
-        ({ path, keys }) =>
-          path === pathName &&
-          steps.every(({ key }) => keys.includes(key as string))
+        ({ path, keys }) => path === pathName && steps.every(({ key }) => keys.includes(key as string))
       );
     });
   };
@@ -231,7 +210,7 @@ export const useTourContext = (): TourContextType => {
   const context = useContext(TourContext);
 
   if (!context) {
-    throw new Error("Hook must be used inside TourContextProvider ");
+    throw new Error('Hook must be used inside TourContextProvider ');
   }
   return context;
 };

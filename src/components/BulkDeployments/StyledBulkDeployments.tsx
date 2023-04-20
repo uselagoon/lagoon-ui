@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const BulkDeploymentsHeader = styled.div`
   @media ${bp.tinyUp} {
@@ -31,14 +31,14 @@ export const BulkDeploymentsHeader = styled.div`
 `;
 
 export const BulkDeploymentsDataTable = styled.div`
-  background-color: ${props => props.theme.backgrounds.table};
-  border: 1px solid ${props => props.theme.borders.tableRow};
+  background-color: ${(props) => props.theme.backgrounds.table};
+  border: 1px solid ${(props) => props.theme.borders.tableRow};
   border-radius: 3px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
 
   .data-none {
-    background-color: ${props => props.theme.backgrounds.table};
-    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+    background-color: ${(props) => props.theme.backgrounds.table};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -46,13 +46,13 @@ export const BulkDeploymentsDataTable = styled.div`
   }
 
   .data-row {
-    background-image: url("/static/images/right-arrow.svg");
+    background-image: url('/static/images/right-arrow.svg');
     background-position: right 20px center;
     background-repeat: no-repeat;
     background-size: 18px 11px;
 
-    border: 1px solid ${props => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -79,11 +79,11 @@ export const BulkDeploymentsDataTable = styled.div`
     }
 
     &:nth-child(odd) {
-      background-color: ${props => props.theme.backgrounds.table};
+      background-color: ${(props) => props.theme.backgrounds.table};
     }
 
     &:nth-child(even) {
-      background-color: ${props => props.theme.backgrounds.tableLight};
+      background-color: ${(props) => props.theme.backgrounds.tableLight};
     }
 
     &:last-child {
@@ -104,31 +104,31 @@ export const BulkDeploymentsDataTable = styled.div`
       background-size: 10px 10px;
 
       &.new {
-        background-image: url("/static/images/pending.svg");
+        background-image: url('/static/images/pending.svg');
       }
 
       &.pending {
-        background-image: url("/static/images/pending.svg");
+        background-image: url('/static/images/pending.svg');
       }
 
       &.running {
-        background-image: url("/static/images/in-progress.svg");
+        background-image: url('/static/images/in-progress.svg');
       }
 
       &.cancelled {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
 
       &.error {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
 
       &.failed {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
 
       &.complete {
-        background-image: url("/static/images/successful.svg");
+        background-image: url('/static/images/successful.svg');
       }
     }
   }

@@ -1,10 +1,11 @@
 import React from 'react';
+
 import Backups from './index';
 
 export default {
   component: Backups,
   title: 'Components/Backups',
-}
+};
 
 const backupsData = [
   {
@@ -33,10 +34,6 @@ const backupsData = [
     },
   },
 ];
-export const Default = () => (
-  <Backups backups={backupsData} />
-);
+export const Default = () => <Backups backups={backupsData} />;
 
-export const NoBackups = () => (
-  <Backups backups={[]} />
-);
+export const NoBackups = () => <Backups backups={[]} />;
