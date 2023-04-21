@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import * as R from 'ramda';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import moment from 'moment';
-import giturlparse from 'git-url-parse';
-
+import parseGitUrl from "lib/parseGitUrl";
 
 import {FieldWrapper, ProjectDetails} from "./StyledProjectSidebar"
 
 const Project = ({ project }) => {
   const [copied, setCopied] = useState(false);
-  const gitUrlParsed = giturlparse(project.gitUrl);
-  const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
+
+  const gitUrlParsed = parseGitUrl(project.gitUrl);
+  const gitLink = gitUrlParsed.showRaw ? gitUrlParsed.rawUrl : `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
 
 
   const environmentCount = R.countBy(R.prop('environmentType'))(

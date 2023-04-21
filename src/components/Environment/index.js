@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import giturlparse from 'git-url-parse';
 import { Mutation } from 'react-apollo';
 import DeleteEnvironmentMutation from 'lib/mutation/DeleteEnvironment';
 import DeleteConfirm from 'components/DeleteConfirm';
@@ -8,16 +7,23 @@ import Router from 'next/router';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
 import {StyledEnvironmentDetails} from "./StyledEnvironment"
+import parseGitUrl from "lib/parseGitUrl";
 
 
 /**
  * Displays the environment information.
  */
 const Environment = ({ environment }) => {
-  const gitUrlParsed = giturlparse(environment.project.gitUrl);
-  const gitBranchLink = `${gitUrlParsed.resource}/${
-    gitUrlParsed.full_name
-    }/${environment.deployType === 'branch' ? `tree/${environment.name}` : `pull/${environment.name.replace(/pr-/i, '')}`}`;
+  const gitUrlParsed = parseGitUrl(environment.project.gitUrl);
+  const gitBranchLink = `${
+    gitUrlParsed.showRaw
+      ? gitUrlParsed.rawUrl
+      : `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`
+  }/${
+    environment.deployType === "branch"
+      ? `tree/${environment.name}`
+      : `pull/${environment.name.replace(/pr-/i, "")}`
+  }`;
 
   return (
     <StyledEnvironmentDetails className="details">
