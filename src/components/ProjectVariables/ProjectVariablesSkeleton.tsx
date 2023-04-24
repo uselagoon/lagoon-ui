@@ -11,7 +11,7 @@ const ProjectVariablesSkeleton = () => {
 
   const skeletonItem = (
     <div className="data-row">
-      <div className="name">
+      <div className="varName">
         <Skeleton width={"90%"} />
       </div>
       <div className="scope">
@@ -34,9 +34,15 @@ const ProjectVariablesSkeleton = () => {
       </div>
       <StyledProjectVariableTable>
         <div className="table-header">
-            <div className="name"><label>Name</label></div>
-            <div className="scope"><label>Scope</label></div>
-            <div className="delete"><label>Delete</label></div>
+          <div className="name">
+            <label>Name</label>
+          </div>
+          <div className="scope">
+            <label>Scope</label>
+          </div>
+          <div className="delete">
+            <label>Delete</label>
+          </div>
         </div>
         <div className="data-table">
           {[...Array<undefined>(numberOfVariableFields)].map(

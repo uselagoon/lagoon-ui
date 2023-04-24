@@ -1,25 +1,37 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
-import { StyledEnvironmentVariableDetails } from "./StyledEnvironmentVariables";
-import AddEnvironmentVariable from "../AddVariable";
-import Table from "react-bootstrap/Table";
+import {
+  StyledEnvironmentVariableDetails,
+  StyledProjectVariableTable,
+} from "./StyledEnvironmentVariables";
 import Button from "react-bootstrap/Button";
 
 const EnvironmentVariablesSkeleton = () => {
   const numberOfVariableFields = 3;
 
   const skeletonItem = (
-    <tr>
-      <td className="name">
-        <Skeleton width={"30%"} />
-      </td>
-      <td className="scope">
-        <Skeleton width={"30%"} />
-      </td>
-      <td className="delete">
-        <Skeleton width={"20%"} />
-      </td>
-    </tr>
+    <div className="data-row">
+      <div className="varName">
+        <Skeleton width={"90%"} />
+      </div>
+      <div className="scope">
+        <Skeleton width={"90%"} />
+      </div>
+      <div className="delete">
+        <Skeleton width={"90%"} />
+      </div>
+    </div>
+  );
+
+  const projectSkeletonItem = (
+    <div className="data-row">
+      <div className="varName">
+        <Skeleton width={"80%"} />
+      </div>
+      <div className="scope">
+        <Skeleton width={"80%"} />
+      </div>
+    </div>
   );
 
   return (
@@ -27,26 +39,28 @@ const EnvironmentVariablesSkeleton = () => {
       <div className="header">
         <label>Environment Variables</label>
         <div className="header-buttons">
-          <AddEnvironmentVariable />
+          <Button>Add/Update</Button>
           <Button>Show values</Button>
         </div>
       </div>
-      <div className="field-wrapper env-vars">
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Environment Variable Name</th>
-              <th>Environment Variable Scope</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array<undefined>(numberOfVariableFields)].map(
-              () => skeletonItem
-            )}
-          </tbody>
-        </Table>
-      </div>
+      <StyledProjectVariableTable>
+        <div className="table-header">
+          <div className="name">
+            <label>Name</label>
+          </div>
+          <div className="scope">
+            <label>Scope</label>
+          </div>
+          <div className="delete">
+            <label>Delete</label>
+          </div>
+        </div>
+        <div className="data-table">
+          {[...Array<undefined>(numberOfVariableFields)].map(
+            () => skeletonItem
+          )}
+        </div>
+      </StyledProjectVariableTable>
       <hr style={{ margin: "30px 0" }} />
       <div className="header">
         <label>Project Variables</label>
@@ -55,22 +69,21 @@ const EnvironmentVariablesSkeleton = () => {
           <Button>Show values</Button>
         </div>
       </div>
-      <div className="field-wrapper env-vars">
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Project Variable Name</th>
-              <th>Project Variable Scope</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array<undefined>(numberOfVariableFields)].map(
-              () => skeletonItem
-            )}
-          </tbody>
-        </Table>
-      </div>
+      <StyledProjectVariableTable>
+        <div className="table-header">
+          <div className="name">
+            <label>Name</label>
+          </div>
+          <div className="scope">
+            <label>Scope</label>
+          </div>
+        </div>
+        <div className="data-table">
+          {[...Array<undefined>(numberOfVariableFields)].map(
+            () => projectSkeletonItem
+          )}
+        </div>
+      </StyledProjectVariableTable>
     </StyledEnvironmentVariableDetails>
   );
 };

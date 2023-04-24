@@ -14,6 +14,7 @@ import { VariableWrapper } from "../styles/pageStyles";
 import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
 import QueryError from "../components/errors/QueryError";
 import EnvironmentVariablesSkeleton from "components/EnvironmentVariables/EnvironmentVariablesSkeleton";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays the variables page, given the name of a project.
@@ -35,25 +36,27 @@ export const PageEnvironmentVariables = ({ router }) => {
           <title>{`${router.query.projectName} | Environment Variables`}</title>
         </Head>
         <MainLayout>
-        <Breadcrumbs>
-          <ProjectBreadcrumb projectSlug={projectSlug} />
-          <EnvironmentBreadcrumb
-            environmentSlug={openshiftProjectName}
-            projectSlug={projectSlug}
-          />
-        </Breadcrumbs>
-          <VariableWrapper>
-            <NavTabsSkeleton
-              activeTab="variables"
-              projectName={router.query.projectName}
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb
+              environmentSlug={openshiftProjectName}
+              projectSlug={projectSlug}
             />
-            <div className="content">
-              <div className="notification">
-                A deployment is required to apply any changes to Environment
-                variables.
+          </Breadcrumbs>
+          <VariableWrapper>
+            <ThemedSkeletonWrapper>
+              <NavTabsSkeleton
+                activeTab="variables"
+                projectName={router.query.projectName}
+              />
+              <div className="content">
+                <div className="notification">
+                  A deployment is required to apply any changes to Environment
+                  variables.
+                </div>
+                <EnvironmentVariablesSkeleton />
               </div>
-              <EnvironmentVariablesSkeleton />
-            </div>
+            </ThemedSkeletonWrapper>
           </VariableWrapper>
         </MainLayout>
       </>

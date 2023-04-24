@@ -13,6 +13,7 @@ import ProjectNotFound from "../components/errors/ProjectNotFound";
 import QueryError from "../components/errors/QueryError";
 import { ProjectWrapper } from "../styles/pageStyles";
 import ProjectNavTabsSkeleton from "components/ProjectNavTabs/ProjectNavTabsSkeleton";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays a list of all Deploy Targets for a project.
@@ -33,11 +34,13 @@ export const PageDeployTargets = ({ router }) => {
             <ProjectBreadcrumb projectSlug={router.query.projectName} />
           </Breadcrumbs>
           <ProjectWrapper>
-            <ProjectNavTabsSkeleton
+            <ThemedSkeletonWrapper>
+              <ProjectNavTabsSkeleton
                 activeTab="overview"
                 projectName={router.query.projectName}
               />
-            <DeployTargetSkeleton />
+              <DeployTargetSkeleton />
+            </ThemedSkeletonWrapper>
           </ProjectWrapper>
         </MainLayout>
       </>
@@ -55,20 +58,20 @@ export const PageDeployTargets = ({ router }) => {
   }
 
   return (
-  <>
-    <Head>
-      <title>{`${router.query.projectName} | Project`}</title>
-    </Head>
-    <MainLayout>
-      <Breadcrumbs>
-        <ProjectBreadcrumb projectSlug={project.name} />
-      </Breadcrumbs>
-      <ProjectWrapper>
-        <ProjectNavTabs activeTab="deployTargets" project={project} />
-        <DeployTargets project={project} />
-      </ProjectWrapper>
-    </MainLayout>
-  </>
+    <>
+      <Head>
+        <title>{`${router.query.projectName} | Project`}</title>
+      </Head>
+      <MainLayout>
+        <Breadcrumbs>
+          <ProjectBreadcrumb projectSlug={project.name} />
+        </Breadcrumbs>
+        <ProjectWrapper>
+          <ProjectNavTabs activeTab="deployTargets" project={project} />
+          <DeployTargets project={project} />
+        </ProjectWrapper>
+      </MainLayout>
+    </>
   );
 };
 

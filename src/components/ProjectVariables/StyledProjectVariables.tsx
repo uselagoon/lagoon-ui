@@ -75,7 +75,6 @@ export const StyledProjectVariablesDetails = styled.div`
     word-break: break-word;
   }
   .varValue {
-  
     & span {
       cursor: pointer;
     }
@@ -129,177 +128,190 @@ export const StyledProjectVariablesDetails = styled.div`
 `;
 
 export const StyledProjectVariableTable = styled.div`
-.table-header {
-  @media ${bp.tinyUp} {
-    margin: 0 0 14px;
-  }
-  @media ${bp.smallOnly} {
-    flex-wrap: wrap;
-  }
-  @media ${bp.tabletUp} {
-    margin-top: 40px;
-  }
-
-  display: flex;
-  justify-content: space-between;
-
-  div.name, div.scope, div.delete {
-    display: none;
-    width: 45%;
+  .table-header {
     @media ${bp.tinyUp} {
-      display: block;
-      text-align: left;
+      margin: 0 0 14px;
     }
-    &.name {
-      padding-left: 20px;
-    }
-    &.delete {
-      width: 5%;
-    }
-  }
-}
-
-.values-present.table-header {
-  @media ${bp.tinyUp} {
-    margin: 0 0 14px;
-  }
-  @media ${bp.smallOnly} {
-    flex-wrap: wrap;
-  }
-  @media ${bp.tabletUp} {
-    margin-top: 40px;
-  }
-
-  div.name, div.scope, div.value, div.delete {
-    display: none;
-    width: 30%;
-    @media ${bp.tinyUp} {
-      display: block;
-      text-align: left;
-    }
-
-    &.name {
-      padding-left: 20px;
-    }
-    &.scope {
-      text-align: center;
-    }
-    &.delete {
-      width: 5%;
-    }
-  }
-}
-
-.data-table {
-  background-color: ${props => props.theme.backgrounds.table};
-  border: 1px solid ${props => props.theme.borders.tableRow};
-  border-radius: 3px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-}
-
-.data-none {
-  border: 1px solid ${props => props.theme.borders.tableRow};
-  border-bottom: 1px solid ${props => props.theme.borders.tableRow};
-  border-radius: 3px;
-  line-height: 1.5rem;
-  padding: 8px 0 7px 0;
-  text-align: center;
-}
-
-.values-present.data-row {
-  border: 1px solid ${props => props.theme.borders.tableRow};
-  border-bottom: 1px solid ${props => props.theme.borders.tableRow};
-  border-radius: 0;
-  line-height: 1.5rem;
-  padding: 8px 0 7px 0;
-  word-break: break-word;
-
-  @media ${bp.tinyUp} {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  & > div {
-    text-align: left;
-    @media ${bp.tinyUp} {
-      width: 20%;
+    @media ${bp.smallOnly} {
+      flex-wrap: wrap;
     }
     @media ${bp.tabletUp} {
-      width: 30%;
+      margin-top: 40px;
     }
-    @media ${bp.wideUp} {
-      width: 30%;
-    }
-  }
 
-  & .varName {
-    padding-left: 20px;
-    width: 31%;
-    @media ${bp.wideDown} {
-      width: 35%;
-    }
-  }
-  & .varScope {
-    text-align: center;
-  }
-  & .varValue {
-    width: 32.5%;
-  }
-  & .varDelete {
-    width: 5%;
-  }
-}
-
-.data-row {
-  border: 1px solid ${props => props.theme.borders.tableRow};
-  border-bottom: 1px solid ${props => props.theme.borders.tableRow};
-  border-radius: 0;
-  line-height: 1.5rem;
-  align-items: center;
-  padding: 8px 0 7px 0;
-
-  @media ${bp.tinyUp} {
     display: flex;
     justify-content: space-between;
+
+    div.name,
+    div.scope,
+    div.delete {
+      display: none;
+      width: 45%;
+      @media ${bp.tinyUp} {
+        display: block;
+        text-align: left;
+      }
+      &.name {
+        width: 65%;
+        padding-left: 20px;
+      }
+      &.scope {
+        width: 40%;
+      }
+      &.delete {
+        width: 5%;
+      }
+    }
   }
 
-  & > div {
-    text-align: left;
+  .values-present.table-header {
     @media ${bp.tinyUp} {
+      margin: 0 0 14px;
+    }
+    @media ${bp.smallOnly} {
+      flex-wrap: wrap;
+    }
+    @media ${bp.tabletUp} {
+      margin-top: 40px;
+    }
+
+    div.name,
+    div.scope,
+    div.value,
+    div.delete {
+      display: none;
+      width: 30%;
+      @media ${bp.tinyUp} {
+        display: block;
+        text-align: left;
+      }
+
+      &.name {
+        padding-left: 20px;
+      }
+      &.scope {
+        text-align: center;
+      }
+      &.delete {
+        width: 5%;
+      }
+    }
+  }
+
+  .data-table {
+    background-color: ${(props) => props.theme.backgrounds.table};
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-radius: 3px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+  }
+
+  .data-none {
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-radius: 3px;
+    line-height: 1.5rem;
+    padding: 8px 0 7px 0;
+    text-align: center;
+  }
+
+  .values-present.data-row {
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-radius: 0;
+    line-height: 1.5rem;
+    padding: 8px 0 7px 0;
+    word-break: break-word;
+
+    @media ${bp.tinyUp} {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    & > div {
+      text-align: left;
+      @media ${bp.tinyUp} {
+        width: 20%;
+      }
+      @media ${bp.tabletUp} {
+        width: 30%;
+      }
+      @media ${bp.wideUp} {
+        width: 30%;
+      }
+    }
+
+    & .varName {
+      padding-left: 20px;
+      width: 31%;
+      @media ${bp.wideDown} {
+        width: 35%;
+      }
+    }
+    & .varScope {
+      text-align: center;
+    }
+    & .varValue {
+      width: 32.5%;
+    }
+    & .varDelete {
+      width: 5%;
+    }
+  }
+
+  .data-row {
+    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border-radius: 0;
+    line-height: 1.5rem;
+    align-items: center;
+    padding: 8px 0 7px 0;
+
+    @media ${bp.tinyUp} {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    & > div {
+      text-align: left;
+      @media ${bp.tinyUp} {
+        width: 40%;
+      }
+      @media ${bp.wideUp} {
+        width: 45%;
+      }
+    }
+
+    & .varName {
+      width: 65%;
+      padding-left: 20px;
+    }
+    & .varScope {
       width: 40%;
     }
-    @media ${bp.wideUp} {
-      width: 45%;
+    & .varDelete {
+      width: 5%;
+    }
+
+    &.skeleton {
+      padding: 20px 0;
+    }
+    &:hover {
+      border: 1px solid ${color.brightBlue};
+    }
+
+    &:first-child {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
     }
   }
-  
-  & .varName {
-    padding-left: 20px;
-  }
-  & .varDelete {
-    width: 5%;
-  }
 
-  &.skeleton{
-    padding: 20px 0;
+  .collapsing {
+    display: none;
+    transition: unset;
   }
-  &:hover {
-    border: 1px solid ${color.brightBlue};
-  }
-
-  &:first-child {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-  }
-
-  &:last-child {
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-  }
-}
-
-.collapsing {
-  display: none;
-  transition: unset;
-}
 `;

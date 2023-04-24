@@ -7,14 +7,16 @@ import { useLazyQuery } from "@apollo/react-hooks";
 import DeleteConfirm from "components/DeleteConfirm";
 import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
-import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
 import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import deleteVariable from "../../static/images/delete.svg";
-import { StyledProjectVariablesDetails, StyledProjectVariableTable } from "./StyledProjectVariables";
+import {
+  StyledProjectVariablesDetails,
+  StyledProjectVariableTable,
+} from "./StyledProjectVariables";
 
 /**
  * Displays the projects variable information.
@@ -33,7 +35,7 @@ const ProjectVariables = ({ project }) => {
   let initValueState = new Array(displayVars.length).fill(false);
 
   const [valueState, setValueState] = useState(initValueState);
-  const [openPrjVars, setOpenPrjVars] = useState(false);  
+  const [openPrjVars, setOpenPrjVars] = useState(false);
 
   const [
     getPrjEnvVarValues,
@@ -70,15 +72,17 @@ const ProjectVariables = ({ project }) => {
     <StyledProjectVariablesDetails className="details">
       {displayVars.length == 0 ? (
         <>
-            <div className="header no-vars">
-              <AddVariable
-                varProject={project.name}
-                varValues={displayVars}
-                varTarget="Project"
-              />
-            </div>
+          <div className="header no-vars">
+            <AddVariable
+              varProject={project.name}
+              varValues={displayVars}
+              varTarget="Project"
+            />
+          </div>
           <hr style={{ margin: "30px 0" }} />
-          <div style={{ textAlign: "center" }}>No Project variables set</div>
+          <div style={{ textAlign: "center" }}>
+            <label>No Project variables set</label>
+          </div>
           <hr style={{ margin: "30px 0" }} />
         </>
       ) : (
@@ -101,20 +105,36 @@ const ProjectVariables = ({ project }) => {
             </div>
           </div>
           <div className="field-wrapper env-vars">
-            <StyledProjectVariableTable> 
-            <div className={openPrjVars ? "values-present table-header" : "table-header"}>
-            <div className="name"><label>Name</label></div>
-            <div className="scope"><label>Scope</label></div>
+            <StyledProjectVariableTable>
+              <div
+                className={
+                  openPrjVars ? "values-present table-header" : "table-header"
+                }
+              >
+                <div className="name">
+                  <label>Name</label>
+                </div>
+                <div className="scope">
+                  <label>Scope</label>
+                </div>
                 <Collapse in={openPrjVars}>
-                  <div className="value"><label>Value</label></div>
+                  <div className="value">
+                    <label>Value</label>
+                  </div>
                 </Collapse>
-                <div className="delete"><label>Delete</label></div>
-            </div>
-            <div className="data-table">
+                <div className="delete">
+                  <label>Delete</label>
+                </div>
+              </div>
+              <div className="data-table">
                 {displayVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={openPrjVars ? "values-present data-row" : "data-row"}>
+                      <div
+                        className={
+                          openPrjVars ? "values-present data-row" : "data-row"
+                        }
+                      >
                         <div className="varName">{projEnvVar.name}</div>
                         <div className="varScope">{projEnvVar.scope}</div>
                         {prjLoading ? (
@@ -255,7 +275,7 @@ const ProjectVariables = ({ project }) => {
                   );
                 })}
               </div>
-              </StyledProjectVariableTable>
+            </StyledProjectVariableTable>
           </div>
         </>
       )}

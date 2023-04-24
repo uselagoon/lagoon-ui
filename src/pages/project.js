@@ -17,12 +17,13 @@ import ProjectNotFound from "../components/errors/ProjectNotFound";
 import SidebarSkeleton from "components/ProjectDetailsSidebar/SidebarSkeleton";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 
 /**
  * Displays a project page, given the project name.
  */
 export const PageProject = ({ router }) => {
-  const {continueTour} = useTourContext();
+  const { continueTour } = useTourContext();
   const { data, error, loading } = useQuery(ProjectByNameQuery, {
     variables: { name: router.query.projectName },
   });
@@ -43,26 +44,27 @@ export const PageProject = ({ router }) => {
             <ProjectBreadcrumb projectSlug={router.query.projectName} />
           </Breadcrumbs>
           <ProjectWrapper>
-          <ProjectNavTabsSkeleton
-              activeTab="overview"
-              projectName={router.query.projectName}
-            />
-          <ProjectDetailsWrapper>
-            <div className="project-details-sidebar">
-              <SidebarSkeleton />
-            </div>
-            <div className="environments-wrapper">
-              <div className="environments-all">
-                <EnvironmentsSkeleton />
-              </div>
-            </div>
-          </ProjectDetailsWrapper>
+            <ThemedSkeletonWrapper>
+              <ProjectNavTabsSkeleton
+                activeTab="overview"
+                projectName={router.query.projectName}
+              />
+              <ProjectDetailsWrapper>
+                <div className="project-details-sidebar">
+                  <SidebarSkeleton />
+                </div>
+                <div className="environments-wrapper">
+                  <div className="environments-all">
+                    <EnvironmentsSkeleton />
+                  </div>
+                </div>
+              </ProjectDetailsWrapper>
+            </ThemedSkeletonWrapper>
           </ProjectWrapper>
         </MainLayout>
       </>
     );
   }
-
 
   if (error) {
     return <QueryError error={error} />;
@@ -85,27 +87,24 @@ export const PageProject = ({ router }) => {
         <title>{`${router.query.projectName} | Project`}</title>
       </Head>
 
-          <MainLayout>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={project.name} />
-            </Breadcrumbs>
-            <ProjectWrapper>
-              <ProjectNavTabs activeTab="overview" project={project} />
-              <ProjectDetailsWrapper>
-                <div className="project-details-sidebar">
-                  <ProjectDetailsSidebar project={project} />
-                </div>
-                <div className="environments-wrapper">
-                  <div className="environments-all">
-                    <Environments
-                      environments={environments}
-                      project={project}
-                    />
-                  </div>
-                </div>
-              </ProjectDetailsWrapper>
-            </ProjectWrapper>
-          </MainLayout>
+      <MainLayout>
+        <Breadcrumbs>
+          <ProjectBreadcrumb projectSlug={project.name} />
+        </Breadcrumbs>
+        <ProjectWrapper>
+          <ProjectNavTabs activeTab="overview" project={project} />
+          <ProjectDetailsWrapper>
+            <div className="project-details-sidebar">
+              <ProjectDetailsSidebar project={project} />
+            </div>
+            <div className="environments-wrapper">
+              <div className="environments-all">
+                <Environments environments={environments} project={project} />
+              </div>
+            </div>
+          </ProjectDetailsWrapper>
+        </ProjectWrapper>
+      </MainLayout>
     </>
   );
 };

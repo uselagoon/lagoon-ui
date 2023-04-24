@@ -12,6 +12,7 @@ import ProjectVariablesSkeleton from "components/ProjectVariables/ProjectVariabl
 import ProjectByNameWithEnvVarsQuery from "lib/query/ProjectByNameWithEnvVars";
 import QueryError from "../components/errors/QueryError";
 import ProjectNotFound from "../components/errors/ProjectNotFound";
+import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
 import ProjectNavTabsSkeleton from "components/ProjectNavTabs/ProjectNavTabsSkeleton";
 
 /**
@@ -39,19 +40,21 @@ export const PageProjectVariables = ({ router }) => {
             <ProjectBreadcrumb projectSlug={router.query.projectName} />
           </Breadcrumbs>
           <ProjectWrapper>
-          <ProjectNavTabsSkeleton
-              activeTab="variables"
-              projectName={router.query.projectName}
-            />
-            <VariableWrapper>
-              <div className="content">
-                <div className="notification">
-                  A deployment is required to apply any changes to Project
-                  variables.
+            <ThemedSkeletonWrapper>
+              <ProjectNavTabsSkeleton
+                activeTab="variables"
+                projectName={router.query.projectName}
+              />
+              <VariableWrapper>
+                <div className="content">
+                  <div className="notification">
+                    A deployment is required to apply any changes to Project
+                    variables.
+                  </div>
+                  <ProjectVariablesSkeleton />
                 </div>
-                <ProjectVariablesSkeleton />
-              </div>
-            </VariableWrapper>
+              </VariableWrapper>
+            </ThemedSkeletonWrapper>
           </ProjectWrapper>
         </MainLayout>
       </>
@@ -63,28 +66,28 @@ export const PageProjectVariables = ({ router }) => {
   }
 
   return (
-  <>
-    <Head>
-      <title>{`${router.query.projectName} | Project`}</title>
-    </Head>
-    <MainLayout>
-      <Breadcrumbs>
-        <ProjectBreadcrumb projectSlug={project.name} />
-      </Breadcrumbs>
-      <ProjectWrapper>
-        <ProjectNavTabs activeTab="variables" project={project} />
-        <VariableWrapper>
-          <div className="content">
-            <div className="notification">
-              A deployment is required to apply any changes to Project
-              variables.
+    <>
+      <Head>
+        <title>{`${router.query.projectName} | Project`}</title>
+      </Head>
+      <MainLayout>
+        <Breadcrumbs>
+          <ProjectBreadcrumb projectSlug={project.name} />
+        </Breadcrumbs>
+        <ProjectWrapper>
+          <ProjectNavTabs activeTab="variables" project={project} />
+          <VariableWrapper>
+            <div className="content">
+              <div className="notification">
+                A deployment is required to apply any changes to Project
+                variables.
+              </div>
+              <ProjectVariables project={project} />
             </div>
-            <ProjectVariables project={project} />
-          </div>
-        </VariableWrapper>
-      </ProjectWrapper>
-    </MainLayout>
-  </>
+          </VariableWrapper>
+        </ProjectWrapper>
+      </MainLayout>
+    </>
   );
 };
 
