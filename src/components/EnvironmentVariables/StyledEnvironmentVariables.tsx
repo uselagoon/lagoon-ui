@@ -17,7 +17,7 @@ export const StyledEnvironmentVariableDetails = styled.div`
     padding-left: calc(((100vw / 16) * 1));
   }
   .showHide {
-    margin-left: 16px !important;
+    margin-left: 8px !important;
     width: 30px !important;
   }
   .showHideContainer span {
@@ -160,6 +160,10 @@ export const StyledVariableTable = styled.div`
       &.name {
         width: 65%;
         padding-left: 20px;
+
+        @media ${bp.tabletDown} {
+          width: 45%;
+        }
       }
       &.scope {
         width: 40%;
@@ -290,6 +294,10 @@ export const StyledVariableTable = styled.div`
     & .varName {
       width: 65%;
       padding-left: 20px;
+
+      @media ${bp.tabletDown} {
+        width: 45%;
+      }
     }
     & .varScope {
       width: 40%;
@@ -377,12 +385,24 @@ export const StyledProjectVariableTable = styled.div`
 
       &.name {
         padding-left: 20px;
+
+        @media ${bp.tabletDown} {
+          width: 30%
+        }
       }
       &.scope {
         text-align: center;
+
+        @media ${bp.tabletDown} {
+          text-align: left;
+          width: 20%;
+        }
       }
-      &.scope {
-        width: 50%;
+      &.value {
+        width: 28%;
+        @media ${bp.tabletDown} {
+          width: auto;
+        }
       }
     }
   }
@@ -434,6 +454,9 @@ export const StyledProjectVariableTable = styled.div`
       width: 31%;
       @media ${bp.wideDown} {
         width: 35%;
+      }
+      @media ${bp.tabletDown} {
+        width: 45%;
       }
     }
     & .varScope {

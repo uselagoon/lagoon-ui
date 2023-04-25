@@ -154,6 +154,10 @@ export const StyledProjectVariableTable = styled.div`
       &.name {
         width: 65%;
         padding-left: 20px;
+
+        @media ${bp.tabletDown} {
+          width: 45%;
+        }
       }
       &.scope {
         width: 40%;
@@ -284,6 +288,10 @@ export const StyledProjectVariableTable = styled.div`
     & .varName {
       width: 65%;
       padding-left: 20px;
+
+        @media ${bp.tabletDown} {
+          width: 45%;
+        }
     }
     & .varScope {
       width: 40%;
