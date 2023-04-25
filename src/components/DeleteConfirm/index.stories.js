@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import { action } from '@storybook/addon-actions';
+
 import DeleteConfirm, { DeleteConfirm as DeleteConfirmBaseComponent } from './index';
 
 export default {
@@ -12,24 +14,32 @@ export default {
       const actionClose = action('close-modal');
       return storyFn({
         openBoolean: open,
-        openModalFunction: () => { actionOpen(); setOpen(true); },
-        closeModalFunction: () => { actionClose(); setOpen( false); },
+        openModalFunction: () => {
+          actionOpen();
+          setOpen(true);
+        },
+        closeModalFunction: () => {
+          actionClose();
+          setOpen(false);
+        },
         onDeleteFunction: action('delete-button-pressed'),
         setInputValueFunction: action('input-value-update-requested'),
       });
     },
   ],
-}
+};
 
 export const Default = ({ onDeleteFunction, setInputValueFunction }) => (
-  <DeleteConfirm
-    deleteType="environment"
-    deleteName="Forty-two"
-    onDelete={onDeleteFunction}
-  />
+  <DeleteConfirm deleteType="environment" deleteName="Forty-two" onDelete={onDeleteFunction} />
 );
 
-export const WithConfirmationBlocked = ({ onDeleteFunction, setInputValueFunction, openBoolean, openModalFunction, closeModalFunction }) => (
+export const WithConfirmationBlocked = ({
+  onDeleteFunction,
+  setInputValueFunction,
+  openBoolean,
+  openModalFunction,
+  closeModalFunction,
+}) => (
   <DeleteConfirmBaseComponent
     deleteType="environment"
     deleteName="Forty-two"
@@ -42,7 +52,13 @@ export const WithConfirmationBlocked = ({ onDeleteFunction, setInputValueFunctio
   />
 );
 
-export const WithConfirmationAllowed = ({ onDeleteFunction, setInputValueFunction, openBoolean, openModalFunction, closeModalFunction }) => (
+export const WithConfirmationAllowed = ({
+  onDeleteFunction,
+  setInputValueFunction,
+  openBoolean,
+  openModalFunction,
+  closeModalFunction,
+}) => (
   <DeleteConfirmBaseComponent
     deleteType="environment"
     deleteName="Forty-two"

@@ -1,4 +1,5 @@
 import { setConfig } from 'next/config';
+
 // import config from '../src/next.config';
 
 // Make sure you can use "publicRuntimeConfig" within storybook.

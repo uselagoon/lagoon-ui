@@ -1,12 +1,14 @@
 import React from 'react';
-import getConfig from 'next/config';
-import * as R from 'ramda';
-import withHandlers from 'recompose/withHandlers';
-import withState from 'recompose/withState';
-import withProps from 'recompose/withProps';
-import compose from 'recompose/compose';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+
+import getConfig from 'next/config';
+
+import gql from 'graphql-tag';
+import * as R from 'ramda';
+import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
+import withProps from 'recompose/withProps';
+import withState from 'recompose/withState';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -15,54 +17,50 @@ const withOptions = withProps(({ pageEnvironment }) => {
   let options = [
     {
       label: 'Clear Drupal caches [drush cache-clear]',
-      value: 'DrushCacheClear'
+      value: 'DrushCacheClear',
     },
     {
       label: 'Run Drupal cron [drush cron]',
-      value: 'DrushCron'
+      value: 'DrushCron',
     },
     {
       label: 'Copy database between environments [drush sql-sync]',
-      value: 'DrushSqlSync'
+      value: 'DrushSqlSync',
     },
     {
       label: 'Copy files between environments [drush rsync]',
-      value: 'DrushRsyncFiles'
+      value: 'DrushRsyncFiles',
     },
     {
       label: 'Generate database backup [drush sql-dump]',
-      value: 'DrushSqlDump'
+      value: 'DrushSqlDump',
     },
     {
       label: 'Generate database and files backup (Drush 8 only) [drush archive-dump]',
-      value: 'DrushArchiveDump'
+      value: 'DrushArchiveDump',
     },
     {
       label: 'Generate login link [drush uli]',
-      value: 'DrushUserLogin'
-    }
+      value: 'DrushUserLogin',
+    },
   ];
 
   // Add Advanced Task Definitions
   let advancedTasks = pageEnvironment.advancedTasks.map(task => {
     let commandstring = task.command ? `[${task.command}]` : '';
-    let label = task.description ? `${task.description} ${commandstring}` :'';
+    let label = task.description ? `${task.description} ${commandstring}` : '';
     return {
       id: task.id,
       label: label,
       value: 'InvokeRegisteredTask',
       arguments: task.advancedTaskDefinitionArguments,
       confirmationText: task.confirmationText,
-    }
+    };
   });
   options = [...options, ...advancedTasks];
 
   // Remove tasks that are blocklisted.
-  options = R.reject(
-    option =>
-      R.contains(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST),
-    options
-  );
+  options = R.reject(option => R.contains(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST), options);
 
   // Currently all tasks require the environment to have a 'cli' service,
   // but this can be made dynamic if that changes.
@@ -75,12 +73,16 @@ const withOptions = withProps(({ pageEnvironment }) => {
   return { options };
 });
 const withNewTaskHanders = withHandlers({
-  onCompleted: ({ setSelectedTask }) => () => {
-    setSelectedTask('Completed');
-  },
-  onError: ({ setSelectedTask }) => () => {
-    setSelectedTask('Error');
-  }
+  onCompleted:
+    ({ setSelectedTask }) =>
+    () => {
+      setSelectedTask('Completed');
+    },
+  onError:
+    ({ setSelectedTask }) =>
+    () => {
+      setSelectedTask('Error');
+    },
 });
 
 const withProjectEnvironments = BaseComponent =>
@@ -102,31 +104,18 @@ const withProjectEnvironments = BaseComponent =>
     render() {
       const { pageEnvironment } = this.props;
       return (
-        <Query
-          query={this.query}
-          variables={{ name: pageEnvironment.project.name }}
-        >
+        <Query query={this.query} variables={{ name: pageEnvironment.project.name }}>
           {({ loading, error, data }) => {
             if (loading || error) {
               return null;
             }
             const allEnvironments = data.projectByName.environments;
 
-            return (
-              <BaseComponent
-                projectEnvironments={allEnvironments}
-                {...this.props}
-              />
-            );
+            return <BaseComponent projectEnvironments={allEnvironments} {...this.props} />;
           }}
         </Query>
       );
     }
   };
 
-export default compose(
-  withSelectedTask,
-  withNewTaskHanders,
-  withOptions,
-  withProjectEnvironments
-);
+export default compose(withSelectedTask, withNewTaskHanders, withOptions, withProjectEnvironments);

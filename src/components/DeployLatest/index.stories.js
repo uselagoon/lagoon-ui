@@ -1,22 +1,20 @@
 import React from 'react';
+
 import mocks, { seed } from 'api/src/mocks';
+
 import DeployLatest from './index';
 
 export default {
   component: DeployLatest,
   title: 'Components/Deploy Latest',
-}
+};
 
 seed();
-const environment = mocks.Environment(null, {name: 'master'});
+const environment = mocks.Environment(null, { name: 'master' });
 
-export const Default = () => (
-  <DeployLatest pageEnvironment={environment} />
-);
+export const Default = () => <DeployLatest pageEnvironment={environment} />;
 
-export const Branch = () => (
-  <DeployLatest pageEnvironment={environment} />
-);
+export const Branch = () => <DeployLatest pageEnvironment={environment} />;
 Branch.story = {
   parameters: {
     docs: {
@@ -26,10 +24,12 @@ Branch.story = {
 };
 
 export const PromoteEnvironment = () => (
-  <DeployLatest pageEnvironment={{
-    ...environment,
-    deployType: 'promote',
-  }} />
+  <DeployLatest
+    pageEnvironment={{
+      ...environment,
+      deployType: 'promote',
+    }}
+  />
 );
 PromoteEnvironment.story = {
   parameters: {
@@ -40,9 +40,7 @@ PromoteEnvironment.story = {
 };
 
 const prEnvironment = mocks.Environment(false, 'pr-100');
-export const PullRequest = () => (
-  <DeployLatest pageEnvironment={prEnvironment} />
-);
+export const PullRequest = () => <DeployLatest pageEnvironment={prEnvironment} />;
 PullRequest.story = {
   parameters: {
     docs: {
@@ -52,10 +50,12 @@ PullRequest.story = {
 };
 
 export const Unavailable = () => (
-  <DeployLatest pageEnvironment={{
-    ...environment,
-    deployBaseRef: '',
-  }} />
+  <DeployLatest
+    pageEnvironment={{
+      ...environment,
+      deployBaseRef: '',
+    }}
+  />
 );
 Unavailable.story = {
   parameters: {

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import getConfig from 'next/config';
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
@@ -20,8 +21,8 @@ export default (App, initialAuth) => {
             provider: 'local-auth',
             providerData: {},
             user: {
-              username: 'localadmin'
-            }
+              username: 'localadmin',
+            },
           }}
         />
       );

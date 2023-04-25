@@ -1,7 +1,8 @@
-import React from "react";
-import { StyledEnvironmentDetails } from "./StyledEnvironment";
-import Skeleton from "react-loading-skeleton";
-import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
+import { StyledEnvironmentDetails } from './StyledEnvironment';
 
 const EnvironmentSkeleton = () => {
   return (
@@ -43,7 +44,7 @@ const EnvironmentSkeleton = () => {
           <div>
             <label>Source</label>
             <div className="field">
-              <Skeleton width={"50%"} />
+              <Skeleton width={'50%'} />
             </div>
           </div>
         </div>
@@ -51,7 +52,7 @@ const EnvironmentSkeleton = () => {
           <div>
             <label>Routes</label>
             <div className="field">
-              <Skeleton width={"50%"} />
+              <Skeleton width={'50%'} />
             </div>
           </div>
         </div>

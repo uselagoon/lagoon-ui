@@ -1,5 +1,7 @@
 import React from 'react';
+
 import GlobalStyles from 'layouts/GlobalStyles';
+
 import '../../src/static/normalize.css';
 
 export default storyFn => (

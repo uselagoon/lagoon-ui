@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledEnvironmentDetails = styled.div`
   padding: 32px calc((100vw / 16) * 1);
@@ -49,39 +49,39 @@ export const StyledEnvironmentDetails = styled.div`
     }
     &.environmentType {
       &::before {
-        background-image: url("/static/images/environments.svg");
+        background-image: url('/static/images/environments.svg');
         background-size: 20px 20px;
       }
     }
     &.deployType {
       &::before {
-        background-image: url("/static/images/branches.svg");
+        background-image: url('/static/images/branches.svg');
         background-size: 15px 20px;
       }
     }
     &.updated {
       &::before {
-        background-image: url("/static/images/last-deploy.svg");
+        background-image: url('/static/images/last-deploy.svg');
         background-size: 20px 15px;
       }
     }
     &.routes {
       width: 100%;
       &::before {
-        background-image: url("/static/images/url.svg");
+        background-image: url('/static/images/url.svg');
         background-size: 19px 19px;
       }
     }
     &.created {
       &::before {
-        background-image: url("/static/images/created.svg");
+        background-image: url('/static/images/created.svg');
         background-size: 17px 16px;
       }
     }
     &.source {
       width: 100%;
       &::before {
-        background-image: url("/static/images/git-lab.svg");
+        background-image: url('/static/images/git-lab.svg');
         background-size: 19px 17px;
       }
       .field {

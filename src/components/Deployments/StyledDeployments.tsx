@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color, fontSize } from "lib/variables";
+import { bp, color, fontSize } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledDeployments = styled.div`
   .header {
@@ -56,7 +56,7 @@ export const StyledDeployments = styled.div`
     }
 
     .data-row {
-      background-image: url("/static/images/right-arrow.svg");
+      background-image: url('/static/images/right-arrow.svg');
       background-position: right 20px center;
       background-repeat: no-repeat;
       background-size: 18px 11px;
@@ -102,31 +102,31 @@ export const StyledDeployments = styled.div`
         background-size: 10px 10px;
 
         &.new {
-          background-image: url("/static/images/pending.svg");
+          background-image: url('/static/images/pending.svg');
         }
 
         &.pending {
-          background-image: url("/static/images/pending.svg");
+          background-image: url('/static/images/pending.svg');
         }
 
         &.running {
-          background-image: url("/static/images/in-progress.svg");
+          background-image: url('/static/images/in-progress.svg');
         }
 
         &.cancelled {
-          background-image: url("/static/images/failed.svg");
+          background-image: url('/static/images/failed.svg');
         }
 
         &.error {
-          background-image: url("/static/images/failed.svg");
+          background-image: url('/static/images/failed.svg');
         }
 
         &.failed {
-          background-image: url("/static/images/failed.svg");
+          background-image: url('/static/images/failed.svg');
         }
 
         &.complete {
-          background-image: url("/static/images/successful.svg");
+          background-image: url('/static/images/successful.svg');
         }
       }
     }

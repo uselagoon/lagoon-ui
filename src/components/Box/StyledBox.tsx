@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { color } from "lib/variables";
+import { color } from 'lib/variables';
+import styled, { css } from 'styled-components';
 
 export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   border: 2px solid ${props => props.theme.borders.box};
@@ -11,7 +11,7 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
 
   &::after {
     bottom: 4px;
-    content: "";
+    content: '';
     display: block;
     height: 20px;
     left: 15px;
@@ -37,7 +37,7 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
     transition: background-image 0.5s ease-in-out;
     z-index: 10;
   }
-  ${(props) =>
+  ${props =>
     props.activeBgs &&
     css`
       .content {

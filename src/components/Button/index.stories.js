@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { action } from '@storybook/addon-actions';
+
 import Button from './index';
 
 export default {
@@ -7,15 +9,10 @@ export default {
   title: 'Components/Button',
 };
 
-export const Default = () => (
-  <Button action={action('button-click')}>Default Button</Button>
-);
+export const Default = () => <Button action={action('button-click')}>Default Button</Button>;
 
 export const Disabled = () => (
-  <Button
-    action={action('button-click')}
-    disabled
-  >
+  <Button action={action('button-click')} disabled>
     Disabled Button
   </Button>
 );
@@ -28,5 +25,7 @@ ButtonLink.story = {
 };
 
 export const DisabledButtonLink = () => (
-  <Button href="/" disabled>Button Link</Button>
+  <Button href="/" disabled>
+    Button Link
+  </Button>
 );

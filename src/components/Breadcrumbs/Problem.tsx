@@ -1,5 +1,6 @@
-import React, { FC } from "react";
-import Breadcrumb from "components/Breadcrumbs/Breadcrumb";
+import React, { FC } from 'react';
+
+import Breadcrumb from 'components/Breadcrumbs/Breadcrumb';
 
 interface EnvironmentBreadcrumbProps {
   header: string;
@@ -16,7 +17,7 @@ const EnvironmentBreadcrumb: FC<EnvironmentBreadcrumbProps> = ({
 }) => {
   const linkData = {
     urlObject: {
-      pathname: "/problems",
+      pathname: '/problems',
       query: { openshiftProjectName: environmentSlug },
     },
     asPath: `/projects/${projectSlug}/${environmentSlug}/problems`,

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledProblems = styled.div`
   .header {
@@ -29,7 +29,6 @@ export const StyledProblems = styled.div`
       }
     }
   }
-
 
   .filters-wrapper {
     .select-filters {
@@ -74,7 +73,7 @@ export const StyledProblems = styled.div`
 
   .button-sort {
     color: #5f6f7a;
-    font-family: "source-code-pro", sans-serif;
+    font-family: 'source-code-pro', sans-serif;
     font-size: 12px;
     font-size: 0.8125rem;
     line-height: 1.4;
@@ -91,11 +90,11 @@ export const StyledProblems = styled.div`
     }
 
     &.ascending:after {
-      content: " \\25B2";
+      content: ' \\25B2';
     }
 
     &.descending:after {
-      content: " \\25BC";
+      content: ' \\25BC';
     }
   }
 

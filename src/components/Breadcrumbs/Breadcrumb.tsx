@@ -1,6 +1,8 @@
-import React, { FC } from "react";
-import Router from "next/router";
-import { BreadCrumbLink, StyledBreadCrumb } from "./StyledBreadCrumb";
+import React, { FC } from 'react';
+
+import Router from 'next/router';
+
+import { BreadCrumbLink, StyledBreadCrumb } from './StyledBreadCrumb';
 
 interface BreadcrumbProps {
   header: string;
@@ -14,16 +16,11 @@ interface BreadcrumbProps {
   asPath: string;
 }
 
-const Breadcrumb: FC<BreadcrumbProps> = ({
-  header,
-  title,
-  urlObject,
-  asPath,
-}) => (
+const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath }) => (
   <>
     <BreadCrumbLink
       href={asPath}
-      onClick={(e) => {
+      onClick={e => {
         e.preventDefault();
         void Router.push(urlObject, asPath);
       }}

@@ -1,5 +1,6 @@
-import React from "react";
-import { StyledBreadcrumbsWrapper } from "./StyledBreadCrumb";
+import React from 'react';
+
+import { StyledBreadcrumbsWrapper } from './StyledBreadCrumb';
 
 /**
  * Displays the Project and, optionally, the Environment breadcrumbs.

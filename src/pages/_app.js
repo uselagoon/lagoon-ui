@@ -1,43 +1,42 @@
-import "isomorphic-unfetch";
-import { useRouter } from "next/router";
-import React, { createContext, useEffect } from "react";
-import Head from "next/head";
-import Typekit from "react-typekit";
-import Favicon from "components/Favicon";
-import Authenticator from "lib/Authenticator";
-import ApiConnection from "lib/ApiConnection";
-import App from "next/app";
-// theming
-import useTheme from "lib/useTheme";
-import { darkTheme, lightTheme } from "../styles/theme";
-import { ThemeProvider } from "styled-components";
+import React, { createContext, useEffect } from 'react';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Typekit from 'react-typekit';
 
+import App from 'next/app';
+import getConfig from 'next/config';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+
+import Favicon from 'components/Favicon';
 // transitions
-import { m, AnimatePresence, LazyMotion } from "framer-motion";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-import "react-loading-skeleton/dist/skeleton.css";
-import "../static/normalize.css";
+import { AnimatePresence, LazyMotion, m } from 'framer-motion';
+import 'isomorphic-unfetch';
+import ApiConnection from 'lib/ApiConnection';
+import Authenticator from 'lib/Authenticator';
+// theming
+import useTheme from 'lib/useTheme';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { ThemeProvider } from 'styled-components';
 
+import '../static/normalize.css';
+import { darkTheme, lightTheme } from '../styles/theme';
+import Tour from '../tours/Tour';
 // tours
-import { TourContextProvider } from "../tours/TourContext";
-import Tour from "../tours/Tour";
-
-import getConfig from "next/config";
+import { TourContextProvider } from '../tours/TourContext';
 
 const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
-const tourEnabled = LAGOON_UI_TOURS_ENABLED === "enabled";
+const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
 
 // lazy load animation features
-const loadFeatures = () =>
-  import("components/common/features").then((res) => res.default);
+const loadFeatures = () => import('components/common/features').then(res => res.default);
 
 export const AppContext = createContext(null);
 
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname, events } = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const lagoonTheme = theme === "light" ? lightTheme : darkTheme;
+  const lagoonTheme = theme === 'light' ? lightTheme : darkTheme;
   NProgress.configure({ showSpinner: false });
 
   useEffect(() => {
@@ -48,13 +47,13 @@ const LagoonApp = ({ Component, pageProps, err }) => {
       NProgress.done();
     };
 
-    events.on("routeChangeStart", startTransition);
-    events.on("routeChangeComplete", endTransition);
-    events.on("routeChangeError", endTransition);
+    events.on('routeChangeStart', startTransition);
+    events.on('routeChangeComplete', endTransition);
+    events.on('routeChangeError', endTransition);
 
     return () => {
-      events.off("routeChangeStart", startTransition);
-      events.off("routeChangeComplete", endTransition);
+      events.off('routeChangeStart', startTransition);
+      events.off('routeChangeComplete', endTransition);
     };
   }, [events]);
 
@@ -66,11 +65,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
         <Head>
           <Typekit kitId="ggo2pml" />
         </Head>
-        <Component
-          {...pageProps}
-          errorMessage={err.toString()}
-          url={pathname}
-        />
+        <Component {...pageProps} errorMessage={err.toString()} url={pathname} />
         <Favicon />
       </ThemeProvider>
     );
@@ -84,7 +79,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
           window.scrollTo({
             top: 0,
             left: 0,
-            behavior: "auto",
+            behavior: 'auto',
           });
         }}
       >
@@ -117,7 +112,7 @@ const LagoonApp = ({ Component, pageProps, err }) => {
   );
 };
 
-LagoonApp.getInitialProps = async (appContext) => {
+LagoonApp.getInitialProps = async appContext => {
   const appProps = await App.getInitialProps(appContext);
   return { ...appProps };
 };

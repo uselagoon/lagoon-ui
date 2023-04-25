@@ -1,8 +1,10 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
+
 import Button from 'components/Button';
+import gql from 'graphql-tag';
+
 import { SelectWrapper } from './Styles';
 
 const taskDrushUserLogin = gql`
@@ -27,10 +29,10 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
     onCompleted={onCompleted}
     onError={onError}
     variables={{
-      environment: pageEnvironment.id
+      environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushUserLogin) => {
+    {taskDrushUserLogin => {
       return (
         <SelectWrapper>
           <div className="envSelect">
@@ -40,13 +42,13 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
               name="dest-environment"
               value={{
                 label: pageEnvironment.name,
-                value: pageEnvironment.id
+                value: pageEnvironment.id,
               }}
               options={[
                 {
                   label: pageEnvironment.name,
-                  value: pageEnvironment.id
-                }
+                  value: pageEnvironment.id,
+                },
               ]}
               isDisabled
               required

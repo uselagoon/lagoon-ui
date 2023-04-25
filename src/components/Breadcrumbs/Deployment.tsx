@@ -1,6 +1,7 @@
-import React, { FC } from "react";
-import { getLinkData } from "components/link/Deployment";
-import Breadcrumb from "components/Breadcrumbs/Breadcrumb";
+import React, { FC } from 'react';
+
+import Breadcrumb from 'components/Breadcrumbs/Breadcrumb';
+import { getLinkData } from 'components/link/Deployment';
 
 interface DeploymentBreadcrumbProps {
   deploymentSlug: string;
@@ -8,16 +9,10 @@ interface DeploymentBreadcrumbProps {
   projectSlug: string;
 }
 
-const DeploymentBreadcrumb: FC<DeploymentBreadcrumbProps> = ({
-  deploymentSlug,
-  environmentSlug,
-  projectSlug,
-}) => {
+const DeploymentBreadcrumb: FC<DeploymentBreadcrumbProps> = ({ deploymentSlug, environmentSlug, projectSlug }) => {
   const linkData = getLinkData(deploymentSlug, environmentSlug, projectSlug);
 
-  return (
-    <Breadcrumb header="Deployment" title={deploymentSlug} {...linkData} />
-  );
+  return <Breadcrumb header="Deployment" title={deploymentSlug} {...linkData} />;
 };
 
 export default DeploymentBreadcrumb;
