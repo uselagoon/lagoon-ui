@@ -1,9 +1,11 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+
 import Button from 'components/Button';
+import gql from 'graphql-tag';
+import useTranslation from 'lib/useTranslation';
+
 import { NewDeployment } from './StyledDeployLatest';
-import useTranslation from "lib/useTranslation";
 
 const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
   mutation deployEnvironmentLatest($environmentId: Int!) {
@@ -18,19 +20,12 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
   const t = useTranslation();
   let deploymentsEnabled = true;
 
-  if (
-    environment.deployType === 'branch' ||
-    environment.deployType === 'promote'
-  ) {
+  if (environment.deployType === 'branch' || environment.deployType === 'promote') {
     if (!environment.deployBaseRef) {
       deploymentsEnabled = false;
     }
   } else if (environment.deployType === 'pullrequest') {
-    if (
-      !environment.deployBaseRef &&
-      !environment.deployHeadRef &&
-      !environment.deployTitle
-    ) {
+    if (!environment.deployBaseRef && !environment.deployHeadRef && !environment.deployTitle) {
       deploymentsEnabled = false;
     }
   } else {
@@ -41,27 +36,25 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
     <NewDeployment>
       {!deploymentsEnabled && (
         <React.Fragment>
-          <div className="description">
-            {t("deployments.deployLatest.noManualDeployments")}
-          </div>
-          <Button disabled>{t("deployments.deployLatest.deploy")}</Button>
+          <div className="description">{t('deployments.deployLatest.noManualDeployments')}</div>
+          <Button disabled>{t('deployments.deployLatest.deploy')}</Button>
         </React.Fragment>
       )}
       {deploymentsEnabled && (
         <React.Fragment>
           <div className="description">
-            {environment.deployType === "branch" &&
-              t("deployments.deployLatest.branchDeployment", {
+            {environment.deployType === 'branch' &&
+              t('deployments.deployLatest.branchDeployment', {
                 branch: environment.deployBaseRef,
               })}
 
-            {environment.deployType === "pullrequest" &&
-              t("deployments.deployLatest.prDeployment", {
+            {environment.deployType === 'pullrequest' &&
+              t('deployments.deployLatest.prDeployment', {
                 title: environment.deployTitle,
               })}
 
-            {environment.deployType === "promote" &&
-              t("deployments.deployLatest.promote", {
+            {environment.deployType === 'promote' &&
+              t('deployments.deployLatest.promote', {
                 project: environment.project.name,
                 ref: environment.deployBaseRef,
               })}
@@ -73,23 +66,18 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
             }}
           >
             {(deploy, { loading, error, data }) => {
-              const success =
-                data && data.deployEnvironmentLatest === "success";
+              const success = data && data.deployEnvironmentLatest === 'success';
               return (
                 <React.Fragment>
                   <Button action={deploy} disabled={loading}>
-                    {t("deployments.deployLatest.deploy")}
+                    {t('deployments.deployLatest.deploy')}
                   </Button>
 
-                  {success && (
-                    <div className="deploy_result">
-                      {t("deployments.deployLatest.deploymentQueued")}
-                    </div>
-                  )}
+                  {success && <div className="deploy_result">{t('deployments.deployLatest.deploymentQueued')}</div>}
 
                   {error && (
                     <div className="deploy_result">
-                      <p>{t("deployments.deployLatest.deploymentProblem")}</p>
+                      <p>{t('deployments.deployLatest.deploymentProblem')}</p>
                       <p>{error.message}</p>
                     </div>
                   )}

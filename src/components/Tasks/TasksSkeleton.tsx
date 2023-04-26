@@ -1,14 +1,13 @@
-import useTranslation from "lib/useTranslation";
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import { StyledTasks, TasksTable } from "./StyledTasks";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import useTranslation from 'lib/useTranslation';
+
+import { StyledTasks, TasksTable } from './StyledTasks';
 
 const TasksSkeleton = () => {
   const t = useTranslation();
-  const numberOfItems =
-    typeof window !== "undefined"
-      ? Math.floor((window.innerHeight * 8) / 10 / 65)
-      : 10;
+  const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const itemRender = (
     <div className="data-row">
@@ -32,14 +31,12 @@ const TasksSkeleton = () => {
   return (
     <StyledTasks className="tasks">
       <div className="header">
-        <label>{t("tasks.name")}</label>
-        <label>{t("tasks.created")}</label>
-        <label className="service">{t("tasks.service")}</label>
-        <label className="status">{t("tasks.status")}</label>
+        <label>{t('tasks.name')}</label>
+        <label>{t('tasks.created')}</label>
+        <label className="service">{t('tasks.service')}</label>
+        <label className="status">{t('tasks.status')}</label>
       </div>
-      <TasksTable className="data-table">
-        {[...Array<undefined>(numberOfItems)].map(() => itemRender)}
-      </TasksTable>
+      <TasksTable className="data-table">{[...Array<undefined>(numberOfItems)].map(() => itemRender)}</TasksTable>
     </StyledTasks>
   );
 };

@@ -1,19 +1,19 @@
-import React from "react";
-import getConfig from "next/config";
-const { publicRuntimeConfig } = getConfig();
-import {
-  StyledDropdown,
-  DropdownMenu,
-  DropdownButton,
-} from "./StyledHeaderMenu";
-import Link from "next/link";
-import useTranslation from "lib/useTranslation";
+import React from 'react';
 
-const useOutsideClick = (callback) => {
+import getConfig from 'next/config';
+import Link from 'next/link';
+
+import useTranslation from 'lib/useTranslation';
+
+import { DropdownButton, DropdownMenu, StyledDropdown } from './StyledHeaderMenu';
+
+const { publicRuntimeConfig } = getConfig();
+
+const useOutsideClick = callback => {
   const ref = React.useRef();
 
   React.useEffect(() => {
-    const handleClick = (event) => {
+    const handleClick = event => {
       if (ref.current && !ref.current.contains(event.target)) {
         setTimeout(() => {
           callback();
@@ -21,10 +21,10 @@ const useOutsideClick = (callback) => {
       }
     };
 
-    document.addEventListener("click", handleClick, true);
+    document.addEventListener('click', handleClick, true);
 
     return () => {
-      document.removeEventListener("click", handleClick, true);
+      document.removeEventListener('click', handleClick, true);
     };
   }, [ref]);
 
@@ -67,28 +67,25 @@ const HeaderMenu = ({ auth }) => {
         menu={[
           <Link key="settings" href="/settings" prefetch>
             <a key="settings" className="settings">
-              {t("header.nav.settings")}
+              {t('header.nav.settings')}
             </a>
           </Link>,
           <hr key="line" />,
           <Link key="projects" href="/projects" prefetch>
             <a key="projects" className="menuitem">
-              {t("header.nav.projects")}
+              {t('header.nav.projects')}
             </a>
           </Link>,
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
-            <Link
-              href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}
-              passHref
-            >
+            <Link href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`} passHref>
               <a key="account" className="menuitem">
-                {t("header.nav.account")}
+                {t('header.nav.account')}
               </a>
             </Link>
           ),
           <hr key="lastline" />,
           <a key="logout" className="logout" onClick={auth.logout}>
-            {t("header.nav.signOut")}
+            {t('header.nav.signOut')}
           </a>,
         ]}
       />

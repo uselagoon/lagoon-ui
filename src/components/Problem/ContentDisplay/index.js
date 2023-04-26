@@ -1,16 +1,12 @@
-import React from "react";
-import DrutinyContent from "components/Problem/ContentDisplay/DrutinyContent";
-import DefaultDisplay from "components/Problem/ContentDisplay/DefaultContent";
+import React from 'react';
+
+import DefaultDisplay from 'components/Problem/ContentDisplay/DefaultContent';
+import DrutinyContent from 'components/Problem/ContentDisplay/DrutinyContent';
 
 const ContentDisplay = ({ problem }) => (
-    <>
-        {problem.source.startsWith("Drutiny") ? (
-            <DrutinyContent problem={problem} />
-        ) : (
-            <DefaultDisplay problem={problem} />
-        )}
-    </>
+  <>
+    {problem.source.startsWith('Drutiny') ? <DrutinyContent problem={problem} /> : <DefaultDisplay problem={problem} />}
+  </>
 );
-
 
 export default ContentDisplay;

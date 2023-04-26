@@ -1,40 +1,43 @@
-import React, { useEffect } from "react";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import getConfig from "next/config";
-import MainLayout from "layouts/MainLayout";
-import EnvironmentWithTasksQuery from "lib/query/EnvironmentWithTasks";
-import TasksSubscription from "lib/subscription/Tasks";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
-import Tasks from "components/Tasks";
-import TasksSkeleton from "components/Tasks/TasksSkeleton";
-import ResultsLimited from "components/ResultsLimited";
-import { TasksWrapper } from "../styles/pageStyles";
-import AddTask from "components/AddTask";
-import QueryError from "../components/errors/QueryError";
-import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
-import { useQuery } from "@apollo/react-hooks";
-import Skeleton from "react-loading-skeleton";
-import { useTourContext } from "../tours/TourContext";
+import React, { useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import getConfig from 'next/config';
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import AddTask from 'components/AddTask';
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import ResultsLimited from 'components/ResultsLimited';
+import Tasks from 'components/Tasks';
+import TasksSkeleton from 'components/Tasks/TasksSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentWithTasksQuery from 'lib/query/EnvironmentWithTasks';
+import TasksSubscription from 'lib/subscription/Tasks';
+
+import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
+import QueryError from '../components/errors/QueryError';
+import { TasksWrapper } from '../styles/pageStyles';
+import { useTourContext } from '../tours/TourContext';
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT, 10);
 const customMessage = publicRuntimeConfig.AGOON_UI_TASKS_LIMIT_MESSAGE;
 
 let urlResultLimit = envLimit;
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   let search = window.location.search;
   let params = new URLSearchParams(search);
-  let limit = params.get("limit");
+  let limit = params.get('limit');
   if (limit) {
     if (parseInt(limit.trim(), 10)) {
       urlResultLimit = parseInt(limit.trim(), 10);
     }
-    if (limit == "all") {
+    if (limit == 'all') {
       urlResultLimit = -1;
     }
   }
@@ -45,16 +48,12 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  */
 export const PageTasks = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore } = useQuery(
-    EnvironmentWithTasksQuery,
-    {
-      variables: {
-        openshiftProjectName: router.query.openshiftProjectName,
-        limit: resultLimit,
-      },
-    }
-  );
-
+  const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithTasksQuery, {
+    variables: {
+      openshiftProjectName: router.query.openshiftProjectName,
+      limit: resultLimit,
+    },
+  });
 
   useEffect(() => {
     if (!loading && data?.environment?.tasks.length) {
@@ -77,28 +76,18 @@ export const PageTasks = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
           </Breadcrumbs>
           <TasksWrapper>
-            <NavTabsSkeleton
-              activeTab="tasks"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
+            <NavTabsSkeleton activeTab="tasks" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
 
             <div className="content">
-              <Skeleton height={"60px"} />
-                <TasksSkeleton/>
+              <Skeleton height={'60px'} />
+              <TasksSkeleton />
 
               <ResultsLimited
                 limit={resultLimit}
-                message={
-                  (!customMessage && "") ||
-                  (customMessage && customMessage.replace(/['"]+/g, ""))
-                }
+                message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
               />
             </div>
           </TasksWrapper>
@@ -130,9 +119,7 @@ export const PageTasks = ({ router }) => {
       if (!subscriptionData.data) return prevStore;
       const prevTasks = prevStore.environment.tasks;
       const incomingTask = subscriptionData.data.taskChanged;
-      const existingIndex = prevTasks.findIndex(
-        (prevTask) => prevTask.id === incomingTask.id
-      );
+      const existingIndex = prevTasks.findIndex(prevTask => prevTask.id === incomingTask.id);
       let newTasks;
 
       // New task.
@@ -183,10 +170,7 @@ export const PageTasks = ({ router }) => {
             <ResultsLimited
               limit={resultLimit}
               results={environment.tasks.length}
-              message={
-                (!customMessage && "") ||
-                (customMessage && customMessage.replace(/['"]+/g, ""))
-              }
+              message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
             />
           </div>
         </TasksWrapper>

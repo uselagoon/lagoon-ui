@@ -1,7 +1,9 @@
-import useTranslation from "lib/useTranslation";
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import { Header, StyledFacts } from "./StyledFacts";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import useTranslation from 'lib/useTranslation';
+
+import { Header, StyledFacts } from './StyledFacts';
 
 const FactsSkeleton = () => {
   const t = useTranslation();
@@ -10,22 +12,17 @@ const FactsSkeleton = () => {
   return (
     <StyledFacts>
       <div className="filters">
-        <input
-          type="text"
-          id="filter"
-          placeholder={t("placeholders.facts") as unknown as string}
-          value={undefined}
-        />
+        <input type="text" id="filter" placeholder={t('placeholders.facts') as unknown as string} value={undefined} />
       </div>
       <Header>
         <button type="button" className="button-sort name">
-          {t("facts.name")}
+          {t('facts.name')}
         </button>
         <button type="button" className="button-sort value">
-          {t("facts.source")}
+          {t('facts.source')}
         </button>
         <button type="button" className="button-sort value">
-          {t("facts.value")}
+          {t('facts.value')}
         </button>
       </Header>
       <div className="data-table">

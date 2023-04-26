@@ -2,14 +2,14 @@ import { color } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledHeader = styled.header`
-        background: ${color.brightBlue} ${color.lightBlue};
-        background: ${color.lightBlue};
-        background: -moz-linear-gradient(left, ${color.brightBlue} 0%, ${color.lightBlue} 25%);
-        background: -webkit-linear-gradient(left, ${color.brightBlue} 0%,${color.lightBlue} 25%);
-        background: linear-gradient(to right, ${color.brightBlue} 0%,${color.lightBlue} 25%);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${color.lightBlue}',GradientType=1 );
-        display: flex;
-        justify-content: space-between;
+  background: ${color.brightBlue} ${color.lightBlue};
+  background: ${color.lightBlue};
+  background: ${props => props.theme.gradients.headerFooterGradient};
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${
+  color.lightBlue
+}',GradientType=1 );
+  display: flex;
+  justify-content: space-between;
 
   .authContainer {
     display: flex;
@@ -60,9 +60,12 @@ export const StyledHeader = styled.header`
       display: flex;
     }
   }
+<<<<<<< HEAD
+=======
 `;
 
 export const ControlButtons = styled.div`
   margin-left: auto;
   align-self: center;
+>>>>>>> main
 `;

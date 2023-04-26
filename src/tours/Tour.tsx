@@ -1,14 +1,16 @@
-import { color } from "lib/variables";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Joyride, { CallBackProps } from "react-joyride";
-import { useTourContext } from "./TourContext";
-import useTranslation from "lib/useTranslation";
+import { useEffect, useState } from 'react';
+import Joyride, { CallBackProps } from 'react-joyride';
 
-import TourConfig from "../../tour.json";
+import { useRouter } from 'next/router';
+
+import useTranslation from 'lib/useTranslation';
+import { color } from 'lib/variables';
+
+import TourConfig from '../../tour.json';
+import { useTourContext } from './TourContext';
 
 interface Config {
-  mode: "translated" | "literal";
+  mode: 'translated' | 'literal';
   routes: Route[];
 }
 export type Route = {
@@ -46,13 +48,11 @@ const Tour = () => {
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
 
   const getCurrentRouteSteps = (routes: Route[]) => {
-    const currentIndex = routes.findIndex(
-      (route) => pathname === route.pathName
-    );
+    const currentIndex = routes.findIndex(route => pathname === route.pathName);
     if (!!~currentIndex) {
-      const modifiedSteps = routes[currentIndex].steps.map((eachStep) => {
+      const modifiedSteps = routes[currentIndex].steps.map(eachStep => {
         const cloned = { ...eachStep };
-        if (TourConfig.mode === "translated") {
+        if (TourConfig.mode === 'translated') {
           // use the T function - get translated strings
           cloned.content = t(cloned.content);
           cloned.title = t(cloned.title);
@@ -62,8 +62,7 @@ const Tour = () => {
 
       // if a step was already viewed and saved locally, if the user navigates elsewhere and returns, don't show it again.
       const unseenSteps = modifiedSteps.filter(
-        ({ key }) =>
-          !routesToured.find(({ keys }) => keys.includes(key as string))
+        ({ key }) => !routesToured.find(({ keys }) => keys.includes(key as string))
       );
 
       const alreadySeenSteps = modifiedSteps.filter(({ key }) =>
@@ -71,16 +70,12 @@ const Tour = () => {
       );
 
       // browser stored hashes that don't match any of the json step hashes get removed.
-      const currentRouteIdxInCache = routesToured.findIndex(
-        ({ path }) => path === pathname
-      );
+      const currentRouteIdxInCache = routesToured.findIndex(({ path }) => path === pathname);
       if (~currentRouteIdxInCache) {
         const clonedToured = [...routesToured];
         // filter out old hash remnants
-        const updatedKeys = routesToured[
-          currentRouteIdxInCache
-        ].keys.filter((hashString) =>
-          alreadySeenSteps.some((step) => step.key === hashString)
+        const updatedKeys = routesToured[currentRouteIdxInCache].keys.filter(hashString =>
+          alreadySeenSteps.some(step => step.key === hashString)
         );
         clonedToured[currentRouteIdxInCache].keys = updatedKeys;
         updateTourInfo(clonedToured);
@@ -95,7 +90,7 @@ const Tour = () => {
 
   const getTourConfig = async () => {
     // save tour info to context
-    setTourState((prev) => {
+    setTourState(prev => {
       return { ...prev, tourRoutes: TourConfig.routes };
     });
 
@@ -114,9 +109,9 @@ const Tour = () => {
       getCurrentRouteSteps(tourRoutes);
     };
 
-    router.events.on("routeChangeComplete", handleStepsOnRouteChange);
+    router.events.on('routeChangeComplete', handleStepsOnRouteChange);
     return () => {
-      router.events.off("routeChangeComplete", handleStepsOnRouteChange);
+      router.events.off('routeChangeComplete', handleStepsOnRouteChange);
     };
   }, [router.events]);
 
@@ -137,30 +132,30 @@ const Tour = () => {
   const handleCallback = (data: CallBackProps) => {
     const { action, index, type } = data;
 
-    if (action === "skip") {
+    if (action === 'skip') {
       skipTour();
       return;
     }
 
-    if (action === "close") {
+    if (action === 'close') {
       // when "X" is clicked the tour on the route pauses, navigating to other routes continues it.
       pauseTour(true);
       return;
     }
 
-    if (type === "step:after" && action === "prev") {
+    if (type === 'step:after' && action === 'prev') {
       // actions if we need to modify what happens on back button
       return;
     }
 
-    if (type === "step:after") {
+    if (type === 'step:after') {
       // update which step of the route tour was shown per step completion
       const stepKey = currentRouteTour?.steps[index].key;
       stepKey && updateRoutesToured(pathname, stepKey);
 
       return;
     }
-    if (type === "tour:end") {
+    if (type === 'tour:end') {
       pauseTour();
     }
   };
@@ -168,10 +163,7 @@ const Tour = () => {
   // check if every step key in current route is present in the steps[] array of the currentTour
   const allCurrentRouteStepsToured = () =>
     currentRouteTour?.steps.every(({ key }) =>
-      routesToured.find(
-        ({ path, keys }) =>
-          path === currentRouteTour.pathName && keys.includes(key as string)
-      )
+      routesToured.find(({ path, keys }) => path === currentRouteTour.pathName && keys.includes(key as string))
     ) ?? false;
 
   // user opted out of the tour or every route has been toured
@@ -186,7 +178,7 @@ const Tour = () => {
   }
 
   // avoid runtime errors if target isn't provided in the configuration
-  if (currentRouteTour.steps.some((step) => step.target === "")) return null;
+  if (currentRouteTour.steps.some(step => step.target === '')) return null;
 
   return (
     running && (
@@ -200,15 +192,15 @@ const Tour = () => {
         showProgress
         showSkipButton
         locale={{
-          skip: t("tours.skip"),
-          last: t("tours.last"),
-          back: t("tours.back"),
-          next: t("tours.next"),
+          skip: t('tours.skip'),
+          last: t('tours.last'),
+          back: t('tours.back'),
+          next: t('tours.next'),
         }}
         styles={{
           options: {
             primaryColor: color.blue,
-            width: "40vw",
+            width: '40vw',
           },
         }}
       />

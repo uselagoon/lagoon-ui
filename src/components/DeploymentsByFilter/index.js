@@ -23,7 +23,7 @@ const DeploymentsByFilter = ({ deployments }) => {
   const [hasFilter, setHasFilter] = useState(false);
 
   const t = useTranslation();
-  
+
   const formatString = (textToEdit, labelClassToQuery) => {
     // if the string is bigger than the data-row container, then add new lines.
     const getTextWidth = string => {
@@ -165,7 +165,6 @@ const DeploymentsByFilter = ({ deployments }) => {
       <DeploymentsDataTable>
         {!sortedItems.filter(deployment => filterResults(deployment)).length && (
           <div className="data-none">{t('allDeployments.noDeployments')}</div>
-
         )}
         {sortedItems
           .filter(deployment => filterResults(deployment))
