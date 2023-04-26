@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { color } from "lib/variables";
+import { color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledCustomTaskConfirm = styled.div`
   .margins {

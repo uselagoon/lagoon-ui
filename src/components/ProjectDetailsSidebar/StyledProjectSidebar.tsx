@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color, fontSize } from "lib/variables";
+import { bp, color, fontSize } from 'lib/variables';
+import styled from 'styled-components';
 
 export const ProjectDetails = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ export const FieldWrapper = styled.div`
 
   &.created {
     &:before {
-      background-image: url("/static/images/created.svg");
+      background-image: url('/static/images/created.svg');
     }
   }
   &.origin {
@@ -47,7 +47,7 @@ export const FieldWrapper = styled.div`
     }
 
     &:before {
-      background-image: url("/static/images/git-lab.svg");
+      background-image: url('/static/images/git-lab.svg');
     }
 
     & > div {
@@ -68,7 +68,7 @@ export const FieldWrapper = styled.div`
     }
 
     &:before {
-      background-image: url("/static/images/git.svg");
+      background-image: url('/static/images/git.svg');
       height: 84px;
     }
 
@@ -82,7 +82,7 @@ export const FieldWrapper = styled.div`
       background-color: ${color.white};
       border-right: 28px solid ${color.white};
       color: ${color.darkGrey};
-      font-family: "source-code-pro", sans-serif;
+      font-family: 'source-code-pro', sans-serif;
       ${fontSize(13)};
       margin-top: 6px;
       overflow: hidden;
@@ -91,15 +91,14 @@ export const FieldWrapper = styled.div`
       text-overflow: ellipsis;
     }
 
-    &.skeleton .field{
+    &.skeleton .field {
       padding: 0;
-      margin:0;
+      margin: 0;
       background-color: transparent;
       border: none;
     }
     .copy {
-      background: url("/static/images/copy.svg") center center no-repeat
-        ${color.white};
+      background: url('/static/images/copy.svg') center center no-repeat ${color.white};
       background-size: 16px;
       border-left: 1px solid ${color.lightestGrey};
       bottom: 0;
@@ -130,7 +129,7 @@ export const FieldWrapper = styled.div`
 
   &.branches {
     &:before {
-      background-image: url("/static/images/branches.svg");
+      background-image: url('/static/images/branches.svg');
     }
 
     .field {
@@ -140,19 +139,19 @@ export const FieldWrapper = styled.div`
 
   &.prs {
     &:before {
-      background-image: url("/static/images/pull-request.svg");
+      background-image: url('/static/images/pull-request.svg');
     }
   }
 
   &.envlimit {
     &:before {
-      background-image: url("/static/images/environments-in-use.svg");
+      background-image: url('/static/images/environments-in-use.svg');
     }
   }
 
   &.target {
     &:before {
-      background-image: url("/static/images/target.svg");
+      background-image: url('/static/images/target.svg');
     }
 
     .field1 {
@@ -170,7 +169,7 @@ export const FieldWrapper = styled.div`
 
   &.members {
     &:before {
-      background-image: url("/static/images/members.svg");
+      background-image: url('/static/images/members.svg');
     }
 
     & > div {

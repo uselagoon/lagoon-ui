@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const ProjectsPage = styled.section`
   .box {
@@ -43,8 +43,7 @@ export const ProjectsHeader = styled.div`
 `;
 
 export const SearchInput = styled.input`
-  background: url("/static/images/search.png") 12px center no-repeat
-    ${color.white};
+  background: url('/static/images/search.png') 12px center no-repeat ${color.white};
   background-size: 14px;
   border: 1px solid ${color.midGrey};
   height: 40px;

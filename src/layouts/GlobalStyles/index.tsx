@@ -1,5 +1,5 @@
-import { bp, color, fontSize } from "lib/variables";
-import { createGlobalStyle } from "styled-components";
+import { bp, color, fontSize } from 'lib/variables';
+import { createGlobalStyle } from 'styled-components';
 
 /**
  * Applies styles globally to any component nested inside it.

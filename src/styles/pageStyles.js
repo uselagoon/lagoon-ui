@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
-import { commonBg } from "./commonPageStyles";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
+
+import { commonBg } from './commonPageStyles';
 
 export const ProblemsByDashBoard = styled.div`
   display: flex;

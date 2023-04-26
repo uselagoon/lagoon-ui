@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
 
-import { StyledInsights } from "./StyledInsights";
-import Skeleton from "react-loading-skeleton";
+import { StyledInsights } from './StyledInsights';
 
 const InsightsSkeleton = () => {
   return (
@@ -23,12 +23,7 @@ const InsightsSkeleton = () => {
         </div>
       </div>
       <div className="filters">
-        <input
-          type="text"
-          id="filter"
-          placeholder="Filter insights e.g. sbom.json"
-          value={undefined}
-        />
+        <input type="text" id="filter" placeholder="Filter insights e.g. sbom.json" value={undefined} />
       </div>
       <div className="header">
         <button type="button" className="button-sort file">
@@ -49,7 +44,7 @@ const InsightsSkeleton = () => {
         </button>
       </div>
       <div className="insights-container">
-        <Skeleton count={5} style={{ height: "100px", lineHeight: "0.1" }} />
+        <Skeleton count={5} style={{ height: '100px', lineHeight: '0.1' }} />
       </div>
     </StyledInsights>
   );

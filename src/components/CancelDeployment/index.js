@@ -1,7 +1,8 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+
 import Button from 'components/Button';
+import gql from 'graphql-tag';
 
 const CANCEL_DEPLOYMENT_MUTATION = gql`
   mutation cancelDeployment($deploymentId: Int!) {
@@ -9,14 +10,7 @@ const CANCEL_DEPLOYMENT_MUTATION = gql`
   }
 `;
 
-export const CancelDeploymentButton = ({
-  action,
-  success,
-  loading,
-  error,
-  beforeText,
-  afterText
-}) => (
+export const CancelDeploymentButton = ({ action, success, loading, error, beforeText, afterText }) => (
   <>
     <Button action={action} disabled={loading || success}>
       {success ? afterText || 'Cancellation requested' : beforeText || 'Cancel deployment'}
@@ -35,7 +29,7 @@ const CancelDeployment = ({ deployment, beforeText, afterText }) => (
   <Mutation
     mutation={CANCEL_DEPLOYMENT_MUTATION}
     variables={{
-      deploymentId: deployment.id
+      deploymentId: deployment.id,
     }}
   >
     {(cancelDeploy, { loading, error, data }) => (

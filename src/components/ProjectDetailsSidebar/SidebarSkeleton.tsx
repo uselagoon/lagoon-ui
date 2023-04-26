@@ -1,6 +1,7 @@
-import React from "react";
-import { FieldWrapper, ProjectDetails } from "./StyledProjectSidebar";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import React from 'react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+
+import { FieldWrapper, ProjectDetails } from './StyledProjectSidebar';
 
 const ProjectSkeleton = () => {
   return (
@@ -10,7 +11,7 @@ const ProjectSkeleton = () => {
           <div>
             <label>Created</label>
             <div className="field">
-              <Skeleton style={{ minWidth: "200px", maxWidth: "300px" }} />
+              <Skeleton style={{ minWidth: '200px', maxWidth: '300px' }} />
             </div>
           </div>
         </FieldWrapper>
@@ -18,7 +19,7 @@ const ProjectSkeleton = () => {
           <div>
             <label>Origin</label>
             <div className="field">
-              <Skeleton style={{ minWidth: "300px", maxWidth: "300px" }} />
+              <Skeleton style={{ minWidth: '300px', maxWidth: '300px' }} />
             </div>
           </div>
         </FieldWrapper>
@@ -26,7 +27,7 @@ const ProjectSkeleton = () => {
           <div>
             <label>Git URL</label>
             <div className="field">
-              <Skeleton style={{ minWidth: "300px", maxWidth: "300px" }} height={20} />
+              <Skeleton style={{ minWidth: '300px', maxWidth: '300px' }} height={20} />
             </div>
           </div>
         </FieldWrapper>
@@ -35,7 +36,7 @@ const ProjectSkeleton = () => {
           <div>
             <label>Development environments in use</label>
             <div className="field">
-              <Skeleton style={{ minWidth: "300px", maxWidth: "300px" }} />
+              <Skeleton style={{ minWidth: '300px', maxWidth: '300px' }} />
             </div>
           </div>
         </FieldWrapper>

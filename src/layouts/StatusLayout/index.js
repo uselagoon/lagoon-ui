@@ -1,7 +1,8 @@
-import Header from "components/Header";
-import Footer from "components/Footer";
-import { StyledContentWrapper } from "./StyledStatusLayout";
-import GlobalStyles from "../GlobalStyles";
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+
+import GlobalStyles from '../GlobalStyles';
+import { StyledContentWrapper } from './StyledStatusLayout';
 
 /**
  * The status layout includes the Lagoon UI header and grey box to wrap content.

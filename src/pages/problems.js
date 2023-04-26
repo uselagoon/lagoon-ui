@@ -1,19 +1,22 @@
-import React from "react";
-import * as R from "ramda";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import { Query } from "react-apollo";
-import MainLayout from "layouts/MainLayout";
-import EnvironmentWithProblemsQuery from "lib/query/EnvironmentWithProblems";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import NavTabs from "components/NavTabs";
-import Problems from "components/Problems";
-import withQueryLoading from "lib/withQueryLoading";
-import withQueryError from "lib/withQueryError";
-import { withEnvironmentRequired } from "lib/withDataRequired";
-import { CommonWrapperWNotification } from "../styles/commonPageStyles";
+import React from 'react';
+import { Query } from 'react-apollo';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import NavTabs from 'components/NavTabs';
+import Problems from 'components/Problems';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentWithProblemsQuery from 'lib/query/EnvironmentWithProblems';
+import { withEnvironmentRequired } from 'lib/withDataRequired';
+import withQueryError from 'lib/withQueryError';
+import withQueryLoading from 'lib/withQueryLoading';
+import * as R from 'ramda';
+
+import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 
 /**
  * Displays the problems page, given the name of an openshift project.
@@ -23,10 +26,7 @@ export const PageProblems = ({ router }) => (
     <Head>
       <title>{`${router.query.openshiftProjectName} | Problems`}</title>
     </Head>
-    <Query
-      query={EnvironmentWithProblemsQuery}
-      variables={{ openshiftProjectName: router.query.openshiftProjectName }}
-    >
+    <Query query={EnvironmentWithProblemsQuery} variables={{ openshiftProjectName: router.query.openshiftProjectName }}>
       {R.compose(
         withQueryLoading,
         withQueryError,
@@ -34,7 +34,7 @@ export const PageProblems = ({ router }) => (
       )(({ data: { environment } }) => {
         const problems =
           environment.problems &&
-          environment.problems.map((problem) => {
+          environment.problems.map(problem => {
             return {
               ...problem,
               environment: {

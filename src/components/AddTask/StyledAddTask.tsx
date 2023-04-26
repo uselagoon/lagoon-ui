@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledNewTask = styled.div`
   background: ${color.white};
@@ -29,7 +29,7 @@ export const NewTaskWrapper = styled.div`
   }
   &::before {
     @media ${bp.wideUp} {
-      content: "";
+      content: '';
       display: block;
       flex-grow: 1;
     }

@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled, { css } from 'styled-components';
 
 const sharedStyles = css`
   display: inline-block;

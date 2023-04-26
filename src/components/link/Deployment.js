@@ -5,10 +5,10 @@ export const getLinkData = (deploymentSlug, environmentSlug, projectSlug) => ({
     pathname: '/deployment',
     query: {
       openshiftProjectName: environmentSlug,
-      deploymentName: deploymentSlug
-    }
+      deploymentName: deploymentSlug,
+    },
   },
-  asPath: `/projects/${projectSlug}/${environmentSlug}/deployments/${deploymentSlug}`
+  asPath: `/projects/${projectSlug}/${environmentSlug}/deployments/${deploymentSlug}`,
 });
 
 /**
@@ -20,7 +20,7 @@ const DeploymentLink = ({
   projectSlug,
   children,
   className = null,
-  prefetch = false
+  prefetch = false,
 }) => {
   const linkData = getLinkData(deploymentSlug, environmentSlug, projectSlug);
 

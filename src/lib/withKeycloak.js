@@ -1,5 +1,7 @@
 import React from 'react';
+
 import getConfig from 'next/config';
+
 import { queryStringToObject } from 'lib/util';
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
@@ -19,7 +21,7 @@ export default (App, initialAuth) => {
       const keycloak = Keycloak({
         url: publicRuntimeConfig.KEYCLOAK_API,
         realm: 'lagoon',
-        clientId: 'lagoon-ui'
+        clientId: 'lagoon-ui',
       });
 
       keycloak.onTokenExpired = async () => {
@@ -28,7 +30,7 @@ export default (App, initialAuth) => {
       };
 
       await keycloak.init({
-        checkLoginIframe: false
+        checkLoginIframe: false,
       });
 
       if (!keycloak.authenticated) {
@@ -50,11 +52,9 @@ export default (App, initialAuth) => {
           provider: 'keycloak',
           providerData: keycloak,
           user: {
-            username: keycloak.tokenParsed
-              ? keycloak.tokenParsed.preferred_username
-              : 'unauthenticated'
-          }
-        }
+            username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
+          },
+        },
       });
     }
 

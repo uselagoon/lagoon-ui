@@ -1,27 +1,31 @@
-import React, { useEffect } from "react";
-import * as R from "ramda";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import ProjectByNameQuery from "lib/query/ProjectByName";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import ProjectDetailsSidebar from "components/ProjectDetailsSidebar";
-import Environments from "components/Environments";
-import EnvironmentsSkeleton from "components/Environments/EnvironmentsSkeleton";
-import { ProjectDetailsWrapper } from "../styles/pageStyles";
-import { useQuery } from "@apollo/react-hooks";
-import ProjectNotFound from "../components/errors/ProjectNotFound";
-import SidebarSkeleton from "components/ProjectDetailsSidebar/SidebarSkeleton";
-import QueryError from "../components/errors/QueryError";
-import { useTourContext } from "../tours/TourContext";
-import useTranslation from "lib/useTranslation";
+import React, { useEffect } from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Environments from 'components/Environments';
+import EnvironmentsSkeleton from 'components/Environments/EnvironmentsSkeleton';
+import ProjectDetailsSidebar from 'components/ProjectDetailsSidebar';
+import SidebarSkeleton from 'components/ProjectDetailsSidebar/SidebarSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import ProjectByNameQuery from 'lib/query/ProjectByName';
+import useTranslation from 'lib/useTranslation';
+import * as R from 'ramda';
+
+import ProjectNotFound from '../components/errors/ProjectNotFound';
+import QueryError from '../components/errors/QueryError';
+import { ProjectDetailsWrapper } from '../styles/pageStyles';
+import { useTourContext } from '../tours/TourContext';
+
 /**
  * Displays a project page, given the project name.
  */
 export const PageProject = ({ router }) => {
   const t = useTranslation();
-  const {continueTour} = useTourContext();
+  const { continueTour } = useTourContext();
   const { data, error, loading } = useQuery(ProjectByNameQuery, {
     variables: { name: router.query.projectName },
   });
@@ -47,7 +51,7 @@ export const PageProject = ({ router }) => {
               <SidebarSkeleton />
             </div>
             <div className="environments-wrapper">
-              <h3>{t("project.environments")}</h3>
+              <h3>{t('project.environments')}</h3>
               <EnvironmentsSkeleton />
             </div>
           </ProjectDetailsWrapper>
@@ -55,7 +59,6 @@ export const PageProject = ({ router }) => {
       </>
     );
   }
-
 
   if (error) {
     return <QueryError error={error} />;
@@ -68,7 +71,7 @@ export const PageProject = ({ router }) => {
   }
   // Sort alphabetically by environmentType and then deployType
   const environments = R.sortWith(
-    [R.descend(R.prop("environmentType")), R.ascend(R.prop("deployType"))],
+    [R.descend(R.prop('environmentType')), R.ascend(R.prop('deployType'))],
     project.environments
   );
 
@@ -87,8 +90,8 @@ export const PageProject = ({ router }) => {
             <ProjectDetailsSidebar project={project} />
           </div>
           <div className="environments-wrapper">
-            <h3>{t("project.environments")}</h3>
-            {!environments.length && <p>{t("project.noEnvironments")}</p>}
+            <h3>{t('project.environments')}</h3>
+            {!environments.length && <p>{t('project.noEnvironments')}</p>}
             <Environments environments={environments} project={project} />
           </div>
         </ProjectDetailsWrapper>

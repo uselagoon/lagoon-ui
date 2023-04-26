@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color, fontSize } from "lib/variables";
+import { bp, color, fontSize } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledEnvironments = styled.div`
   display: block;
@@ -9,7 +9,7 @@ export const StyledEnvironments = styled.div`
     justify-content: space-between;
 
     &::after {
-      content: "";
+      content: '';
       flex: auto;
     }
   }
@@ -61,7 +61,7 @@ export const StyledEnvironments = styled.div`
 
     &::after {
       border-top: 1px solid ${color.grey};
-      content: "";
+      content: '';
       display: block;
       position: relative;
       right: 12px;
@@ -88,7 +88,7 @@ export const StyledEnvironments = styled.div`
 
     &::after {
       border-top: 1px solid ${color.grey};
-      content: "";
+      content: '';
       display: block;
       position: relative;
       right: 12px;
@@ -115,7 +115,7 @@ export const StyledEnvironments = styled.div`
 
     &::after {
       border-top: 1px solid ${color.grey};
-      content: "";
+      content: '';
       display: block;
       position: relative;
       right: 12px;
@@ -172,7 +172,7 @@ export const StyledEnvironments = styled.div`
       min-height: 122px;
       padding: 10px 15px;
     }
-    &.skeleton{
+    &.skeleton {
       padding-bottom: 0;
     }
   }

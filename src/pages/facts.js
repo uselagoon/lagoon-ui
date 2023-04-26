@@ -1,19 +1,22 @@
-import React from "react";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import EnvironmentWithFactsQuery from "lib/query/EnvironmentWithFacts";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
-import Facts from "components/Facts";
-import FactsSkeleton from "components/Facts/FactsSkeleton";
-import { CommonWrapperWNotification } from "../styles/commonPageStyles";
-import { useQuery } from "@apollo/react-hooks";
-import QueryError from "../components/errors/QueryError";
-import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import React from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Facts from 'components/Facts';
+import FactsSkeleton from 'components/Facts/FactsSkeleton';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentWithFactsQuery from 'lib/query/EnvironmentWithFacts';
+
+import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
+import QueryError from '../components/errors/QueryError';
+import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 
 /**
  * Displays the facts page, given the name of an openshift project.
@@ -34,18 +37,11 @@ export const PageFacts = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
           </Breadcrumbs>
 
           <CommonWrapperWNotification>
-            <NavTabsSkeleton
-              activeTab="facts"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
+            <NavTabsSkeleton activeTab="facts" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
             <div className="content">
               <FactsSkeleton />
             </div>

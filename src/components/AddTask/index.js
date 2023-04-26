@@ -1,19 +1,21 @@
-import React from "react";
-import ReactSelect from "react-select";
-import withLogic from "./logic";
-import DrushArchiveDump from "./components/DrushArchiveDump";
-import DrushSqlDump from "./components/DrushSqlDump";
-import DrushCacheClear from "./components/DrushCacheClear";
-import DrushCron from "./components/DrushCron";
-import DrushRsyncFiles from "./components/DrushRsyncFiles";
-import DrushSqlSync from "./components/DrushSqlSync";
-import DrushUserLogin from "./components/DrushUserLogin";
-import Empty from "./components/Empty";
-import Completed from "./components/Completed";
-import Error from "./components/Error";
-import InvokeRegisteredTask from "./components/InvokeRegisteredTask";
-import { NewTaskWrapper, StyledNewTask } from "./StyledAddTask";
-import useTranslation from "lib/useTranslation";
+import React from 'react';
+import ReactSelect from 'react-select';
+
+import useTranslation from 'lib/useTranslation';
+
+import { NewTaskWrapper, StyledNewTask } from './StyledAddTask';
+import Completed from './components/Completed';
+import DrushArchiveDump from './components/DrushArchiveDump';
+import DrushCacheClear from './components/DrushCacheClear';
+import DrushCron from './components/DrushCron';
+import DrushRsyncFiles from './components/DrushRsyncFiles';
+import DrushSqlDump from './components/DrushSqlDump';
+import DrushSqlSync from './components/DrushSqlSync';
+import DrushUserLogin from './components/DrushUserLogin';
+import Empty from './components/Empty';
+import Error from './components/Error';
+import InvokeRegisteredTask from './components/InvokeRegisteredTask';
+import withLogic from './logic';
 
 /**
  * Perform a task on the CLI environment.
@@ -48,7 +50,6 @@ const AddTask = ({
       : newTaskComponents[selectedTask]
     : newTaskComponents[Empty];
 
-
   return (
     <React.Fragment>
       <NewTaskWrapper>
@@ -56,10 +57,10 @@ const AddTask = ({
           <div className="selectTask">
             <ReactSelect
               aria-label="Task"
-              placeholder={t("placeholders.selectTask")}
+              placeholder={t('placeholders.selectTask')}
               name="task"
-              value={options.find((o) => o.value === selectedTask)}
-              onChange={(selectedOption) => setSelectedTask(selectedOption)}
+              value={options.find(o => o.value === selectedTask)}
+              onChange={selectedOption => setSelectedTask(selectedOption)}
               options={options}
               required
             />

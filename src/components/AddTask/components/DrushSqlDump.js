@@ -1,10 +1,12 @@
-import React from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import ReactSelect from "react-select";
-import Button from "components/Button";
-import { SelectWrapper } from "./Styles";
-import useTranslation from "lib/useTranslation";
+import React from 'react';
+import { Mutation } from 'react-apollo';
+import ReactSelect from 'react-select';
+
+import Button from 'components/Button';
+import gql from 'graphql-tag';
+import useTranslation from 'lib/useTranslation';
+
+import { SelectWrapper } from './Styles';
 
 const taskDrushSqlDump = gql`
   mutation taskDrushSqlDump($environment: Int!) {
@@ -34,11 +36,11 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => {
         environment: pageEnvironment.id,
       }}
     >
-      {(taskDrushSqlDump) => {
+      {taskDrushSqlDump => {
         return (
           <SelectWrapper>
             <div className="envSelect">
-              <label id="dest-env">{t("tasks.addTask.environment")}:</label>
+              <label id="dest-env">{t('tasks.addTask.environment')}:</label>
               <ReactSelect
                 aria-labelledby="dest-env"
                 name="dest-environment"
@@ -56,7 +58,7 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => {
                 required
               />
             </div>
-            <Button action={taskDrushSqlDump}>{t("tasks.addTask.run")}</Button>
+            <Button action={taskDrushSqlDump}>{t('tasks.addTask.run')}</Button>
           </SelectWrapper>
         );
       }}
