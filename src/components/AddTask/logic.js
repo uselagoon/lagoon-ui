@@ -60,8 +60,7 @@ const withOptions = withProps(({ pageEnvironment }) => {
   options = [...options, ...advancedTasks];
 
   // Remove tasks that are blocklisted.
-  options = R.reject(option => R.contains(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST), options);
-
+  options = R.reject(option => R.includes(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST), options);
   // Currently all tasks require the environment to have a 'cli' service,
   // but this can be made dynamic if that changes.
   // if (
