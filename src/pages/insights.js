@@ -16,6 +16,7 @@ import EnvironmentWithInsightsQuery from 'lib/query/EnvironmentWithInsights';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 
 /**
@@ -35,21 +36,23 @@ export const PageInsights = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Insights`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-          </Breadcrumbs>
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            </Breadcrumbs>
 
-          <CommonWrapperWNotification>
-            <NavTabsSkeleton
-              activeTab="insights"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <InsightsSkeleton />
-            </div>
-          </CommonWrapperWNotification>
+            <CommonWrapperWNotification>
+              <NavTabsSkeleton
+                activeTab="insights"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
+              <div className="content">
+                <InsightsSkeleton />
+              </div>
+            </CommonWrapperWNotification>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

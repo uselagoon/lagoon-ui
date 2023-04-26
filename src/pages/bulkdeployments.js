@@ -13,6 +13,7 @@ import MainLayout from 'layouts/MainLayout';
 import BulkDeploymentById from 'lib/query/BulkDeploymentById';
 
 import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { CommonWrapper } from '../styles/commonPageStyles';
 
 /**
@@ -34,17 +35,19 @@ const BulkDeploymentsPage = ({ router }) => {
       </Head>
 
       <MainLayout>
-        <Breadcrumbs>
-          <BulkDeploymentBreadcrumb
-            title={loading ? <Skeleton /> : data.deploymentsByBulkId[0].bulkName || router.query.bulkId}
-            bulkIdSlug={loading ? '' : data.deploymentsByBulkId[0].bulkId || router.query.bulkId}
-          />
-        </Breadcrumbs>
-        <CommonWrapper>
-          <div className="content">
-            {loading ? <BulkDeploymentsSkeleton /> : <BulkDeployments deployments={data.deploymentsByBulkId || []} />}
-          </div>
-        </CommonWrapper>
+        <ThemedSkeletonWrapper>
+          <Breadcrumbs>
+            <BulkDeploymentBreadcrumb
+              title={loading ? <Skeleton /> : data.deploymentsByBulkId[0].bulkName || router.query.bulkId}
+              bulkIdSlug={loading ? '' : data.deploymentsByBulkId[0].bulkId || router.query.bulkId}
+            />
+          </Breadcrumbs>
+          <CommonWrapper>
+            <div className="content">
+              {loading ? <BulkDeploymentsSkeleton /> : <BulkDeployments deployments={data.deploymentsByBulkId || []} />}
+            </div>
+          </CommonWrapper>
+        </ThemedSkeletonWrapper>
       </MainLayout>
     </>
   );

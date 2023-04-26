@@ -21,6 +21,7 @@ import * as R from 'ramda';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -70,25 +71,27 @@ export const PageBackups = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Backups`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-          </Breadcrumbs>
-          <CommonWrapperWNotification>
-            <NavTabsSkeleton
-              activeTab="backups"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <div className="notification">{t('backups.notification')}</div>
-              <BackupsSkeleton />
-              <ResultsLimited
-                limit={resultLimit}
-                message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            </Breadcrumbs>
+            <CommonWrapperWNotification>
+              <NavTabsSkeleton
+                activeTab="backups"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
               />
-            </div>
-          </CommonWrapperWNotification>
+              <div className="content">
+                <div className="notification">{t('backups.notification')}</div>
+                <BackupsSkeleton />
+                <ResultsLimited
+                  limit={resultLimit}
+                  message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+                />
+              </div>
+            </CommonWrapperWNotification>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

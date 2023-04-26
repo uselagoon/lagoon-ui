@@ -21,6 +21,7 @@ import TasksSubscription from 'lib/subscription/Tasks';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { TasksWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -74,23 +75,29 @@ export const PageTasks = ({ router }) => {
         </Head>
 
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-          </Breadcrumbs>
-          <TasksWrapper>
-            <NavTabsSkeleton activeTab="tasks" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
-
-            <div className="content">
-              <Skeleton height={'60px'} />
-              <TasksSkeleton />
-
-              <ResultsLimited
-                limit={resultLimit}
-                message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            </Breadcrumbs>
+            <TasksWrapper>
+              <NavTabsSkeleton
+                activeTab="tasks"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
               />
-            </div>
-          </TasksWrapper>
+
+              <div className="content">
+                <Skeleton height={'60px'} />
+                <TasksSkeleton />
+
+                <ResultsLimited
+                  limit={resultLimit}
+                  message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+                />
+              </div>
+            </TasksWrapper>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

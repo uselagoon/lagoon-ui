@@ -1,6 +1,7 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
 const DeploymentsByFilterSkeleton = () => {
@@ -42,31 +43,33 @@ const DeploymentsByFilterSkeleton = () => {
 
   return (
     <Deployments>
-      <div className="filters">
-        <label>
-          <Skeleton width={'20%'} />
-        </label>
-        <label></label>
-        <input type="text" id="filter" placeholder="Filter deployments..." />
-      </div>
-      <DeploymentsHeader>
-        <label>Project</label>
-        <label>Environment</label>
-        <label>Cluster</label>
-        <button type="button" className="button-sort name">
-          Name
-        </button>
-        <label className="priority">Priority</label>
-        <button type="button" className="button-sort created">
-          Created
-        </button>
-        <button type="button" className="button-sort status">
-          Status
-        </button>
-        <label>Duration</label>
-        <label></label>
-      </DeploymentsHeader>
-      <DeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}</DeploymentsDataTable>
+      <ThemedSkeletonWrapper>
+        <div className="filters">
+          <label>
+            <Skeleton width={'20%'} />
+          </label>
+          <label></label>
+          <input type="text" id="filter" placeholder="Filter deployments..." />
+        </div>
+        <DeploymentsHeader>
+          <label>Project</label>
+          <label>Environment</label>
+          <label>Cluster</label>
+          <button type="button" className="button-sort name">
+            Name
+          </button>
+          <label className="priority">Priority</label>
+          <button type="button" className="button-sort created">
+            Created
+          </button>
+          <button type="button" className="button-sort status">
+            Status
+          </button>
+          <label>Duration</label>
+          <label></label>
+        </DeploymentsHeader>
+        <DeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}</DeploymentsDataTable>
+      </ThemedSkeletonWrapper>
     </Deployments>
   );
 };

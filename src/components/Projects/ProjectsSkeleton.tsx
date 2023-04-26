@@ -3,6 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 
 import Box from 'components/Box';
 
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { ProjectsHeader, ProjectsPage, SearchInput, StyledProject } from './StyledProjects';
 
 const ProjectsSkeleton = () => {
@@ -21,14 +22,16 @@ const ProjectsSkeleton = () => {
   const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
   return (
     <ProjectsPage>
-      <ProjectsHeader>
-        <label>
-          <Skeleton width={'20%'} />
-        </label>
-        <label></label>
-        <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
-      </ProjectsHeader>
-      <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
+      <ThemedSkeletonWrapper>
+        <ProjectsHeader>
+          <label>
+            <Skeleton width={'20%'} />
+          </label>
+          <label></label>
+          <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
+        </ProjectsHeader>
+        <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
+      </ThemedSkeletonWrapper>
     </ProjectsPage>
   );
 };

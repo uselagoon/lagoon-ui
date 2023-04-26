@@ -10,7 +10,8 @@ import { AuthContext } from 'lib/Authenticator';
 import useTranslation from 'lib/useTranslation';
 
 import TourControlBtn from '../../tours/TourControlBtn';
-import { StyledHeader } from './StyledHeader';
+import { ControlButtons, StyledHeader } from './StyledHeader';
+import ThemeToggler from './ThemeToggler';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -40,7 +41,10 @@ const Header = ({ logo }) => {
           />
         </a>
       </Link>
-      <TourControlBtn />
+      <ControlButtons>
+        <TourControlBtn />
+        <ThemeToggler />
+      </ControlButtons>
       <AuthContext.Consumer>
         {auth => {
           if (auth.authenticated) {

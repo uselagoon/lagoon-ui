@@ -16,6 +16,7 @@ import EnvironmentByOpenshiftProjectNameQuery from 'lib/query/EnvironmentByOpens
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { EnvironmentWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -45,21 +46,23 @@ export const PageEnvironment = ({ router }) => {
           <title>{`${openshiftProjectName} | Environment`}</title>
         </Head>
         <MainLayout>
-          <Breadcrumbs>
-            <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-          </Breadcrumbs>
+          <ThemedSkeletonWrapper>
+            <Breadcrumbs>
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            </Breadcrumbs>
 
-          <EnvironmentWrapper>
-            <NavTabsSkeleton
-              activeTab="overview"
-              projectName={projectSlug}
-              openshiftProjectName={openshiftProjectName}
-            />
-            <div className="content">
-              <EnvironmentSkeleton />
-            </div>
-          </EnvironmentWrapper>
+            <EnvironmentWrapper>
+              <NavTabsSkeleton
+                activeTab="overview"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
+              <div className="content">
+                <EnvironmentSkeleton />
+              </div>
+            </EnvironmentWrapper>
+          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

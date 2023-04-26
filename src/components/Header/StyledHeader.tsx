@@ -5,16 +5,12 @@ export const StyledHeader = styled.header`
   background: ${color.brightBlue} ${color.lightBlue};
   background: ${color.lightBlue};
   background: ${props => props.theme.gradients.headerFooterGradient};
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${
-  color.lightBlue
-}',GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${color.lightBlue}',GradientType=1 );
   display: flex;
   justify-content: space-between;
-
   .authContainer {
     display: flex;
   }
-
   a {
     color: ${color.almostWhite};
     padding: 10px 20px;
@@ -60,12 +56,9 @@ export const StyledHeader = styled.header`
       display: flex;
     }
   }
-<<<<<<< HEAD
-=======
 `;
 
 export const ControlButtons = styled.div`
   margin-left: auto;
   align-self: center;
->>>>>>> main
 `;

@@ -16,26 +16,21 @@ export const StyledAccordion = styled.div`
     background: ${color.white};
     cursor: pointer;
     word-break: break-word;
-
     &.minified {
       padding: 1em;
     }
-
     > div {
       padding: 0 6px;
     }
-
     &.cols-6 {
       > div {
         width: calc(100% / 6);
         text-align: center;
       }
-
       .identifier {
         text-align: left;
       }
     }
-
     .identifier {
       width: 40%;
     }

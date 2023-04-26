@@ -14,28 +14,24 @@ export const BackupsHeader = styled.div`
   @media ${bp.tabletUp} {
     margin-top: 40px;
   }
-
   label {
     display: none;
     padding-left: 20px;
     @media ${bp.wideUp} {
       display: block;
     }
-
     &.source {
       width: 15%;
       @media ${bp.extraWideUp} {
         width: 10%;
       }
     }
-
     &.created {
       width: 25%;
       @media ${bp.extraWideUp} {
         width: 20%;
       }
     }
-
     &.backupid {
       width: 45%;
       @media ${bp.extraWideUp} {
@@ -50,7 +46,6 @@ export const DataTable = styled.div`
   border: 1px solid ${props => props.theme.borders.tableRow};
   border-radius: 3px;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-
   .data-none {
     border: 1px solid ${props => props.theme.borders.tableRow};
     border-bottom: 1px solid ${props => props.theme.borders.tableRow};
@@ -59,7 +54,6 @@ export const DataTable = styled.div`
     padding: 8px 0 7px 0;
     text-align: center;
   }
-
   .data-row {
     border: 1px solid ${props => props.theme.borders.tableRow};
     border-bottom: 1px solid ${props => props.theme.borders.tableRow};
@@ -71,7 +65,6 @@ export const DataTable = styled.div`
       justify-content: space-between;
       padding-right: 15px;
     }
-
     & > div {
       padding-left: 20px;
       @media ${bp.wideDown} {
@@ -81,11 +74,9 @@ export const DataTable = styled.div`
         &.source {
           width: 10%;
         }
-
         &.created {
           width: 20%;
         }
-
         &.download {
           align-self: center;
           width: 25%;
@@ -94,7 +85,6 @@ export const DataTable = styled.div`
           }
         }
       }
-
       &.backupid {
         word-break: break-word;
         overflow: hidden;
@@ -107,16 +97,13 @@ export const DataTable = styled.div`
         }
       }
     }
-
     &:hover {
       border: 1px solid ${color.brightBlue};
     }
-
     &:first-child {
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
     }
-
     &:last-child {
       border-bottom-left-radius: 3px;
       border-bottom-right-radius: 3px;

@@ -1,41 +1,41 @@
-import { bp, color, fontSize } from 'lib/variables';
+import { bp, color } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledBreadCrumb = styled.div`
-  height: 100%;
-  padding: 32px 16px 0 46px;
+  height: max-content;
   position: relative;
-  @media ${bp.tabletUp} {
-    padding: 42px 76px 0 96px;
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    label {
+      font-size: clamp(0.5rem, 1vw, 0.815rem);
+    }
   }
-
   &::after {
     content: '';
     position: absolute;
     top: 0;
-    left: 30px;
+    left: -36px;
     width: 1px;
-    height: 100%;
-    background: ${color.midGrey};
+    height: 200%;
+    background: ${props => props.theme.backgrounds.breadCrumb};
     transform-origin: 100% 0;
-    transform: skew(-12deg);
+    transform: skew(-12deg) translateY(-20%);
   }
-
   h2 {
-    ${fontSize(28)};
-    margin-bottom: 24px;
-    @media ${bp.tabletUp} {
-      ${fontSize(36)};
-      margin-bottom: 38px;
-    }
+    margin-bottom: 0;
+    line-height: initial;
+    font-size: clamp(1.2rem, 1.875vw, 2.25rem);
   }
 `;
 
 export const BreadCrumbLink = styled.a`
+  margin-right: 72px;
   &:first-child {
     .breadcrumb {
       padding-left: 0;
-
       &::after {
         content: none;
       }
@@ -44,9 +44,14 @@ export const BreadCrumbLink = styled.a`
 `;
 
 export const StyledBreadcrumbsWrapper = styled.div`
-  background-color: ${color.white};
-  border-bottom: 1px solid ${color.midGrey};
-
+  padding: 1vw 0.75vw;
+  background-color: ${props => props.theme.backgrounds.breadCrumbs};
+  border-bottom: ${props =>
+    props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};
+  overflow: hidden;
+  @media ${bp.tabletUp} {
+    padding: 1.75vw 0 1.25vw;
+  }
   .breadcrumbs {
     display: flex;
     margin: 0 calc((100vw / 16) * 1);

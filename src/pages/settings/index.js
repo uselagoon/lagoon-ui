@@ -10,6 +10,7 @@ import useTranslation from 'lib/useTranslation';
 import SshKeys from '../../components/SshKeys';
 import AddSshKey from '../../components/SshKeys/AddSshKey';
 import QueryError from '../../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { CommonWrapper } from '../../styles/commonPageStyles';
 
 /**
@@ -32,13 +33,15 @@ const SettingsPage = () => {
         <title>Settings</title>
       </Head>
       <MainLayout>
-        <CommonWrapper>
-          <h2>{t('settings.title')}</h2>
-          <div className="content">
-            <SshKeys me={data?.me || {}} loading={loading} />
-            <AddSshKey me={data?.me || {}} />
-          </div>
-        </CommonWrapper>
+        <ThemedSkeletonWrapper>
+          <CommonWrapper>
+            <h2>{t('settings.title')}</h2>
+            <div className="content">
+              <SshKeys me={data?.me || {}} loading={loading} />
+              <AddSshKey me={data?.me || {}} />
+            </div>
+          </CommonWrapper>
+        </ThemedSkeletonWrapper>
       </MainLayout>
     </>
   );

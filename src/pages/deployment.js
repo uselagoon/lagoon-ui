@@ -18,6 +18,7 @@ import MainLayout from 'layouts/MainLayout';
 import EnvironmentWithDeploymentQuery from 'lib/query/EnvironmentWithDeployment';
 
 import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { DeploymentWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -48,7 +49,7 @@ export const PageDeployment = ({ router }) => {
     const openshiftProjectName = router.query.openshiftProjectName;
     const deploymentName = router.query.deploymentName;
     return (
-      <>
+      <ThemedSkeletonWrapper>
         <Head>
           <title>{`${router.query.deploymentName} | Deployment`}</title>
         </Head>
@@ -74,7 +75,7 @@ export const PageDeployment = ({ router }) => {
             </div>
           </DeploymentWrapper>
         </MainLayout>
-      </>
+      </ThemedSkeletonWrapper>
     );
   }
 

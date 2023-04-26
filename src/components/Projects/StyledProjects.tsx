@@ -4,7 +4,6 @@ import styled from 'styled-components';
 export const ProjectsPage = styled.section`
   .box {
     margin-bottom: 7px;
-
     & > .content {
       padding: 9px 20px 14px;
       @media ${bp.tinyUp} {
@@ -68,7 +67,6 @@ export const SearchInput = styled.input`
 
 export const StyledProject = styled.div`
   font-weight: normal;
-
   @media ${bp.tinyUp} {
     width: 50%;
   }
