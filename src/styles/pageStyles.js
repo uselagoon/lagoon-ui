@@ -310,7 +310,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
 `;
 
 export const ProblemDashboardFilterWrapper = styled.div`
-  background: ${(props) => props.theme.backgrounds.content};
+  background: ${props => props.theme.backgrounds.content};
   padding: 38px calc((100vw / 16) * 1);
   @media ${bp.wideUp} {
     padding: 38px calc((100vw / 16) * 2);

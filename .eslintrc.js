@@ -1,6 +1,6 @@
-const path = require("path");
+const path = require('path');
 module.exports = {
-  extends: ["next", "plugin:storybook/recommended"],
+  extends: ['next', 'plugin:storybook/recommended'],
   rules: {
     'import/no-anonymous-default-export': 'off',
     'react/no-unescaped-entities': 'off',

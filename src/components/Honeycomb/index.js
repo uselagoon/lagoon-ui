@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { HexGrid, Layout, Hexagon, Text, GridGenerator } from 'react-hexgrid';
-import * as R from 'ramda';
+import React, { useEffect, useState } from 'react';
+import { GridGenerator, HexGrid, Hexagon, Layout, Text } from 'react-hexgrid';
+
 import ProblemsByProject from 'components/ProblemsByProject';
+import * as R from 'ramda';
 
 const config = {
   width: 1200,
