@@ -79,11 +79,15 @@ export const StyledLogAccordion = styled.div`
   .accordion-heading {
     display: flex;
     justify-content: space-between;
+
     border: 1px solid ${color.lightestGrey};
-    background: ${color.white};
+    background: ${props =>
+      props.theme.colorScheme === 'dark'
+        ? `${props.theme.backgrounds.primary}`
+        : `${props.theme.backgrounds.secondary}`};
+
     cursor: pointer;
     word-break: break-word;
-
     > div {
       padding: 0 6px;
     }
@@ -91,8 +95,8 @@ export const StyledLogAccordion = styled.div`
 
   //Log accordion content styling
   .accordion-heading {
-    color: black;
-    border-color: lightgrey;
+    color: ${props => props.theme.texts.accordionHeading};
+    border-color: ${props => props.theme.borders.tableRow};
     .log-header {
       ::before {
         background-image: url('/static/images/logs-closed.png');

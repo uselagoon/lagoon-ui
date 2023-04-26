@@ -1,5 +1,5 @@
-import { bp, color } from 'lib/variables';
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
+import { bp, color } from "lib/variables";
 
 export const Deployments = styled.div`
   ${css`
@@ -24,7 +24,7 @@ export const Deployments = styled.div`
     .button-sort {
       color: #5f6f7a;
       position: relative;
-      font-family: 'source-code-pro', sans-serif;
+      font-family: "source-code-pro", sans-serif;
       font-size: 13px;
       font-size: 0.8125rem;
       line-height: 1.4;
@@ -43,11 +43,11 @@ export const Deployments = styled.div`
       }
 
       &.ascending:after {
-        content: ' \\25B2';
+        content: " \\25B2";
       }
 
       &.descending:after {
-        content: ' \\25BC';
+        content: " \\25BC";
       }
 
       &:first-child {
@@ -128,7 +128,7 @@ export const DeploymentsDataTable = styled.div`
       }
     }
 
-    &.skeleton {
+    &.skeleton{
       padding: 20px 0;
     }
     &:hover {
@@ -158,35 +158,35 @@ export const DeploymentsDataTable = styled.div`
       text-indent: 20px;
 
       &.active {
-        background-image: url('/static/images/in-progress.svg');
+        background-image: url("/static/images/in-progress.svg");
       }
 
       &.new {
-        background-image: url('/static/images/in-progress.svg');
+        background-image: url("/static/images/in-progress.svg");
       }
 
       &.pending {
-        background-image: url('/static/images/in-progress.svg');
+        background-image: url("/static/images/in-progress.svg");
       }
 
       &.running {
-        background-image: url('/static/images/in-progress.svg');
+        background-image: url("/static/images/in-progress.svg");
       }
 
       &.failed {
-        background-image: url('/static/images/failed.svg');
+        background-image: url("/static/images/failed.svg");
       }
 
       &.cancelled {
-        background-image: url('/static/images/failed.svg');
+        background-image: url("/static/images/failed.svg");
       }
 
       &.succeeded {
-        background-image: url('/static/images/successful.svg');
+        background-image: url("/static/images/successful.svg");
       }
 
       &.complete {
-        background-image: url('/static/images/successful.svg');
+        background-image: url("/static/images/successful.svg");
       }
 
       span {

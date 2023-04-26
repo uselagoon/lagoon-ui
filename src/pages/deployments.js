@@ -1,38 +1,35 @@
-import React, { useEffect } from 'react';
-import Skeleton from 'react-loading-skeleton';
-
-import getConfig from 'next/config';
-import Head from 'next/head';
-import { withRouter } from 'next/router';
-
-import { useQuery } from '@apollo/react-hooks';
-import Breadcrumbs from 'components/Breadcrumbs';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import DeployLatest from 'components/DeployLatest';
-import Deployments from 'components/Deployments';
-import DeploymentsSkeleton from 'components/Deployments/DeploymentsSkeleton';
-import NavTabs from 'components/NavTabs';
-import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
-import ResultsLimited from 'components/ResultsLimited';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentWithDeploymentsQuery from 'lib/query/EnvironmentWithDeployments';
-import DeploymentsSubscription from 'lib/subscription/Deployments';
-
-import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
-import QueryError from '../components/errors/QueryError';
-import { DeploymentsWrapper } from '../styles/pageStyles';
-import { useTourContext } from '../tours/TourContext';
+import React, { useEffect } from "react";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import getConfig from "next/config";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentWithDeploymentsQuery from "lib/query/EnvironmentWithDeployments";
+import DeploymentsSubscription from "lib/subscription/Deployments";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import NavTabs from "components/NavTabs";
+import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
+import DeployLatest from "components/DeployLatest";
+import ResultsLimited from "components/ResultsLimited";
+import { DeploymentsWrapper } from "../styles/pageStyles";
+import Deployments from "components/Deployments";
+import DeploymentsSkeleton from "components/Deployments/DeploymentsSkeleton";
+import { useQuery } from "@apollo/react-hooks";
+import QueryError from "../components/errors/QueryError";
+import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import Skeleton from "react-loading-skeleton";
+import { useTourContext } from "../tours/TourContext";
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT, 10);
 const customMessage = publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT_MESSAGE;
 
 let urlResultLimit = envLimit;
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   let search = window.location.search;
   let params = new URLSearchParams(search);
-  let limit = params.get('limit');
+  let limit = params.get("limit");
   if (limit) {
     if (parseInt(limit.trim(), 10)) {
       urlResultLimit = parseInt(limit.trim(), 10);
@@ -46,12 +43,16 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  */
 export const PageDeployments = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithDeploymentsQuery, {
-    variables: {
-      openshiftProjectName: router.query.openshiftProjectName,
-      limit: resultLimit,
-    },
-  });
+  const { data, error, loading, subscribeToMore } = useQuery(
+    EnvironmentWithDeploymentsQuery,
+    {
+      variables: {
+        openshiftProjectName: router.query.openshiftProjectName,
+        limit: resultLimit,
+      },
+    }
+  );
+
 
   useEffect(() => {
     if (!loading && data?.environment) {
@@ -71,7 +72,10 @@ export const PageDeployments = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb
+              environmentSlug={openshiftProjectName}
+              projectSlug={projectSlug}
+            />
           </Breadcrumbs>
 
           <DeploymentsWrapper>
@@ -86,7 +90,10 @@ export const PageDeployments = ({ router }) => {
               <DeploymentsSkeleton />
               <ResultsLimited
                 limit={resultLimit}
-                message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+                message={
+                  (!customMessage && "") ||
+                  (customMessage && customMessage.replace(/['"]+/g, ""))
+                }
               />
             </div>
           </DeploymentsWrapper>
@@ -118,7 +125,9 @@ export const PageDeployments = ({ router }) => {
       if (!subscriptionData.data) return prevStore;
       const prevDeployments = prevStore.environment.deployments;
       const incomingDeployment = subscriptionData.data.deploymentChanged;
-      const existingIndex = prevDeployments.findIndex(prevDeployment => prevDeployment.id === incomingDeployment.id);
+      const existingIndex = prevDeployments.findIndex(
+        (prevDeployment) => prevDeployment.id === incomingDeployment.id
+      );
       let newDeployments;
 
       // New deployment.
@@ -169,7 +178,10 @@ export const PageDeployments = ({ router }) => {
             <ResultsLimited
               limit={resultLimit}
               results={environment.deployments.length}
-              message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+              message={
+                (!customMessage && "") ||
+                (customMessage && customMessage.replace(/['"]+/g, ""))
+              }
             />
           </div>
         </DeploymentsWrapper>

@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
+import Head from "next/head";
+import MainLayout from "layouts/MainLayout";
+import AllProjectsQuery from "lib/query/AllProjects";
+import Projects from "components/Projects";
+import ProjectsSkeleton from "components/Projects/ProjectsSkeleton";
+import { CommonWrapper } from "../styles/commonPageStyles";
+import { useQuery } from "@apollo/react-hooks";
+import QueryError from "../components/errors/QueryError";
+import { useTourContext } from "../tours/TourContext";
+import useTranslation from "lib/useTranslation";
 
-import Head from 'next/head';
 
-import { useQuery } from '@apollo/react-hooks';
-import Projects from 'components/Projects';
-import ProjectsSkeleton from 'components/Projects/ProjectsSkeleton';
-import MainLayout from 'layouts/MainLayout';
-import AllProjectsQuery from 'lib/query/AllProjects';
-import useTranslation from 'lib/useTranslation';
-
-import QueryError from '../components/errors/QueryError';
-import { CommonWrapper } from '../styles/commonPageStyles';
-import { useTourContext } from '../tours/TourContext';
 
 /**
  * Displays the projects page.
  */
 const ProjectsPage = () => {
+
   const t = useTranslation();
 
   const { startTour } = useTourContext();
 
   const { data, loading, error } = useQuery(AllProjectsQuery, {
-    displayName: 'AllProjectsQuery',
+    displayName: "AllProjectsQuery",
   });
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const ProjectsPage = () => {
     return <QueryError error={error} />;
   }
 
+
   return (
     <>
       <Head>
@@ -43,9 +44,15 @@ const ProjectsPage = () => {
       </Head>
       <MainLayout>
         <CommonWrapper>
-          <h2>{t('projects.title')}</h2>
+          <h2>
+            {t("projects.title")}
+          </h2>
           <div className="content">
-            {loading ? <ProjectsSkeleton /> : <Projects projects={data.allProjects || []} />}
+            {loading ? (
+              <ProjectsSkeleton />
+            ) : (
+              <Projects projects={data.allProjects || []} />
+            )}
           </div>
         </CommonWrapper>
       </MainLayout>

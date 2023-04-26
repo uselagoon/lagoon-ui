@@ -1,12 +1,10 @@
-import React from 'react';
-import { Mutation } from 'react-apollo';
-import ReactSelect from 'react-select';
-
-import Button from 'components/Button';
-import gql from 'graphql-tag';
-import useTranslation from 'lib/useTranslation';
-
-import { SelectWrapper } from './Styles';
+import React from "react";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+import ReactSelect from "react-select";
+import Button from "components/Button";
+import { SelectWrapper } from "./Styles";
+import useTranslation from "lib/useTranslation";
 
 const taskDrushCacheClear = gql`
   mutation taskDrushCacheClear($environment: Int!) {
@@ -35,11 +33,11 @@ const DrushCacheClear = ({ pageEnvironment, onCompleted, onError }) => {
         environment: pageEnvironment.id,
       }}
     >
-      {taskDrushCacheClear => {
+      {(taskDrushCacheClear) => {
         return (
           <SelectWrapper>
             <div className="envSelect">
-              <label id="dest-env">{t('tasks.addTask.environment')}:</label>
+              <label id="dest-env">{t("tasks.addTask.environment")}:</label>
               <ReactSelect
                 aria-labelledby="dest-env"
                 name="dest-environment"
@@ -57,7 +55,9 @@ const DrushCacheClear = ({ pageEnvironment, onCompleted, onError }) => {
                 required
               />
             </div>
-            <Button action={taskDrushCacheClear}>{t('tasks.addTask.run')}</Button>
+            <Button action={taskDrushCacheClear}>
+              {t("tasks.addTask.run")}
+            </Button>
           </SelectWrapper>
         );
       }}

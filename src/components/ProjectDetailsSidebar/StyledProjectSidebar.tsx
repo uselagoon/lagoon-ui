@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const ProjectDetails = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: ${props => props.theme.backgrounds.sidebar};
   padding: 48px 24px 48px clamp(5%, 4vw, 20%);
 
   @media ${bp.xlWideDown} {
@@ -115,7 +116,7 @@ export const FieldWrapper = styled.div`
     }
 
     .copied {
-      background-color: ${color.midGrey};
+      background-color: ${props => props.theme.backgrounds.copy};
       ${fontSize(9, 16)};
       border-radius: 3px;
       padding: 0 2px;

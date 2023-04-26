@@ -58,7 +58,12 @@ const useSortableData = (initialItems, initialConfig) => {
     return { sortedItems: currentItems };
   };
 
-  return { sortedItems: currentItems, currentSortConfig: sortConfig, getClassNamesFor, requestSort };
+  return {
+    sortedItems: currentItems,
+    currentSortConfig: sortConfig,
+    getClassNamesFor,
+    requestSort,
+  };
 };
 
 export default useSortableData;

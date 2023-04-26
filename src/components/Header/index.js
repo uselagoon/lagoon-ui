@@ -1,16 +1,13 @@
-import React from 'react';
-
-import getConfig from 'next/config';
-import Image from 'next/image';
-import Link from 'next/link';
-
-import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
-import HeaderMenu from 'components/HeaderMenu';
-import { AuthContext } from 'lib/Authenticator';
-import useTranslation from 'lib/useTranslation';
-
-import TourControlBtn from '../../tours/TourControlBtn';
-import { StyledHeader } from './StyledHeader';
+import React from "react";
+import Link from "next/link";
+import getConfig from "next/config";
+import { AuthContext } from "lib/Authenticator";
+import lagoonLogo from "!svg-inline-loader?classPrefix!./lagoon.svg";
+import HeaderMenu from "components/HeaderMenu";
+import { StyledHeader } from "./StyledHeader";
+import Image from "next/image";
+import TourControlBtn from "../../tours/TourControlBtn";
+import useTranslation from "lib/useTranslation";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -42,12 +39,12 @@ const Header = ({ logo }) => {
       </Link>
       <TourControlBtn />
       <AuthContext.Consumer>
-        {auth => {
+        {(auth) => {
           if (auth.authenticated) {
             return (
               <div className="authContainer">
                 <Link href="/alldeployments" prefetch>
-                  <a className="navitem">{t('header.nav.allDeployments')}</a>
+                  <a className="navitem">{t("header.nav.allDeployments")}</a>
                 </Link>
                 <HeaderMenu auth={auth}></HeaderMenu>
               </div>

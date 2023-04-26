@@ -27,6 +27,9 @@ export const StyledCustomTaskConfirm = styled.div`
 export const SelectWrapper = styled.div`
   .envSelect {
     margin: 10px 0;
+    #dest-env {
+      color: black;
+    }
   }
   .warning {
     background-color: red;

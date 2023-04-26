@@ -1,9 +1,12 @@
-import React from 'react';
-import Skeleton from 'react-loading-skeleton';
-
-import useTranslation from 'lib/useTranslation';
-
-import { ButtonRow, DeploymentDetails, FieldWrapper, SkeletonWrapper } from './StyledDeployment';
+import React from "react";
+import {
+  ButtonRow,
+  DeploymentDetails,
+  FieldWrapper,
+  SkeletonWrapper,
+} from "./StyledDeployment";
+import Skeleton from "react-loading-skeleton";
+import useTranslation from "lib/useTranslation";
 
 const DeploymentSkeleton = () => {
   const t = useTranslation();
@@ -13,7 +16,7 @@ const DeploymentSkeleton = () => {
       <DeploymentDetails>
         <FieldWrapper className="created">
           <div>
-            <label>{t('deployment.label.created')}</label>
+            <label>{t("deployment.label.created")}</label>
             <div className="field">
               <Skeleton />
             </div>
@@ -21,7 +24,7 @@ const DeploymentSkeleton = () => {
         </FieldWrapper>
         <FieldWrapper className="status">
           <div>
-            <label>{t('deployment.label.status')}</label>
+            <label>{t("deployment.label.status")}</label>
             <div className="field">
               <Skeleton />
             </div>
@@ -29,7 +32,7 @@ const DeploymentSkeleton = () => {
         </FieldWrapper>
         <FieldWrapper className="duration">
           <div>
-            <label>{t('deployment.label.duration')}</label>
+            <label>{t("deployment.label.duration")}</label>
             <div className="field">
               <Skeleton />
             </div>
@@ -37,7 +40,7 @@ const DeploymentSkeleton = () => {
         </FieldWrapper>
         <FieldWrapper className="logstatus">
           <div>
-            <label>{t('deployment.label.logView')}</label>
+            <label>{t("deployment.label.logView")}</label>
             <div className="field">
               <Skeleton />
             </div>
@@ -48,7 +51,7 @@ const DeploymentSkeleton = () => {
         <Skeleton />
       </ButtonRow>
       <SkeletonWrapper>
-        <Skeleton count={10} style={{ height: '60px', lineHeight: '0.1' }} />
+        <Skeleton count={10} style={{ height: "60px", lineHeight: "0.1" }} />
       </SkeletonWrapper>
     </div>
   );

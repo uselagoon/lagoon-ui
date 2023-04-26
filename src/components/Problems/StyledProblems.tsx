@@ -104,7 +104,7 @@ export const StyledProblems = styled.div`
       justify-content: space-between;
       padding: 10px 20px;
       margin: 0 0 20px;
-      background: #f3f3f3;
+      background-color: ${props => props.theme.backgrounds.table};
 
       li.result {
         display: flex;
@@ -115,8 +115,8 @@ export const StyledProblems = styled.div`
   }
 
   .data-none {
-    border: 1px solid ${color.white};
-    border-bottom: 1px solid ${color.lightestGrey};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;

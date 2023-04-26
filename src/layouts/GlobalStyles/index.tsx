@@ -1,12 +1,17 @@
 import { bp, color, fontSize } from 'lib/variables';
-import { createGlobalStyle } from 'styled-components';
+import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
 
 /**
  * Applies styles globally to any component nested inside it.
  */
-const GlobalStyles = createGlobalStyle`
+
+const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 * {
   box-sizing: border-box;
+}
+
+:root {
+  color-scheme: ${props => props.theme.colorScheme};
 }
 
 html, body {
@@ -14,7 +19,7 @@ html, body {
 }
 
 body {
-  color: ${color.black};
+  color: ${props => props.theme.texts.primary};
   font-family: 'source-sans-pro', sans-serif;
   ${fontSize(16)};
   height: 100%;
@@ -23,7 +28,7 @@ body {
 }
 
 .content-wrapper {
-  background-color: ${color.almostWhite};
+  background-color:${props => props.theme.backgrounds.primary};
   flex: 1 0 auto;
   width: 100%;
 }
@@ -41,7 +46,7 @@ body {
 }
 
 a {
-  color: ${color.black};
+  color: ${props => props.theme.texts.primary};
   text-decoration: none;
 
   &.hover-state {
@@ -72,7 +77,10 @@ a {
     }
   }
 }
-
+mark {
+  background-color: ${props => props.theme.highlights.selection};
+  color: #000;
+}
 .bulk-label a:link { color: ${color.white}; }
 .bulk-label a:visited { color: ${color.white}; }
 .bulk-label a:hover { color: ${color.white}; }
@@ -160,7 +168,7 @@ textarea {
 }
 
 label {
-  color: ${color.darkGrey};
+  color: ${props => props.theme.texts.label};
   font-family: 'source-code-pro', sans-serif;
   ${fontSize(13)};
   text-transform: uppercase;
@@ -195,8 +203,8 @@ label {
   }
 }
 
-main{
-  background-color: ${color.almostWhite};
+main{  
+  background-color:${props => props.theme.backgrounds.primary};
   margin: 0 !important;
   padding: 62px !important;
  }
@@ -206,8 +214,7 @@ main{
     left: 0;
     right: 0;
     bottom: 0;
-    /* color.almostWhite, 0.75 opacity */
-    background-color: rgb(250, 250, 252, 0.75);
+    background-color:${props => props.theme.backgrounds.modalOverlay};
     z-index: 100;
   }
 .modal__content {
@@ -219,13 +226,17 @@ main{
   margin-right: -50%;
   transform: translate(-50%, -50%);
   border: 1px solid ${color.midGrey};
+
   background: ${color.white};
+
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   border-radius: 4px;
   outline: none;
   padding: 20px;
-  color: ${color.black};
+
+  color: ${props => props.theme.texts.primary};
+
   max-width: 90vw;
    @media ${bp.desktopUp} {
     max-width: 60vw;

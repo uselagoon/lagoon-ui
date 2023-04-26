@@ -1,9 +1,8 @@
-import React from 'react';
-import { Mutation } from 'react-apollo';
-
-import Button from 'components/Button';
-import gql from 'graphql-tag';
-import useTranslation from 'lib/useTranslation';
+import React from "react";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+import Button from "components/Button";
+import useTranslation from "lib/useTranslation";
 
 const addRestore = gql`
   mutation addRestore($input: AddRestoreInput!) {
@@ -19,14 +18,18 @@ const Prepare = ({ backupId }) => {
     <Mutation mutation={addRestore} variables={{ input: { backupId } }}>
       {(addRestore, { loading, called, error, data }) => {
         if (error) {
-          return <Button disabled>{t('backups.restore.retrieveFailed')}</Button>;
+          return (
+            <Button disabled>{t("backups.restore.retrieveFailed")}</Button>
+          );
         }
 
         if (loading || called) {
-          return <Button disabled>{t('backups.restore.retrieving')}</Button>;
+          return <Button disabled>{t("backups.restore.retrieving")}</Button>;
         }
 
-        return <Button action={addRestore}>{t('backups.restore.retrieve')}</Button>;
+        return (
+          <Button action={addRestore}>{t("backups.restore.retrieve")}</Button>
+        );
       }}
     </Mutation>
   );

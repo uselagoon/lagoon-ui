@@ -1,25 +1,22 @@
-import React, { useEffect } from 'react';
-
-import Head from 'next/head';
-import { withRouter } from 'next/router';
-
-import { useQuery } from '@apollo/react-hooks';
-import Breadcrumbs from 'components/Breadcrumbs';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import TaskBreadcrumb from 'components/Breadcrumbs/Task';
-import NavTabs from 'components/NavTabs';
-import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
-import Task from 'components/Task';
-import TaskSkeleton from 'components/Task/TaskSkeleton';
-import MainLayout from 'layouts/MainLayout';
-import EnvironmentWithTaskQuery from 'lib/query/EnvironmentWithTask';
-
-import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
-import QueryError from '../components/errors/QueryError';
-import TaskNotFound from '../components/errors/TaskNotFound';
-import { TaskWrapper } from '../styles/pageStyles';
-import { useTourContext } from '../tours/TourContext';
+import React, { useEffect } from "react";
+import { withRouter } from "next/router";
+import Head from "next/head";
+import MainLayout from "layouts/MainLayout";
+import EnvironmentWithTaskQuery from "lib/query/EnvironmentWithTask";
+import Breadcrumbs from "components/Breadcrumbs";
+import ProjectBreadcrumb from "components/Breadcrumbs/Project";
+import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
+import TaskBreadcrumb from "components/Breadcrumbs/Task";
+import NavTabs from "components/NavTabs";
+import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
+import Task from "components/Task";
+import TaskSkeleton from "components/Task/TaskSkeleton";
+import { TaskWrapper } from "../styles/pageStyles";
+import { useQuery } from "@apollo/react-hooks";
+import QueryError from "../components/errors/QueryError";
+import TaskNotFound from "../components/errors/TaskNotFound";
+import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
+import { useTourContext } from "../tours/TourContext";
 
 /**
  * Displays a task page, given the openshift project and task ID.
@@ -35,7 +32,7 @@ export const PageTask = ({ router }) => {
 
   useEffect(() => {
     if (!loading && data?.environment?.tasks[0]) {
-      continueTour();
+        continueTour();
     }
   }, [loading]);
 
@@ -50,13 +47,20 @@ export const PageTask = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb
+              environmentSlug={openshiftProjectName}
+              projectSlug={projectSlug}
+            />
           </Breadcrumbs>
 
           <TaskWrapper>
-            <NavTabsSkeleton activeTab="tasks" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
+            <NavTabsSkeleton
+              activeTab="tasks"
+              projectName={projectSlug}
+              openshiftProjectName={openshiftProjectName}
+            />
             <div className="content">
-              <TaskSkeleton />
+            <TaskSkeleton />
             </div>
           </TaskWrapper>
         </MainLayout>

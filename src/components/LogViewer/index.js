@@ -219,7 +219,11 @@ const logPreprocessorTokenize = logs => {
   // this will ensure that everything is eventually wrapped in a section
   // even if there's one massive log
   if (tokenizedLogs.length > 0 && tokenizedLogs[0].type == 'log-text') {
-    tokenizedLogs.unshift({ type: 'section-opener', key: -1, details: beginningSectionDefaultDetails });
+    tokenizedLogs.unshift({
+      type: 'section-opener',
+      key: -1,
+      details: beginningSectionDefaultDetails,
+    });
   }
 
   return tokenizedLogs;

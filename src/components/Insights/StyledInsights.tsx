@@ -22,6 +22,9 @@ export const StyledInsights = styled.div`
       }
     }
   }
+  [id^='react-select'] {
+    color: ${color.darkGrey};
+  }
   .text-large {
     font-size: 1.4em;
   }
@@ -31,7 +34,7 @@ export const StyledInsights = styled.div`
       justify-content: space-between;
       padding: 10px 20px;
       margin: 0 0 20px;
-      background: #f3f3f3;
+      background-color: ${props => props.theme.backgrounds.tertiary};
       li.result {
         display: flex;
         flex-direction: column;
@@ -91,8 +94,8 @@ export const StyledInsights = styled.div`
   .data-row {
     display: flex;
     justify-content: space-between;
-    border: 1px solid ${color.white};
-    border-bottom: 1px solid ${color.lightestGrey};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     @media ${bp.smallOnly} {
@@ -133,14 +136,14 @@ export const StyledInsights = styled.div`
     }
   }
   .data-none {
-    border: 1px solid ${color.white};
-    border-bottom: 1px solid ${color.lightestGrey};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
     text-align: center;
   }
   .row-heading {
-    background: ${color.white};
+    background-color: ${props => props.theme.backgrounds.table};
   }
 `;
