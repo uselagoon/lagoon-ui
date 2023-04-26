@@ -12,8 +12,6 @@ import {StyledNavigation} from "./StylednavTabs";
 import ProblemsLink from 'components/link/Problems';
 import TasksLink from 'components/link/Tasks';
 
-import { StyledNavigation } from './StylednavTabs';
-
 const NavTabs = ({ activeTab, environment }) => (
   <StyledNavigation className="navigation">
     <li className={`overview ${activeTab == 'overview' ? 'active' : ''} deployLink`}>
