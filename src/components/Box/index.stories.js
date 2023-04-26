@@ -1,6 +1,8 @@
 import React from 'react';
-import Box from './index';
+
 import Lipsum from 'storybook/components/Lipsum';
+
+import Box from './index';
 
 export default {
   component: Box,

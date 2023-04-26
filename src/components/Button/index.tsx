@@ -1,5 +1,6 @@
-import React, { FC } from "react";
-import { LinkElement, ButtonElem } from "./StyledButton";
+import React, { FC } from 'react';
+
+import { ButtonElem, LinkElement } from './StyledButton';
 
 interface ButtonProps {
   action: () => void;
@@ -9,16 +10,9 @@ interface ButtonProps {
   variant?: string;
 }
 
-const Button: FC<ButtonProps> = ({
-  action = undefined,
-  href = undefined,
-  disabled,
-  children,
-  variant,
-}) => {
-  const createClassName = () =>
-    `${variant ? `btn-${variant}` : "btn"} ${disabled ? "btn--disabled" : ""} `;
-    
+const Button: FC<ButtonProps> = ({ action = undefined, href = undefined, disabled, children, variant }) => {
+  const createClassName = () => `${variant ? `btn-${variant}` : 'btn'} ${disabled ? 'btn--disabled' : ''} `;
+
   const onClick = action
     ? action
     : (e: React.MouseEvent) => {
@@ -33,11 +27,7 @@ const Button: FC<ButtonProps> = ({
       {children}
     </LinkElement>
   ) : (
-    <ButtonElem
-      className={createClassName()}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <ButtonElem className={createClassName()} onClick={onClick} disabled={disabled}>
       {children}
     </ButtonElem>
   );

@@ -1,7 +1,4 @@
-import { LoadingPageNoHeader } from 'pages/_loading';
 import renderWhile from 'lib/renderWhile';
+import { LoadingPageNoHeader } from 'pages/_loading';
 
-export default renderWhile(
-  ({ loading }) => loading,
-  LoadingPageNoHeader
-);
+export default renderWhile(({ loading }) => loading, LoadingPageNoHeader);

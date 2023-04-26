@@ -1,6 +1,7 @@
-import React, { FC } from "react";
-import { getLinkData } from "components/link/Task";
-import Breadcrumb from "components/Breadcrumbs/Breadcrumb";
+import React, { FC } from 'react';
+
+import Breadcrumb from 'components/Breadcrumbs/Breadcrumb';
+import { getLinkData } from 'components/link/Task';
 
 interface TaskBreadcrumbProps {
   taskName: string;
@@ -9,12 +10,7 @@ interface TaskBreadcrumbProps {
   projectSlug: string;
 }
 
-const TaskBreadcrumb: FC<TaskBreadcrumbProps> = ({
-  taskName,
-  taskSlug,
-  environmentSlug,
-  projectSlug,
-}) => {
+const TaskBreadcrumb: FC<TaskBreadcrumbProps> = ({ taskName, taskSlug, environmentSlug, projectSlug }) => {
   const linkData = getLinkData(taskSlug, environmentSlug, projectSlug);
 
   return <Breadcrumb header="Task" title={taskName} {...linkData} />;

@@ -13,7 +13,9 @@
     "generateTourHash": "node tourHash.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "serve-storybook": "storybook-server -s ./src"
+    "serve-storybook": "storybook-server -s ./src",
+    "format": "yarn prettier --write .",
+    "format-check": "yarn prettier --c ."
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
@@ -80,6 +82,7 @@
     "@storybook/react": "^7.0.5",
     "@storybook/testing-library": "^0.0.14-next.2",
     "@types/core-js": "^2.5.5",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/git-url-parse": "^9.0.1",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
@@ -94,6 +97,7 @@
     "chromatic": "^6.17.3",
     "eslint-plugin-storybook": "^0.6.11",
     "faker": "^4.1.0",
+    "prettier": "^2.8.7",
     "prop-types": "^15.7.2",
     "react-is": "^18.2.0",
     "regenerator-runtime": "^0.13.3",

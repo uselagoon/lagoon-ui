@@ -1,4 +1,5 @@
 import React from 'react';
+
 import GlobalStyles from './index';
 
 export default {
@@ -35,15 +36,23 @@ headings.story = {
 
 export const links = () => (
   <GlobalStyles>
-    <p><a href="#">This link is a standard link</a>.</p>
-    <p><a href="#" className="hover-state">This link has a special hover
-      state</a>.</p>
+    <p>
+      <a href="#">This link is a standard link</a>.
+    </p>
+    <p>
+      <a href="#" className="hover-state">
+        This link has a special hover state
+      </a>
+      .
+    </p>
   </GlobalStyles>
 );
 
 export const textStyles = () => (
   <GlobalStyles>
-    <p><strong>This is bolded.</strong> <em>And this is italicized.</em></p>
+    <p>
+      <strong>This is bolded.</strong> <em>And this is italicized.</em>
+    </p>
   </GlobalStyles>
 );
 
@@ -52,12 +61,16 @@ export const lists = () => (
     <ul>
       <li>A list item</li>
       <li>Another list item</li>
-      <li><a href="#">A list item containing a link</a></li>
+      <li>
+        <a href="#">A list item containing a link</a>
+      </li>
     </ul>
     <ol>
       <li>A list item</li>
       <li>Another list item</li>
-      <li><a href="#">A list item containing a link</a></li>
+      <li>
+        <a href="#">A list item containing a link</a>
+      </li>
     </ol>
   </GlobalStyles>
 );

@@ -1,21 +1,24 @@
-import React from "react";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import Me from "lib/query/Me";
-import SshKeys from "../../components/SshKeys";
-import AddSshKey from "../../components/SshKeys/AddSshKey";
-import { CommonWrapper } from "../../styles/commonPageStyles";
-import QueryError from "../../components/errors/QueryError";
-import { useQuery } from "@apollo/react-hooks";
-import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
+import React from 'react';
+
+import Head from 'next/head';
+
+import { useQuery } from '@apollo/react-hooks';
+import MainLayout from 'layouts/MainLayout';
+import Me from 'lib/query/Me';
+
+import SshKeys from '../../components/SshKeys';
+import AddSshKey from '../../components/SshKeys/AddSshKey';
+import QueryError from '../../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
+import { CommonWrapper } from '../../styles/commonPageStyles';
 
 /**
  * Displays the user settings page.
  */
 const SettingsPage = () => {
   const { data, loading, error } = useQuery(Me, {
-    displayName: "Me",
-    fetchPolicy: "cache-and-network",
+    displayName: 'Me',
+    fetchPolicy: 'cache-and-network',
   });
 
   if (error) {

@@ -1,16 +1,19 @@
-import Image from "next/image";
-import styled from "styled-components";
-import { TourContext, TourContextType } from "./TourContext";
-import { color } from "lib/variables";
-import { useContext } from "react";
-import getConfig from "next/config";
+import { useContext } from 'react';
+
+import getConfig from 'next/config';
+import Image from 'next/image';
+
+import { color } from 'lib/variables';
+import styled from 'styled-components';
+
+import { TourContext, TourContextType } from './TourContext';
 
 /**
  * Restart tour button for the index page shown if either skipped or tour was completed
  */
 
 const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
-const tourEnabled = LAGOON_UI_TOURS_ENABLED === "enabled";
+const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
 
 const TourControlBtn = () => {
   let skipped,
@@ -45,12 +48,7 @@ const TourControlBtn = () => {
   const renderButton = (clickHandler: () => void, toolTip: string) => {
     return (
       <StyledRestartTour onClick={clickHandler}>
-        <Image
-          src="/static/images/tour.svg"
-          alt="tour"
-          width={24}
-          height={24}
-        />
+        <Image src="/static/images/tour.svg" alt="tour" width={24} height={24} />
         <span className="tooltip">{toolTip}</span>
       </StyledRestartTour>
     );
@@ -58,7 +56,7 @@ const TourControlBtn = () => {
 
   // if skipped or everything was toured
   if (skipped || allRoutesToured()) {
-    return renderButton(manuallyTriggerTour, "Restart Lagoon Tour");
+    return renderButton(manuallyTriggerTour, 'Restart Lagoon Tour');
   }
 
   // current route tours already finished
@@ -68,7 +66,7 @@ const TourControlBtn = () => {
   if (tourStarted && !running) {
     return renderButton(() => {
       continueTour(true);
-    }, "Continue Lagoon Tour");
+    }, 'Continue Lagoon Tour');
   }
 
   // tour was not started at all
@@ -76,7 +74,7 @@ const TourControlBtn = () => {
     return renderButton(() => {
       startTour();
       continueTour(true);
-    }, "Start & Continue Lagoon Tour");
+    }, 'Start & Continue Lagoon Tour');
   }
 
   return null;

@@ -1,13 +1,16 @@
 import React from 'react';
-import Link from 'next/link';
+
 import getConfig from 'next/config';
-import { AuthContext } from 'lib/Authenticator';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
 import HeaderMenu from 'components/HeaderMenu';
-import { StyledHeader, ControlButtons } from "./StyledHeader";
-import Image from 'next/image';
+import { AuthContext } from 'lib/Authenticator';
+
 import TourControlBtn from '../../tours/TourControlBtn';
-import ThemeToggler from "./ThemeToggler";
+import { ControlButtons, StyledHeader } from './StyledHeader';
+import ThemeToggler from './ThemeToggler';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -40,7 +43,7 @@ const Header = ({ logo }) => (
       <ThemeToggler />
     </ControlButtons>
     <AuthContext.Consumer>
-      {(auth) => {
+      {auth => {
         if (auth.authenticated) {
           return (
             <div className="authContainer">

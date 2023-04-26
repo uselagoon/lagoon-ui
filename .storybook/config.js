@@ -1,13 +1,15 @@
 // Import the mocked next.config before importing decorators.
-import config from './next.mock-config';
 import React from 'react';
-import requireContext from 'require-context.macro';
-import { addDecorator, addParameters, configure } from '@storybook/react';
+
 import { withA11y } from '@storybook/addon-a11y';
 import { withKnobs } from '@storybook/addon-knobs';
+import { addDecorator, addParameters, configure } from '@storybook/react';
+import requireContext from 'require-context.macro';
+
 import withApiConnection from './decorators/ApiConnection';
 import withGlobalStyles from './decorators/GlobalStyles';
 import lagoonTheme from './lagoonTheme';
+import config from './next.mock-config';
 
 addParameters({
   options: {
@@ -35,14 +37,15 @@ addParameters({
         const aRootIndex = rootOrder.indexOf(aRootName);
         const bRootIndex = rootOrder.indexOf(bRootName);
         // If at least one of the roots is found, sort by rootOrder.
-        if (!(aRootIndex === bRootIndex === -1)) {
-          return (aRootIndex === -1 ? rootOrder.length : aRootIndex)
-            - (bRootIndex === -1 ? rootOrder.length : bRootIndex);
+        if (!((aRootIndex === bRootIndex) === -1)) {
+          return (
+            (aRootIndex === -1 ? rootOrder.length : aRootIndex) - (bRootIndex === -1 ? rootOrder.length : bRootIndex)
+          );
         }
       }
 
       // Otherwise, use alphabetical order.
-      return a[1].id.localeCompare(b[1].id)
+      return a[1].id.localeCompare(b[1].id);
     },
   },
   a11y: {

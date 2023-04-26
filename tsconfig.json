@@ -6,7 +6,7 @@
       "components/*": ["src/components/*"],
       "layouts/*": ["src/layouts/*"],
       "lib/*": ["src/lib/*"],
-      "pages/*": ["src/pages/*"],
+      "pages/*": ["src/pages/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -23,6 +23,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts","styled.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "styled.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

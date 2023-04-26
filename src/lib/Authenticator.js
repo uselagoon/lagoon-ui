@@ -1,5 +1,7 @@
 import React from 'react';
+
 import getConfig from 'next/config';
+
 import withKeycloak from 'lib/withKeycloak';
 import withLocalAuth from 'lib/withLocalAuth';
 
@@ -9,9 +11,7 @@ const initialAuth = { authenticated: false };
 
 export const AuthContext = React.createContext(initialAuth);
 
-const ContextProvider = ({ children, auth }) => (
-  <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-);
+const ContextProvider = ({ children, auth }) => <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 
 const Authenticator = publicRuntimeConfig.GRAPHQL_API_TOKEN
   ? withLocalAuth(ContextProvider, initialAuth)

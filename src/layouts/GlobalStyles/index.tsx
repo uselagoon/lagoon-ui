@@ -1,20 +1,11 @@
-import { bp, color, fontSize } from "lib/variables";
-import {
-  createGlobalStyle,
-  DefaultTheme,
-  GlobalStyleComponent,
-} from "styled-components";
+import { bp, color, fontSize } from 'lib/variables';
+import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
 
 /**
  * Applies styles globally to any component nested inside it.
  */
 
-
-
-const GlobalStyles: GlobalStyleComponent<
-  {},
-  DefaultTheme
-> = createGlobalStyle`
+const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
@@ -37,7 +28,7 @@ body {
 }
 
 .content-wrapper {
-  background-color:${(props) => props.theme.backgrounds.primary};
+  background-color:${props => props.theme.backgrounds.primary};
   flex: 1 0 auto;
   width: 100%;
 }
@@ -177,7 +168,7 @@ textarea {
 }
 
 label {
-  color: ${(props) => props.theme.texts.label};
+  color: ${props => props.theme.texts.label};
   font-family: 'source-code-pro', sans-serif;
   ${fontSize(13)};
   text-transform: uppercase;
@@ -213,7 +204,7 @@ label {
 }
 
 main{  
-  background-color:${(props) => props.theme.backgrounds.primary};
+  background-color:${props => props.theme.backgrounds.primary};
   margin: 0 !important;
   padding: 62px !important;
  }
@@ -223,7 +214,7 @@ main{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color:${(props) => props.theme.backgrounds.modalOverlay};
+    background-color:${props => props.theme.backgrounds.modalOverlay};
     z-index: 100;
   }
 .modal__content {

@@ -1,10 +1,12 @@
-import { SkeletonTheme } from "react-loading-skeleton";
-import { lightTheme, darkTheme } from "./theme";
-import { ReactNode } from "react";
-import useTheme from "lib/useTheme";
+import { ReactNode } from 'react';
+import { SkeletonTheme } from 'react-loading-skeleton';
+
+import useTheme from 'lib/useTheme';
+
+import { darkTheme, lightTheme } from './theme';
 
 const ThemedSkeletonWrapper = ({ children }: { children: ReactNode }) => {
-  const cachedTheme = localStorage.getItem("theme");
+  const cachedTheme = localStorage.getItem('theme');
   const { theme } = useTheme();
 
   // use localstorage first to avoid flickers if toggling theme too quickly;
@@ -12,7 +14,7 @@ const ThemedSkeletonWrapper = ({ children }: { children: ReactNode }) => {
 
   const {
     skeleton: { base, highlight },
-  } = currentTheme === "dark" ? darkTheme : lightTheme;
+  } = currentTheme === 'dark' ? darkTheme : lightTheme;
 
   return (
     <SkeletonTheme baseColor={base} highlightColor={highlight}>

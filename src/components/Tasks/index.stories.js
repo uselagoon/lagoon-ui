@@ -1,5 +1,7 @@
 import React from 'react';
+
 import mocks, { seed } from 'api/src/mocks';
+
 import Tasks from './index';
 
 export default {
@@ -10,11 +12,11 @@ export default {
 seed();
 const environment = mocks.Environment();
 const tasks = [
-  mocks.Task(null, {environment}),
-  mocks.Task(null, {environment}),
-  mocks.Task(null, {environment}),
-  mocks.Task(null, {environment}),
-  mocks.Task(null, {environment}),
+  mocks.Task(null, { environment }),
+  mocks.Task(null, { environment }),
+  mocks.Task(null, { environment }),
+  mocks.Task(null, { environment }),
+  mocks.Task(null, { environment }),
 ];
 
 export const Default = () => <Tasks tasks={tasks} />;

@@ -1,11 +1,7 @@
-import React from "react";
-import {
-  ButtonRow,
-  DeploymentDetails,
-  FieldWrapper,
-  SkeletonWrapper,
-} from "./StyledDeployment";
-import Skeleton from "react-loading-skeleton";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import { ButtonRow, DeploymentDetails, FieldWrapper, SkeletonWrapper } from './StyledDeployment';
 
 const DeploymentSkeleton = () => (
   <div className="deployment">
@@ -47,7 +43,7 @@ const DeploymentSkeleton = () => (
       <Skeleton />
     </ButtonRow>
     <SkeletonWrapper>
-      <Skeleton count={10} style={{ height: "60px", lineHeight: "0.1" }} />
+      <Skeleton count={10} style={{ height: '60px', lineHeight: '0.1' }} />
     </SkeletonWrapper>
   </div>
 );

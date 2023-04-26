@@ -1,17 +1,17 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query me{
-    me{
+  query me {
+    me {
       id
       firstName
       lastName
       email
       sshKeys {
         id
-        name,
-        keyType,
-        created,
+        name
+        keyType
+        created
         keyFingerprint
       }
     }

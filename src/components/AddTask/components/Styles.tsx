@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { color } from "lib/variables";
+import { color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledCustomTaskConfirm = styled.div`
   .margins {
@@ -27,8 +27,8 @@ export const StyledCustomTaskConfirm = styled.div`
 export const SelectWrapper = styled.div`
   .envSelect {
     margin: 10px 0;
-    #dest-env{
-    color: black;
+    #dest-env {
+      color: black;
     }
   }
   .warning {

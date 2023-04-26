@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledFacts = styled.div`
   input#filter {
@@ -13,7 +13,7 @@ export const StyledFacts = styled.div`
   .button-sort {
     color: #5f6f7a;
     position: relative;
-    font-family: "source-code-pro", sans-serif;
+    font-family: 'source-code-pro', sans-serif;
     font-size: 13px;
     font-size: 0.8125rem;
     line-height: 1.4;
@@ -32,11 +32,11 @@ export const StyledFacts = styled.div`
     }
 
     &.ascending:after {
-      content: " \\25B2";
+      content: ' \\25B2';
     }
 
     &.descending:after {
-      content: " \\25BC";
+      content: ' \\25BC';
     }
 
     &:first-child {

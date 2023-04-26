@@ -1,14 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Head from 'next/head'
+
+import Head from 'next/head';
+
 import StatusLayout from 'layouts/StatusLayout';
+import PropTypes from 'prop-types';
 
 const statusCodes = {
   400: 'Bad Request',
   401: 'Not Authenticated',
   404: 'This page could not be found',
   500: 'Internal Server Error',
-  501: 'Not Implemented'
+  501: 'Not Implemented',
 };
 
 /**
@@ -18,8 +20,7 @@ export default class Error extends React.Component {
   static displayName = 'ErrorPage';
 
   static getInitialProps({ res, err }) {
-    const statusCode =
-      res && res.statusCode ? res.statusCode : err ? err.statusCode : 404;
+    const statusCode = res && res.statusCode ? res.statusCode : err ? err.statusCode : 404;
     return { statusCode };
   }
 
@@ -40,12 +41,12 @@ export default class Error extends React.Component {
 }
 
 export class ErrorNoHeader extends React.Component {
-    static displayName = 'ErrorNoHeader';
+  static displayName = 'ErrorNoHeader';
 
-    render() {
-        const { errorMessage } = this.props;
-        return (errorMessage && <p>{errorMessage}</p>);
-    }
+  render() {
+    const { errorMessage } = this.props;
+    return errorMessage && <p>{errorMessage}</p>;
+  }
 }
 
 if (process.env.NODE_ENV !== 'production') {

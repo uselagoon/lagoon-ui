@@ -1,18 +1,17 @@
-import React from "react";
-import getConfig from "next/config";
-const { publicRuntimeConfig } = getConfig();
-import {
-  StyledDropdown,
-  DropdownMenu,
-  DropdownButton,
-} from "./StyledHeaderMenu";
-import Link from "next/link";
+import React from 'react';
 
-const useOutsideClick = (callback) => {
+import getConfig from 'next/config';
+import Link from 'next/link';
+
+import { DropdownButton, DropdownMenu, StyledDropdown } from './StyledHeaderMenu';
+
+const { publicRuntimeConfig } = getConfig();
+
+const useOutsideClick = callback => {
   const ref = React.useRef();
 
   React.useEffect(() => {
-    const handleClick = (event) => {
+    const handleClick = event => {
       if (ref.current && !ref.current.contains(event.target)) {
         setTimeout(() => {
           callback();
@@ -20,10 +19,10 @@ const useOutsideClick = (callback) => {
       }
     };
 
-    document.addEventListener("click", handleClick, true);
+    document.addEventListener('click', handleClick, true);
 
     return () => {
-      document.removeEventListener("click", handleClick, true);
+      document.removeEventListener('click', handleClick, true);
     };
   }, [ref]);
 
@@ -75,10 +74,7 @@ const HeaderMenu = ({ auth }) => {
             </a>
           </Link>,
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
-            <Link
-              href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}
-              passHref
-            >
+            <Link href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`} passHref>
               <a key="account" className="menuitem">
                 Your account
               </a>
