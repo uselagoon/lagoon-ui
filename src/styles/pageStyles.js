@@ -310,12 +310,13 @@ export const StyledProblemsDashBoardByProject = styled.div`
 `;
 
 export const ProblemDashboardFilterWrapper = styled.div`
-  margin: 38px calc((100vw / 16) * 1);
+  background: ${props => props.theme.backgrounds.content};
+  padding: 38px calc((100vw / 16) * 1);
   @media ${bp.wideUp} {
-    margin: 38px calc((100vw / 16) * 2);
+    padding: 38px calc((100vw / 16) * 2);
   }
   @media ${bp.extraWideUp} {
-    margin: 38px calc((100vw / 16) * 3);
+    padding: 38px calc((100vw / 16) * 3);
   }
   .filters {
     display: flex;

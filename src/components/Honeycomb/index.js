@@ -3,8 +3,6 @@ import { GridGenerator, HexGrid, Hexagon, Layout, Text } from 'react-hexgrid';
 
 import ProblemsByProject from 'components/ProblemsByProject';
 import useTranslation from 'lib/useTranslation';
-import { ErrorNoHeader } from 'pages/_error';
-import { LoadingPageNoHeader } from 'pages/_loading';
 import * as R from 'ramda';
 
 const config = {
