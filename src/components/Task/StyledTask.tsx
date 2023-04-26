@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp } from "lib/variables";
+import { bp } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledTask = styled.div`
   .details {
@@ -54,21 +54,21 @@ export const StyledTask = styled.div`
 
       &.created {
         &::before {
-          background-image: url("/static/images/created.svg");
+          background-image: url('/static/images/created.svg');
           background-size: 17px 16px;
         }
       }
 
       &.command {
         &::before {
-          background-image: url("/static/images/command.svg");
+          background-image: url('/static/images/command.svg');
           background-size: 16px;
         }
       }
 
       &.service {
         &::before {
-          background-image: url("/static/images/service.svg");
+          background-image: url('/static/images/service.svg');
           background-size: 16px;
         }
       }
@@ -80,49 +80,49 @@ export const StyledTask = styled.div`
 
         &.active {
           &::before {
-            background-image: url("/static/images/in-progress.svg");
+            background-image: url('/static/images/in-progress.svg');
           }
         }
 
         &.new {
           &::before {
-            background-image: url("/static/images/in-progress.svg");
+            background-image: url('/static/images/in-progress.svg');
           }
         }
 
         &.pending {
           &::before {
-            background-image: url("/static/images/in-progress.svg");
+            background-image: url('/static/images/in-progress.svg');
           }
         }
 
         &.running {
           &::before {
-            background-image: url("/static/images/in-progress.svg");
+            background-image: url('/static/images/in-progress.svg');
           }
         }
 
         &.failed {
           &::before {
-            background-image: url("/static/images/failed.svg");
+            background-image: url('/static/images/failed.svg');
           }
         }
 
         &.cancelled {
           &::before {
-            background-image: url("/static/images/failed.svg");
+            background-image: url('/static/images/failed.svg');
           }
         }
 
         &.succeeded {
           &::before {
-            background-image: url("/static/images/successful.svg");
+            background-image: url('/static/images/successful.svg');
           }
         }
 
         &.complete {
           &::before {
-            background-image: url("/static/images/successful.svg");
+            background-image: url('/static/images/successful.svg');
           }
         }
       }
@@ -140,7 +140,7 @@ export const StyledTask = styled.div`
 
       &.files {
         &::before {
-          background-image: url("/static/images/files.svg");
+          background-image: url('/static/images/files.svg');
         }
 
         ul.field {

@@ -1,8 +1,8 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export default gql`
   mutation switchActiveStandby($input: switchActiveStandbyInput!) {
-    switchActiveStandby(input:$input){
+    switchActiveStandby(input: $input) {
       id
       remoteId
     }

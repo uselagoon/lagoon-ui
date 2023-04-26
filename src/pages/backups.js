@@ -1,35 +1,38 @@
-import React, { useEffect } from "react";
-import * as R from "ramda";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import getConfig from "next/config";
-import MainLayout from "layouts/MainLayout";
-import EnvironmentWithBackupsQuery from "lib/query/EnvironmentWithBackups";
-import BackupsSubscription from "lib/subscription/Backups";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
-import Backups from "components/Backups";
-import BackupsSkeleton from "components/Backups/BackupsSkeleton";
-import ResultsLimited from "components/ResultsLimited";
-import { CommonWrapperWNotification } from "../styles/commonPageStyles";
-import { useQuery } from "@apollo/react-hooks";
-import QueryError from "../components/errors/QueryError";
-import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
-import { useTourContext } from "../tours/TourContext";
-import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
+import React, { useEffect } from 'react';
+
+import getConfig from 'next/config';
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Backups from 'components/Backups';
+import BackupsSkeleton from 'components/Backups/BackupsSkeleton';
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import ResultsLimited from 'components/ResultsLimited';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
+import BackupsSubscription from 'lib/subscription/Backups';
+import * as R from 'ramda';
+
+import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
+import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
+import { CommonWrapperWNotification } from '../styles/commonPageStyles';
+import { useTourContext } from '../tours/TourContext';
 
 const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT, 10);
 const customMessage = publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT_MESSAGE;
 
 let urlResultLimit = envLimit;
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   let search = window.location.search;
   let params = new URLSearchParams(search);
-  let limit = params.get("limit");
+  let limit = params.get('limit');
   if (limit) {
     if (parseInt(limit.trim(), 10)) {
       urlResultLimit = parseInt(limit.trim(), 10);
@@ -43,15 +46,12 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  */
 export const PageBackups = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore } = useQuery(
-    EnvironmentWithBackupsQuery,
-    {
-      variables: {
-        openshiftProjectName: router.query.openshiftProjectName,
-        limit: resultLimit,
-      },
-    }
-  );
+  const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithBackupsQuery, {
+    variables: {
+      openshiftProjectName: router.query.openshiftProjectName,
+      limit: resultLimit,
+    },
+  });
 
   useEffect(() => {
     if (!loading && data?.environment?.backups?.length) {
@@ -72,10 +72,7 @@ export const PageBackups = ({ router }) => {
           <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb
-                environmentSlug={openshiftProjectName}
-                projectSlug={projectSlug}
-              />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
             </Breadcrumbs>
             <CommonWrapperWNotification>
               <NavTabsSkeleton
@@ -85,17 +82,13 @@ export const PageBackups = ({ router }) => {
               />
               <div className="content">
                 <div className="notification">
-                  If you need a current database or files dump, use the tasks
-                  "drush sql-dump" or "drush archive-dump" in the new "Tasks"
-                  section!
+                  If you need a current database or files dump, use the tasks "drush sql-dump" or "drush archive-dump"
+                  in the new "Tasks" section!
                 </div>
                 <BackupsSkeleton />
                 <ResultsLimited
                   limit={resultLimit}
-                  message={
-                    (!customMessage && "") ||
-                    (customMessage && customMessage.replace(/['"]+/g, ""))
-                  }
+                  message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
                 />
               </div>
             </CommonWrapperWNotification>
@@ -128,15 +121,13 @@ export const PageBackups = ({ router }) => {
       if (!subscriptionData.data) return prevStore;
       const prevBackups = prevStore.environment.backups;
       const incomingBackup = subscriptionData.data.backupChanged;
-      const existingIndex = prevBackups.findIndex(
-        (prevBackup) => prevBackup.id === incomingBackup.id
-      );
+      const existingIndex = prevBackups.findIndex(prevBackup => prevBackup.id === incomingBackup.id);
       let newBackups;
 
       // New backup.
       if (existingIndex === -1) {
         // Don't add new deleted backups.
-        if (incomingBackup.deleted !== "0000-00-00 00:00:00") {
+        if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
           return prevStore;
         }
 
@@ -145,7 +136,7 @@ export const PageBackups = ({ router }) => {
       // Existing backup.
       else {
         // Updated backup
-        if (incomingBackup.deleted === "0000-00-00 00:00:00") {
+        if (incomingBackup.deleted === '0000-00-00 00:00:00') {
           newBackups = Object.assign([...prevBackups], {
             [existingIndex]: incomingBackup,
           });
@@ -185,17 +176,14 @@ export const PageBackups = ({ router }) => {
           <NavTabs activeTab="backups" environment={environment} />
           <div className="content">
             <div className="notification">
-              If you need a current database or files dump, use the tasks "drush
-              sql-dump" or "drush archive-dump" in the new "Tasks" section!
+              If you need a current database or files dump, use the tasks "drush sql-dump" or "drush archive-dump" in
+              the new "Tasks" section!
             </div>
             <Backups backups={environment.backups} />
             <ResultsLimited
               limit={resultLimit}
               results={environment.backups.length}
-              message={
-                (!customMessage && "") ||
-                (customMessage && customMessage.replace(/['"]+/g, ""))
-              }
+              message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
             />
           </div>
         </CommonWrapperWNotification>

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { action } from '@storybook/addon-actions';
+
 import { CancelDeploymentButton as CancelDeployment } from './index';
 
 export default {
@@ -14,33 +16,10 @@ const rest = {
   error: false,
 };
 
-export const Default = () => (
-  <CancelDeployment
-    deployment={{id: 42}}
-    {...rest}
-  />
-);
+export const Default = () => <CancelDeployment deployment={{ id: 42 }} {...rest} />;
 
-export const Loading = () => (
-  <CancelDeployment
-    deployment={{id: 42}}
-    {...rest}
-    loading
-  />
-);
+export const Loading = () => <CancelDeployment deployment={{ id: 42 }} {...rest} loading />;
 
-export const Success = () => (
-  <CancelDeployment
-    deployment={{id: 42}}
-    {...rest}
-    success
-  />
-);
+export const Success = () => <CancelDeployment deployment={{ id: 42 }} {...rest} success />;
 
-export const Error = () => (
-  <CancelDeployment
-    deployment={{id: 42}}
-    {...rest}
-    error
-  />
-);
+export const Error = () => <CancelDeployment deployment={{ id: 42 }} {...rest} error />;

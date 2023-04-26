@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledNewTask = styled.div`
   background: ${props => props.theme.backgrounds.primary};
@@ -11,8 +11,8 @@ export const StyledNewTask = styled.div`
   margin-bottom: 32px;
   padding: 32px 20px;
   width: 100%;
- 
-  [id^=react-select]{
+
+  [id^='react-select'] {
     color: black;
   }
   @media ${bp.tabletUp} {
@@ -33,7 +33,7 @@ export const NewTaskWrapper = styled.div`
   }
   &::before {
     @media ${bp.wideUp} {
-      content: "";
+      content: '';
       display: block;
       flex-grow: 1;
     }

@@ -1,11 +1,13 @@
 import React from 'react';
+
 import mocks, { seed } from 'api/src/mocks';
+
 import BulkDeployments from './index';
 
 export default {
   component: BulkDeployments,
   title: 'Components/BulkDeployments',
-}
+};
 
 seed();
 const data = [
@@ -27,17 +29,9 @@ const data = [
   },
 ];
 
-export const Complete = () => (
-  <BulkDeployments
-    deployments={data}
-  />
-);
+export const Complete = () => <BulkDeployments deployments={data} />;
 
-export const NoDeployments = () => (
-  <BulkDeployments
-    deployments={[]}
-  />
-);
+export const NoDeployments = () => <BulkDeployments deployments={[]} />;
 
 export const New = () => (
   <BulkDeployments

@@ -1,9 +1,11 @@
-import React, { FC } from "react";
-import moment from "moment";
-import DeploymentLink from "components/link/Deployment";
-import BulkDeploymentLink from "components/link/BulkDeployment";
-import { getDeploymentDuration } from "components/Deployment";
-import { StyledDeployments } from "./StyledDeployments";
+import React, { FC } from 'react';
+
+import { getDeploymentDuration } from 'components/Deployment';
+import BulkDeploymentLink from 'components/link/BulkDeployment';
+import DeploymentLink from 'components/link/Deployment';
+import moment from 'moment';
+
+import { StyledDeployments } from './StyledDeployments';
 
 interface DeploymentsProps {
   deployments: {
@@ -19,11 +21,7 @@ interface DeploymentsProps {
 /**
  * Displays a list of deployments.
  */
-const Deployments: FC<DeploymentsProps> = ({
-  deployments,
-  environmentSlug,
-  projectSlug,
-}) => (
+const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, projectSlug }) => (
   <StyledDeployments>
     <div className="header">
       <label>Name</label>
@@ -33,7 +31,7 @@ const Deployments: FC<DeploymentsProps> = ({
     </div>
     <div className="data-table">
       {!deployments.length && <div className="data-none">No Deployments</div>}
-      {deployments.map((deployment) => (
+      {deployments.map(deployment => (
         <DeploymentLink
           deploymentSlug={deployment.name}
           environmentSlug={environmentSlug}
@@ -45,21 +43,13 @@ const Deployments: FC<DeploymentsProps> = ({
               {deployment.name}
               {deployment.bulkId && (
                 <label className="bulk-label">
-                  <BulkDeploymentLink bulkIdSlug={deployment.bulkId}>
-                    bulk
-                  </BulkDeploymentLink>
+                  <BulkDeploymentLink bulkIdSlug={deployment.bulkId}>bulk</BulkDeploymentLink>
                 </label>
               )}
             </div>
-            <div className="started">
-              {moment
-                .utc(deployment.created)
-                .local()
-                .format("DD MMM YYYY, HH:mm:ss (Z)")}
-            </div>
+            <div className="started">{moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
             <div className={`status ${deployment.status}`}>
-              {deployment.status.charAt(0).toUpperCase() +
-                deployment.status.slice(1)}
+              {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
             </div>
             <div className="duration">{getDeploymentDuration(deployment)}</div>
           </div>

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const DropdownButton = styled.a`
   display: flex;
@@ -15,12 +15,12 @@ export const DropdownButton = styled.a`
   &::after {
     background-position: center center;
     background-repeat: no-repeat;
-    content: "";
+    content: '';
     display: inline-block;
     transition: all 0.3s ease-in-out;
     height: 10px;
     width: 25px;
-    background-image: url("/static/images/profile-dropdown.svg");
+    background-image: url('/static/images/profile-dropdown.svg');
     background-size: 9px;
   }
 `;
@@ -41,13 +41,13 @@ export const StyledDropdown = styled.div`
       &::before {
         background-position: center center;
         background-repeat: no-repeat;
-        content: "";
+        content: '';
         display: block;
         height: 35px;
         transition: all 0.3s ease-in-out;
         width: 35px;
         color: ${color.white};
-        background-image: url("/static/images/cog.svg");
+        background-image: url('/static/images/cog.svg');
         background-size: 18px;
       }
     }
@@ -64,12 +64,12 @@ export const StyledDropdown = styled.div`
       &::before {
         background-position: center center;
         background-repeat: no-repeat;
-        content: "";
+        content: '';
         display: block;
         height: 35px;
         transition: all 0.3s ease-in-out;
         width: 35px;
-        background-image: url("/static/images/logout.svg");
+        background-image: url('/static/images/logout.svg');
         background-size: 18px;
       }
     }
@@ -92,8 +92,9 @@ export const DropdownMenu = styled.ul`
     &:hover {
       background-color: ${color.blue};
     }
-    & > a.settings, & > a.logout {
-        padding: 0;
+    & > a.settings,
+    & > a.logout {
+      padding: 0;
     }
   }
 

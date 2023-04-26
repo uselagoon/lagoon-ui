@@ -1,12 +1,10 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import { StyledDeployments } from "./StyledDeployments";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import { StyledDeployments } from './StyledDeployments';
 
 const DeploymentsSkeleton = () => {
-  const numberOfDeploymentFields =
-    typeof window !== "undefined"
-      ? Math.floor((window.innerHeight * 8) / 10 / 65)
-      : 10;
+  const numberOfDeploymentFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const skeletonItem = (
     <div className="data-row">
@@ -17,10 +15,10 @@ const DeploymentsSkeleton = () => {
         <Skeleton />
       </div>
       <div className="status">
-        <Skeleton width={"50%"} />
+        <Skeleton width={'50%'} />
       </div>
       <div className="duration">
-        <Skeleton width={"50%"} />
+        <Skeleton width={'50%'} />
       </div>
     </div>
   );
@@ -33,11 +31,7 @@ const DeploymentsSkeleton = () => {
         <label>Status</label>
         <label>Duration</label>
       </div>
-      <div className="data-table">
-        {[...Array<undefined>(numberOfDeploymentFields)].map(
-          () => skeletonItem
-        )}
-      </div>
+      <div className="data-table">{[...Array<undefined>(numberOfDeploymentFields)].map(() => skeletonItem)}</div>
     </StyledDeployments>
   );
 };

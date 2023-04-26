@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp } from "lib/variables";
+import { bp } from 'lib/variables';
+import styled from 'styled-components';
 
 export const FieldWrapper = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const FieldWrapper = styled.div`
   &::before {
     left: calc(((-100vw / 16) * 1.5) - 28px);
 
-    content: "";
+    content: '';
     display: inline-block;
     background-repeat: no-repeat;
     height: 60px;
@@ -35,14 +35,14 @@ export const FieldWrapper = styled.div`
 
   &.created {
     &::before {
-      background-image: url("/static/images/created.svg");
+      background-image: url('/static/images/created.svg');
       background-size: 17px 16px;
     }
   }
 
   &.duration {
     &::before {
-      background-image: url("/static/images/duration.svg");
+      background-image: url('/static/images/duration.svg');
       background-size: 17px;
     }
   }
@@ -54,50 +54,50 @@ export const FieldWrapper = styled.div`
 
     &.new {
       &::before {
-        background-image: url("/static/images/pending.svg");
+        background-image: url('/static/images/pending.svg');
       }
     }
 
     &.pending {
       &::before {
-        background-image: url("/static/images/pending.svg");
+        background-image: url('/static/images/pending.svg');
       }
     }
 
     &.running {
       &::before {
-        background-image: url("/static/images/in-progress.svg");
+        background-image: url('/static/images/in-progress.svg');
       }
     }
 
     &.cancelled {
       &::before {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
     }
 
     &.error {
       &::before {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
     }
 
     &.failed {
       &::before {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
     }
 
     &.complete {
       &::before {
-        background-image: url("/static/images/successful.svg");
+        background-image: url('/static/images/successful.svg');
       }
     }
   }
 
   &.bulk {
     &::before {
-      background-image: url("/static/images/tasks-dark.svg");
+      background-image: url('/static/images/tasks-dark.svg');
       background-size: 14px;
     }
   }

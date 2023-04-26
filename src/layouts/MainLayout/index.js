@@ -1,6 +1,7 @@
-import Header from "components/Header";
-import Footer from "components/Footer";
-import GlobalStyles from "../GlobalStyles";
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+
+import GlobalStyles from '../GlobalStyles';
 
 /**
  * The main layout includes the Lagoon UI header.

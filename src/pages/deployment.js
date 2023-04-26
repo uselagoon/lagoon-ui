@@ -1,23 +1,26 @@
-import React, { useEffect, useRef } from "react";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import EnvironmentWithDeploymentQuery from "lib/query/EnvironmentWithDeployment";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import DeploymentBreadcrumb from "components/Breadcrumbs/Deployment";
-import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
-import Deployment from "components/Deployment";
-import DeploymentSkeleton from "components/Deployment/DeploymentSkeleton";
-import { DeploymentWrapper } from "../styles/pageStyles";
-import QueryError from "../components/errors/QueryError";
-import { useQuery } from "@apollo/react-hooks";
-import EnvironmentNotFound from "components/errors/EnvironmentNotFound";
-import DeploymentNotFound from "components/errors/DeploymentNotFound";
-import { useTourContext } from "../tours/TourContext";
-import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
+import React, { useEffect, useRef } from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import DeploymentBreadcrumb from 'components/Breadcrumbs/Deployment';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Deployment from 'components/Deployment';
+import DeploymentSkeleton from 'components/Deployment/DeploymentSkeleton';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import DeploymentNotFound from 'components/errors/DeploymentNotFound';
+import EnvironmentNotFound from 'components/errors/EnvironmentNotFound';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentWithDeploymentQuery from 'lib/query/EnvironmentWithDeployment';
+
+import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
+import { DeploymentWrapper } from '../styles/pageStyles';
+import { useTourContext } from '../tours/TourContext';
 
 /**
  * Displays a deployment page, given the openshift project and deployment name.
@@ -53,10 +56,7 @@ export const PageDeployment = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <ProjectBreadcrumb projectSlug={projectSlug} />
-            <EnvironmentBreadcrumb
-              environmentSlug={openshiftProjectName}
-              projectSlug={projectSlug}
-            />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
             <DeploymentBreadcrumb
               deploymentSlug={deploymentName}
               environmentSlug={openshiftProjectName}
