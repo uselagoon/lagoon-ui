@@ -1,4 +1,4 @@
-import gitUrlParse from "git-url-parse";
+import gitUrlParse from 'git-url-parse';
 
 const parseGitUrl = (url: string) => {
   try {

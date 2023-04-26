@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import parseGitUrl from 'lib/parseGitUrl';
 import moment from 'moment';
-import parseGitUrl from "lib/parseGitUrl";
-import {FieldWrapper, ProjectDetails} from "./StyledProjectSidebar"
 import * as R from 'ramda';
+
+import { FieldWrapper, ProjectDetails } from './StyledProjectSidebar';
 
 const Project = ({ project }) => {
   const [copied, setCopied] = useState(false);
