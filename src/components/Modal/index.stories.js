@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { boolean } from '@storybook/addon-knobs';
+
 import { action } from '@storybook/addon-actions';
-import Modal from './index';
+import { boolean } from '@storybook/addon-knobs';
 import Lipsum from 'storybook/components/Lipsum';
+
+import Modal from './index';
 
 export default {
   component: Modal,
@@ -14,7 +16,10 @@ export default {
       const actionClose = action('close-modal');
       const props = {
         isOpenBoolean: isOpen,
-        onRequestCloseFunction: () => { actionClose(); setOpen(false); },
+        onRequestCloseFunction: () => {
+          actionClose();
+          setOpen(false);
+        },
         ariaHideApp: false,
       };
 
@@ -29,22 +34,21 @@ export default {
       );
     },
   ],
-}
+};
 
 const SampleContent = () => (
   <>
-    <p><strong>Pres <kbd>ESC</kbd> or click outside of this modal dialog to close it.</strong></p>
+    <p>
+      <strong>
+        Pres <kbd>ESC</kbd> or click outside of this modal dialog to close it.
+      </strong>
+    </p>
     <Lipsum />
   </>
 );
 
 export const Default = ({ isOpenBoolean, onRequestCloseFunction, ...rest }) => (
-  <Modal
-    isOpen={isOpenBoolean}
-    onRequestClose={onRequestCloseFunction}
-    contentLabel="Open Modal Dialog"
-    {...rest}
-  >
+  <Modal isOpen={isOpenBoolean} onRequestClose={onRequestCloseFunction} contentLabel="Open Modal Dialog" {...rest}>
     <SampleContent />
   </Modal>
 );

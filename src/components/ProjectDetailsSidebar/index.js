@@ -12,10 +12,8 @@ const ProjectDetailsSidebar = ({ project }) => {
   const gitUrlParsed = giturlparse(project.gitUrl);
   const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
 
-  const environmentCount = R.countBy(R.prop("environmentType"))(
-    project.environments
-  );
-  const developEnvironmentCount = R.propOr(0, "development", environmentCount);
+  const environmentCount = R.countBy(R.prop('environmentType'))(project.environments);
+  const developEnvironmentCount = R.propOr(0, 'development', environmentCount);
   const projectUsesDeployTargets = project.deployTargetConfigs.length > 0;
 
   return (
@@ -23,23 +21,14 @@ const ProjectDetailsSidebar = ({ project }) => {
       <FieldWrapper className="field-wrapper created">
         <div>
           <label>Created</label>
-          <div className="field">
-            {moment
-              .utc(project.created)
-              .local()
-              .format("DD MMM YYYY, HH:mm:ss (Z)")}
-          </div>
+          <div className="field">{moment.utc(project.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
         </div>
       </FieldWrapper>
       <FieldWrapper className="field-wrapper origin">
         <div>
           <label>Origin</label>
           <div className="field">
-            <a
-              className="hover-state"
-              target="_blank"
-              href={`https://${gitLink}`}
-            >
+            <a className="hover-state" target="_blank" href={`https://${gitLink}`}>
               {gitLink}
             </a>
           </div>
@@ -50,17 +39,14 @@ const ProjectDetailsSidebar = ({ project }) => {
           <label>Git URL</label>
           <div className="copy-field">
             <div className="field">{project.gitUrl}</div>
-            <span
-              className="copied"
-              style={copied ? { top: "-20px", opacity: "0" } : null}
-            >
+            <span className="copied" style={copied ? { top: '-20px', opacity: '0' } : null}>
               Copied
             </span>
             <CopyToClipboard
               text={project.gitUrl}
               onCopy={() => {
                 setCopied(true);
-                setTimeout(function() {
+                setTimeout(function () {
                   setCopied(false);
                 }, 750);
               }}
@@ -90,8 +76,7 @@ const ProjectDetailsSidebar = ({ project }) => {
         <div>
           <label>Development environments in use</label>
           <div className="field">
-            {developEnvironmentCount} of{" "}
-            {R.defaultTo("unlimited", project.developmentEnvironmentsLimit)}
+            {developEnvironmentCount} of {R.defaultTo('unlimited', project.developmentEnvironmentsLimit)}
           </div>
         </div>
       </FieldWrapper>

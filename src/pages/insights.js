@@ -1,20 +1,23 @@
-import React from "react";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import NavTabs from "components/NavTabs";
-import NavTabsSkeleton from "components/NavTabs/NavTabsSkeleton";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import EnvironmentBreadcrumb from "components/Breadcrumbs/Environment";
-import Insights from "components/Insights";
-import InsightsSkeleton from "components/Insights/InsightsSkeleton";
-import EnvironmentWithInsightsQuery from "lib/query/EnvironmentWithInsights";
-import { CommonWrapperWNotification } from "../styles/commonPageStyles";
-import { useQuery } from "@apollo/react-hooks";
-import QueryError from "../components/errors/QueryError";
-import EnvironmentNotFound from "../components/errors/EnvironmentNotFound";
-import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
+import React from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Insights from 'components/Insights';
+import InsightsSkeleton from 'components/Insights/InsightsSkeleton';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import EnvironmentWithInsightsQuery from 'lib/query/EnvironmentWithInsights';
+
+import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
+import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
+import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 
 /**
  * Displays the insights page, given the name of an openshift project.
@@ -36,10 +39,7 @@ export const PageInsights = ({ router }) => {
           <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb
-                environmentSlug={openshiftProjectName}
-                projectSlug={projectSlug}
-              />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
             </Breadcrumbs>
 
             <CommonWrapperWNotification>
@@ -93,12 +93,8 @@ export const PageInsights = ({ router }) => {
           <div className="content">
             {environment && (
               <div className="content">
-                {!environment.insights && (
-                  <p>{`No insights found for '${router.query.environmentSlug}'`}</p>
-                )}
-                {environment.insights && (
-                  <Insights insights={environment.insights} />
-                )}
+                {!environment.insights && <p>{`No insights found for '${router.query.environmentSlug}'`}</p>}
+                {environment.insights && <Insights insights={environment.insights} />}
               </div>
             )}
           </div>

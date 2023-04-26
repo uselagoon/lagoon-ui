@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledKeys = styled.div`
   label.fingerprint,
@@ -56,7 +56,7 @@ export const StyledKeys = styled.div`
     .data-none {
       border: 1px solid ${props => props.theme.borders.tableRow};
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
-      
+
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;

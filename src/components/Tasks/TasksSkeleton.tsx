@@ -1,12 +1,10 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import { StyledTasks, TasksTable } from "./StyledTasks";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import { StyledTasks, TasksTable } from './StyledTasks';
 
 const TasksSkeleton = () => {
-  const numberOfItems =
-    typeof window !== "undefined"
-      ? Math.floor((window.innerHeight * 8) / 10 / 65)
-      : 10;
+  const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const itemRender = (
     <div className="data-row">
@@ -35,9 +33,7 @@ const TasksSkeleton = () => {
         <label className="service">Service</label>
         <label className="status">Status</label>
       </div>
-      <TasksTable className="data-table">
-        {[...Array<undefined>(numberOfItems)].map(() => itemRender)}
-      </TasksTable>
+      <TasksTable className="data-table">{[...Array<undefined>(numberOfItems)].map(() => itemRender)}</TasksTable>
     </StyledTasks>
   );
 };

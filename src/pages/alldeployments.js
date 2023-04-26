@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import deploymentsByFilter from "lib/query/DeploymentsByFilter";
-import { withRouter } from "next/router";
-import DeploymentsByFilter from "../components/DeploymentsByFilter";
-import DeploymentsByFilterSkeleton from "components/DeploymentsByFilter/DeploymentsByFilterSkeleton";
-import { CommonWrapperMargin } from "../styles/commonPageStyles";
-import { useQuery } from "@apollo/react-hooks";
-import QueryError from "../components/errors/QueryError";
-import { useTourContext } from "../tours/TourContext";
+import React, { useEffect } from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import DeploymentsByFilterSkeleton from 'components/DeploymentsByFilter/DeploymentsByFilterSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import deploymentsByFilter from 'lib/query/DeploymentsByFilter';
+
+import DeploymentsByFilter from '../components/DeploymentsByFilter';
+import QueryError from '../components/errors/QueryError';
+import { CommonWrapperMargin } from '../styles/commonPageStyles';
+import { useTourContext } from '../tours/TourContext';
 
 /**
  * Displays the projects page.
@@ -17,7 +20,7 @@ const AllDeployments = () => {
   const { continueTour } = useTourContext();
 
   const { data, error, loading } = useQuery(deploymentsByFilter, {
-    displayName: "deploymentsByFilter",
+    displayName: 'deploymentsByFilter',
   });
 
   useEffect(() => {
@@ -44,9 +47,7 @@ const AllDeployments = () => {
             {loading ? (
               <DeploymentsByFilterSkeleton />
             ) : (
-              <DeploymentsByFilter
-                deployments={data.deploymentsByFilter || []}
-              />
+              <DeploymentsByFilter deployments={data.deploymentsByFilter || []} />
             )}
           </div>
         </CommonWrapperMargin>

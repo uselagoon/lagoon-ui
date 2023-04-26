@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color, fontSize } from "lib/variables";
+import { bp, color, fontSize } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledEnvironments = styled.div`
   display: block;
@@ -9,7 +9,7 @@ export const StyledEnvironments = styled.div`
     justify-content: space-between;
 
     &::after {
-      content: "";
+      content: '';
       flex: auto;
     }
   }
@@ -48,8 +48,8 @@ export const StyledEnvironments = styled.div`
         margin-left: 0;
       }
     }
-    & .box .content{
-      label{
+    & .box .content {
+      label {
         background: ${props => props.theme.borders.box};
       }
     }
@@ -65,8 +65,8 @@ export const StyledEnvironments = styled.div`
     transform: translateY(-50%) rotate(-90deg);
 
     &::after {
-      border-top: 1px solid ${props => props.theme.colorScheme === "dark" ? "transparent" : `${color.grey}`};
-      content: "";
+      border-top: 1px solid ${props => (props.theme.colorScheme === 'dark' ? 'transparent' : `${color.grey}`)};
+      content: '';
       display: block;
       position: relative;
       right: 12px;
@@ -92,8 +92,8 @@ export const StyledEnvironments = styled.div`
     transform: translateY(-50%) rotate(-90deg);
 
     &::after {
-      border-top: 1px solid ${props => props.theme.colorScheme === "dark" ? "transparent" : `${color.grey}`};
-      content: "";
+      border-top: 1px solid ${props => (props.theme.colorScheme === 'dark' ? 'transparent' : `${color.grey}`)};
+      content: '';
       display: block;
       position: relative;
       right: 12px;
@@ -118,8 +118,8 @@ export const StyledEnvironments = styled.div`
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
     &::after {
-      border-top: 1px solid ${props => props.theme.colorScheme === "dark" ? "transparent" : `${color.grey}`};
-      content: "";
+      border-top: 1px solid ${props => (props.theme.colorScheme === 'dark' ? 'transparent' : `${color.grey}`)};
+      content: '';
       display: block;
       position: relative;
       right: 12px;
@@ -176,7 +176,7 @@ export const StyledEnvironments = styled.div`
       min-height: 122px;
       padding: 10px 15px;
     }
-    &.skeleton{
+    &.skeleton {
       padding-bottom: 0;
     }
   }

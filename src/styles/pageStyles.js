@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
-import { commonBg } from "./commonPageStyles";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
+
+import { commonBg } from './commonPageStyles';
 
 export const ProblemsByDashBoard = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   display: flex;
   flex-direction: column;
   .filters-wrapper,
@@ -18,7 +19,7 @@ export const ProblemsByDashBoard = styled.div`
     .filters {
       display: flex;
       flex-direction: column;
-      [id^="react-select"] {
+      [id^='react-select'] {
         color: ${color.black};
       }
       @media ${bp.wideUp} {
@@ -45,7 +46,7 @@ export const ProblemsByDashBoard = styled.div`
       }
     }
     .content {
-      background: ${(props) => props.theme.backgrounds.content};
+      background: ${props => props.theme.backgrounds.content};
       margin: 0 calc((100vw / 16) * 1);
       @media ${bp.wideUp} {
         margin: 0 calc((100vw / 16) * 2);
@@ -70,23 +71,21 @@ export const ProblemsByDashBoard = styled.div`
       display: flex;
       justify-content: space-between;
       padding: 1em;
-      border: 1px solid ${(props) => props.theme.borders.tableRow};
+      border: 1px solid ${props => props.theme.borders.tableRow};
     }
   }
 
   .project {
     padding: 20px;
-    background: ${(props) => props.theme.backgrounds.secondary};
+    background: ${props => props.theme.backgrounds.secondary};
     margin-bottom: 20px;
   }
   .content-wrapper {
     .results {
       margin-bottom: 20px;
       .content {
-        background: ${(props) =>
-          props.theme.colorScheme === "dark"
-            ? `${props.theme.backgrounds.secondary}`
-            : "#f1f1f1"} !important;
+        background: ${props =>
+          props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.secondary}` : '#f1f1f1'} !important;
         padding: 0px 15px;
         .label {
           color: rgb(95, 111, 122);
@@ -102,7 +101,7 @@ export const ProblemsByDashBoard = styled.div`
 
 export const DeploymentWrapper = styled.div`
   flex: 1;
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -114,7 +113,7 @@ export const DeploymentWrapper = styled.div`
 `;
 
 export const DeploymentsWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -128,7 +127,7 @@ export const DeploymentsWrapper = styled.div`
 `;
 
 export const EnvironmentWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -157,7 +156,7 @@ export const VariableWrapper = styled.div`
 `;
 
 export const ProblemsDashBoardWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   h2 {
     margin: 38px calc((100vw / 16) * 1) 0;
@@ -185,7 +184,7 @@ export const ProblemsDashBoardWrapper = styled.div`
 `;
 
 export const TasksWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -198,7 +197,7 @@ export const TasksWrapper = styled.div`
 `;
 
 export const TaskWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -284,7 +283,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
       margin: 32px calc((100vw / 16) * 3);
     }
     .filters {
-      [id^="react-select"] {
+      [id^='react-select'] {
         color: ${color.black};
       }
       @media ${bp.wideUp} {
@@ -329,7 +328,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
       padding-bottom: 20px;
     }
     .project-overview {
-      background: ${(props) => props.theme.backgrounds.content};
+      background: ${props => props.theme.backgrounds.content};
     }
     .overview {
       .overview-list {
@@ -358,19 +357,20 @@ export const StyledProblemsDashBoardByProject = styled.div`
 `;
 
 export const ProblemDashboardFilterWrapper = styled.div`
-  margin: 38px calc((100vw / 16) * 1);
+  background: ${props => props.theme.backgrounds.content};
+  padding: 38px calc((100vw / 16) * 1);
   @media ${bp.wideUp} {
-    margin: 38px calc((100vw / 16) * 2);
+    padding: 38px calc((100vw / 16) * 2);
   }
   @media ${bp.extraWideUp} {
-    margin: 38px calc((100vw / 16) * 3);
+    padding: 38px calc((100vw / 16) * 3);
   }
   .filters {
     display: flex;
     justify-content: space-between;
     padding-bottom: 1em;
     flex-direction: column;
-    [id^="react-select"] {
+    [id^='react-select'] {
       color: ${color.black};
     }
     @media ${bp.wideUp} {

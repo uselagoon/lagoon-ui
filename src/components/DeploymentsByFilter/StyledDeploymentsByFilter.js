@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled, { css } from 'styled-components';
 
 export const Deployments = styled.div`
   ${css`
@@ -24,7 +24,7 @@ export const Deployments = styled.div`
     .button-sort {
       color: #5f6f7a;
       position: relative;
-      font-family: "source-code-pro", sans-serif;
+      font-family: 'source-code-pro', sans-serif;
       font-size: 13px;
       font-size: 0.8125rem;
       line-height: 1.4;
@@ -43,11 +43,11 @@ export const Deployments = styled.div`
       }
 
       &.ascending:after {
-        content: " \\25B2";
+        content: ' \\25B2';
       }
 
       &.descending:after {
-        content: " \\25BC";
+        content: ' \\25BC';
       }
 
       &:first-child {
@@ -94,16 +94,16 @@ export const DeploymentsHeader = styled.div`
 `;
 
 export const DeploymentsDataTable = styled.div`
-  background-color: ${(props) => props.theme.backgrounds.table};
+  background-color: ${props => props.theme.backgrounds.table};
 
-  border: 1px solid ${(props) => props.theme.borders.box};
+  border: 1px solid ${props => props.theme.borders.box};
   border-radius: 3px;
   transition: all 0.3s ease;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
 
   .data-none {
     border: 1px solid ${color.white};
-    border: 1px solid ${(props) => props.theme.borders.box};
+    border: 1px solid ${props => props.theme.borders.box};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -111,8 +111,8 @@ export const DeploymentsDataTable = styled.div`
   }
 
   .data-row {
-    border: 1px solid ${(props) => props.theme.borders.box};
-    border-bottom: 1px solid ${(props) => props.theme.borders.box};
+    border: 1px solid ${props => props.theme.borders.box};
+    border-bottom: 1px solid ${props => props.theme.borders.box};
     border-radius: 0;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -170,35 +170,35 @@ export const DeploymentsDataTable = styled.div`
       text-indent: 20px;
 
       &.active {
-        background-image: url("/static/images/in-progress.svg");
+        background-image: url('/static/images/in-progress.svg');
       }
 
       &.new {
-        background-image: url("/static/images/in-progress.svg");
+        background-image: url('/static/images/in-progress.svg');
       }
 
       &.pending {
-        background-image: url("/static/images/in-progress.svg");
+        background-image: url('/static/images/in-progress.svg');
       }
 
       &.running {
-        background-image: url("/static/images/in-progress.svg");
+        background-image: url('/static/images/in-progress.svg');
       }
 
       &.failed {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
 
       &.cancelled {
-        background-image: url("/static/images/failed.svg");
+        background-image: url('/static/images/failed.svg');
       }
 
       &.succeeded {
-        background-image: url("/static/images/successful.svg");
+        background-image: url('/static/images/successful.svg');
       }
 
       &.complete {
-        background-image: url("/static/images/successful.svg");
+        background-image: url('/static/images/successful.svg');
       }
 
       span {

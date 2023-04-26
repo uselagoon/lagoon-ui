@@ -1,6 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import ReactModal from "react-modal";
+import React from 'react';
+import ReactModal from 'react-modal';
+
+import PropTypes from 'prop-types';
 
 /**
  * A styled modal dialog.
@@ -8,7 +9,7 @@ import ReactModal from "react-modal";
 const Modal = ({ isOpen, onRequestClose, contentLabel, children, variant, ...rest }) => {
   // ReactModal throws an error in environments where the document isn't loaded.
   try {
-    ReactModal.setAppElement("#__next");
+    ReactModal.setAppElement('#__next');
   } catch {}
 
   return (
@@ -27,7 +28,7 @@ const Modal = ({ isOpen, onRequestClose, contentLabel, children, variant, ...res
   );
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   Modal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onRequestClose: PropTypes.func,

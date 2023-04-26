@@ -1,11 +1,8 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import ThemedSkeletonWrapper from "../../styles/ThemedSkeletonWrapper";
-import {
-  Deployments,
-  DeploymentsDataTable,
-  DeploymentsHeader,
-} from "./StyledDeploymentsByFilter";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
+import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
 const DeploymentsByFilterSkeleton = () => {
   const SkeletonRow = (
@@ -30,29 +27,26 @@ const DeploymentsByFilterSkeleton = () => {
         <Skeleton />
       </div>
       <div className="status">
-        <Skeleton width={"50%"} />
+        <Skeleton width={'50%'} />
       </div>
       <div className="duration">
         <Skeleton />
       </div>
       <div>
-        <Skeleton width={"80%"} />
+        <Skeleton width={'80%'} />
       </div>
     </div>
   );
 
   // fit skeleton items on 80vh
-  const numberOfItems =
-    typeof window !== "undefined"
-      ? Math.floor((window.innerHeight * 8) / 10 / 80)
-      : 10;
+  const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 80) : 10;
 
   return (
     <Deployments>
       <ThemedSkeletonWrapper>
         <div className="filters">
           <label>
-            <Skeleton width={"20%"} />
+            <Skeleton width={'20%'} />
           </label>
           <label></label>
           <input type="text" id="filter" placeholder="Filter deployments..." />
@@ -74,9 +68,7 @@ const DeploymentsByFilterSkeleton = () => {
           <label>Duration</label>
           <label></label>
         </DeploymentsHeader>
-        <DeploymentsDataTable>
-          {[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}
-        </DeploymentsDataTable>
+        <DeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}</DeploymentsDataTable>
       </ThemedSkeletonWrapper>
     </Deployments>
   );

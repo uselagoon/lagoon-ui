@@ -1,9 +1,10 @@
 import React from 'react';
-import Modal from 'components/Modal';
+
 import Button from 'components/Button';
-import { color } from 'lib/variables';
 import withLogic from 'components/DeleteConfirm/logic';
 import Image from "next/image";
+import Modal from 'components/Modal';
+import { color } from 'lib/variables';
 
 /**
  * Confirms the deletion of the specified name and type.
@@ -18,7 +19,7 @@ export const DeleteConfirm = ({
   setInputValue,
   open,
   openModal,
-  closeModal
+  closeModal,
 }) => {
   return (
     <React.Fragment>
@@ -46,8 +47,8 @@ export const DeleteConfirm = ({
         <React.Fragment>
           <p>
             This will delete all resources associated with the {deleteType}{' '}
-            <span className="delete-name">{deleteName}</span> and cannot be
-            undone. Make sure this is something you really want to do!
+            <span className="delete-name">{deleteName}</span> and cannot be undone. Make sure this is something you
+            really want to do!
           </p>
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
@@ -55,11 +56,7 @@ export const DeleteConfirm = ({
             <a href="#" className="hover-state" onClick={closeModal}>
               cancel
             </a>
-            <Button
-              disabled={inputValue !== deleteName}
-              action={onDelete}
-              variant='red'
-            >
+            <Button disabled={inputValue !== deleteName} action={onDelete} variant="red">
               Delete
             </Button>
           </div>

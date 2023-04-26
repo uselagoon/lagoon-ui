@@ -1,24 +1,18 @@
-import * as R from 'ramda';
-import EnvironmentNotFound from 'components/errors/EnvironmentNotFound';
-import TaskNotFound from 'components/errors/TaskNotFound';
-import ProblemNotFound from 'components/errors/ProblemNotFound';
 import DeploymentNotFound from 'components/errors/DeploymentNotFound';
+import EnvironmentNotFound from 'components/errors/EnvironmentNotFound';
+import ProblemNotFound from 'components/errors/ProblemNotFound';
 import ProjectNotFound from 'components/errors/ProjectNotFound';
+import TaskNotFound from 'components/errors/TaskNotFound';
 import renderWhile from 'lib/renderWhile';
+import * as R from 'ramda';
 
 const noProp = R.complement(R.prop);
 const noEnvironmentData = noProp('environment');
 const noProjectData = noProp('project');
 
-export const withEnvironmentRequired = renderWhile(
-  ({ data }) => noEnvironmentData(data),
-  EnvironmentNotFound
-);
+export const withEnvironmentRequired = renderWhile(({ data }) => noEnvironmentData(data), EnvironmentNotFound);
 
-export const withTaskRequired = renderWhile(
-  ({ data: { environment } }) => !environment.tasks.length,
-  TaskNotFound
-);
+export const withTaskRequired = renderWhile(({ data: { environment } }) => !environment.tasks.length, TaskNotFound);
 
 export const withProblemRequired = renderWhile(
   ({ data: { environment } }) => !environment.problem.id === null,
@@ -30,7 +24,4 @@ export const withDeploymentRequired = renderWhile(
   DeploymentNotFound
 );
 
-export const withProjectRequired = renderWhile(
-  ({ data }) => noProjectData(data),
-  ProjectNotFound
-);
+export const withProjectRequired = renderWhile(({ data }) => noProjectData(data), ProjectNotFound);

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color, fontSize } from "lib/variables";
+import { bp, color, fontSize } from 'lib/variables';
+import styled from 'styled-components';
 
 export const StyledTasks = styled.div`
   .header {
@@ -52,7 +52,7 @@ export const TasksTable = styled.div`
     }
 
     .data-row {
-      background-image: url("/static/images/right-arrow.svg");
+      background-image: url('/static/images/right-arrow.svg');
       background-position: right 20px center;
       background-repeat: no-repeat;
       background-size: 18px 11px;
@@ -119,35 +119,35 @@ export const TasksTable = styled.div`
         background-size: 10px 10px;
 
         &.active {
-          background-image: url("/static/images/in-progress.svg");
+          background-image: url('/static/images/in-progress.svg');
         }
 
         &.new {
-          background-image: url("/static/images/in-progress.svg");
+          background-image: url('/static/images/in-progress.svg');
         }
 
         &.pending {
-          background-image: url("/static/images/in-progress.svg");
+          background-image: url('/static/images/in-progress.svg');
         }
 
         &.running {
-          background-image: url("/static/images/in-progress.svg");
+          background-image: url('/static/images/in-progress.svg');
         }
 
         &.failed {
-          background-image: url("/static/images/failed.svg");
+          background-image: url('/static/images/failed.svg');
         }
 
         &.cancelled {
-          background-image: url("/static/images/failed.svg");
+          background-image: url('/static/images/failed.svg');
         }
 
         &.succeeded {
-          background-image: url("/static/images/successful.svg");
+          background-image: url('/static/images/successful.svg');
         }
 
         &.complete {
-          background-image: url("/static/images/successful.svg");
+          background-image: url('/static/images/successful.svg');
         }
 
         span {

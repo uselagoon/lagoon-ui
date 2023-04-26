@@ -3,20 +3,15 @@ import Link from 'next/link';
 export const getLinkData = projectSlug => ({
   urlObject: {
     pathname: '/project',
-    query: { projectName: projectSlug }
+    query: { projectName: projectSlug },
   },
-  asPath: `/projects/${projectSlug}`
+  asPath: `/projects/${projectSlug}`,
 });
 
 /**
  * Links to the project page given the project name.
  */
-const ProjectLink = ({
-  projectSlug,
-  children,
-  className = null,
-  prefetch = false
-}) => {
+const ProjectLink = ({ projectSlug, children, className = null, prefetch = false }) => {
   const linkData = getLinkData(projectSlug);
 
   return (

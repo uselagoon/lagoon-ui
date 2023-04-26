@@ -1,24 +1,22 @@
 import React from 'react';
-import EnvironmentLink from 'components/link/Environment';
+
 import BackupsLink from 'components/link/Backups';
 import DeploymentsLink from 'components/link/Deployments';
-import TasksLink from 'components/link/Tasks';
-import ProblemsLink from 'components/link/Problems';
+import EnvironmentLink from 'components/link/Environment';
 import FactsLink from 'components/link/Facts';
 import InsightsLink from 'components/link/Insights';
 import EnvironmentVariablesLink from 'components/link/EnvironmentVariables';
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 import {StyledNavigation} from "./StylednavTabs";
+import ProblemsLink from 'components/link/Problems';
+import TasksLink from 'components/link/Tasks';
 
+import { StyledNavigation } from './StylednavTabs';
 
 const NavTabs = ({ activeTab, environment }) => (
   <StyledNavigation className="navigation">
-    <li
-      className={`overview ${
-        activeTab == 'overview' ? 'active' : ''
-      } deployLink`}
-    >
+    <li className={`overview ${activeTab == 'overview' ? 'active' : ''} deployLink`}>
       <EnvironmentLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -27,11 +25,7 @@ const NavTabs = ({ activeTab, environment }) => (
         Overview
       </EnvironmentLink>
     </li>
-    <li
-      className={`deployments ${
-        activeTab == 'deployments' ? 'active' : ''
-      } deployLink`}
-    >
+    <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} deployLink`}>
       <DeploymentsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -40,11 +34,7 @@ const NavTabs = ({ activeTab, environment }) => (
         Deployments
       </DeploymentsLink>
     </li>
-    <li
-      className={`backups ${
-        activeTab == 'backups' ? 'active' : ''
-      } deployLink`}
-    >
+    <li className={`backups ${activeTab == 'backups' ? 'active' : ''} deployLink`}>
       <BackupsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -53,9 +43,7 @@ const NavTabs = ({ activeTab, environment }) => (
         Backups
       </BackupsLink>
     </li>
-    <li
-      className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${"deployLink"}`}
-    >
+    <li className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${'deployLink'}`}>
       <TasksLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -76,34 +64,30 @@ const NavTabs = ({ activeTab, environment }) => (
       </EnvironmentVariablesLink>
     </li>
     }
-    {(environment.project.problemsUi == 1) && <li
-      className={`problems ${activeTab == 'problems' ? 'active' : ''} deployLink`}
-    >
+    {environment.project.problemsUi == 1 && (
+      <li className={`problems ${activeTab == 'problems' ? 'active' : ''} deployLink`}>
       <ProblemsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
           className="deployLink"
-      >
-        Problems
-      </ProblemsLink>
-    </li>
-    }
-    {(environment.project.factsUi == 1) && 
-    <li
-      className={`facts ${activeTab == 'facts' ? 'active' : ''} ${"deployLink"}`}
-    >
-      <FactsLink
-        environmentSlug={environment.openshiftProjectName}
-        projectSlug={environment.project.name}
-        className="deployLink"
-      >
-        Facts
-      </FactsLink>
-    </li>
-    }
-    {(environment.project.factsUi == 1) && <li
-        className={`insights ${activeTab == 'insights' ? 'active' : ''} deployLink`}
-      >
+        >
+          Problems
+        </ProblemsLink>
+      </li>
+    )}
+    {environment.project.factsUi == 1 && (
+      <li className={`facts ${activeTab == 'facts' ? 'active' : ''} ${'deployLink'}`}>
+        <FactsLink
+          environmentSlug={environment.openshiftProjectName}
+          projectSlug={environment.project.name}
+          className="deployLink"
+        >
+          Facts
+        </FactsLink>
+      </li>
+    )}
+    {environment.project.factsUi == 1 && (
+      <li className={`insights ${activeTab == 'insights' ? 'active' : ''} deployLink`}>
         <InsightsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
@@ -112,8 +96,7 @@ const NavTabs = ({ activeTab, environment }) => (
           Insights
         </InsightsLink>
       </li>
-    }
-
+    )}
   </StyledNavigation>
 );
 

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import mocks, { seed } from 'api/src/mocks';
+
 import ProblemsLink from './Problems';
 
 export default {
@@ -11,10 +13,7 @@ seed();
 const environment = mocks.Environment();
 
 export const Default = () => (
-  <ProblemsLink
-    environmentSlug={environment.openshiftProjectName}
-    projectSlug={environment.project.name}
-  >
+  <ProblemsLink environmentSlug={environment.openshiftProjectName} projectSlug={environment.project.name}>
     Problems link
   </ProblemsLink>
 );

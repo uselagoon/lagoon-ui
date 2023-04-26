@@ -1,12 +1,10 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import { BackupsHeader, DataTable } from "./StyledBackups";
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+import { BackupsHeader, DataTable } from './StyledBackups';
 
 const Backups = () => {
-  const numberOfBackupFields =
-    typeof window !== "undefined"
-      ? Math.floor((window.innerHeight * 8) / 10 / 65)
-      : 10;
+  const numberOfBackupFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const backupFieldSkeleton = (
     <div className="data-row">
@@ -34,11 +32,7 @@ const Backups = () => {
         <label className="backupid">Backup id</label>
       </BackupsHeader>
 
-      <DataTable>
-        {[...Array<undefined>(numberOfBackupFields)].map(
-          () => backupFieldSkeleton
-        )}
-      </DataTable>
+      <DataTable>{[...Array<undefined>(numberOfBackupFields)].map(() => backupFieldSkeleton)}</DataTable>
     </div>
   );
 };

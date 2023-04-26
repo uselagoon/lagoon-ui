@@ -1,11 +1,13 @@
 import React from 'react';
+
 import mocks, { seed } from 'api/src/mocks';
+
 import Deployments from './index';
 
 export default {
   component: Deployments,
   title: 'Components/Deployments',
-}
+};
 
 seed();
 const data = [
@@ -27,17 +29,9 @@ const data = [
   },
 ];
 
-export const Complete = () => (
-  <Deployments
-    deployments={data}
-  />
-);
+export const Complete = () => <Deployments deployments={data} />;
 
-export const NoDeployments = () => (
-  <Deployments
-    deployments={[]}
-  />
-);
+export const NoDeployments = () => <Deployments deployments={[]} />;
 
 export const New = () => (
   <Deployments

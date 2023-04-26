@@ -34,7 +34,7 @@ export const bp = {
   xlWideDown: `all and (max-width: ${(BP_EXTRAWIDE + 150) / 16}em)`,
 
   tinyUp: `all and (min-width: ${BP_TINY / 16}em)`,
-  xs_smallUp: `all and (min-width: ${(BP_XS) / 16}em)`,
+  xs_smallUp: `all and (min-width: ${BP_XS / 16}em)`,
   tabletUp: `all and (min-width: ${BP_TABLET / 16}em)`,
   desktopUp: `all and (min-width: ${BP_DESKTOP / 16}em)`,
   wideUp: `all and (min-width: ${BP_WIDE / 16}em)`,
@@ -57,15 +57,20 @@ export const fontSize = (sizeInPx, lineHeight) => `
   font-size: ${sizeInPx}px;
   font-size: ${pxToRem(sizeInPx)};
 
-  ${!lineHeight &&
+  ${
+    !lineHeight &&
     `
     line-height: ${sizeInPx * 1.66666667}px;
     line-height: ${pxToRem(sizeInPx * 1.66666667)};
-  `}
+  `
+  }
 
-  ${lineHeight ?
-    `
+  ${
+    lineHeight
+      ? `
     line-height: ${lineHeight}px;
     line-height: ${pxToRem(lineHeight)};
-  ` : ''}
+  `
+      : ''
+  }
 `;

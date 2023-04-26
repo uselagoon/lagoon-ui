@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import * as R from "ramda";
-import Head from "next/head";
-import { Query } from "react-apollo";
-import { useQuery } from "@apollo/react-hooks";
-import AllProblemsQuery from "lib/query/AllProblems";
-import getSeverityEnumQuery, {
-  getSourceOptions,
-} from "components/Filters/helpers";
-import withQueryLoadingNoHeader from "lib/withQueryLoadingNoHeader";
-import withQueryErrorNoHeader from "lib/withQueryErrorNoHeader";
-import ProblemsByIdentifier from "components/ProblemsByIdentifier";
-import MainLayout from "layouts/MainLayout";
-import SelectFilter from "components/Filters";
-import { ProblemsDashBoardWrapper, ProblemDashboardFilterWrapper } from "../styles/pageStyles";
+import React, { useState } from 'react';
+import { Query } from 'react-apollo';
+
+import Head from 'next/head';
+
+import { useQuery } from '@apollo/react-hooks';
+import SelectFilter from 'components/Filters';
+import getSeverityEnumQuery, { getSourceOptions } from 'components/Filters/helpers';
+import ProblemsByIdentifier from 'components/ProblemsByIdentifier';
+import MainLayout from 'layouts/MainLayout';
+import AllProblemsQuery from 'lib/query/AllProblems';
+import withQueryErrorNoHeader from 'lib/withQueryErrorNoHeader';
+import withQueryLoadingNoHeader from 'lib/withQueryLoadingNoHeader';
+import * as R from 'ramda';
+
+import { ProblemDashboardFilterWrapper, ProblemsDashBoardWrapper } from '../styles/pageStyles';
 
 /**
  * Displays the problems overview page.
@@ -20,35 +21,33 @@ import { ProblemsDashBoardWrapper, ProblemDashboardFilterWrapper } from "../styl
  */
 const ProblemsDashboardPage = () => {
   const [source, setSource] = useState([]);
-  const [severity, setSeverity] = useState(["CRITICAL"]);
-  const [envType, setEnvType] = useState("PRODUCTION");
+  const [severity, setSeverity] = useState(['CRITICAL']);
+  const [envType, setEnvType] = useState('PRODUCTION');
 
-  const { data: severities, loading: severityLoading } = useQuery(
-    getSeverityEnumQuery
-  );
+  const { data: severities, loading: severityLoading } = useQuery(getSeverityEnumQuery);
   const { data: sources, loading: sourceLoading } = useQuery(getSourceOptions);
 
-  const handleEnvTypeChange = (envType) => setEnvType(envType.value);
+  const handleEnvTypeChange = envType => setEnvType(envType.value);
 
-  const handleSourceChange = (source) => {
-    let values = (source && source.map((s) => s.value)) || [];
+  const handleSourceChange = source => {
+    let values = (source && source.map(s => s.value)) || [];
     setSource(values);
   };
 
-  const handleSeverityChange = (severity) => {
-    let values = (severity && severity.map((s) => s.value)) || [];
+  const handleSeverityChange = severity => {
+    let values = (severity && severity.map(s => s.value)) || [];
     setSeverity(values);
   };
 
-  const sourceOptions = (sources) => {
-    return sources && sources.map((s) => ({ value: s, label: s }));
+  const sourceOptions = sources => {
+    return sources && sources.map(s => ({ value: s, label: s }));
   };
 
-  const severityOptions = (enums) => {
-    return enums && enums.map((s) => ({ value: s.name, label: s.name }));
+  const severityOptions = enums => {
+    return enums && enums.map(s => ({ value: s.name, label: s.name }));
   };
 
-  const groupByProblemIdentifier = (problems) =>
+  const groupByProblemIdentifier = problems =>
     problems &&
     problems.reduce((arr, problem) => {
       arr[problem.identifier] = arr[problem.identifier] || [];
@@ -75,19 +74,17 @@ const ProblemsDashboardPage = () => {
             <SelectFilter
               title="Severity"
               loading={severityLoading}
-              options={
-                severities && severityOptions(severities.__type.enumValues)
-              }
-              defaultValue={{ value: "CRITICAL", label: "CRITICAL" }}
+              options={severities && severityOptions(severities.__type.enumValues)}
+              defaultValue={{ value: 'CRITICAL', label: 'CRITICAL' }}
               onFilterChange={handleSeverityChange}
               isMulti
             />
             <SelectFilter
               title="Type"
-              defaultValue={{ value: "PRODUCTION", label: "Production" }}
+              defaultValue={{ value: 'PRODUCTION', label: 'Production' }}
               options={[
-                { value: "PRODUCTION", label: "Production" },
-                { value: "DEVELOPMENT", label: "Development" },
+                { value: 'PRODUCTION', label: 'Production' },
+                { value: 'DEVELOPMENT', label: 'Development' },
               ]}
               onFilterChange={handleEnvTypeChange}
             />
@@ -110,7 +107,7 @@ const ProblemsDashboardPage = () => {
             const problemsById = groupByProblemIdentifier(problems) || [];
             const problemIdentifiers =
               problemsById &&
-              Object.keys(problemsById).map((p) => {
+              Object.keys(problemsById).map(p => {
                 const problem = problemsById[p][0];
 
                 return {
@@ -121,16 +118,10 @@ const ProblemsDashboardPage = () => {
                 };
               }, []);
 
-            const critical =
-              problems &&
-              problems.filter((p) => p.severity === "CRITICAL").length;
-            const high =
-              problems && problems.filter((p) => p.severity === "HIGH").length;
-            const medium =
-              problems &&
-              problems.filter((p) => p.severity === "MEDIUM").length;
-            const low =
-              problems && problems.filter((p) => p.severity === "LOW").length;
+            const critical = problems && problems.filter(p => p.severity === 'CRITICAL').length;
+            const high = problems && problems.filter(p => p.severity === 'HIGH').length;
+            const medium = problems && problems.filter(p => p.severity === 'MEDIUM').length;
+            const low = problems && problems.filter(p => p.severity === 'LOW').length;
 
             return (
               <>
@@ -162,9 +153,7 @@ const ProblemsDashboardPage = () => {
                       <ul className="overview-list">
                         <li className="result">
                           <label>Showing: </label>
-                          {envType.charAt(0).toUpperCase() +
-                            envType.slice(1).toLowerCase()}{" "}
-                          environments
+                          {envType.charAt(0).toUpperCase() + envType.slice(1).toLowerCase()} environments
                         </li>
                       </ul>
                     </div>

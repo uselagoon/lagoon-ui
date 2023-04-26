@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { AuthContext } from 'lib/Authenticator';
 
 const noUser = {
@@ -9,8 +10,4 @@ const noUser = {
   user: {},
 };
 
-export default storyFn => (
-  <AuthContext.Provider value={noUser}>
-    {storyFn()}
-  </AuthContext.Provider>
-);
+export default storyFn => <AuthContext.Provider value={noUser}>{storyFn()}</AuthContext.Provider>;

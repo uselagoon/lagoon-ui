@@ -16,9 +16,7 @@
       "request": "launch",
       "name": "Lagoon UI Next: Node",
       "program": "${workspaceFolder}/server.js",
-      "runtimeArgs": [
-          "--inspect"
-      ],
+      "runtimeArgs": ["--inspect"],
       "port": 9229,
       "sourceMaps": true,
       "console": "integratedTerminal"
