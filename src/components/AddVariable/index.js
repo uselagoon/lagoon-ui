@@ -60,7 +60,7 @@ export const AddVariable = ({
             </span>
           </div>
           <div className="var-modal">
-            <label htmlFor="varName">Variable Scope</label>
+            <label htmlFor="varName">Scope</label>
             {
               <ReactSelect
                 classNamePrefix="react-select"
@@ -77,7 +77,7 @@ export const AddVariable = ({
             }
           </div>
           <div className="var-modal">
-            <label htmlFor="varName">Variable Name</label>
+            <label htmlFor="varName">Name</label>
             <input
               id="varNameId"
               name="varName"
@@ -88,7 +88,7 @@ export const AddVariable = ({
             />
           </div>
           <div className="var-modal">
-            <label htmlFor="varName">Variable Value</label>
+            <label htmlFor="varName">Value</label>
             <input
               id="varValueId"
               name="varValue"
