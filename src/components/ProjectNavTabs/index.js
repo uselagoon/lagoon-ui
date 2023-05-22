@@ -3,6 +3,8 @@ import ProjectVariablesLink from 'components/link/ProjectVariables';
 import ProjectLink from "components/link/Project";
 import DeployTargetsLink from "components/link/DeployTargets";
 import { StyledProjectNavTabs } from "./StyledProjectNavTabs";
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
 const ProjectNavTabs = ({ activeTab, project }) => {
   return (
@@ -14,18 +16,20 @@ const ProjectNavTabs = ({ activeTab, project }) => {
       >
         <ProjectLink projectSlug={project.name}>Overview</ProjectLink>
       </li>
-      <li
-        className={`variables ${
-          activeTab == "variables" ? "active" : ""
-        } deployLink`}
-      >
-        <ProjectVariablesLink
-          projectSlug={project.name}
-          className="deployLink"
+      {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && 
+        <li
+          className={`variables ${
+            activeTab == "variables" ? "active" : ""
+          } deployLink`}
         >
-          Variables
-        </ProjectVariablesLink>
-      </li>
+          <ProjectVariablesLink
+            projectSlug={project.name}
+            className="deployLink"
+          >
+            Variables
+          </ProjectVariablesLink>
+        </li>
+      }
       {project.deployTargetConfigs.length > 0 && (
         <li
           className={`deployTargets ${
