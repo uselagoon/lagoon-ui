@@ -7,81 +7,86 @@ import FactsLink from 'components/link/Facts';
 import InsightsLink from 'components/link/Insights';
 import ProblemsLink from 'components/link/Problems';
 import TasksLink from 'components/link/Tasks';
+import useTranslation from 'lib/useTranslation';
 
 import { StyledNavigation } from './StylednavTabs';
 
-const NavTabs = ({ activeTab, environment }) => (
-  <StyledNavigation className="navigation">
-    <li className={`overview ${activeTab == 'overview' ? 'active' : ''} deployLink`}>
-      <EnvironmentLink
-        environmentSlug={environment.openshiftProjectName}
-        projectSlug={environment.project.name}
-        className="deployLink"
-      >
-        Overview
-      </EnvironmentLink>
-    </li>
-    <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} deployLink`}>
-      <DeploymentsLink
-        environmentSlug={environment.openshiftProjectName}
-        projectSlug={environment.project.name}
-        className="deployLink"
-      >
-        Deployments
-      </DeploymentsLink>
-    </li>
-    <li className={`backups ${activeTab == 'backups' ? 'active' : ''} deployLink`}>
-      <BackupsLink
-        environmentSlug={environment.openshiftProjectName}
-        projectSlug={environment.project.name}
-        className="deployLink"
-      >
-        Backups
-      </BackupsLink>
-    </li>
-    <li className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${'deployLink'}`}>
-      <TasksLink
-        environmentSlug={environment.openshiftProjectName}
-        projectSlug={environment.project.name}
-        className="deployLink"
-      >
-        Tasks
-      </TasksLink>
-    </li>
-    {environment.project.problemsUi == 1 && (
-      <li className={`problems ${activeTab == 'problems' ? 'active' : ''} deployLink`}>
-        <ProblemsLink
+const NavTabs = ({ activeTab, environment }) => {
+  const t = useTranslation();
+
+  return (
+    <StyledNavigation className="navigation">
+      <li className={`overview ${activeTab == 'overview' ? 'active' : ''} deployLink`}>
+        <EnvironmentLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
           className="deployLink"
         >
-          Problems
-        </ProblemsLink>
+          {t('environment.nav.overview')}
+        </EnvironmentLink>
       </li>
-    )}
-    {environment.project.factsUi == 1 && (
-      <li className={`facts ${activeTab == 'facts' ? 'active' : ''} ${'deployLink'}`}>
-        <FactsLink
+      <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} deployLink`}>
+        <DeploymentsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
           className="deployLink"
         >
-          Facts
-        </FactsLink>
+          {t('environment.nav.deployments')}
+        </DeploymentsLink>
       </li>
-    )}
-    {environment.project.factsUi == 1 && (
-      <li className={`insights ${activeTab == 'insights' ? 'active' : ''} deployLink`}>
-        <InsightsLink
+      <li className={`backups ${activeTab == 'backups' ? 'active' : ''} deployLink`}>
+        <BackupsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
           className="deployLink"
         >
-          Insights
-        </InsightsLink>
+          {t('environment.nav.backups')}
+        </BackupsLink>
       </li>
-    )}
-  </StyledNavigation>
-);
+      <li className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${'deployLink'}`}>
+        <TasksLink
+          environmentSlug={environment.openshiftProjectName}
+          projectSlug={environment.project.name}
+          className="deployLink"
+        >
+          {t('environment.nav.tasks')}
+        </TasksLink>
+      </li>
+      {environment.project.problemsUi == 1 && (
+        <li className={`problems ${activeTab == 'problems' ? 'active' : ''} deployLink`}>
+          <ProblemsLink
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+            className="deployLink"
+          >
+            {t('environment.nav.problems')}
+          </ProblemsLink>
+        </li>
+      )}
+      {environment.project.factsUi == 1 && (
+        <li className={`facts ${activeTab == 'facts' ? 'active' : ''} ${'deployLink'}`}>
+          <FactsLink
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+            className="deployLink"
+          >
+            {t('environment.nav.facts')}
+          </FactsLink>
+        </li>
+      )}
+      {environment.project.factsUi == 1 && (
+        <li className={`insights ${activeTab == 'insights' ? 'active' : ''} deployLink`}>
+          <InsightsLink
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+            className="deployLink"
+          >
+            {t('environment.nav.insights')}
+          </InsightsLink>
+        </li>
+      )}
+    </StyledNavigation>
+  );
+};
 
 export default NavTabs;

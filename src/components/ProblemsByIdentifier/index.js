@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 
 import Accordion from 'components/Accordion';
 import ProblemsLink from 'components/link/Problems';
+import useTranslation from 'lib/useTranslation';
 
 import { IdentifierHeader, StyledProblemsByIdentifier } from './StyledProblemsByIdentifier';
 import useSortableData from './sortedItems';
 
 const ProblemsByIdentifier = ({ problems }) => {
+  const t = useTranslation();
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(problems);
 
   const [problemTerm, setProblemTerm] = useState('');
@@ -49,7 +51,7 @@ const ProblemsByIdentifier = ({ problems }) => {
         <input
           type="text"
           id="filter"
-          placeholder="Filter problems e.g. CVE-2020-2342"
+          placeholder={t('placeholders.problemsByIdentifier')}
           value={problemTerm}
           onChange={handleProblemFilterChange}
         />
@@ -60,32 +62,34 @@ const ProblemsByIdentifier = ({ problems }) => {
           onClick={() => handleSort('identifier')}
           className={`button-sort identifier ${getClassNamesFor('identifier')}`}
         >
-          Problem identifier
+          {t('problemsDashboard.identifier.problem')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('source')}
           className={`button-sort source ${getClassNamesFor('source')}`}
         >
-          Source
+          {t('problemsDashboard.identifier.source')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('severity')}
           className={`button-sort severity ${getClassNamesFor('severity')}`}
         >
-          Severity
+          {t('problemsDashboard.identifier.severity')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('projectsAffected')}
           className={`button-sort projectsAffected ${getClassNamesFor('projectsAffected')}`}
         >
-          Projects affected
+          {t('problemsDashboard.identifier.affected')}
         </button>
       </IdentifierHeader>
       <div className="data-table">
-        {!sortedItems.filter(item => filterResults(item)).length && <div className="data-none">No Problems</div>}
+        {!sortedItems.filter(item => filterResults(item)).length && (
+          <div className="data-none">{t('problemsDashboard.identifier.noProblems')}</div>
+        )}
         {sortedItems
           .filter(item => filterResults(item))
           .map(item => {
@@ -104,7 +108,7 @@ const ProblemsByIdentifier = ({ problems }) => {
                 <div className="expanded-wrapper">
                   <div className="left-content">
                     <div className="fieldWrapper">
-                      <label>Problem Description</label>
+                      <label>{t('problemsDashboard.identifier.labels.description')}</label>
                       {description && (
                         <div className="description">
                           {description.length > 250 ? description.substring(0, 247) + '...' : description}
@@ -112,11 +116,11 @@ const ProblemsByIdentifier = ({ problems }) => {
                       )}
                     </div>
                     <div className="fieldWrapper">
-                      <label>Package</label>
+                      <label>{t('problemsDashboard.identifier.labels.package')}</label>
                       {associatedPackage && <div className="package">{associatedPackage}</div>}
                     </div>
                     <div className="fieldWrapper">
-                      <label>Associated link (CVE description etc.)</label>
+                      <label>{t('problemsDashboard.identifier.labels.associatedLink')}</label>
                       {links && (
                         <div className="links">
                           <a href={links} target="_blank">
@@ -128,7 +132,7 @@ const ProblemsByIdentifier = ({ problems }) => {
                   </div>
                   <div className="right-content">
                     <div className="fieldWrapper">
-                      <label>Projects:Environments affected:</label>
+                      <label>{t('problemsDashboard.identifier.labels.projectsAffected')}</label>
                       {problems &&
                         problems
                           .filter(p => p != null)
@@ -157,7 +161,7 @@ const ProblemsByIdentifier = ({ problems }) => {
                           })}
                       {problems && problems.filter(p => p != null).length > moreProjectsLimit && (
                         <button className="button more" onClick={e => onLoadMore(e)}>
-                          More...
+                          {t('general.more')}
                         </button>
                       )}
                     </div>

@@ -16,6 +16,7 @@ import ResultsLimited from 'components/ResultsLimited';
 import MainLayout from 'layouts/MainLayout';
 import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
 import BackupsSubscription from 'lib/subscription/Backups';
+import useTranslation from 'lib/useTranslation';
 import * as R from 'ramda';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
@@ -45,6 +46,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  * Displays the backups page, given the name of an openshift project.
  */
 export const PageBackups = ({ router }) => {
+  const t = useTranslation();
   const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithBackupsQuery, {
     variables: {
@@ -81,10 +83,7 @@ export const PageBackups = ({ router }) => {
                 openshiftProjectName={openshiftProjectName}
               />
               <div className="content">
-                <div className="notification">
-                  If you need a current database or files dump, use the tasks "drush sql-dump" or "drush archive-dump"
-                  in the new "Tasks" section!
-                </div>
+                <div className="notification">{t('backups.notification')}</div>
                 <BackupsSkeleton />
                 <ResultsLimited
                   limit={resultLimit}
@@ -175,10 +174,7 @@ export const PageBackups = ({ router }) => {
         <CommonWrapperWNotification>
           <NavTabs activeTab="backups" environment={environment} />
           <div className="content">
-            <div className="notification">
-              If you need a current database or files dump, use the tasks "drush sql-dump" or "drush archive-dump" in
-              the new "Tasks" section!
-            </div>
+            <div className="notification">{t('backups.notification')}</div>
             <Backups backups={environment.backups} />
             <ResultsLimited
               limit={resultLimit}

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import giturlparse from 'git-url-parse';
+import useTranslation from 'lib/useTranslation';
 import moment from 'moment';
 import * as R from 'ramda';
 
 import { FieldWrapper, ProjectDetails } from './StyledProjectSidebar';
 
 const Project = ({ project }) => {
+  const t = useTranslation();
   const [copied, setCopied] = useState(false);
   const gitUrlParsed = giturlparse(project.gitUrl);
   const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
@@ -20,13 +22,13 @@ const Project = ({ project }) => {
     <ProjectDetails className="details">
       <FieldWrapper className="field-wrapper created">
         <div>
-          <label>Created</label>
+          <label>{t('project.sidebar.created')}</label>
           <div className="field">{moment.utc(project.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
         </div>
       </FieldWrapper>
       <FieldWrapper className="field-wrapper origin">
         <div>
-          <label>Origin</label>
+          <label>{t('project.sidebar.origin')}</label>
           <div className="field">
             <a className="hover-state" target="_blank" href={`https://${gitLink}`}>
               {gitLink}
@@ -40,7 +42,7 @@ const Project = ({ project }) => {
           <div className="copy-field">
             <div className="field">{project.gitUrl}</div>
             <span className="copied" style={copied ? { top: '-20px', opacity: '0' } : null}>
-              Copied
+              {t('project.sidebar.copied')}
             </span>
             <CopyToClipboard
               text={project.gitUrl}
@@ -59,7 +61,7 @@ const Project = ({ project }) => {
       {!projectUsesDeployTargets && (
         <FieldWrapper className="field-wrapper branches">
           <div>
-            <label>Branches enabled</label>
+            <label>{t('project.sidebar.branchesEnabled')}</label>
             <div className="field">{project.branches}</div>
           </div>
         </FieldWrapper>
@@ -67,23 +69,24 @@ const Project = ({ project }) => {
       {!projectUsesDeployTargets && (
         <FieldWrapper className="field-wrapper prs">
           <div>
-            <label>Pull requests enabled</label>
+            <label>{t('project.sidebar.prsEnabled')}</label>
             <div className="field">{project.pullrequests}</div>
           </div>
         </FieldWrapper>
       )}
       <FieldWrapper className="field-wrapper envlimit">
         <div>
-          <label>Development environments in use</label>
+          <label>{t('project.sidebar.devEnvsInuse')}</label>
           <div className="field">
-            {developEnvironmentCount} of {R.defaultTo('unlimited', project.developmentEnvironmentsLimit)}
+            {developEnvironmentCount} {t('project.sidebar.of')}{' '}
+            {R.defaultTo('unlimited', project.developmentEnvironmentsLimit)}
           </div>
         </div>
       </FieldWrapper>
       {projectUsesDeployTargets && (
         <FieldWrapper className="field-wrapper target">
           <div>
-            <label>Deploy Targets</label>
+            <label>{t('project.sidebar.deployTargets')}</label>
             {project.deployTargetConfigs.map(depTarget => (
               <div key={depTarget.id}>
                 <div>
@@ -93,9 +96,9 @@ const Project = ({ project }) => {
                       : depTarget.deployTarget.name}
                   </label>
                 </div>
-                <label className="field2">Branches enabled</label>
+                <label className="field2">{t('project.sidebar.branchesEnabled')}</label>
                 <div className="field2">{depTarget.branches}</div>
-                <label className="field2">Pull requests enabled</label>
+                <label className="field2">{t('project.sidebar.prsEnabled')}</label>
                 <div className="field2">{depTarget.pullrequests}</div>
               </div>
             ))}

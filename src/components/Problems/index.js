@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import SelectFilter from 'components/Filters';
 import Problem from 'components/Problem';
+import useTranslation from 'lib/useTranslation';
 
 import { StyledProblems } from './StyledProblems';
 import useSortableProblemsData from './sortedItems';
@@ -13,6 +14,8 @@ const getOptionsFromProblems = (problems, key) => {
 };
 
 const Problems = ({ problems }) => {
+  const t = useTranslation();
+
   const { sortedItems, requestSort, getClassNamesFor } = useSortableProblemsData(problems);
   const [severitySelected, setSeverity] = useState([]);
   const [sourceSelected, setSource] = useState([]);
@@ -134,23 +137,23 @@ const Problems = ({ problems }) => {
       <div className="overview">
         <ul className="overview-list">
           <li className="result">
-            <label>Problems </label>
+            <label>{t('problems.label.problems')} </label>
             <span className="text-large">{Object.keys(sortedItems).length}</span>
           </li>
           <li className="result">
-            <label>Critical </label>
+            <label>{t('problems.label.critical')} </label>
             <span className="text-large red">{problemStats.critical}</span>
           </li>
           <li className="result">
-            <label>High </label>
+            <label>{t('problems.label.high')} </label>
             <span className="text-large blue">{problemStats.high}</span>
           </li>
           <li className="result">
-            <label>Medium </label>
+            <label>{t('problems.label.medium')} </label>
             <span className="text-large yellow">{problemStats.medium}</span>
           </li>
           <li className="result">
-            <label>Low </label>
+            <label>{t('problems.label.low')} </label>
             <span className="text-large grey">{problemStats.low}</span>
           </li>
         </ul>
@@ -158,21 +161,21 @@ const Problems = ({ problems }) => {
       <div className="filters-wrapper">
         <div className="select-filters">
           <SelectFilter
-            title="Severity"
+            title={t('problems.filters.severity')}
             loading={!severities}
             options={severities && severityOptions(severities)}
             onFilterChange={handleSeverityChange}
             isMulti
           />
           <SelectFilter
-            title="Source"
+            title={t('problems.filters.source')}
             loading={!sources}
             options={sources && sourceOptions(sources)}
             onFilterChange={handleSourceChange}
             isMulti
           />
           <SelectFilter
-            title="Service"
+            title={t('problems.filters.service')}
             loading={!services}
             options={services && serviceOptions(services)}
             onFilterChange={handleServiceChange}
@@ -184,7 +187,7 @@ const Problems = ({ problems }) => {
         <input
           type="text"
           id="filter"
-          placeholder="Filter problems e.g. CVE-2020-2342"
+          placeholder={t('placeholders.problemsFilter')}
           value={problemTerm}
           onChange={handleTextFilterChange}
         />
@@ -195,48 +198,48 @@ const Problems = ({ problems }) => {
           onClick={() => handleSort('identifier')}
           className={`button-sort identifier ${getClassNamesFor('identifier')}`}
         >
-          Problem id
+          {t('problems.problemID')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('severity')}
           className={`button-sort severity ${getClassNamesFor('severity')}`}
         >
-          Severity
+          {t('problems.severity')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('source')}
           className={`button-sort source ${getClassNamesFor('source')}`}
         >
-          Source
+          {t('problems.source')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('created')}
           className={`button-sort created ${getClassNamesFor('created')}`}
         >
-          Last detected
+          {t('problems.lastDetected')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('service')}
           className={`button-sort service ${getClassNamesFor('service')}`}
         >
-          Service
+          {t('problems.service')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('associatedPackage')}
           className={`button-sort associatedPackage ${getClassNamesFor('associatedPackage')}`}
         >
-          Package
+          {t('problems.package')}
         </button>
       </div>
       <div className="problems-container">
         {sortedItems.filter(item => shouldItemBeShown(item)).length == 0 && (
           <div className="data-table">
-            <div className="data-none">No Problems</div>
+            <div className="data-none">{t('problems.noProblems')}</div>
           </div>
         )}
         {sortedItems

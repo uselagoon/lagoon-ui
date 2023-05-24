@@ -4,6 +4,7 @@ import ReactSelect from 'react-select';
 
 import Button from 'components/Button';
 import gql from 'graphql-tag';
+import useTranslation from 'lib/useTranslation';
 import * as R from 'ramda';
 import withState from 'recompose/withState';
 
@@ -44,6 +45,8 @@ const InvokeRegisteredTask = ({
   isConfirmOpen,
   setIsConfirmOpen,
 }) => {
+  const t = useTranslation();
+
   let taskArgumentsExist = false;
   let argumentVariablesHaveValues = true;
 
@@ -99,10 +102,7 @@ const InvokeRegisteredTask = ({
                               value: R.prop(d.name, advancedTaskArguments),
                             }}
                             onChange={selectedOption => {
-                              setAdvancedTaskArguments({
-                                ...advancedTaskArguments,
-                                [d.name]: selectedOption.value,
-                              });
+                              setAdvancedTaskArguments({ ...advancedTaskArguments, [d.name]: selectedOption.value });
                             }}
                             options={d.range.map(opt => ({ label: opt, value: opt }))}
                           />
@@ -119,10 +119,7 @@ const InvokeRegisteredTask = ({
                             name="{d.name}"
                             value={R.prop(d.name, advancedTaskArguments)}
                             onChange={event => {
-                              setAdvancedTaskArguments({
-                                ...advancedTaskArguments,
-                                [d.name]: event.target.value,
-                              });
+                              setAdvancedTaskArguments({ ...advancedTaskArguments, [d.name]: event.target.value });
                             }}
                           />
                         </div>
@@ -150,7 +147,7 @@ const InvokeRegisteredTask = ({
                 disabled={taskArgumentsExist && !argumentVariablesHaveValues}
                 action={mutationInvokeRegisteredTask}
               >
-                Run task
+                {t('tasks.addTask.run')}
               </Button>
             )}
           </StyledRegisteredTasks>

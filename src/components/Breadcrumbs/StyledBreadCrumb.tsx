@@ -13,7 +13,6 @@ export const StyledBreadCrumb = styled.div`
       font-size: clamp(0.5rem, 1vw, 0.815rem);
     }
   }
-
   &::after {
     content: '';
     position: absolute;
@@ -25,7 +24,6 @@ export const StyledBreadCrumb = styled.div`
     transform-origin: 100% 0;
     transform: skew(-12deg) translateY(-20%);
   }
-
   h2 {
     margin-bottom: 0;
     line-height: initial;
@@ -38,7 +36,6 @@ export const BreadCrumbLink = styled.a`
   &:first-child {
     .breadcrumb {
       padding-left: 0;
-
       &::after {
         content: none;
       }
@@ -55,7 +52,6 @@ export const StyledBreadcrumbsWrapper = styled.div`
   @media ${bp.tabletUp} {
     padding: 1.75vw 0 1.25vw;
   }
-
   .breadcrumbs {
     display: flex;
     margin: 0 calc((100vw / 16) * 1);

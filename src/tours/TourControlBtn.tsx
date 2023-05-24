@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import getConfig from 'next/config';
 import Image from 'next/image';
 
+import useTranslation from 'lib/useTranslation';
 import { color } from 'lib/variables';
 import styled from 'styled-components';
 
@@ -25,6 +26,7 @@ const TourControlBtn = () => {
     continueTour: (shouldRevalidate: boolean) => void,
     allCurrentStepsTraversed;
 
+  const t = useTranslation();
   // if used in the header it needs to "wait" until initialization;
   const tourContext = useContext<TourContextType | null>(TourContext);
   if (!tourContext) {
@@ -56,7 +58,7 @@ const TourControlBtn = () => {
 
   // if skipped or everything was toured
   if (skipped || allRoutesToured()) {
-    return renderButton(manuallyTriggerTour, 'Restart Lagoon Tour');
+    return renderButton(manuallyTriggerTour, t('tours.restartTour'));
   }
 
   // current route tours already finished
@@ -66,7 +68,7 @@ const TourControlBtn = () => {
   if (tourStarted && !running) {
     return renderButton(() => {
       continueTour(true);
-    }, 'Continue Lagoon Tour');
+    }, t('tours.continueTour'));
   }
 
   // tour was not started at all
@@ -74,7 +76,7 @@ const TourControlBtn = () => {
     return renderButton(() => {
       startTour();
       continueTour(true);
-    }, 'Start & Continue Lagoon Tour');
+    }, t('tours.startContinue'));
   }
 
   return null;

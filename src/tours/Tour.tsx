@@ -3,8 +3,10 @@ import Joyride, { CallBackProps } from 'react-joyride';
 
 import { useRouter } from 'next/router';
 
+import useTranslation from 'lib/useTranslation';
 import { color } from 'lib/variables';
 
+import TourConfig from '../../tour.json';
 import { useTourContext } from './TourContext';
 
 interface Config {
@@ -24,6 +26,7 @@ type Step = {
 };
 
 const Tour = () => {
+  const t = useTranslation();
   const router = useRouter();
   const { pathname } = router;
 
@@ -42,14 +45,19 @@ const Tour = () => {
     updateCurrentStepsTraversed,
     updateTourInfo,
   } = useTourContext();
-  const [translated, setTranslated] = useState(false);
   const [currentRouteTour, setCurrentRouteTour] = useState<Route>();
 
   const getCurrentRouteSteps = (routes: Route[]) => {
     const currentIndex = routes.findIndex(route => pathname === route.pathName);
     if (!!~currentIndex) {
       const modifiedSteps = routes[currentIndex].steps.map(eachStep => {
-        return { ...eachStep, disableBeacon: true };
+        const cloned = { ...eachStep };
+        if (TourConfig.mode === 'translated') {
+          // use the T function - get translated strings
+          cloned.content = t(cloned.content);
+          cloned.title = t(cloned.title);
+        }
+        return { ...cloned, disableBeacon: true };
       });
 
       // if a step was already viewed and saved locally, if the user navigates elsewhere and returns, don't show it again.
@@ -81,15 +89,10 @@ const Tour = () => {
   };
 
   const getTourConfig = async () => {
-    const TourConfig = (await import('../../tour.json')).default;
-
     // save tour info to context
     setTourState(prev => {
       return { ...prev, tourRoutes: TourConfig.routes };
     });
-
-    // translation mode locally
-    setTranslated(TourConfig.mode === 'translated');
 
     // identify the current route and save it's steps locally
     getCurrentRouteSteps(TourConfig.routes);
@@ -189,8 +192,10 @@ const Tour = () => {
         showProgress
         showSkipButton
         locale={{
-          skip: 'Skip the tour',
-          last: 'Complete',
+          skip: t('tours.skip'),
+          last: t('tours.last'),
+          back: t('tours.back'),
+          next: t('tours.next'),
         }}
         styles={{
           options: {

@@ -5,6 +5,7 @@ import { getDeploymentDuration } from 'components/Deployment';
 import DeploymentLink from 'components/link/Deployment';
 import DeploymentsLink from 'components/link/Deployments';
 import ProjectLink from 'components/link/Project';
+import useTranslation from 'lib/useTranslation';
 import moment from 'moment';
 
 import useSortableData from '../../lib/withSortedItems';
@@ -20,6 +21,8 @@ const DeploymentsByFilter = ({ deployments }) => {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [hasFilter, setHasFilter] = useState(false);
+
+  const t = useTranslation();
 
   const formatString = (textToEdit, labelClassToQuery) => {
     // if the string is bigger than the data-row container, then add new lines.
@@ -125,44 +128,43 @@ const DeploymentsByFilter = ({ deployments }) => {
         <input
           type="text"
           id="filter"
-          placeholder="Filter deployments..."
+          placeholder={t('placeholders.deploymentFilter')}
           value={searchTerm}
           onChange={handleSearchFilterChange}
         />
       </div>
-
+      <DeploymentsHeader>
+        <label>{t('allDeployments.project')}</label>
+        <label>{t('allDeployments.environment')}</label>
+        <label>{t('allDeployments.cluster')}</label>
+        <button
+          type="button"
+          onClick={() => handleSort('name')}
+          className={`button-sort name ${getClassNamesFor('name')}`}
+        >
+          {t('allDeployments.name')}
+        </button>
+        <label className="priority">{t('allDeployments.priority')}</label>
+        <button
+          type="button"
+          onClick={() => handleSort('created')}
+          className={`button-sort created ${getClassNamesFor('created')}`}
+        >
+          {t('allDeployments.created')}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSort('status')}
+          className={`button-sort status ${getClassNamesFor('status')}`}
+        >
+          {t('allDeployments.status')}
+        </button>
+        <label>{t('allDeployments.duration')}</label>
+        <label></label>
+      </DeploymentsHeader>
       <DeploymentsDataTable>
-        <DeploymentsHeader>
-          <label>Project</label>
-          <label>Environment</label>
-          <label>Cluster</label>
-          <button
-            type="button"
-            onClick={() => handleSort('name')}
-            className={`button-sort name ${getClassNamesFor('name')}`}
-          >
-            Name
-          </button>
-          <label className="priority">Priority</label>
-          <button
-            type="button"
-            onClick={() => handleSort('created')}
-            className={`button-sort created ${getClassNamesFor('created')}`}
-          >
-            Created
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSort('status')}
-            className={`button-sort status ${getClassNamesFor('status')}`}
-          >
-            Status
-          </button>
-          <label>Duration</label>
-          <label></label>
-        </DeploymentsHeader>
         {!sortedItems.filter(deployment => filterResults(deployment)).length && (
-          <div className="data-none">No deployments</div>
+          <div className="data-none">{t('allDeployments.noDeployments')}</div>
         )}
         {sortedItems
           .filter(deployment => filterResults(deployment))
@@ -203,7 +205,11 @@ const DeploymentsByFilter = ({ deployments }) => {
                 <div className="duration">{getDeploymentDuration(deployment)}</div>
                 <div>
                   {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
-                    <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
+                    <CancelDeployment
+                      deployment={deployment}
+                      afterText={t('allDeployments.cancelled')}
+                      beforeText={t('allDeployments.cancel')}
+                    />
                   )}
                 </div>
               </div>

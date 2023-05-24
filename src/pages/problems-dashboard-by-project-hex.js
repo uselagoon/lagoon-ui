@@ -8,6 +8,7 @@ import getSeverityEnumQuery, { getSourceOptions } from 'components/Filters/helpe
 import Honeycomb from 'components/Honeycomb';
 import MainLayout from 'layouts/MainLayout';
 import AllProjectsProblemsQuery from 'lib/query/AllProjectsProblems';
+import useTranslation from 'lib/useTranslation';
 import { LoadingPageNoHeader } from 'pages/_loading';
 import * as R from 'ramda';
 
@@ -18,6 +19,7 @@ import { ProblemsByDashBoard } from '../styles/pageStyles';
  *
  */
 const ProblemsDashboardByProjectPageHexDisplay = () => {
+  const t = useTranslation();
   const [showCleanProjects, setShowCleanProjects] = useState(true);
   const [source, setSource] = useState([]);
   const [severity, setSeverity] = useState(['CRITICAL']);
@@ -64,22 +66,23 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
         <div className="filters-wrapper">
           <div className="filters">
             <SelectFilter
-              title="Severity"
+              title={t('problemsByHex.filters.severity')}
               loading={severityLoading}
               options={severities && severityOptions(severities.__type.enumValues)}
               defaultValue={{ value: 'CRITICAL', label: 'CRITICAL' }}
               onFilterChange={handleSeverityChange}
               isMulti
             />
+
             <SelectFilter
-              title="Source"
+              title={t('problemsByHex.filters.source')}
               loading={sourceLoading}
               options={sources && sourceOptions(sources.sources)}
               onFilterChange={handleSourceChange}
               isMulti
             />
             <SelectFilter
-              title="Type"
+              title={t('problemsByHex.filters.type')}
               defaultValue={{ value: 'PRODUCTION', label: 'Production' }}
               options={[
                 { value: 'PRODUCTION', label: 'Production' },
@@ -89,7 +92,7 @@ const ProblemsDashboardByProjectPageHexDisplay = () => {
             />
           </div>
           <div className="extra-filters">
-            <label>Show Projects with no problems: </label>
+            <label>{t('problemsByHex.showNoProblems')}: </label>
             <input
               name="env-type"
               onClick={handleShowAllProjectsCheck}

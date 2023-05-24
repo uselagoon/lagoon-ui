@@ -11,7 +11,6 @@ export const StyledNewTask = styled.div`
   margin-bottom: 32px;
   padding: 32px 20px;
   width: 100%;
-
   [id^='react-select'] {
     color: black;
   }

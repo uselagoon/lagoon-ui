@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Button from 'components/Button';
 import SelectFilter from 'components/Filters';
+import useTranslation from 'lib/useTranslation';
 
 import useSortableData from '../../lib/withSortedItems';
 // import { Icon } from 'semantic-ui-react';
@@ -14,6 +15,7 @@ const getOptionsFromInsights = (insights, key) => {
 };
 
 const Insights = ({ insights }) => {
+  const t = useTranslation();
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(insights, {
     key: 'id',
     direction: 'ascending',
@@ -125,7 +127,7 @@ const Insights = ({ insights }) => {
       <div className="overview">
         <ul className="overview-list">
           <li className="result">
-            <label>{insightsLength <= 1 ? `Insight` : `Insights`}</label>
+            <label>{insightsLength <= 1 ? t('insights.insight') : t('insights.insights')}</label>
             <span className="text-large">{insightsLength}</span>
           </li>
         </ul>
@@ -133,21 +135,21 @@ const Insights = ({ insights }) => {
       <div className="filters-wrapper">
         <div className="select-filters">
           <SelectFilter
-            title="Name"
+            title={t('insights.filters.name')}
             loading={!names}
             options={names && nameOptions(names)}
             onFilterChange={handleNameChange}
             isMulti
           />
           <SelectFilter
-            title="Service"
+            title={t('insights.filters.service')}
             loading={!services}
             options={services && serviceOptions(services)}
             onFilterChange={handleServiceChange}
             isMulti
           />
           <SelectFilter
-            title="Type"
+            title={t('insights.filters.type')}
             loading={!types}
             options={types && typeOptions(types)}
             onFilterChange={handleTypeChange}
@@ -159,7 +161,7 @@ const Insights = ({ insights }) => {
         <input
           type="text"
           id="filter"
-          placeholder="Filter insights e.g. sbom.json"
+          placeholder={t('placeholders.insights')}
           value={factTerm}
           onChange={handleFactFilterChange}
         />
@@ -170,44 +172,44 @@ const Insights = ({ insights }) => {
           onClick={() => handleSort('file')}
           className={`button-sort file ${getClassNamesFor('file')}`}
         >
-          File
+          {t('insights.file')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('service')}
           className={`button-sort service ${getClassNamesFor('service')}`}
         >
-          Service
+          {t('insights.service')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('type')}
           className={`button-sort type ${getClassNamesFor('type')}`}
         >
-          Type
+          {t('insights.type')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('created')}
           className={`button-sort created ${getClassNamesFor('created')}`}
         >
-          Created
+          {t('insights.created')}
         </button>
         <button
           type="size"
           onClick={() => handleSort('size')}
           className={`button-sort size ${getClassNamesFor('size')}`}
         >
-          Size
+          {t('insights.size')}
         </button>
         <button type="button" className={`button-sort download ${getClassNamesFor('download')}`}>
-          Download
+          {t('insights.download')}
         </button>
       </div>
       <div className="insights-container">
         {sortedItems.filter(item => shouldItemBeShown(item)).length == 0 && (
           <div className="data-table">
-            <div className="data-none">No insights</div>
+            <div className="data-none">{t('insights.noInsights')}</div>
           </div>
         )}
         {sortedItems
@@ -222,8 +224,7 @@ const Insights = ({ insights }) => {
                 <div className="col col-3">{insight.size}</div>
                 <div className="col col-3">
                   <a href={insight.downloadUrl} target="_blank">
-                    {/* <Icon link name='download'/>Download */}
-                    <Button>Download</Button>
+                    <Button>{t('general.download')}</Button>
                   </a>
                 </div>
               </div>

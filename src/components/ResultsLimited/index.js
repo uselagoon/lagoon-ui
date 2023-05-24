@@ -1,15 +1,10 @@
 import React from 'react';
 import ReactSelect from 'react-select';
 
+import useTranslation from 'lib/useTranslation';
+
 import { StyledResultsLimited } from './StyledResultsLimited';
 
-const options = [
-  { value: '10', label: '10' },
-  { value: '25', label: '25' },
-  { value: '50', label: '50' },
-  { value: '100', label: '100' },
-  { value: '-1', label: 'all' },
-];
 const handleChange = values => {
   window.location.href = window.location.href.split('?')[0] + '?limit=' + values.value;
 };
@@ -28,6 +23,15 @@ const customStyles = {
  * Button that deploys the latest environment.
  */
 const ResultsLimited = ({ limit, message }) => {
+  const t = useTranslation();
+
+  const options = [
+    { value: '10', label: '10' },
+    { value: '25', label: '25' },
+    { value: '50', label: '50' },
+    { value: '100', label: '100' },
+    { value: '-1', label: t('resultsLimited.label.all') },
+  ];
   return (
     // if the number of results = the limit, then display a message that the results are limited
     // if the number of results is less than the limit, the message won't be displayed
@@ -36,18 +40,16 @@ const ResultsLimited = ({ limit, message }) => {
     <StyledResultsLimited>
       {limit && (
         <React.Fragment>
-          <div className="description">
-            Number of results displayed is limited to {limit}
-            {message}
-          </div>
+          <div className="description">{t('resultsLimited.description', { limit, message })}</div>
         </React.Fragment>
       )}
       <div className="results">
         {
           <ReactSelect
+            menuPosition="fixed"
             styles={customStyles}
             aria-label="Results"
-            placeholder="Results to display..."
+            placeholder={t('placeholders.resultsDisplay')}
             name="results"
             onChange={handleChange}
             options={options}

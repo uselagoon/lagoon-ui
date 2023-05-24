@@ -8,7 +8,6 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
   border-radius: 3px;
   position: relative;
   width: 100%;
-
   &::after {
     bottom: 4px;
     content: '';
@@ -19,15 +18,12 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
     transition: box-shadow 0.5s ease;
     width: calc(100% - 30px);
   }
-
   &:hover {
     border: 2px solid ${color.brightBlue};
-
     &::after {
       box-shadow: 0px 12px 40px 0px rgba(73, 127, 250, 0.5);
     }
   }
-
   .content {
     background: ${props => props.theme.backgrounds.box};
     height: 100%;
@@ -42,7 +38,6 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
     css`
       .content {
         background-image: ${props.activeBgs[0]};
-
         &:hover {
           background-image: ${props.activeBgs[1]};
         }

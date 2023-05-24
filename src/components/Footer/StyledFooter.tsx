@@ -8,7 +8,6 @@ export const StyledFooter = styled.footer`
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${color.lightBlue}',GradientType=1 );
   display: flex;
   justify-content: space-between;
-
   span {
     color: ${color.almostWhite};
     padding: 10px 20px;
@@ -33,4 +32,12 @@ export const StyledFooter = styled.footer`
       }
     }
   }
+`;
+export const StyledLanguageSwitcher = styled.select`
+  margin-right: 20px;
+  padding-inline: 8px;
+  background-color: #4578e6;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid #ffffff5e;
 `;

@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 
+import useTranslation from 'lib/useTranslation';
+
 import useSortableData from '../../lib/withSortedItems';
 import { Header, StyledFacts } from './StyledFacts';
 
 const Facts = ({ facts }) => {
+  const t = useTranslation();
+
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(facts, {
     key: 'name',
     direction: 'ascending',
@@ -45,7 +49,7 @@ const Facts = ({ facts }) => {
         <input
           type="text"
           id="filter"
-          placeholder="Filter facts e.g. PHP version"
+          placeholder={t('placeholders.facts')}
           value={factTerm}
           onChange={handleFactFilterChange}
         />
@@ -56,21 +60,21 @@ const Facts = ({ facts }) => {
           onClick={() => handleSort('name')}
           className={`button-sort name ${getClassNamesFor('name')}`}
         >
-          Name
+          {t('facts.name')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('source')}
           className={`button-sort value ${getClassNamesFor('source')}`}
         >
-          Source
+          {t('facts.source')}
         </button>
         <button
           type="button"
           onClick={() => handleSort('value')}
           className={`button-sort value ${getClassNamesFor('value')}`}
         >
-          Value
+          {t('facts.value')}
         </button>
       </Header>
       <div className="data-table">

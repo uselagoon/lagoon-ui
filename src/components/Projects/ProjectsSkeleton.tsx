@@ -20,7 +20,6 @@ const ProjectsSkeleton = () => {
   };
   // fit skeleton items on 80vh
   const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
-
   return (
     <ProjectsPage>
       <ThemedSkeletonWrapper>

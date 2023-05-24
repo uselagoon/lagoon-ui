@@ -18,7 +18,6 @@ import EnvironmentWithTaskQuery from 'lib/query/EnvironmentWithTask';
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
 import TaskNotFound from '../components/errors/TaskNotFound';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { TaskWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -49,23 +48,17 @@ export const PageTask = ({ router }) => {
           <title>{`${router.query.taskName} | Task`}</title>
         </Head>
         <MainLayout>
-          <ThemedSkeletonWrapper>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-            </Breadcrumbs>
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+          </Breadcrumbs>
 
-            <TaskWrapper>
-              <NavTabsSkeleton
-                activeTab="tasks"
-                projectName={projectSlug}
-                openshiftProjectName={openshiftProjectName}
-              />
-              <div className="content">
-                <TaskSkeleton />
-              </div>
-            </TaskWrapper>
-          </ThemedSkeletonWrapper>
+          <TaskWrapper>
+            <NavTabsSkeleton activeTab="tasks" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
+            <div className="content">
+              <TaskSkeleton />
+            </div>
+          </TaskWrapper>
         </MainLayout>
       </>
     );

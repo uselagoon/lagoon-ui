@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactSelect from 'react-select';
 
+import useTranslation from 'lib/useTranslation';
+
 import { NewTaskWrapper, StyledNewTask } from './StyledAddTask';
 import Completed from './components/Completed';
 import DrushArchiveDump from './components/DrushArchiveDump';
@@ -27,6 +29,7 @@ const AddTask = ({
   onError,
   options,
 }) => {
+  const t = useTranslation();
   const newTaskComponents = {
     DrushArchiveDump,
     DrushSqlDump,
@@ -54,7 +57,7 @@ const AddTask = ({
           <div className="selectTask">
             <ReactSelect
               aria-label="Task"
-              placeholder="Select a task..."
+              placeholder={t('placeholders.selectTask')}
               name="task"
               value={options.find(o => o.value === selectedTask)}
               onChange={selectedOption => setSelectedTask(selectedOption)}

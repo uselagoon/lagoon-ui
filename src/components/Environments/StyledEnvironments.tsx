@@ -7,13 +7,11 @@ export const StyledEnvironments = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-
     &::after {
       content: '';
       flex: auto;
     }
   }
-
   .environment {
     width: 100%;
     @media ${bp.xs_smallUp} {
@@ -54,7 +52,6 @@ export const StyledEnvironments = styled.div`
       }
     }
   }
-
   .productionLabel {
     color: ${color.green};
     ${fontSize(13)};
@@ -63,7 +60,6 @@ export const StyledEnvironments = styled.div`
     text-transform: uppercase;
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
-
     &::after {
       border-top: 1px solid ${props => (props.theme.colorScheme === 'dark' ? 'transparent' : `${color.grey}`)};
       content: '';
@@ -74,14 +70,12 @@ export const StyledEnvironments = styled.div`
       width: calc(100% + 26px);
       z-index: -1;
     }
-
     span {
       background: ${props => props.theme.backgrounds.boxLabel};
       padding: 0 16px;
       z-index: 0;
     }
   }
-
   .standbyLabel {
     color: ${color.blue};
     ${fontSize(13)};
@@ -90,7 +84,6 @@ export const StyledEnvironments = styled.div`
     text-transform: uppercase;
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
-
     &::after {
       border-top: 1px solid ${props => (props.theme.colorScheme === 'dark' ? 'transparent' : `${color.grey}`)};
       content: '';
@@ -101,14 +94,12 @@ export const StyledEnvironments = styled.div`
       width: calc(100% + 26px);
       z-index: -1;
     }
-
     span {
       background: ${props => props.theme.backgrounds.boxLabel};
       padding: 0 16px;
       z-index: 0;
     }
   }
-
   .activeLabel {
     color: ${color.green};
     ${fontSize(13)};
@@ -127,14 +118,12 @@ export const StyledEnvironments = styled.div`
       width: calc(100% + 26px);
       z-index: -1;
     }
-
     span {
       background: ${props => props.theme.backgrounds.boxLabel};
       padding: 0 16px;
       z-index: 0;
     }
   }
-
   label {
     ${fontSize(10)};
     background-color: ${color.lightestGrey};
@@ -143,7 +132,6 @@ export const StyledEnvironments = styled.div`
     margin-left: -25px;
     padding: 3px 15px 2px;
   }
-
   .clusterLabel {
     ${fontSize(10)};
     background-color: ${color.lightestGrey};
@@ -152,7 +140,6 @@ export const StyledEnvironments = styled.div`
     margin-left: -25px;
     padding: 3px 15px 2px;
   }
-
   .regionLabel {
     ${fontSize(10)};
     background-color: ${color.lightestGrey};
@@ -161,7 +148,6 @@ export const StyledEnvironments = styled.div`
     margin-left: -25px;
     padding: 3px 15px 2px;
   }
-
   .routeLink {
     position: absolute;
     top: 8px;

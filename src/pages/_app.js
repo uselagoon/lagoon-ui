@@ -19,11 +19,15 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { ThemeProvider } from 'styled-components';
 
+//localization
+import { initI18n } from '../i18n/i18n';
 import '../static/normalize.css';
 import { darkTheme, lightTheme } from '../styles/theme';
 import Tour from '../tours/Tour';
 // tours
 import { TourContextProvider } from '../tours/TourContext';
+
+initI18n();
 
 const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
 const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';

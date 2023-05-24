@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GridGenerator, HexGrid, Hexagon, Layout, Text } from 'react-hexgrid';
 
 import ProblemsByProject from 'components/ProblemsByProject';
+import useTranslation from 'lib/useTranslation';
 import * as R from 'ramda';
 
 const config = {
@@ -13,6 +14,7 @@ const config = {
 };
 
 const Honeycomb = ({ data, filter }) => {
+  const t = useTranslation();
   const { projectsProblems } = data || [];
   const [projects, setProjects] = useState(projects);
   const [projectInView, setProjectInView] = useState(false);
@@ -118,7 +120,9 @@ const Honeycomb = ({ data, filter }) => {
       {projects && (
         <div className="content-wrapper results">
           <div className="content">
-            <label>Projects: {projects.length}</label>
+            <label>
+              {t('general.projects')}: {projects.length}
+            </label>
           </div>
         </div>
       )}
@@ -172,7 +176,9 @@ const Honeycomb = ({ data, filter }) => {
                 {projectInView ? (
                   <>
                     <div className="project">
-                      <label>Project: {projectInView.name}</label>
+                      <label>
+                        {t('general.project')}: {projectInView.name}
+                      </label>
                     </div>
                     {projectInView.environments &&
                       projectInView.environments.map(environment => {
@@ -225,7 +231,7 @@ const Honeycomb = ({ data, filter }) => {
                       })}
                   </>
                 ) : (
-                  <div className="project">No project selected</div>
+                  <div className="project">{t('general.noProjectSelected')}</div>
                 )}
               </div>
             </div>

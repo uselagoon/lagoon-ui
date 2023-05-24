@@ -8,11 +8,9 @@ export const StyledHeader = styled.header`
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${color.lightBlue}',GradientType=1 );
   display: flex;
   justify-content: space-between;
-
   .authContainer {
     display: flex;
   }
-
   a {
     color: ${color.almostWhite};
     padding: 10px 20px;
