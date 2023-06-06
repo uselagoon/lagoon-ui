@@ -5,7 +5,15 @@ import useTheme from 'lib/useTheme';
 
 import { darkTheme, lightTheme } from './theme';
 
-const ThemedSkeletonWrapper = ({ children }: { children: ReactNode }) => {
+const ThemedSkeletonWrapper = ({
+  children,
+  baseColor,
+  highlightColor,
+}: {
+  children: ReactNode;
+  baseColor?: string;
+  highlightColor?: string;
+}) => {
   const cachedTheme = localStorage.getItem('theme');
   const { theme } = useTheme();
 
@@ -17,7 +25,7 @@ const ThemedSkeletonWrapper = ({ children }: { children: ReactNode }) => {
   } = currentTheme === 'dark' ? darkTheme : lightTheme;
 
   return (
-    <SkeletonTheme baseColor={base} highlightColor={highlight}>
+    <SkeletonTheme baseColor={baseColor || base} highlightColor={highlightColor || highlight}>
       {children}
     </SkeletonTheme>
   );

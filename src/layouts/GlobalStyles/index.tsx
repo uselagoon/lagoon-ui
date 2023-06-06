@@ -5,7 +5,7 @@ import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-co
  * Applies styles globally to any component nested inside it.
  */
 
-const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
+export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 * {
   box-sizing: border-box;
 }

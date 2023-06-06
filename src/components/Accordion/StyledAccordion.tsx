@@ -14,6 +14,7 @@ export const StyledAccordion = styled.div`
     padding: 20px 12px;
     border: 1px solid ${color.lightestGrey};
     background: ${color.white};
+  
     cursor: pointer;
     word-break: break-word;
 
@@ -23,6 +24,7 @@ export const StyledAccordion = styled.div`
 
     > div {
       padding: 0 6px;
+      color: ${props => props.theme.texts.primary}
     }
 
     &.cols-6 {

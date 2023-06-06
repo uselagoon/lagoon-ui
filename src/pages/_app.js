@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import Favicon from 'components/Favicon';
 // transitions
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
-import 'isomorphic-unfetch';
+// import 'isomorphic-unfetch';
 import ApiConnection from 'lib/ApiConnection';
 import Authenticator from 'lib/Authenticator';
 // theming
@@ -31,7 +31,7 @@ const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
 // lazy load animation features
 const loadFeatures = () => import('components/common/features').then(res => res.default);
 
-export const AppContext = createContext(null);
+export const AppContext = createContext({});
 
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname, events } = useRouter();

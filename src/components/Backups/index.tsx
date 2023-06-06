@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { BackupsHeader, DataTable } from './StyledBackups';
 
-interface BackupsProps {
+export interface BackupsProps {
   backups: {
     source: string;
     id: string;
@@ -13,7 +13,7 @@ interface BackupsProps {
     backupId: string;
     restore: {
       status: 'completed' | 'pending' | 'failed';
-      restoreLocation: string;
+      restoreLocation?: string;
     };
   }[];
 }
