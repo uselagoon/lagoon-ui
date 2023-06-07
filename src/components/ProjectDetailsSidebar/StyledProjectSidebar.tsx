@@ -80,9 +80,9 @@ export const FieldWrapper = styled.div`
       transform: translateX(-13px);
     }
     .field {
-      background-color: ${color.white};
+      background-color: ${props => props.theme.backgrounds.copy};
       border-right: 28px solid ${color.white};
-      color: ${color.darkGrey};
+      color: ${props => props.theme.texts.primary};
       font-family: 'source-code-pro', sans-serif;
       ${fontSize(13)};
       margin-top: 6px;
@@ -99,18 +99,17 @@ export const FieldWrapper = styled.div`
       border: none;
     }
     .copy {
-      background: url('/static/images/copy.svg') center center no-repeat ${color.white};
+      background: url('/static/images/copy.svg') center center no-repeat ${props => props.theme.backgrounds.copy};
       background-size: 16px;
-      border-left: 1px solid ${color.lightestGrey};
       bottom: 0;
-      height: 33px;
+      height: 34px;
       position: absolute;
       right: 0;
       width: 40px;
       transition: all 0.5s;
 
       &:hover {
-        background-color: ${color.midGrey};
+        background-color: ${props => props.theme.backgrounds.sidebar};
         cursor: pointer;
       }
     }

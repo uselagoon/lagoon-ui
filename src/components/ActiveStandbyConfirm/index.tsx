@@ -5,7 +5,7 @@ import withLogic from 'components/ActiveStandbyConfirm/logic';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 
-import { StyledActiveStandbyConfirm } from './StyledActiveStandbyConfirm';
+import { StyledActiveStandbyConfirm, StyledActiveStandbyConfirmModal } from './StyledActiveStandbyConfirm';
 
 /**
  * Confirms the deletion of the specified name and type.
@@ -33,13 +33,13 @@ export const ActiveStandbyConfirm: FC<ActiveStandbyConfirmProps> = ({
         <Button action={openModal}>Switch Active/Standby environments</Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel="Confirm">
-        <React.Fragment>
+        <StyledActiveStandbyConfirmModal>
           <p>
             This will replace the current active environment
-            <span className="environment-name">{activeEnvironment}</span>
+            <span className="environment-name"> {activeEnvironment}</span>
             <br />
             with the selected standby environment
-            <span className="environment-name">{standbyEnvironment}</span>.
+            <span className="environment-name"> {standbyEnvironment}</span>.
             <br />
             <br />
             Are you sure you want to do this?
@@ -54,7 +54,7 @@ export const ActiveStandbyConfirm: FC<ActiveStandbyConfirmProps> = ({
             </a>
             <Button action={onProceed}>Confirm</Button>
           </div>
-        </React.Fragment>
+        </StyledActiveStandbyConfirmModal>
       </Modal>
     </StyledActiveStandbyConfirm>
   );
