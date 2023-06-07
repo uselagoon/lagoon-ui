@@ -61,7 +61,7 @@ export const lightTheme: DefaultTheme = {
     breadCrumb: color.midGrey,
     content: color.almostWhite,
     boxLabel: color.white,
-    copy: color.midGrey,
+    copy: color.white,
   },
   texts: {
     primary: color.black,
