@@ -5,6 +5,12 @@ export const StyledActiveStandbyConfirm = styled.div`
   .margins {
     margin-right: 10px;
   }
+`;
+
+export const StyledActiveStandbyConfirmModal = styled.div`
+  .margins {
+    margin-right: 10px;
+  }
   input {
     margin-right: 10px;
     width: 100%;
