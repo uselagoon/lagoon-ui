@@ -48,7 +48,12 @@ const TourControlBtn = () => {
   const renderButton = (clickHandler: () => void, toolTip: string) => {
     return (
       <StyledRestartTour onClick={clickHandler}>
-        <Image src="/static/images/tour.svg" alt="tour" width={24} height={24} />
+        <Image
+          alt="tour"
+          width={35}
+          height={35}
+          src="/static/images/tour.svg"
+        />
         <span className="tooltip">{toolTip}</span>
       </StyledRestartTour>
     );
@@ -94,6 +99,8 @@ const StyledRestartTour = styled.button`
   align-items: center;
   padding: 6px;
   height: max-content;
+  border: 2px solid transparent;
+  border-radius: 8px;
 
   .tooltip {
     position: absolute;
@@ -114,6 +121,7 @@ const StyledRestartTour = styled.button`
     transition: all 0.3s ease;
   }
   &:hover {
+    background-color: ${color.lightestBlue};
     .tooltip {
       opacity: 1;
       visibility: visible;
