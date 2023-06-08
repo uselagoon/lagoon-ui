@@ -43,9 +43,12 @@ export const StyledProblemsByIdentifier = styled.div`
     border: none;
     padding: 10px 20px;
     margin: 0;
+    ::placeholder {
+      color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+    }
   }
   .button-sort {
-    color: #5f6f7a;
+    color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
     font-family: 'source-code-pro', sans-serif;
     font-size: 13px;
     font-size: 0.8125rem;
@@ -113,6 +116,7 @@ export const StyledProblemsByIdentifier = styled.div`
     .data-none {
       border: 1px solid ${props => props.theme.borders.tableRow};
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      background:${props => props.theme.backgrounds.primary} !important;
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
