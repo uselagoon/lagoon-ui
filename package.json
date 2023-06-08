@@ -99,6 +99,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "apollo-link-schema": "^1.2.4",
+    "axe-playwright": "^1.2.3",
     "babel-loader": "^9.1.2",
     "babel-plugin-macros": "^3.1.0",
     "chromatic": "^6.17.3",

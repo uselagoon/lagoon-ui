@@ -16,7 +16,6 @@ import EnvironmentWithFactsQuery from 'lib/query/EnvironmentWithFacts';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 
 /**
@@ -36,7 +35,6 @@ export const PageFacts = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Facts`}</title>
         </Head>
         <MainLayout>
-          <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
               <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
@@ -52,7 +50,6 @@ export const PageFacts = ({ router }) => {
                 <FactsSkeleton />
               </div>
             </CommonWrapperWNotification>
-          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

@@ -43,7 +43,7 @@ const DeploymentsByFilterSkeleton = () => {
 
   return (
     <Deployments>
-      <ThemedSkeletonWrapper>
+      <>
         <div className="filters">
           <label>
             <Skeleton width={'20%'} />
@@ -69,7 +69,7 @@ const DeploymentsByFilterSkeleton = () => {
           <label></label>
         </DeploymentsHeader>
         <DeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}</DeploymentsDataTable>
-      </ThemedSkeletonWrapper>
+      </>
     </Deployments>
   );
 };

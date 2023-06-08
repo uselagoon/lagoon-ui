@@ -1,6 +1,6 @@
 import { addons } from '@storybook/addons';
 
-import LagoonTheme from './LagoonTheme';
+import LagoonTheme from './lagoonTheme';
 
 addons.setConfig({
   theme: LagoonTheme,

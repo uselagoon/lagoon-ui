@@ -1,24 +1,22 @@
-import React, { useEffect } from 'react';
-
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 
 import { MockAllProjects } from '../../.storybook/mocks/api';
 import ProjectsPage from '../pages/projects';
+import QueryError from 'components/errors/QueryError';
 
 const meta: Meta<typeof ProjectsPage> = {
-  title: 'Pages/ProjectsPage',
+  title: 'Pages/Projects',
   component: ProjectsPage,
 };
 type Story = StoryObj<typeof ProjectsPage>;
-
 
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
         graphql.query('AllProjectsQuery', (_, res, ctx) => {
-          return res(ctx.delay(),ctx.data({ allProjects: MockAllProjects(123) }));
+          return res(ctx.delay(), ctx.data({ allProjects: MockAllProjects(123) }));
         }),
       ],
     },
@@ -42,20 +40,25 @@ export const Loading: Story = {
     msw: {
       handlers: [
         graphql.query('AllProjectsQuery', (_, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data({ allProjects: [] }));
+          return res(ctx.delay('infinite'));
         }),
       ],
     },
   },
-  decorators: [
-    Story => {
-      useEffect(() => {
-        return () => window.location.reload();
-      }, []);
-
-      return <Story />;
-    },
-  ],
 };
 
+export const Error: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.operation((_, res, ctx) => {
+          return res(ctx.status(403));
+        }),
+      ],
+    },
+  },
+  render: () => {
+    return <QueryError error="Error" />;
+  },
+};
 export default meta;

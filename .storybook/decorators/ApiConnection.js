@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
 import getConfig from 'next/config';
@@ -24,13 +24,6 @@ const defaultOptions = {
   },
 };
 
-// Create a mocked Apollo client for the ApolloProvider.
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: createHttpLink({ uri: publicRuntimeConfig.GRAPHQL_API }),
-  defaultOptions,
-});
-
 // Mock the src/lib/Authenticator and lib/withLocalAuth.
 const auth = {
   apiToken: 'dummy-value-not-used-but-evals-to-true',
@@ -44,6 +37,30 @@ const auth = {
 };
 
 const withMockAuth = Story => {
+  const [_controller] = useState(new AbortController());
+
+  // Create a mocked Apollo client for the ApolloProvider.
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: createHttpLink({
+      uri: publicRuntimeConfig.GRAPHQL_API,
+      fetchOptions: {
+        signal: _controller.signal,
+      },
+    }),
+    defaultOptions,
+  });
+
+  /* 
+    Every time the decorator unmounts, all previous gql requests get cancelled,
+    makes it easy to handle mocked infinite loading queries that do not get re-executed.
+
+  */
+  useEffect(() => {
+    return () => {
+      _controller.abort();
+    };
+  }, []);
   return (
     <AuthContext.Provider value={auth}>
       <ApolloProvider client={client}>

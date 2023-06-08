@@ -16,7 +16,6 @@ import EnvironmentByOpenshiftProjectNameQuery from 'lib/query/EnvironmentByOpens
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { EnvironmentWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -46,7 +45,6 @@ export const PageEnvironment = ({ router }) => {
           <title>{`${openshiftProjectName} | Environment`}</title>
         </Head>
         <MainLayout>
-          <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
               <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
@@ -62,7 +60,6 @@ export const PageEnvironment = ({ router }) => {
                 <EnvironmentSkeleton />
               </div>
             </EnvironmentWrapper>
-          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

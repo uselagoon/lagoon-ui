@@ -1,16 +1,15 @@
 import React from 'react';
 
-import mocks, { seed } from 'api/src/mocks';
-
+import { getDeployment } from '../../../.storybook/mocks/mocks';
 import Deployment from './index';
 
 export default {
   component: Deployment,
   title: 'Components/Deployment',
+  tags: ['autodocs'],
 };
 
-seed();
-const data = mocks.Deployment();
+const data = getDeployment();
 
 export const Complete = () => (
   <Deployment

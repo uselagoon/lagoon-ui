@@ -1,7 +1,8 @@
 import React from 'react';
 
-import mocks, { seed } from 'api/src/mocks';
+import { faker } from '@faker-js/faker';
 
+import { getDeployment } from '../../../.storybook/mocks/mocks';
 import Deployments from './index';
 
 export default {
@@ -9,38 +10,49 @@ export default {
   title: 'Components/Deployments',
 };
 
-seed();
 const data = [
   {
-    ...mocks.Deployment(),
+    ...getDeployment(),
     status: 'complete',
+    bulkId: '',
   },
   {
-    ...mocks.Deployment(),
+    ...getDeployment(),
     status: 'complete',
+    bulkId: '',
   },
   {
-    ...mocks.Deployment(),
+    ...getDeployment(),
     status: 'complete',
+    bulkId: '123',
   },
   {
-    ...mocks.Deployment(),
+    ...getDeployment(),
     status: 'complete',
+    bulkId: '123',
   },
 ];
 
-export const Complete = () => <Deployments deployments={data} />;
+faker.seed();
+const environmentsSlug = faker.lorem.slug();
+const projectSlug = faker.lorem.slug();
 
-export const NoDeployments = () => <Deployments deployments={[]} />;
+export const Complete = () => (
+  <Deployments deployments={data} environmentSlug={environmentsSlug} projectSlug={projectSlug} />
+);
+
+export const NoDeployments = () => (
+  <Deployments deployments={[]} environmentSlug={environmentsSlug} projectSlug={projectSlug} />
+);
 
 export const New = () => (
   <Deployments
+    environmentSlug={environmentsSlug}
+    projectSlug={projectSlug}
     deployments={[
       {
         ...data[0],
         status: 'new',
-        started: null,
-        completed: data[0].created,
       },
     ]}
   />
@@ -48,11 +60,12 @@ export const New = () => (
 
 export const Pending = () => (
   <Deployments
+    environmentSlug={environmentsSlug}
+    projectSlug={projectSlug}
     deployments={[
       {
         ...data[0],
         status: 'pending',
-        started: null,
       },
     ]}
   />
@@ -60,6 +73,8 @@ export const Pending = () => (
 
 export const Running = () => (
   <Deployments
+    environmentSlug={environmentsSlug}
+    projectSlug={projectSlug}
     deployments={[
       {
         ...data[0],
@@ -71,6 +86,8 @@ export const Running = () => (
 
 export const Cancelled = () => (
   <Deployments
+    environmentSlug={environmentsSlug}
+    projectSlug={projectSlug}
     deployments={[
       {
         ...data[0],
@@ -82,6 +99,8 @@ export const Cancelled = () => (
 
 export const Error = () => (
   <Deployments
+    environmentSlug={environmentsSlug}
+    projectSlug={projectSlug}
     deployments={[
       {
         ...data[0],
@@ -93,6 +112,8 @@ export const Error = () => (
 
 export const Failed = () => (
   <Deployments
+    environmentSlug={environmentsSlug}
+    projectSlug={projectSlug}
     deployments={[
       {
         ...data[0],

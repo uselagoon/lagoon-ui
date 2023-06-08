@@ -1,6 +1,6 @@
 import React from 'react';
 
-import mocks, { seed } from 'api/src/mocks';
+import { generateEnvironments, generateProjectInfo } from '../../../.storybook/mocks/mocks';
 
 import Environment from './index';
 
@@ -9,7 +9,8 @@ export default {
   title: 'Components/Environment',
 };
 
-seed();
-const data = mocks.Environment();
+
+const data = generateEnvironments();
+data.project = generateProjectInfo();
 
 export const Default = () => <Environment environment={data} />;

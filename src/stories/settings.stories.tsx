@@ -6,7 +6,7 @@ import { MockSettings } from '../../.storybook/mocks/api';
 import SettingsPage from '../pages/settings/';
 
 const meta: Meta<typeof SettingsPage> = {
-  title: 'Pages/SettingsPage',
+  title: 'Pages/Settings',
   component: SettingsPage,
 };
 type Story = StoryObj<typeof SettingsPage>;

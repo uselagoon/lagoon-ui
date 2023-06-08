@@ -20,6 +20,7 @@ import 'nprogress/nprogress.css';
 import { ThemeProvider } from 'styled-components';
 
 import '../static/normalize.css';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { darkTheme, lightTheme } from '../styles/theme';
 import Tour from '../tours/Tour';
 // tours
@@ -88,20 +89,22 @@ const LagoonApp = ({ Component, pageProps, err }) => {
             <Authenticator>
               <ApiConnection>
                 <TourContextProvider>
-                  <m.div
-                    className="lagoon-wrapper"
-                    key={pathname}
-                    initial={{ opacity: 0.65 }}
-                    animate={{ opacity: 1, transition: { duration: 0.5 } }}
-                    exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
-                  >
-                    <Head>
-                      <Typekit kitId="ggo2pml" />
-                    </Head>
-                    <Component {...pageProps} url={pathname} />
-                    {tourEnabled ? <Tour /> : null}
-                    <Favicon />
-                  </m.div>
+                  <ThemedSkeletonWrapper>
+                    <m.div
+                      className="lagoon-wrapper"
+                      key={pathname}
+                      initial={{ opacity: 0.65 }}
+                      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+                      exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
+                    >
+                      <Head>
+                        <Typekit kitId="ggo2pml" />
+                      </Head>
+                      <Component {...pageProps} url={pathname} />
+                      {tourEnabled ? <Tour /> : null}
+                      <Favicon />
+                    </m.div>
+                  </ThemedSkeletonWrapper>
                 </TourContextProvider>
               </ApiConnection>
             </Authenticator>

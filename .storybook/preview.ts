@@ -8,7 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from '../src/layouts/GlobalStyles';
 import { darkTheme, lightTheme } from '../src/styles/theme';
 // apollo/auth and theme context mocks
-import withMockAuth from './decorators/apiConnection';
+import withMockAuth from './decorators/ApiConnection';
 import withLoadingSkeletons from './decorators/withLoadingSkeletons';
 import withMockedAppContextProvider from './decorators/withMockedAppContext';
 import withTourProvider from './decorators/withTourProvider';
@@ -19,6 +19,17 @@ initialize({
 
 const preview: Preview = {
   parameters: {
+    options:{
+      storySort:{
+        method:"alphabetical",
+        order:[
+          "Introduction",
+          "Components",
+          "Pages",
+          "*",
+        ]
+      },
+    },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {

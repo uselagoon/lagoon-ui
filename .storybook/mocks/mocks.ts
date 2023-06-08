@@ -103,7 +103,8 @@ export function generateBackup() {
 }
 
 export function generateProjectInfo() {
-  const environmentCount = faker.number.int({ min: 0, max: 5 });
+  faker.seed();
+  const environmentCount = faker.number.int({ min: 1, max: 5 });
   return {
     gitUrl: 'git@github.com:somecompany/some-project.git',
     id: faker.string.uuid(),
@@ -124,6 +125,10 @@ export function generateProjectInfo() {
         environmentType: faker.helpers.arrayElement(['development', 'production']),
         id: faker.string.uuid(),
         name: faker.helpers.arrayElement(['master', 'main', 'feature']),
+        openshift: {
+          friendlyName: faker.word.words(),
+          cloudRegion: 'NA',
+        },
       };
     }),
   };
@@ -235,8 +240,10 @@ const getFact = () => {
   };
 };
 
-export const generateEnvironments = () => {
-  const name = faker.helpers.arrayElement(['master', 'staging', 'development', 'pr-42', 'pr-100', 'pr-175']);
+export const generateEnvironments = (args = Object.create(null)) => {
+  const name = args['name']
+    ? args['name']
+    : faker.helpers.arrayElement(['master', 'staging', 'development', 'pr-42', 'pr-100', 'pr-175']);
   let deployType, deployBaseRef, deployHeadRef;
   if (/^pr\-/.test(name)) {
     deployType = 'pullrequest';
@@ -248,8 +255,8 @@ export const generateEnvironments = () => {
     deployHeadRef = 'source';
   }
   const created = faker.date.anytime().toDateString();
-  const updated = addTime(created, 48);
-  const deleted = addTime(updated, 24);
+  const updated = addTime(created, 4);
+  const deleted = addTime(updated, 2);
 
   const project = { ...MockAllProjects[0], factsUi: 1, problemsUi: 1, name: faker.lorem.slug() };
 
@@ -272,6 +279,8 @@ export const generateEnvironments = () => {
     route: name === 'master' ? `https://${project.name}.org` : `https://${name}.${project.name}.org`,
     routes: `https://${project.name}.org,https://varnish-${project.name}-org-prod.us.amazee.io,https://nginx-${project.name}-org-prod.us.amazee.io`,
     monitoringUrls: '',
+    facts: [],
+    insights: [],
   };
 
   return {
@@ -281,7 +290,7 @@ export const generateEnvironments = () => {
 
 export const getDeployment = () => {
   const id = faker.string.uuid();
-  const created = faker.date.anytime().toDateString();
+  const created = faker.date.past().toDateString();
   const started = addTime(created, 0.5);
   const completed = addTime(started, 0.75);
 
@@ -295,5 +304,92 @@ export const getDeployment = () => {
     environment: generateEnvironments(),
     remoteId: faker.number.int(),
     buildLog: 'Buildem logem ipsum.',
+  };
+};
+
+export const generateBackups = (seed: number) => {
+  if (seed) faker.seed(seed);
+  const numberOfBackups = faker.number.int({ min: 1, max: 10 });
+
+  const backups = Array.from({ length: numberOfBackups }, () => {
+    return {
+      id: faker.string.uuid(),
+      source: faker.helpers.arrayElement(['nginx', 'solr', 'mariadb']),
+      backupId: faker.git.commitSha(),
+      created: faker.date.past().toDateString(),
+      restore: {
+        id: faker.git.commitSha(),
+        status: faker.helpers.arrayElement(['completed', 'pending', 'failed']),
+        restoreLocation: faker.internet.url(),
+      },
+    };
+  });
+  return backups;
+};
+
+export const generateFact = () => {
+  const id = faker.string.uuid();
+  const name = faker.helpers.arrayElement([
+    'drupal-version',
+    'drush-version',
+    'admin_toolbar',
+    'drupal-core',
+    'laravel',
+    'composer-version',
+  ]);
+  const value = faker.helpers.arrayElement(['8.0.1', '9.0.1', '3.2.1', '10.20.2', '4.3.4']);
+  const source = faker.helpers.arrayElement(['drush_pml', 'drush_status', 'http_header', 'php-version', 'env']);
+  const category = faker.helpers.arrayElement([
+    'Application',
+    'Framework',
+    'Docker configuration',
+    'Drupal configuration',
+    'Lagoon',
+    'Platform',
+    'Programming language',
+  ]);
+  const description = faker.lorem.paragraph();
+  const environment = faker.number.int({ min: 0, max: 5 });
+  const keyFact = false;
+  const type = 'TEXT';
+
+  const references = [
+    {
+      id: faker.number.int(),
+      fid: faker.number.int(),
+      name: faker.helpers.arrayElement([
+        ['nginx.company.amazee.io'],
+        ['cli'],
+        ['solr'],
+        ['php'],
+        ['backend.company.amazee.io'],
+      ]),
+    },
+  ];
+
+  return {
+    id: id,
+    name: name,
+    value: value,
+    source: source,
+    category: category,
+    description,
+    environment,
+    keyFact,
+    type,
+    references,
+  };
+};
+
+export const generateInsight = () => {
+  return {
+    created: faker.date.past().toDateString(),
+    downloadUrl: faker.internet.url(),
+    file: faker.lorem.slug() + '-cli.json',
+    fileId: null,
+    id: faker.number.int(),
+    service: faker.helpers.arrayElement(['cli', 'php', 'nginx']),
+    size: faker.number.float({ precision: 0.1, min: 1, max: 5 }) + 'KB',
+    type: 'image',
   };
 };

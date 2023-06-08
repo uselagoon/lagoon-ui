@@ -10,7 +10,13 @@ export const getLinkData = (environmentSlug, projectSlug) => ({
 
 /**
  * Links to the tasks page given the project name and the openshift project name.
+ * @component
+ * @param {any} children
+ * @param {string} environmentSlug
+ * @param {string} projectSlug
+ * @ts-ignore
  */
+
 const TasksLink = ({ environmentSlug, projectSlug, children, className = '', prefetch = false }) => {
   const linkData = getLinkData(environmentSlug, projectSlug);
 
