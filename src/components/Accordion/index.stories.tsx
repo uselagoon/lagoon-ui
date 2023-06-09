@@ -52,13 +52,13 @@ export const WithChildren: Story = {
   play:async ({canvasElement})=>{
     // toggle functionality
     const canvas = within(canvasElement)
-    const element = await canvas.getByTestId("storybook-accordion");
-    await userEvent.click(element);
-    expect(await canvas.getAllByRole("listitem").length).toBe(2);
+    const element = await Promise.resolve(canvas.getByTestId("storybook-accordion"));
+    await Promise.resolve(userEvent.click(element));
+    expect(await Promise.resolve(canvas.getAllByRole("listitem").length)).toBe(2);
 
     // toggle visibility
-    await userEvent.click(element);
-    expect(await canvas.queryByRole("list")).toBeNull();
+    await Promise.resolve(userEvent.click(element));
+    expect(await Promise.resolve(canvas.queryByRole("list"))).toBeNull();
   }
 };
 

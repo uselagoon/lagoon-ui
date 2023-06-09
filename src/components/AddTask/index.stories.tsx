@@ -1,7 +1,3 @@
-import React from 'react';
-
-
-
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Meta, StoryObj } from '@storybook/react';
 
 import ResultsLimited from './index';

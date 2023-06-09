@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { StoryObj } from '@storybook/react';
 
+import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import DeploymentsLink from './Deployments';
 
 export default {
@@ -11,8 +12,18 @@ export default {
 
 const environment = generateEnvironments();
 
-export const Default = () => (
-  <DeploymentsLink environmentSlug={environment.openshiftProjectName} projectSlug={environment.project.name}>
-    Deployments link
-  </DeploymentsLink>
-);
+type Story = StoryObj<typeof DeploymentsLink>;
+
+export const Default: Story = {
+  args: {
+    environmentSlug: environment.openshiftProjectName,
+    projectSlug: environment.project.name,
+  },
+  render: args => {
+    return (
+      <>
+        <DeploymentsLink {...args}>Deployments link</DeploymentsLink>
+      </>
+    );
+  },
+};

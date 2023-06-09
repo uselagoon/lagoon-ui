@@ -26,7 +26,12 @@ export const Disabled: Story = {
 
 export const ButtonLink: Story = {
   render: () => (
-    <Button action={() => {}} href="/">
+    <Button
+      action={() => {
+        return;
+      }}
+      href="/"
+    >
       Button Link
     </Button>
   ),
@@ -34,7 +39,13 @@ export const ButtonLink: Story = {
 
 export const DisabledButtonLink: Story = {
   render: () => (
-    <Button action={() => {}} href="/" disabled>
+    <Button
+      action={() => {
+        return;
+      }}
+      href="/"
+      disabled
+    >
       Button Link
     </Button>
   ),

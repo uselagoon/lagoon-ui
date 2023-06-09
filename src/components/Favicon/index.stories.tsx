@@ -10,6 +10,6 @@ export default {
 export const Default = () => (
   <>
     <Favicon />
-    <p>This component adds a favicon to the website and has no visible effects in the browser's viewport.</p>
+    <p>This component adds a favicon to the website and has no visible effects in the browser&apos;s viewport.</p>
   </>
 );

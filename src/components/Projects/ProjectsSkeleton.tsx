@@ -3,7 +3,6 @@ import Skeleton from 'react-loading-skeleton';
 
 import Box from 'components/Box';
 
-import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { ProjectsHeader, ProjectsPage, SearchInput, StyledProject } from './StyledProjects';
 
 const ProjectsSkeleton = () => {

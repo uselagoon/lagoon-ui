@@ -1,18 +1,30 @@
 import React from 'react';
 
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { Meta, StoryObj } from '@storybook/react';
 
+import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import EnvironmentLink from './Environment';
 
-export default {
+const meta: Meta<typeof EnvironmentLink> = {
   component: EnvironmentLink,
   title: 'Components/link/EnvironmentLink',
 };
 
 const environment = generateEnvironments();
 
-export const Default = () => (
-  <EnvironmentLink environmentSlug={environment.openshiftProjectName} projectSlug={environment.project.name}>
-    Environment link
-  </EnvironmentLink>
-);
+type Story = StoryObj<typeof EnvironmentLink>;
+
+export const Default: Story = {
+  args: {
+    environmentSlug: environment.openshiftProjectName,
+    projectSlug: environment.project.name,
+  },
+  render: args => {
+    return (
+      <>
+        <EnvironmentLink {...args}>Environment link</EnvironmentLink>
+      </>
+    );
+  },
+};
+export default meta;

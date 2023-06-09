@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { MockAllProjects } from './api';
+import { MockAllProjects, Project } from './api';
 
 interface Tasks {
   tasks: {
@@ -258,7 +258,7 @@ export const generateEnvironments = (args = Object.create(null)) => {
   const updated = addTime(created, 4);
   const deleted = addTime(updated, 2);
 
-  const project = { ...MockAllProjects[0], factsUi: 1, problemsUi: 1, name: faker.lorem.slug() };
+  const project: Project = { ...MockAllProjects[0], factsUi: 1, problemsUi: 1, name: faker.lorem.slug() };
 
   const environment = {
     id: faker.string.uuid(),

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { generateEnvironments } from './mocks';
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   __typename: 'Project';

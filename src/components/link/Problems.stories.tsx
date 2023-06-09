@@ -1,17 +1,29 @@
 import React from 'react';
 
+import { Meta, StoryObj } from '@storybook/react';
+
 import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import ProblemsLink from './Problems';
 
-export default {
+const meta: Meta<typeof ProblemsLink> = {
   component: ProblemsLink,
   title: 'Components/link/ProblemsLink',
 };
 
 const environment = generateEnvironments();
 
-export const Default = () => (
-  <ProblemsLink environmentSlug={environment.openshiftProjectName} projectSlug={environment.project.name}>
-    Problems link
-  </ProblemsLink>
-);
+type Story = StoryObj<typeof ProblemsLink>;
+
+export const Default: Story = {
+  args: {
+    projectSlug: environment.project.name,
+  },
+  render: args => {
+    return (
+      <>
+        <ProblemsLink {...args}>Problems link</ProblemsLink>
+      </>
+    );
+  },
+};
+export default meta;

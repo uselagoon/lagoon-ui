@@ -1,10 +1,12 @@
 import React from 'react';
 
 import { faker } from '@faker-js/faker';
+import { Meta, StoryObj } from '@storybook/react';
+
 import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import TaskLink from './Task';
 
-export default {
+const meta: Meta<typeof TaskLink> = {
   component: TaskLink,
   title: 'Components/link/TaskLink',
 };
@@ -16,12 +18,21 @@ const task = {
   environment: generateEnvironments(),
 };
 
-export const Default = () => (
-  <TaskLink
-    taskSlug={task.id}
-    environmentSlug={task.environment.openshiftProjectName}
-    projectSlug={task.environment.project.name}
-  >
-    Task link
-  </TaskLink>
-);
+type Story = StoryObj<typeof TaskLink>;
+
+export const Default: Story = {
+  args: {
+    taskSlug: task.id,
+    environmentSlug: task.environment.openshiftProjectName,
+    projectSlug: task.environment.project.name,
+  },
+  render: args => {
+    return (
+      <>
+        <TaskLink {...args}>Task link</TaskLink>
+      </>
+    );
+  },
+};
+
+export default meta;
