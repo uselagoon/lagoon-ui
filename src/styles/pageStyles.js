@@ -60,7 +60,7 @@ export const ProblemsByDashBoard = styled.div`
     }
     .environment-wrapper {
       padding: 0 1em 1em;
-      background: #fefefe;
+      background: ${props => (props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.content}` : '#fefefe')};
       margin: 0 0 2em;
 
       h4 {
@@ -291,6 +291,7 @@ export const StyledProblemsDashBoardByProject = styled.div`
       }
     }
     .environment-wrapper {
+      background: ${props => (props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.content}` : '#fff')};
       padding: 0 1em 1em;
       background: #fefefe;
       margin: 0 0 2em;
