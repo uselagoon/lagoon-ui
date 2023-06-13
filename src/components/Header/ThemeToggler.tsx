@@ -19,8 +19,8 @@ const ThemeToggler = () => {
     <StyledToggler onClick={toggleTheme}>
       <Image
         alt="toggle"
-        height={28}
-        width={28}
+        height={35}
+        width={35}
         src={`${theme === 'dark' ? '/static/images/sun.svg' : '/static/images/moon.svg'}`}
       />
     </StyledToggler>

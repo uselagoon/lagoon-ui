@@ -21,7 +21,7 @@ export const StyledHeader = styled.header`
       position: relative;
       img {
         display: block;
-        height: 28px;
+        height: 35px;
         width: auto;
       }
       &::after {

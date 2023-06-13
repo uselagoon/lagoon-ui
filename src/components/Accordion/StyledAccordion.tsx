@@ -5,7 +5,7 @@ export const StyledAccordion = styled.div`
   .accordion-meta-heading {
     display: flex;
     justify-content: space-between;
-    background: ${color.lightestGrey};
+    background: ${props => props.theme.backgrounds.secondary};
     padding: 5px 20px;
   }
   .accordion-heading {
@@ -13,8 +13,8 @@ export const StyledAccordion = styled.div`
     justify-content: space-between;
     padding: 20px 12px;
     border: 1px solid ${color.lightestGrey};
-    background: ${color.white};
-  
+    background: ${props =>
+    props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.primary}` : "#fff" };
     cursor: pointer;
     word-break: break-word;
 

@@ -30,10 +30,13 @@ export const StyledProblemsByProject = styled.div`
     border: none;
     padding: 10px 20px;
     margin: 0;
+    ::placeholder{
+        color:${props => props.theme.colorScheme === "dark" ? "#fff": "#000" };
+      }
   }
 
   .button-sort {
-    color: ${color.darkGrey};
+    color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : color.darkGrey)};
     font-family: 'source-code-pro', sans-serif;
     font-size: 13px;
     font-size: 0.8125rem;
@@ -72,6 +75,7 @@ export const StyledProblemsByProject = styled.div`
     .data-none {
       border: 1px solid ${color.white};
       border-bottom: 1px solid ${color.lightestGrey};
+      background:${props => props.theme.backgrounds.primary} !important;
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
@@ -116,6 +120,7 @@ export const StyledProblemsByProject = styled.div`
 
     .row-heading {
       cursor: pointer;
+      background: ${props => (props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.primary}` : '#fff')};
     }
   }
 
