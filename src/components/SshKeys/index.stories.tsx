@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import SshKeys from './index';
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 
 /**
  * Ssh keys present in the settings menu
@@ -9,6 +10,7 @@ const meta: Meta<typeof SshKeys> = {
   title: 'Components/SshKeys',
   component: SshKeys,
   tags: ['autodocs'],
+  decorators: [withButtonOverrides('.btn-red', 'click', 'delete ssh key')],
 };
 
 const meData = {

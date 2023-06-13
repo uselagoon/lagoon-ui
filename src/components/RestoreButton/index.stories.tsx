@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { generateBackup } from '../../../.storybook/mocks/mocks';
 import RestoreButton from './index';
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 
 const backup = generateBackup();
 
@@ -14,6 +15,7 @@ const meta: Meta<typeof RestoreButton> = {
   title: 'Components/RestoreButton',
   component: RestoreButton,
   tags: ['autodocs'],
+  decorators: [withButtonOverrides('.btn', 'click', 'Restorebtn download click')],
 };
 type Story = StoryObj<typeof RestoreButton>;
 

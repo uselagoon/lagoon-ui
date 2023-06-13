@@ -2,11 +2,13 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import DeployLatest from './index';
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 
 const meta: Meta<typeof DeployLatest> = {
   component: DeployLatest,
   title: 'Components/Deploy Latest',
   tags: ['autodocs'],
+  decorators: [withButtonOverrides('button', 'click', 'Deploylatest button click')],
 };
 
 type Story = StoryObj<typeof DeployLatest>;

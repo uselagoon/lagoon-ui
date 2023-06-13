@@ -11,6 +11,7 @@ export default {
 
 
 const data = generateEnvironments();
+//@ts-ignore
 data.project = generateProjectInfo();
 
 export const Default = () => <Environment environment={data} />;

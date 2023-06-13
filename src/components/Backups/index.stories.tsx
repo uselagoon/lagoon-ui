@@ -1,11 +1,14 @@
-import { faker } from '@faker-js/faker';
 import React from 'react';
+import { faker } from '@faker-js/faker';
+import { Meta } from '@storybook/react';
 
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 import Backups, { BackupsProps } from './index';
 
-export default {
+const meta:Meta<typeof Backups> = {
   component: Backups,
   title: 'Components/Backups',
+  decorators: [withButtonOverrides('.download', 'click', 'Backups button click')],
 };
 
 const backupsData = [
@@ -39,6 +42,11 @@ const backupsData = [
   },
 ] satisfies BackupsProps["backups"];
 
+
+
 export const Default = () => <Backups backups={backupsData} />;
 
 export const NoBackups = () => <Backups backups={[]} />;
+
+
+export default meta;

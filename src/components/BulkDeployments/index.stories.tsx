@@ -2,6 +2,7 @@ import React from 'react';
 
 import { StoryObj } from '@storybook/react';
 
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 import { getDeployment } from '../../../.storybook/mocks/mocks';
 import BulkDeploymentsSkeleton from './BulkDeploymentsSkeleton';
 import BulkDeployments from './index';
@@ -9,7 +10,8 @@ import BulkDeployments from './index';
 export default {
   component: BulkDeployments,
   title: 'Components/BulkDeployments',
-  tags:["autodocs"],
+  tags: ['autodocs'],
+  decorators: [withButtonOverrides('button', 'click', 'Deployment button click')],
 };
 
 const data = [

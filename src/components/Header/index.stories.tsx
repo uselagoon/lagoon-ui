@@ -2,6 +2,7 @@ import { StoryObj } from '@storybook/react';
 
 import newLogo from './amazeeio.svg';
 import Header from './index';
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 
 export default {
   component: Header,

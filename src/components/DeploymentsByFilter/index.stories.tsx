@@ -4,10 +4,12 @@ import React from 'react';
 
 import DeploymentsByFilter from './index';
 import DeploymentsByFilterSkeleton from "./DeploymentsByFilterSkeleton";
+import withButtonOverrides from "../../../.storybook/decorators/withButtonOverrides";
 
 export default {
   component: DeploymentsByFilter,
   title: 'Components/Deployments by filter',
+  decorators: [withButtonOverrides('button', 'click', 'cancel deployment action')],
 };
 
 type Story = StoryObj<typeof DeploymentsByFilter>;

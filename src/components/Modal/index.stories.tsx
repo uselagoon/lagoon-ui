@@ -9,29 +9,29 @@ const meta: Meta<typeof Modal> = {
   component: Modal,
   title: 'Components/Modal',
   decorators: [
-    storyFn => {
-      const [open, setOpen] = useState(true);
-      const actionClose = action('close-modal');
-      const props = {
-        isOpenBoolean: open,
-        onRequestCloseFunction: () => {
-          actionClose();
-          setOpen(false);
-        },
-        ariaHideApp: false,
-      };
+    // storyFn => {
+    //   const [open, setOpen] = useState(true);
+    //   const actionClose = action('close-modal');
+    //   const props = {
+    //     isOpenBoolean: open,
+    //     onRequestCloseFunction: () => {
+    //       actionClose();
+    //       setOpen(false);
+    //     },
+    //     ariaHideApp: false,
+    //   };
 
-      return (
-        <>
-          <div id="__next">
-            <p>This content should be hidden when the modal dialog is open.</p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae architecto repellat illum facilis assumenda,
-            quia veritatis veniam magni ea dignissimos.
-          </div>
-          {storyFn(props)}
-        </>
-      );
-    },
+    //   return (
+    //     <>
+    //       <div id="__next">
+    //         <p>This content should be hidden when the modal dialog is open.</p>
+    //         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae architecto repellat illum facilis assumenda,
+    //         quia veritatis veniam magni ea dignissimos.
+    //       </div>
+    //       {storyFn(props)}
+    //     </>
+    //   );
+    // },
   ],
 };
 
