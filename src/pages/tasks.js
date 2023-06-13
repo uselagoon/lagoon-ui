@@ -47,7 +47,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
 /**
  * Displays the tasks page, given the openshift project name.
  */
-export const PageTasks = ({ router }) => {
+export const PageTasks = ({ router, renderAddTasks }) => {
   const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithTasksQuery, {
     variables: {
@@ -168,7 +168,7 @@ export const PageTasks = ({ router }) => {
         <TasksWrapper>
           <NavTabs activeTab="tasks" environment={environment} />
           <div className="content">
-            <AddTask pageEnvironment={environment} />
+            {!renderAddTasks && <AddTask pageEnvironment={environment} />}
             <Tasks
               tasks={environment.tasks}
               environmentSlug={environment.openshiftProjectName}

@@ -119,7 +119,7 @@ export const PageTask = ({ router }) => {
         <TaskWrapper>
           <NavTabs activeTab="tasks" environment={environment} />
           <div className="content">
-            <Task task={environment.tasks[0]} />
+            <Task task={environment.tasks[0] || undefined} />
           </div>
         </TaskWrapper>
       </MainLayout>

@@ -27,6 +27,8 @@ interface Task {
     status: string;
     files: TaskFile[];
     logs: string;
+    taskName?: string;
+    name?: string;
   };
 }
 
@@ -77,7 +79,7 @@ export function createTask(seed?: number): Task {
     return {
       id: faker.string.uuid(),
       download: faker.internet.url(),
-      filename: faker.word.words(),
+      filename: faker.lorem.slug(2),
     };
   });
 
@@ -88,6 +90,7 @@ export function createTask(seed?: number): Task {
       status,
       files,
       logs: log,
+      taskName: faker.lorem.slug(2),
     },
   };
 }

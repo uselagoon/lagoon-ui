@@ -24,6 +24,7 @@ type Story = StoryObj<typeof PageEnvironment>;
 
 faker.seed();
 const environment = generateEnvironments(123);
+// @ts-ignore
 environment.project = generateProjectInfo();
 
 export const Default: Story = {
