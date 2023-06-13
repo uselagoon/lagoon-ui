@@ -11,6 +11,11 @@ const meta: Meta<typeof SshKeys> = {
   component: SshKeys,
   tags: ['autodocs'],
   decorators: [withButtonOverrides('.btn-red', 'click', 'delete ssh key')],
+  argTypes:{
+    me:{
+      description:"Logged in user object with ssh keys"
+    }
+  }
 };
 
 const meData = {

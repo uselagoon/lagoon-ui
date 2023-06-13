@@ -12,6 +12,12 @@ export default {
   title: 'Components/BulkDeployments',
   tags: ['autodocs'],
   decorators: [withButtonOverrides('button', 'click', 'Deployment button click')],
+  argTypes:{
+    deployments: {
+      description: 'Deployments array',
+    },
+  }
+
 };
 
 const data = [

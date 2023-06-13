@@ -1,38 +1,14 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 
 import { action } from '@storybook/addon-actions';
-import { Meta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import Button from 'components/Button';
 
 import Modal from './index';
 
 const meta: Meta<typeof Modal> = {
   component: Modal,
   title: 'Components/Modal',
-  decorators: [
-    // storyFn => {
-    //   const [open, setOpen] = useState(true);
-    //   const actionClose = action('close-modal');
-    //   const props = {
-    //     isOpenBoolean: open,
-    //     onRequestCloseFunction: () => {
-    //       actionClose();
-    //       setOpen(false);
-    //     },
-    //     ariaHideApp: false,
-    //   };
-
-    //   return (
-    //     <>
-    //       <div id="__next">
-    //         <p>This content should be hidden when the modal dialog is open.</p>
-    //         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae architecto repellat illum facilis assumenda,
-    //         quia veritatis veniam magni ea dignissimos.
-    //       </div>
-    //       {storyFn(props)}
-    //     </>
-    //   );
-    // },
-  ],
 };
 
 const SampleContent = () => (
@@ -47,17 +23,37 @@ const SampleContent = () => (
   </>
 );
 
-export const Default = ({
-  isOpenBoolean,
-  onRequestCloseFunction,
-  ...rest
-}: {
-  isOpenBoolean: boolean;
-  onRequestCloseFunction: () => void;
-}) => (
-  <Modal isOpen={isOpenBoolean} onRequestClose={onRequestCloseFunction} contentLabel="Open Modal Dialog" {...rest}>
-    <SampleContent />
-  </Modal>
-);
+export const Default: StoryObj<typeof Modal> = {
+  render: args => {
+    const [isOpen, setIsOpen] = useState(false);
+    const closeModal = () => setIsOpen(false);
+    const openMModal = () => setIsOpen(true);
+    return (
+      <>
+        <Button action={openMModal}>Open modal</Button>
+        <div id="__next"></div>
+        <Modal {...args} isOpen={isOpen} onRequestClose={closeModal}>
+          <SampleContent />
+          <div className="form-input">
+            <button className="hover-state margins" onClick={closeModal}>
+              cancel
+            </button>
+            <Button
+              action={(e: MouseEvent<HTMLButtonElement>) => {
+                action('Confirm click')(e);
+                closeModal();
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </Modal>
+      </>
+    );
+  },
+  args: {
+    contentLabel: 'Open Modal Dialog',
+  },
+};
 
 export default meta;

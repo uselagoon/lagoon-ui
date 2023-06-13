@@ -8,6 +8,7 @@ import Projects from './index';
 const meta: Meta<typeof Projects> = {
   title: 'Components/Projects',
   component: Projects,
+  tags:["autodocs"],
 };
 type Story = StoryObj<typeof Projects>;
 

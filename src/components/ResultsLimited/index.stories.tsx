@@ -12,6 +12,15 @@ const meta: Meta<typeof ResultsLimited> = {
   args: {
     disableHandler: true,
   },
+  argTypes: {
+    limit: {
+      description: 'Sets result limit to the URL',
+      control: {
+        type: 'select',
+      },
+      options: [10, 25, 50, 100, 'all'],
+    },
+  },
 };
 
 export const Default: StoryObj<typeof ResultsLimited> = {};

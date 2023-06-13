@@ -1,12 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent, ReactNode } from 'react';
 
 import { ButtonElem, LinkElement } from './StyledButton';
 
 interface ButtonProps {
-  action: () => void;
+  action: (e: MouseEvent<HTMLButtonElement>) => void;
   href?: string;
   disabled?: boolean;
-  children?: string | JSX.Element | JSX.Element[];
+  children?: ReactNode;
   variant?: string;
 }
 

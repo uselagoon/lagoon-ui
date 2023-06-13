@@ -3,6 +3,9 @@ import { Meta, StoryObj } from '@storybook/react';
 import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import NavTabs from './index';
 
+/**
+ * Left navigation tabs in project drilldown pages
+ */
 const meta: Meta<typeof NavTabs> = {
   component: NavTabs,
   title: 'Components/NavTabs',
@@ -10,6 +13,12 @@ const meta: Meta<typeof NavTabs> = {
   args: {
     environment: generateEnvironments(),
   },
+  argTypes:{
+    environment: {
+      description: 'Project environment object',
+    },
+  }
+
 };
 
 type Story = StoryObj<typeof NavTabs>;

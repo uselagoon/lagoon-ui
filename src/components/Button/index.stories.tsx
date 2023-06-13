@@ -30,7 +30,6 @@ export const ButtonLink: Story = {
       action={() => {
         return;
       }}
-      href="/"
     >
       Button Link
     </Button>
@@ -43,7 +42,6 @@ export const DisabledButtonLink: Story = {
       action={() => {
         return;
       }}
-      href="/"
       disabled
     >
       Button Link

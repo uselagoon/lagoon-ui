@@ -37,9 +37,9 @@ export const CustomTaskConfirm: FC<CustomTaskConfirmProps> = ({
         <React.Fragment>
           <ReactMarkdown>{taskText}</ReactMarkdown>
           <div className="form-input">
-            <a href="#" className="hover-state margins" onClick={closeModal}>
+            <button className="hover-state margins" onClick={closeModal}>
               Cancel
-            </a>
+            </button>
             <Button action={onProceed}>Confirm</Button>
           </div>
         </React.Fragment>

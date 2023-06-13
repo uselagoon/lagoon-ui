@@ -20,6 +20,11 @@ export const Default: Story = {
   args: {
     tasks,
   },
+  argTypes: {
+    tasks: {
+      description: 'Array of tasks',
+    },
+  },
 };
 
 export const NoTasks: Story = {
