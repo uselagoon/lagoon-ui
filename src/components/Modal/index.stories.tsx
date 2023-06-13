@@ -23,37 +23,39 @@ const SampleContent = () => (
   </>
 );
 
+const ModalWrapper = (args: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
+  const openModal = () => setIsOpen(true);
+
+  return (
+    <>
+      <Button action={openModal}>Open modal</Button>
+      <div id="__next"></div>
+      <Modal {...args} isOpen={isOpen} onRequestClose={closeModal}>
+        <SampleContent />
+        <div className="form-input">
+          <button className="hover-state margins" onClick={closeModal}>
+            cancel
+          </button>
+          <Button
+            action={(e: MouseEvent<HTMLButtonElement>) => {
+              action('Confirm click')(e);
+              closeModal();
+            }}
+          >
+            Confirm
+          </Button>
+        </div>
+      </Modal>
+    </>
+  );
+};
+
 export const Default: StoryObj<typeof Modal> = {
-  render: args => {
-    const [isOpen, setIsOpen] = useState(false);
-    const closeModal = () => setIsOpen(false);
-    const openMModal = () => setIsOpen(true);
-    return (
-      <>
-        <Button action={openMModal}>Open modal</Button>
-        <div id="__next"></div>
-        <Modal {...args} isOpen={isOpen} onRequestClose={closeModal}>
-          <SampleContent />
-          <div className="form-input">
-            <button className="hover-state margins" onClick={closeModal}>
-              cancel
-            </button>
-            <Button
-              action={(e: MouseEvent<HTMLButtonElement>) => {
-                action('Confirm click')(e);
-                closeModal();
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </Modal>
-      </>
-    );
-  },
+  render: args => <ModalWrapper {...args} />,
   args: {
     contentLabel: 'Open Modal Dialog',
   },
 };
-
 export default meta;

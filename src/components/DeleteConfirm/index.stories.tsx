@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 
+
+
 import { action } from '@storybook/addon-actions';
 import { Meta } from '@storybook/react';
 
-import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
+
+
 import DeleteConfirm, { DeleteConfirm as DeleteConfirmBaseComponent } from './index';
+
 
 interface Props {
   onDeleteFunction: () => void;
@@ -14,14 +18,16 @@ interface Props {
   closeModalFunction: () => void;
 }
 
-const meta: Meta<typeof DeleteConfirmBaseComponent> = {
-  component: DeleteConfirmBaseComponent,
-  title: 'Components/Delete and Confirm',
+const DeleteConfirmWrapper = (args: any) => {
+  const [open, setOpen] = useState(true);
 
-  render: args => {
-    const [open, setOpen] = useState(true);
-    return <DeleteConfirm {...args} open={open} closeModal={() => setOpen(false)} />;
-  },
+  return <DeleteConfirm {...args} open={open} closeModal={() => setOpen(false)} />;
+};
+
+const meta: Meta<typeof DeleteConfirmBaseComponent> = {
+  component: DeleteConfirmWrapper,
+  title: 'Components/Delete and Confirm',
+  render: args => <DeleteConfirmWrapper {...args} />,
 };
 
 export const Default = () => (
