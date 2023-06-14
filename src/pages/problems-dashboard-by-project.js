@@ -16,6 +16,22 @@ import * as R from 'ramda';
 
 import { StyledProblemsDashBoardByProject } from '../styles/pageStyles';
 
+export async function getServerSideProps() {
+  // TEMPORARY: disable this page from rendering until rework
+  const isEnabled = false;
+  if (!isEnabled) {
+    return {
+      redirect: {
+        destination: '/problems-dashboard-by-project-hex',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
+
 /**
  * Displays the problems overview page by project.
  */

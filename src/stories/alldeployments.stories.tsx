@@ -18,6 +18,14 @@ export const Default: Story = {
         graphql.query('deploymentsByFilter', (_, res, ctx) => {
           return res(ctx.delay(), ctx.data({ deploymentsByFilter: MockAllDeployments(123) }));
         }),
+        graphql.mutation('cancelDeployment', (_, res, ctx) => {
+          return res(
+            ctx.delay(1000),
+            ctx.data({
+              cancelDeployment: 'success',
+            })
+          );
+        }),
       ],
     },
   },

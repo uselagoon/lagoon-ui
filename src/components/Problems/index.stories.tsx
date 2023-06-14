@@ -11,17 +11,15 @@ export default {
   tags: ['autodocs'],
 };
 
-export const Default = () => (
-  <Problems
-    problems={Array.from({
-      length: faker.number.int({
-        min: 1,
-        max: 10,
-      }),
-    }).map(() => {
-      return ProblemIdentifier();
-    })}
-  />
-);
+const problemData = Array.from({
+  length: faker.number.int({
+    min: 1,
+    max: 10,
+  }),
+}).map(() => {
+  return ProblemIdentifier();
+})[0].problems;
+
+export const Default = () => <Problems problems={problemData} />;
 
 export const NoProblems = () => <Problems problems={[]} />;

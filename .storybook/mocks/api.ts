@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { generateEnvironments } from './mocks';
+import { ProblemIdentifier, generateEnvironments } from './mocks';
 
 export interface Project {
   id: string;
@@ -123,3 +123,28 @@ export const MockBulkDeployments = (seed?: number) => {
   });
   return bulkDeployments;
 };
+
+export const ProjectsProblems = () => {
+  faker.seed();
+
+  const problemCount = faker.number.int({min:0,max:10});
+  const projectCount = faker.number.int({min:1, max:200});
+
+  const allProblems = Array.from({length: projectCount}, ()=>{
+    return {
+      id:faker.number.int({min:1, max:1000}),
+      name: faker.lorem.slug({min:2,max:3}),
+      environments:[
+      {
+        id:faker.number.int({min:100,max:2000}),
+        name:faker.word.words(),
+        problems:Array.from({length: problemCount}, () =>{
+          return ProblemIdentifier().problems[0]
+        })
+      }
+      ]
+    }
+  })
+return allProblems;
+
+}

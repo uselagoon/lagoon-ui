@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 
+import { ProjectsProblems } from '../../../.storybook/mocks/api';
 import Honeycomb from './index';
 
 const meta: Meta<typeof Honeycomb> = {
@@ -14,7 +15,8 @@ export const Default: StoryObj<typeof Honeycomb> = {
     return data && <Honeycomb data={data} filter={{ showCleanProjects: false }} {...args} />;
   },
   args: {
-    data: [],
+    //@ts-ignore
+    projectsProblems: ProjectsProblems(),
   },
 };
 

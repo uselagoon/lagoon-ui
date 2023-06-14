@@ -23,7 +23,7 @@ const Button: FC<ButtonProps> = ({ action = undefined, href = undefined, disable
       };
 
   const ButtonElement = href ? (
-    <LinkElement className={createClassName()} href={href}>
+    <LinkElement className={createClassName()} href={href} target='_blank'>
       {children}
     </LinkElement>
   ) : (

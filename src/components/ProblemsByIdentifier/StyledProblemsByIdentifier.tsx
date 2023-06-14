@@ -78,7 +78,7 @@ export const StyledProblemsByIdentifier = styled.div`
     flex-wrap: wrap;
     width: 100%;
     padding: 20px;
-    background: ${color.lightestGrey};
+    background: ${props => props.theme.backgrounds.sidebar};
 
     .fieldWrapper {
       padding: 0 2em 1em 0;
