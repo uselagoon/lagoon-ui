@@ -46,7 +46,7 @@ export const StyledHeader = styled.header`
         background-repeat: no-repeat;
         content: '';
         display: block;
-        height: 35px;
+        height: 28px;
         transition: all 0.3s ease-in-out;
         width: 0px;
         background-size: 18px;
