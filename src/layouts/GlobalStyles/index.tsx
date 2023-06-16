@@ -1,4 +1,5 @@
 import { bp, color, fontSize } from 'lib/variables';
+import React from 'react';
 import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
 
 /**
@@ -288,4 +289,4 @@ background:${(props) => props.theme.backgrounds.primary};
 }
 `;
 
-export default GlobalStyles;
+export default React.memo(() => <GlobalStyles />);;

@@ -6,11 +6,18 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-styling',
     '@storybook/addon-interactions',
     'storybook-addon-designs',
     '@storybook/addon-a11y',
-    "@storybook/jest"
+    '@storybook/jest',
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        sass: {
+          implementation: require('sass'),
+        },
+      },
+    },
   ],
   framework: {
     name: '@storybook/nextjs',

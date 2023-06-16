@@ -1,11 +1,8 @@
-import { useContext } from 'react';
-
 import Image from 'next/image';
 
 import { color } from 'lib/variables';
 import styled from 'styled-components';
-
-import { AppContext } from '../../pages/_app';
+import useTheme from 'lib/useTheme';
 
 type AppContextType = {
   theme: string;
@@ -13,8 +10,7 @@ type AppContextType = {
 };
 
 const ThemeToggler = () => {
-  const { theme, toggleTheme } = useContext(AppContext) as unknown as AppContextType;
-
+  const { theme, toggleTheme } = useTheme();
   return (
     <StyledToggler onClick={toggleTheme}>
       <Image

@@ -1,18 +1,24 @@
 import React from 'react';
 
+//styles and themes
+import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+//autodoc configuration
 import { DocsContainer } from '@storybook/blocks';
-import { GLOBALS_UPDATED, FORCE_REMOUNT, FORCE_RE_RENDER, UPDATE_GLOBALS } from '@storybook/core-events';
+import { FORCE_RE_RENDER, GLOBALS_UPDATED, UPDATE_GLOBALS } from '@storybook/core-events';
 import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 // mock worker
 import { initialize, mswDecorator } from 'msw-storybook-addon';
+import { ThemeProvider } from 'styled-components';
 
-// apollo/auth and theme context mocks
+import { darkTheme, lightTheme } from '../src/styles/theme';
+// apollo/auth/app level contexts
 import withMockAuth from './decorators/ApiConnection';
-import withGlobalStyles from './decorators/withGlobalStyles';
 import withLoadingSkeletons from './decorators/withLoadingSkeletons';
 import withMockedAppContextProvider from './decorators/withMockedAppContext';
 import withTourProvider from './decorators/withTourProvider';
+import GlobalStyles from './styles/GlobalStyles';
+import './styles/globalStyles.scss';
 
 initialize({
   onUnhandledRequest: 'bypass',
@@ -35,34 +41,46 @@ const preview: Preview = {
     },
     backgrounds: {
       default: 'dark',
+      values: [
+        {
+          name: 'light',
+          value: '#F8F8F8',
+
+        },
+        {
+          name: 'dark',
+          value: '#333333',
+          default:true,
+        },
+      ],
     },
+
     docs: {
-      // container: props => {
-      //   const channel = addons.getChannel();
-      //   let eventProcessed = false;
+      container: props => {
+        const channel = addons.getChannel();
+        let eventProcessed = false;
 
-      //   function updateBg(e) {
-      //     if (!eventProcessed) {
-      //       channel.removeListener(GLOBALS_UPDATED, updateBg);
-      //       const changedTheme = e.globals.theme;
+        function updateBg(e) {
+          if (!eventProcessed) {
+            eventProcessed = true;
+            channel.removeListener(GLOBALS_UPDATED, updateBg);
+            const changedTheme = e.globals.theme;
 
-      //       channel.emit(UPDATE_GLOBALS, {
-      //         globals: {
-      //           backgrounds: {
-      //             value: changedTheme === 'dark' ? '#333333' : '#F8F8F8',
-      //           },
-      //         },
-      //       });
-      //       channel.emit(FORCE_RE_RENDER);
+            channel.emit(UPDATE_GLOBALS, {
+              globals: {
+                backgrounds: {
+                  value: changedTheme === 'dark' ? '#333333' : '#F8F8F8',
+                },
+              },
+            });
+            channel.emit(FORCE_RE_RENDER);
+          }
+        }
 
-      //       eventProcessed = true;
-      //     }
-      //   }
+        channel.once(GLOBALS_UPDATED, updateBg);
 
-      //   channel.once(GLOBALS_UPDATED, updateBg);
-
-      //   return React.createElement(DocsContainer, props);
-      // },
+        return React.createElement(DocsContainer, props);
+      },
     },
   },
 
@@ -70,23 +88,18 @@ const preview: Preview = {
   decorators: [
     withTourProvider,
     withLoadingSkeletons,
-    withGlobalStyles,
+    withThemeFromJSXProvider({
+      themes: {
+        light: lightTheme,
+        dark: darkTheme,
+      },
+      defaultTheme: 'dark',
+      Provider: ThemeProvider,
+      GlobalStyles,
+    }),
     withMockedAppContextProvider('dark'),
     withMockAuth,
     mswDecorator,
-
   ],
-};
-export const globalTypes = {
-  theme: {
-    name: 'Color scheme',
-    description: 'Light or dark mode',
-    defaultValue: 'dark',
-    toolbar: {
-      icon: 'mirror',
-      items: ['light', 'dark'],
-      dynamicTitle: true,
-    },
-  },
 };
 export default preview;
