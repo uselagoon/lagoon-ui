@@ -1,7 +1,6 @@
 import React from 'react';
 
 import getConfig from 'next/config';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import lagoonLogo from '!svg-inline-loader?classPrefix!./lagoon.svg';
@@ -21,11 +20,8 @@ const Header = ({ logo }) => (
   <StyledHeader>
     <Link href="/">
       <a className="home">
-        <Image
+        <img
           alt="Home"
-          width={75}
-          height={28}
-          layout="fixed"
           src={
             logo
               ? logo
