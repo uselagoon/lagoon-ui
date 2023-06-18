@@ -1,11 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
+import { graphql } from 'msw';
 
-
-
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { MockAllProjects } from '../../../.storybook/mocks/api';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import AddTask from './index';
-
 
 const meta: Meta<typeof AddTask> = {
   component: AddTask,
@@ -14,8 +13,9 @@ const meta: Meta<typeof AddTask> = {
 
 type Story = StoryObj<typeof AddTask>;
 
+seed();
 const pageEnvironment = {
-  ...generateEnvironments(),
+  ...generateEnvironments(123),
   advancedTasks: [
     {
       command: faker.string.sample(),
@@ -27,10 +27,21 @@ const pageEnvironment = {
   ],
 };
 
-
 export const Default: Story = {
   args: {
     pageEnvironment,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.operation((_, res, ctx) => {
+          return res(
+            ctx.delay(),
+            ctx.data({ projectByName: { ...pageEnvironment, environments: MockAllProjects(123)[0].environments } })
+          );
+        }),
+      ],
+    },
   },
 };
 
@@ -39,6 +50,15 @@ export const NoCLIService: Story = {
     pageEnvironment: {
       ...pageEnvironment,
       services: [],
+    },
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('getProject', (_, res, ctx) => {
+          return res(ctx.delay(), ctx.data({ projectByName: {} }));
+        }),
+      ],
     },
   },
 };

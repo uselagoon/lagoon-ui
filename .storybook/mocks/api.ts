@@ -135,7 +135,7 @@ export const ProjectsProblems = (seed: number) => {
           id: faker.number.int({ min: 100, max: 2000 }),
           name: faker.word.words(),
           problems: Array.from({ length: problemCount }, () => {
-            return ProblemIdentifier().problems[0];
+            return ProblemIdentifier(123).problems[0];
           }),
         },
       ],
