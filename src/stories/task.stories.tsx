@@ -8,6 +8,7 @@ import { createTask, generateEnvironments, seed } from '../../.storybook/mocks/m
 import PageTask from '../pages/task';
 
 seed();
+faker.seed(123);
 
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),

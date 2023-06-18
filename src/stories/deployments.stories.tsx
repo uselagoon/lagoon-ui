@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
-import { generateEnvironments, getDeployment } from '../../.storybook/mocks/mocks';
+import { generateEnvironments, getDeployment, seed } from '../../.storybook/mocks/mocks';
 import PageDeployments from '../pages/deployments';
 
 const meta: Meta<typeof PageDeployments> = {
@@ -18,6 +18,7 @@ const fakeQueryParams = {
   deploymentName: faker.lorem.slug(),
 };
 
+seed()
 export const Default: Story = {
   parameters: {
     msw: {

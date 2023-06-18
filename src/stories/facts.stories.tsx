@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
-import { generateEnvironments, generateFact } from '../../.storybook/mocks/mocks';
+import { generateEnvironments, generateFact, seed } from '../../.storybook/mocks/mocks';
 import PageFacts from '../pages/facts';
 import { faker } from '@faker-js/faker';
 
@@ -20,7 +20,7 @@ const fakeQueryParams = {
 
 };
 
-
+seed()
 const environment = generateEnvironments(123);
 environment.facts = [generateFact(1), generateFact(2), generateFact(3), generateFact(123)] as any;
 

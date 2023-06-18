@@ -7,6 +7,8 @@ import { createTasks, generateEnvironments,seed } from '../../.storybook/mocks/m
 import PageTasks from '../pages/tasks';
 
 seed();
+faker.seed(123);
+
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),

@@ -179,6 +179,7 @@ export const ProblemIdentifier = (val: number) => {
 };
 
 const addTime = (originalDate: string, hoursLimit: number) => {
+  seed();
   const date = new Date(originalDate);
   date.setTime(date.getTime() + faker.number.int(hoursLimit * 60 * 60 * 1000));
   return date.toISOString();
