@@ -13,8 +13,6 @@ const meta: Meta<typeof ProblemsDashboardProductPageHexDisplay> = {
 };
 type Story = StoryObj<typeof ProblemsDashboardProductPageHexDisplay>;
 
-console.log(ProjectsProblems(123));
-
 export const Default: Story = {
   parameters: {
     msw: {

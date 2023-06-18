@@ -14,6 +14,7 @@ import { ThemeProvider } from 'styled-components';
 import { darkTheme, lightTheme } from '../src/styles/theme';
 // apollo/auth/app level contexts
 import withMockAuth from './decorators/ApiConnection';
+import withButtonOverrides from './decorators/withButtonOverrides';
 import withLoadingSkeletons from './decorators/withLoadingSkeletons';
 import withMockedAppContextProvider from './decorators/withMockedAppContext';
 import withTourProvider from './decorators/withTourProvider';
@@ -74,6 +75,7 @@ const preview: Preview = {
 
   // order matters
   decorators: [
+    withButtonOverrides('.themeToggler', 'click', 'Theme toggled'),
     withTourProvider,
     withLoadingSkeletons,
     withThemeFromJSXProvider({

@@ -16,7 +16,7 @@ export const Default: StoryObj<typeof Honeycomb> = {
   },
   args: {
     //@ts-ignore
-    projectsProblems: ProjectsProblems(),
+    projectsProblems: ProjectsProblems(123),
   },
 };
 

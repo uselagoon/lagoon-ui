@@ -11,6 +11,7 @@ export default {
   tags: ['autodocs'],
 };
 
+faker.seed(123);
 const problemData = Array.from({
   length: faker.number.int({
     min: 1,

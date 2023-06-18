@@ -150,6 +150,9 @@ export const Problem = (args: any) => {
     description,
     links,
     data,
+    fixedVersion: '',
+    version: '',
+    id: faker.number.int({ max: 1000 }),
   };
 };
 
@@ -181,8 +184,9 @@ const addTime = (originalDate: string, hoursLimit: number) => {
   return date.toISOString();
 };
 
-const deployStatus = () =>{ 
-  return faker.helpers.arrayElement(['new', 'pending', 'running', 'cancelled', 'error', 'failed', 'complete']);}
+const deployStatus = () => {
+  return faker.helpers.arrayElement(['new', 'pending', 'running', 'cancelled', 'error', 'failed', 'complete']);
+};
 
 const getFact = () => {
   const id = `${faker.number.int({ min: 0, max: 99999 })}`;

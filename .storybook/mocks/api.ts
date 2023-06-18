@@ -126,7 +126,9 @@ export const ProjectsProblems = (seed: number) => {
   const problemCount = faker.number.int({ min: 0, max: 10 });
   const projectCount = faker.number.int({ min: 1, max: 200 });
 
-  const allProblems = Array.from({ length: projectCount }, () => {
+  const allProblems = Array.from({ length: projectCount }, (_, index) => {
+    const problemIdentifier = index + 1;
+    
     return {
       id: faker.number.int({ min: 1, max: 1000 }),
       name: faker.lorem.slug({ min: 2, max: 3 }),
@@ -135,7 +137,7 @@ export const ProjectsProblems = (seed: number) => {
           id: faker.number.int({ min: 100, max: 2000 }),
           name: faker.word.words(),
           problems: Array.from({ length: problemCount }, () => {
-            return ProblemIdentifier(123).problems[0];
+            return ProblemIdentifier(problemIdentifier).problems[0];
           }),
         },
       ],
