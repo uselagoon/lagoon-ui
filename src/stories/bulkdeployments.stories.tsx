@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
@@ -14,6 +14,7 @@ const meta: Meta<typeof BulkDeploymentsPage> = {
 };
 type Story = StoryObj<typeof BulkDeploymentsPage>;
 
+faker.seed(123);
 const fakeQueryParams = {
   id: faker.string.uuid(),
   bulkName: faker.lorem.slug(),

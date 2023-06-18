@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { generateEnvironments, generateProjectInfo } from '../../../.storybook/mocks/mocks';
+import { generateEnvironments, generateProjectInfo, seed } from '../../../.storybook/mocks/mocks';
 
 import Environment from './index';
 
@@ -9,7 +9,7 @@ export default {
   title: 'Components/Environment',
 };
 
-
+seed();
 const data = generateEnvironments();
 //@ts-ignore
 data.project = generateProjectInfo();

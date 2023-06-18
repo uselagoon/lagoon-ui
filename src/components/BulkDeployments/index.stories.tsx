@@ -22,22 +22,22 @@ export default {
 
 const data = [
   {
-    ...getDeployment(),
+    ...getDeployment(123),
     priority: 'urgent',
     status: 'complete',
   },
   {
-    ...getDeployment(),
+    ...getDeployment(1234),
     priority: 'urgent',
     status: 'complete',
   },
   {
-    ...getDeployment(),
+    ...getDeployment(12345),
     priority: 'urgent',
     status: 'complete',
   },
   {
-    ...getDeployment(),
+    ...getDeployment(123456),
     priority: 'urgent',
     status: 'complete',
   },

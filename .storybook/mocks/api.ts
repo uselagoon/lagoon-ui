@@ -12,10 +12,8 @@ export interface Project {
   }[];
 }
 
-export const MockAllProjects = (seed?: number) => {
-  if (seed) {
-    faker.seed(seed);
-  }
+export const MockAllProjects = (seed: number) => {
+  if (seed) faker.seed(seed);
 
   const numberOfProjects = faker.number.int({ min: 10, max: 20 });
 
@@ -28,10 +26,10 @@ export const MockAllProjects = (seed?: number) => {
         {
           route: faker.internet.url(),
           __typename: 'Environment',
-          openshift:{
+          openshift: {
             friendlyName: faker.word.words(),
-            cloudRegion: "NA"
-          }
+            cloudRegion: 'NA',
+          },
         },
       ],
     };
@@ -40,7 +38,7 @@ export const MockAllProjects = (seed?: number) => {
   return allProjects;
 };
 
-export const MockSettings = (seed?: number) => {
+export const MockSettings = (seed: number) => {
   if (seed) {
     faker.seed(seed);
   }
@@ -58,10 +56,8 @@ export const MockSettings = (seed?: number) => {
   return me;
 };
 
-export const MockAllDeployments = (seed?: number) => {
-  if (seed) {
-    faker.seed(seed);
-  }
+export const MockAllDeployments = (seed: number) => {
+  faker.seed(seed);
   const numberOfDeployments = faker.number.int({ min: 5, max: 20 });
 
   // function to create fake environment names with name/like/so or-name-like-so or a long word
@@ -101,8 +97,8 @@ export const MockAllDeployments = (seed?: number) => {
   return allDeployments;
 };
 
-export const MockBulkDeployments = (seed?: number) => {
-  if (seed) faker.seed(seed);
+export const MockBulkDeployments = (seed: number) => {
+  faker.seed(seed);
 
   const bulkNumber = faker.number.int({ min: 1, max: 10 });
 
@@ -124,27 +120,26 @@ export const MockBulkDeployments = (seed?: number) => {
   return bulkDeployments;
 };
 
-export const ProjectsProblems = () => {
-  faker.seed();
+export const ProjectsProblems = (seed: number) => {
+  faker.seed(seed);
 
-  const problemCount = faker.number.int({min:0,max:10});
-  const projectCount = faker.number.int({min:1, max:200});
+  const problemCount = faker.number.int({ min: 0, max: 10 });
+  const projectCount = faker.number.int({ min: 1, max: 200 });
 
-  const allProblems = Array.from({length: projectCount}, ()=>{
+  const allProblems = Array.from({ length: projectCount }, () => {
     return {
-      id:faker.number.int({min:1, max:1000}),
-      name: faker.lorem.slug({min:2,max:3}),
-      environments:[
-      {
-        id:faker.number.int({min:100,max:2000}),
-        name:faker.word.words(),
-        problems:Array.from({length: problemCount}, () =>{
-          return ProblemIdentifier().problems[0]
-        })
-      }
-      ]
-    }
-  })
-return allProblems;
-
-}
+      id: faker.number.int({ min: 1, max: 1000 }),
+      name: faker.lorem.slug({ min: 2, max: 3 }),
+      environments: [
+        {
+          id: faker.number.int({ min: 100, max: 2000 }),
+          name: faker.word.words(),
+          problems: Array.from({ length: problemCount }, () => {
+            return ProblemIdentifier().problems[0];
+          }),
+        },
+      ],
+    };
+  });
+  return allProblems;
+};

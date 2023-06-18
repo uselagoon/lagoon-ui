@@ -14,6 +14,7 @@ const meta: Meta<typeof PageDeployment> = {
 };
 type Story = StoryObj<typeof PageDeployment>;
 
+faker.seed(123);
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),
@@ -35,7 +36,7 @@ export const Default: Story = {
           return res(
             ctx.delay(),
             ctx.data({
-              environment: { ...generateEnvironments(123), deployments: [getDeployment()] },
+              environment: { ...generateEnvironments(123), deployments: [getDeployment(22)] },
             })
           );
         }),

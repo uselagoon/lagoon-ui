@@ -21,7 +21,6 @@ import TasksSubscription from 'lib/subscription/Tasks';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { TasksWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -75,7 +74,6 @@ export const PageTasks = ({ router, renderAddTasks }) => {
         </Head>
 
         <MainLayout>
-          <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
               <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
@@ -97,7 +95,6 @@ export const PageTasks = ({ router, renderAddTasks }) => {
                 />
               </div>
             </TasksWrapper>
-          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );

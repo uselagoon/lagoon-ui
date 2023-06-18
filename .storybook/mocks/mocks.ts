@@ -32,10 +32,9 @@ interface Task {
   };
 }
 
-export function createTasks(seed?: number): Tasks {
-  if (seed) {
-    faker.seed(seed);
-  }
+export const seed = (val = 123) => faker.seed(val);
+
+export function createTasks(): Tasks {
   const numberOftasks = faker.number.int({ min: 1, max: 10 });
   const tasks = Array.from({ length: numberOftasks }, () => {
     return {
@@ -51,11 +50,7 @@ export function createTasks(seed?: number): Tasks {
   return { tasks, environmentSlug: faker.lorem.slug(), projectSlug: faker.lorem.slug() };
 }
 
-export function createTask(seed?: number): Task {
-  if (seed) {
-    faker.seed(seed);
-  }
-
+export function createTask(): Task {
   const generateLogMessage = () => {
     return faker.git.commitMessage();
   };
@@ -106,7 +101,6 @@ export function generateBackup() {
 }
 
 export function generateProjectInfo() {
-  faker.seed();
   const environmentCount = faker.number.int({ min: 1, max: 5 });
   return {
     gitUrl: 'git@github.com:somecompany/some-project.git',
@@ -159,7 +153,8 @@ export const Problem = (args: any) => {
   };
 };
 
-export const ProblemIdentifier = () => {
+export const ProblemIdentifier = (val: number) => {
+  seed(val);
   const recentYear = faker.helpers.arrayElement(['2019', '2020']);
   const vuln_id = `CVE-${recentYear}-${faker.number.int({ min: 1000, max: 99999 })}`;
   const severity = faker.helpers.arrayElement(['UNKNOWN', 'NEGLIGIBLE', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL']);
@@ -186,8 +181,8 @@ const addTime = (originalDate: string, hoursLimit: number) => {
   return date.toISOString();
 };
 
-const deployStatus = () =>
-  faker.helpers.arrayElement(['new', 'pending', 'running', 'cancelled', 'error', 'failed', 'complete']);
+const deployStatus = () =>{ 
+  return faker.helpers.arrayElement(['new', 'pending', 'running', 'cancelled', 'error', 'failed', 'complete']);}
 
 const getFact = () => {
   const id = `${faker.number.int({ min: 0, max: 99999 })}`;
@@ -291,7 +286,8 @@ export const generateEnvironments = (args = Object.create(null)) => {
   };
 };
 
-export const getDeployment = () => {
+export const getDeployment = (seed: number) => {
+  faker.seed(seed);
   const id = faker.string.uuid();
   const created = faker.date.past().toDateString();
   const started = addTime(created, 0.5);
@@ -330,7 +326,8 @@ export const generateBackups = (seed: number) => {
   return backups;
 };
 
-export const generateFact = () => {
+export const generateFact = (val: number) => {
+  seed(val);
   const id = faker.string.uuid();
   const name = faker.helpers.arrayElement([
     'drupal-version',
@@ -384,7 +381,8 @@ export const generateFact = () => {
   };
 };
 
-export const generateInsight = () => {
+export const generateInsight = (val: number) => {
+  seed(val);
   return {
     created: faker.date.past().toDateString(),
     downloadUrl: faker.internet.url(),

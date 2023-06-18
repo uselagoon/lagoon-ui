@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
+
 import { generateEnvironments, getDeployment } from '../../.storybook/mocks/mocks';
 import PageDeployments from '../pages/deployments';
 
@@ -26,7 +27,7 @@ export const Default: Story = {
             ctx.data({
               environment: {
                 ...generateEnvironments(123),
-                deployments: [getDeployment(), getDeployment(), getDeployment(), getDeployment()],
+                deployments: [getDeployment(1), getDeployment(22), getDeployment(30), getDeployment(123)],
               },
             })
           );

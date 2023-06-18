@@ -4,8 +4,10 @@ import Task from 'components/Task';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
-import { createTask, generateEnvironments } from '../../.storybook/mocks/mocks';
+import { createTask, generateEnvironments, seed } from '../../.storybook/mocks/mocks';
 import PageTask from '../pages/task';
+
+seed();
 
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),

@@ -1,11 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import NavTabs from './index';
 
 /**
  * Left navigation tabs in project drilldown pages
  */
+
+seed();
+
 const meta: Meta<typeof NavTabs> = {
   component: NavTabs,
   title: 'Components/NavTabs',

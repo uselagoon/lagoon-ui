@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 

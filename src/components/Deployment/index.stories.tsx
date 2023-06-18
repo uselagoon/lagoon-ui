@@ -11,7 +11,8 @@ export default {
   decorators: [withButtonOverrides('.btn:not(div.field .btn)', 'click', 'Cancel deployment click')],
 };
 
-const data = getDeployment();
+
+const data = getDeployment(123);
 
 export const Complete = () => (
   <Deployment

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StoryObj } from '@storybook/react';
 
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import DeploymentsLink from './Deployments';
 
 export default {
@@ -10,6 +10,7 @@ export default {
   title: 'Components/link/DeploymentsLink',
 };
 
+seed();
 const environment = generateEnvironments();
 
 type Story = StoryObj<typeof DeploymentsLink>;

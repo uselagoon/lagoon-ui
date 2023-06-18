@@ -11,6 +11,7 @@ const meta:Meta<typeof Backups> = {
   decorators: [withButtonOverrides('.download', 'click', 'Backups button click')],
 };
 
+faker.seed(123);
 const backupsData = [
   {
     id:faker.string.uuid(),

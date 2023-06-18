@@ -1,5 +1,5 @@
 import React from 'react';
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import BulkDeploymentLink from './BulkDeployment';
 
 export default {
@@ -7,6 +7,7 @@ export default {
   title: 'Components/link/BulkDeploymentLink',
 };
 
+seed();
 const deployment = generateEnvironments();
 
 export const Default = () => (

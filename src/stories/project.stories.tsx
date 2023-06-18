@@ -4,7 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
-import { generateProjectInfo } from '../../.storybook/mocks/mocks';
+import { generateProjectInfo, seed } from '../../.storybook/mocks/mocks';
 import PageProject from '../pages/project';
 
 const meta: Meta<typeof PageProject> = {
@@ -12,6 +12,8 @@ const meta: Meta<typeof PageProject> = {
   component: PageProject,
 };
 type Story = StoryObj<typeof PageProject>;
+
+seed();
 
 export const Default: Story = {
   args: {

@@ -3,7 +3,7 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import TaskLink from './Task';
 
 const meta: Meta<typeof TaskLink> = {
@@ -11,7 +11,7 @@ const meta: Meta<typeof TaskLink> = {
   title: 'Components/link/TaskLink',
 };
 
-faker.seed();
+seed();
 
 const task = {
   id: faker.lorem.slug(),

@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 
-
-
 import { action } from '@storybook/addon-actions';
 import { Meta } from '@storybook/react';
-
-
 
 import DeleteConfirm, { DeleteConfirm as DeleteConfirmBaseComponent } from './index';
 

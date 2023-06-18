@@ -8,7 +8,7 @@ export default {
   title: 'Components/link/DeploymentLink',
 };
 
-faker.seed();
+faker.seed(123);
 
 const deployment = {
   name: faker.lorem.slug(),

@@ -2,9 +2,10 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 
-import { generateEnvironments, generateProjectInfo } from '../../.storybook/mocks/mocks';
+import { generateEnvironments, generateProjectInfo, seed } from '../../.storybook/mocks/mocks';
 import PageEnvironment from '../pages/environment';
 
+faker.seed(123);
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),
@@ -22,7 +23,7 @@ const meta: Meta<typeof PageEnvironment> = {
 };
 type Story = StoryObj<typeof PageEnvironment>;
 
-faker.seed();
+seed();
 const environment = generateEnvironments(123);
 // @ts-ignore
 environment.project = generateProjectInfo();

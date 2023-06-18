@@ -16,8 +16,8 @@ const problemData = Array.from({
     min: 1,
     max: 10,
   }),
-}).map(() => {
-  return ProblemIdentifier();
+}).map((_,idx) => {
+  return ProblemIdentifier(idx);
 })[0].problems;
 
 export const Default = () => <Problems problems={problemData} />;

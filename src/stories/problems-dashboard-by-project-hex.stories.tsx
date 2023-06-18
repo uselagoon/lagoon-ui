@@ -13,7 +13,7 @@ const meta: Meta<typeof ProblemsDashboardProductPageHexDisplay> = {
 };
 type Story = StoryObj<typeof ProblemsDashboardProductPageHexDisplay>;
 
-console.log(ProjectsProblems());
+console.log(ProjectsProblems(123));
 
 export const Default: Story = {
   parameters: {
@@ -23,7 +23,7 @@ export const Default: Story = {
           return res(
             ctx.delay(),
             ctx.data({
-              projectsProblems: ProjectsProblems(),
+              projectsProblems: ProjectsProblems(123),
             })
           );
         }),

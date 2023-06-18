@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 
-import { createTasks } from '../../../.storybook/mocks/mocks';
+import { createTasks, seed } from '../../../.storybook/mocks/mocks';
 import TasksSkeleton from './TasksSkeleton';
 import Tasks from './index';
 
@@ -12,7 +12,8 @@ const meta: Meta<typeof Tasks> = {
   tags: ['autodocs'],
 };
 
-const { tasks } = createTasks(123);
+seed();
+const { tasks } = createTasks();
 
 type Story = StoryObj<typeof Tasks>;
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 
-import { generateProjectInfo } from '../../../.storybook/mocks/mocks';
+import { generateProjectInfo, seed } from '../../../.storybook/mocks/mocks';
 import ProjectSkeleton from './SidebarSkeleton';
 import ProjectDetailsSidebar from './index';
 
@@ -17,6 +17,7 @@ const meta: Meta<typeof ProjectDetailsSidebar> = {
 
 type Story = StoryObj<typeof ProjectDetailsSidebar>;
 
+seed();
 const project = generateProjectInfo();
 
 export const Default = () => <ProjectDetailsSidebar project={project} />;

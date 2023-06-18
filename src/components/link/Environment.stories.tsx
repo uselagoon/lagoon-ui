@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 
-import { generateEnvironments } from '../../../.storybook/mocks/mocks';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import EnvironmentLink from './Environment';
 
 const meta: Meta<typeof EnvironmentLink> = {
@@ -10,6 +10,7 @@ const meta: Meta<typeof EnvironmentLink> = {
   title: 'Components/link/EnvironmentLink',
 };
 
+seed();
 const environment = generateEnvironments();
 
 type Story = StoryObj<typeof EnvironmentLink>;

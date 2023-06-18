@@ -3,9 +3,10 @@ import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
-import { createTasks, generateEnvironments } from '../../.storybook/mocks/mocks';
+import { createTasks, generateEnvironments,seed } from '../../.storybook/mocks/mocks';
 import PageTasks from '../pages/tasks';
 
+seed();
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),

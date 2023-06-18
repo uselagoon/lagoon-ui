@@ -4,7 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
-import { generateBackups, generateEnvironments } from '../../.storybook/mocks/mocks';
+import { generateBackups, generateEnvironments, seed } from '../../.storybook/mocks/mocks';
 import PageBackups from '../pages/backups';
 
 const meta: Meta<typeof PageBackups> = {
@@ -13,6 +13,7 @@ const meta: Meta<typeof PageBackups> = {
 };
 type Story = StoryObj<typeof PageBackups>;
 
+seed();
 export const Default: Story = {
   parameters: {
     msw: {

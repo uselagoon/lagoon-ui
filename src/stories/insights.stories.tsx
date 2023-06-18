@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
@@ -12,9 +11,8 @@ const meta: Meta<typeof PageInsights> = {
 };
 type Story = StoryObj<typeof PageInsights>;
 
-faker.seed();
 const environment = generateEnvironments(123);
-environment.insights = [generateInsight(), generateInsight(), generateInsight(), generateInsight()] as any;
+environment.insights = [generateInsight(1), generateInsight(2), generateInsight(3), generateInsight(123)] as any;
 
 export const Default: Story = {
   parameters: {

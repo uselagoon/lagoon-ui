@@ -3,9 +3,10 @@ import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 
 import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
-import { generateBackup } from '../../../.storybook/mocks/mocks';
+import { generateBackup, seed } from '../../../.storybook/mocks/mocks';
 import RestoreButton from './index';
 
+seed();
 const backup = generateBackup();
 
 /**

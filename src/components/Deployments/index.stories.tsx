@@ -12,28 +12,28 @@ export default {
 
 const data = [
   {
-    ...getDeployment(),
+    ...getDeployment(1),
     status: 'complete',
     bulkId: '',
   },
   {
-    ...getDeployment(),
+    ...getDeployment(2),
     status: 'complete',
     bulkId: '',
   },
   {
-    ...getDeployment(),
+    ...getDeployment(3),
     status: 'complete',
     bulkId: '123',
   },
   {
-    ...getDeployment(),
+    ...getDeployment(4),
     status: 'complete',
     bulkId: '123',
   },
 ];
 
-faker.seed();
+faker.seed(123);
 const environmentsSlug = faker.lorem.slug();
 const projectSlug = faker.lorem.slug();
 
