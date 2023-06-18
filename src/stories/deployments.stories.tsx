@@ -12,6 +12,7 @@ const meta: Meta<typeof PageDeployments> = {
 };
 type Story = StoryObj<typeof PageDeployments>;
 
+faker.seed(123);
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),

@@ -4,6 +4,7 @@ import { graphql } from 'msw';
 
 import { generateEnvironments, generateInsight } from '../../.storybook/mocks/mocks';
 import PageInsights from '../pages/insights';
+import { faker } from '@faker-js/faker';
 
 const meta: Meta<typeof PageInsights> = {
   title: 'Pages/Insights',
@@ -11,10 +12,25 @@ const meta: Meta<typeof PageInsights> = {
 };
 type Story = StoryObj<typeof PageInsights>;
 
+faker.seed(123);
+
+const fakeQueryParams = {
+  openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
+  deploymentName: faker.lorem.slug(),
+
+};
+
+
 const environment = generateEnvironments(123);
 environment.insights = [generateInsight(1), generateInsight(2), generateInsight(3), generateInsight(123)] as any;
 
 export const Default: Story = {
+  args:{
+    router: {
+      asPath: '/projects/lagoon-deploy-123',
+      query: fakeQueryParams,
+    },
+  },
   parameters: {
     msw: {
       handlers: [

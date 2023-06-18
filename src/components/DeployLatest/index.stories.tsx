@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { generateEnvironments } from '../../../.storybook/mocks/mocks';
 import DeployLatest from './index';
 import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
+import { faker } from '@faker-js/faker';
 
 const meta: Meta<typeof DeployLatest> = {
   component: DeployLatest,
@@ -12,6 +13,9 @@ const meta: Meta<typeof DeployLatest> = {
 };
 
 type Story = StoryObj<typeof DeployLatest>;
+
+faker.seed(123);
+
 const environment = generateEnvironments({ name: 'master' });
 
 
