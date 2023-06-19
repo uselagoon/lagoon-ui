@@ -11,6 +11,7 @@ export default {
   tags: ['autodocs'],
 };
 
+faker.seed(123);
 export const Default = () => (
   <ProblemsByIdentifier
     problems={Array.from({
