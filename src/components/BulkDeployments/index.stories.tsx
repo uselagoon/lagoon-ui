@@ -45,7 +45,6 @@ const data = [
   },
 ];
 
-console.warn(data);
 
 type Story = StoryObj<typeof BulkDeployments>;
 
