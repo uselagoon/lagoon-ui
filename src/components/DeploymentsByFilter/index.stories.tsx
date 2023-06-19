@@ -20,6 +20,8 @@ export const Default: Story = {
   }
 }
 
+console.warn(MockAllDeployments(123));
+
 export const Loading: Story = {
   render: () => <DeploymentsByFilterSkeleton/>
 }

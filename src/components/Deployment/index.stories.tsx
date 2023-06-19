@@ -14,6 +14,8 @@ export default {
 
 const data = getDeployment(123);
 
+console.warn(data);
+
 export const Complete = () => (
   <Deployment
     deployment={{

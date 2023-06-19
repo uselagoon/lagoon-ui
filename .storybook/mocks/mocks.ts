@@ -59,13 +59,15 @@ export function createTask(): Task {
   const eventName = faker.word.words();
   const jobName = faker.word.words();
   const stepName = faker.word.words();
-  const duration = Math.floor(Math.random() * 10) + 1;
+  const duration = Math.floor(faker.number.int({ min: 0, max: 1 }) * 10) + 1;
 
   const log =
     `::group::${eventName}\n` +
-    `::${status[Math.floor(Math.random() * status.length)]}:: Job '${jobName}'\n` +
+    `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]}:: Job '${jobName}'\n` +
     `::step-start::${stepName}\n` +
-    `::${status[Math.floor(Math.random() * status.length)]}:: Job '${jobName}' step '${stepName}'\n` +
+    `::${
+      status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
+    }:: Job '${jobName}' step '${stepName}'\n` +
     `::step-end::${stepName}::${duration}\n` +
     `${generateLogMessage()}\n` +
     `::endgroup::`;
@@ -178,8 +180,8 @@ export const ProblemIdentifier = (val: number) => {
   };
 };
 
-const addTime = (originalDate: string, hoursLimit: number) => {
-  seed();
+const addTime = (originalDate: string, hoursLimit: number, seedVal?: number) => {
+  seed(seedVal);
   const date = new Date(originalDate);
   date.setTime(date.getTime() + faker.number.int(hoursLimit * 60 * 60 * 1000));
   return date.toISOString();
@@ -244,6 +246,8 @@ const getFact = () => {
 };
 
 export const generateEnvironments = (args = Object.create(null)) => {
+  if (args['seed']) seed(args['seed']);
+
   const name = args['name']
     ? args['name']
     : faker.helpers.arrayElement(['master', 'staging', 'development', 'pr-42', 'pr-100', 'pr-175']);
@@ -261,7 +265,7 @@ export const generateEnvironments = (args = Object.create(null)) => {
   const updated = addTime(created, 4);
   const deleted = addTime(updated, 2);
 
-  const project: Project = { ...MockAllProjects[0], factsUi: 1, problemsUi: 1, name: faker.lorem.slug() };
+  const project: Project = { ...MockAllProjects(args['seed'])[0], factsUi: 1, problemsUi: 1, name: faker.lorem.slug() };
 
   const environment = {
     id: faker.string.uuid(),
@@ -293,10 +297,11 @@ export const generateEnvironments = (args = Object.create(null)) => {
 
 export const getDeployment = (seed: number) => {
   faker.seed(seed);
+
   const id = faker.string.uuid();
   const created = faker.date.past().toDateString();
-  const started = addTime(created, 0.5);
-  const completed = addTime(started, 0.75);
+  const started = addTime(created, 0.5, seed);
+  const completed = addTime(started, 0.75, seed);
 
   return {
     id,
@@ -305,7 +310,7 @@ export const getDeployment = (seed: number) => {
     created,
     started,
     completed,
-    environment: generateEnvironments(),
+    environment: generateEnvironments({ seed }),
     remoteId: faker.number.int(),
     buildLog: 'Buildem logem ipsum.',
   };

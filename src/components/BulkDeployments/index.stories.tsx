@@ -20,6 +20,8 @@ export default {
 
 };
 
+
+
 const data = [
   {
     ...getDeployment(123),
@@ -42,6 +44,8 @@ const data = [
     status: 'complete',
   },
 ];
+
+console.warn(data);
 
 type Story = StoryObj<typeof BulkDeployments>;
 

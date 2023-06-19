@@ -37,7 +37,7 @@ export const Default: Story = {
           return res(
             ctx.delay(),
             ctx.data({
-              environment: { ...generateEnvironments(123), deployments: [getDeployment(22)] },
+              environment: { ...generateEnvironments(123), deployments: [getDeployment(30)] },
             })
           );
         }),

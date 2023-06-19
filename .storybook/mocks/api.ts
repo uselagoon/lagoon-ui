@@ -5,6 +5,8 @@ import { ProblemIdentifier, generateEnvironments } from './mocks';
 export interface Project {
   id: string;
   name: string;
+  factsUi?: number;
+  problemsUi?: number;
   __typename: 'Project';
   environments: {
     route: string;
@@ -78,11 +80,14 @@ export const MockAllDeployments = (seed: number) => {
   };
 
   const allDeployments = Array.from({ length: numberOfDeployments }, () => {
+    const created = faker.date.past().toDateString();
+
     return {
       status: faker.helpers.arrayElement(['new', 'pending', 'running', 'cancelled', 'error', 'failed', 'complete']),
       name: faker.lorem.slug({ min: 1, max: 5 }),
       priority: faker.helpers.arrayElement(['critical', 'urgent', 'low']),
-      created: faker.date.anytime().toDateString(),
+      created: created,
+      completed:faker.date.future({refDate:created}).toDateString(),
       environment: {
         name: formattedNameString(),
         project: {
@@ -102,7 +107,8 @@ export const MockBulkDeployments = (seed: number) => {
 
   const bulkNumber = faker.number.int({ min: 1, max: 10 });
 
-  const bulkDeployments = Array.from({ length: bulkNumber }, () => {
+  const bulkDeployments = Array.from({ length: bulkNumber }, (_,idx) => {
+    faker.seed(idx);
     return {
       id: faker.string.uuid(),
       status: faker.helpers.arrayElement(['new', 'pending', 'running', 'cancelled', 'error', 'failed', 'complete']),
@@ -114,7 +120,7 @@ export const MockBulkDeployments = (seed: number) => {
       bulkId: faker.string.uuid(),
       bulkName: faker.lorem.slug(),
       priority: faker.helpers.arrayElement(['critical', 'urgent', 'low']),
-      environment: generateEnvironments(),
+      environment: generateEnvironments({seed: idx}),
     };
   });
   return bulkDeployments;
