@@ -87,7 +87,7 @@ export const MockAllDeployments = (seed: number) => {
       name: faker.lorem.slug({ min: 1, max: 5 }),
       priority: faker.helpers.arrayElement(['critical', 'urgent', 'low']),
       created: created,
-      completed:faker.date.future({refDate:created}).toDateString(),
+      completed: faker.date.future({ refDate: created }).toDateString(),
       environment: {
         name: formattedNameString(),
         project: {
@@ -107,7 +107,7 @@ export const MockBulkDeployments = (seed: number) => {
 
   const bulkNumber = faker.number.int({ min: 1, max: 10 });
 
-  const bulkDeployments = Array.from({ length: bulkNumber }, (_,idx) => {
+  const bulkDeployments = Array.from({ length: bulkNumber }, (_, idx) => {
     faker.seed(idx);
     return {
       id: faker.string.uuid(),
@@ -120,7 +120,7 @@ export const MockBulkDeployments = (seed: number) => {
       bulkId: faker.string.uuid(),
       bulkName: faker.lorem.slug(),
       priority: faker.helpers.arrayElement(['critical', 'urgent', 'low']),
-      environment: generateEnvironments({seed: idx}),
+      environment: generateEnvironments({ seed: idx }),
     };
   });
   return bulkDeployments;
@@ -129,12 +129,11 @@ export const MockBulkDeployments = (seed: number) => {
 export const ProjectsProblems = (seed: number) => {
   faker.seed(seed);
 
-  const problemCount = faker.number.int({ min: 0, max: 10 });
   const projectCount = faker.number.int({ min: 1, max: 200 });
 
   const allProblems = Array.from({ length: projectCount }, (_, index) => {
     const problemIdentifier = index + 1;
-    
+
     return {
       id: faker.number.int({ min: 1, max: 1000 }),
       name: faker.lorem.slug({ min: 2, max: 3 }),
@@ -142,9 +141,7 @@ export const ProjectsProblems = (seed: number) => {
         {
           id: faker.number.int({ min: 100, max: 2000 }),
           name: faker.word.words(),
-          problems: Array.from({ length: problemCount }, () => {
-            return ProblemIdentifier(problemIdentifier).problems[0];
-          }),
+          problems: ProblemIdentifier(problemIdentifier).problems,
         },
       ],
     };
