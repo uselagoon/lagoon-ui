@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { ReactElement } from 'react';
 
 import { Route } from './Tour';
@@ -52,7 +52,7 @@ const defaultTourContextValue = {
 
 export const TourContext = createContext<TourContextType | null>(null);
 
-export const TourContextProvider = ({ children }: { children: ReactElement[] }) => {
+export const TourContextProvider = ({ children }: { children: ReactElement[] | ReactNode }) => {
   const [tourState, setTourState] = useState<TourContextType>(defaultTourContextValue);
 
   const updateTourInfo = (

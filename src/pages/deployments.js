@@ -21,7 +21,6 @@ import DeploymentsSubscription from 'lib/subscription/Deployments';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { DeploymentsWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -76,22 +75,20 @@ export const PageDeployments = ({ router }) => {
           </Breadcrumbs>
 
           <DeploymentsWrapper>
-            <ThemedSkeletonWrapper>
-              <NavTabsSkeleton
-                activeTab="deployments"
-                projectName={projectSlug}
-                openshiftProjectName={openshiftProjectName}
-              />
-              <div className="content">
-                <Skeleton height={70} />
+            <NavTabsSkeleton
+              activeTab="deployments"
+              projectName={projectSlug}
+              openshiftProjectName={openshiftProjectName}
+            />
+            <div className="content">
+              <Skeleton height={70} />
 
-                <DeploymentsSkeleton />
-                <ResultsLimited
-                  limit={resultLimit}
-                  message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
-                />
-              </div>
-            </ThemedSkeletonWrapper>
+              <DeploymentsSkeleton />
+              <ResultsLimited
+                limit={resultLimit}
+                message={(!customMessage && '') || (customMessage && customMessage.replace(/['"]+/g, ''))}
+              />
+            </div>
           </DeploymentsWrapper>
         </MainLayout>
       </>

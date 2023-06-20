@@ -33,9 +33,9 @@ export const DeleteConfirm = ({
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
             <input type="text" value={inputValue} onChange={setInputValue} />
-            <a href="#" className="hover-state" onClick={closeModal}>
+            <button className="hover-state" onClick={closeModal}>
               cancel
-            </a>
+            </button>
             <Button disabled={inputValue !== deleteName} action={onDelete} variant="red">
               Delete
             </Button>
@@ -47,7 +47,7 @@ export const DeleteConfirm = ({
           margin-right: 10px;
           width: 100%;
         }
-        a.hover-state {
+        .hover-state {
           margin-right: 10px;
           color: ${color.blue};
         }

@@ -27,7 +27,7 @@ const customStyles = {
 /**
  * Button that deploys the latest environment.
  */
-const ResultsLimited = ({ limit, message }) => {
+const ResultsLimited = ({ limit, message, disableHandler}) => {
   return (
     // if the number of results = the limit, then display a message that the results are limited
     // if the number of results is less than the limit, the message won't be displayed
@@ -49,7 +49,7 @@ const ResultsLimited = ({ limit, message }) => {
             aria-label="Results"
             placeholder="Results to display..."
             name="results"
-            onChange={handleChange}
+            onChange={!disableHandler ? handleChange : () => {}}
             options={options}
             required
           />

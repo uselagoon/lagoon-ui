@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import Favicon from 'components/Favicon';
 // transitions
 import { AnimatePresence, LazyMotion, m } from 'framer-motion';
-import 'isomorphic-unfetch';
+// import 'isomorphic-unfetch';
 import ApiConnection from 'lib/ApiConnection';
 import Authenticator from 'lib/Authenticator';
 // theming
@@ -20,6 +20,7 @@ import 'nprogress/nprogress.css';
 import { ThemeProvider } from 'styled-components';
 
 import '../static/normalize.css';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { darkTheme, lightTheme } from '../styles/theme';
 import Tour from '../tours/Tour';
 // tours
@@ -31,7 +32,7 @@ const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
 // lazy load animation features
 const loadFeatures = () => import('components/common/features').then(res => res.default);
 
-export const AppContext = createContext(null);
+export const AppContext = createContext({});
 
 const LagoonApp = ({ Component, pageProps, err }) => {
   const { pathname, events } = useRouter();
@@ -88,20 +89,22 @@ const LagoonApp = ({ Component, pageProps, err }) => {
             <Authenticator>
               <ApiConnection>
                 <TourContextProvider>
-                  <m.div
-                    className="lagoon-wrapper"
-                    key={pathname}
-                    initial={{ opacity: 0.65 }}
-                    animate={{ opacity: 1, transition: { duration: 0.5 } }}
-                    exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
-                  >
-                    <Head>
-                      <Typekit kitId="ggo2pml" />
-                    </Head>
-                    <Component {...pageProps} url={pathname} />
-                    {tourEnabled ? <Tour /> : null}
-                    <Favicon />
-                  </m.div>
+                  <ThemedSkeletonWrapper>
+                    <m.div
+                      className="lagoon-wrapper"
+                      key={pathname}
+                      initial={{ opacity: 0.65 }}
+                      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+                      exit={{ opacity: 0.65, transition: { duration: 0.5 } }}
+                    >
+                      <Head>
+                        <Typekit kitId="ggo2pml" />
+                      </Head>
+                      <Component {...pageProps} url={pathname} />
+                      {tourEnabled ? <Tour /> : null}
+                      <Favicon />
+                    </m.div>
+                  </ThemedSkeletonWrapper>
                 </TourContextProvider>
               </ApiConnection>
             </Authenticator>

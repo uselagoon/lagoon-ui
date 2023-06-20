@@ -1,7 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { Header, StyledFacts } from './StyledFacts';
 
 const FactsSkeleton = () => {
@@ -9,7 +8,6 @@ const FactsSkeleton = () => {
 
   return (
     <StyledFacts>
-      <ThemedSkeletonWrapper>
         <div className="filters">
           <input type="text" id="filter" placeholder="Filter facts e.g. PHP version" value={undefined} />
         </div>
@@ -44,7 +42,6 @@ const FactsSkeleton = () => {
             </div>
           ))}
         </div>
-      </ThemedSkeletonWrapper>
     </StyledFacts>
   );
 };

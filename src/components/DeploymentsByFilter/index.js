@@ -31,7 +31,7 @@ const DeploymentsByFilter = ({ deployments }) => {
       return context.measureText(string).width;
     };
 
-    const labelWidth = document.querySelector(`.data-row > .${labelClassToQuery}`).getBoundingClientRect().width;
+    const labelWidth = document.querySelector(`.data-row > .${labelClassToQuery}`)?.getBoundingClientRect().width;
 
     const editString = string => {
       // find all "-" or "/" and replace with line breaks prefixed by the symbol found.

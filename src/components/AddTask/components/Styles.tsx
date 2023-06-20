@@ -13,7 +13,7 @@ export const StyledCustomTaskConfirm = styled.div`
     font-weight: bold;
     color: ${color.lightBlue};
   }
-  a.hover-state {
+  .hover-state {
     margin-right: 10px;
     color: ${color.blue};
   }

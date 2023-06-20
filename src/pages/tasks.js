@@ -21,7 +21,6 @@ import TasksSubscription from 'lib/subscription/Tasks';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { TasksWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -47,7 +46,7 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
 /**
  * Displays the tasks page, given the openshift project name.
  */
-export const PageTasks = ({ router }) => {
+export const PageTasks = ({ router, renderAddTasks }) => {
   const { continueTour } = useTourContext();
   const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithTasksQuery, {
     variables: {
@@ -75,7 +74,6 @@ export const PageTasks = ({ router }) => {
         </Head>
 
         <MainLayout>
-          <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
               <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
@@ -97,7 +95,6 @@ export const PageTasks = ({ router }) => {
                 />
               </div>
             </TasksWrapper>
-          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );
@@ -168,7 +165,7 @@ export const PageTasks = ({ router }) => {
         <TasksWrapper>
           <NavTabs activeTab="tasks" environment={environment} />
           <div className="content">
-            <AddTask pageEnvironment={environment} />
+            {!renderAddTasks && <AddTask pageEnvironment={environment} />}
             <Tasks
               tasks={environment.tasks}
               environmentSlug={environment.openshiftProjectName}

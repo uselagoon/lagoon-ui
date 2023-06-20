@@ -1,7 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
 const DeploymentsByFilterSkeleton = () => {
@@ -43,7 +42,7 @@ const DeploymentsByFilterSkeleton = () => {
 
   return (
     <Deployments>
-      <ThemedSkeletonWrapper>
+      <>
         <div className="filters">
           <label>
             <Skeleton width={'20%'} />
@@ -69,7 +68,7 @@ const DeploymentsByFilterSkeleton = () => {
           <label></label>
         </DeploymentsHeader>
         <DeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}</DeploymentsDataTable>
-      </ThemedSkeletonWrapper>
+      </>
     </Deployments>
   );
 };

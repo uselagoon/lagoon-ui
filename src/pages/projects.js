@@ -44,6 +44,7 @@ const ProjectsPage = () => {
           <div className="content">
             {loading ? <ProjectsSkeleton /> : <Projects projects={data.allProjects || []} />}
           </div>
+        
         </CommonWrapper>
       </MainLayout>
     </>
