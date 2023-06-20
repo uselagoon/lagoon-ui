@@ -1,4 +1,4 @@
-import { bp, color } from 'lib/variables';
+import {bp, color} from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledFacts = styled.div`
@@ -11,7 +11,7 @@ export const StyledFacts = styled.div`
   }
 
   .button-sort {
-    color: #5f6f7a;
+    color: #4578e6;
     position: relative;
     font-family: 'source-code-pro', sans-serif;
     font-size: 13px;
@@ -102,9 +102,29 @@ export const StyledFacts = styled.div`
       font-size: 12px;
     }
   }
+      
+  .collapse:not(.show) {
+      display: none !important;
+    }
+  
+  .collapsing {
+      position: relative;
+      height: 0;
+      overflow: hidden;
+      transition: height 200ms ease !important;
+}
 
   .row-heading {
     background-color: ${props => props.theme.backgrounds.table};
+    
+     &.fact-values {
+        background-color: ${props => props.theme.backgrounds.tertiary};
+    }
+  }
+  
+  .fact-dropdown {
+    background: transparent;
+    border: none;
   }
 `;
 
