@@ -1,9 +1,12 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import ReactSelect from 'react-select';
+
 import Button from 'components/Button';
+import gql from 'graphql-tag';
 import { bp, color, fontSize } from 'lib/variables';
+
+import { SelectWrapper } from './Styles';
 
 const taskDrushCron = gql`
   mutation taskDrushCron($environment: Int!) {
@@ -27,12 +30,12 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
     onCompleted={onCompleted}
     onError={onError}
     variables={{
-      environment: pageEnvironment.id
+      environment: pageEnvironment.id,
     }}
   >
-    {(taskDrushCron, { loading, called, error, data }) => {
+    {taskDrushCron => {
       return (
-        <React.Fragment>
+        <SelectWrapper>
           <div className="envSelect">
             <label id="dest-env">Environment:</label>
             <ReactSelect
@@ -40,25 +43,20 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
               name="dest-environment"
               value={{
                 label: pageEnvironment.name,
-                value: pageEnvironment.id
+                value: pageEnvironment.id,
               }}
               options={[
                 {
                   label: pageEnvironment.name,
-                  value: pageEnvironment.id
-                }
+                  value: pageEnvironment.id,
+                },
               ]}
               isDisabled
               required
             />
           </div>
           <Button action={taskDrushCron}>Run task</Button>
-          <style jsx>{`
-            .envSelect {
-              margin: 10px 0;
-            }
-          `}</style>
-        </React.Fragment>
+        </SelectWrapper>
       );
     }}
   </Mutation>

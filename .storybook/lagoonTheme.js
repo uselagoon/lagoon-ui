@@ -1,9 +1,11 @@
-import { create } from '@storybook/theming/create';
-import logo from './lagoon.png';
+import { create } from '@storybook/theming';
+
+import logo from './public/logo.svg';
 
 export default create({
-  base: 'light',
-  brandTitle: 'Lagoon UI Style Guide',
-  // brandUrl: 'https://docs.lagoon.sh/',
+  base: 'dark',
+  brandTitle: 'Lagoon',
+  brandUrl: 'http://lagoon.sh/',
   brandImage: logo,
+  brandTarget: '_blank',
 });

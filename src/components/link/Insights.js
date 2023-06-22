@@ -2,22 +2,16 @@ import Link from 'next/link';
 
 export const getLinkData = (environmentSlug, projectSlug) => ({
   urlObject: {
-    pathname: '/projects/[projectSlug]/[environmentSlug]/insights',
-    query: { openshiftProjectName: environmentSlug }
+    pathname: '/insights',
+    query: { openshiftProjectName: environmentSlug },
   },
-  asPath: `/projects/${projectSlug}/${environmentSlug}/insights`
+  asPath: `/projects/${projectSlug}/${environmentSlug}/insights`,
 });
 
 /**
  * Links to the insights page given the project name and the openshift project name.
  */
-const InsightsLink = ({
-  environmentSlug,
-  projectSlug,
-  children,
-  className = null,
-  prefetch = false
-}) => {
+const InsightsLink = ({ environmentSlug, projectSlug, children, className = null, prefetch = false }) => {
   const linkData = getLinkData(environmentSlug, projectSlug);
 
   return (

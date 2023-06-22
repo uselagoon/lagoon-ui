@@ -1,68 +1,53 @@
 import React from 'react';
-import * as R from 'ramda';
+import Skeleton from 'react-loading-skeleton';
+
 import Head from 'next/head';
 import { withRouter } from 'next/router';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
+
+import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import BulkDeploymentBreadcrumb from 'components/Breadcrumbs/BulkDeployment';
-import BulkDeploymentById from 'lib/query/BulkDeploymentById';
 import BulkDeployments from 'components/BulkDeployments';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { bp } from 'lib/variables';
+import BulkDeploymentsSkeleton from 'components/BulkDeployments/BulkDeploymentsSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import BulkDeploymentById from 'lib/query/BulkDeploymentById';
+
+import QueryError from '../components/errors/QueryError';
+import { CommonWrapper } from '../styles/commonPageStyles';
 
 /**
  * Displays the bulk deployments page.
  */
-const BulkDeploymentsPage = ({ router }) => (
-  <>
-    <Head>
-      <title>Bulk Deployment - { router.query.bulkId }</title>
-    </Head>
-    <Query
-      query={BulkDeploymentById}
-      variables={{ bulkId: router.query.bulkId }}
-    >
-      {R.compose(
-        withQueryLoading,
-        withQueryError
-      )(({ data }) => (
-        <MainLayout>
-        <Breadcrumbs>
-          <BulkDeploymentBreadcrumb bulkIdSlug={ data.deploymentsByBulkId[0].bulkName || router.query.bulkId } />
-        </Breadcrumbs>
-          <div className="content-wrapper">
+const BulkDeploymentsPage = ({ router }) => {
+  const { data, loading, error } = useQuery(BulkDeploymentById, {
+    variables: { bulkId: router.query.bulkId },
+  });
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>Bulk Deployment - {router.query.bulkId}</title>
+      </Head>
+
+      <MainLayout>
+          <Breadcrumbs>
+            <BulkDeploymentBreadcrumb
+              title={loading ? <Skeleton /> : data.deploymentsByBulkId[0]?.bulkName || router.query.bulkName}
+              bulkIdSlug={loading ? '' : data.deploymentsByBulkId[0]?.bulkId || router.query.bulkId}
+            />
+          </Breadcrumbs>
+          <CommonWrapper>
             <div className="content">
-              <BulkDeployments deployments={data.deploymentsByBulkId || []} />
+              {loading ? <BulkDeploymentsSkeleton /> : <BulkDeployments deployments={data.deploymentsByBulkId || []} />}
             </div>
-          </div>
-          <style jsx>{`
-            .content-wrapper {
-              h2 {
-                margin: 38px calc((100vw / 16) * 1) 0;
-                @media ${bp.wideUp} {
-                  margin: 62px calc((100vw / 16) * 2) 0;
-                }
-                @media ${bp.extraWideUp} {
-                  margin: 62px calc((100vw / 16) * 3) 0;
-                }
-              }
-              .content {
-                margin: 38px calc((100vw / 16) * 1);
-                @media ${bp.wideUp} {
-                  margin: 38px calc((100vw / 16) * 2);
-                }
-                @media ${bp.extraWideUp} {
-                  margin: 38px calc((100vw / 16) * 3);
-                }
-              }
-            }
-          `}</style>
-        </MainLayout>
-      ))}
-    </Query>
-  </>
-);
+          </CommonWrapper>
+      </MainLayout>
+    </>
+  );
+};
 
 export default withRouter(BulkDeploymentsPage);

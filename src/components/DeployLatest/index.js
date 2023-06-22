@@ -1,8 +1,10 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+
 import Button from 'components/Button';
-import { bp, color, fontSize } from 'lib/variables';
+import gql from 'graphql-tag';
+
+import { NewDeployment } from './StyledDeployLatest';
 
 const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
   mutation deployEnvironmentLatest($environmentId: Int!) {
@@ -16,19 +18,12 @@ const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
 const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
   let deploymentsEnabled = true;
 
-  if (
-    environment.deployType === 'branch' ||
-    environment.deployType === 'promote'
-  ) {
+  if (environment.deployType === 'branch' || environment.deployType === 'promote') {
     if (!environment.deployBaseRef) {
       deploymentsEnabled = false;
     }
   } else if (environment.deployType === 'pullrequest') {
-    if (
-      !environment.deployBaseRef &&
-      !environment.deployHeadRef &&
-      !environment.deployTitle
-    ) {
+    if (!environment.deployBaseRef && !environment.deployHeadRef && !environment.deployTitle) {
       deploymentsEnabled = false;
     }
   } else {
@@ -36,47 +31,37 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
   }
 
   return (
-    <div className="newDeployment">
+    <NewDeployment>
       {!deploymentsEnabled && (
         <React.Fragment>
-          <div className="description">
-            Manual deployments are not available for this environment.
-          </div>
+          <div className="description">Manual deployments are not available for this environment.</div>
           <Button disabled>Deploy</Button>
         </React.Fragment>
       )}
       {deploymentsEnabled && (
         <React.Fragment>
           <div className="description">
-            {environment.deployType === 'branch' &&
-              `Start a new deployment of branch ${environment.deployBaseRef}.`}
+            {environment.deployType === 'branch' && `Start a new deployment of branch ${environment.deployBaseRef}.`}
             {environment.deployType === 'pullrequest' &&
-              `Start a new deployment of pull request ${
-                environment.deployTitle
-              }.`}
+              `Start a new deployment of pull request ${environment.deployTitle}.`}
             {environment.deployType === 'promote' &&
-              `Start a new deployment from environment ${
-                environment.project.name
-              }-${environment.deployBaseRef}.`}
+              `Start a new deployment from environment ${environment.project.name}-${environment.deployBaseRef}.`}
           </div>
           <Mutation
             mutation={DEPLOY_ENVIRONMENT_LATEST_MUTATION}
             variables={{
-              environmentId: environment.id
+              environmentId: environment.id,
             }}
           >
             {(deploy, { loading, error, data }) => {
-              const success =
-                data && data.deployEnvironmentLatest === 'success';
+              const success = data && data.deployEnvironmentLatest === 'success';
               return (
                 <React.Fragment>
                   <Button action={deploy} disabled={loading}>
                     Deploy
                   </Button>
 
-                  {success && (
-                    <div className="deploy_result">Deployment queued.</div>
-                  )}
+                  {success && <div className="deploy_result">Deployment queued.</div>}
 
                   {error && (
                     <div className="deploy_result">
@@ -90,41 +75,7 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
           </Mutation>
         </React.Fragment>
       )}
-      <style jsx>
-        {`
-          .newDeployment {
-            align-items: center;
-            background: ${color.white};
-            border: 1px solid ${color.lightestGrey};
-            border-radius: 3px;
-            box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            padding: 15px;
-
-            @media ${bp.tabletUp} {
-              margin-bottom: 0;
-            }
-
-            @media ${bp.wideUp} {
-              min-width: 52%;
-            }
-
-            .description {
-              color: ${color.darkGrey};
-            }
-
-            .deploy_result {
-              margin-top: 20px;
-              text-align: right;
-              width: 100%;
-            }
-          }
-        `}
-      </style>
-    </div>
+    </NewDeployment>
   );
 };
 

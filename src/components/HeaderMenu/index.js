@@ -1,31 +1,35 @@
 import React from 'react';
-import { bp, color } from 'lib/variables';
+
 import getConfig from 'next/config';
+import Link from 'next/link';
+
+import { DropdownButton, DropdownMenu, StyledDropdown } from './StyledHeaderMenu';
+
 const { publicRuntimeConfig } = getConfig();
 
-const useOutsideClick = (callback) => {
-    const ref = React.useRef();
-  
-    React.useEffect(() => {
-      const handleClick = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setTimeout(() => {
-            callback();
-          });
-        }
-      };
-  
-      document.addEventListener('click', handleClick, true);
+const useOutsideClick = callback => {
+  const ref = React.useRef();
 
-      return () => {
-        document.removeEventListener('click', handleClick, true);
-      };
-    }, [ref]);
-  
-    return ref;
+  React.useEffect(() => {
+    const handleClick = event => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setTimeout(() => {
+          callback();
+        });
+      }
+    };
+
+    document.addEventListener('click', handleClick, true);
+
+    return () => {
+      document.removeEventListener('click', handleClick, true);
+    };
+  }, [ref]);
+
+  return ref;
 };
 
-const HeaderMenu = ({auth}) => {
+const HeaderMenu = ({ auth }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOutside = () => {
@@ -50,143 +54,64 @@ const HeaderMenu = ({auth}) => {
 
   return (
     <>
-    <Dropdown
-      open={open}
-      trigger={<a ref={ref} className="dropdown-btn" onClick={handleOpen}>{auth.user.username}</a>}
-      menu={[
-        <a className="settings" href="/settings">Settings</a>,
-        <hr />,
-        <a className="menuitem" href="/projects">Your projects</a>,
-        <a className="menuitem" href="/organizations">Your organizations</a>,
-        publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (<a className="menuitem" href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}>Your account</a>),
-        <hr />,
-        <a className="logout" onClick={auth.logout}>Sign out</a>
-      ]}
-    />
-    <style jsx>{`
-    .dropdown-btn {
-        display: flex;
-        align-items: center;
-        background-color: transparent;
-        color: ${color.white};
-        cursor: pointer;
-        padding-left: 10px;
-        @media ${bp.tinyUp} {
-          align-self: auto;
+     <Dropdown
+        open={open}
+        trigger={
+          <DropdownButton ref={ref} onClick={handleOpen}>
+            {auth.user.username}
+          </DropdownButton>
         }
-        height: 100%;
-        &::after {
-          background-position: center center;
-          background-repeat: no-repeat;
-          content: '';
-          display: inline-block;
-          transition: all 0.3s ease-in-out;
-          height: 10px;
-          width: 25px;
-          background-image: url('/static/images/profile-dropdown.svg');
-          background-size: 9px;
-        }
-    }
-    hr {
-        border: 1px solid ${color.blue};
-    }
-    a {
-        color: ${color.almostWhite};
-        &.settings {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          &::before {
-            background-position: center center;
-            background-repeat: no-repeat;
-            content: '';
-            display: block;
-            height: 35px;
-            transition: all 0.3s ease-in-out;
-            width: 35px;
-            color: ${color.white};
-            background-image: url('/static/images/cog.svg');
-            background-size: 18px;
-          }
-        }
-        &.menuitem {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          padding: 5px 10px;
-        }
-        &.logout {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          &::before {
-            background-position: center center;
-            background-repeat: no-repeat;
-            content: '';
-            display: block;
-            height: 35px;
-            transition: all 0.3s ease-in-out;
-            width: 35px;
-            background-image: url('/static/images/logout.svg');
-            background-size: 18px;
-          }
-        } 
-      }
-    `}</style>
+        menu={[
+          <Link key="settings" href="/settings" prefetch>
+            <a key="settings" className="settings">
+              Settings
+            </a>
+          </Link>,
+          <hr key="line" />,
+          <Link key="projects" href="/projects" prefetch>
+            <a key="projects" className="menuitem">
+              Your projects
+            </a>
+          </Link>,
+              <Link key="organizations" href="/organizations" prefetch>
+              <a key="organizations" className="menuitem">
+                Your organizations
+              </a>
+            </Link>,
+          publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
+            <Link href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`} passHref>
+              <a key="account" className="menuitem">
+                Your account
+              </a>
+            </Link>
+          ),
+          <hr key="lastline" />,
+          <a key="logout" className="logout" onClick={auth.logout}>
+            Sign out
+          </a>,
+        ]}
+      />
     </>
   );
 };
 
 const Dropdown = ({ open, trigger, menu }) => {
-    return (
+  return (
     <>
-      <div className="dropdown">
+      <StyledDropdown>
         {trigger}
         {open ? (
-          <ul className="menu">
+          <DropdownMenu>
             {menu.map((menuItem, index) => (
-              <li key={index} className="menu-item">{menuItem}</li>
+              <li key={index} className="menu-item">
+                {menuItem}
+              </li>
             ))}
-          </ul>
+          </DropdownMenu>
         ) : null}
-      </div>
-        <style jsx>{`
-        .dropdown {
-            border-left: 1px solid ${color.blue};
-            cursor: pointer;
-            padding: 10px 20px;
-        }
-        
-        .menu {
-            position: absolute;
-            z-index: 9;
-            list-style-type: none;
-            padding: 0;
-            right: 20px;
-            width: 200px;
-            background-color: ${color.lightBlue};
-            border: 2px solid ${color.blue};
-            border-radius: 8px;
-        }
-        .menu-item {
-            padding: 0px;
-            &:hover {
-                background-color: ${color.blue};
-            }
-        }
-    
-        .menu > li {
-            margin: 0px;
-        }
-        
-        .menu > ul {
-            padding: 0px;
-        }
-        
-    
-        `}</style>
+      </StyledDropdown>
     </>
-    );
-  };
+  );
+};
 
 export default HeaderMenu;

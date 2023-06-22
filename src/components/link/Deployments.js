@@ -3,21 +3,15 @@ import Link from 'next/link';
 export const getLinkData = (environmentSlug, projectSlug) => ({
   urlObject: {
     pathname: '/deployments',
-    query: { openshiftProjectName: environmentSlug }
+    query: { openshiftProjectName: environmentSlug },
   },
-  asPath: `/projects/${projectSlug}/${environmentSlug}/deployments`
+  asPath: `/projects/${projectSlug}/${environmentSlug}/deployments`,
 });
 
 /**
  * Links to the deployments page given the project name and the openshift project name.
  */
-const DeploymentsLink = ({
-  environmentSlug,
-  projectSlug,
-  children,
-  className = null,
-  prefetch = false
-}) => {
+const DeploymentsLink = ({ environmentSlug, projectSlug, children, className = '', prefetch = false }) => {
   const linkData = getLinkData(environmentSlug, projectSlug);
 
   return (

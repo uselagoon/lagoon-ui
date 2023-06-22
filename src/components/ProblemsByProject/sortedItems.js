@@ -1,11 +1,12 @@
-import React, {useState, useEffect, useMemo} from "react";
+import React, { useEffect, useMemo, useState } from 'react';
+
 import hash from 'object-hash';
 
 const useSortableData = (initialItems, initialConfig) => {
   const [sortConfig, setSortConfig] = React.useState(initialConfig);
   const [currentItems, setCurrentItems] = useState(initialItems);
 
-  const getClassNamesFor = (name) => {
+  const getClassNamesFor = name => {
     if (!sortConfig) return;
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
@@ -17,13 +18,13 @@ const useSortableData = (initialItems, initialConfig) => {
 
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
-        let aParsed, bParsed = '';
+        let aParsed,
+          bParsed = '';
 
         if (sortConfig.key === 'identifier') {
           aParsed = a[sortConfig.key].toString().toLowerCase().trim();
           bParsed = b[sortConfig.key].toString().toLowerCase().trim();
-        }
-        else {
+        } else {
           let aProblem = a[sortConfig.key];
           aParsed = aProblem.toString().toLowerCase().trim();
 
@@ -44,7 +45,7 @@ const useSortableData = (initialItems, initialConfig) => {
     setCurrentItems(sortedItems);
   }
 
-  const requestSort = (key) => {
+  const requestSort = key => {
     let direction = 'ascending';
 
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -57,7 +58,12 @@ const useSortableData = (initialItems, initialConfig) => {
     return { sortedItems: currentItems };
   };
 
-  return { sortedItems: currentItems, currentSortConfig: sortConfig, getClassNamesFor, requestSort };
+  return {
+    sortedItems: currentItems,
+    currentSortConfig: sortConfig,
+    getClassNamesFor,
+    requestSort,
+  };
 };
 
 export default useSortableData;

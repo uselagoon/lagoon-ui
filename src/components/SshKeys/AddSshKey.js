@@ -1,35 +1,34 @@
 import React, { useState } from 'react';
-import css from 'styled-jsx/css';
-import Button from 'components/Button';
 import { Mutation } from 'react-apollo';
+
+import Button from 'components/Button';
 import Me from 'lib/query/Me';
 import { bp, color, fontSize } from 'lib/variables';
-import AddSshKeyMutation from '../../lib/mutation/AddSshKey';
 import { none } from 'ramda';
+import css from 'styled-jsx/css';
 
-const AddSshKey = ({me: { id, email }}) => {
+import AddSshKeyMutation from '../../lib/mutation/AddSshKey';
 
-  const defaultValues = {sshKeyName: '', sshKey: ''};
+const AddSshKey = ({ me: { id, email } }) => {
+  const defaultValues = { sshKeyName: '', sshKey: '' };
   const [values, setValues] = useState(defaultValues);
 
   const handleChange = e => {
-    const {name, value} = e.target;
-    setValues({...values, [name]: value});
-  }
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
 
-  const regex = /\s*(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521)\s(\S+)/
+  const regex = /\s*(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521)\s(\S+)/;
   // First capture group is the type of the ssh key
   // Second capture group is the actual ssh key
   // Whitespace and comments are ignored
 
-  const isFormValid = values.sshKeyName !== '' && !values.sshKey.includes('\n') && values.sshKey.match(regex)
+  const isFormValid = values.sshKeyName !== '' && !values.sshKey.includes('\n') && values.sshKey.match(regex);
 
-  return(
+  return (
     <div className="addSshKey">
-
       <Mutation mutation={AddSshKeyMutation} refetchQueries={[{ query: Me }]}>
         {(addSshKey, { loading, called, error, data }) => {
-
           const addSshKeyHandler = () => {
             addSshKey({
               variables: {
@@ -39,10 +38,10 @@ const AddSshKey = ({me: { id, email }}) => {
                   keyType: values.sshKey.match(regex)[1].replace(/-/g, '_').toUpperCase(),
                   user: {
                     id,
-                    email
-                  }
-                }
-              }
+                    email,
+                  },
+                },
+              },
             });
             setValues(defaultValues);
           };
@@ -53,8 +52,7 @@ const AddSshKey = ({me: { id, email }}) => {
 
           return (
             <div className="addNew">
-
-              { error ? <div className="error">{error.message.replace('GraphQL error:', '').trim()}</div> : "" }
+              {error ? <div className="error">{error.message.replace('GraphQL error:', '').trim()}</div> : ''}
 
               <div>
                 <label htmlFor="sshKeyName">SSH Key Name</label>
@@ -71,17 +69,22 @@ const AddSshKey = ({me: { id, email }}) => {
               <div>
                 <label htmlFor="sshKey">SSH Key</label>
                 <textarea
-                  id='sshKey'
-                  name='sshKey'
+                  id="sshKey"
+                  name="sshKey"
                   className="addSshKeyInput"
                   type="text"
                   onChange={handleChange}
                   value={values.sshKey}
-                  placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"/>
+                  placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"
+                />
               </div>
-              <Button disabled={!isFormValid} action={addSshKeyHandler}>Add</Button>
+              <Button disabled={!isFormValid} action={addSshKeyHandler}>
+                Add
+              </Button>
               <div className="sshKeyError">
-                <span className={values.sshKey == "" || isFormValid ? 'fade' : 'fade-in'}>{values.sshKeyName == "" ? 'Please enter a SSH Key name' : 'The SSH Key entered is invalid'}</span>
+                <span className={values.sshKey == '' || isFormValid ? 'fade' : 'fade-in'}>
+                  {values.sshKeyName == '' ? 'Please enter a SSH Key name' : 'The SSH Key entered is invalid'}
+                </span>
               </div>
             </div>
           );
@@ -101,15 +104,15 @@ const AddSshKey = ({me: { id, email }}) => {
         }
         .fade {
           opacity: 0;
-          -webkit-transition: opacity .15s linear;
-          -o-transition: opacity .15s linear;
-          transition: opacity .15s linear;
+          -webkit-transition: opacity 0.15s linear;
+          -o-transition: opacity 0.15s linear;
+          transition: opacity 0.15s linear;
         }
         .fade-in {
           opacity: 1;
-          -webkit-transition: opacity .15s linear;
-          -o-transition: opacity .15s linear;
-          transition: opacity .15s linear;
+          -webkit-transition: opacity 0.15s linear;
+          -o-transition: opacity 0.15s linear;
+          transition: opacity 0.15s linear;
         }
         .sshKeyError {
           margin-top: 15px;

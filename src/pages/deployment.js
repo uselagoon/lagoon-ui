@@ -1,23 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
+import React, { useEffect, useRef } from 'react';
+
 import Head from 'next/head';
-import { Query } from 'react-apollo';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import DeploymentBreadcrumb from 'components/Breadcrumbs/Deployment';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Deployment from 'components/Deployment';
+import DeploymentSkeleton from 'components/Deployment/DeploymentSkeleton';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
+import DeploymentNotFound from 'components/errors/DeploymentNotFound';
+import EnvironmentNotFound from 'components/errors/EnvironmentNotFound';
 import MainLayout from 'layouts/MainLayout';
 import EnvironmentWithDeploymentQuery from 'lib/query/EnvironmentWithDeployment';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import DeploymentBreadcrumb from 'components/Breadcrumbs/Deployment';
-import NavTabs from 'components/NavTabs';
-import Deployment from 'components/Deployment';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import {
-  withEnvironmentRequired,
-  withDeploymentRequired
-} from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+
+import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
+import { DeploymentWrapper } from '../styles/pageStyles';
+import { useTourContext } from '../tours/TourContext';
 
 /**
  * Displays a deployment page, given the openshift project and deployment name.
@@ -26,125 +29,113 @@ export const PageDeployment = ({ router }) => {
   const logsContent = useRef(null);
   const logsTopRef = useRef(null);
   const logsEndRef = useRef(null);
-  const [showBottom, setShowBottom] = useState(true);
-  const [showTop, setShowTop] = useState(false);
-  const [hidden, setHidden] = useState("");
 
-  const scrollToTop = () => {
-    logsTopRef.current.scrollIntoView({ behavior: "smooth" });
-    setShowTop(!!showTop);
-    setShowBottom(!!showBottom);
-  };
+  const { continueTour } = useTourContext();
+  const { data, error, loading } = useQuery(EnvironmentWithDeploymentQuery, {
+    variables: {
+      openshiftProjectName: router.query.openshiftProjectName,
+      deploymentName: router.query.deploymentName,
+    },
+  });
 
-  const scrollToBottom = () => {
-    logsEndRef.current.scrollIntoView({ behavior: "smooth" });
-    setShowTop(!!showTop);
-    setShowBottom(!!showBottom);
-  };
-
-  const onScroll = () => {
-    const pageTop = document.documentElement.scrollTop <= 300;
-    const pageBottom = (document.body.scrollHeight - document.documentElement.scrollTop) - 100 <= document.documentElement.clientHeight;
-
-    if (hidden == "hidden") return;
-    if (pageTop) {
-      setShowTop(false);
-      setShowBottom(true);
+  useEffect(() => {
+    if (!loading && data?.environment) {
+      continueTour();
     }
-    if (pageBottom) {
-      setShowTop(true);
-      setShowBottom(false);
-    }
+  }, [loading]);
+
+  if (loading) {
+    const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];
+    const openshiftProjectName = router.query.openshiftProjectName;
+    const deploymentName = router.query.deploymentName;
+    return (
+      <>
+        <Head>
+          <title>{`${router.query.deploymentName} | Deployment`}</title>
+        </Head>
+        <MainLayout>
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+            <DeploymentBreadcrumb
+              deploymentSlug={deploymentName}
+              environmentSlug={openshiftProjectName}
+              projectSlug={projectSlug}
+            />
+          </Breadcrumbs>
+          <DeploymentWrapper>
+            <NavTabsSkeleton
+              activeTab="deployments"
+              projectName={projectSlug}
+              openshiftProjectName={openshiftProjectName}
+            />
+
+            <div className="content">
+              <DeploymentSkeleton />
+            </div>
+          </DeploymentWrapper>
+        </MainLayout>
+      </>
+    );
   }
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+  const environment = data?.environment;
+
+  if (!environment) {
+    return (
+      <EnvironmentNotFound
+        variables={{
+          openshiftProjectName: router.query.openshiftProjectName,
+        }}
+      />
+    );
+  }
+
+  if (!environment?.deployments.length) {
+    return (
+      <DeploymentNotFound
+        variables={{
+          deployName: router.query.deploymentName,
+        }}
+      />
+    );
+  }
+
+  const deployment = environment && environment.deployments[0];
 
   return (
     <>
       <Head>
         <title>{`${router.query.deploymentName} | Deployment`}</title>
       </Head>
-      <Query
-        query={EnvironmentWithDeploymentQuery}
-        variables={{
-          openshiftProjectName: router.query.openshiftProjectName,
-          deploymentName: router.query.deploymentName
-        }}
-      >
-        {R.compose(
-          withQueryLoading,
-          withQueryError,
-          withEnvironmentRequired,
-          withDeploymentRequired
-        )(({ data: { environment } }) => {
-          const deployment = environment && environment.deployments[0];
-          return (
-            <MainLayout>
-              <div ref={logsTopRef} />
-              <Breadcrumbs>
-                <ProjectBreadcrumb projectSlug={environment.project.name} />
-                <EnvironmentBreadcrumb
-                  environmentSlug={environment.openshiftProjectName}
-                  projectSlug={environment.project.name}
-                />
-                <DeploymentBreadcrumb
-                  deploymentSlug={deployment.name}
-                  environmentSlug={environment.openshiftProjectName}
-                  projectSlug={environment.project.name}
-                  />
-              </Breadcrumbs>
-              <div className="content-wrapper">
-                <NavTabs activeTab="deployments" environment={environment} />
-                <div ref={logsContent} className="content">
-                  <Deployment deployment={deployment} />
-                </div>
-              </div>
-              <div ref={logsEndRef} />
-              <style jsx>{`
-                .content-wrapper {
-                  @media ${bp.tabletUp} {
-                    display: flex;
-                    padding: 0;
-                  }
-                }
 
-                .content {
-                  width: 100%;
-                }
+      <MainLayout>
+        <div ref={logsTopRef} />
+        <Breadcrumbs>
+          <ProjectBreadcrumb projectSlug={environment.project.name} />
+          <EnvironmentBreadcrumb
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+          />
+          <DeploymentBreadcrumb
+            deploymentSlug={deployment.name}
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+          />
+        </Breadcrumbs>
 
-                .scroll-wrapper {
-                  position: fixed;
-                  bottom: 4em;
-                  right: 2em;
-                }
-                button.scroll {
-                  padding: 0.625rem;
-                  width: 52px;
-                  color: #fff;
-                  background: #3d3d3d;
-                  border-radius: 50%;
-                  border: none;
-                  cursor: pointer;
-                  line-height: 2rem;
-                  font-size: 2rem;
-                  opacity: 0;
-
-                  -webkit-transition: opacity 2s ease-in;
-                  -moz-transition: opacity 2s ease-in;
-                  -ms-transition: opacity 2s ease-in;
-                  -o-transition: opacity 2s ease-in;
-                  transition: opacity 2s ease-in;
-
-                  &.hidden {
-                    opacity: 0;
-                  }
-                  &.top, &.bottom {
-                    opacity: 1;
-                  }
-                }
-              `}</style>
-            </MainLayout>
-          )
-        })}
-      </Query>
+        <DeploymentWrapper>
+          <NavTabs activeTab="deployments" environment={environment} />
+          <div ref={logsContent} className="content">
+            <Deployment deployment={deployment} />
+          </div>
+        </DeploymentWrapper>
+        <div ref={logsEndRef} />
+      </MainLayout>
     </>
   );
 };

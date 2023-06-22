@@ -1,77 +1,99 @@
 import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
+
 import Head from 'next/head';
-import { Query } from 'react-apollo';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import Facts from 'components/Facts';
+import FactsSkeleton from 'components/Facts/FactsSkeleton';
+import NavTabs from 'components/NavTabs';
+import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
 import MainLayout from 'layouts/MainLayout';
 import EnvironmentWithFactsQuery from 'lib/query/EnvironmentWithFacts';
-import Breadcrumbs from 'components/Breadcrumbs';
-import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
-import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
-import NavTabs from 'components/NavTabs';
-import Facts from 'components/Facts';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withEnvironmentRequired } from 'lib/withDataRequired';
-import { bp, color } from 'lib/variables';
+
+import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
+import QueryError from '../components/errors/QueryError';
+import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 
 /**
  * Displays the facts page, given the name of an openshift project.
  */
-export const PageFacts = ({ router }) => (
-  <>
-    <Head>
-      <title>{`${router.query.openshiftProjectName} | Facts`}</title>
-    </Head>
-    <Query
-      query={EnvironmentWithFactsQuery}
-      variables={{ openshiftProjectName: router.query.openshiftProjectName }}
-    >
-      {R.compose(
-        withQueryLoading,
-        withQueryError,
-        withEnvironmentRequired
-      )(({ data: { environment } }) => {
+export const PageFacts = ({ router }) => {
+  const { data, error, loading } = useQuery(EnvironmentWithFactsQuery, {
+    variables: { openshiftProjectName: router.query.openshiftProjectName },
+  });
 
-        return (
-          <MainLayout>
+  if (loading) {
+    const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];
+    const openshiftProjectName = router.query.openshiftProjectName;
+    return (
+      <>
+        <Head>
+          <title>{`${router.query.openshiftProjectName} | Facts`}</title>
+        </Head>
+        <MainLayout>
             <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={environment.project.name} />
-              <EnvironmentBreadcrumb
-                environmentSlug={environment.openshiftProjectName}
-                projectSlug={environment.project.name}
-              />
+              <ProjectBreadcrumb projectSlug={projectSlug} />
+              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
             </Breadcrumbs>
-            <div className="content-wrapper">
-              <NavTabs activeTab="facts" environment={environment} />
+
+            <CommonWrapperWNotification>
+              <NavTabsSkeleton
+                activeTab="facts"
+                projectName={projectSlug}
+                openshiftProjectName={openshiftProjectName}
+              />
               <div className="content">
-                <Facts facts={environment.facts} />
+                <FactsSkeleton />
               </div>
-            </div>
-            <style jsx>{`
-              .content-wrapper {
-                @media ${bp.tabletUp} {
-                  display: flex;
-                  padding: 0;
-                }
-              }
+            </CommonWrapperWNotification>
+        </MainLayout>
+      </>
+    );
+  }
 
-              .content {
-                padding: 32px calc((100vw / 16) * 1);
-                width: 100%;
-              }
+  if (error) {
+    return <QueryError error={error} />;
+  }
 
-              .notification {
-                background-color: ${color.lightBlue};
-                color: ${color.white};
-                padding: 10px 20px;
-              }
-            `}</style>
-          </MainLayout>
-        );
-      })}
-    </Query>
-  </>
-);
+  const environment = data?.environment;
+
+  if (!environment) {
+    return (
+      <EnvironmentNotFound
+        variables={{
+          openshiftProjectName: router.query.openshiftProjectName,
+        }}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{`${router.query.openshiftProjectName} | Facts`}</title>
+      </Head>
+
+      <MainLayout>
+        <Breadcrumbs>
+          <ProjectBreadcrumb projectSlug={environment.project.name} />
+          <EnvironmentBreadcrumb
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+          />
+        </Breadcrumbs>
+        <CommonWrapperWNotification>
+          <NavTabs activeTab="facts" environment={environment} />
+          <div className="content">
+            <Facts facts={environment.facts} />
+          </div>
+        </CommonWrapperWNotification>
+      </MainLayout>
+    </>
+  );
+};
 
 export default withRouter(PageFacts);

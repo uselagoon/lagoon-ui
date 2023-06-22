@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactSelect from 'react-select';
-import withLogic from './logic';
+
+import { NewTaskWrapper, StyledNewTask } from './StyledAddTask';
+import Completed from './components/Completed';
 import DrushArchiveDump from './components/DrushArchiveDump';
-import DrushSqlDump from './components/DrushSqlDump';
 import DrushCacheClear from './components/DrushCacheClear';
 import DrushCron from './components/DrushCron';
 import DrushRsyncFiles from './components/DrushRsyncFiles';
+import DrushSqlDump from './components/DrushSqlDump';
 import DrushSqlSync from './components/DrushSqlSync';
 import DrushUserLogin from './components/DrushUserLogin';
 import Empty from './components/Empty';
-import Completed from './components/Completed';
 import Error from './components/Error';
 import InvokeRegisteredTask from './components/InvokeRegisteredTask';
-import { bp, color } from 'lib/variables';
+import withLogic from './logic';
 
 /**
  * Perform a task on the CLI environment.
@@ -24,9 +25,8 @@ const AddTask = ({
   setSelectedTask,
   onCompleted,
   onError,
-  options
+  options,
 }) => {
-
   const newTaskComponents = {
     DrushArchiveDump,
     DrushSqlDump,
@@ -38,17 +38,19 @@ const AddTask = ({
     Empty,
     Completed,
     Error,
-    InvokeRegisteredTask
+    InvokeRegisteredTask,
   };
 
   const NewTask = selectedTask
-    ? selectedTask.value ? newTaskComponents[selectedTask.value] : newTaskComponents[selectedTask]
+    ? selectedTask.value
+      ? newTaskComponents[selectedTask.value]
+      : newTaskComponents[selectedTask]
     : newTaskComponents[Empty];
 
   return (
     <React.Fragment>
-      <div className="newTaskWrapper">
-        <div className="newTask">
+      <NewTaskWrapper>
+        <StyledNewTask>
           <div className="selectTask">
             <ReactSelect
               aria-label="Task"
@@ -71,45 +73,8 @@ const AddTask = ({
               />
             </div>
           )}
-        </div>
-      </div>
-      <style jsx>
-        {`
-          .newTaskWrapper {
-            @media ${bp.wideUp} {
-              display: flex;
-            }
-            &::before {
-              @media ${bp.wideUp} {
-                content: '';
-                display: block;
-                flex-grow: 1;
-              }
-            }
-          }
-          .newTask {
-            background: ${color.white};
-            border: 1px solid ${color.lightestGrey};
-            border-radius: 3px;
-            box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-            display: flex;
-            flex-flow: column;
-            margin-bottom: 32px;
-            padding: 32px 20px;
-            width: 100%;
-            @media ${bp.tabletUp} {
-              margin-bottom: 0;
-            }
-            .selectTask {
-              flex-grow: 1;
-              min-width: 220px;
-            }
-            .taskForm {
-              margin-top: 20px;
-            }
-          }
-        `}
-      </style>
+        </StyledNewTask>
+      </NewTaskWrapper>
     </React.Fragment>
   );
 };

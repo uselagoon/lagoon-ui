@@ -2,9 +2,7 @@ import gql from 'graphql-tag';
 
 export default gql`
   query getEnvironment($openshiftProjectName: String!, $deploymentName: String!) {
-    environment: environmentByOpenshiftProjectName(
-      openshiftProjectName: $openshiftProjectName
-    ) {
+    environment: environmentByOpenshiftProjectName(openshiftProjectName: $openshiftProjectName) {
       openshiftProjectName
       project {
         name
