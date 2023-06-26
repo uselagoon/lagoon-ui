@@ -8,6 +8,9 @@ import ReactSelect from 'react-select';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
+import { StyledNotification, StyledNotificationWrapper } from "../SharedStyles";
+import { RoleSelect } from '../AddUserToGroup/Styles';
+
 
 const ADD_GROUP_PROJECT_MUTATION = gql`
   mutation addProjectToGroup($groupName: String!, $projectName: String!) {
@@ -34,21 +37,17 @@ const customStyles = {
  * Confirms the deletion of the specified name and type.
  */
 export const AddGroupToProject = ({
-  project,
-  inputValueEmail,
   projectName,
-  organizationId,
-  setInputValue,
   selectedProject,
   options,
   setSelectedProject,
-  onProceed,
   open,
   openModal,
-  closeModal
+  closeModal,
+  refresh
 }) => {
   return (
-    <React.Fragment>
+    <StyledNotificationWrapper>
       <div className="margins"><Button action={openModal}>
         Add Group
       </Button></div>
@@ -60,21 +59,21 @@ export const AddGroupToProject = ({
       >
         <React.Fragment>
         <Mutation mutation={ADD_GROUP_PROJECT_MUTATION}>
-          {(addGroupProject, {loading, error, data}) => {
+          {(addGroupProject, {_, error, data}) => {
             if (error) {
               return <div>{error.message}</div>;
             }
             if (data) {
-              window.location.reload();
+              refresh().then(closeModal);
             }
             return (
-              <div className="newMember">
+              <StyledNotification>
                 <h4>Add Group</h4>
                 <label>Group
-                <div className="selectRole">
+                <RoleSelect>
                   <ReactSelect
                     menuPortalTarget={document.body} 
-                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                    styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' })}}
                     aria-label="Group"
                     placeholder="Select a group..."
                     name="group"
@@ -83,7 +82,7 @@ export const AddGroupToProject = ({
                     options={options}
                     required
                   />
-                </div></label>
+                </RoleSelect></label>
                 <div>
                   <p></p>
                   <Button
@@ -101,33 +100,13 @@ export const AddGroupToProject = ({
                   >Add
                   </Button>
                 </div>
-              </div>
+              </StyledNotification>
             );
           }}
           </Mutation>
         </React.Fragment>
       </Modal>
-      <style jsx>{`
-        .form-box input, textarea{
-          display: block;
-          width: 100%;
-          border-width:1px;
-          border-style: solid;
-          border-radius: 4px;
-          min-height: 38px;
-          border-color: hsl(0,0%,80%);
-          font-family: 'source-code-pro',sans-serif;
-          font-size: 0.8125rem;
-          color: #5f6f7a;
-          padding: 8px;
-          box-sizing: border-box;
-        }
-        input[type="text"]:focus {
-          border: 2px solid ${color.linkBlue};
-          outline: none;
-        }
-      `}</style>
-    </React.Fragment>
+    </StyledNotificationWrapper>
   );
 };
 

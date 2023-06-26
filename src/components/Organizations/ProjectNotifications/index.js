@@ -1,35 +1,20 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-import css from 'styled-jsx/css';
-import Highlighter from 'react-highlight-words';
-// import MemberLink from 'components/link/Member';
-import Box from 'components/Box';
-import { bp, color, fontSize } from 'lib/variables';
-import Button from 'components/Button';
-import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
-import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
-const { className: boxClassName, styles: boxStyles } = css.resolve`
-  .box {
-    margin-bottom: 5px;
+import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
+import gql from 'graphql-tag';
 
-    .content {
-      padding: 5px;
-      @media ${bp.tinyUp} {
-        display: flex;
-      }
-    }
-  }
-`;
+import { StyledProjectNotifications } from './Styles';
 
 const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
-  mutation removeNotificationFromProject($notificationType: NotificationType!, $notificationName: String!, $projectName: String!) {
-    removeNotificationFromProject(input:{
-      notificationType: $notificationType
-      notificationName: $notificationName
-      project: $projectName
-    }){
+  mutation removeNotificationFromProject(
+    $notificationType: NotificationType!
+    $notificationName: String!
+    $projectName: String!
+  ) {
+    removeNotificationFromProject(
+      input: { notificationType: $notificationType, notificationName: $notificationName, project: $projectName }
+    ) {
       name
     }
   }
@@ -38,20 +23,16 @@ const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectNotifications = ({ notifications = [], organizationId, organizationName, projectName }) => {
+const ProjectNotifications = ({ notifications = [], organizationId, organizationName, projectName, refresh }) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredMembers = notifications.filter(key => {
-    const sortByName = key.name
-      .toLowerCase()
-      .includes(searchInput.toLowerCase());
-    return ['name', '__typename'].includes(key)
-      ? false
-      : (true && sortByName);
+    const sortByName = key.name.toLowerCase().includes(searchInput.toLowerCase());
+    return ['name', '__typename'].includes(key) ? false : true && sortByName;
   });
 
   return (
-    <>
+    <StyledProjectNotifications>
       <div className="header">
         <label>Notifications</label>
         <label></label>
@@ -66,206 +47,47 @@ const ProjectNotifications = ({ notifications = [], organizationId, organization
         />
       </div>
 
-    <div className="deployments">
       <div className="data-table">
-      {!notifications.length && <div className="data-none">No notifications</div>}
-      {(searchInput && !filteredMembers.length) && (
+        {!notifications.length && <div className="data-none">No notifications</div>}
+        {searchInput && !filteredMembers.length && (
           <div className="data-none">No notifications matching "{searchInput}"</div>
-      )}
-      {filteredMembers.map(notification => (
-      <div className="data-row" key={notification.name}>
-        <div className="name">
-          {notification.name}
-        </div>
-        <div className="name">
-          <label className={notification.type.toLowerCase() + "-group-label"}>{notification.type}</label>
-        </div>
-        <div className="remove">
-          <Mutation mutation={REMOVE_NOTIFICATION_FROM_PROJECT}>
-          {(removeNotificationFromProject, { loading, called, error, data }) => {
-            if (error) {
-              return <div>{error.message}</div>;
-            }
-            if (called) {
-              return <div>Success</div>;
-            }
-            return (
-              <RemoveProjectGroupConfirm
-                removeName={notification.name}
-                onRemove={() => {
-                  removeNotificationFromProject({
-                    variables: {
-                        projectName: projectName,
-                        notificationType: notification.type,
-                        notificationName: notification.name,
-                      }
-                  });
-                  window.location.reload();
-                }
-                }
-              />
-            );
-          }}
-          </Mutation>
-        </div>
+        )}
+        {filteredMembers.map(notification => (
+          <div className="data-row" key={notification.name}>
+            <div className="name">{notification.name}</div>
+            <div className="name">
+              <label className={notification.type.toLowerCase() + '-group-label'}>{notification.type}</label>
+            </div>
+            <div className="remove">
+              <Mutation mutation={REMOVE_NOTIFICATION_FROM_PROJECT}>
+                {(removeNotificationFromProject, { _, called, error }) => {
+                  if (error) {
+                    return <div>{error.message}</div>;
+                  }
+                  if (called) {
+                    return <div>Success</div>;
+                  }
+                  return (
+                    <RemoveProjectGroupConfirm
+                      removeName={notification.name}
+                      onRemove={() => {
+                        removeNotificationFromProject({
+                          variables: {
+                            projectName: projectName,
+                            notificationType: notification.type,
+                            notificationName: notification.name,
+                          },
+                        }).then(refresh);
+                      }}
+                    />
+                  );
+                }}
+              </Mutation>
+            </div>
+          </div>
+        ))}
       </div>
-      ))}
-      </div>
-    </div>
-      <style jsx>{`
-        .default-group-label {
-          color: ${color.white};
-          background-color: ${color.black};
-          margin-left: 10px;
-          padding: 5px 10px 5px 10px;
-          border-radius: 4px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-        }
-        .name {
-          padding: 8px 0 7px 0;
-          font-family: 'source-code-pro',sans-serif;
-          font-size: 0.8125rem;
-        }
-        .remove {
-          display:flex; justify-content:flex-end; width:100%; padding:0;
-        }
-        .data-table {
-          background-color: ${color.white};
-          border: 1px solid ${color.midGrey};
-          border-radius: 3px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-          .data-none {
-            border: 1px solid ${color.white};
-            border-bottom: 1px solid ${color.lightestGrey};
-            border-radius: 3px;
-            line-height: 1.5rem;
-            padding: 8px 0 7px 0;
-            text-align: center;
-          }
-          .data-row {
-            background-position: right 20px center;
-            background-repeat: no-repeat;
-            background-size: 18px 11px;
-            border: 1px solid ${color.white};
-            border-bottom: 1px solid ${color.lightestGrey};
-            border-radius: 0;
-            line-height: 1.5rem;
-            padding: 8px 0 7px 0;
-            @media ${bp.tinyUp} {
-              display: flex;
-              justify-content: space-between;
-              padding-right: 40px;
-            }
-            & > div {
-              padding-left: 20px;
-              @media ${bp.tinyUp} {
-                width: 50%;
-              }
-            }
-            &:hover {
-              border: 1px solid ${color.brightBlue};
-            }
-            &:first-child {
-              border-top-left-radius: 3px;
-              border-top-right-radius: 3px;
-            }
-            &:last-child {
-              border-bottom-left-radius: 3px;
-              border-bottom-right-radius: 3px;
-            }
-          }
-        }
-        .slack-group-label {
-          color: ${color.white};
-          background-color: ${color.blue};
-          margin-left: 5px;
-          padding: 2px 8px 2px 8px;
-          border-radius: 4px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-        }
-        .rocketchat-group-label {
-          color: ${color.white};
-          background-color: ${color.teal};
-          margin-left: 5px;
-          padding: 2px 8px 2px 8px;
-          border-radius: 4px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-        }
-        .email-group-label {
-          color: ${color.black};
-          background-color: ${color.lightGreen};
-          margin-left: 5px;
-          padding: 2px 8px 2px 8px;
-          border-radius: 4px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-        }
-        .microsoftteams-group-label {
-          color: ${color.black};
-          background-color: ${color.lightestBlue};
-          margin-left: 5px;
-          padding: 2px 8px 2px 8px;
-          border-radius: 4px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-        }
-        .webhook-group-label {
-          color: ${color.white};
-          background-color: ${color.lightRed};
-          margin-left: 5px;
-          padding: 2px 8px 2px 8px;
-          border-radius: 4px;
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-        }
-        .header {
-          @media ${bp.tinyUp} {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-            margin: 0 0 14px;
-            padding-right: 40px;
-          }
-          @media ${bp.smallOnly} {
-            flex-wrap: wrap;
-          }
-          @media ${bp.tabletUp} {
-            margin-top: 40px;
-          }
-          .searchInput {
-            background: url('/static/images/search.png') 12px center no-repeat
-              ${color.white};
-            background-size: 14px;
-            border: 1px solid hsl(0,0%,80%);
-            border-radius: 4px;
-            height: 40px;
-            padding: 0 12px 0 34px;
-            transition: border 0.5s ease;
-            @media ${bp.smallOnly} {
-              margin-bottom: 20px;
-              order: -1;
-              width: 100%;
-            }
-            @media ${bp.tabletUp} {
-              width: 30%;
-            }
-            &::placeholder {
-              color: ${color.grey};
-            }
-            &:focus {
-              border: 1px solid ${color.brightBlue};
-              outline: none;
-            }
-          }
-          label {
-            display: none;
-            padding-left: 20px;
-            width: 50%;
-            @media ${bp.tinyUp} {
-              display: block;
-            }
-          }
-        }
-      `}</style>
-      {boxStyles}
-    </>
+    </StyledProjectNotifications>
   );
 };
 

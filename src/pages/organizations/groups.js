@@ -1,114 +1,109 @@
 import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
+
 import Head from 'next/head';
-import getConfig from 'next/config';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
-import OrgNavTabs from 'components/Organizations/NavTabs';
 import Groups from 'components/Organizations/Groups';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withOrganizationRequired } from 'lib/withDataRequired';
-import { bp } from 'lib/variables';
+import GroupsSkeleton from 'components/Organizations/Groups/GroupsSkeleton';
+import { GroupsWrapper } from 'components/Organizations/Groups/Styles';
+import OrgNavTabs from 'components/Organizations/NavTabs';
+import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
+import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
+import MainLayout from 'layouts/MainLayout';
+import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+
+import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
+
 import NewGroup from '../../components/Organizations/NewGroup';
+import QueryError from '../../components/errors/QueryError';
 
 /**
  * Displays the groups page, given the openshift project name.
  */
-export const PageGroups = ({ router }) => (
-  <>
-    <Query
-      query={OrganizationByIDQuery}
-      variables={{ id: parseInt(router.query.organizationSlug, 10) }}
-    >
-      {R.compose(
-        withQueryLoading,
-        withQueryError,
-        withOrganizationRequired
-      )(({ data: { organization } }) => {
-        return (
-          <>
-            <Head>
-              <title>{`${organization.name} | Organization`}</title>
-            </Head>
-            <MainLayout>
-              <Breadcrumbs>
-                <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
-              </Breadcrumbs>
-              <div className="content-wrapper">
-                <OrgNavTabs activeTab="groups" organization={organization} />
-                <div className="groups-wrapper">
-                  <div className="details">
-                    <div className="field-wrapper environmentType">
-                      <NewGroup organizationId={organization.id}
-                      />
-                    </div>
-                  </div>
-                  <Groups groups={organization.groups} organizationId={router.query.organizationSlug} organizationName={organization.name} />
+export const PageGroups = ({ router }) => {
+  const { data, error, loading, refetch } = useQuery(OrganizationByIDQuery, {
+    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  });
+
+  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+
+  if (loading) {
+    return (
+      <>
+        <Head>
+          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+        </Head>
+
+        <MainLayout>
+          <Breadcrumbs>
+            <OrganizationBreadcrumb
+              organizationSlug={router.query.organizationSlug}
+              organizationName={router.query.organizationName || ''}
+            />
+          </Breadcrumbs>
+
+          <OrganizationsWrapper>
+            <OrgNavTabsSkeleton activeTab="groups" />
+
+            <GroupsWrapper>
+              <div className="details">
+                <div className="field-wrapper environmentType">
+                  <NewGroup disabled organizationId={''} />
                 </div>
               </div>
-              <style jsx>{`
-                .content-wrapper {
-                  @media ${bp.tabletUp} {
-                    display: flex;
-                    justify-content: space-between;
-                  }
-                }
-                .groups-wrapper {
-                  flex-grow: 1;
-                  padding: 40px calc((100vw / 16) * 1);
-                }
-                .content {
-                  padding: 32px calc((100vw / 16) * 1);
-                  width: 100%;
-                }
+              <GroupsSkeleton />
+            </GroupsWrapper>
+          </OrganizationsWrapper>
+        </MainLayout>
+      </>
+    );
+  }
 
-                .details {
-                  width: 100%;
-                  @media ${bp.xs_smallUp} {
-                    display: flex;
-                    flex-wrap: wrap;
-                    min-width: 100%;
-                    width: 100%;
-                  }
-    
-                  .field-wrapper {
-                    &::before {
-                      left: calc(((-100vw / 16) * 1.5) - 28px);
-                    }
-                    margin: 0px;
-                    @media ${bp.xs_smallUp} {
-                      min-width: 50%;
-                      position: relative;
-                      width: 50%;
-                    }
-                    @media ${bp.wideUp} {
-                      min-width: 33.33%;
-                      width: 33.33%;
-                    }
-                    @media ${bp.extraWideUp} {
-                      min-width: 25%;
-                      width: 25%;
-                    }
-    
-                    &.environmentType {
-                      &::before {
-                        background-size: 20px 20px;
-                      }
-                    }
-                  }
-                }
-              `}</style>
-            </MainLayout>
-          </>
-        );
-      })}
-    </Query>
-  </>
-);
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+  const organization = data.organization;
+
+  if (!organization) {
+    return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
+  }
+
+  // disable adding new groups if non-default groups count is 10
+  const ableToAddGroup = organization.groups.filter(group => group.type !== 'project-default-group').length < 10;
+
+  return (
+    <>
+      <Head>
+        <title>{`${organization.name} | Organization`}</title>
+      </Head>
+      <MainLayout>
+        <Breadcrumbs>
+          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+        </Breadcrumbs>
+        <OrganizationsWrapper>
+          <OrgNavTabs activeTab="groups" organization={organization} />
+
+          <GroupsWrapper>
+            <div className="details">
+              <div className="field-wrapper environmentType">
+                <NewGroup disabled={!ableToAddGroup} organizationId={organization.id} onGroupAdded={handleRefetch} />
+              </div>
+            </div>
+            <Groups
+              onGroupDeleted={handleRefetch}
+              groups={organization.groups}
+              organizationId={router.query.organizationSlug}
+              organizationName={organization.name}
+            />
+          </GroupsWrapper>
+        </OrganizationsWrapper>
+      </MainLayout>
+    </>
+  );
+};
 
 export default withRouter(PageGroups);

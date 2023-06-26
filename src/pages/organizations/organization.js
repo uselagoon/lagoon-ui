@@ -1,62 +1,86 @@
 import React from 'react';
-import * as R from 'ramda';
-import { withRouter } from 'next/router';
+
 import Head from 'next/head';
-import { Query } from 'react-apollo';
-import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgNavTabs from 'components/Organizations/NavTabs';
-import Groups from 'components/Organizations/Groups';
-import Projects from 'components/Organizations/Projects';
+import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import Organization from 'components/Organizations/Organization';
-import withQueryLoading from 'lib/withQueryLoading';
-import withQueryError from 'lib/withQueryError';
-import { withOrganizationRequired } from 'lib/withDataRequired';
-import { bp, color } from 'lib/variables';
+import OrganizationSkeleton from 'components/Organizations/Organization/OrganizationSkeleton';
+import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
+import MainLayout from 'layouts/MainLayout';
+import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+
+import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
+import QueryError from '../../components/errors/QueryError';
 
 /**
  * Displays a organization page, given the organization id.
  */
-export const PageOrganization = ({ router }) => (
-  <Query
-    query={OrganizationByIDQuery}
-    variables={{ id: parseInt(router.query.organizationSlug, 10) }}
-  >
-    {R.compose(
-      withQueryLoading,
-      withQueryError,
-      withOrganizationRequired
-    )(({ data: { organization } }) => {
-      return (
-        <>
-          <Head>
-            <title>{`${organization.name} | Organization`}</title>
-          </Head>
-          <MainLayout>
-            <Breadcrumbs>
-              <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
-            </Breadcrumbs>
-            <div className="content-wrapper">
-              <OrgNavTabs activeTab="overview" organization={organization} />
-              <div className="content">
-                <Organization organization={organization} />
-              </div>
+export const PageOrganization = ({ router }) => {
+  const { data, error, loading } = useQuery(OrganizationByIDQuery, {
+    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  });
+
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>
+            {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+          </title>
+        </Head>
+
+        <MainLayout>
+          <Breadcrumbs>
+            <OrganizationBreadcrumb
+              organizationSlug={router.query.organizationSlug}
+              organizationName={router.query.organizationName || ''}
+            />
+          </Breadcrumbs>
+
+          <OrganizationsWrapper>
+            <OrgNavTabsSkeleton activeTab="overview" />
+            <div className="content">
+              <OrganizationSkeleton />
             </div>
-            <style jsx>{`
-              .content-wrapper {
-                @media ${bp.tabletUp} {
-                  display: flex;
-                  padding: 0;
-                }
-              }
-            `}</style>
-          </MainLayout>
-        </>
-        );
-      })}
-    </Query>
-);
+          </OrganizationsWrapper>
+        </MainLayout>
+      </>
+    );
+  }
+
+  if (error) {
+    return <QueryError error={error} />;
+  }
+
+  const organization = data.organization;
+
+  if (!organization) {
+    return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{`${organization.name} | Organization`}</title>
+      </Head>
+      <MainLayout>
+        <Breadcrumbs>
+          <OrganizationBreadcrumb organizationSlug={data.organization.id} organizationName={data.organization.name} />
+        </Breadcrumbs>
+        <OrganizationsWrapper>
+          <OrgNavTabs activeTab="overview" organization={data.organization} />
+          <div className="content">
+            <Organization organization={organization} />
+          </div>
+        </OrganizationsWrapper>
+      </MainLayout>
+    </>
+  );
+};
 
 export default withRouter(PageOrganization);

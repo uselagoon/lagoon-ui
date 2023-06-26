@@ -15,7 +15,7 @@ const OrganizationLink = ({
   organizationSlug,
   organizationName,
   children,
-  className = null,
+  className = '',
   prefetch = false
 }) => {
   const linkData = getLinkData(organizationSlug, organizationName);
