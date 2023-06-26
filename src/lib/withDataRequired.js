@@ -2,7 +2,6 @@ import DeploymentNotFound from 'components/errors/DeploymentNotFound';
 import EnvironmentNotFound from 'components/errors/EnvironmentNotFound';
 import ProblemNotFound from 'components/errors/ProblemNotFound';
 import ProjectNotFound from 'components/errors/ProjectNotFound';
-
 import OrganizationNotFound from 'components/errors/OrganizationNotFound';
 import GroupNotFound from 'components/errors/GroupNotFound';
 import TaskNotFound from 'components/errors/TaskNotFound';
@@ -28,7 +27,6 @@ export const withDeploymentRequired = renderWhile(
   ({ data: { environment } }) => !environment.deployments.length,
   DeploymentNotFound
 );
-
 
 export const withProjectRequired = renderWhile(
   ({ data }) => noProjectData(data),
