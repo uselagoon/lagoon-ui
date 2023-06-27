@@ -11,7 +11,7 @@ const ProjectNavTabs = ({ activeTab, project }) => {
     <StyledProjectNavTabs className="navigation">
       <li
         className={`overview ${
-          activeTab == "overview" ? "active" : ""
+          activeTab === "overview" ? "active" : ""
         } deployLink`}
       >
         <ProjectLink projectSlug={project.name}>Overview</ProjectLink>
@@ -19,7 +19,7 @@ const ProjectNavTabs = ({ activeTab, project }) => {
       {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && 
         <li
           className={`variables ${
-            activeTab == "variables" ? "active" : ""
+            activeTab === "variables" ? "active" : ""
           } deployLink`}
         >
           <ProjectVariablesLink
@@ -33,7 +33,7 @@ const ProjectNavTabs = ({ activeTab, project }) => {
       {project.deployTargetConfigs.length > 0 && (
         <li
           className={`deployTargets ${
-            activeTab == "deployTargets" ? "active" : ""
+            activeTab === "deployTargets" ? "active" : ""
           } deployLink`}
         >
           <DeployTargetsLink

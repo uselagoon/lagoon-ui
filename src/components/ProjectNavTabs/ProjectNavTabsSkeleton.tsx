@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import ProjectChildPageLink from "components/link/ProjectChildPageLink";
 import ProjectLink from "components/link/Project";
+import DeployTargetsLink from "components/link/DeployTargets";
 import { StyledProjectNavTabs } from "./StyledProjectNavTabs";
 import Skeleton from "react-loading-skeleton";
 
@@ -32,9 +33,23 @@ const ProjectNavTabsSkeleton: FC<ProjectNavTabsSkeleton> = ({
         >
           Variables
         </ProjectChildPageLink>
-      </li>
 
-    <Skeleton style={{ height: "50px", lineHeight: "0.5" }} />
+      </li>
+      { activeTab == "deployTargets" && (
+          <li
+              className={`deployTargets ${
+                  activeTab == "deployTargets" ? "active" : ""
+              } deployLink`}
+          >
+              <DeployTargetsLink
+                  projectSlug={projectName}
+              >
+                  Deploy Targets
+              </DeployTargetsLink>
+          </li>
+      )}
+
+    {/*<Skeleton style={{ height: "50px", lineHeight: "0.5" }} />*/}
   </StyledProjectNavTabs>
 );
 

@@ -36,7 +36,7 @@ export const PageDeployTargets = ({ router }) => {
           <ProjectWrapper>
             <ThemedSkeletonWrapper>
               <ProjectNavTabsSkeleton
-                activeTab="overview"
+                activeTab="deployTargets"
                 projectName={router.query.projectName}
               />
               <DeployTargetSkeleton />
