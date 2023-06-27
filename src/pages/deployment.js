@@ -49,7 +49,7 @@ export const PageDeployment = ({ router }) => {
     const openshiftProjectName = router.query.openshiftProjectName;
     const deploymentName = router.query.deploymentName;
     return (
-      <ThemedSkeletonWrapper>
+      <>
         <Head>
           <title>{`${router.query.deploymentName} | Deployment`}</title>
         </Head>
@@ -75,7 +75,7 @@ export const PageDeployment = ({ router }) => {
             </div>
           </DeploymentWrapper>
         </MainLayout>
-      </ThemedSkeletonWrapper>
+      </>
     );
   }
 

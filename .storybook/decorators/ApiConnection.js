@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
+import getConfig from 'next/config';
+
+import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 import { action } from '@storybook/addon-actions';
-import typeDefs from 'api/dist/typeDefs';
-import introspectionQueryResultData from 'api/src/fragmentTypes.json';
-import mocks, { seed } from 'api/src/mocks';
-import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
-import { SchemaLink } from 'apollo-link-schema';
-import { addMockFunctionsToSchema, makeExecutableSchema } from 'graphql-tools';
-import { AuthContext } from 'lib/Authenticator';
+import { createHttpLink } from 'apollo-link-http';
 
-const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData,
-});
+import { AuthContext } from '../../src/lib/Authenticator';
 
-// Make a GraphQL schema without resolvers.
-const schema = makeExecutableSchema({ typeDefs });
+const publicRuntimeConfig = getConfig();
 
-// Add mocks, modifies schema in place.
-addMockFunctionsToSchema({ schema, mocks });
-
-// Create a mocked Apollo client for the ApolloProvider.
-const client = new ApolloClient({
-  cache: new InMemoryCache({ fragmentMatcher }),
-  link: new SchemaLink({ schema }),
-});
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+};
 
 // Mock the src/lib/Authenticator and lib/withLocalAuth.
 const auth = {
@@ -35,17 +32,44 @@ const auth = {
   provider: 'local-auth',
   providerData: {},
   user: {
-    username: 'admin',
+    username: 'Admin',
   },
 };
 
-export default storyFn => {
-  // Generate consistent results by seeding the mocks generator before each
-  // story.
-  seed();
+const withMockAuth = Story => {
+  const [_controller] = useState(new AbortController());
+
+  // Create a mocked Apollo client for the ApolloProvider.
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: createHttpLink({
+      uri: publicRuntimeConfig.GRAPHQL_API,
+      fetchOptions: {
+        signal: _controller.signal,
+      },
+    }),
+    defaultOptions,
+  });
+
+  /* 
+    Every time the decorator unmounts, all previous gql requests get cancelled,
+    makes it easy to handle mocked infinite loading queries that do not get re-executed.
+
+  */
+  useEffect(() => {
+    return () => {
+      _controller.abort();
+    };
+  }, []);
   return (
     <AuthContext.Provider value={auth}>
-      <ApolloProvider client={client}>{storyFn()}</ApolloProvider>
+      <ApolloProvider client={client}>
+        <ApolloHooksProvider client={client}>
+          <Story />
+        </ApolloHooksProvider>
+      </ApolloProvider>
     </AuthContext.Provider>
   );
 };
+
+export default withMockAuth;

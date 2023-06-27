@@ -13,6 +13,8 @@ const config = {
 };
 
 const Honeycomb = ({ data, filter }) => {
+  console.log(data);
+  
   const { projectsProblems } = data || [];
   const [projects, setProjects] = useState(projects);
   const [projectInView, setProjectInView] = useState(false);

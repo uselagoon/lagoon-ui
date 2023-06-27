@@ -20,7 +20,6 @@ import * as R from 'ramda';
 
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -69,7 +68,7 @@ export const PageBackups = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Backups`}</title>
         </Head>
         <MainLayout>
-          <ThemedSkeletonWrapper>
+          <>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
               <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
@@ -92,7 +91,7 @@ export const PageBackups = ({ router }) => {
                 />
               </div>
             </CommonWrapperWNotification>
-          </ThemedSkeletonWrapper>
+          </>
         </MainLayout>
       </>
     );

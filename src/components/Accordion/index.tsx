@@ -1,9 +1,9 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, Fragment, ReactNode, useState } from 'react';
 
 import { StyledAccordion } from './StyledAccordion';
 
 interface AccordionProps {
-  children: JSX.Element[];
+  children: ReactNode;
   defaultValue?: boolean;
   minified?: boolean;
   className?: string;
@@ -26,6 +26,7 @@ const Accordion: FC<AccordionProps> = ({
   return (
     <StyledAccordion className={className}>
       <div
+        data-testid="storybook-accordion"
         className={`accordion-heading ${accordionType} ${colCountClass ? colCountClass : ''}`}
         onClick={() => {
           setVisibility(!visibility);

@@ -18,7 +18,6 @@ import EnvironmentWithTaskQuery from 'lib/query/EnvironmentWithTask';
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
 import TaskNotFound from '../components/errors/TaskNotFound';
-import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
 import { TaskWrapper } from '../styles/pageStyles';
 import { useTourContext } from '../tours/TourContext';
 
@@ -49,7 +48,6 @@ export const PageTask = ({ router }) => {
           <title>{`${router.query.taskName} | Task`}</title>
         </Head>
         <MainLayout>
-          <ThemedSkeletonWrapper>
             <Breadcrumbs>
               <ProjectBreadcrumb projectSlug={projectSlug} />
               <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
@@ -65,7 +63,6 @@ export const PageTask = ({ router }) => {
                 <TaskSkeleton />
               </div>
             </TaskWrapper>
-          </ThemedSkeletonWrapper>
         </MainLayout>
       </>
     );
@@ -119,7 +116,7 @@ export const PageTask = ({ router }) => {
         <TaskWrapper>
           <NavTabs activeTab="tasks" environment={environment} />
           <div className="content">
-            <Task task={environment.tasks[0]} />
+            <Task task={environment.tasks[0] || undefined} />
           </div>
         </TaskWrapper>
       </MainLayout>

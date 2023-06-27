@@ -3,7 +3,6 @@ import Skeleton from 'react-loading-skeleton';
 
 import Box from 'components/Box';
 
-import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { ProjectsHeader, ProjectsPage, SearchInput, StyledProject } from './StyledProjects';
 
 const ProjectsSkeleton = () => {
@@ -23,7 +22,6 @@ const ProjectsSkeleton = () => {
 
   return (
     <ProjectsPage>
-      <ThemedSkeletonWrapper>
         <ProjectsHeader>
           <label>
             <Skeleton width={'20%'} />
@@ -32,7 +30,6 @@ const ProjectsSkeleton = () => {
           <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
         </ProjectsHeader>
         <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
-      </ThemedSkeletonWrapper>
     </ProjectsPage>
   );
 };

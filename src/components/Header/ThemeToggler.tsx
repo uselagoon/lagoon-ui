@@ -16,7 +16,7 @@ const ThemeToggler = () => {
   const { theme, toggleTheme } = useContext(AppContext) as unknown as AppContextType;
 
   return (
-    <StyledToggler onClick={toggleTheme}>
+    <StyledToggler onClick={toggleTheme} className="themeToggler">
       <Image
         alt="toggle"
         height={35}

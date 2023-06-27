@@ -9,7 +9,6 @@ import Me from 'lib/query/Me';
 import SshKeys from '../../components/SshKeys';
 import AddSshKey from '../../components/SshKeys/AddSshKey';
 import QueryError from '../../components/errors/QueryError';
-import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { CommonWrapper } from '../../styles/commonPageStyles';
 
 /**
@@ -31,7 +30,6 @@ const SettingsPage = () => {
         <title>Settings</title>
       </Head>
       <MainLayout>
-        <ThemedSkeletonWrapper>
           <CommonWrapper>
             <h2>SSH keys</h2>
             <div className="content">
@@ -39,7 +37,6 @@ const SettingsPage = () => {
               <AddSshKey me={data?.me || {}} />
             </div>
           </CommonWrapper>
-        </ThemedSkeletonWrapper>
       </MainLayout>
     </>
   );

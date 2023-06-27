@@ -8,13 +8,11 @@ export const StyledDefaultContent = styled.div`
   .rawdata {
     max-width: 100%;
     .rawdata-elements {
-      border: 1px solid ${color.white};
-      border-bottom: 1px solid ${color.lightestGrey};
+      border: 1px solid ${color.lightestGrey};
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
-      background-color: ${color.white};
-      border: 1px solid ${color.lightestGrey};
+      background-color: ${props => props.theme.backgrounds.table};
       width: 100%;
       @media ${bp.wideUp} {
         display: flex;

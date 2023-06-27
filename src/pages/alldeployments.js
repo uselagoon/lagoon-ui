@@ -33,7 +33,6 @@ const AllDeployments = () => {
   if (error) {
     return <QueryError error={error} />;
   }
-
   return (
     <>
       <Head>

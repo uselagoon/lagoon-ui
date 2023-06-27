@@ -1,11 +1,12 @@
 import { bp, color, fontSize } from 'lib/variables';
+import React from 'react';
 import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
 
 /**
  * Applies styles globally to any component nested inside it.
  */
 
-const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
+export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
@@ -167,6 +168,38 @@ textarea {
   line-height: 1.25rem;
 }
 
+button{
+  &.hover-state {
+    all: unset;
+    display: inline-block;
+    margin-right: 1rem;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    cursor:pointer;
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      transition: all 0.2s ease-in-out;
+      transition-duration: 0.75s;
+      opacity: 0;
+    }
+    &::after {
+      left: 0;
+      background-color: ${color.linkBlue};
+    }
+    &:hover {
+      &::before,
+      &::after {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+  }
+}
 label {
   color: ${props => props.theme.texts.label};
   font-family: 'source-code-pro', sans-serif;
@@ -266,4 +299,4 @@ main{
 }
 `;
 
-export default GlobalStyles;
+export default React.memo(() => <GlobalStyles />);;
