@@ -1,4 +1,4 @@
-import { bp, color } from 'lib/variables';
+import { bp } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledNewTask = styled.div`

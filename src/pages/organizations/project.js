@@ -45,7 +45,7 @@ export const PageGroupProject = ({ router }) => {
 
         <MainLayout>
           <Breadcrumbs>
-            <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} />
+            <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} loading />
             <ProjectsBreadcrumb organizationSlug={router.query.organizationSlug} />
             <OrgProjectBreadcrumb
               projectSlug={router.query.projectName}

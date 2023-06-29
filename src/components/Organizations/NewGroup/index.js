@@ -6,7 +6,7 @@ import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
 import withLogic from 'components/Organizations/NewGroup/logic';
 import gql from 'graphql-tag';
-import { bp, color } from 'lib/variables';
+import { color } from 'lib/variables';
 import styled from 'styled-components';
 import { StyledNotification } from '../SharedStyles';
 
@@ -104,9 +104,7 @@ export const NewGroup = ({
               }
               if (data) {
                 clearModalText();
-                onGroupAdded().then(() => {
-                  closeModal();
-                });
+                onGroupAdded().then(closeModal);
               }
               return (
                 <StyledNotification>

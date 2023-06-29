@@ -48,7 +48,7 @@ export const PageGroup = ({ router }) => {
               organizationName={router.query.organizationName || ''}
             />
             <GroupsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" />
-            <GroupBreadcrumb groupSlug="" organizationSlug={router.query.organizationSlug} organizationName="" />
+            <GroupBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" loading />
           </Breadcrumbs>
 
           <OrganizationsWrapper>
