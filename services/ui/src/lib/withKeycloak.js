@@ -50,11 +50,12 @@ const withKeycloak = (App, initialAuth) => (props) => {
     return <App {...props} auth={auth} />
   }
   else {
-    return <>
-      <StatusLayout>
-        <h1 suppressHydrationWarning>Checking authentication...</h1>
-      </StatusLayout>
-    </>
+    // return <>
+    //   <StatusLayout>
+    //     <h1 suppressHydrationWarning>Checking authentication...</h1>
+    //   </StatusLayout>
+    // </>
+      return <App {...props} auth={auth} />
   }
 };
 
