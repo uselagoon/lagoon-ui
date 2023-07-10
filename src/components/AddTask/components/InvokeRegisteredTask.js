@@ -117,7 +117,7 @@ const InvokeRegisteredTask = ({
                           <input
                             type="text"
                             name="{d.name}"
-                            value={R.prop(d.name, advancedTaskArguments)}
+                            value="{d.defaultValue}"
                             onChange={event => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
