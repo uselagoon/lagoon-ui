@@ -51,6 +51,9 @@ const InvokeRegisteredTask = ({
     taskArgumentsExist = true;
     argumentVariablesHaveValues = selectedTask.arguments.reduce((p, c) => {
       let hasArg = advancedTaskArguments[c['name']];
+      if (!advancedTaskArguments[c['optional']]) {
+        hasArg = !advancedTaskArguments[c['optional']];
+      }
       return hasArg && p;
     }, true);
   }
@@ -117,7 +120,7 @@ const InvokeRegisteredTask = ({
                           <input
                             type="text"
                             name="{d.name}"
-                            value="{d.defaultValue}"
+                            value={d.defaultValue}
                             onChange={event => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
