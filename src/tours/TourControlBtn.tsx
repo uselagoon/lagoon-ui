@@ -13,7 +13,7 @@ import { TourContext, TourContextType } from './TourContext';
  */
 
 const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
-const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
+const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'true';
 
 const TourControlBtn = () => {
   let skipped,
