@@ -11,6 +11,7 @@ import { color } from 'lib/variables';
 export const DeleteConfirm = ({
   deleteType,
   deleteName,
+  icon,
   onDelete,
   inputValue,
   setInputValue,
@@ -18,9 +19,10 @@ export const DeleteConfirm = ({
   openModal,
   closeModal,
 }) => {
+  
   return (
     <React.Fragment>
-      <Button variant="red" action={openModal}>
+      <Button variant="red" icon={icon} action={openModal}>
         Delete
       </Button>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm delete ${deleteType}`}>

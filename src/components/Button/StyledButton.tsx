@@ -37,6 +37,22 @@ const sharedStyles = css`
       background-color: ${color.red};
     }
   }
+  &.btn-white {
+    // background-color: ${color.white};
+    background: transparent;
+    color:  ${color.blue};
+    border: 1px solid ${color.blue};
+    &.btn--disabled {
+      background-color: ${color.lightestGrey};
+      &:hover,
+      &:active {
+        background-color: ${color.lightestGrey};
+      }
+    }
+    &:hover {
+      background-color: ${color.lightestGrey};
+    }
+  }
   &.btn-green {
     display: inline-block;
     background-color: ${color.green};
@@ -63,6 +79,33 @@ const sharedStyles = css`
       border-radius: 3px;
       border-color: hsl(0, 0%, 85%);
     }
+  }
+
+  &.icon {
+    display: flex;
+    padding: 0 10px;
+  }
+
+  i {
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  i.icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  i.view {
+    background-image: url('/static/images/view.svg');
+    width: 48px;
+    height: 36px;
+  }
+
+  i.bin {
+    background-image: url('/static/images/bin.svg');
+    width: 48px;
+    height: 36px;
   }
 `;
 

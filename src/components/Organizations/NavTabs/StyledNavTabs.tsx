@@ -78,6 +78,17 @@ export const StyledNavigation = styled.ul`
       }
     }
 
+    &.users {
+      &::before {
+        background-image: url('/static/images/users.svg');
+        background-size: 21px 16px;
+      }
+
+      &.active::before {
+        background-image: url('/static/images/users-active.svg');
+      }
+    }
+
     &.projects {
       &::before {
         background-image: url('/static/images/tasks.svg');

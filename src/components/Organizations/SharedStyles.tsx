@@ -176,9 +176,9 @@ export const sharedTableStyles = css`
         justify-content: space-between;
         padding-right: 40px;
       }
-      & > div {
-        padding-left: 20px;
-      }
+      // & > div {
+      //   padding-left: 20px;
+      // }
       &:hover {
         border: 1px solid ${color.brightBlue};
       }
