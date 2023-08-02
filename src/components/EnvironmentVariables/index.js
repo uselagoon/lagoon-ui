@@ -33,7 +33,7 @@ const hashValue = (value) => {
   return hashedVal;
 };
 
-const EnvironmentVariables = ({ environment }) => {
+const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
   let displayVars = environment.envVariables;
   let displayProjectVars = environment.project.envVariables;
   let initValueState = new Array(displayVars.length).fill(false);
@@ -114,6 +114,7 @@ const EnvironmentVariables = ({ environment }) => {
               varValues={displayVars}
               varTarget="Environment"
               noVars="Add"
+              refresh={onVariableAdded}
             />
           </div>
           <hr style={{ margin: "30px 0" }} />
@@ -126,12 +127,18 @@ const EnvironmentVariables = ({ environment }) => {
           <div className="header">
             <label>Environment Variables</label>
             <div className="header-buttons">
-              <AddVariable
-                varProject={environment.project.name}
-                varEnvironment={environment.name}
-                varValues={displayVars}
-                varTarget="Environment"
-              />
+              <Button
+                  onClick={() => setOpenPrjVars(false)}
+                  style={{ all: "unset" }}
+              >
+                <AddVariable
+                  varProject={environment.project.name}
+                  varEnvironment={environment.name}
+                  varValues={displayVars}
+                  varTarget="Environment"
+                  refresh={onVariableAdded}
+                />
+              </Button>
               <Button
                 onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
@@ -272,8 +279,8 @@ const EnvironmentVariables = ({ environment }) => {
                                 );
                               }
 
-                              if (called) {
-                                return <div>Delete queued</div>;
+                              if (data) {
+                                onVariableAdded().then(closeModal);
                               }
 
                               const deleteEnvVariableByNameHandler = () => {
@@ -286,9 +293,7 @@ const EnvironmentVariables = ({ environment }) => {
                                     },
                                   },
                                 });
-                                setTimeout(() => {
-                                  location.reload();
-                                }, 2000);
+
                               };
 
                               return (

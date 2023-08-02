@@ -28,6 +28,7 @@ export const AddVariable = ({
   varValues,
   varTarget,
   noVars,
+  refresh,
   inputName,
   setInputName,
   inputValue,
@@ -37,6 +38,7 @@ export const AddVariable = ({
   open,
   openModal,
   closeModal,
+  setClear
 }) => {
   return (
     <NewVariable>
@@ -103,7 +105,7 @@ export const AddVariable = ({
               cancel
             </a>
             <Mutation mutation={addOrUpdateEnvVariableMutation}>
-              {(addOrUpdateEnvVariableByName, { called, error }) => {
+              {(addOrUpdateEnvVariableByName, { called, error, data }) => {
                 let updateVar = varValues.map((varName) => {
                   return varName.name;
                 });
@@ -118,6 +120,10 @@ export const AddVariable = ({
                       variable.
                     </div>
                   );
+                }
+
+                if (data) {
+                  refresh().then(setClear).then(closeModal);
                 }
 
                 if (updateVar && called) {
@@ -138,9 +144,6 @@ export const AddVariable = ({
                       },
                     },
                   });
-                  setTimeout(() => {
-                    location.reload();
-                  }, 2000);
                 };
 
                 return (

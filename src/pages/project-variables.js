@@ -19,9 +19,11 @@ import ProjectNavTabsSkeleton from "components/ProjectNavTabs/ProjectNavTabsSkel
  * Displays a list of all variables for a project.
  */
 export const PageProjectVariables = ({ router }) => {
-  const { data, error, loading } = useQuery(ProjectByNameWithEnvVarsQuery, {
+  const { data, error, loading, refetch } = useQuery(ProjectByNameWithEnvVarsQuery, {
     variables: { name: router.query.projectName },
   });
+
+  const handleRefetch = async () => await refetch({ name: router.query.projectName });
 
   if (error) {
     return <QueryError error={error} />;
@@ -82,7 +84,7 @@ export const PageProjectVariables = ({ router }) => {
                 A deployment is required to apply any changes to Project
                 variables.
               </div>
-              <ProjectVariables project={project} />
+              <ProjectVariables project={project} onVariableAdded={handleRefetch} />
             </div>
           </VariableWrapper>
         </ProjectWrapper>

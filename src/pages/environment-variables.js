@@ -20,12 +20,14 @@ import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
  * Displays the variables page, given the name of a project.
  */
 export const PageEnvironmentVariables = ({ router }) => {
-  const { data, error, loading } = useQuery(
+  const { data, error, loading, refetch } = useQuery(
     EnvironmentByOpenshiftProjectNameWithEnvVarsQuery,
     {
       variables: { openshiftProjectName: router.query.openshiftProjectName },
     }
   );
+
+  const handleRefetch = async () => await refetch({ openshiftProjectName: router.query.openshiftProjectName });
 
   if (loading) {
     const projectSlug = router.asPath.match(/projects\/([^/]+)/)?.[1];
@@ -99,7 +101,7 @@ export const PageEnvironmentVariables = ({ router }) => {
               A deployment is required to apply any changes to Environment
               variables.
             </div>
-            <EnvironmentVariables environment={environment} />
+            <EnvironmentVariables environment={environment} onVariableAdded={handleRefetch} />
           </div>
         </VariableWrapper>
       </MainLayout>

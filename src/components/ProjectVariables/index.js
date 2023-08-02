@@ -30,7 +30,7 @@ const hashValue = (value) => {
   return hashedVal;
 };
 
-const ProjectVariables = ({ project }) => {
+const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   let displayVars = project.envVariables;
   let initValueState = new Array(displayVars.length).fill(false);
 
@@ -77,6 +77,7 @@ const ProjectVariables = ({ project }) => {
               varProject={project.name}
               varValues={displayVars}
               varTarget="Project"
+              refresh={onVariableAdded}
             />
           </div>
           <hr style={{ margin: "30px 0" }} />
@@ -90,11 +91,17 @@ const ProjectVariables = ({ project }) => {
           <div className="header">
             <label>Project Variables</label>
             <div className="header-buttons">
-              <AddVariable
-                varProject={project.name}
-                varValues={displayVars}
-                varTarget="Project"
-              />
+              <Button
+                  onClick={() => setOpenPrjVars(false)}
+                  style={{ all: "unset" }}
+              >
+                <AddVariable
+                  varProject={project.name}
+                  varValues={displayVars}
+                  varTarget="Project"
+                  refresh={onVariableAdded}
+                />
+              </Button>
               <Button
                 onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
@@ -238,8 +245,8 @@ const ProjectVariables = ({ project }) => {
                                 );
                               }
 
-                              if (called) {
-                                return <div>Delete queued</div>;
+                              if (data) {
+                                onVariableAdded().then(closeModal)
                               }
 
                               const deleteEnvVariableByNameHandler = () => {
@@ -251,9 +258,7 @@ const ProjectVariables = ({ project }) => {
                                     },
                                   },
                                 });
-                                setTimeout(() => {
-                                  location.reload();
-                                }, 2000);
+
                               };
 
                               return (
