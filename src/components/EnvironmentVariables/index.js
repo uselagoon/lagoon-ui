@@ -10,6 +10,7 @@ import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
+import withLogic from 'components/DeleteConfirm/logic';
 import {
   StyledEnvironmentVariableDetails,
   StyledProjectVariableTable,
@@ -18,7 +19,6 @@ import {
 import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
-import deleteVariable from "../../static/images/delete.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
 
 /**
@@ -43,6 +43,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
   const [prjValueState, setPrjValueState] = useState(initProjectValueState);
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
+  const [updateVarValue, setUpdateVarValue ] = useState('');
+  const [updateVarName, setUpdateVarName ] = useState('');
+  const [updateVarScope, setUpdateVarScope ] = useState('');
 
   const [
     getEnvVarValues,
@@ -103,6 +106,12 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
     setPrjValueState(initProjectValueState);
   };
 
+  const setUpdateValue = (rowValue, rowName, rowScope) => {
+    setUpdateVarValue(rowValue);
+    setUpdateVarName(rowName)
+    setUpdateVarScope(rowScope)
+  }
+
   return (
     <StyledEnvironmentVariableDetails className="details">
       {environment.envVariables.length == 0 ? (
@@ -128,7 +137,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
             <label>Environment Variables</label>
             <div className="header-buttons">
               <Button
-                  onClick={() => setOpenPrjVars(false)}
+                  onClick={() => setOpenEnvVars(false)}
                   style={{ all: "unset" }}
               >
                 <AddVariable
@@ -166,9 +175,6 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                     <label>Value</label>
                   </div>
                 </Collapse>
-                <div className="delete">
-                  <label>Delete</label>
-                </div>
               </div>
               <div className="data-table">
                 {displayVars.map((envVar, index) => {
@@ -263,6 +269,26 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         )}
+                        <Collapse in={openEnvVars}>
+                        <div className="varUpdate">
+                          <Button
+                            onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
+                            style={{ all: 'unset'}}
+                          >
+                            <AddVariable
+                                varProject={environment.project.name}
+                                varEnvironment={environment.name}
+                                varValues={displayVars}
+                                varTarget="Environment"
+                                varName={updateVarName}
+                                varValue={updateVarValue}
+                                varScope={updateVarScope}
+                                refresh={onVariableAdded}
+                                icon="edit"
+                            />
+                          </Button>
+                        </div>
+                        </Collapse>
                         <div className="varDelete">
                           <Mutation mutation={DeleteEnvVariableMutation}>
                             {(
@@ -300,8 +326,8 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                                 <DeleteConfirm
                                   deleteType="variable"
                                   deleteName={envVar.name}
-                                  deleteFormat="svg"
-                                  deleteImg={deleteVariable}
+                                  icon="bin"
+                                  loading={loading}
                                   onDelete={() =>
                                     deleteEnvVariableByNameHandler()
                                   }
@@ -489,4 +515,4 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
   );
 };
 
-export default EnvironmentVariables;
+export default withLogic(EnvironmentVariables);

@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Modal from "components/Modal";
-import Button from "react-bootstrap/Button";
+import ButtonBootstrap from "react-bootstrap/Button";
+import Button from 'components/Button'
 import ReactSelect from "react-select";
 import { Mutation } from "react-apollo";
 import withLogic from "components/AddVariable/logic";
@@ -28,7 +29,11 @@ export const AddVariable = ({
   varValues,
   varTarget,
   noVars,
+  varName,
+  varValue,
+  varScope,
   refresh,
+  icon,
   inputName,
   setInputName,
   inputValue,
@@ -38,15 +43,33 @@ export const AddVariable = ({
   open,
   openModal,
   closeModal,
-  setClear
+  setClear,
 }) => {
+  const [updateName, setUpdateName] = useState(varName);
+  const [updateValue, setUpdateValue] = useState(varValue);
+  const [updateScope, setUpdateScope] = useState(varScope);
+  const handleUpdateName = (event) => {setUpdateName(event.target.value)};
+  const handleUpdateValue = (event) => {setUpdateValue(event.target.value)};
+  useEffect(() => {
+    setUpdateValue(varValue);
+    setUpdateName(varName);
+    setUpdateScope(varScope);
+  }, [varValue, varName, varScope]);
+
   return (
-    <NewVariable>
-      <Button onClick={openModal}>
-        {
-          noVars? "Add" : "Add/Update"
-        }
-      </Button>
+      <NewVariable>
+      {
+        icon ?
+            <Button variant='white' icon={icon} action={openModal}>
+              Update
+            </Button>
+          :
+          <ButtonBootstrap onClick={openModal}>
+            {
+              noVars || !updateName ? "Add" : "Update"
+            }
+          </ButtonBootstrap>
+      }
       <Modal
         isOpen={open}
         onRequestClose={closeModal}
@@ -57,7 +80,7 @@ export const AddVariable = ({
           <div className="variable-target">
             <span className="variable-target">
               {
-                noVars? `Add ${varTarget} Variable` : `Add/Update ${varTarget} Variable`
+                noVars || !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`
               }
             </span>
           </div>
@@ -69,9 +92,9 @@ export const AddVariable = ({
                 aria-label="Scope"
                 placeholder="Select a variable scope"
                 name="results"
-                value={scopeOptions.find((o) => o.value === inputScope)}
-                onChange={(selectedOption) =>
-                  setInputScope(selectedOption.value)
+                value={varScope ? scopeOptions.find((o) => o.value === updateScope.toUpperCase()) : scopeOptions.find((o) => o.value === inputScope)}
+                onChange={varScope ? (selectedOption) => setUpdateScope(selectedOption.value)
+                    : (selectedOption) => setInputScope(selectedOption.value)
                 }
                 options={scopeOptions}
                 required
@@ -85,8 +108,9 @@ export const AddVariable = ({
               name="varName"
               className="addVarnameInput"
               type="text"
-              value={inputName}
-              onChange={setInputName}
+              value={varName ? updateName : inputName}
+              onChange={varName ? handleUpdateName : setInputName}
+              readOnly={!!varName}
             />
           </div>
           <div className="var-modal">
@@ -96,8 +120,8 @@ export const AddVariable = ({
               name="varValue"
               className="addVarValueInput"
               type="text"
-              value={inputValue}
-              onChange={setInputValue}
+              value={varValue ? updateValue : inputValue}
+              onChange={varValue ? handleUpdateValue : setInputValue}
             />
           </div>
           <div className="form-input add-var-btn">
@@ -109,9 +133,7 @@ export const AddVariable = ({
                 let updateVar = varValues.map((varName) => {
                   return varName.name;
                 });
-
                 updateVar = updateVar.includes(inputName);
-
                 if (error) {
                   console.error(error);
                   return (
@@ -126,7 +148,7 @@ export const AddVariable = ({
                   refresh().then(setClear).then(closeModal);
                 }
 
-                if (updateVar && called) {
+                if (updateVar && called || updateName && called ) {
                   return <div>Updating variable</div>;
                 } else if (called) {
                   return <div>Adding variable</div>;
@@ -136,9 +158,9 @@ export const AddVariable = ({
                   addOrUpdateEnvVariableByName({
                     variables: {
                       input: {
-                        name: inputName,
-                        value: inputValue,
-                        scope: inputScope,
+                        name: updateName ? updateName : inputName,
+                        value: updateValue ? updateValue : inputValue,
+                        scope: updateScope ? updateScope.toUpperCase() : inputScope,
                         project: varProject,
                         environment: varEnvironment,
                       },
@@ -147,20 +169,22 @@ export const AddVariable = ({
                 };
 
                 return (
-                  <Button
-                    disabled={
-                      inputName == "" || inputValue == "" || inputScope == ""
+                  <ButtonBootstrap
+                    disabled={ updateName ?
+                      updateName === "" || updateValue === "" || updateScope === ""
+                        :
+                      inputName === "" || inputValue === "" || inputScope === ""
                     }
                     onClick={addOrUpdateEnvVariableHandler}
                   >
                     {varTarget == "Environment"
-                      ? updateVar
+                      ? updateVar || varName
                         ? "Update environment variable"
                         : "Add environment variable"
-                      : updateVar
+                      : updateVar || varName
                       ? "Update project variable"
                       : "Add project variable"}
-                  </Button>
+                  </ButtonBootstrap>
                 );
               }}
             </Mutation>

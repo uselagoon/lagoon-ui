@@ -175,6 +175,7 @@ export const StyledVariableTable = styled.div`
   }
 
   .values-present.table-header {
+    width: 80%;
     @media ${bp.tinyUp} {
       margin: 0 0 14px;
     }
@@ -190,7 +191,7 @@ export const StyledVariableTable = styled.div`
     div.value,
     div.delete {
       display: none;
-      width: 30%;
+      width: 33%;
       @media ${bp.tinyUp} {
         display: block;
         text-align: left;
@@ -263,8 +264,13 @@ export const StyledVariableTable = styled.div`
     & .varValue {
       width: 32.5%;
     }
+    & .varUpdate {
+        display: flex;
+        padding: 0;
+        width: 10%;
+    }
     & .varDelete {
-      width: 5%;
+      width: 10%;
     }
   }
 
@@ -300,10 +306,10 @@ export const StyledVariableTable = styled.div`
       }
     }
     & .varScope {
-      width: 40%;
+      width: 30%;
     }
     & .varDelete {
-      width: 5%;
+      width: 10%;
     }
 
     &.skeleton {
@@ -377,7 +383,7 @@ export const StyledProjectVariableTable = styled.div`
     div.scope,
     div.value {
       display: none;
-      width: 30%;
+      width: 33%;
       @media ${bp.tinyUp} {
         display: block;
         text-align: left;

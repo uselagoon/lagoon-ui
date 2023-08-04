@@ -9,6 +9,7 @@ import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
+import withLogic from 'components/DeleteConfirm/logic';
 import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
@@ -36,6 +37,9 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
 
   const [valueState, setValueState] = useState(initValueState);
   const [openPrjVars, setOpenPrjVars] = useState(false);
+  const [updateVarValue, setUpdateVarValue ] = useState('');
+  const [updateVarName, setUpdateVarName ] = useState('');
+  const [updateVarScope, setUpdateVarScope ] = useState('');
 
   const [
     getPrjEnvVarValues,
@@ -67,6 +71,12 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
     setOpenPrjVars(!openPrjVars);
     setValueState(initValueState);
   };
+
+  const setUpdateValue = (rowValue, rowName, rowScope) => {
+    setUpdateVarValue(rowValue);
+    setUpdateVarName(rowName)
+    setUpdateVarScope(rowScope)
+  }
 
   return (
     <StyledProjectVariablesDetails className="details">
@@ -129,9 +139,6 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                     <label>Value</label>
                   </div>
                 </Collapse>
-                <div className="delete">
-                  <label>Delete</label>
-                </div>
               </div>
               <div className="data-table">
                 {displayVars.map((projEnvVar, index) => {
@@ -229,6 +236,25 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         )}
+                        <Collapse in={openPrjVars}>
+                          <div className="varUpdate">
+                            <Button
+                                onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
+                                style={{ all: 'unset'}}
+                            >
+                              <AddVariable
+                                  varProject={project.name}
+                                  varValues={displayVars}
+                                  varTarget="Project"
+                                  varName={updateVarName}
+                                  varValue={updateVarValue}
+                                  varScope={updateVarScope}
+                                  refresh={onVariableAdded}
+                                  icon="edit"
+                              />
+                            </Button>
+                          </div>
+                        </Collapse>
                         <div className="varDelete">
                           <Mutation mutation={DeleteEnvVariableMutation}>
                             {(
@@ -265,8 +291,8 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                 <DeleteConfirm
                                   deleteType="variable"
                                   deleteName={projEnvVar.name}
-                                  deleteFormat="svg"
-                                  deleteImg={deleteVariable}
+                                  icon="bin"
+                                  loading={loading}
                                   onDelete={() =>
                                     deleteEnvVariableByNameHandler()
                                   }
@@ -288,4 +314,4 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   );
 };
 
-export default ProjectVariables;
+export default withLogic(ProjectVariables);

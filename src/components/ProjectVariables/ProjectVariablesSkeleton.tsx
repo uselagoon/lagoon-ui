@@ -28,7 +28,7 @@ const ProjectVariablesSkeleton = () => {
       <div className="header">
         <label>Project Variables</label>
         <div className="header-buttons">
-          <Button>Add/Update</Button>
+          <Button>Add</Button>
           <Button>Show values</Button>
         </div>
       </div>

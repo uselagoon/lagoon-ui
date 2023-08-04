@@ -2,7 +2,6 @@ import React from 'react';
 
 import Button from 'components/Button';
 import withLogic from 'components/DeleteConfirm/logic';
-import Image from "next/image";
 import Modal from 'components/Modal';
 import { color } from 'lib/variables';
 
@@ -13,8 +12,8 @@ export const DeleteConfirm = ({
   deleteType,
   deleteName,
   onDelete,
-  deleteFormat,
-  deleteImg,
+  icon,
+  loading,
   inputValue,
   setInputValue,
   open,
@@ -24,15 +23,10 @@ export const DeleteConfirm = ({
   return (
     <React.Fragment>
       {
-        deleteFormat == "svg" ?
-        <div className="deleteConfirmImg">
-          <span onClick={() => openModal()}>
-            <Image
-              src={deleteImg}
-              alt=""
-            />
-          </span>
-        </div>
+        icon ?
+        <Button variant='red' icon={icon} action={openModal}>
+          Delete
+        </Button>
         : 
         <Button variant='red' action={openModal}>
           Delete
@@ -57,7 +51,7 @@ export const DeleteConfirm = ({
               cancel
             </button>
             <Button disabled={inputValue !== deleteName} action={onDelete} variant="red">
-              Delete
+              {loading ? 'Deleting...' : 'Delete'}
             </Button>
           </div>
         </React.Fragment>

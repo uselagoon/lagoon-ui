@@ -35,7 +35,7 @@ export const PageEnvironmentVariables = ({ router }) => {
     return (
       <>
         <Head>
-          <title>{`${router.query.projectName} | Environment Variables`}</title>
+          <title>{`${openshiftProjectName} | Environment Variables`}</title>
         </Head>
         <MainLayout>
           <Breadcrumbs>

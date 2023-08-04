@@ -39,7 +39,7 @@ const EnvironmentVariablesSkeleton = () => {
       <div className="header">
         <label>Environment Variables</label>
         <div className="header-buttons">
-          <Button>Add/Update</Button>
+          <Button>Add</Button>
           <Button>Show values</Button>
         </div>
       </div>
