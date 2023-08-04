@@ -17,14 +17,14 @@ jobs:
     steps:
       -
         name: Checkout PR
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:
           fetch-depth: "0"
           ref: ${{ github.event.pull_request.head.sha }}
       -
         name: Checkout Branch or Tag
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: ${{ github.event_name != 'pull_request' }}
         with:
           fetch-depth: "0"
@@ -54,7 +54,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
           images: |
@@ -73,31 +73,45 @@ jobs:
             type=ref,event=branch
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
       -
         name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Login to GHCR
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Build and push
-        uses: docker/build-push-action@v2
+        name: Build and push amd64
+        uses: docker/build-push-action@v4
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           build-args: |
-            "LAGOON_VERSION=${{ env.VERSION }}"
+            "LAGOON_VERSION=${{ env.LAGOON_VERSION }}"
+            "UI_VERSION=${{ env.UI_VERSION }}"
+            "BUILD=${{ env.BUILD }}"
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      -
+        name: Build and push arm64
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/arm64
+          build-args: |
+            "LAGOON_VERSION=${{ env.LAGOON_VERSION }}"
+            "UI_VERSION=${{ env.UI_VERSION }}"
             "BUILD=${{ env.BUILD }}"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
