@@ -284,7 +284,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     },
                                   },
                                 });
-
+                                closeModal();
                               };
 
                               return (

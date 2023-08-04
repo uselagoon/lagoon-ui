@@ -319,7 +319,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                                     },
                                   },
                                 });
-
+                                closeModal();
                               };
 
                               return (
