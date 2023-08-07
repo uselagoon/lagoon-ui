@@ -21,7 +21,7 @@ const OrgNavTabs = ({ activeTab, organization }) => (
         Groups
       </OrgGroupsLink>
     </li>
-        <li className={`users ${activeTab == 'users' ? 'active' : ''} navLink`}>
+    <li className={`users ${activeTab == 'users' ? 'active' : ''} navLink`}>
       <OrgUsersLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
         Users
       </OrgUsersLink>

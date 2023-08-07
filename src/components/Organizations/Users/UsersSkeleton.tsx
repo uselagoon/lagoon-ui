@@ -6,8 +6,8 @@ import { StyledUsers } from './Styles';
 const UsersSkeleton = () => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const groupSkeleton = (
-    <div className="data-row">
+  const groupSkeleton = (index: number) => (
+    <div key={`groupSkeleton-${index}`} className="data-row">
       <div className="user">
         <Skeleton />
       </div>
@@ -20,7 +20,9 @@ const UsersSkeleton = () => {
         <label></label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>
-      <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => groupSkeleton)}</div>
+      <div className="data-table">
+        {[...Array<undefined>(numberOfFields)].map((_, index) => groupSkeleton(index))}
+      </div>
     </StyledUsers>
   );
 };

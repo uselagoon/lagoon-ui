@@ -14,36 +14,38 @@ interface NavSkeletonProps {
   organization: IOrganization;
 }
 
-const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
-  <StyledNavigation className="navigation">
-    <li className={`overview ${activeTab == 'overview' ? 'active' : ''} navLink`}>
-      <OrganizationLink organizationName={''} organizationSlug={''} className="navLink">
-        Overview
-      </OrganizationLink>
-    </li>
+const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => {
+  const organization = { id: 0, name: ""}
 
-    <li className={`groups ${activeTab == 'groups' ? 'active' : ''} navLink`}>
-      <OrgGroupsLink organizationSlug={''} organizationName={''} className="navLink">
-        Groups
-      </OrgGroupsLink>
-    </li>
-    <li className={`users ${activeTab == 'users' ? 'active' : ''} navLink`}>
-      <OrgUsersLink organizationSlug={''} organizationName={''} className="navLink">
-        Users
-      </OrgUsersLink>
-    </li>
-
-    <li className={`projects ${activeTab == 'projects' ? 'active' : ''} navLink`}>
-      <OrgProjectsLink organizationSlug={''} organizationName={''} className="navLink">
-        Projects
-      </OrgProjectsLink>
-    </li>
-    <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} navLink`}>
-      <OrgNotificationsLink organizationSlug={''} organizationName={''} className="navLink">
-        Notifications
-      </OrgNotificationsLink>
-    </li>
-  </StyledNavigation>
-);
+  return (
+    <StyledNavigation className="navigation">
+      <li className={`overview ${activeTab == 'overview' ? 'active' : ''} navLink`}>
+        <OrganizationLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+          Overview
+        </OrganizationLink>
+      </li>
+      <li className={`groups ${activeTab == 'groups' ? 'active' : ''} navLink`}>
+        <OrgGroupsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+          Groups
+        </OrgGroupsLink>
+      </li>
+      <li className={`users ${activeTab == 'users' ? 'active' : ''} navLink`}>
+        <OrgUsersLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+          Users
+        </OrgUsersLink>
+      </li>
+      <li className={`projects ${activeTab == 'projects' ? 'active' : ''} navLink`}>
+        <OrgProjectsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+          Projects
+        </OrgProjectsLink>
+      </li>
+      <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} navLink`}>
+        <OrgNotificationsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+          Notifications
+        </OrgNotificationsLink>
+      </li>
+    </StyledNavigation>
+  )
+};
 
 export default OrgNavTabsSkeleton;

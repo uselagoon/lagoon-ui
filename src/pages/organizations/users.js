@@ -28,15 +28,17 @@ export const PageUsers = ({ router }) => {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const handleRefetch = async () =>
+    await refetch({ id: parseInt(router.query.organizationSlug, 10) });
 
   if (loading) {
     return (
       <>
         <Head>
-          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+          {router.query.organizationName
+            ? `${router.query.organizationName} | Organization`
+            : 'Organization'}
         </Head>
-
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
@@ -44,11 +46,10 @@ export const PageUsers = ({ router }) => {
               organizationName={router.query.organizationName || ''}
             />
           </Breadcrumbs>
-
           <OrganizationsWrapper>
             <OrgNavTabsSkeleton activeTab="users" />
             <UsersWrapper>
-              <UsersSkeleton/>
+              <UsersSkeleton />
             </UsersWrapper>
           </OrganizationsWrapper>
         </MainLayout>
@@ -63,10 +64,6 @@ export const PageUsers = ({ router }) => {
   const organization = data.organization;
   const users = data.organization.groups.map((group) => group.members.map((member) => member.user));
   const allUsers = users.flat();
-
-  if (!organization) {
-    return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
-  }
 
   return (
     <>
@@ -95,3 +92,4 @@ export const PageUsers = ({ router }) => {
 };
 
 export default withRouter(PageUsers);
+

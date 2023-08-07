@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 
-import {User} from 'components/Organizations/User';
+import User from 'components/Organizations/User';
 import UserSkeleton from 'components/Organizations/User/UserSkeleton';
 import {UserWrapper} from 'components/Organizations/User/Styles';
 
@@ -94,14 +94,16 @@ export const PageUser = ({ router }) => {
         </Breadcrumbs>
 
         <OrganizationsWrapper>
-          <OrgNavTabs activeTab="users" organization={organization} />
+          {organization && (
+            <OrgNavTabs activeTab="users" organization={organization?.organization} />
+          )}
           <UserWrapper>
-            {/* <User
+            <User
               organization={organization}
               organizationId={router.query.organizationSlug}
               organizationName={organization.name}
-              user={user}
-            /> */}
+              user={user?.user}
+            />
           </UserWrapper>
         </OrganizationsWrapper>
       </MainLayout>

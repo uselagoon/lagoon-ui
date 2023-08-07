@@ -102,6 +102,12 @@ const sharedStyles = css`
     height: 36px;
   }
 
+  i.edit {
+    background-image: url('/static/images/edit.svg');
+    width: 48px;
+    height: 36px;
+  }
+
   i.bin {
     background-image: url('/static/images/bin.svg');
     width: 48px;

@@ -25,23 +25,7 @@ export const StyledUser = styled.section`
     text-align: center;
     display: inline-block;
   }
-  .firstName {
-    font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
-    color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
-    width: 10%;
-    font-weight: normal;
-  }
-  .lastName {
-    font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
-    color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
-    width: 10%;
-    font-weight: normal;
-  }
-  .email {
+  .group-name {
     font-family: 'source-code-pro', sans-serif;
     font-size: 0.8125rem;
     padding: 5px 10px 5px 10px;
@@ -49,7 +33,23 @@ export const StyledUser = styled.section`
     width: 30%;
     font-weight: normal;
   }
-  .view {
+  .roles {
+    font-family: 'source-code-pro', sans-serif;
+    font-size: 0.8125rem;
+    padding: 5px 10px 5px 10px;
+    color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
+    width: 50%;
+    font-weight: normal;
+  }
+  .project-name {
+    font-family: 'source-code-pro', sans-serif;
+    font-size: 0.8125rem;
+    padding: 5px 10px 5px 10px;
+    color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
+    width: 80%;
+    font-weight: normal;
+  }
+  .edit {
     display: flex;
     justify-content: flex-end;
     padding: 0;
