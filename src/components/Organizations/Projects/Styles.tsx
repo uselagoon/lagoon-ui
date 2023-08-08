@@ -9,6 +9,11 @@ export const StyledOrgProjects = styled.div`
   padding-inline: 12px;
   display: flex;
   flex-direction: column;
+  .edit{
+    svg {
+        color: #4578e6;
+      }
+  }
   .remove {
     display: flex;
     justify-content: flex-end;

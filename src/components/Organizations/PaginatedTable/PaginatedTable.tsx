@@ -183,7 +183,7 @@ const PaginatedTable: FC<Props> = ({ data = [], columns, withSorter, emptyText,l
   return (
     <StyledTable>
       <Filters>
-        {labelText ? <span style={{marginRight:"auto"}}>{labelText}</span> : "" }
+        {labelText ? <span className='labelText'>{labelText}</span> : "" }
         {withSorter ? <select onChange={handleSortChange}>
           <option value={undefined}>Sort by</option>
           <option value="alphabetical">Alphabetical</option>

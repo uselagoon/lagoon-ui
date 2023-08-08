@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
-import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
-import DeleteConfirm from 'components/DeleteConfirm';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import Modal from 'components/Modal';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
+import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { TableActions } from '../SharedStyles';
@@ -21,6 +22,11 @@ const DELETE_PROJECT = gql`
  * The primary list of projects.
  */
 const OrgProjects = ({ projects = [], organizationId, organizationName, refresh, deployTargets }) => {
+  const [modalState, setModalState] = useState({
+    open: false,
+    current: null,
+  });
+
   const Columns = [
     {
       width: '30%',
@@ -55,11 +61,8 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       render: function (project) {
         return (
           <TableActions style={{ marginLeft: 'auto' }}>
-            <>
-              <UserAddOutlined className="add" onClick={() => {}} />
-            </>
-
             <ProjectGroupLink
+              className="link"
               projectGroupSlug={project.name}
               organizationSlug={organizationId}
               organizationName={organizationName}
@@ -69,45 +72,50 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
             </ProjectGroupLink>
 
             <>
-              <DeleteOutlined className="delete" onClick={() => {}} />
+              <DeleteOutlined
+                className="delete"
+                onClick={() => {
+                  setModalState({ open: true, current: project.name });
+                }}
+              />
 
-              {/* <Modal
-                  isOpen={modalStates.deleteGroup.open && modalStates.deleteGroup.current.name === i.name}
-                  onRequestClose={() => modalAction('close', 'deleteGroup')}
-                >
-                  <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-                  <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                    This action will delete this entry, you might not be able to get this back.
-                  </p>
+              <Modal
+                isOpen={modalState.open && modalState.current === project.name}
+                onRequestClose={() => setModalState({ open: false, current: null })}
+              >
+                <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
+                <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+                  This action will delete this entry, you might not be able to get this back.
+                </p>
 
-                  <ModalFooter>
-                    <Mutation mutation={DELETE_GROUP}>
-                      {(deleteGroup, { error, data }) => {
-                        if (error) {
-                          return <div>{error.message}</div>;
-                        }
-                        if (data) {
-                          refetch().then(() => modalAction('close', 'deleteGroup'));
-                          return <DeleteButton>Continue</DeleteButton>;
-                        }
-                        return (
-                          <DeleteButton
-                            onClick={() => {
-                              deleteGroup({
-                                variables: {
-                                  groupName: modalStates.deleteGroup?.current?.name,
-                                },
-                              });
-                            }}
-                          >
-                            Continue
-                          </DeleteButton>
-                        );
-                      }}
-                    </Mutation>
-                    <CancelButton onClick={() => modalAction('close', 'deleteGroup')}>Cancel</CancelButton>
-                  </ModalFooter>
-                </Modal> */}
+                <ModalFooter>
+                  <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
+                    {(deleteProject, { error, data }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => setModalState({ open: false, current: null }));
+                        return <DeleteButton>Continue</DeleteButton>;
+                      }
+                      return (
+                        <DeleteButton
+                          onClick={() => {
+                            deleteProject({
+                              variables: {
+                                project: modalState.current,
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </DeleteButton>
+                      );
+                    }}
+                  </Mutation>
+                  <CancelButton onClick={() => setModalState({ open: false, current: null })}>Cancel</CancelButton>
+                </ModalFooter>
+              </Modal>
             </>
           </TableActions>
         );
@@ -118,8 +126,6 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
   return (
     <StyledOrgProjects>
       <PaginatedTable limit={10} data={projects} columns={Columns} labelText="Projects" emptyText="No Projects" />
-
-      <div className="data-table"></div>
       <NewProject
         organizationId={organizationId}
         options={deployTargets.map(deploytarget => {

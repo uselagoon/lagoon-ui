@@ -8,7 +8,7 @@ import withLogic from 'components/Organizations/NewProject/logic';
 import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import { Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -66,53 +66,77 @@ const OrgNewProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button action={openModal}>New Project</Button>
+        <Button action={openModal}>
+          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '28px' }}>+</span>
+            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Project</span>
+          </span>
+        </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_PROJECT_MUTATION}>
+          <Mutation mutation={ADD_PROJECT_MUTATION} onError={e => console.error(e)}>
             {(addGroupProject, { _, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
               if (data) {
-                refresh().then(closeModal);
+                refresh().then(() => {
+                  setProjectName({ target: { value: '' } });
+                  setGitURL({ target: { value: '' } });
+                  setProdEnv({ target: { value: '' } });
+                  setSelectedDeployTarget({ target: { value: '' } });
+                  closeModal();
+                });
               }
 
               return (
                 <>
                   <StyledNotification>
-                    <h4>New Project</h4>
+                    <h4>Add Project</h4>
                     <div className="form-box">
                       <label>
-                        Name:{' '}
-                        <input className="inputEmail" type="text" value={inputProjectName} onChange={setProjectName} />
+                        Project name: <span style={{ color: '#E30000' }}>*</span>
+                        <input
+                          className="inputEmail"
+                          type="text"
+                          placeholder="Enter name"
+                          value={inputProjectName}
+                          onChange={setProjectName}
+                        />
                       </label>
                     </div>
                     <div className="form-box">
                       <label>
-                        Git URL: <input className="inputEmail" type="text" value={inputGitURL} onChange={setGitURL} />
+                        Git URL: <span style={{ color: '#E30000' }}>*</span>
+                        <input
+                          className="inputEmail"
+                          type="text"
+                          placeholder="Enter URL"
+                          value={inputGitURL}
+                          onChange={setGitURL}
+                        />
                       </label>
                     </div>
                     <div className="form-box">
                       <label>
-                        Production Environment:{' '}
-                        <input className="inputEmail" type="text" value={inputProdEnv} onChange={setProdEnv} />
+                        Production Environment: <span style={{ color: '#E30000' }}>*</span>
+                        <input
+                          className="inputEmail"
+                          type="text"
+                          placeholder="eg Main or Master"
+                          value={inputProdEnv}
+                          onChange={setProdEnv}
+                        />
                       </label>
                     </div>
-                    {/* <div className="form-box">
-                  <label>Branches (true, false, or regex): <input className="inputEmail" type="text" value={inputBranches} onChange={setBranches} /></label>
-                  </div>
-                  <div className="form-box">
-                  <label>Pullrequests (true, false, or regex): <input className="inputEmail" type="text" value={inputPRs} onChange={setPRs} /></label>
-                  </div> */}
                     <label>
-                      Deploy Target:
+                      Deploy Target: <span style={{ color: '#E30000' }}>*</span>
                       <RoleSelect>
                         <ReactSelect
                           styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
                           aria-label="Role"
-                          placeholder="Select a target..."
+                          placeholder="Select target..."
                           name="target"
                           value={options.find(o => o.value === selectedDeployTarget)}
                           onChange={selectedOption => setSelectedDeployTarget(selectedOption)}
@@ -122,34 +146,37 @@ const OrgNewProject = ({
                       </RoleSelect>
                     </label>
                     <div>
-                      <p></p>
-                      <Button
-                        disabled={
-                          inputProjectName === '' ||
-                          inputProjectName.indexOf(' ') > 0 ||
-                          inputGitURL === '' ||
-                          inputGitURL.indexOf(' ') > 0 ||
-                          inputProdEnv === '' ||
-                          inputProdEnv.indexOf(' ') > 0 ||
-                          selectedDeployTarget === undefined
-                        }
-                        action={() => {
-                          addGroupProject({
-                            variables: {
-                              name: inputProjectName,
-                              gitUrl: inputGitURL,
-                              kubernetes: parseInt(selectedDeployTarget.value, 10),
-                              productionEnvironment: inputProdEnv,
-                              organization: parseInt(organizationId, 10),
-                              // branches: inputBranches,
-                              // pullrequests: inputPRs,
-                            },
-                          });
-                        }}
-                        variant="green"
-                      >
-                        Create
-                      </Button>
+                      <Footer>
+                        <Button
+                          disabled={
+                            inputProjectName === '' ||
+                            inputProjectName.indexOf(' ') > 0 ||
+                            inputGitURL === '' ||
+                            inputGitURL.indexOf(' ') > 0 ||
+                            inputProdEnv === '' ||
+                            inputProdEnv.indexOf(' ') > 0 ||
+                            selectedDeployTarget === undefined
+                          }
+                          action={() => {
+                            addGroupProject({
+                              variables: {
+                                name: inputProjectName,
+                                gitUrl: inputGitURL,
+                                kubernetes: parseInt(selectedDeployTarget.value, 10),
+                                productionEnvironment: inputProdEnv,
+                                organization: parseInt(organizationId, 10),
+                              },
+                            });
+                          }}
+                          variant="primary"
+                        >
+                          Add
+                        </Button>
+
+                        <Button action={() => closeModal()} variant="ghost">
+                          Cancel
+                        </Button>
+                      </Footer>
                     </div>
                   </StyledNotification>
                 </>

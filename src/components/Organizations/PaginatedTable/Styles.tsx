@@ -8,7 +8,7 @@ export const StyledTable = styled.div`
 export const Filters = styled.div`
   display: flex;
   gap: 4px;
-  align-items:center;
+  align-items: center;
   background: ${props => props.theme.backgrounds.content};
   padding-bottom: 18px !important;
   > * {
@@ -31,17 +31,26 @@ export const Filters = styled.div`
       top: 12px;
     }
   }
+  .labelText {
+    margin-right: auto;
+    display: inline-flex;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 13px !important;
+    font-weight: 600;
+    color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
+  }
 `;
 
 export const TableRow = styled.div`
   display: flex;
-  transition:0.3s ease;
+  transition: 0.3s ease;
   &:not(:last-child) {
     border: 2px solid transparent;
     border-bottom: 2px solid ${props => props.theme.borders.tableRow};
   }
-  &:hover{
-    border:2px solid #2bc0d8;
+  &:hover {
+    border: 2px solid #2bc0d8;
   }
 `;
 export const TableColumn = styled.div<{ width: string }>`
@@ -114,6 +123,6 @@ export const NextBtn = styled.div`
 `;
 
 export const TableEmpty = styled.p`
-text-align:center;
-padding:2.5rem;
+  text-align: center;
+  padding: 2.5rem;
 `;
