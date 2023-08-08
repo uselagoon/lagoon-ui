@@ -17,19 +17,16 @@ const EnvironmentVariablesSkeleton = () => {
       <div className="scope">
         <Skeleton width={"90%"} />
       </div>
-      <div className="delete">
-        <Skeleton width={"90%"} />
-      </div>
     </div>
   );
 
   const projectSkeletonItem = (
     <div className="data-row">
       <div className="varName">
-        <Skeleton width={"80%"} />
+        <Skeleton width={"90%"} />
       </div>
       <div className="scope">
-        <Skeleton width={"80%"} />
+        <Skeleton width={"90%"} />
       </div>
     </div>
   );
@@ -50,9 +47,6 @@ const EnvironmentVariablesSkeleton = () => {
           </div>
           <div className="scope">
             <label>Scope</label>
-          </div>
-          <div className="delete">
-            <label>Delete</label>
           </div>
         </div>
         <div className="data-table">

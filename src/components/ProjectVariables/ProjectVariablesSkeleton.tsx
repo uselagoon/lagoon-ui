@@ -17,9 +17,6 @@ const ProjectVariablesSkeleton = () => {
       <div className="scope">
         <Skeleton width={"90%"} />
       </div>
-      <div className="delete">
-        <Skeleton width={"90%"} />
-      </div>
     </div>
   );
 
@@ -39,9 +36,6 @@ const ProjectVariablesSkeleton = () => {
           </div>
           <div className="scope">
             <label>Scope</label>
-          </div>
-          <div className="delete">
-            <label>Delete</label>
           </div>
         </div>
         <div className="data-table">
