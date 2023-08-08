@@ -1,11 +1,9 @@
 import React, { Fragment, useState } from "react";
-import { Mutation } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.min.css";
-import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByName";
 import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentAndProjectByOpenshiftProjectNameWithEnvVarsValue";
 import EnvironmentByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue";
 import { useLazyQuery } from "@apollo/react-hooks";
-import DeleteConfirm from "components/DeleteConfirm";
+import DeleteVariable from "components/DeleteVariable";
 import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
 import Button from "react-bootstrap/Button";
@@ -290,51 +288,14 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                         </div>
                         </Collapse>
                         <div className="varDelete">
-                          <Mutation mutation={DeleteEnvVariableMutation}>
-                            {(
-                              deleteEnvVariableByName,
-                              { loading, called, error, data }
-                            ) => {
-                              if (error) {
-                                console.error(error);
-                                return (
-                                  <div>
-                                    Unauthorized: You don't have permission to
-                                    delete this variable.
-                                  </div>
-                                );
-                              }
-
-                              if (data) {
-                                onVariableAdded().then(closeModal);
-                              }
-
-                              const deleteEnvVariableByNameHandler = () => {
-                                deleteEnvVariableByName({
-                                  variables: {
-                                    input: {
-                                      name: envVar.name,
-                                      project: environment.project.name,
-                                      environment: environment.name,
-                                    },
-                                  },
-                                });
-                                closeModal();
-                              };
-
-                              return (
-                                <DeleteConfirm
-                                  deleteType="variable"
-                                  deleteName={envVar.name}
-                                  icon="bin"
-                                  loading={loading}
-                                  onDelete={() =>
-                                    deleteEnvVariableByNameHandler()
-                                  }
-                                />
-                              );
-                            }}
-                          </Mutation>
+                          <DeleteVariable
+                              deleteType="Environment variable"
+                              deleteName={envVar.name}
+                              varProject={environment.project.name}
+                              varEnvironment={environment.name}
+                              icon="bin"
+                              refresh={onVariableAdded}
+                          />
                         </div>
                       </div>
                     </Fragment>

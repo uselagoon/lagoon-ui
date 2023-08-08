@@ -48,13 +48,12 @@ export const AddVariable = ({
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
   const [updateScope, setUpdateScope] = useState(varScope);
-  const handleUpdateName = (event) => {setUpdateName(event.target.value)};
   const handleUpdateValue = (event) => {setUpdateValue(event.target.value)};
   useEffect(() => {
     setUpdateValue(varValue);
     setUpdateName(varName);
     setUpdateScope(varScope);
-  }, [varValue, varName, varScope]);
+  }, [varValue]);
 
   return (
       <NewVariable>
@@ -109,7 +108,7 @@ export const AddVariable = ({
               className="addVarnameInput"
               type="text"
               value={varName ? updateName : inputName}
-              onChange={varName ? handleUpdateName : setInputName}
+              onChange={!varName ? setInputName : null}
               readOnly={!!varName}
             />
           </div>
