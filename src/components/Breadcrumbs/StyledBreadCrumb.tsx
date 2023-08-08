@@ -48,6 +48,7 @@ export const BreadCrumbLink = styled.a`
 
 export const StyledBreadcrumbsWrapper = styled.div`
   padding: 1vw 0.75vw;
+  min-height:100px;
   background-color: ${props => props.theme.backgrounds.breadCrumbs};
   border-bottom: ${props =>
     props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};

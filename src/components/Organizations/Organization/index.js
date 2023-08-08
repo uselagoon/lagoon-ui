@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { StyledOrganization } from './Styles';
+import Link from 'next/link';
+
+import { EnvironmentOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
+
+import OrgHeader from '../Orgheader';
+import { LinkBtn, StyledOrganization, StyledOverview } from './Styles';
 
 /**
  * Displays the organization information.
@@ -16,60 +21,82 @@ const Organization = ({ organization }) => {
     }
   }
 
+  const quotaDisplay = (quota, quotaNumber) => {
+    const pluralName = quota + 's';
+    const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
+    const link = {
+      urlObject: {
+        pathname: `/organizations/${pluralName}`,
+        query: { organizationSlug: organization.id },
+      },
+      asPath: `/organizations/${organization.id}/${pluralName}`,
+    };
+
+    return (
+      <div className="quotaField">
+        <span>{pluralName.toUpperCase()}</span>
+        <span className="quota">
+          {capitalize(quota)} quota: {quotaNumber} of 10
+        </span>
+
+        <Link href={link.urlObject} as={link.asPath}>
+          <LinkBtn>
+            <EyeOutlined className="icon" /> {capitalize(pluralName)}
+          </LinkBtn>
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <StyledOrganization>
-      <div className="field-wrapper quotaProject">
-        <div>
-          <label>Project Quota</label>
-          <div className="field">
-            {organization.projects.length}/{organization.quotaProject}
+      <OrgHeader headerText="overview" />
+
+      <StyledOverview>
+        <span className="orgname">{organization.name}</span>
+
+        <div className="description">
+          <span className="title">Description</span>
+          <p>{organization.description}</p>
+        </div>
+        <div className="info">
+          <div className="quotas">
+            {quotaDisplay('group', groupCount)}
+            {quotaDisplay('project', organization.projects.length)}
+            {quotaDisplay(
+              'notification',
+              organization.slacks.length +
+                organization.rocketchats.length +
+                organization.teams.length +
+                organization.emails.length +
+                organization.webhook.length
+            )}
+          </div>
+
+          <div className="targetwrapper">
+            <div className="targets">
+              <span>Available Deployments</span>
+              {organization.deployTargets.map(deploytarget => (
+                <div key={deploytarget.id} className="target">
+                  <EnvironmentOutlined className="targetIcon" />
+                  {deploytarget.name}
+                </div>
+              ))}
+            </div>
+
+            <div className="users">
+              <span>Users</span>
+              {organization.owners.map(owner => (
+                <div key={owner.email} className="user">
+                  <UserOutlined className="userIcon" />
+                  {owner.email}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div>
-          <label>Group Quota</label>
-          <div className="field">
-            {groupCount}/{organization.quotaGroup}
-          </div>
-        </div>
-        <div>
-          <label>Notification Quota</label>
-          <div className="field">
-            {organization.slacks.length +
-              organization.rocketchats.length +
-              organization.teams.length +
-              organization.emails.length +
-              organization.webhook.length}
-            /{organization.quotaNotification}
-          </div>
-        </div>
-      </div>
-      <div className="field-wrapper owners">
-        <div>
-          <label>Users</label>
-          <div className="field">
-            {organization.owners.map(owner => (
-              <li key={owner.email}>
-                {owner.email}
-                {owner.owner ? (
-                  <label className="owner-label">OWNER</label>
-                ) : (
-                  <label className="viewer-label">VIEWER</label>
-                )}
-              </li>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="field-wrapper targets">
-        <div>
-          <label>Available DeployTargets</label>
-          <div className="field">
-            {organization.deployTargets.map(deploytarget => (
-              <li key={deploytarget.id}>{deploytarget.name}</li>
-            ))}
-          </div>
-        </div>
-      </div>
+      </StyledOverview>
     </StyledOrganization>
   );
 };

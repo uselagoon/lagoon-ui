@@ -4,6 +4,11 @@ import styled from 'styled-components';
 import { sharedTableStyles } from '../SharedStyles';
 
 export const StyledOrgProjects = styled.div`
+  width: 95.83%;
+  padding-top: 22px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
   .remove {
     display: flex;
     justify-content: flex-end;

@@ -1,57 +1,10 @@
-import { bp, color } from 'lib/variables';
+import { color } from 'lib/variables';
 import styled from 'styled-components';
 
 import { sharedTableStyles } from '../SharedStyles';
 
-export const GroupsWrapper = styled.div`
-  flex-grow: 1;
-  padding: 40px calc((100vw / 16) * 1);
-
-  .content {
-    padding: 32px calc((100vw / 16) * 1);
-    width: 100%;
-  }
-
-  .details {
-    width: 100%;
-    @media ${bp.xs_smallUp} {
-      display: flex;
-      flex-wrap: wrap;
-      min-width: 100%;
-      width: 100%;
-    }
-
-    .field-wrapper {
-      &::before {
-        margin-inline: 14px;
-        padding-right: unset;
-        width: unset;
-      }
-      margin: 0px;
-      @media ${bp.xs_smallUp} {
-        min-width: 50%;
-        position: relative;
-        width: 50%;
-      }
-      @media ${bp.wideUp} {
-        min-width: 33.33%;
-        width: 33.33%;
-      }
-      @media ${bp.extraWideUp} {
-        min-width: 25%;
-        width: 25%;
-      }
-
-      &.environmentType {
-        &::before {
-          background-size: 20px 20px;
-        }
-      }
-    }
-  }
-`;
-
 export const StyledGroups = styled.section`
+  width: 95.83%;
   .default-group-label {
     color: ${color.white};
     background-color: ${props => (props.theme.colorScheme === 'dark' ? props.theme.borders.tableRow : color.black)};
@@ -112,7 +65,62 @@ export const StyledGroups = styled.section`
     padding-right: 15px;
   }
   ${sharedTableStyles}
+
   .description {
     line-height: 24px;
   }
+`;
+
+export const GroupsWrapper = styled.div`
+  width: 95.83%;
+  padding-top: 22px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const AddGroupButton = styled.button`
+  all: unset;
+  width: 115px;
+  height: 38px;
+  margin-top:42px;
+  text-align: center;
+  cursor: pointer;
+  background: #4578e6;
+`;
+
+export const DeleteButton = styled.button`
+all:unset;
+cursor:pointer;
+margin-left:auto;
+background:#4578E6;
+color: #fff;
+border-radius:2px;
+width:96px;
+text-align:center;
+transition:all 0.3s ease;
+&:hover{
+  box-shadow: 4px 8px 13px 0px #00000008;
+}
+`;
+
+export const CancelButton = styled.button`
+all:unset;
+cursor:pointer;
+border-radius:2px;
+border:1px solid #4578E6;
+color:#4578E6;
+background:#fff;
+width:81px;
+text-align:center;
+transition:all 0.3s ease;
+&:hover{
+  box-shadow: 4px 8px 13px 0px #00000008;
+}
+`;
+
+export const ModalFooter = styled.div`
+height:40px;
+display:flex;
+gap:8px;
 `;

@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { sharedTableStyles } from '../SharedStyles';
 
 export const StyledGroupMembers = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
   .OWNER-label {
     color: ${color.white};
     background-color: ${color.lightRed};
@@ -88,4 +91,9 @@ export const StyledGroupMembers = styled.section`
     font-weight: normal;
   }
   ${sharedTableStyles}
+  .view {
+    svg {
+      fill: #4578e6;
+    }
+  }
 `;

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
+import Button from 'components/Button';
 import RemoveNotificationConfirm from 'components/Organizations/RemoveNotificationConfirm';
 import gql from 'graphql-tag';
 
-import { StyledOrgNotifications } from './Styles';
+import OrgHeader from '../Orgheader';
+import AddNotifications from './AddNotifications';
+import { AddNotifButton, NameTagCol, StyledOrgNotifications } from './Styles';
 
 const REMOVE_NOTIFICATION_SLACK = gql`
   mutation removeNotification($name: String!) {
@@ -39,7 +42,15 @@ const REMOVE_NOTIFICATION_WEBHOOK = gql`
 /**
  * The primary list of projects.
  */
-const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = [], webhooks = [], refresh }) => {
+const OrgNotifications = ({
+  slacks = [],
+  rocketchats = [],
+  emails = [],
+  teams = [],
+  webhooks = [],
+  refresh,
+  organizationId,
+}) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredSlackNotifications = slacks.filter(key => {
@@ -78,21 +89,19 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
     return ['name', '__typename', 'emailAddress'].includes(key) ? false : (true && sortByName) || (true && sortByEmail);
   });
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <StyledOrgNotifications>
-      <div className="header">
-        <label>Notifications</label>
-        <label></label>
-        <input
-          aria-labelledby="search"
-          className="searchInput"
-          type="text"
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          placeholder="Type to search"
-          disabled={slacks.length === 0}
-        />
-      </div>
+      <OrgHeader
+        headerText="Notifications"
+        searchBar
+        searchProps={{
+          value: searchInput,
+          onChange: e => setSearchInput(e.target.value),
+          disabled: slacks.length === 0,
+        }}
+      />
 
       <div className="data-table">
         {!slacks.length && !rocketchats.length && !emails.length && !teams.length && !webhooks.length && (
@@ -106,20 +115,23 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
           !filteredWebhookNotifications.length && (
             <div className="data-none">No notifications matching "{searchInput}"</div>
           )}
+
         {filteredSlackNotifications.map(project => (
           <div className="data-row" project={project.name} key={project.name}>
-            <div className="name">{project.name}</div>
-            <div className="notiftype">
-              <label className="slack-group-label">SLACK</label>
-            </div>
+            <NameTagCol>
+              <div className="name">{project.name}</div>
+              <div className="notiftype">
+                <label className="slack-group-label">SLACK</label>
+              </div>
+            </NameTagCol>
             <div className="notifdata">
               Webhook: {project.webhook}
               <br></br>
               Channel: {project.channel}
             </div>
             <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_SLACK}>
-                {(removeNotification, { loading, called, error, data }) => {
+              <Mutation mutation={REMOVE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
+                {(removeNotification, { error, data }) => {
                   if (error) {
                     return <div>{error.message}</div>;
                   }
@@ -145,18 +157,20 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
         ))}
         {filteredRocketChatNotifications.map(project => (
           <div className="data-row" project={project.name} key={project.name}>
-            <div className="name">{project.name}</div>
-            <div className="notiftype">
-              <label className="rocketchat-group-label">ROCKETCHAT</label>
-            </div>
+            <NameTagCol>
+              <div className="name">{project.name}</div>
+              <div className="notiftype">
+                <label className="rocketchat-group-label">ROCKETCHAT</label>
+              </div>
+            </NameTagCol>
             <div className="notifdata">
               Webhook: {project.webhook}
               <br></br>
               Channel: {project.channel}
             </div>
             <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_ROCKETCHAT}>
-                {(removeNotification, { loading, called, error, data }) => {
+              <Mutation mutation={REMOVE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
+                {(removeNotification, { error, data }) => {
                   if (error) {
                     return <div>{error.message}</div>;
                   }
@@ -182,14 +196,16 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
         ))}
         {filteredEmailNotifications.map(project => (
           <div className="data-row" project={project.name} key={project.name}>
-            <div className="name">{project.name}</div>
-            <div className="notiftype">
-              <label className="email-group-label">EMAIL</label>
-            </div>
+            <NameTagCol>
+              <div className="name">{project.name}</div>
+              <div className="notiftype">
+                <label className="email-group-label">EMAIL</label>
+              </div>
+            </NameTagCol>
             <div className="notifdata">Address: {project.emailAddress}</div>
             <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_EMAIL}>
-                {(removeNotification, { loading, called, error, data }) => {
+              <Mutation mutation={REMOVE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
+                {(removeNotification, { error, data }) => {
                   if (error) {
                     return <div>{error.message}</div>;
                   }
@@ -215,14 +231,16 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
         ))}
         {filteredWebhookNotifications.map(project => (
           <div className="data-row" project={project.name} key={project.name}>
-            <div className="name">{project.name}</div>
-            <div className="notiftype">
-              <label className="webhook-group-label">WEBHOOK</label>
-            </div>
+            <NameTagCol>
+              <div className="name">{project.name}</div>
+              <div className="notiftype">
+                <label className="webhook-group-label">WEBHOOK</label>
+              </div>
+            </NameTagCol>
             <div className="notifdata">Webhook: {project.webhook}</div>
             <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_WEBHOOK}>
-                {(removeNotification, { loading, called, error, data }) => {
+              <Mutation mutation={REMOVE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
+                {(removeNotification, { error, data }) => {
                   if (error) {
                     return <div>{error.message}</div>;
                   }
@@ -248,14 +266,17 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
         ))}
         {filteredTeamsNotifications.map(project => (
           <div className="data-row" project={project.name} key={project.name}>
-            <div className="name">{project.name}</div>
-            <div className="notiftype">
-              <label className="microsoftteams-group-label">TEAMS</label>
-            </div>
+            <NameTagCol>
+              <div className="name">{project.name}</div>
+              <div className="notiftype">
+                <label className="microsoftteams-group-label">TEAMS</label>
+              </div>
+            </NameTagCol>
+
             <div className="notifdata">Webhook: {project.webhook}</div>
             <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_TEAMS}>
-                {(removeNotification, { loading, called, error, data }) => {
+              <Mutation mutation={REMOVE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
+                {(removeNotification, { error, data }) => {
                   if (error) {
                     return <div>{error.message}</div>;
                   }
@@ -280,6 +301,22 @@ const OrgNotifications = ({ slacks = [], rocketchats = [], emails = [], teams = 
           </div>
         ))}
       </div>
+
+      <AddNotifications
+        organizationId={organizationId}
+        onNotificationAdded={refresh}
+        modalOpen={modalOpen}
+        closeModal={() => setModalOpen(false)}
+      >
+        <AddNotifButton>
+          <Button action={() => setModalOpen(true)}>
+            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '28px' }}>+</span>
+              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Notification</span>
+            </span>
+          </Button>
+        </AddNotifButton>
+      </AddNotifications>
     </StyledOrgNotifications>
   );
 };

@@ -89,6 +89,8 @@ export const GroupPageWrapper = styled.div`
 export const StyledNotificationWrapper = styled.div`
   .margins {
     margin-right: 10px;
+    margin-top:30px;
+    margin-bottom:30px;
     button {
       margin-inline: 14px;
       margin-bottom: 28px;
@@ -238,6 +240,89 @@ export const sharedTableStyles = css`
       @media ${bp.tinyUp} {
         display: block;
       }
+    }
+  }
+`;
+
+export const Tag = styled.div<{ background: string }>`
+  border-radius: 5px;
+  background: ${props => props.background};
+  padding: 3px 8px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 22px;
+  text-transform: uppercase;
+  color: #fff;
+  width: max-content;
+`;
+
+export const TableActions = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-evenly;
+  > * {
+    height: 36px;
+    width: 54px;
+    cursor: pointer;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      color: #fff;
+      height: 22px;
+      width: 22px;
+    }
+
+    &.add {
+      background: #4578e6;
+    }
+    &.link {
+      border: 1px solid #4578e6 !important;
+      background: #fff;
+    }
+    .edit {
+      svg {
+        color: #4578e6;
+      }
+    }
+    &.delete {
+      background: #dc3545;
+      svg {
+        color: #fff;
+      }
+    }
+  }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  margin-top: 14px;
+  gap: 12px;
+  height: 40px;
+  .btn-primary {
+    margin-left: auto;
+    background: #4578e6;
+    color: #fff;
+    transition: all 0.3s ease;
+    &:not(.btn--disabled):hover {
+      background: #2e69e6;
+    }
+  }
+  .btn--disabled {
+    background: gray;
+    margin-right: 0;
+  }
+  .btn-ghost {
+    background: #fff;
+    border: 1px solid #4578e6;
+    color: #4578e6;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #2e69e6;
+      color: #fff;
     }
   }
 `;

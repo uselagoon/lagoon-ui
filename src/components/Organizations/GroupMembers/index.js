@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
+import Link from 'next/link';
+
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import gql from 'graphql-tag';
 
+import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { TableActions } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
+
+export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+  urlObject: {
+    pathname: '/organizations/users',
+    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+  },
+  asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
+});
 
 const REMOVE_USER_FROM_GROUP = gql`
   mutation removeUserFromGroup($groupName: String!, $email: String!) {
@@ -17,20 +30,85 @@ const REMOVE_USER_FROM_GROUP = gql`
 /**
  * The primary list of members.
  */
-const GroupMembers = ({ members = [], groupName, projectDefaultGroup, onUserRemove }) => {
-  const [searchInput, setSearchInput] = useState('');
-
-  const filteredMembers = members.filter(key => {
-    const sortByName = key.user.email.toLowerCase().includes(searchInput.toLowerCase());
-    const sortByRole = key.role.toLowerCase().includes(searchInput.toLowerCase());
-    return ['name', 'role', '__typename'].includes(key) ? false : (true && sortByName) || sortByRole;
-  });
-
+const GroupMembers = ({
+  members = [],
+  groupName,
+  organizationName,
+  organizationId,
+  projectDefaultGroup,
+  onUserRemove,
+}) => {
   const duRegex = new RegExp('^default-user@' + groupName.replace('project-', '') + '$', 'g');
+
+  const UserColumns = [
+    {
+      width: '20%',
+      key: 'name',
+      render: ({ user }) => {
+        const name = user.name;
+        return name ? <div className="name">{name}</div> : <>-</>;
+      },
+    },
+    {
+      width: '20%',
+      key: 'lastName',
+      render: ({ user }) => {
+        const lastName = user.lastName;
+        return lastName ? <div className="lastname">{lastName}</div> : <>-</>;
+      },
+    },
+    {
+      width: '20%',
+      key: 'email',
+      render: ({ user }) => {
+        const linkData = getLinkData(user.email, organizationId, organizationName);
+        return (
+          <div className="email">
+            <Link href={linkData.urlObject} as={linkData.asPath}>
+              <a> {user.email}</a>
+            </Link>
+          </div>
+        );
+      },
+    },
+    {
+      width: '10%',
+      key: 'role',
+      render: u => {
+        return <div className="role">{u.role}</div>;
+      },
+    },
+    {
+      width: '10%',
+      key: 'separator',
+      render: () => {
+        return <></>;
+      },
+    },
+    {
+      width: '10%',
+      key: 'actions',
+      render: ({ user }) => {
+        const linkData = getLinkData(user.email, organizationId, organizationName);
+        return (
+          <TableActions>
+            <Link href={linkData.urlObject} as={linkData.asPath}>
+              <a>
+                <EyeOutlined className="view" style={{border:"1px solid #4578E6", padding:"0.5rem", color:"#4578E6"}}/>
+              </a>
+            </Link>
+            <DeleteOutlined className="delete" />
+          </TableActions>
+        );
+      },
+    },
+  ];
 
   return (
     <StyledGroupMembers>
-      <div className="header">
+      <PaginatedTable limit={10} data={members} columns={UserColumns} labelText="Users" emptyText="No users" />
+      <PaginatedTable limit={10} data={members} columns={UserColumns} labelText="Projects" emptyText="No Projects" />
+      {/* <div className="header">
         <label>Members</label>
         <label></label>
         <input
@@ -42,8 +120,8 @@ const GroupMembers = ({ members = [], groupName, projectDefaultGroup, onUserRemo
           placeholder="Type to search"
           disabled={members.length === 0}
         />
-      </div>
-      <div className="deployments">
+      </div> */}
+      {/* <div className="deployments">
         <div className="data-table">
           {!members.length && <div className="data-none">No members</div>}
           {searchInput && !filteredMembers.length && (
@@ -95,7 +173,7 @@ const GroupMembers = ({ members = [], groupName, projectDefaultGroup, onUserRemo
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </StyledGroupMembers>
   );
 };

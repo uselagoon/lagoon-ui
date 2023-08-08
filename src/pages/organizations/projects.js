@@ -82,8 +82,8 @@ export const PageOrgProjects = ({ router }) => {
 
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="projects" organization={organization} />
-          <div className="projects-wrapper">
-            <ProjectDetails className="details">
+
+            {/* <ProjectDetails className="details">
               <div className="field-wrapper environmentType">
                 <NewProject
                   organizationId={organization.id}
@@ -93,15 +93,23 @@ export const PageOrgProjects = ({ router }) => {
                   refresh={handleRefetch}
                 />
               </div>
-            </ProjectDetails>
+            </ProjectDetails> */}
 
             <OrgProjects
               refresh={handleRefetch}
               projects={organization.projects}
               organizationId={organization.id}
               organizationName={organization.name}
+              deployTargets={organization.deployTargets}
             />
-          </div>
+                 {/* <NewProject
+                  organizationId={organization.id}
+                  options={organization.deployTargets.map(deploytarget => {
+                    return { label: deploytarget.name, value: deploytarget.id };
+                  })}
+                  refresh={handleRefetch}
+                /> */}
+
         </OrganizationsWrapper>
       </MainLayout>
     </>
