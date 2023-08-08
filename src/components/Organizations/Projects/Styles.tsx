@@ -9,10 +9,10 @@ export const StyledOrgProjects = styled.div`
   padding-inline: 12px;
   display: flex;
   flex-direction: column;
-  .edit{
+  .edit {
     svg {
-        color: #4578e6;
-      }
+      color: #4578e6;
+    }
   }
   .remove {
     display: flex;
@@ -145,43 +145,11 @@ export const ProjectDetails = styled.div`
 `;
 
 export const OrgProjectWrapper = styled.div`
-  flex-grow: 1;
-  padding: 40px calc((100vw / 16) * 1);
-  .details {
-    width: 100%;
-    @media ${bp.xs_smallUp} {
-      display: flex;
-      flex-wrap: wrap;
-      min-width: 100%;
-      width: 100%;
-    }
-
-    .field-wrapper {
-      &::before {
-        left: calc(((-100vw / 16) * 1.5) - 28px);
-      }
-      margin: 0px;
-      @media ${bp.xs_smallUp} {
-        min-width: 50%;
-        position: relative;
-        width: 50%;
-      }
-      @media ${bp.wideUp} {
-        min-width: 33.33%;
-        width: 33.33%;
-      }
-      @media ${bp.extraWideUp} {
-        min-width: 25%;
-        width: 25%;
-      }
-
-      &.environmentType {
-        &::before {
-          background-size: 20px 20px;
-        }
-      }
-    }
-  }
+  width: 95.83%;
+  padding-top: 22px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
 
   .rightside-button {
     display: flex;

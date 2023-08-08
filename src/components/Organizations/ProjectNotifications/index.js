@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
+import { EditOutlined } from '@ant-design/icons';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
+import OrgNotificationsLink from 'components/link/Organizations/Notifications';
 import gql from 'graphql-tag';
 
+import AddNotificationToProject from '../AddNotificationToProject';
+import { TableActions } from '../SharedStyles';
 import { StyledProjectNotifications } from './Styles';
 
 const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
@@ -23,7 +27,14 @@ const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectNotifications = ({ notifications = [], organizationId, organizationName, projectName, refresh }) => {
+const ProjectNotifications = ({
+  notifications = [],
+  organizationId,
+  organizationName,
+  projectName,
+  organization,
+  refresh,
+}) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredMembers = notifications.filter(key => {
@@ -68,18 +79,28 @@ const ProjectNotifications = ({ notifications = [], organizationId, organization
                     return <div>Success</div>;
                   }
                   return (
-                    <RemoveProjectGroupConfirm
-                      removeName={notification.name}
-                      onRemove={() => {
-                        removeNotificationFromProject({
-                          variables: {
-                            projectName: projectName,
-                            notificationType: notification.type,
-                            notificationName: notification.name,
-                          },
-                        }).then(refresh);
-                      }}
-                    />
+                    <TableActions>
+                      <OrgNotificationsLink
+                        className="link"
+                        organizationSlug={organizationId}
+                        organizationName={organizationName}
+                      >
+                        <EditOutlined className="edit" />
+                      </OrgNotificationsLink>
+
+                      <RemoveProjectGroupConfirm
+                        removeName={notification.name}
+                        onRemove={() => {
+                          removeNotificationFromProject({
+                            variables: {
+                              projectName: projectName,
+                              notificationType: notification.type,
+                              notificationName: notification.name,
+                            },
+                          }).then(refresh);
+                        }}
+                      />
+                    </TableActions>
                   );
                 }}
               </Mutation>
@@ -87,6 +108,12 @@ const ProjectNotifications = ({ notifications = [], organizationId, organization
           </div>
         ))}
       </div>
+      <AddNotificationToProject
+        projectName={projectName}
+        organizationId={organizationId}
+        options={organization}
+        refresh={refresh}
+      />
     </StyledProjectNotifications>
   );
 };
