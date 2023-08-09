@@ -1,60 +1,37 @@
 import React from 'react';
-import Modal from 'components/Modal';
+
+import { DeleteOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
-import { color } from 'lib/variables';
+import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveNotificationConfirm/logic';
+
+import { Footer } from '../SharedStyles';
 
 /**
  * Confirms the removal of the specified email from group
  */
-export const RemoveNotificationConfirm = ({
-  removeName,
-  onRemove,
-  open,
-  openModal,
-  closeModal
-}) => {
+export const RemoveNotificationConfirm = ({ removeName, onRemove, open, openModal, closeModal }) => {
   return (
     <React.Fragment>
-      <Button variant='red' action={openModal}>
-        Remove
+      <Button variant="red" action={openModal}>
+        <DeleteOutlined />
       </Button>
-      <Modal
-        isOpen={open}
-        onRequestClose={closeModal}
-        contentLabel={`Confirm removal`}
-      >
+      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>
-          <p>
-            This will remove the notification <b>{removeName}</b> from this organization.
+          <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
+          <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+            This action will delete this entry, you might not be able to get this back.
           </p>
-          <p>
-            Are you sure?
-          </p>
-          <div className="form-input">
-            <a href="#" className="hover-state" onClick={closeModal}>cancel</a>
-            <Button action={onRemove} variant='red'>Remove</Button>
-          </div>
+          <Footer>
+            <Button action={onRemove} variant="primary">
+              Continue
+            </Button>
+            <Button action={closeModal} variant="ghost">
+              Cancel
+            </Button>
+          </Footer>
         </React.Fragment>
       </Modal>
-      <style jsx>{`
-        input {
-          margin-right: 10px;
-          width: 100%;
-        }
-        a.hover-state {
-          margin-right: 10px;
-          color: ${color.blue};
-        }
-        .delete-name {
-          font-weight: bold;
-          color: ${color.lightBlue};
-        }
-        .form-input {
-          display: flex;
-          align-items: center;
-        }
-      `}</style>
     </React.Fragment>
   );
 };

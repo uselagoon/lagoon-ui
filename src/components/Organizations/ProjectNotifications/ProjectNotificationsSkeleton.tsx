@@ -22,7 +22,7 @@ const ProjectNotificationsSkeleton = () => {
   return (
     <StyledProjectNotifications>
       <div className="header">
-        <label>Groups</label>
+        <label>Notifications</label>
         <label></label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>

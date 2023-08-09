@@ -56,58 +56,62 @@ export const NotificationsWrapper = styled.div`
 `;
 
 export const StyledOrgNotifications = styled.div`
+  width: 95.83%;
+  padding-top: 22px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
   .remove {
     display: flex;
     justify-content: flex-end;
     padding: 0;
-    width: 10%;
+    width: 40%;
     align-self: center;
   }
   .name {
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
-    width: 15%;
+
     .comment {
       font-size: 10px;
     }
     font-weight: normal;
   }
   .notiftype {
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
+
     color: ${color.darkGrey};
-    width: 15%;
     .comment {
       font-size: 10px;
     }
     font-weight: normal;
   }
   .notifdata {
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
-    width: 60%;
+    border-right: 2px solid ${props => props.theme.borders.tableRow};
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 35%;
     .comment {
       font-size: 10px;
     }
     font-weight: normal;
   }
   .channel {
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
-    width: 15%;
     .comment {
       font-size: 10px;
     }
     font-weight: normal;
   }
   .emailAddress {
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
-    padding: 5px 10px 5px 10px;
+
     width: 55%;
     .comment {
       font-size: 10px;
@@ -118,7 +122,7 @@ export const StyledOrgNotifications = styled.div`
     color: ${color.white};
     background-color: ${color.black};
     margin-left: 5px;
-    padding: 2px 8px 2px 8px;
+    padding: 5px;
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
@@ -126,7 +130,7 @@ export const StyledOrgNotifications = styled.div`
     color: ${color.white};
     background-color: ${color.blue};
     margin-left: 5px;
-    padding: 2px 8px 2px 8px;
+    padding: 5px;
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
@@ -134,7 +138,7 @@ export const StyledOrgNotifications = styled.div`
     color: ${color.white};
     background-color: ${color.teal};
     margin-left: 5px;
-    padding: 2px 8px 2px 8px;
+    padding: 5px;
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
@@ -142,7 +146,7 @@ export const StyledOrgNotifications = styled.div`
     color: ${color.black};
     background-color: ${color.lightGreen};
     margin-left: 5px;
-    padding: 2px 8px 2px 8px;
+    padding: 5px;
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
@@ -150,7 +154,7 @@ export const StyledOrgNotifications = styled.div`
     color: ${color.black};
     background-color: ${color.lightestBlue};
     margin-left: 5px;
-    padding: 2px 8px 2px 8px;
+    padding: 5px;
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
@@ -158,7 +162,7 @@ export const StyledOrgNotifications = styled.div`
     color: ${color.white};
     background-color: ${color.lightRed};
     margin-left: 5px;
-    padding: 2px 8px 2px 8px;
+    padding: 5px;
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
@@ -180,7 +184,7 @@ export const StyledOrgNotifications = styled.div`
     border-radius: 4px;
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
     color: #5f6f7a;
     padding: 8px;
@@ -196,7 +200,37 @@ export const StyledOrgNotifications = styled.div`
   }
 
   ${sharedTableStyles}
+  .data-row {
+    height: 63px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    transition: 0.3s ease;
+    border: 2px solid transparent;
+    justify-content: flex-start !important;
+    &:not(:last-child) {
+      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+    }
+    &:hover {
+      border: 1px solid #2bc0d8;
+    }
+  }
   .description {
     line-height: 24px;
   }
+`;
+export const NameTagCol = styled.div`
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  border-right: 2px solid ${props => props.theme.borders.tableRow};
+  padding-inline: 11px;
+`;
+
+export const AddNotifButton = styled.div`
+  width: max-content;
+  margin: 2rem 0;
 `;

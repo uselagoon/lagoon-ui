@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import { BellOutlined, DeploymentUnitOutlined, ReadOutlined, TeamOutlined } from '@ant-design/icons';
 import OrgGroupsLink from 'components/link/Organizations/Groups';
 import OrgUsersLink from 'components/link/Organizations/Users';
 import OrgNotificationsLink from 'components/link/Organizations/Notifications';
@@ -15,33 +16,39 @@ interface NavSkeletonProps {
 }
 
 const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => {
-  const organization = { id: 0, name: ""}
+  const organization = { id: 0, name: ""};
 
   return (
     <StyledNavigation className="navigation">
-      <li className={`overview ${activeTab == 'overview' ? 'active' : ''} navLink`}>
+      <li className={`overview ${activeTab == 'overview' ? 'active' : ''} linkContainer`}>
         <OrganizationLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
-          Overview
+          <ReadOutlined className="icon" />
+          <span className="destination">Overview</span>
         </OrganizationLink>
       </li>
-      <li className={`groups ${activeTab == 'groups' ? 'active' : ''} navLink`}>
+
+      <li className={`groups ${activeTab == 'groups' ? 'active' : ''} linkContainer`}>
         <OrgGroupsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
-          Groups
+          <TeamOutlined className="icon" />
+          <span className="destination">Groups</span>
         </OrgGroupsLink>
       </li>
-      <li className={`users ${activeTab == 'users' ? 'active' : ''} navLink`}>
+      <li className={`users ${activeTab == 'users' ? 'active' : ''} linkContainer`}>
         <OrgUsersLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
-          Users
+          <TeamOutlined className="icon" />
+          <span className="destination">Users</span>
         </OrgUsersLink>
-      </li>
-      <li className={`projects ${activeTab == 'projects' ? 'active' : ''} navLink`}>
+        </li>
+      <li className={`projects ${activeTab == 'projects' ? 'active' : ''} linkContainer`}>
         <OrgProjectsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
-          Projects
+          <DeploymentUnitOutlined className="icon" />
+          <span className="destination">Projects</span>
         </OrgProjectsLink>
       </li>
-      <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} navLink`}>
+      <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} linkContainer`}>
         <OrgNotificationsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
-          Notifications
+          <BellOutlined className="icon" />
+          <span className="destination">Notifications</span>
         </OrgNotificationsLink>
       </li>
     </StyledNavigation>

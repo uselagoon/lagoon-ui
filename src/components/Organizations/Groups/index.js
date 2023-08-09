@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
-import DeleteConfirm from 'components/DeleteConfirm';
-import withLogic from 'components/Organizations/Groups/logic';
+import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
+import Modal from 'components/Modal';
 import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 
-import { StyledGroups } from './Styles';
+import AddUserToGroup from '../AddUserToGroup';
+import NewGroup from '../NewGroup';
+import OrgHeader from '../Orgheader';
+import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { TableActions, Tag } from '../SharedStyles';
+import { CancelButton, DeleteButton, GroupsWrapper, ModalFooter, StyledGroups } from './Styles';
 
 const DELETE_GROUP = gql`
   mutation deleteGroup($groupName: String!) {
@@ -17,87 +22,171 @@ const DELETE_GROUP = gql`
 /**
  * The primary list of groups.
  */
-const Groups = ({ groups = [], organizationId, organizationName, onGroupDeleted, closeModal }) => {
-  const [searchInput, setSearchInput] = useState('');
-
-  const filteredGroups = groups.filter(key => {
-    const sortByName = key.name.toLowerCase().includes(searchInput.toLowerCase());
-    let sortByUrl = '';
-    return ['name', 'environments', '__typename'].includes(key) ? false : (true && sortByName) || sortByUrl;
+const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup, refetch }) => {
+  const [modalStates, setModalStates] = useState({
+    addUser: {
+      open: false,
+      current: null,
+    },
+    deleteGroup: {
+      open: false,
+      current: null,
+    },
   });
 
-  return (
-    <StyledGroups>
-      <div className="header">
-        <label>Groups</label>
-        <label></label>
-        <input
-          aria-labelledby="search"
-          className="searchInput"
-          type="text"
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          placeholder="Type to search"
-          disabled={groups.length === 0}
-        />
-      </div>
+  const modalAction = (type, modal, current) => {
+    const closedState = {
+      open: false,
+      current: null,
+    };
 
-      <div className="data-table">
-        {!groups.length && <div className="data-none">No groups</div>}
-        {searchInput && !filteredGroups.length && <div className="data-none">No groups matching "{searchInput}"</div>}
-        {filteredGroups.map(group => (
-          <div key={group.name} className="data-row" group={group.name}>
-            <div className="group">
-              <OrgGroupsLink
-                groupSlug={group.name}
-                organizationSlug={organizationId}
-                organizationName={organizationName}
-                key={group.id}
+    if (type === 'open') {
+      setModalStates({
+        ...modalStates,
+        [modal]: {
+          open: true,
+          current,
+        },
+      });
+    } else {
+      setModalStates({
+        ...modalStates,
+        [modal]: closedState,
+      });
+    }
+  };
+
+  const Columns = [
+    {
+      width: '30%',
+      key: 'name',
+      render: i => {
+        return (
+          <OrgGroupsLink
+            groupSlug={i.name}
+            organizationSlug={organizationId}
+            organizationName={organizationName}
+            key={i.id}
+          >
+            {i.name}
+          </OrgGroupsLink>
+        );
+      },
+    },
+
+    {
+      width: '20%',
+      key: 'members',
+      render: i => {
+        return i.members && <span>Members: {i.members.length} </span>;
+      },
+    },
+    {
+      width: '25%',
+      key: 'type',
+      render: i => {
+        return i.type === 'project-default-group' && <Tag background="#262D65">{i.type}</Tag>;
+      },
+    },
+    {
+      width: '25%',
+      key: 'actions',
+      render: function (i) {
+        return (
+          <TableActions>
+            <>
+              <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+              <Modal
+                style={{
+                  content: {
+                    width: '50%',
+                  },
+                }}
+                isOpen={modalStates.addUser.open && modalStates.addUser.current.name === i.name}
+                onRequestClose={() => modalAction('close', 'addUser')}
               >
-                {group.name}
-              </OrgGroupsLink>
-            </div>
-            <div className="customer">
-              {group.type.includes('project-default-group') && (
-                <label className="default-group-label">{group.type}</label>
-              )}
-            </div>
-            <div className="customer">Members: {group.members.length}</div>
-            {/* <div className="customer">
-            Projects: {group.projects.length}
-          </div> */}
-            {(!group.type.includes('project-default-group') && (
-              <div className="remove">
-                <Mutation mutation={DELETE_GROUP}>
-                  {(deleteGroup, { loading, called, error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    if (data) {
-                      onGroupDeleted().then(closeModal);
-                    }
-                    return (
-                      <DeleteConfirm
-                        deleteName={group.name}
-                        deleteType="group"
-                        onDelete={() => {
-                          deleteGroup({
-                            variables: {
-                              groupName: group.name,
-                            },
-                          });
-                        }}
-                      />
-                    );
-                  }}
-                </Mutation>
-              </div>
-            )) || <div className="remove"></div>}
-          </div>
-        ))}
-      </div>
-    </StyledGroups>
+                <AddUserToGroup
+                  group={i}
+                  organizationId={organizationId}
+                  onAddUser={refetch}
+                  closeModal={() => modalAction('close', 'addUser')}
+                />
+              </Modal>
+            </>
+
+            <OrgGroupsLink
+              className="link"
+              groupSlug={i.name}
+              organizationSlug={organizationId}
+              organizationName={organizationName}
+              key={i.id}
+            >
+              <EditOutlined className="edit" />
+            </OrgGroupsLink>
+
+            {i.type !== 'project-default-group' && (
+              <>
+                <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+
+                <Modal
+                  isOpen={modalStates.deleteGroup.open && modalStates.deleteGroup.current.name === i.name}
+                  onRequestClose={() => modalAction('close', 'deleteGroup')}
+                >
+                  <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
+                  <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+                    This action will delete this entry, you might not be able to get this back.
+                  </p>
+
+                  <ModalFooter>
+                    <Mutation mutation={DELETE_GROUP}>
+                      {(deleteGroup, { error, data }) => {
+                        if (error) {
+                          return <div>{error.message}</div>;
+                        }
+                        if (data) {
+                          refetch().then(() => modalAction('close', 'deleteGroup'));
+                          return <DeleteButton>Continue</DeleteButton>;
+                        }
+                        return (
+                          <DeleteButton
+                            onClick={() => {
+                              deleteGroup({
+                                variables: {
+                                  groupName: modalStates.deleteGroup?.current?.name,
+                                },
+                              });
+                            }}
+                          >
+                            Continue
+                          </DeleteButton>
+                        );
+                      }}
+                    </Mutation>
+                    <CancelButton onClick={() => modalAction('close', 'deleteGroup')}>Cancel</CancelButton>
+                  </ModalFooter>
+                </Modal>
+              </>
+            )}
+          </TableActions>
+        );
+      },
+    },
+  ];
+
+  return (
+    <GroupsWrapper>
+      <OrgHeader headerText="Groups" />
+      <StyledGroups>
+        <PaginatedTable limit={10} data={groups} columns={Columns} withSorter emptyText="No groups found" />
+        <NewGroup
+          disabled={!ableToAddGroup}
+          organizationId={organizationId}
+          onGroupAdded={refetch}
+          existingGroupNames={groups.map(g => g.name)}
+        />
+      </StyledGroups>
+    </GroupsWrapper>
   );
 };
 
-export default withLogic(Groups);
+export default Groups;

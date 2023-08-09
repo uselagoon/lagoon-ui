@@ -23,32 +23,16 @@ export const StyledNavigation = styled.ul`
     &:hover {
       background-color: ${color.white} !important;
     }
-
-    &::before {
-      background-color: ${color.linkBlue};
-      background-position: center center;
-      background-repeat: no-repeat;
-      content: '';
-      display: block;
-      height: 59px;
-      left: 0;
-      position: absolute;
-      top: 0;
-      transition: all 0.3s ease-in-out;
-      width: 45px;
-    }
-
     a {
       color: ${props => props.theme.texts.navigation};
       display: block;
-      padding: 20px 20px 19px 60px;
-      @media ${bp.wideUp} {
-        padding-left: calc((100vw / 16) * 1);
+      &:hover{
+        color: ${props => (props.theme.colorScheme === 'dark' ? props.theme.backgrounds.box : 'initial')} !important;
       }
     }
 
     &.active {
-      background-color: ${props => props.theme.backgrounds.content};
+      background-color: ${props => props.theme.backgrounds.secondary};
       border-right: 1px solid ${props => props.theme.backgrounds.content};
       width: calc(100% + 1px);
 
@@ -56,77 +40,47 @@ export const StyledNavigation = styled.ul`
         color: ${props => props.theme.texts.navigation};
       }
     }
-    &.overview {
-      &::before {
-        background-image: url('/static/images/overview.svg');
-        background-size: 21px 16px;
-      }
+ 
+  }
+  .linkContainer{
+    margin-bottom:1px;
 
-      &.active::before {
-        background-image: url('/static/images/overview-active.svg');
+    span[role="img"]{
+      background:#497FFA;
+      height:60px;
+      width:50px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      svg{
+        fill:#fff;
+        font-size:32px;
       }
     }
-
-    &.groups {
-      &::before {
-        background-image: url('/static/images/tasks.svg');
-        background-size: 21px 16px;
-      }
-
-      &.active::before {
-        background-image: url('/static/images/tasks-active.svg');
-      }
-    }
-
-    &.users {
-      &::before {
-        background-image: url('/static/images/users.svg');
-        background-size: 21px 16px;
-      }
-
-      &.active::before {
-        background-image: url('/static/images/users-active.svg');
-      }
-    }
-
-    &.projects {
-      &::before {
-        background-image: url('/static/images/tasks.svg');
-        background-size: 21px 16px;
-      }
-
-      &.active::before {
-        background-image: url('/static/images/tasks-active.svg');
-      }
-    }
-
-    &.notifications {
-      &::before {
-        background-image: url('/static/images/tasks.svg');
-        background-size: 21px 16px;
-      }
-
-      &.active::before {
-        background-image: url('/static/images/tasks-active.svg');
-      }
+    .destination{
+      display:inline-flex;
+      align-items:center;
+      margin-left:36px;
+      font-size:1rem;
+      line-height:24px;
     }
   }
+
+
   .navLink {
+    display:flex;
     a {
       color: ${props => props.theme.texts.navigation};
       display: block;
       padding: 20px 20px 19px 60px;
       transition: color 0.2s ease;
-      @media ${bp.wideUp} {
-        padding-left: calc((100vw / 16) * 1);
-      }
       &:hover {
         color: ${color.darkGrey};
       }
-    }
-
+    
     .active a {
       color: ${color.black};
     }
+ 
   }
 `;

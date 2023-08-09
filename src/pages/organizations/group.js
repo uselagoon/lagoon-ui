@@ -47,7 +47,6 @@ export const PageGroup = ({ router }) => {
               organizationSlug={router.query.organizationSlug}
               organizationName={router.query.organizationName || ''}
             />
-            <GroupsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" />
             <GroupBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" loading />
           </Breadcrumbs>
 
@@ -55,11 +54,6 @@ export const PageGroup = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="groups" />
 
             <GroupPageWrapper>
-              <div className="details">
-                <div className="field-wrapper environmentType">
-                  <AddUserToGroup group={null} organizationId="" disabled />
-                </div>
-              </div>
               <GroupMembersSkeleton/>
             </GroupPageWrapper>
           </OrganizationsWrapper>
@@ -94,7 +88,6 @@ export const PageGroup = ({ router }) => {
             organizationSlug={router.query.organizationSlug}
             organizationName={organization.name}
           />
-          <GroupsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
           <GroupBreadcrumb
             groupSlug={group.name}
             organizationSlug={router.query.organizationSlug}
@@ -106,12 +99,14 @@ export const PageGroup = ({ router }) => {
           <OrgNavTabs activeTab="groups" organization={organization} />
 
           <GroupPageWrapper>
-            <div className="details">
+            {/* <div className="details">
               <div className="field-wrapper environmentType">
                 <AddUserToGroup group={group} organizationId={organization.id} onAddUser={handleRefetch}/>
               </div>
-            </div>
+            </div> */}
             <GroupMembers
+              organizationId={organization.id}
+              organizationName={organization.name}
               members={group.members || []}
               groupName={group.name}
               projectDefaultGroup={(group.type.includes('project-default-group') && 'project') || 'user'}

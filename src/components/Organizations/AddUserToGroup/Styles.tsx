@@ -26,6 +26,9 @@ export const NewMember = styled.div`
     outline: none;
   }
 
+  input::placeholder {
+    font-size: 1rem;
+  }
   .selectRole {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
@@ -61,3 +64,5 @@ export const RoleSelect = styled.div`
     margin-bottom: 0;
   }
 `;
+
+export const AddUserButtons = styled.div``;

@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { Mutation } from 'react-apollo';
 
+
+
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
@@ -8,7 +10,11 @@ import withLogic from 'components/Organizations/NewGroup/logic';
 import gql from 'graphql-tag';
 import { color } from 'lib/variables';
 import styled from 'styled-components';
-import { StyledNotification } from '../SharedStyles';
+
+
+
+import { Footer, StyledNotification } from '../SharedStyles';
+
 
 const ADD_GROUP_MUTATION = gql`
   mutation addGroup($group: String!, $organization: Int!) {
@@ -26,7 +32,7 @@ const customStyles = {
 
 const StyledNewGroup = styled.div`
   .margins {
-    margin-right: 10px;
+    margin: 2rem 10px 2rem 0;
   }
   .modal-content {
     max-width: 70%;
@@ -71,6 +77,7 @@ const StyledNewGroup = styled.div`
  * Confirms the deletion of the specified name and type.
  */
 export const NewGroup = ({
+  existingGroupNames,
   onGroupAdded,
   disabled,
   inputValueGroup,
@@ -80,68 +87,79 @@ export const NewGroup = ({
   openModal,
   closeModal,
 }) => {
-  const inputRef = useRef(null);
-
-  const clearModalText = () => {
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-  };
-
   return (
     <StyledNewGroup>
       <div className="margins">
         <Button disabled={disabled} action={openModal}>
-          New Group
+          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '28px' }}>+</span>
+            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
+          </span>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_GROUP_MUTATION}>
-            {(addGroup, { loading, error, data }) => {
+            {(addGroup, { error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
               if (data) {
-                clearModalText();
-                onGroupAdded().then(closeModal);
+                // hacky
+                onGroupAdded().then(() => {
+                  setInputValue({ target: { value: '' } });
+                  closeModal();
+                });
               }
               return (
                 <StyledNotification>
+                  <div className="newMember">
+                    <h4>New Group</h4>
+                    <div className="form-box">
+                      <label>
+                        Group Name: <span style={{ color: '#E30000' }}>*</span>{' '}
+                        <input
+                          className="inputEmail"
+                          type="text"
+                          placeholder="Enter name"
+                          value={inputValueGroup}
+                          onChange={e => {
+                            const newVal = e.target.value;
+                            const allowedChars = /^[a-z0-9-]*$/;
+                            if (!allowedChars.test(newVal)) return;
+                            // recompose wants the whole event
+                            setInputValue(e);
+                          }}
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <Footer>
+                        <Button
+                          disabled={
+                            inputValueGroup === '' ||
+                            inputValueGroup.indexOf(' ') > 0 ||
+                            existingGroupNames.includes(inputValueGroup)
+                          }
+                          action={() => {
+                            addGroup({
+                              variables: {
+                                group: inputValueGroup,
+                                organization: parseInt(organizationId, 10),
+                              },
+                            });
+                          }}
+                          variant="primary"
+                        >
+                          Create
+                        </Button>
 
-
-                <div className="newMember">
-                  <h4>New Group</h4>
-                  <div className="form-box">
-                    <label>
-                      Group Name:{' '}
-                      <input
-                        ref={inputRef}
-                        className="inputEmail"
-                        type="text"
-                        value={inputValueGroup}
-                        onChange={setInputValue}
-                      />
-                    </label>
+                        <Button variant="ghost" action={() => closeModal()}>
+                          Cancel
+                        </Button>
+                      </Footer>
+                    </div>
                   </div>
-                  <div>
-                    <p></p>
-                    <Button
-                      disabled={inputValueGroup === '' || inputValueGroup.indexOf(' ') > 0}
-                      action={() => {
-                        addGroup({
-                          variables: {
-                            group: inputValueGroup,
-                            organization: parseInt(organizationId, 10),
-                          },
-                        });
-                      }}
-                      variant="green"
-                    >
-                      Create
-                    </Button>
-                  </div>
-                </div>
                 </StyledNotification>
               );
             }}
