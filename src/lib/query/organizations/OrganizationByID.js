@@ -12,6 +12,7 @@ export default gql`
       name
       description
       quotaProject
+      friendlyName
       quotaGroup
       quotaNotification
       deployTargets{

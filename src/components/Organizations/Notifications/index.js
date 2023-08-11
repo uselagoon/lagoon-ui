@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
+import { EditOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
+import Modal from 'components/Modal';
 import RemoveNotificationConfirm from 'components/Organizations/RemoveNotificationConfirm';
 import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
+import { Footer, ModalChildren } from '../SharedStyles';
 import AddNotifications from './AddNotifications';
 import { AddNotifButton, NameTagCol, StyledOrgNotifications } from './Styles';
 
@@ -36,6 +39,43 @@ const REMOVE_NOTIFICATION_TEAMS = gql`
 const REMOVE_NOTIFICATION_WEBHOOK = gql`
   mutation removeNotification($name: String!) {
     deleteNotificationWebhook(input: { name: $name })
+  }
+`;
+
+export const UPDATE_NOTIFICATION_SLACK = gql`
+  mutation UpdateNotificationSlack($name: String!, $patch: UpdateNotificationSlackPatchInput) {
+    updateNotificationSlack(input: { name: $name, patch: $patch }) {
+      name
+    }
+  }
+`;
+export const UPDATE_NOTIFICATION_ROCKETCHAT = gql`
+  mutation UpdateNotificationRocketChat($name: String!, $patch: UpdateNotificationRocketChatPatchInput) {
+    updateNotificationRocketChat(input: { name: $name, patch: $patch }) {
+      name
+    }
+  }
+`;
+export const UPDATE_NOTIFICATION_EMAIL = gql`
+  mutation UpdateNotificationEmail($name: String!, $patch: UpdateNotificationEmailPatchInput) {
+    updateNotificationEmail(input: { name: $name, patch: $patch }) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_NOTIFICATION_WEBHOOK = gql`
+  mutation UpdateNotificationWebhook($name: String!, $patch: UpdateNotificationWebhookPatchInput) {
+    updateNotificationWebhook(input: { name: $name, patch: $patch }) {
+      name
+    }
+  }
+`;
+export const UPDATE_NOTIFICATION_TEAMS = gql`
+  mutation UpdateNotificationMicrosoftTeams($name: String!, $patch: UpdateNotificationMicrosoftTeamsPatchInput) {
+    updateNotificationMicrosoftTeams(input: { name: $name, patch: $patch }) {
+      name
+    }
   }
 `;
 
@@ -91,6 +131,27 @@ const OrgNotifications = ({
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const initialEditState = {
+    open: false,
+    type: '',
+    current: {},
+  };
+
+  const [editState, setEditState] = useState(initialEditState);
+
+  const [notificationName, setNotificationName] = useState('');
+  const [email, setEmail] = useState('');
+  const [webhook, setWebhook] = useState('');
+  const [channel, setChannel] = useState('');
+
+  const closeEditModal = () => {
+    setEditState(initialEditState);
+    setNotificationName('');
+    setEmail('');
+    setWebhook('');
+    setChannel('');
+  };
+
   return (
     <StyledOrgNotifications>
       <OrgHeader
@@ -99,7 +160,6 @@ const OrgNotifications = ({
         searchProps={{
           value: searchInput,
           onChange: e => setSearchInput(e.target.value),
-          disabled: slacks.length === 0,
         }}
       />
 
@@ -129,29 +189,116 @@ const OrgNotifications = ({
               <br></br>
               Channel: {project.channel}
             </div>
-            <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
-                {(removeNotification, { error, data }) => {
-                  if (error) {
-                    return <div>{error.message}</div>;
-                  }
-                  if (data) {
-                    refresh();
-                  }
-                  return (
-                    <RemoveNotificationConfirm
-                      removeName={project.name}
-                      onRemove={() =>
-                        removeNotification({
-                          variables: {
-                            name: project.name,
-                          },
-                        })
+            <div className="actions">
+              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'slack' })}>
+                <EditOutlined className="edit" />
+              </span>
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'slack'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        type="text"
+                        placeholder="Enter name"
+                        value={notificationName || editState.current.name}
+                        onChange={e => setNotificationName(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={webhook || editState.current.webhook}
+                        onChange={e => setWebhook(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Channel: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputChannel"
+                        type="text"
+                        placeholder="Enter channel"
+                        value={channel || editState.current.channel}
+                        onChange={e => setChannel(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
+                    {(updateSlack, { error, data }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
                       }
-                    />
-                  );
-                }}
-              </Mutation>
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          variant="primary"
+                          action={() => {
+                            updateSlack({
+                              variables: {
+                                name: editState.current.name,
+                                patch: {
+                                  ...(notificationName ? { name: notificationName } : {}),
+                                  ...(channel ? { channel } : {}),
+                                  ...(webhook ? { webhook } : {}),
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+              <div className="remove">
+                <Mutation mutation={REMOVE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
+                  {(removeNotification, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refresh();
+                    }
+                    return (
+                      <RemoveNotificationConfirm
+                        removeName={project.name}
+                        onRemove={() =>
+                          removeNotification({
+                            variables: {
+                              name: project.name,
+                            },
+                          })
+                        }
+                      />
+                    );
+                  }}
+                </Mutation>
+              </div>
             </div>
           </div>
         ))}
@@ -168,29 +315,116 @@ const OrgNotifications = ({
               <br></br>
               Channel: {project.channel}
             </div>
-            <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
-                {(removeNotification, { error, data }) => {
-                  if (error) {
-                    return <div>{error.message}</div>;
-                  }
-                  if (data) {
-                    refresh();
-                  }
-                  return (
-                    <RemoveNotificationConfirm
-                      removeName={project.name}
-                      onRemove={() =>
-                        removeNotification({
-                          variables: {
-                            name: project.name,
-                          },
-                        })
+            <div className="actions">
+              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}>
+                <EditOutlined className="edit" />
+              </span>
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'rocketchat'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        type="text"
+                        placeholder="Enter name"
+                        value={notificationName || editState.current.name}
+                        onChange={e => setNotificationName(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={webhook || editState.current.webhook}
+                        onChange={e => setWebhook(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Channel: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputChannel"
+                        type="text"
+                        placeholder="Enter channel"
+                        value={channel || editState.current.channel}
+                        onChange={e => setChannel(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
+                    {(updateRocketChat, { error, data }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
                       }
-                    />
-                  );
-                }}
-              </Mutation>
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          variant="primary"
+                          action={() => {
+                            updateRocketChat({
+                              variables: {
+                                name: editState.current.name,
+                                patch: {
+                                  ...(notificationName ? { name: notificationName } : {}),
+                                  ...(channel ? { channel } : {}),
+                                  ...(webhook ? { webhook } : {}),
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+              <div className="remove">
+                <Mutation mutation={REMOVE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
+                  {(removeNotification, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refresh();
+                    }
+                    return (
+                      <RemoveNotificationConfirm
+                        removeName={project.name}
+                        onRemove={() =>
+                          removeNotification({
+                            variables: {
+                              name: project.name,
+                            },
+                          })
+                        }
+                      />
+                    );
+                  }}
+                </Mutation>
+              </div>
             </div>
           </div>
         ))}
@@ -203,29 +437,102 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
             <div className="notifdata">Address: {project.emailAddress}</div>
-            <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
-                {(removeNotification, { error, data }) => {
-                  if (error) {
-                    return <div>{error.message}</div>;
-                  }
-                  if (data) {
-                    refresh();
-                  }
-                  return (
-                    <RemoveNotificationConfirm
-                      removeName={project.name}
-                      onRemove={() =>
-                        removeNotification({
-                          variables: {
-                            name: project.name,
-                          },
-                        })
+            <div className="actions">
+              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'email' })}>
+                <EditOutlined className="edit" />
+              </span>
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'email'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        type="text"
+                        placeholder="Enter name"
+                        value={notificationName || editState.current.name}
+                        onChange={e => setNotificationName(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Email Address: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputEmail"
+                        type="text"
+                        placeholder="Enter Email"
+                        value={email || editState.current.emailAddress}
+                        onChange={e => setEmail(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
+                    {(updateEmail, { error, data }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
                       }
-                    />
-                  );
-                }}
-              </Mutation>
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          variant="primary"
+                          action={() => {
+                            updateEmail({
+                              variables: {
+                                name: editState.current.name,
+                                patch: {
+                                  ...(notificationName ? { name: notificationName } : {}),
+                                  ...(email ? { emailAddress: email } : {}),
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+              <div className="remove">
+                <Mutation mutation={REMOVE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
+                  {(removeNotification, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refresh();
+                    }
+                    return (
+                      <RemoveNotificationConfirm
+                        removeName={project.name}
+                        onRemove={() =>
+                          removeNotification({
+                            variables: {
+                              name: project.name,
+                            },
+                          })
+                        }
+                      />
+                    );
+                  }}
+                </Mutation>
+              </div>
             </div>
           </div>
         ))}
@@ -238,29 +545,104 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
             <div className="notifdata">Webhook: {project.webhook}</div>
-            <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
-                {(removeNotification, { error, data }) => {
-                  if (error) {
-                    return <div>{error.message}</div>;
-                  }
-                  if (data) {
-                    refresh();
-                  }
-                  return (
-                    <RemoveNotificationConfirm
-                      removeName={project.name}
-                      onRemove={() =>
-                        removeNotification({
-                          variables: {
-                            name: project.name,
-                          },
-                        })
+            <div className="actions">
+              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'webhook' })}>
+                <EditOutlined className="edit" />
+              </span>
+
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'webhook'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        type="text"
+                        placeholder="Enter name"
+                        value={notificationName || editState.current.name}
+                        onChange={e => setNotificationName(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={webhook || editState.current.webhook}
+                        onChange={e => setWebhook(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
+                    {(updateWebhook, { error, data }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
                       }
-                    />
-                  );
-                }}
-              </Mutation>
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          variant="primary"
+                          action={() => {
+                            updateWebhook({
+                              variables: {
+                                name: editState.current.name,
+                                patch: {
+                                  ...(notificationName ? { name: notificationName } : {}),
+                                  ...(webhook ? { webhook } : {}),
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+
+              <div className="remove">
+                <Mutation mutation={REMOVE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
+                  {(removeNotification, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refresh();
+                    }
+                    return (
+                      <RemoveNotificationConfirm
+                        removeName={project.name}
+                        onRemove={() =>
+                          removeNotification({
+                            variables: {
+                              name: project.name,
+                            },
+                          })
+                        }
+                      />
+                    );
+                  }}
+                </Mutation>
+              </div>
             </div>
           </div>
         ))}
@@ -274,29 +656,105 @@ const OrgNotifications = ({
             </NameTagCol>
 
             <div className="notifdata">Webhook: {project.webhook}</div>
-            <div className="remove">
-              <Mutation mutation={REMOVE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
-                {(removeNotification, { error, data }) => {
-                  if (error) {
-                    return <div>{error.message}</div>;
-                  }
-                  if (data) {
-                    refresh();
-                  }
-                  return (
-                    <RemoveNotificationConfirm
-                      removeName={project.name}
-                      onRemove={() =>
-                        removeNotification({
-                          variables: {
-                            name: project.name,
-                          },
-                        })
+            <div className="actions">
+              <span className="link">
+                <EditOutlined
+                  className="edit"
+                  onClick={() => setEditState({ open: true, current: project, type: 'teams' })}
+                />
+              </span>
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'teams'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        type="text"
+                        placeholder="Enter name"
+                        value={notificationName || editState.current.name}
+                        onChange={e => setNotificationName(e.target.value)}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={webhook || editState.current.webhook}
+                        onChange={e => setWebhook(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
+                    {(updateTeams, { error, data }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
                       }
-                    />
-                  );
-                }}
-              </Mutation>
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          variant="primary"
+                          action={() => {
+                            updateTeams({
+                              variables: {
+                                name: editState.current.name,
+                                patch: {
+                                  ...(notificationName ? { name: notificationName } : {}),
+                                  ...(webhook ? { webhook } : {}),
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+              <div className="remove">
+                <Mutation mutation={REMOVE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
+                  {(removeNotification, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refresh();
+                    }
+                    return (
+                      <RemoveNotificationConfirm
+                        removeName={project.name}
+                        onRemove={() =>
+                          removeNotification({
+                            variables: {
+                              name: project.name,
+                            },
+                          })
+                        }
+                      />
+                    );
+                  }}
+                </Mutation>
+              </div>
             </div>
           </div>
         ))}

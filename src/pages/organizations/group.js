@@ -9,7 +9,7 @@ import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import GroupsBreadcrumb from 'components/Breadcrumbs/Organizations/Groups';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import GroupMembers from 'components/Organizations/GroupMembers';
-import GroupMembersSkeleton from "components/Organizations/GroupMembers/GroupMembersSkeleton";
+import GroupMembersSkeleton from 'components/Organizations/GroupMembers/GroupMembersSkeleton';
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
@@ -54,7 +54,7 @@ export const PageGroup = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="groups" />
 
             <GroupPageWrapper>
-              <GroupMembersSkeleton/>
+              <GroupMembersSkeleton />
             </GroupPageWrapper>
           </OrganizationsWrapper>
         </MainLayout>
@@ -75,7 +75,6 @@ export const PageGroup = ({ router }) => {
   if (!group) {
     return <GroupNotFound variables={{ name: router.query.organizationSlug }} />;
   }
-
   return (
     <>
       <Head>
@@ -107,10 +106,11 @@ export const PageGroup = ({ router }) => {
             <GroupMembers
               organizationId={organization.id}
               organizationName={organization.name}
+              projects={organization.projects || []}
               members={group.members || []}
               groupName={group.name}
               projectDefaultGroup={(group.type.includes('project-default-group') && 'project') || 'user'}
-              onUserRemove={handleRefetch}
+              refetch={handleRefetch}
             />
           </GroupPageWrapper>
         </OrganizationsWrapper>

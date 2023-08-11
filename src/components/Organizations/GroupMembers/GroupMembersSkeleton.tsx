@@ -27,7 +27,11 @@ const GroupMembersSkeleton = () => {
         <label></label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>
-      <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => groupMembers)}</div>
+      <div className="data-table">{[...Array<undefined>(Math.floor(numberOfFields / 2))].map(() => groupMembers)}</div>
+
+      <div className="data-table" style={{ marginTop: '2rem' }}>
+        {[...Array<undefined>(Math.floor(numberOfFields / 2))].map(() => groupMembers)}
+      </div>
     </StyledGroupMembers>
   );
 };

@@ -4,13 +4,12 @@ import Breadcrumb from 'components/Breadcrumbs/Breadcrumb';
 
 const OrganizationBreadcrumb = ({ organizationSlug, organizationName, loading}) => {
   const linkData = getLinkData(organizationSlug, organizationName);
-
   return (
     <Breadcrumb
       header="Organization"
       title={organizationName}
       loading={loading}
-      {... linkData}
+      {...linkData}
     />
   );
 };

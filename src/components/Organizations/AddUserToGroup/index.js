@@ -3,7 +3,6 @@ import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
 import Button from 'components/Button';
-import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
 import withLogic from 'components/Organizations/AddUserToGroup/logic';
 import gql from 'graphql-tag';
@@ -47,7 +46,7 @@ let options = [
  */
 export const AddUserToGroup = ({
   group,
-  closeModal,
+  close,
   inputValueEmail,
   setInputValue,
   selectedRole,
@@ -63,7 +62,7 @@ export const AddUserToGroup = ({
         if (data) {
           onAddUser().then(() => {
             setInputValue({ target: { value: '' } });
-            closeModal();
+            close();
           });
         }
         return (
@@ -115,8 +114,9 @@ export const AddUserToGroup = ({
                 >
                   Add
                 </Button>
-
-                <Button variant="ghost">Cancel</Button>
+                <Button variant="ghost" action={() => close()}>
+                  Cancel
+                </Button>
               </Footer>
             </div>
           </NewMember>

@@ -28,6 +28,7 @@ interface Props {
     width: string;
     render: (item: DataType) => ReactNode;
   }[];
+  usersTable?: boolean;
   withSorter?: boolean;
   labelText?: string;
   limit: number;
@@ -48,7 +49,15 @@ const debounce = (fn: (val: string) => void, delay: number) => {
   };
 };
 
-const PaginatedTable: FC<Props> = ({ data = [], columns, withSorter, emptyText,labelText, limit = 10 }) => {
+const PaginatedTable: FC<Props> = ({
+  data = [],
+  columns,
+  usersTable,
+  withSorter,
+  emptyText,
+  labelText,
+  limit = 10,
+}) => {
   const params = new URLSearchParams(window.location.search);
 
   // initial qs params.
@@ -77,7 +86,12 @@ const PaginatedTable: FC<Props> = ({ data = [], columns, withSorter, emptyText,l
   const sortedFilteredData = useMemo(() => {
     const filtered = !searchStr
       ? unfilteredData
-      : unfilteredData.filter(key => key.name.toLowerCase().includes(searchStr.toLowerCase()));
+      : unfilteredData.filter(key => {
+          // @ts-ignore
+          const k = !usersTable ? key.name : key.user.email;
+
+          return k.toLowerCase().includes(searchStr.toLowerCase());
+        });
 
     if (withSorter && sortMethod === 'alphabetical') {
       return filtered.sort(function (a, b) {
@@ -183,11 +197,13 @@ const PaginatedTable: FC<Props> = ({ data = [], columns, withSorter, emptyText,l
   return (
     <StyledTable>
       <Filters>
-        {labelText ? <span className='labelText'>{labelText}</span> : "" }
-        {withSorter ? <select onChange={handleSortChange}>
-          <option value={undefined}>Sort by</option>
-          <option value="alphabetical">Alphabetical</option>
-        </select>: null}
+        {labelText ? <span className="labelText">{labelText}</span> : ''}
+        {withSorter ? (
+          <select onChange={handleSortChange}>
+            <option value={undefined}>Sort by</option>
+            <option value="alphabetical">Alphabetical</option>
+          </select>
+        ) : null}
         <SearchBar className="search">
           <SearchOutlined className="icon" />
           <input
@@ -207,10 +223,10 @@ const PaginatedTable: FC<Props> = ({ data = [], columns, withSorter, emptyText,l
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow key={idx}>
+            <TableRow key={i.id}>
               {columns?.map(col => {
                 return (
-                  <TableColumn key={col.key} width={col.width}>
+                  <TableColumn key={`${col.key}-${idx}`} width={col.width}>
                     {col.render(i)}
                   </TableColumn>
                 );
