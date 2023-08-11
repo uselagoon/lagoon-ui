@@ -88,8 +88,7 @@ const PaginatedTable: FC<Props> = ({
       ? unfilteredData
       : unfilteredData.filter(key => {
           // @ts-ignore
-          const k = !usersTable ? key.name : key.user.email;
-
+          const k = !usersTable ? key.name : key.user.email as string;
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
