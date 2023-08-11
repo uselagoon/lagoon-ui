@@ -21,11 +21,6 @@ const OrgProjectsSkeleton = () => {
   );
   return (
     <StyledOrgProjects>
-      <div className="header">
-        <label>Projects</label>
-        <label></label>
-        <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
-      </div>
       <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => projectSkeleton)}</div>
     </StyledOrgProjects>
   );

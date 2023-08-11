@@ -9,7 +9,7 @@ import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import GroupsBreadcrumb from 'components/Breadcrumbs/Organizations/Groups';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import GroupMembers from 'components/Organizations/GroupMembers';
-import GroupMembersSkeleton from "components/Organizations/GroupMembers/GroupMembersSkeleton";
+import GroupMembersSkeleton from 'components/Organizations/GroupMembers/GroupMembersSkeleton';
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
@@ -47,7 +47,6 @@ export const PageGroup = ({ router }) => {
               organizationSlug={router.query.organizationSlug}
               organizationName={router.query.organizationName || ''}
             />
-            <GroupsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" />
             <GroupBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" loading />
           </Breadcrumbs>
 
@@ -55,12 +54,7 @@ export const PageGroup = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="groups" />
 
             <GroupPageWrapper>
-              <div className="details">
-                <div className="field-wrapper environmentType">
-                  <AddUserToGroup group={null} organizationId="" disabled />
-                </div>
-              </div>
-              <GroupMembersSkeleton/>
+              <GroupMembersSkeleton />
             </GroupPageWrapper>
           </OrganizationsWrapper>
         </MainLayout>
@@ -81,7 +75,6 @@ export const PageGroup = ({ router }) => {
   if (!group) {
     return <GroupNotFound variables={{ name: router.query.organizationSlug }} />;
   }
-
   return (
     <>
       <Head>
@@ -94,7 +87,6 @@ export const PageGroup = ({ router }) => {
             organizationSlug={router.query.organizationSlug}
             organizationName={organization.name}
           />
-          <GroupsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
           <GroupBreadcrumb
             groupSlug={group.name}
             organizationSlug={router.query.organizationSlug}
@@ -106,16 +98,19 @@ export const PageGroup = ({ router }) => {
           <OrgNavTabs activeTab="groups" organization={organization} />
 
           <GroupPageWrapper>
-            <div className="details">
+            {/* <div className="details">
               <div className="field-wrapper environmentType">
                 <AddUserToGroup group={group} organizationId={organization.id} onAddUser={handleRefetch}/>
               </div>
-            </div>
+            </div> */}
             <GroupMembers
+              organizationId={organization.id}
+              organizationName={organization.name}
+              projects={organization.projects || []}
               members={group.members || []}
               groupName={group.name}
               projectDefaultGroup={(group.type.includes('project-default-group') && 'project') || 'user'}
-              onUserRemove={handleRefetch}
+              refetch={handleRefetch}
             />
           </GroupPageWrapper>
         </OrganizationsWrapper>

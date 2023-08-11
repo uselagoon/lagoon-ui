@@ -5,6 +5,7 @@ import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGro
 import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 
+import AddGroupToProject from '../AddGroupToProject';
 import { StyledGroupMembers } from './Styles';
 
 const REMOVE_GROUP_FROM_PROJECT = gql`
@@ -18,7 +19,7 @@ const REMOVE_GROUP_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, projectName, refresh }) => {
+const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, projectName, orgGroups, refresh }) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredMembers = groups.filter(key => {
@@ -46,7 +47,7 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
         {!groups.length && <div className="data-none">No groups</div>}
         {searchInput && !filteredMembers.length && <div className="data-none">No groups matching "{searchInput}"</div>}
         {filteredMembers.map(group => (
-          <div className="data-row" key={group.name}>
+          <div className="data-row" key={group.id}>
             <div className="name">
               <OrgGroupsLink
                 groupSlug={group.name}
@@ -92,6 +93,14 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
           </div>
         ))}
       </div>
+      <AddGroupToProject
+        projectName={projectName}
+        organizationId={organizationId}
+        options={orgGroups.map(group => {
+          return { label: group.name, value: group.name };
+        })}
+        refresh={refresh}
+      />
     </StyledGroupMembers>
   );
 };

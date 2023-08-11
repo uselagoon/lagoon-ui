@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -8,7 +8,6 @@ import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import Groups from 'components/Organizations/Groups';
 import GroupsSkeleton from 'components/Organizations/Groups/GroupsSkeleton';
-import { GroupsWrapper } from 'components/Organizations/Groups/Styles';
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
@@ -16,8 +15,6 @@ import MainLayout from 'layouts/MainLayout';
 import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
-
-import NewGroup from '../../components/Organizations/NewGroup';
 import QueryError from '../../components/errors/QueryError';
 
 /**
@@ -48,14 +45,7 @@ export const PageGroups = ({ router }) => {
           <OrganizationsWrapper>
             <OrgNavTabsSkeleton activeTab="groups" />
 
-            <GroupsWrapper>
-              <div className="details">
-                <div className="field-wrapper environmentType">
-                  <NewGroup disabled organizationId={''} />
-                </div>
-              </div>
-              <GroupsSkeleton />
-            </GroupsWrapper>
+            <GroupsSkeleton />
           </OrganizationsWrapper>
         </MainLayout>
       </>
@@ -86,20 +76,14 @@ export const PageGroups = ({ router }) => {
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="groups" organization={organization} />
-
-          <GroupsWrapper>
-            <div className="details">
-              <div className="field-wrapper environmentType">
-                <NewGroup disabled={!ableToAddGroup} organizationId={organization.id} onGroupAdded={handleRefetch} />
-              </div>
-            </div>
-            <Groups
-              onGroupDeleted={handleRefetch}
-              groups={organization.groups}
-              organizationId={router.query.organizationSlug}
-              organizationName={organization.name}
-            />
-          </GroupsWrapper>
+          <Groups
+            onGroupDeleted={handleRefetch}
+            groups={organization.groups}
+            organizationId={organization.id}
+            organizationName={organization.name}
+            ableToAddGroup={ableToAddGroup}
+            refetch={handleRefetch}
+          />
         </OrganizationsWrapper>
       </MainLayout>
     </>

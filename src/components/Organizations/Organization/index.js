@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Mutation } from 'react-apollo';
 
-import { StyledOrganization } from './Styles';
+import Link from 'next/link';
+
+import { EditOutlined, EnvironmentOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
+import Button from 'components/Button';
+import Modal from 'components/Modal';
+import gql from 'graphql-tag';
+
+import OrgHeader from '../Orgheader';
+import { Footer, ModalChildren, Tag } from '../SharedStyles';
+import { LinkBtn, StyledOrganization, StyledOverview } from './Styles';
+
+const UPDATE_ORGANIZATION_FRIENDLY_NAME = gql`
+  mutation updateOrganizationFriendlyName($id: Int!, $friendlyName: String!) {
+    updateOrganization(input: { id: $id, patch: { friendlyName: $friendlyName } }) {
+      id
+      name
+      friendlyName
+    }
+  }
+`;
+
+const UPDATE_ORGANIZATION_DESCRIPTION = gql`
+  mutation updateOrganizationFriendlyName($id: Int!, $description: String!) {
+    updateOrganization(input: { id: $id, patch: { description: $description } }) {
+      id
+      name
+      description
+    }
+  }
+`;
 
 /**
  * Displays the organization information.
  */
-const Organization = ({ organization }) => {
+const Organization = ({ organization, refetch }) => {
   // this is done on the API side when creating groups against the organization as project-default-groups are not counted towards the quota
   // using the same count here to show the quota in the ui
   let groupCount = 0;
@@ -16,60 +46,229 @@ const Organization = ({ organization }) => {
     }
   }
 
+  const [nameModalOpen, setNameModalOpen] = useState(false);
+  const [friendlyName, setFriendlyName] = useState('');
+
+  const [descModalOpen, setDescModalOpen] = useState(false);
+  const [description, setDescription] = useState('');
+
+  const quotaDisplay = (quota, quotaNumber, quotaLimit) => {
+    const pluralName = quota + 's';
+    const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
+    const link = {
+      urlObject: {
+        pathname: `/organizations/${pluralName}`,
+        query: { organizationSlug: organization.id },
+      },
+      asPath: `/organizations/${organization.id}/${pluralName}`,
+    };
+
+    return (
+      <div className="quotaField">
+        <span>{pluralName.toUpperCase()}</span>
+        <span className="quota">
+          {capitalize(quota)} quota: {quotaNumber} of {quotaLimit}
+        </span>
+
+        <Link href={link.urlObject} as={link.asPath}>
+          <LinkBtn>
+            <EyeOutlined className="icon" /> {capitalize(pluralName)}
+          </LinkBtn>
+        </Link>
+      </div>
+    );
+  };
+
+  const modalAction = (action, modalName) => {
+    const modalAction = !(action === 'close');
+    return modalName === 'name' ? () => setNameModalOpen(modalAction) : () => setDescModalOpen(modalAction);
+  };
+
+  const renderEditBtn = type => <EditOutlined style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />;
+
   return (
     <StyledOrganization>
-      <div className="field-wrapper quotaProject">
-        <div>
-          <label>Project Quota</label>
-          <div className="field">
-            {organization.projects.length}/{organization.quotaProject}
+      <OrgHeader headerText="overview" />
+      <StyledOverview>
+        <span className="orgname">
+          {organization.friendlyName || organization.name} {renderEditBtn('name')}
+          <Modal
+            style={{
+              content: {
+                width: '50%',
+              },
+            }}
+            onRequestClose={modalAction('close', 'name')}
+            isOpen={nameModalOpen}
+          >
+            <ModalChildren>
+              <h4>Change Organisation name</h4>
+              <div className="form-box">
+                <label>
+                  Organisation name: <span style={{ color: '#E30000' }}>*</span>
+                  <input
+                    className="inputName"
+                    type="text"
+                    placeholder="Existing org name"
+                    value={friendlyName}
+                    onChange={e => setFriendlyName(e.target.value)}
+                  />
+                </label>
+              </div>
+
+              <Footer>
+                <Mutation mutation={UPDATE_ORGANIZATION_FRIENDLY_NAME} onError={e => console.error(e)}>
+                  {(updateOrgFriendlyName, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refetch().then(() => {
+                        modalAction('close', 'name')();
+                        setFriendlyName('');
+                      });
+                    }
+                    return (
+                      <Button
+                        variant="primary"
+                        action={() => {
+                          friendlyName &&
+                            updateOrgFriendlyName({
+                              variables: {
+                                id: organization.id,
+                                friendlyName,
+                              },
+                            });
+                        }}
+                      >
+                        Continue
+                      </Button>
+                    );
+                  }}
+                </Mutation>
+                <Button variant="ghost" action={modalAction('close', 'name')}>
+                  Cancel
+                </Button>
+              </Footer>
+            </ModalChildren>
+          </Modal>
+        </span>
+
+        <div className="description">
+          <span className="title">Description</span> {!organization.description && renderEditBtn('description')}
+          <p>
+            {organization.description} {organization.description && renderEditBtn('description')}
+          </p>
+          <Modal
+            isOpen={descModalOpen}
+            onRequestClose={modalAction('close', 'description')}
+            style={{
+              content: {
+                width: '50%',
+              },
+            }}
+          >
+            <ModalChildren>
+              <h4>Change Organisation description</h4>
+              <div className="form-box">
+                <label>
+                  Organisation description: <span style={{ color: '#E30000' }}>*</span>
+                  <input
+                    className="inputName"
+                    type="text"
+                    placeholder="Org description"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                  />
+                </label>
+              </div>
+              <Footer>
+                <Mutation mutation={UPDATE_ORGANIZATION_DESCRIPTION} onError={e => console.error(e)}>
+                  {(updateOrgDescription, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refetch().then(() => {
+                        modalAction('close', 'description')();
+                        setDescription('');
+                      });
+                    }
+                    return (
+                      <Button
+                        variant="primary"
+                        action={() => {
+                          description &&
+                            updateOrgDescription({
+                              variables: {
+                                id: organization.id,
+                                description,
+                              },
+                            });
+                        }}
+                      >
+                        Continue
+                      </Button>
+                    );
+                  }}
+                </Mutation>
+                <Button variant="ghost" action={modalAction('close', 'description')}>
+                  Cancel
+                </Button>
+              </Footer>
+            </ModalChildren>
+          </Modal>
+        </div>
+        <div className="info">
+          <div className="quotas">
+            {quotaDisplay('group', groupCount, organization.quotaGroup)}
+            {quotaDisplay('project', organization.projects.length, organization.quotaProject)}
+            {quotaDisplay(
+              'notification',
+              organization.slacks.length +
+                organization.rocketchats.length +
+                organization.teams.length +
+                organization.emails.length +
+                organization.webhook.length,
+              organization.quotaNotification
+            )}
+          </div>
+
+          <div className="targetwrapper">
+            <div className="targets">
+              <span>Available Deployments</span>
+              {organization.deployTargets.map(deploytarget => (
+                <div key={deploytarget.id} className="target">
+                  <EnvironmentOutlined className="targetIcon" />
+                  {deploytarget.name}
+                </div>
+              ))}
+            </div>
+
+            <div className="users">
+              <span>Users</span>
+              {organization.owners.map(owner => (
+                <div key={owner.email} className="user">
+                  <p>
+                    <UserOutlined className="userIcon" />
+                    {owner.email}{' '}
+                    {owner.owner ? (
+                      <Tag style={{ display: 'inline-block' }} background="#47D3FF">
+                        ORG OWNER
+                      </Tag>
+                    ) : (
+                      <Tag style={{ display: 'inline-block' }} background="#FF4747">
+                        ORG VIEWER
+                      </Tag>
+                    )}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div>
-          <label>Group Quota</label>
-          <div className="field">
-            {groupCount}/{organization.quotaGroup}
-          </div>
-        </div>
-        <div>
-          <label>Notification Quota</label>
-          <div className="field">
-            {organization.slacks.length +
-              organization.rocketchats.length +
-              organization.teams.length +
-              organization.emails.length +
-              organization.webhook.length}
-            /{organization.quotaNotification}
-          </div>
-        </div>
-      </div>
-      <div className="field-wrapper owners">
-        <div>
-          <label>Users</label>
-          <div className="field">
-            {organization.owners.map(owner => (
-              <li key={owner.email}>
-                {owner.email}
-                {owner.owner ? (
-                  <label className="owner-label">OWNER</label>
-                ) : (
-                  <label className="viewer-label">VIEWER</label>
-                )}
-              </li>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="field-wrapper targets">
-        <div>
-          <label>Available DeployTargets</label>
-          <div className="field">
-            {organization.deployTargets.map(deploytarget => (
-              <li key={deploytarget.id}>{deploytarget.name}</li>
-            ))}
-          </div>
-        </div>
-      </div>
+      </StyledOverview>
     </StyledOrganization>
   );
 };

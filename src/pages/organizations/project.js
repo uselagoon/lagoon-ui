@@ -7,11 +7,9 @@ import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgProjectBreadcrumb from 'components/Breadcrumbs/Organizations/Project';
-import ProjectsBreadcrumb from 'components/Breadcrumbs/Organizations/Projects';
-import AddGroupToProject from 'components/Organizations/AddGroupToProject';
-import AddNotificationToProject from 'components/Organizations/AddNotificationToProject';
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
+import OrgHeader from 'components/Organizations/Orgheader';
 import ProjectGroupMembers from 'components/Organizations/ProjectGroupMembers';
 import ProjectGroupSkeleton from 'components/Organizations/ProjectGroupMembers/ProjectGroupSkeleton';
 import ProjectNotifications from 'components/Organizations/ProjectNotifications';
@@ -45,8 +43,11 @@ export const PageGroupProject = ({ router }) => {
 
         <MainLayout>
           <Breadcrumbs>
-            <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} loading />
-            <ProjectsBreadcrumb organizationSlug={router.query.organizationSlug} />
+            <OrganizationBreadcrumb
+              organizationName={router.query.organizationName}
+              organizationSlug={router.query.organizationSlug}
+              loading
+            />
             <OrgProjectBreadcrumb
               projectSlug={router.query.projectName}
               organizationSlug={router.query.organizationSlug}
@@ -56,14 +57,6 @@ export const PageGroupProject = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="projects" />
 
             <OrgProjectWrapper>
-              <div className="details">
-                <div className="field-wrapper environmentType">
-                  <AddGroupToProject refresh={handleRefetch} projectName="" organizationId={null} options={[]} />
-                </div>
-                <div className="field-wrapper environmentType">
-                  <AddNotificationToProject refresh={handleRefetch} projectName="" organizationId={null} options={[]} />
-                </div>
-              </div>
               <ProjectGroupSkeleton />
               <ProjectNotificationsSkeleton />
             </OrgProjectWrapper>
@@ -95,7 +88,6 @@ export const PageGroupProject = ({ router }) => {
             organizationSlug={router.query.organizationSlug}
             organizationName={organization.name}
           />
-          <ProjectsBreadcrumb organizationSlug={router.query.organizationSlug} organizationName={organization.name} />
           <OrgProjectBreadcrumb
             projectSlug={router.query.projectName}
             organizationSlug={router.query.organizationSlug}
@@ -109,34 +101,15 @@ export const PageGroupProject = ({ router }) => {
               project.name == router.query.projectName && (
                 <>
                   <OrgNavTabs activeTab="projects" organization={organization} />
-
                   <OrgProjectWrapper>
-                    <div className="details">
-                      <div className="field-wrapper environmentType">
-                        <AddGroupToProject
-                          projectName={project.name}
-                          organizationId={organization.id}
-                          options={organization.groups.map(group => {
-                            return { label: group.name, value: group.name };
-                          })}
-                          refresh={handleRefetch}
-                        />
-                      </div>
-                      <div className="field-wrapper environmentType">
-                        <AddNotificationToProject
-                          projectName={project.name}
-                          organizationId={organization.id}
-                          options={organization}
-                          refresh={handleRefetch}
-                        />
-                      </div>
-                    </div>
+                    <OrgHeader headerText="Projects" />
                     <ProjectGroupMembers
                       refresh={handleRefetch}
                       projectName={project.name}
                       organizationId={organization.id}
                       organizationName={organization.name}
                       groups={project.groups || []}
+                      orgGroups={organization.groups}
                     />
                     <ProjectNotifications
                       refresh={handleRefetch}
@@ -144,6 +117,7 @@ export const PageGroupProject = ({ router }) => {
                       organizationId={organization.id}
                       organizationName={organization.name}
                       notifications={project.notifications}
+                      organization={organization}
                     />
                   </OrgProjectWrapper>
                 </>

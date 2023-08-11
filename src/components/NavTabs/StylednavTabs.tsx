@@ -49,9 +49,6 @@ export const StyledNavigation = styled.ul`
     }
 
     &.active {
-      &::before {
-        /* background-color: ${color.white}; */
-      }
       background-color: ${props => props.theme.backgrounds.content};
       border-right: 1px solid ${props => props.theme.backgrounds.content};
       width: calc(100% + 1px);

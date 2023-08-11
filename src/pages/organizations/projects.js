@@ -9,9 +9,9 @@ import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organiz
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import NewProject from 'components/Organizations/NewProject';
+import OrgHeader from 'components/Organizations/Orgheader';
 import OrgProjects from 'components/Organizations/Projects';
 import OrgProjectsSkeleton from 'components/Organizations/Projects/OrgProjectsSkeleton';
-import { ProjectDetails } from 'components/Organizations/Projects/Styles';
 import MainLayout from 'layouts/MainLayout';
 import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
 
@@ -47,12 +47,14 @@ export const PageOrgProjects = ({ router }) => {
 
           <OrganizationsWrapper>
             <OrgNavTabsSkeleton activeTab="projects" />
+            <div style={{ width: '100%' }}>
+              <div style={{ padding: '2rem 0.75rem 0 0.75rem' }}>
+                <OrgHeader headerText="Projects" searchBar />
+              </div>
 
-            <div className="projects-wrapper">
-              <NewProject organizationId={''} options={[]} />
-
-              <ProjectDetails className="details"></ProjectDetails>
               <OrgProjectsSkeleton />
+
+              <NewProject organizationId={''} options={[]} />
             </div>
           </OrganizationsWrapper>
         </MainLayout>
@@ -82,26 +84,14 @@ export const PageOrgProjects = ({ router }) => {
 
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="projects" organization={organization} />
-          <div className="projects-wrapper">
-            <ProjectDetails className="details">
-              <div className="field-wrapper environmentType">
-                <NewProject
-                  organizationId={organization.id}
-                  options={organization.deployTargets.map(deploytarget => {
-                    return { label: deploytarget.name, value: deploytarget.id };
-                  })}
-                  refresh={handleRefetch}
-                />
-              </div>
-            </ProjectDetails>
 
-            <OrgProjects
-              refresh={handleRefetch}
-              projects={organization.projects}
-              organizationId={organization.id}
-              organizationName={organization.name}
-            />
-          </div>
+          <OrgProjects
+            refresh={handleRefetch}
+            projects={organization.projects}
+            organizationId={organization.id}
+            organizationName={organization.name}
+            deployTargets={organization.deployTargets}
+          />
         </OrganizationsWrapper>
       </MainLayout>
     </>
