@@ -23,6 +23,12 @@ const OrgNavTabs = ({ activeTab, organization }) => (
         <span className="destination">Groups</span>
       </OrgGroupsLink>
     </li>
+    <li className={`users ${activeTab == 'users' ? 'active' : ''} linkContainer`}>
+      <OrgUsersLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+        <TeamOutlined className="icon" />
+        <span className="destination">Users</span>
+      </OrgUsersLink>
+    </li>
     <li className={`projects ${activeTab == 'projects' ? 'active' : ''} linkContainer`}>
       <OrgProjectsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
         <DeploymentUnitOutlined className="icon" />

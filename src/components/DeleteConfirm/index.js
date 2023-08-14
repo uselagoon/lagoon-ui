@@ -19,7 +19,6 @@ export const DeleteConfirm = ({
   openModal,
   closeModal,
 }) => {
-  
   return (
     <React.Fragment>
       <Button variant="red" icon={icon} action={openModal}>

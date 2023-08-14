@@ -34,13 +34,6 @@ export const PageUser = ({ router }) => {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
 
-
-  console.log("user: ", user);
-  console.log("organization: ", organization);
-
-  // const handleRefetch = async () =>
-  //   await refetch({ name: router.query.groupName, organization: parseInt(router.query.organizationSlug, 10) });
-
   if (userLoading || orgLoading) {
     return (
       <>

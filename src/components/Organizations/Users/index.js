@@ -11,16 +11,18 @@ import Button from 'components/Button';
 import gql from 'graphql-tag';
 
 const DELETE_USER = gql`
-  mutation removeUserFromOrganization($id: String, $email: String) {
-    removeUserFromOrganization(input: { user: { id: $id, email: $email } })
+  mutation removeUserFromOrganizationGroups($organization: Int!, $email: String!) {
+    removeUserFromOrganizationGroups(input: { user: { email: $email }, organization: $organization }) {
+      id
+    }
   }
 `;
 
 /**
  * The primary list of users.
  */
-const Users = ({ users = [], organization, organizationId, organizationName, onGroupDeleted, closeModal }) => {
-    const { sortedItems, getClassNamesFor, requestSort } = useSortableData(users, {
+const Users = ({ users = [], organization, organizationId, organizationName, onUserDeleted, closeModal }) => {
+  const { sortedItems, getClassNamesFor, requestSort } = useSortableData(users, {
     key: 'email',
     direction: 'ascending',
   });
@@ -97,15 +99,17 @@ const Users = ({ users = [], organization, organizationId, organizationName, onG
              <div className="view">
               <Button variant="white" action="" href={`/organizations/${organization.id}/users/${user.email}`} icon="view"></Button>
              </div>
-            {/* {(!user.type.includes('project-default-user') && ( */}
               <div className="remove">
                 <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganization, { loading, called, error, data }) => {
+                  {(removeUserFromOrganizationGroups, { loading, called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
                     if (data) {
-                      onUserDeleted().then(closeModal);
+                      onUserDeleted().then(() => {
+                        // setSearchInput("");
+                        closeModal();
+                      });
                     }
                     return (
                       <DeleteConfirm
@@ -113,9 +117,10 @@ const Users = ({ users = [], organization, organizationId, organizationName, onG
                         deleteType="user"
                         icon="bin"
                         onDelete={() => {
-                          removeUserFromOrganization({
+                          removeUserFromOrganizationGroups({
                             variables: {
-                              user: user.email,
+                              email: user.email,
+                              organization: organization.id
                             },
                           });
                         }}
@@ -124,7 +129,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, onG
                   }}
                 </Mutation>
               </div>
-            {/* )) || <div className="remove"></div>} */}
           </div>
         ))}
       </div>

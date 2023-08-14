@@ -78,7 +78,7 @@ export const PageUsers = ({ router }) => {
           <OrgNavTabs activeTab="users" organization={organization} />
           <UsersWrapper>
             <Users
-              onGroupDeleted={handleRefetch}
+              onUserDeleted={handleRefetch}
               users={allUsers}
               organization={organization}
               organizationId={router.query.organizationSlug}
