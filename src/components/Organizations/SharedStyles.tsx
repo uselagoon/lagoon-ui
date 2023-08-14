@@ -89,8 +89,8 @@ export const GroupPageWrapper = styled.div`
 export const StyledNotificationWrapper = styled.div`
   .margins {
     margin-right: 10px;
-    margin-top:30px;
-    margin-bottom:30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     button {
       margin-inline: 14px;
       margin-bottom: 28px;
@@ -324,5 +324,31 @@ export const Footer = styled.div`
       background: #2e69e6;
       color: #fff;
     }
+  }
+`;
+
+export const ModalChildren = styled.div`
+  .form-box input,
+  textarea {
+    display: block;
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    min-height: 38px;
+    border-color: hsl(0, 0%, 80%);
+    font-family: 'source-code-pro', sans-serif;
+    font-size: 0.8125rem;
+    color: ${props => (props.theme.colorScheme === 'dark' ? props.theme.texts.primary : '#5f6f7a')};
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  input[type='text']:focus {
+    border: 2px solid ${color.linkBlue};
+    outline: none;
+  }
+  .form-input {
+    display: flex;
+    align-items: center;
   }
 `;

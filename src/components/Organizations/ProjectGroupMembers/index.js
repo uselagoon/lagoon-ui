@@ -5,8 +5,8 @@ import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGro
 import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 
-import { StyledGroupMembers } from './Styles';
 import AddGroupToProject from '../AddGroupToProject';
+import { StyledGroupMembers } from './Styles';
 
 const REMOVE_GROUP_FROM_PROJECT = gql`
   mutation removeGroupFromProject($groupName: String!, $projectName: String!) {
@@ -27,12 +27,8 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
     return ['name', 'role', '__typename'].includes(key) ? false : true && sortByName;
   });
 
-
   return (
     <StyledGroupMembers>
-       
-
-
       <div className="header">
         <label>Groups</label>
         <label></label>
@@ -47,12 +43,11 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
         />
       </div>
 
-   
       <div className="data-table">
         {!groups.length && <div className="data-none">No groups</div>}
         {searchInput && !filteredMembers.length && <div className="data-none">No groups matching "{searchInput}"</div>}
         {filteredMembers.map(group => (
-          <div className="data-row" key={group.name}>
+          <div className="data-row" key={group.id}>
             <div className="name">
               <OrgGroupsLink
                 groupSlug={group.name}
@@ -97,16 +92,15 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
             )) || <div className="remove"></div>}
           </div>
         ))}
-
       </div>
       <AddGroupToProject
-                          projectName={projectName}
-                          organizationId={organizationId}
-                          options={orgGroups.map(group => {
-                            return { label: group.name, value: group.name };
-                          })}
-                          refresh={refresh}
-                        />
+        projectName={projectName}
+        organizationId={organizationId}
+        options={orgGroups.map(group => {
+          return { label: group.name, value: group.name };
+        })}
+        refresh={refresh}
+      />
     </StyledGroupMembers>
   );
 };

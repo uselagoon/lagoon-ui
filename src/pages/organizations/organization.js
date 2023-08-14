@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -14,6 +14,7 @@ import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
 import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
 
+import { useTourContext } from '../../../src/tours/TourContext';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
 
@@ -21,9 +22,17 @@ import QueryError from '../../components/errors/QueryError';
  * Displays a organization page, given the organization id.
  */
 export const PageOrganization = ({ router }) => {
-  const { data, error, loading } = useQuery(OrganizationByIDQuery, {
+  const { data, error, loading, refetch } = useQuery(OrganizationByIDQuery, {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
+
+  const { startTour } = useTourContext();
+
+  useEffect(() => {
+    if (!loading && data.organization) {
+      startTour();
+    }
+  }, [loading]);
 
   if (loading) {
     return (
@@ -75,7 +84,7 @@ export const PageOrganization = ({ router }) => {
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="overview" organization={data.organization} />
           <div className="content">
-            <Organization organization={organization} />
+            <Organization organization={organization} refetch={refetch} />
           </div>
         </OrganizationsWrapper>
       </MainLayout>

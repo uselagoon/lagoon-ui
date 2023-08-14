@@ -89,6 +89,7 @@ export const StyledOverview = styled.div`
   .description {
     margin: 14px 0;
     .title {
+      display:block;
       text-transform:uppercase;
       font-size: 13px;
       font-weight: 600;

@@ -7,8 +7,6 @@ import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgProjectBreadcrumb from 'components/Breadcrumbs/Organizations/Project';
-import AddGroupToProject from 'components/Organizations/AddGroupToProject';
-import AddNotificationToProject from 'components/Organizations/AddNotificationToProject';
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import OrgHeader from 'components/Organizations/Orgheader';
@@ -45,7 +43,11 @@ export const PageGroupProject = ({ router }) => {
 
         <MainLayout>
           <Breadcrumbs>
-            <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} loading />
+            <OrganizationBreadcrumb
+              organizationName={router.query.organizationName}
+              organizationSlug={router.query.organizationSlug}
+              loading
+            />
             <OrgProjectBreadcrumb
               projectSlug={router.query.projectName}
               organizationSlug={router.query.organizationSlug}

@@ -30,7 +30,7 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath, loa
       <StyledBreadCrumb className="breadcrumb">
         <div>
           <label>{header}</label>
-          {loading ? <Skeleton width={150} /> : <h2> {title}</h2>}
+          {title ? <h2>{title}</h2> : loading && <Skeleton width={150} />}
         </div>
       </StyledBreadCrumb>
     </BreadCrumbLink>

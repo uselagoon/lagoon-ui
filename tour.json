@@ -193,6 +193,32 @@
           "key": "a6d799c717733edea38c6df02758b855"
         }
       ]
+    },
+    {
+      "pathName": "/organizations/organization",
+      "steps": [
+        {
+          "target": "li.groups",
+          "title": "Groups and Users ",
+          "content": "Click on Groups to show all of the groups in your organization. From here you can view, add and remove users to groups. You can also see the projects that are associated with this group. Use the sub menu to view a list of Users and their roles with in projects and your organization. ",
+          "placement": "right-start",
+          "key": "e7c94ac75cee258ab1816a932267f394"
+        },
+        {
+          "target": "li.projects",
+          "title": "Projects",
+          "content": "This is where all your organizastions projects live. You can manage new and existing projects, manage the groups that have access to projects and manage any notifications that you might need. ",
+          "placement": "right-start",
+          "key": "e70230c6e09798116c0a22d12ec1407f"
+        },
+        {
+          "target": "li.notifications",
+          "title": "Notifications",
+          "content": "Add and remove notification channels for your organization. These channels can then be added to projects.  ",
+          "placement": "right-start",
+          "key": "97727eeb21a7846f4fda89a0fc66dcee"
+        }
+      ]
     }
   ]
 }

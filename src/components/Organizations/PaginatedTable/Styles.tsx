@@ -63,6 +63,9 @@ export const TableColumn = styled.div<{ width: string }>`
   width: ${props => props.width};
   align-items: center;
   display: flex;
+  &:last-child {
+    justify-content: flex-end;
+  }
 `;
 export const SelectLimit = styled.div`
   span {

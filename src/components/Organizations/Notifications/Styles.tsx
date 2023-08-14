@@ -61,12 +61,36 @@ export const StyledOrgNotifications = styled.div`
   padding-inline: 12px;
   display: flex;
   flex-direction: column;
-  .remove {
+  .actions {
     display: flex;
     justify-content: flex-end;
     padding: 0;
     width: 40%;
     align-self: center;
+    gap: 0.5rem;
+    .link {
+      border: 1px solid #4578e6 !important;
+      background: #fff;
+      display: flex;
+      height: 36px;
+      width: 76px;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .edit {
+      svg {
+        color: #4578e6;
+      }
+    }
+  }
+  .remove {
+    height: 36px;
+    > * {
+      max-width: 300px;
+      justify-content: center;
+      display: flex;
+    }
   }
   .name {
     font-family: 'roboto', sans-serif;

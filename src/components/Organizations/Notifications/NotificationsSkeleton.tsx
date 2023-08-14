@@ -20,8 +20,11 @@ const NotificationSkeleton = () => {
       <div className="notifdata">
         <Skeleton height={25} width={300} />
       </div>
-      <div className="remove">
-        <Skeleton height={25} width={100} />
+
+      <div className="actions">
+        <Skeleton height={25} width={80} />
+
+        <Skeleton height={25} width={90} />
       </div>
     </div>
   );
