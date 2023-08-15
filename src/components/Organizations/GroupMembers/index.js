@@ -12,9 +12,8 @@ import gql from 'graphql-tag';
 
 import AddGroupToProject from '../AddGroupToProject';
 import AddUserToGroup from '../AddUserToGroup';
-import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { TableActions } from '../SharedStyles';
+import { Footer, TableActions } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -34,8 +33,8 @@ const REMOVE_USER_FROM_GROUP = gql`
 `;
 
 const REMOVE_PROJECT_FROM_GROUP = gql`
-  mutation removeProjectFromGroup($groupName: String!, $projectId: Int!) {
-    removeProjectFromGroup(input: { group: $groupName, projectId: $projectId }) {
+  mutation removeGroupsFromProject($group: String!, $project: String!) {
+    removeGroupsFromProject(input: { groups: [{ name: $group }], project: { name: $project } }) {
       name
     }
   }
@@ -182,7 +181,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                 This action will delete this entry, you might not be able to get this back.
               </p>
 
-              <ModalFooter>
+              <Footer>
                 <Mutation mutation={REMOVE_PROJECT_FROM_GROUP} onError={e => console.error(e)}>
                   {(removeProject, { error, data }) => {
                     if (error) {
@@ -192,23 +191,26 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                       refetch().then(closeProjectModal);
                     }
                     return (
-                      <DeleteButton
-                        onClick={() => {
+                      <Button
+                        variant="primary"
+                        action={() => {
                           removeProject({
                             variables: {
-                              groupName,
-                              projectId: project.id,
+                              group: groupName,
+                              project: project.name,
                             },
                           });
                         }}
                       >
                         Continue
-                      </DeleteButton>
+                      </Button>
                     );
                   }}
                 </Mutation>
-                <CancelButton onClick={closeProjectModal}>Cancel</CancelButton>
-              </ModalFooter>
+                <Button variant="ghost" action={closeProjectModal}>
+                  Cancel
+                </Button>
+              </Footer>
             </Modal>
           </TableActions>
         );

@@ -1,6 +1,7 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+import OrgHeader from '../Orgheader';
 import { StyledGroupMembers } from './Styles';
 
 const GroupMembersSkeleton = () => {
@@ -11,25 +12,30 @@ const GroupMembersSkeleton = () => {
       <div className="name">
         <Skeleton />
       </div>
-      <div className="role">
+      <div className="name">
         <Skeleton />
       </div>
 
-      <div className="role">
+      <div className="name">
+        <Skeleton />
+      </div>
+      <div className="name">
+        <Skeleton />
+      </div>
+      <div className="name">
         <Skeleton />
       </div>
     </div>
   );
   return (
     <StyledGroupMembers>
-      <div className="header">
-        <label>Users</label>
-        <label></label>
-        <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
-      </div>
-      <div className="data-table">{[...Array<undefined>(Math.floor(numberOfFields / 2))].map(() => groupMembers)}</div>
+      <OrgHeader headerText="Users" searchBar />
 
-      <div className="data-table" style={{ marginTop: '2rem' }}>
+      <div className="data-table" style={{ marginTop: '-60px' }}>
+        {[...Array<undefined>(Math.floor(numberOfFields / 2))].map(() => groupMembers)}
+      </div>
+      <OrgHeader headerText="Projects" searchBar />
+      <div className="data-table" style={{ marginTop: '-60px' }}>
         {[...Array<undefined>(Math.floor(numberOfFields / 2))].map(() => groupMembers)}
       </div>
     </StyledGroupMembers>

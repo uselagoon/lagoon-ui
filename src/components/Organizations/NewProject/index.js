@@ -134,6 +134,7 @@ const OrgNewProject = ({
                       Deploy Target: <span style={{ color: '#E30000' }}>*</span>
                       <RoleSelect>
                         <ReactSelect
+                          className='select'
                           styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
                           aria-label="Role"
                           placeholder="Select target..."

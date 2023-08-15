@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import Button from 'components/Button';
 import Modal from 'components/Modal';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
@@ -9,7 +10,7 @@ import gql from 'graphql-tag';
 import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { TableActions } from '../SharedStyles';
+import { Footer, TableActions } from '../SharedStyles';
 import { StyledOrgProjects } from './Styles';
 
 const DELETE_PROJECT = gql`
@@ -88,7 +89,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                   This action will delete this entry, you might not be able to get this back.
                 </p>
 
-                <ModalFooter>
+                <Footer>
                   <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
                     {(deleteProject, { error, data }) => {
                       if (error) {
@@ -98,9 +99,11 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                         refresh().then(() => setModalState({ open: false, current: null }));
                         return <DeleteButton>Continue</DeleteButton>;
                       }
+
                       return (
-                        <DeleteButton
-                          onClick={() => {
+                        <Button
+                          variant="primary"
+                          action={() => {
                             deleteProject({
                               variables: {
                                 project: modalState.current,
@@ -109,12 +112,14 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                           }}
                         >
                           Continue
-                        </DeleteButton>
+                        </Button>
                       );
                     }}
                   </Mutation>
-                  <CancelButton onClick={() => setModalState({ open: false, current: null })}>Cancel</CancelButton>
-                </ModalFooter>
+                  <Button variant="ghost" action={() => setModalState({ open: false, current: null })}>
+                    Cancel
+                  </Button>
+                </Footer>
               </Modal>
             </>
           </TableActions>
@@ -125,7 +130,15 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
 
   return (
     <StyledOrgProjects>
-      <PaginatedTable limit={10} data={projects} columns={Columns} labelText="Projects" emptyText="No Projects" />
+      <PaginatedTable
+        limit={10}
+        data={projects}
+        columns={Columns}
+        numericSortKey="groups"
+        withSorter
+        labelText="Projects"
+        emptyText="No Projects"
+      />
       <NewProject
         organizationId={organizationId}
         options={deployTargets.map(deploytarget => {

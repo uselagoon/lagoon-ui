@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { EditOutlined, EnvironmentOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
+import UsersLink from 'components/link/Organizations/User';
 import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
@@ -248,23 +249,26 @@ const Organization = ({ organization, refetch }) => {
 
             <div className="users">
               <span>Users</span>
-              {organization.owners.map(owner => (
+              {organization.owners.slice(0, 10).map(owner => (
                 <div key={owner.email} className="user">
                   <p>
                     <UserOutlined className="userIcon" />
                     {owner.email}{' '}
                     {owner.owner ? (
-                      <Tag style={{ display: 'inline-block' }} background="#47D3FF">
+                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} background="#47D3FF">
                         ORG OWNER
                       </Tag>
                     ) : (
-                      <Tag style={{ display: 'inline-block' }} background="#FF4747">
+                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} background="#FF4747">
                         ORG VIEWER
                       </Tag>
                     )}
                   </p>
                 </div>
               ))}
+              <UsersLink organizationSlug={organization.id} organizationName={organization.name}>
+                View more ...
+              </UsersLink>
             </div>
           </div>
         </div>

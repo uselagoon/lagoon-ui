@@ -14,9 +14,13 @@ export const StyledProjectNotifications = styled.div`
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
   .name {
-    padding: 8px 0 7px 0;
-    font-family: 'source-code-pro', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 35%;
+    border-right: 1px solid ${props => props.theme.borders.tableRow};
   }
   .remove {
     display: flex;
@@ -37,6 +41,20 @@ export const StyledProjectNotifications = styled.div`
         @media ${bp.tinyUp} {
           width: 50%;
         }
+      }
+    }
+    .data-row {
+      height: 63px;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      transition: 0.3s ease;
+      border: 1px solid transparent;
+      justify-content: flex-start !important;
+      &:not(:last-child) {
+        border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      }
+      &:hover {
+        border: 1px solid #2bc0d8;
       }
     }
   }

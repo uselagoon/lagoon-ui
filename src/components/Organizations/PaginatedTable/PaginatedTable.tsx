@@ -30,13 +30,14 @@ interface Props {
   }[];
   usersTable?: boolean;
   withSorter?: boolean;
+  numericSortKey?: string;
   labelText?: string;
   limit: number;
   emptyText: string;
 }
 
 // currently possible...
-type SortMethod = 'alphabetical' | undefined;
+type SortMethod = 'alphabetical' | 'numeric' | undefined;
 
 const debounce = (fn: (val: string) => void, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -54,6 +55,7 @@ const PaginatedTable: FC<Props> = ({
   columns,
   usersTable,
   withSorter,
+  numericSortKey,
   emptyText,
   labelText,
   limit = 10,
@@ -71,7 +73,7 @@ const PaginatedTable: FC<Props> = ({
   const [currentPage, setCurrentPage] = useState<number>((initialPageNumber && +initialPageNumber) || 1);
 
   const [sortMethod, setSortMethod] = useState<SortMethod>(
-    (initialSortMethod === 'alphabetical' && initialSortMethod) || undefined
+    ((initialSortMethod === 'alphabetical' || initialSortMethod === 'numeric') && initialSortMethod) || undefined
   );
 
   const [searchStr, setSearchStr] = useState<string>(initialSearchStr || '');
@@ -88,14 +90,26 @@ const PaginatedTable: FC<Props> = ({
       ? unfilteredData
       : unfilteredData.filter(key => {
           // @ts-ignore
-          const k = !usersTable ? key.name : key.user.email as string;
+          const k = !usersTable ? key.name : (key.user.email as string);
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
-    if (withSorter && sortMethod === 'alphabetical') {
-      return filtered.sort(function (a, b) {
-        return a.name.localeCompare(b.name);
-      });
+    if (withSorter) {
+      if (sortMethod === 'alphabetical') {
+        return filtered.sort(function (a, b) {
+          return a.name.localeCompare(b.name);
+        });
+      }
+      if (sortMethod === 'numeric' && numericSortKey) {
+        return filtered.sort(function (a, b) {
+          const first = a[numericSortKey].length as number;
+          const second = b[numericSortKey].length as number;
+
+          return second - first;
+        });
+      }
+
+      return filtered;
     } else {
       return filtered;
     }
@@ -111,13 +125,13 @@ const PaginatedTable: FC<Props> = ({
     if (currentPage > totalPages || currentPage < 0) setCurrentPage(1);
   }, [totalPages, currentPage]);
 
-  const updateUrl = () =>
+  const updateUrl = () => {
     // update the url bar without reloads.
-    history.replaceState(
-      null,
-      '',
-      `${window.location.origin}${window.location.pathname}?${params.toString()}${window.location.hash}`
-    );
+    const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}${window.location.hash}`;
+    const args = [{}, '', newUrl] as const;
+
+    history.replaceState(...args);
+  };
 
   // query string update effects.
   useEffect(() => {
@@ -130,7 +144,7 @@ const PaginatedTable: FC<Props> = ({
   }, [searchStr]);
 
   useEffect(() => {
-    if (sortMethod === 'alphabetical') {
+    if (sortMethod && ['alphabetical', 'numeric'].includes(sortMethod)) {
       params.set('sort', sortMethod);
     } else {
       params.delete('sort');
@@ -164,7 +178,11 @@ const PaginatedTable: FC<Props> = ({
   );
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSortMethod(e.target.value === 'alphabetical' ? 'alphabetical' : undefined);
+    const selected = e.target.value;
+    let newSort;
+    if (['alphabetical', 'numeric'].includes(selected)) newSort = selected;
+
+    setSortMethod(newSort as SortMethod);
   };
 
   const handleResultChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -198,9 +216,15 @@ const PaginatedTable: FC<Props> = ({
       <Filters>
         {labelText ? <span className="labelText">{labelText}</span> : ''}
         {withSorter ? (
-          <select onChange={handleSortChange}>
-            <option value={undefined}>Sort by</option>
+          <select onChange={handleSortChange} placeholder="Sort by">
+            <option value="" disabled selected hidden>
+              Sort by
+            </option>
+            <option value={undefined}>None</option>
             <option value="alphabetical">Alphabetical</option>
+            {numericSortKey && (
+              <option value="numeric">{numericSortKey[0].toUpperCase() + numericSortKey.slice(1)}</option>
+            )}
           </select>
         ) : null}
         <SearchBar className="search">

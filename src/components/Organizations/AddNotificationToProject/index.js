@@ -85,6 +85,7 @@ export const AddNotificationToProject = ({
                     Notification
                     <RoleSelect>
                       <ReactSelect
+                        className='select'
                         menuPortalTarget={document.body}
                         styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
                         aria-label="Notification"

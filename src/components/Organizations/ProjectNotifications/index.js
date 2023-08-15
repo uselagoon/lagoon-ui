@@ -205,8 +205,8 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
   };
   return (
     <StyledProjectNotifications>
-      <div className="header">
-        <label>Notifications</label>
+        <div className="header" style={{marginTop:"20px", paddingRight:'0'}}>
+        <label style={{paddingLeft:"0"}}>Notifications</label>
         <label></label>
         <input
           aria-labelledby="search"

@@ -57,6 +57,7 @@ export const PageGroupProject = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="projects" />
 
             <OrgProjectWrapper>
+              <OrgHeader headerText="Project" />
               <ProjectGroupSkeleton />
               <ProjectNotificationsSkeleton />
             </OrgProjectWrapper>
@@ -102,7 +103,7 @@ export const PageGroupProject = ({ router }) => {
                 <>
                   <OrgNavTabs activeTab="projects" organization={organization} />
                   <OrgProjectWrapper>
-                    <OrgHeader headerText="Projects" />
+                    <OrgHeader headerText="Project" />
                     <ProjectGroupMembers
                       refresh={handleRefetch}
                       projectName={project.name}

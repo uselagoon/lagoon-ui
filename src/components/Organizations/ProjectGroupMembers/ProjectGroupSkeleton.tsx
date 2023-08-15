@@ -8,7 +8,10 @@ const ProjectGroupSkeleton = () => {
 
   const groupsSkeleton = (
     <div className="data-row">
-      <div className="name">
+     <div className="customer">
+        <Skeleton />
+      </div>
+      <div className="customer">
         <Skeleton />
       </div>
       <div className="customer">
