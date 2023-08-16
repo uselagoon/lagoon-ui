@@ -36,6 +36,12 @@ const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
         <span className="destination">Users</span>
       </OrgUsersLink>
     </li>
+    <li className={`user ${activeTab == 'user' ? 'active' : ''} linkContainer`}>
+      <OrgUsersLink organizationSlug={''} organizationName={''} className="navLink">
+        <TeamOutlined className="icon" />
+        <span className="destination">User</span>
+      </OrgUsersLink>
+    </li>
     <li className={`projects ${activeTab == 'projects' ? 'active' : ''} linkContainer`}>
       <OrgProjectsLink organizationSlug={''} organizationName={''} className="navLink">
         <DeploymentUnitOutlined className="icon" />

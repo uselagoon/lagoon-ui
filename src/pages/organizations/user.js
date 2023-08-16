@@ -50,7 +50,7 @@ export const PageUser = ({ router }) => {
           </Breadcrumbs>
 
           <OrganizationsWrapper>
-            <OrgNavTabsSkeleton activeTab="users" />
+            <OrgNavTabsSkeleton activeTab="user" />
             <UserWrapper>
               <UserSkeleton/>
             </UserWrapper>
@@ -88,7 +88,7 @@ export const PageUser = ({ router }) => {
 
         <OrganizationsWrapper>
           {organization && (
-            <OrgNavTabs activeTab="users" organization={organization?.organization} />
+            <OrgNavTabs activeTab="user" organization={organization?.organization} />
           )}
           <UserWrapper>
             <User

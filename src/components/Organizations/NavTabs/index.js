@@ -29,6 +29,14 @@ const OrgNavTabs = ({ activeTab, organization }) => (
         <span className="destination">Users</span>
       </OrgUsersLink>
     </li>
+    {activeTab == "user" &&
+    <li className={`user ${activeTab == 'user' ? 'active' : ''} linkContainer`}>
+      <OrgUsersLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+        <TeamOutlined className="icon" />
+        <span className="destination">User</span>
+      </OrgUsersLink>
+    </li>
+    }
     <li className={`projects ${activeTab == 'projects' ? 'active' : ''} linkContainer`}>
       <OrgProjectsLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
         <DeploymentUnitOutlined className="icon" />
@@ -45,3 +53,4 @@ const OrgNavTabs = ({ activeTab, organization }) => (
 );
 
 export default OrgNavTabs;
+

@@ -21,7 +21,7 @@ const DELETE_USER = gql`
 /**
  * The primary list of users.
  */
-const Users = ({ users = [], organization, organizationId, organizationName, onUserDeleted, closeModal }) => {
+const Users = ({ users = [], organization, organizationId, organizationName, onUserDeleted }) => {
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(users, {
     key: 'email',
     direction: 'ascending',
