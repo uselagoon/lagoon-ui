@@ -34,6 +34,9 @@ export const PageUser = ({ router }) => {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
 
+  const handleUserRefetch = async () =>
+    await refetch({ name: router.query.userSlug, organization: parseInt(router.query.organizationSlug, 10) });
+
   if (userLoading || orgLoading) {
     return (
       <>
@@ -92,10 +95,11 @@ export const PageUser = ({ router }) => {
           )}
           <UserWrapper>
             <User
-              organization={organization}
               organizationId={router.query.organizationSlug}
               organizationName={organization.name}
-              user={user?.user}
+              organization={organization || []}
+              user={user?.user || []}
+              refetch={handleUserRefetch}
             />
           </UserWrapper>
         </OrganizationsWrapper>
