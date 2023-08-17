@@ -2,6 +2,7 @@ import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import OrgHeader from '../Orgheader';
+import { TableWrapper } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 const GroupMembersSkeleton = () => {

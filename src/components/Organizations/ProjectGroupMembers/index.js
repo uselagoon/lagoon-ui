@@ -29,8 +29,8 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
 
   return (
     <StyledGroupMembers>
-      <div className="header" style={{marginTop:"20px", paddingRight:'0'}}>
-        <label style={{paddingLeft:"0"}}>Groups</label>
+      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
+        <label style={{ paddingLeft: '0' }}>Groups</label>
         <input
           aria-labelledby="search"
           className="searchInput"

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DeleteOutlined } from '@ant-design/icons';
+import { DisconnectOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveUserConfirm/logic';
@@ -14,7 +14,7 @@ export const RemoveUserConfirm = ({ removeName, onRemove, open, openModal, close
   return (
     <React.Fragment>
       <Button variant="red" action={openModal}>
-        <DeleteOutlined className="delete" />
+        <DisconnectOutlined className="delete" />
       </Button>
 
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>

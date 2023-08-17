@@ -35,6 +35,10 @@ const OrganizationSkeleton = () => {
       <StyledOverview>
         <Skeleton width={'20%'} />
         <span className="orgname"></span>
+        <div className="description">
+          <span className="title">Description</span>
+          <Skeleton width={'20%'} />
+        </div>
 
         <div className="info">
           <div className="quotas">

@@ -30,6 +30,7 @@ interface Props {
   }[];
   usersTable?: boolean;
   withSorter?: boolean;
+  disableUrlMutation?: boolean;
   numericSortKey?: string;
   labelText?: string;
   limit: number;
@@ -59,6 +60,7 @@ const PaginatedTable: FC<Props> = ({
   emptyText,
   labelText,
   limit = 10,
+  disableUrlMutation = false,
 }) => {
   const params = new URLSearchParams(window.location.search);
 
@@ -127,10 +129,8 @@ const PaginatedTable: FC<Props> = ({
 
   const updateUrl = () => {
     // update the url bar without reloads.
-    const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}${window.location.hash}`;
-    const args = [{}, '', newUrl] as const;
-
-    history.replaceState(...args);
+    const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+    history.replaceState({ ...history.state, as: newUrl, url: newUrl }, '', newUrl);
   };
 
   // query string update effects.
@@ -140,35 +140,24 @@ const PaginatedTable: FC<Props> = ({
     } else {
       params.delete('search');
     }
-    updateUrl();
-  }, [searchStr]);
-
-  useEffect(() => {
     if (sortMethod && ['alphabetical', 'numeric'].includes(sortMethod)) {
       params.set('sort', sortMethod);
     } else {
       params.delete('sort');
     }
-    updateUrl();
-  }, [sortMethod]);
-
-  useEffect(() => {
     if (resultLimit) {
       params.set('limit', String(resultLimit));
     } else {
       params.delete('limit');
     }
-    updateUrl();
-  }, [resultLimit]);
-
-  useEffect(() => {
     if (currentPage) {
       params.set('page', String(currentPage));
     } else {
       params.delete('page');
     }
-    updateUrl();
-  }, [currentPage]);
+
+    if (!disableUrlMutation) updateUrl();
+  }, [searchStr, sortMethod, resultLimit, currentPage]);
 
   const handleSearchUpdate = useCallback(
     debounce(val => {
@@ -212,8 +201,8 @@ const PaginatedTable: FC<Props> = ({
   const endPage = Math.min(startPage + maxPagination - 1, totalPages);
 
   return (
-    <StyledTable>
-      <Filters>
+    <StyledTable className='paginatedTable'>
+      <Filters className='filters'>
         {labelText ? <span className="labelText">{labelText}</span> : ''}
         {withSorter ? (
           <select onChange={handleSortChange} placeholder="Sort by">
@@ -246,7 +235,7 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow key={i.id}>
+            <TableRow className='tableRow' key={i.id}>
               {columns?.map(col => {
                 return (
                   <TableColumn key={`${col.key}-${idx}`} width={col.width}>
@@ -258,10 +247,10 @@ const PaginatedTable: FC<Props> = ({
           );
         })
       ) : (
-        <TableEmpty>{emptyText}</TableEmpty>
+        <TableEmpty className='empty'>{emptyText}</TableEmpty>
       )}
 
-      <TableFooter>
+      <TableFooter className='tableFooter'>
         <SelectLimit>
           <span>Results per page</span>
           <select onChange={handleResultChange} value={resultLimit}>

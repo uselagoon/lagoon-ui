@@ -8,7 +8,7 @@ const ProjectNotificationsSkeleton = () => {
 
   const notificationsSkeleton = (
     <div className="data-row">
-      <div className="name">
+      <div>
         <Skeleton />
       </div>
       <div>
@@ -21,9 +21,8 @@ const ProjectNotificationsSkeleton = () => {
   );
   return (
     <StyledProjectNotifications>
-      <div className="header">
-        <label>Notifications</label>
-        <label></label>
+      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
+        <label style={{ paddingLeft: '0' }}>Notifications</label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>
       <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => notificationsSkeleton)}</div>
