@@ -23,7 +23,7 @@ const taskDrushCacheClear = gql`
   }
 `;
 
-const DrushCacheClear = ({ pageEnvironment, onCompleted, onError }) => (
+const DrushCacheClear = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
   <Mutation
     mutation={taskDrushCacheClear}
     onCompleted={onCompleted}
@@ -32,7 +32,10 @@ const DrushCacheClear = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {taskDrushCacheClear => {
+    {(taskDrushCacheClear, { loading, data }) => {
+      if (data) {
+        onNewTask();
+      }
       return (
         <SelectWrapper>
           <div className="envSelect">
@@ -54,7 +57,7 @@ const DrushCacheClear = ({ pageEnvironment, onCompleted, onError }) => (
               required
             />
           </div>
-          <Button action={taskDrushCacheClear}>Run task</Button>
+          <Button disabled={loading} action={taskDrushCacheClear}>{loading ? <span className="loader"></span> : "Run task"}</Button>
         </SelectWrapper>
       );
     }}
