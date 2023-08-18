@@ -11,7 +11,9 @@ const options = [
   { value: '-1', label: 'all' },
 ];
 const handleChange = values => {
-  window.location.href = window.location.href.split('?')[0] + '?limit=' + values.value;
+  // window.location.href = window.location.href.split('?')[0] + '?limit=' + values.value;
+
+  history.pushState(null,"", window.location.href.split('?')[0] + '?limit=' + values.value);
 };
 const customStyles = {
   menu: (provided, state) => ({

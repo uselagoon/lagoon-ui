@@ -1,6 +1,16 @@
 import { faker } from '@faker-js/faker';
 
-import { ProblemIdentifier, generateEnvironments } from './mocks';
+import {
+  ProblemIdentifier,
+  generateEnvironments,
+  organizationEmails,
+  organizationGroups,
+  organizationNotifications,
+  organizationOwners,
+  organizationProjects,
+} from './mocks';
+
+faker.setDefaultRefDate(new Date(`${new Date().getFullYear().toString()}-01-01`));
 
 export interface Project {
   id: string;
@@ -147,4 +157,38 @@ export const ProjectsProblems = (seed: number) => {
     };
   });
   return allProblems;
+};
+
+export const getOrganization = () => {
+  faker.seed(123);
+
+  const projectQuota = faker.number.int({ min: 1, max: 10 });
+  const groupQuota = faker.number.int({ min: 1, max: 10 });
+
+  const { slack, rocketChat, teams, webhook } = organizationNotifications();
+
+  return {
+    id: 1,
+    name: 'Test Org',
+    description: 'An organization for testing',
+    quotaProject: projectQuota,
+    quotaGroup: groupQuota,
+    quotaNotification: 10,
+    __typename: 'Organization',
+    deployTargets: [
+      {
+        id: faker.number.int(),
+        name: 'ci-local-control-k8s',
+        __typename: 'Openshift',
+      },
+    ],
+    owners: organizationOwners(),
+    projects: organizationProjects(projectQuota),
+    groups: organizationGroups(groupQuota),
+    slacks: slack,
+    rocketchats: rocketChat,
+    teams,
+    webhook,
+    emails: organizationEmails(),
+  };
 };

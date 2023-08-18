@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import Router from 'next/router';
 
@@ -14,9 +15,10 @@ interface BreadcrumbProps {
     };
   };
   asPath: string;
+  loading?: boolean;
 }
 
-const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath }) => (
+const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath, loading }) => (
   <>
     <BreadCrumbLink
       href={asPath}
@@ -28,7 +30,7 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath }) =
       <StyledBreadCrumb className="breadcrumb">
         <div>
           <label>{header}</label>
-          <h2>{title}</h2>
+          {title ? <h2>{title}</h2> : loading && <Skeleton width={150} />}
         </div>
       </StyledBreadCrumb>
     </BreadCrumbLink>
