@@ -8,7 +8,7 @@ export const darkTheme: DefaultTheme = {
     primary: '#0E1117',
     secondary: '#151922',
     tertiary: '#161b25',
-    modalOverlay: '#050503',
+    modalOverlay: '#060604b3',
     input: '#3B3B3B',
     content: '#222837',
     table: '#0E1117',

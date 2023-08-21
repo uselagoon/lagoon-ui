@@ -1,13 +1,11 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import ThemedSkeletonWrapper from '../../styles/ThemedSkeletonWrapper';
 import { StyledEnvironmentDetails } from './StyledEnvironment';
 
 const EnvironmentSkeleton = () => {
   return (
     <StyledEnvironmentDetails className="details">
-      <ThemedSkeletonWrapper>
         <div className="field-wrapper environmentType">
           <div>
             <label>Environment Type</label>
@@ -56,7 +54,6 @@ const EnvironmentSkeleton = () => {
             </div>
           </div>
         </div>
-      </ThemedSkeletonWrapper>
     </StyledEnvironmentDetails>
   );
 };

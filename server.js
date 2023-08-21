@@ -136,6 +136,50 @@ app
       });
     });
 
+    // organizations start
+    server.get('/organizations', (req, res) => {
+      app.render(req, res, '/organizations/organizations');
+    });
+
+    server.get('/organizations/:organizationSlug', (req, res) => {
+      app.render(req, res, '/organizations/organization', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/groups', (req, res) => {
+      app.render(req, res, '/organizations/groups', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/groups/:groupSlug', (req, res) => {
+      app.render(req, res, '/organizations/group', {
+        organizationSlug: req.params.organizationSlug,
+        groupName: req.params.groupSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/projects', (req, res) => {
+      app.render(req, res, '/organizations/projects', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/projects/:projectGroupSlug', (req, res) => {
+      app.render(req, res, '/organizations/project', {
+        organizationSlug: req.params.organizationSlug,
+        projectName: req.params.projectGroupSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/notifications', (req, res) => {
+      app.render(req, res, '/organizations/notifications', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
+    // organizations end
+
     server.get('*', (req, res) => {
       return handle(req, res);
     });

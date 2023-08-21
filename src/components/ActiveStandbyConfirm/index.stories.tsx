@@ -44,7 +44,6 @@ export const Default = ({ onProceedFunction }: { onProceedFunction: () => void }
 
 export const WithConfirmationBlocked = ({
   onProceedFunction,
-  setInputValueFunction,
   openBoolean,
   openModalFunction,
   closeModalFunction,
@@ -61,7 +60,6 @@ export const WithConfirmationBlocked = ({
 
 export const WithConfirmationAllowed = ({
   onProceedFunction,
-  setInputValueFunction,
   openBoolean,
   openModalFunction,
   closeModalFunction,
