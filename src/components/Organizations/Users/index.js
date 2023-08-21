@@ -2,13 +2,31 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import useSortableData from '../../../lib/withSortedItems';
-import DeleteConfirm from 'components/DeleteConfirm';
 import withLogic from 'components/Organizations/users/logic';
 
+import Link from 'next/link';
+
+import AddUserToOrganization from '../AddUserToOrganization';
+import Modal from 'components/Modal';
+import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
+import PaginatedTable from '../PaginatedTable/PaginatedTable';
+
+import { TableActions } from '../SharedStyles';
 import { Header, StyledUsers } from './Styles';
 import Button from 'components/Button';
 
 import gql from 'graphql-tag';
+
+
+export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+  urlObject: {
+    pathname: '/organizations/users',
+    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+  },
+  asPath: `/organizations/${organizationSlug}/users/${userSlug}?limit=10&page=1`,
+});
 
 const DELETE_USER = gql`
   mutation removeUserFromOrganizationGroups($organization: Int!, $email: String!) {
@@ -21,7 +39,18 @@ const DELETE_USER = gql`
 /**
  * The primary list of users.
  */
-const Users = ({ users = [], organization, organizationId, organizationName, onUserDeleted }) => {
+const Users = ({ users = [], organization, organizationId, organizationName, refetch }) => {
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState('');
+
+  const [addUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
+
+  const closeUserModal = () => {
+    setSelectedUser('');
+    setUserModalOpen(false);
+  };
+
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(users, {
     key: 'email',
     direction: 'ascending',
@@ -42,22 +71,114 @@ const Users = ({ users = [], organization, organizationId, organizationName, onU
     return ['email', '__typename'].includes(key) ? false : (true && sortByName) || sortByUrl;
   });
 
+  const UsersColumns = [
+    {
+      width: '15%',
+      key: 'firstName',
+      render: ({ firstName }) => {
+        return firstName ? <div className="name">{firstName}</div> : <>First name - </>;
+      },
+    },
+    {
+      width: '15%',
+      key: 'lastName',
+      render: ({ lastName }) => {
+        return lastName ? <div className="lastname">{lastName}</div> : <>Last name -</>;
+      },
+    },
+    {
+      width: '25%',
+      key: 'email',
+      render: ({ email }) => {
+        const linkData = getLinkData(email, organizationId, organizationName);
+        return (
+          <div className="email">
+            <Link href={linkData.urlObject} as={linkData.asPath}>
+              <a>{email}</a>
+            </Link>
+          </div>
+        );
+      },
+    },
+    {
+      width: '15%',
+      key: 'groups',
+      render: () => {
+        return organization ? <div className="groups">Groups: {organization.groups.length}</div> : <>Groups -</>;
+      },
+    },
+    {
+      width: '15%',
+      key: 'projects',
+      render: () => {
+        return organization ? <div className="projects">Projects: {organization.projects.length}</div> : <>Projects -</>;
+      },
+    },
+
+    {
+      width: '15%',
+      key: 'actions',
+      render: ({ ...user }) => {
+
+        const linkData = getLinkData(user?.email, organizationId, organizationName);
+        return (
+          <TableActions>
+            <Link href={linkData.urlObject} as={linkData.asPath}>
+              <a className="link">
+                <EyeOutlined className="edit" />
+              </a>
+            </Link>
+            <DeleteOutlined
+              className="delete"
+              onClick={() => {
+                setSelectedUser(user?.id);
+                setUserModalOpen(true);
+              }}
+            />
+            <Modal isOpen={userModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
+              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
+              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+                This action will delete this entry, you might not be able to get this back.
+              </p>
+
+              <ModalFooter>
+                <Mutation mutation={DELETE_USER}>
+                  {(removeUserFromOrganizationGroups, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refetch().then(() => { 
+                        return setDeleteUserModalOpen(false)
+                      });
+                    }
+                    return (
+                      <RemoveUserConfirm
+                        removeName={user?.email}
+                        onRemove={() => {
+                          removeUserFromOrganizationGroups({
+                            variables: {
+                              email: user?.email,
+                              organization: organization.id
+                            },
+                          });
+                        }}
+                      />
+                    );
+                  }}
+                </Mutation>
+                <CancelButton onClick={closeUserModal}>Cancel</CancelButton>
+              </ModalFooter>
+            </Modal>
+          </TableActions>
+        );
+      },
+    },
+  ];
+
   return (
     <StyledUsers>
-      <div className="header">
-        <label>Users</label>
-        <label></label>
-        <input
-          aria-labelledby="search"
-          className="searchInput"
-          type="text"
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          placeholder="Type to search"
-          disabled={users.length === 0}
-        />
-      </div>
-      <Header>
+      {/* <Header>
         <button
           type="button"
           onClick={() => handleSort('firstName')}
@@ -79,58 +200,37 @@ const Users = ({ users = [], organization, organizationId, organizationName, onU
         >
           Email
         </button>
-      </Header>
-      <div className="data-table">
-        {!users.length && <div className="data-none">No users</div>}
-        {searchInput && !filteredUsers.length && <div className="data-none">No users matching "{searchInput}"</div>}
-        {filteredUsers.map(user => (
-          <div key={user.id} className="data-row" user={user.id}>
-            <div className="firstName">
-              <label className="firstName">{user.firstName}</label>
-            </div>
-            <div className="lastName">
-              <label className="lastName">{user.lastName}</label>
-            </div>
-            <div className="email">
-              <label className="default-user-label">{user.email}</label>
-            </div>
-            <div className="groups">Groups: {organization.groups.length}</div>
-            <div className="projects">Projects: {organization.projects.length}</div>
-             <div className="view">
-              <Button variant="white" action="" href={`/organizations/${organization.id}/users/${user.email}`} icon="view"></Button>
-             </div>
-              <div className="remove">
-                <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganizationGroups, { loading, called, error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    if (data) {
-                      onUserDeleted().then(() => {
-                        // setSearchInput("");
-                        closeModal();
-                      });
-                    }
-                    return (
-                      <DeleteConfirm
-                        deleteName={user.email}
-                        deleteType="user"
-                        icon="bin"
-                        onDelete={() => {
-                          removeUserFromOrganizationGroups({
-                            variables: {
-                              email: user.email,
-                              organization: organization.id
-                            },
-                          });
-                        }}
-                      />
-                    );
-                  }}
-                </Mutation>
-              </div>
-          </div>
-        ))}
+      </Header> */}
+
+      <PaginatedTable
+        limit={10}
+        data={users}
+        columns={UsersColumns}
+        usersTable={true}
+        labelText="Users"
+        emptyText="No Users"
+      />
+
+      <Modal
+        isOpen={addUserModalOpen}
+        style={{ content: { width: '50%' } }}
+        onRequestClose={() => setAddUserModalOpen(false)}
+      >
+        <AddUserToOrganization
+          organization={organization}
+          modalOpen={addUserModalOpen}
+          close={() => setAddUserModalOpen(false)}
+          onAddUser={refetch}
+        />
+      </Modal>
+
+      <div style={{ width: '100px' }}>
+        <Button action={() => setAddUserModalOpen(true)}>
+          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '28px' }}>+</span>
+            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
+          </span>
+        </Button>
       </div>
     </StyledUsers>
   );

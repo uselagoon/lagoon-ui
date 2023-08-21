@@ -282,6 +282,11 @@ export const TableActions = styled.div`
       border: 1px solid #4578e6 !important;
       background: #fff;
     }
+    .view {
+      svg {
+        color: #4578e6;
+      }
+    }
     .edit {
       svg {
         color: #4578e6;
