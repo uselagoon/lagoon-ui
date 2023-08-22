@@ -25,7 +25,7 @@ export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
     pathname: '/organizations/users',
     query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
   },
-  asPath: `/organizations/${organizationSlug}/users/${userSlug}?limit=10&page=1`,
+  asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
 
 const DELETE_USER = gql`
