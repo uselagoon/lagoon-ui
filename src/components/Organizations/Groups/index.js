@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
+import Button from 'components/Button';
 import Modal from 'components/Modal';
 import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
@@ -10,8 +11,8 @@ import AddUserToGroup from '../AddUserToGroup';
 import NewGroup from '../NewGroup';
 import OrgHeader from '../Orgheader';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { TableActions, Tag } from '../SharedStyles';
-import { CancelButton, DeleteButton, GroupsWrapper, ModalFooter, StyledGroups } from './Styles';
+import { Footer, TableActions, Tag } from '../SharedStyles';
+import { DeleteButton, GroupsWrapper, StyledGroups } from './Styles';
 
 const DELETE_GROUP = gql`
   mutation deleteGroup($groupName: String!) {
@@ -137,7 +138,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                     This action will delete this entry, you might not be able to get this back.
                   </p>
 
-                  <ModalFooter>
+                  <Footer>
                     <Mutation mutation={DELETE_GROUP}>
                       {(deleteGroup, { error, data }) => {
                         if (error) {
@@ -148,8 +149,9 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                           return <DeleteButton>Continue</DeleteButton>;
                         }
                         return (
-                          <DeleteButton
-                            onClick={() => {
+                          <Button
+                            variant="primary"
+                            action={() => {
                               deleteGroup({
                                 variables: {
                                   groupName: modalStates.deleteGroup?.current?.name,
@@ -158,12 +160,14 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                             }}
                           >
                             Continue
-                          </DeleteButton>
+                          </Button>
                         );
                       }}
                     </Mutation>
-                    <CancelButton onClick={() => modalAction('close', 'deleteGroup')}>Cancel</CancelButton>
-                  </ModalFooter>
+                    <Button variant="ghost" action={() => modalAction('close', 'deleteGroup')}>
+                      Cancel
+                    </Button>
+                  </Footer>
                 </Modal>
               </>
             )}
@@ -177,7 +181,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
     <GroupsWrapper>
       <OrgHeader headerText="Groups" />
       <StyledGroups>
-        <PaginatedTable limit={10} data={groups} columns={Columns} withSorter emptyText="No groups found" />
+        <PaginatedTable limit={10} data={groups} columns={Columns} withSorter numericSortKey='members' emptyText="No groups found" />
         <NewGroup
           disabled={!ableToAddGroup}
           organizationId={organizationId}

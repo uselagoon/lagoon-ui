@@ -18,7 +18,7 @@ import { OrgProjectWrapper } from 'components/Organizations/Projects/Styles';
 import MainLayout from 'layouts/MainLayout';
 import ProjectAndOrganizationByID from 'lib/query/organizations/ProjectAndOrganizationByID';
 
-import { OrganizationsWrapper } from '../../components/Organizations/SharedStyles';
+import { OrganizationsWrapper, TableWrapper } from '../../components/Organizations/SharedStyles';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
 
@@ -57,8 +57,12 @@ export const PageGroupProject = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="projects" />
 
             <OrgProjectWrapper>
-              <ProjectGroupSkeleton />
-              <ProjectNotificationsSkeleton />
+              <OrgHeader headerText="Project" />
+              <TableWrapper>
+                <h3>{router.query.projectName}</h3>
+                <ProjectGroupSkeleton />
+                <ProjectNotificationsSkeleton />
+              </TableWrapper>
             </OrgProjectWrapper>
           </OrganizationsWrapper>
         </MainLayout>
@@ -102,23 +106,26 @@ export const PageGroupProject = ({ router }) => {
                 <>
                   <OrgNavTabs activeTab="projects" organization={organization} />
                   <OrgProjectWrapper>
-                    <OrgHeader headerText="Projects" />
-                    <ProjectGroupMembers
-                      refresh={handleRefetch}
-                      projectName={project.name}
-                      organizationId={organization.id}
-                      organizationName={organization.name}
-                      groups={project.groups || []}
-                      orgGroups={organization.groups}
-                    />
-                    <ProjectNotifications
-                      refresh={handleRefetch}
-                      projectName={project.name}
-                      organizationId={organization.id}
-                      organizationName={organization.name}
-                      notifications={project.notifications}
-                      organization={organization}
-                    />
+                    <OrgHeader headerText="Project" />
+                    <TableWrapper>
+                      <h3>{project.name}</h3>
+                      <ProjectGroupMembers
+                        refresh={handleRefetch}
+                        projectName={project.name}
+                        organizationId={organization.id}
+                        organizationName={organization.name}
+                        groups={project.groups || []}
+                        orgGroups={organization.groups}
+                      />
+                      <ProjectNotifications
+                        refresh={handleRefetch}
+                        projectName={project.name}
+                        organizationId={organization.id}
+                        organizationName={organization.name}
+                        notifications={project.notifications}
+                        organization={organization}
+                      />
+                    </TableWrapper>
                   </OrgProjectWrapper>
                 </>
               )

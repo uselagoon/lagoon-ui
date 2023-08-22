@@ -65,7 +65,6 @@ export const StyledOrgProjects = styled.div`
     width: 50%;
     border-width: 1px;
     border-style: solid;
-    border-radius: 4px;
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
@@ -77,6 +76,13 @@ export const StyledOrgProjects = styled.div`
   input[type='text']:focus {
     border: 2px solid ${color.linkBlue};
     outline: none;
+  }
+  .select {
+    font-family: 'source-sans-pro', sans-serif;
+    line-height: 1.25rem;
+    div{
+      border-radius:0 !important;
+    }
   }
   label {
     padding-left: 20px;

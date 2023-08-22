@@ -19,6 +19,9 @@ export default gql`
           type
           id
           name
+          members{
+            role
+          }
         }
         notifications{
           name

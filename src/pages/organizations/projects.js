@@ -84,7 +84,6 @@ export const PageOrgProjects = ({ router }) => {
 
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="projects" organization={organization} />
-
           <OrgProjects
             refresh={handleRefetch}
             projects={organization.projects}

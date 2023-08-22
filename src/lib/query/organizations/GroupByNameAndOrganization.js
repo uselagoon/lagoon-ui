@@ -29,6 +29,9 @@ export default gql`
       projects {
         id
         name
+        groups{
+          name
+        }
       }
     }
   }

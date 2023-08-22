@@ -98,11 +98,6 @@ export const PageGroup = ({ router }) => {
           <OrgNavTabs activeTab="groups" organization={organization} />
 
           <GroupPageWrapper>
-            {/* <div className="details">
-              <div className="field-wrapper environmentType">
-                <AddUserToGroup group={group} organizationId={organization.id} onAddUser={handleRefetch}/>
-              </div>
-            </div> */}
             <GroupMembers
               organizationId={organization.id}
               organizationName={organization.name}

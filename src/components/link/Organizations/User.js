@@ -1,32 +1,26 @@
 import Link from 'next/link';
 
-export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+export const getLinkData = (organizationSlug, organizationName) => ({
   urlObject: {
-    pathname: '/organizations/user',
-    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName }
+    pathname: '/organizations/users',
+    query: { organizationSlug: organizationSlug, organizationName: organizationName },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`
 });
 
 /**
- * Links to a user page.
+ * Links to the group page given the project name and the openshift project name.
  */
-const UserLink = ({
-  userSlug,
-  organizationSlug,
-  organizationName,
-  children,
-  className = '',
-  prefetch = false
-}) => {
-
-  const linkData = getLinkData(userSlug, organizationSlug, organizationName);
+const UsersLink = ({ organizationSlug, organizationName, children, className = '', prefetch = false }) => {
+  const linkData = getLinkData(organizationSlug, organizationName);
 
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a className={className}>{children}</a>
+      <a style={{ textDecoration: 'underline' }} className={className}>
+        {children}
+      </a>
     </Link>
   );
 };
 
-export default UserLink;
+export default UsersLink;

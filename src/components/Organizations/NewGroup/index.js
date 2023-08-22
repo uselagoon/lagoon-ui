@@ -43,12 +43,12 @@ const StyledNewGroup = styled.div`
     width: 100%;
     border-width: 1px;
     border-style: solid;
-    border-radius: 4px;
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 0.8125rem;
-    color: #5f6f7a;
+    color: #000;
+    background:#fff;
     padding: 8px;
     box-sizing: border-box;
   }
@@ -56,9 +56,15 @@ const StyledNewGroup = styled.div`
     border: 2px solid ${color.linkBlue};
     outline: none;
   }
-  .selectRole {
+  input[type="text"]::placeholder{
+    color:#000;
+  }
+  .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
+    div{
+      border-radius:0 !important;
+    }
   }
   .environment-name {
     font-weight: bold;

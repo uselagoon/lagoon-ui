@@ -8,7 +8,10 @@ const ProjectGroupSkeleton = () => {
 
   const groupsSkeleton = (
     <div className="data-row">
-      <div className="name">
+      <div className="customer">
+        <Skeleton />
+      </div>
+      <div className="customer">
         <Skeleton />
       </div>
       <div className="customer">
@@ -21,9 +24,8 @@ const ProjectGroupSkeleton = () => {
   );
   return (
     <StyledGroupMembers>
-      <div className="header">
-        <label>Groups</label>
-        <label></label>
+      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
+        <label style={{ paddingLeft: '0' }}>Groups</label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>
       <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => groupsSkeleton)}</div>

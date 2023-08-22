@@ -29,9 +29,8 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
 
   return (
     <StyledGroupMembers>
-      <div className="header">
-        <label>Groups</label>
-        <label></label>
+      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
+        <label style={{ paddingLeft: '0' }}>Groups</label>
         <input
           aria-labelledby="search"
           className="searchInput"
@@ -57,11 +56,14 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
                 {group.name}
               </OrgGroupsLink>
             </div>
-            <div className="customer">
+            <div className="members">Members: {group.members.length}</div>
+
+            <div className="labels">
               {group.type.includes('project-default-group') && (
                 <label className="default-group-label">{group.type}</label>
               )}
             </div>
+
             {/* even though we can't prevent users from removing the project default group from the api, we can make it harder to do from the ui */}
             {(!group.name.includes('project-' + projectName.toLowerCase()) && (
               <div className="remove">

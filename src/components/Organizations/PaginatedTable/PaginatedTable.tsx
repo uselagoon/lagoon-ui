@@ -30,13 +30,15 @@ interface Props {
   }[];
   usersTable?: boolean;
   withSorter?: boolean;
+  disableUrlMutation?: boolean;
+  numericSortKey?: string;
   labelText?: string;
   limit: number;
   emptyText: string;
 }
 
 // currently possible...
-type SortMethod = 'alphabetical' | undefined;
+type SortMethod = 'alphabetical' | 'numeric' | undefined;
 
 const debounce = (fn: (val: string) => void, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -54,9 +56,11 @@ const PaginatedTable: FC<Props> = ({
   columns,
   usersTable,
   withSorter,
+  numericSortKey,
   emptyText,
   labelText,
   limit = 10,
+  disableUrlMutation = false,
 }) => {
   const params = new URLSearchParams(window.location.search);
 
@@ -71,7 +75,7 @@ const PaginatedTable: FC<Props> = ({
   const [currentPage, setCurrentPage] = useState<number>((initialPageNumber && +initialPageNumber) || 1);
 
   const [sortMethod, setSortMethod] = useState<SortMethod>(
-    (initialSortMethod === 'alphabetical' && initialSortMethod) || undefined
+    ((initialSortMethod === 'alphabetical' || initialSortMethod === 'numeric') && initialSortMethod) || undefined
   );
 
   const [searchStr, setSearchStr] = useState<string>(initialSearchStr || '');
@@ -93,10 +97,22 @@ const PaginatedTable: FC<Props> = ({
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
-    if (withSorter && sortMethod === 'alphabetical') {
-      return filtered.sort(function (a, b) {
-        return a.name.localeCompare(b.name);
-      });
+    if (withSorter) {
+      if (sortMethod === 'alphabetical') {
+        return filtered.sort(function (a, b) {
+          return a.name.localeCompare(b.name);
+        });
+      }
+      if (sortMethod === 'numeric' && numericSortKey) {
+        return filtered.sort(function (a, b) {
+          const first = a[numericSortKey].length as number;
+          const second = b[numericSortKey].length as number;
+
+          return second - first;
+        });
+      }
+
+      return filtered;
     } else {
       return filtered;
     }
@@ -112,13 +128,11 @@ const PaginatedTable: FC<Props> = ({
     if (currentPage > totalPages || currentPage < 0) setCurrentPage(1);
   }, [totalPages, currentPage]);
 
-  const updateUrl = () =>
+  const updateUrl = () => {
     // update the url bar without reloads.
-    history.replaceState(
-      null,
-      '',
-      `${window.location.origin}${window.location.pathname}?${params.toString()}${window.location.hash}`
-    );
+    const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+    history.replaceState({ ...history.state, as: newUrl, url: newUrl }, '', newUrl);
+  };
 
   // query string update effects.
   useEffect(() => {
@@ -127,35 +141,24 @@ const PaginatedTable: FC<Props> = ({
     } else {
       params.delete('search');
     }
-    updateUrl();
-  }, [searchStr]);
-
-  useEffect(() => {
-    if (sortMethod === 'alphabetical') {
+    if (sortMethod && ['alphabetical', 'numeric'].includes(sortMethod)) {
       params.set('sort', sortMethod);
     } else {
       params.delete('sort');
     }
-    updateUrl();
-  }, [sortMethod]);
-
-  useEffect(() => {
     if (resultLimit) {
       params.set('limit', String(resultLimit));
     } else {
       params.delete('limit');
     }
-    updateUrl();
-  }, [resultLimit]);
-
-  useEffect(() => {
     if (currentPage) {
       params.set('page', String(currentPage));
     } else {
       params.delete('page');
     }
-    updateUrl();
-  }, [currentPage]);
+
+    if (!disableUrlMutation) updateUrl();
+  }, [searchStr, sortMethod, resultLimit, currentPage]);
 
   const handleSearchUpdate = useCallback(
     debounce(val => {
@@ -165,7 +168,11 @@ const PaginatedTable: FC<Props> = ({
   );
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSortMethod(e.target.value === 'alphabetical' ? 'alphabetical' : undefined);
+    const selected = e.target.value;
+    let newSort;
+    if (['alphabetical', 'numeric'].includes(selected)) newSort = selected;
+
+    setSortMethod(newSort as SortMethod);
   };
 
   const handleResultChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -195,13 +202,19 @@ const PaginatedTable: FC<Props> = ({
   const endPage = Math.min(startPage + maxPagination - 1, totalPages);
 
   return (
-    <StyledTable>
-      <Filters>
+    <StyledTable className='paginatedTable'>
+      <Filters className='filters'>
         {labelText ? <span className="labelText">{labelText}</span> : ''}
         {withSorter ? (
-          <select onChange={handleSortChange}>
-            <option value={undefined}>Sort by</option>
+          <select onChange={handleSortChange} placeholder="Sort by">
+            <option value="" disabled selected hidden>
+              Sort by
+            </option>
+            <option value={undefined}>None</option>
             <option value="alphabetical">Alphabetical</option>
+            {numericSortKey && (
+              <option value="numeric">{numericSortKey[0].toUpperCase() + numericSortKey.slice(1)}</option>
+            )}
           </select>
         ) : null}
         <SearchBar className="search">
@@ -223,7 +236,7 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow key={i.id}>
+            <TableRow className='tableRow' key={i.id}>
               {columns?.map(col => {
                 return (
                   <TableColumn key={`${col.key}-${idx}`} width={col.width}>
@@ -235,10 +248,10 @@ const PaginatedTable: FC<Props> = ({
           );
         })
       ) : (
-        <TableEmpty>{emptyText}</TableEmpty>
+        <TableEmpty className='empty'>{emptyText}</TableEmpty>
       )}
 
-      <TableFooter>
+      <TableFooter className='tableFooter'>
         <SelectLimit>
           <span>Results per page</span>
           <select onChange={handleResultChange} value={resultLimit}>

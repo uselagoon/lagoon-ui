@@ -81,7 +81,7 @@ export const TableFooter = styled.div`
   background: ${props => props.theme.backgrounds.content};
   display: flex;
   align-items: center;
-  padding: 30px 0;
+  padding: 48px 0 30px;
   height: 2rem;
 `;
 
@@ -128,4 +128,5 @@ export const NextBtn = styled.div`
 export const TableEmpty = styled.p`
   text-align: center;
   padding: 2.5rem;
+  background: ${props => props.theme.backgrounds.box};
 `;

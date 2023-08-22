@@ -117,7 +117,7 @@ export const StyledLogAccordion = styled.div`
       padding: 0;
     }
   }
-  .data-row.log-error-state {
+  &.data-row.log-error-state {
     .accordion-heading {
       .log-header {
         ::before {

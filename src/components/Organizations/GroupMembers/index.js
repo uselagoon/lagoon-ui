@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
+import ReactSelect from 'react-select';
 
 import Link from 'next/link';
 
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { DisconnectOutlined, EyeOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
-import AddGroupToProject from '../AddGroupToProject';
 import AddUserToGroup from '../AddUserToGroup';
-import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
+import { RoleSelect } from '../AddUserToGroup/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { TableActions } from '../SharedStyles';
+import { Footer, TableActions, TableWrapper } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -33,9 +33,17 @@ const REMOVE_USER_FROM_GROUP = gql`
   }
 `;
 
-const REMOVE_PROJECT_FROM_GROUP = gql`
-  mutation removeProjectFromGroup($groupName: String!, $projectId: Int!) {
-    removeProjectFromGroup(input: { group: $groupName, projectId: $projectId }) {
+const REMOVE_GROUP_FROM_PROJECT = gql`
+  mutation removeGroupFromProject($groupName: String!, $projectName: String!) {
+    removeGroupsFromProject(input: { groups: [{ name: $groupName }], project: { name: $projectName } }) {
+      name
+    }
+  }
+`;
+
+const ADD_GROUP_PROJECT_MUTATION = gql`
+  mutation addProjectToGroup($groupName: String!, $projectName: String!) {
+    addGroupsToProject(input: { groups: { name: $groupName }, project: { name: $projectName } }) {
       name
     }
   }
@@ -52,6 +60,12 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
+  const [addProjectModalOpen, setAddProjectModalOpen] = useState(false);
+
+  const closeAddProjectModal = () => {
+    setSelectedProject('');
+    setAddProjectModalOpen(false);
+  };
   const closeProjectModal = () => {
     setSelectedProject('');
     setProjectModalOpen(false);
@@ -169,7 +183,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
       render: project => {
         return (
           <TableActions>
-            <DeleteOutlined
+            <DisconnectOutlined
               className="delete"
               onClick={() => {
                 setSelectedProject(project.id);
@@ -182,9 +196,9 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                 This action will delete this entry, you might not be able to get this back.
               </p>
 
-              <ModalFooter>
-                <Mutation mutation={REMOVE_PROJECT_FROM_GROUP} onError={e => console.error(e)}>
-                  {(removeProject, { error, data }) => {
+              <Footer>
+                <Mutation mutation={REMOVE_GROUP_FROM_PROJECT} onError={e => console.error(e)}>
+                  {(removeGroupFromProject, { error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -192,23 +206,26 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                       refetch().then(closeProjectModal);
                     }
                     return (
-                      <DeleteButton
-                        onClick={() => {
-                          removeProject({
+                      <Button
+                        variant="primary"
+                        action={() => {
+                          removeGroupFromProject({
                             variables: {
                               groupName,
-                              projectId: project.id,
+                              projectName: project.name,
                             },
                           });
                         }}
                       >
                         Continue
-                      </DeleteButton>
+                      </Button>
                     );
                   }}
                 </Mutation>
-                <CancelButton onClick={closeProjectModal}>Cancel</CancelButton>
-              </ModalFooter>
+                <Button variant="ghost" action={closeProjectModal}>
+                  Cancel
+                </Button>
+              </Footer>
             </Modal>
           </TableActions>
         );
@@ -218,44 +235,127 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
 
   return (
     <StyledGroupMembers>
-      <PaginatedTable
-        limit={10}
-        data={members}
-        columns={UserColumns}
-        usersTable
-        labelText="Users"
-        emptyText="No users"
-      />
-
-      <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-          </span>
-        </Button>
-      </div>
-
-      <Modal
-        isOpen={addUserModalOpen}
-        style={{ content: { width: '50%' } }}
-        onRequestClose={() => setAddUserModalOpen(false)}
-      >
-        <AddUserToGroup
-          group={{ name: groupName }}
-          modalOpen={addUserModalOpen}
-          close={() => setAddUserModalOpen(false)}
-          onAddUser={refetch}
+      <TableWrapper>
+        <PaginatedTable
+          limit={10}
+          data={members}
+          columns={UserColumns}
+          usersTable
+          labelText="Users"
+          emptyText="No users"
+          disableUrlMutation
         />
-      </Modal>
 
-      <PaginatedTable
-        limit={10}
-        data={projects}
-        columns={ProjectsColumns}
-        labelText="Projects"
-        emptyText="No Projects"
-      />
+        <div className="tableAction">
+          <Button action={() => setAddUserModalOpen(true)}>
+            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '28px' }}>+</span>
+              <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
+            </span>
+          </Button>
+        </div>
+
+        <Modal
+          isOpen={addUserModalOpen}
+          style={{ content: { width: '50%' } }}
+          onRequestClose={() => setAddUserModalOpen(false)}
+        >
+          <AddUserToGroup
+            group={{ name: groupName }}
+            modalOpen={addUserModalOpen}
+            close={() => setAddUserModalOpen(false)}
+            onAddUser={refetch}
+          />
+        </Modal>
+
+        <PaginatedTable
+          limit={10}
+          data={projects.filter(project => {
+            return project.groups.find(group => group.name === groupName);
+          })}
+          columns={ProjectsColumns}
+          labelText="Projects"
+          emptyText="No Projects"
+          disableUrlMutation
+        />
+
+        <div className="tableAction">
+          <Button action={() => setAddProjectModalOpen(true)}>
+            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '28px' }}>+</span>
+              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Project</span>
+            </span>
+          </Button>
+        </div>
+
+        <Modal
+          isOpen={addProjectModalOpen}
+          style={{ content: { width: '50%' } }}
+          onRequestClose={() => closeAddProjectModal()}
+        >
+          <Mutation mutation={ADD_GROUP_PROJECT_MUTATION} onError={e => console.error(e)}>
+            {(addGroupToProject, { error, data }) => {
+              if (error) {
+                return <div>{error.message}</div>;
+              }
+              if (data) {
+                refetch().then(closeAddProjectModal);
+              }
+
+              const filtered = projects.filter(project => {
+                if (project.groups.length === 0) return project;
+
+                return project.groups.every(group => group.name !== groupName);
+              });
+
+              const opts = filtered.map(p => {
+                return { label: p.name, value: p.name };
+              });
+
+              return (
+                <>
+                  <h4>Add Project</h4>
+                  <label>
+                    Project
+                    <RoleSelect>
+                      <ReactSelect
+                        className="select"
+                        menuPortalTarget={document.body}
+                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                        aria-label="project"
+                        placeholder="Select a project..."
+                        name="project"
+                        value={opts.find(o => o.value === selectedProject)}
+                        onChange={selectedOption => setSelectedProject(selectedOption.value)}
+                        options={opts}
+                        required
+                      />
+                    </RoleSelect>
+                  </label>
+                  <Footer>
+                    <Button
+                      action={() => {
+                        addGroupToProject({
+                          variables: {
+                            projectName: selectedProject,
+                            groupName,
+                          },
+                        });
+                      }}
+                      variant="primary"
+                    >
+                      Add
+                    </Button>
+                    <Button variant="ghost" action={() => closeAddProjectModal()}>
+                      Cancel
+                    </Button>
+                  </Footer>
+                </>
+              );
+            }}
+          </Mutation>
+        </Modal>
+      </TableWrapper>
     </StyledGroupMembers>
   );
 };

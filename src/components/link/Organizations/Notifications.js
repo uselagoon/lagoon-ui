@@ -19,7 +19,6 @@ const OrgNotificationsLink = ({
   prefetch = false
 }) => {
   const linkData = getLinkData(organizationSlug, organizationName);
-
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
       <a className={className}>{children}</a>

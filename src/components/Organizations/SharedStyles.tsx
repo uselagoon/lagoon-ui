@@ -25,9 +25,8 @@ export const OrganizationsWrapper = styled.div`
 `;
 
 export const GroupPageWrapper = styled.div`
-  padding: 32px;
+  padding: 15px;
   width: 100%;
-
   .details {
     min-width: 50vw !important;
     padding: 1rem;
@@ -116,12 +115,12 @@ export const StyledNotification = styled.div`
     width: 100%;
     border-width: 1px;
     border-style: solid;
-    border-radius: 4px;
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 0.8125rem;
-    color: ${props => (props.theme.colorScheme === 'dark' ? props.theme.texts.primary : '#5f6f7a')};
+    color: #000;
+    background: #fff;
     padding: 8px;
     box-sizing: border-box;
   }
@@ -129,9 +128,15 @@ export const StyledNotification = styled.div`
     border: 2px solid ${color.linkBlue};
     outline: none;
   }
-  .selectRole {
+  input[type='text']::placeholder {
+    color: #000;
+  }
+  .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
+    div {
+      border-radius: 0 !important;
+    }
   }
   .environment-name {
     font-weight: bold;
@@ -339,12 +344,12 @@ export const ModalChildren = styled.div`
     width: 100%;
     border-width: 1px;
     border-style: solid;
-    border-radius: 4px;
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 0.8125rem;
-    color: ${props => (props.theme.colorScheme === 'dark' ? props.theme.texts.primary : '#5f6f7a')};
+    color: #000;
+    background: #fff;
     padding: 8px;
     box-sizing: border-box;
   }
@@ -352,8 +357,45 @@ export const ModalChildren = styled.div`
     border: 2px solid ${color.linkBlue};
     outline: none;
   }
+  input[type='text']::placeholder {
+    color: #000;
+  }
+  .select {
+    font-family: 'source-sans-pro', sans-serif;
+    line-height: 1.25rem;
+    div {
+      border-radius: 0 !important;
+    }
+  }
   .form-input {
     display: flex;
     align-items: center;
+  }
+`;
+
+export const TableWrapper = styled.div`
+  padding: 15px;
+  background: ${props => (props.theme.colorScheme === 'dark' ? props.theme.backgrounds.primary : '#fff')};
+  h3 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 36px;
+    line-height: 24px;
+    margin-top: 15px;
+    margin-bottom: 0;
+  }
+  .paginatedTable,
+  .filters,
+  .tableFooter {
+    background: ${props => (props.theme.colorScheme === 'dark' ? props.theme.backgrounds.primary : '#fff')};
+    .tableRow {
+      border: 2px solid ${props => props.theme.borders.tableRow};
+
+      &:hover {
+        border: 2px solid #2bc0d8;
+      }
+    }
+  }
+  .tableAction {
+    margin: 24px 0 36px 0;
   }
 `;
