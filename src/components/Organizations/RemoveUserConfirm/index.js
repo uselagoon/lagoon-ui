@@ -10,12 +10,18 @@ import { Footer } from '../SharedStyles';
 /**
  * Confirms the removal of the specified email from group
  */
-export const RemoveUserConfirm = ({ removeName, onRemove, open, openModal, closeModal }) => {
+export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeModal }) => {
   return (
     <React.Fragment>
-      <Button variant="red" action={openModal}>
-        <DisconnectOutlined className="delete" />
-      </Button>
+      {!withText ? (
+        <Button variant="red" action={openModal}>
+          <DisconnectOutlined className="delete" />
+        </Button>
+      ) : (
+        <Button variant="primary" action={openModal}>
+          Continue
+        </Button>
+      )}
 
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>

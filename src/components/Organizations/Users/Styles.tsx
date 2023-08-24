@@ -4,13 +4,11 @@ import styled from 'styled-components';
 import { sharedTableStyles } from '../SharedStyles';
 
 export const UsersWrapper = styled.div`
-  flex-grow: 1;
-  padding: 40px calc((100vw / 16) * 1);
-
-  .content {
-    padding: 32px calc((100vw / 16) * 1);
-    width: 100%;
-  }
+  width: 95.83%;
+  padding-top: 22px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const StyledUsers = styled.section`
@@ -27,26 +25,27 @@ export const StyledUsers = styled.section`
   }
   .firstName {
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
+    line-height:1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
-    width: 10%;
+
     font-weight: normal;
   }
   .lastName {
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
+    line-height:1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
-    width: 10%;
     font-weight: normal;
   }
   .email {
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
+    line-height:1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
-    width: 30%;
     font-weight: normal;
   }
   .view {
@@ -61,12 +60,13 @@ export const StyledUsers = styled.section`
     padding: 0;
     width: 5%;
   }
-  .groups, .projects {
+  .groups,
+  .projects {
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
+    line-height:1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
-    width: 10%;
     font-weight: normal;
   }
   .form-box input,
@@ -79,7 +79,8 @@ export const StyledUsers = styled.section`
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
+    line-height:1.5rem;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;
@@ -112,36 +113,37 @@ export const Header = styled.div`
   display: flex;
 
   .button-sort {
-      color: #5f6f7a;
-      position: relative;
-      font-family: 'source-code-pro', sans-serif;
-      font-size: 13px;
-      font-size: 0.8125rem;
-      line-height: 1.4;
-      text-transform: uppercase;
-      padding-left: 20px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      width: 10%;
+    color: #5f6f7a;
+    position: relative;
+    font-family: 'source-code-pro', sans-serif;
+    font-size: 13px;
+    font-size: 1rem;
+    line-height:1.5rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    padding-left: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 10%;
 
-      &:after {
-        position: absolute;
-        top: 0;
-        width: 20px;
-        height: 20px;
-      }
-
-      &.ascending:after {
-        content: ' \\25B2';
-      }
-
-      &.descending:after {
-        content: ' \\25BC';
-      }
-
-      &:first-child {
-        padding-left: 0;
-      }
+    &:after {
+      position: absolute;
+      top: 0;
+      width: 20px;
+      height: 20px;
     }
+
+    &.ascending:after {
+      content: ' \\25B2';
+    }
+
+    &.descending:after {
+      content: ' \\25BC';
+    }
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
 `;

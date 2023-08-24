@@ -3,19 +3,47 @@ import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
 
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { DisconnectOutlined, EyeOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
-
+import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
-import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { TableActions } from '../SharedStyles';
-import { Header, StyledUser, UserWrapper } from './Styles';
+import { Footer, TableActions, TableWrapper } from '../SharedStyles';
+import { StyledUser } from './Styles';
 
-export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+type Group = {
+  id: string;
+  name: string;
+  __typename?: 'Group';
+  projects?: {
+    id: string;
+    name: string;
+    __typename: 'Project';
+  }[];
+};
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  groups: {
+    id: string;
+    name: string;
+    projects: {
+      id: string;
+      name: string;
+    }[];
+  }[];
+  roles: {
+    id: string;
+    name: string;
+    role: string;
+  }[];
+};
+
+export const getLinkData = (userSlug: string, organizationSlug: string, organizationName: string) => ({
   urlObject: {
     pathname: '/organizations/users',
     query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
@@ -25,14 +53,7 @@ export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
 
 const DELETE_USER_FROM_GROUP = gql`
   mutation removeUserFromGroup($email: String!, $groupId: String!) {
-    removeUserFromGroup(input: {
-      user: {
-        email: $email
-      },
-      group: {
-        id: $groupId
-      }
-    }) {
+    removeUserFromGroup(input: { user: { email: $email }, group: { id: $groupId } }) {
       id
       name
     }
@@ -41,14 +62,7 @@ const DELETE_USER_FROM_GROUP = gql`
 
 const DELETE_USER_FROM_PROJECT = gql`
   mutation removeUserFromProject($email: String!, $groupId: String!) {
-    removeUserFromProject(input: {
-      user: {
-        email: $email
-      },
-      group: {
-        id: $groupId
-      }
-    }) {
+    removeUserFromProject(input: { user: { email: $email }, group: { id: $groupId } }) {
       id
       name
     }
@@ -56,62 +70,65 @@ const DELETE_USER_FROM_PROJECT = gql`
 `;
 
 interface UserProps {
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    groups: [];
-  },
-  refetch: any
+  user: User;
+  organizationName: string;
+  organizationId: string;
+  refetch: () => void;
 }
 
 /**
  * Displays user information.
  */
-const User: FC<UserProps> = ({ user, organization, organizationName, organizationId, refetch }) => {
-
+const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }) => {
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('');
 
-  const [addUserModalOpen, setAddUserModalOpen] = useState(false);
-  const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState('');
 
   const closeGroupModal = () => {
     setSelectedGroup('');
     setGroupModalOpen(false);
   };
-  
+
+  const closeProjectModal = () => {
+    setSelectedProject('');
+    setProjectModalOpen(false);
+  };
+
   const UserColumns = [
     {
       width: '20%',
       key: 'group',
-      render: ({ id, name, projects }) => {
-        return name ? <div className="group">{name}</div> : <>group name - </>;
+      render: ({ name }: Group) => {
+        return name ? <div className="group">{name}</div> : <>Group name - </>;
       },
     },
     {
-      width: '20%',
+      width: '75%',
       key: 'roles',
-      render: ({ ...rest }) => {
-        console.log(rest);
-        
-        const role = rest?.role;
-        return role ? <div className="role">{role}</div> : <>role - </>;
-      },
-    },
-    {
-      width: '55%',
-      key: 'separator',
-      render: () => {
-        return <></>;
+      render: (group: Group) => {
+        const { roles } = user;
+        const { id: groupId } = group;
+        const role = roles.find(r => r.id === groupId)?.role;
+
+        return role ? <div className="role">{role}</div> : <>Role - </>;
       },
     },
     {
       width: '25%',
       key: 'actions',
-      render: (group) => {
-        const linkData = getLinkData(user?.email, organizationId, organizationName);
+      render: (group: Group) => {
+        const groupLinkData = (groupSlug: string, organizationSlug: string, organizationName: string) => ({
+          urlObject: {
+            pathname: '/organizations/group',
+            query: { groupName: groupSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+          },
+          asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
+        });
+
+        const linkData = groupLinkData(group.name, organizationId, organizationName);
+
         return (
           <TableActions>
             <Link href={linkData.urlObject} as={linkData.asPath}>
@@ -119,45 +136,59 @@ const User: FC<UserProps> = ({ user, organization, organizationName, organizatio
                 <EyeOutlined className="view" />
               </a>
             </Link>
-            <DeleteOutlined
+            <DisconnectOutlined
               className="delete"
               onClick={() => {
                 setSelectedGroup(group?.id);
                 setGroupModalOpen(true);
               }}
             />
-            <Modal isOpen={groupModalOpen && selectedGroup === group?.id} onRequestClose={closeGroupModal}>
+            <Modal
+              contentLabel="unlinkuser"
+              isOpen={groupModalOpen && selectedGroup === group?.id}
+              onRequestClose={closeGroupModal}
+            >
               <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
               <p style={{ fontSize: '16px', lineHeight: '24px' }}>
                 This action will delete this entry, you might not be able to get this back.
               </p>
 
-              <ModalFooter>
-                <Mutation mutation={DELETE_USER_FROM_GROUP}>
+              <Footer>
+                <Mutation<{
+                  removeUserFromGroup: {
+                    email: string;
+                    groupId: string;
+                  };
+                }>
+                  mutation={DELETE_USER_FROM_GROUP}
+                >
                   {(removeUserFromGroup, { error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
                     if (data) {
-                      refetch().then(() => setDeleteUserModalOpen(false));
+                      refetch();
                     }
                     return (
                       <RemoveUserConfirm
+                        withText
                         removeName={user?.email}
                         onRemove={() => {
-                          removeUserFromGroup({
+                          void removeUserFromGroup({
                             variables: {
                               email: user?.email,
-                              groupId: group?.id
-                            }
+                              groupId: group?.id,
+                            },
                           });
                         }}
                       />
                     );
                   }}
                 </Mutation>
-                <CancelButton onClick={closeGroupModal}>Cancel</CancelButton>
-              </ModalFooter>
+                <Button variant="ghost" action={closeGroupModal}>
+                  Cancel
+                </Button>
+              </Footer>
             </Modal>
           </TableActions>
         );
@@ -165,150 +196,113 @@ const User: FC<UserProps> = ({ user, organization, organizationName, organizatio
     },
   ];
 
-  if (!user) return <p style={{textAlign:"center"}}>User not found</p>
-  
+  const UserProjectColumns = [
+    {
+      width: '80%',
+      key: 'name',
+      render: ({ name }: { name: string }) => {
+        return name ? <div className="group">{name}</div> : <>Group name - </>;
+      },
+    },
+
+    {
+      width: '20%',
+      key: 'actions',
+      render: ({ name }: { name: string }) => {
+        return (
+          <TableActions>
+            <ProjectGroupLink
+              className="link"
+              projectGroupSlug={name}
+              organizationSlug={organizationId}
+              organizationName={organizationName}
+              key={name}
+            >
+              <EyeOutlined className="edit" style={{ width: '27px' }} />
+            </ProjectGroupLink>
+
+            <DisconnectOutlined
+              className="delete"
+              onClick={() => {
+                setSelectedProject(name);
+                setProjectModalOpen(true);
+              }}
+            />
+
+            <Modal
+              contentLabel="unlinkuser"
+              isOpen={projectModalOpen && selectedProject === name}
+              onRequestClose={closeProjectModal}
+            >
+              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
+              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+                This action will delete this entry, you might not be able to get this back.
+              </p>
+
+              <Footer>
+                <Mutation<{ remove: {} }> mutation={DELETE_USER_FROM_PROJECT} onError={e => console.error(e)}>
+                  {(removeUserFromProject, { error, data }) => {
+                    if (error) {
+                      return <div>{error.message}</div>;
+                    }
+                    if (data) {
+                      refetch();
+                    }
+                    return (
+                      <RemoveUserConfirm
+                        withText
+                        removeName={user?.email}
+                        onRemove={() => {
+                          removeUserFromProject({
+                            variables: {
+                              email: user.email,
+                              projectName: name,
+                            },
+                          });
+                        }}
+                      />
+                    );
+                  }}
+                </Mutation>
+                <Button variant="ghost" action={closeProjectModal}>
+                  Cancel
+                </Button>
+              </Footer>
+            </Modal>
+          </TableActions>
+        );
+      },
+    },
+  ];
+
+  if (!user) return <p style={{ textAlign: 'center' }}>User not found</p>;
+
+  const userProjects = [...new Set(user.groups.map(g => g.projects).flat())];
+
   return (
     <StyledUser>
-        <PaginatedTable
-          limit={10}
-          data={user?.groups}
-          columns={UserColumns}
-          usersTable
-          labelText="Groups"
-          emptyText="No groups"
-        />
-
-        <div style={{ width: '100px' }}>
-          <Button action={() => setAddUserModalOpen(true)}>
-            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '28px' }}>+</span>
-              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
-            </span>
-          </Button>
-        </div>
-
-        <Modal
-          isOpen={addUserModalOpen}
-          style={{ content: { width: '50%' } }}
-          onRequestClose={() => setAddUserModalOpen(false)}
-        >
-          <Mutation mutation={DELETE_USER_FROM_GROUP}>
-            {(removeUserFromGroup, { error, data }) => {
-              if (error) {
-                return <div>{error.message}</div>;
-              }
-
-              if (data) {
-                refetch().then(() => setDeleteUserModalOpen(false));
-              }
-
-              return (
-                <RemoveUserConfirm
-                  removeName={user.email}
-                  onRemove={() => {
-                    removeUserFromGroup({
-                      variables: {
-                        email: user.email,
-                        groupId: group.id
-                      },
-                    });
-                  }}
-                />
-              );
-            }}
-            </Mutation>
-        </Modal>
-
-        {/* <div className="data-table">
-          {user?.groups.map(group => (
-            <div key={group.name} className="data-row">
-              <div className="group-name">
-                <label className="group">{group.name}</label>
-              </div>
-              <div className="roles">
-                <label className="default-user-label">{user?.roles.map(role => role.role)}</label>
-              </div>
-              <div className="view">
-                <Button variant="white" action="" icon="edit"></Button>
-              </div>
-                <div className="remove">
-                  <Mutation mutation={DELETE_USER_FROM_GROUP}>
-                    {(removeUserFromGroup, { error, data }) => {
-                      if (error) {
-                        return <div>{error.message}</div>;
-                      }
-
-                      if (data) {
-                        refetch().then(() => setDeleteUserModalOpen(false));
-                      }
-
-                      return (
-                        <RemoveUserConfirm
-                          removeName={user.email}
-                          onRemove={() => {
-                            removeUserFromGroup({
-                              variables: {
-                                email: user.email,
-                                groupId: group.id
-                              },
-                            });
-                          }}
-                        />
-                      );
-                    }}
-                  </Mutation>
-                </div>
-            </div>
-          ))}
-        </div> */}
-
-        <div className="header">
-          <label>Projects</label>
-        </div>
-        <div className="data-table">
-          {user?.groups?.map((group) =>
-            group.projects?.map((project) => (
-              <div key={project.name} className="data-row">
-                <div className="project-name">
-                  <label className="project">{project.name}</label>
-                </div>
-                <div></div>
-                <div className="view">
-                  <Button variant="white" action="" icon="edit"></Button>
-                </div>
-                <div className="remove">
-                  <Mutation mutation={DELETE_USER_FROM_PROJECT}>
-                    {(removeUserFromProject, { loading, called, error, data }) => {
-                      if (error) {
-                        return <div>{error.message}</div>;
-                      }
-                      if (data) {
-                        onUserDeleted().then(closeModal);
-                      }
-
-                      return <></>
-                      // return (
-                        // <DeleteConfirm
-                        //   deleteName={user.email}
-                        //   deleteType="user"
-                        //   icon="bin"
-                        //   onDelete={() => {
-                        //     removeUserFromProject({
-                        //       variables: {
-                        //         user: user.email,
-                        //         groupId: group.id
-                        //       },
-                        //     });
-                        //   }}
-                        // />
-                      // );
-                    }}
-                  </Mutation>
-                </div>
-              </div>
-            ))
-          )}
-      </div>
+      <TableWrapper>
+        <>
+          <PaginatedTable
+            limit={10}
+            data={user.groups}
+            columns={UserColumns}
+            labelText="Groups"
+            emptyText="No groups"
+            disableUrlMutation
+          />
+          <div className="separator" style={{ margin: '3rem 0' }}></div>
+          <PaginatedTable
+            limit={10}
+            data={userProjects}
+            columns={UserProjectColumns}
+            labelText="Projects"
+            emptyText="No projects"
+            disableUrlMutation
+          />
+          <div className="separator" style={{ margin: '3rem 0' }}></div>
+        </>
+      </TableWrapper>
     </StyledUser>
   );
 };

@@ -1,13 +1,7 @@
 import React, { FC } from 'react';
 
 import { BellOutlined, DeploymentUnitOutlined, ReadOutlined, TeamOutlined } from '@ant-design/icons';
-import OrgGroupsLink from 'components/link/Organizations/Groups';
-import OrgUsersLink from 'components/link/Organizations/Users';
-import OrgNotificationsLink from 'components/link/Organizations/Notifications';
-import OrganizationLink from 'components/link/Organizations/Organization';
-import OrgProjectsLink from 'components/link/Organizations/Projects';
 
-import { IOrganization } from '../Organizations';
 import { StyledNavigation } from './StyledNavTabs';
 
 interface NavSkeletonProps {
@@ -30,19 +24,19 @@ const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
       </a>
     </li>
     <li className={`users ${activeTab == 'users' ? 'active' : ''} linkContainer`}>
-      <OrgUsersLink organizationSlug={''} organizationName={''} className="navLink">
+      <a className="navLink">
         <TeamOutlined className="icon" />
         <span className="destination">Users</span>
-      </OrgUsersLink>
+      </a>
     </li>
-    {activeTab == 'user' &&
+    {activeTab == 'user' && (
       <li className={`user ${activeTab == 'user' ? 'active' : ''} linkContainer`}>
-        <OrgUsersLink organizationSlug={''} organizationName={''} className="navLink">
+        <a className="navLink">
           <TeamOutlined className="icon" />
           <span className="destination">User</span>
-        </OrgUsersLink>
+        </a>
       </li>
-    }
+    )}
     <li className={`projects ${activeTab == 'projects' ? 'active' : ''} linkContainer`}>
       <a className="navLink">
         <DeploymentUnitOutlined className="icon" />

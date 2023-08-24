@@ -17,7 +17,11 @@ import {
 } from './Styles';
 
 type DataType = {
-  [key: string]: string | Record<string, string | Pick<Props, 'data'> | string[]>;
+  [key: string]:
+    | string
+    | Record<string, string>
+    | Record<string, Pick<Props, 'data'> | string[]>
+    | Array<Record<string, string>>;
   name: string;
   id: string;
 };
@@ -92,8 +96,7 @@ const PaginatedTable: FC<Props> = ({
       ? unfilteredData
       : unfilteredData.filter(key => {
           // @ts-ignore
-          const k = !usersTable ? key.name : 
-            (key.user ? key.user?.email : key.email) as string;
+          const k = !usersTable ? key.name : ((key.user ? key.user?.email : key.email) as string);
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
@@ -202,8 +205,8 @@ const PaginatedTable: FC<Props> = ({
   const endPage = Math.min(startPage + maxPagination - 1, totalPages);
 
   return (
-    <StyledTable className='paginatedTable'>
-      <Filters className='filters'>
+    <StyledTable className="paginatedTable">
+      <Filters className="filters">
         {labelText ? <span className="labelText">{labelText}</span> : ''}
         {withSorter ? (
           <select onChange={handleSortChange} placeholder="Sort by">
@@ -236,7 +239,7 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow className='tableRow' key={i.id}>
+            <TableRow className="tableRow" key={i.id}>
               {columns?.map(col => {
                 return (
                   <TableColumn key={`${col.key}-${idx}`} width={col.width}>
@@ -248,10 +251,10 @@ const PaginatedTable: FC<Props> = ({
           );
         })
       ) : (
-        <TableEmpty className='empty'>{emptyText}</TableEmpty>
+        <TableEmpty className="empty">{emptyText}</TableEmpty>
       )}
 
-      <TableFooter className='tableFooter'>
+      <TableFooter className="tableFooter">
         <SelectLimit>
           <span>Results per page</span>
           <select onChange={handleResultChange} value={resultLimit}>

@@ -1,33 +1,29 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
-import useSortableData from '../../../lib/withSortedItems';
-import withLogic from 'components/Organizations/users/logic';
-
 import Link from 'next/link';
 
-import AddUserToOrganization from '../AddUserToOrganization';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
-import PaginatedTable from '../PaginatedTable/PaginatedTable';
-
-import { TableActions } from '../SharedStyles';
-import { Header, StyledUsers } from './Styles';
-import Button from 'components/Button';
-
+import withLogic from 'components/Organizations/users/logic';
 import gql from 'graphql-tag';
 
+import useSortableData from '../../../lib/withSortedItems';
+import AddUserToOrganization from '../AddUserToOrganization';
+import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
+import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { Footer, TableActions } from '../SharedStyles';
+import { Header, StyledUsers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
-    pathname: '/organizations/users',
-    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    pathname: '/organizations/user',
+    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
-
 const DELETE_USER = gql`
   mutation removeUserFromOrganizationGroups($organization: Int!, $email: String!) {
     removeUserFromOrganizationGroups(input: { user: { email: $email }, organization: $organization }) {
@@ -51,25 +47,14 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
     setUserModalOpen(false);
   };
 
-  const { sortedItems, getClassNamesFor, requestSort } = useSortableData(users, {
+  const { sortedItems } = useSortableData(users, {
     key: 'email',
     direction: 'ascending',
   });
 
-  const [searchInput, setSearchInput] = useState('');
-  const handleSort = key => {
-    return requestSort(key);
-  };
-
   if (sortedItems) {
-    users = sortedItems
+    users = sortedItems;
   }
-
-  const filteredUsers = users.filter(key => {
-    const sortByName = key.email.toLowerCase().includes(searchInput.toLowerCase());
-    let sortByUrl = '';
-    return ['email', '__typename'].includes(key) ? false : (true && sortByName) || sortByUrl;
-  });
 
   const UsersColumns = [
     {
@@ -111,7 +96,11 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       width: '15%',
       key: 'projects',
       render: () => {
-        return organization ? <div className="projects">Projects: {organization.projects.length}</div> : <>Projects -</>;
+        return organization ? (
+          <div className="projects">Projects: {organization.projects.length}</div>
+        ) : (
+          <>Projects -</>
+        );
       },
     },
 
@@ -119,7 +108,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       width: '15%',
       key: 'actions',
       render: ({ ...user }) => {
-
         const linkData = getLinkData(user?.email, organizationId, organizationName);
         return (
           <TableActions>
@@ -132,43 +120,47 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
               className="delete"
               onClick={() => {
                 setSelectedUser(user?.id);
-                setUserModalOpen(true);
+                setDeleteUserModalOpen(true);
               }}
             />
-            <Modal isOpen={userModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
+            <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
               <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
               <p style={{ fontSize: '16px', lineHeight: '24px' }}>
                 This action will delete this entry, you might not be able to get this back.
               </p>
 
-              <ModalFooter>
+              <Footer>
                 <Mutation mutation={DELETE_USER}>
                   {(removeUserFromOrganizationGroups, { error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
                     if (data) {
-                      refetch().then(() => { 
-                        return setDeleteUserModalOpen(false)
+                      refetch().then(() => {
+                        return setDeleteUserModalOpen(false);
                       });
                     }
                     return (
-                      <RemoveUserConfirm
-                        removeName={user?.email}
-                        onRemove={() => {
+                      <Button
+                        variant="primary"
+                        action={() => {
                           removeUserFromOrganizationGroups({
                             variables: {
                               email: user?.email,
-                              organization: organization.id
+                              organization: organization.id,
                             },
                           });
                         }}
-                      />
+                      >
+                        Continue
+                      </Button>
                     );
                   }}
                 </Mutation>
-                <CancelButton onClick={closeUserModal}>Cancel</CancelButton>
-              </ModalFooter>
+                <Button variant="ghost" action={closeUserModal}>
+                  Cancel
+                </Button>
+              </Footer>
             </Modal>
           </TableActions>
         );
@@ -178,30 +170,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
 
   return (
     <StyledUsers>
-      {/* <Header>
-        <button
-          type="button"
-          onClick={() => handleSort('firstName')}
-          className={`button-sort firstNameSort ${getClassNamesFor('firstName')}`}
-        >
-          First Name
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSort('lastName')}
-          className={`button-sort lastNameSort ${getClassNamesFor('lastName')}`}
-        >
-          Last Name
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSort('email')}
-          className={`button-sort emailSort ${getClassNamesFor('email')}`}
-        >
-          Email
-        </button>
-      </Header> */}
-
       <PaginatedTable
         limit={10}
         data={users}

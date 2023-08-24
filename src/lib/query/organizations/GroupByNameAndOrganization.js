@@ -9,6 +9,8 @@ export default gql`
       members{
         role
         user{
+          firstName
+          lastName
           email
           comment
         }

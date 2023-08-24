@@ -4,13 +4,11 @@ import styled from 'styled-components';
 import { sharedTableStyles } from '../SharedStyles';
 
 export const UserWrapper = styled.div`
-  flex-grow: 1;
-  padding: 40px calc((100vw / 16) * 1);
-
-  .content {
-    padding: 32px calc((100vw / 16) * 1);
-    width: 100%;
-  }
+  width: 95.83%;
+  padding-top: 22px;
+  padding-inline: 12px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const StyledUser = styled.section`
@@ -54,6 +52,12 @@ export const StyledUser = styled.section`
     justify-content: flex-end;
     padding: 0;
     width: 5%;
+  }
+  .role{
+    background:#9747FF;
+    padding:5px 8px;
+    border-radius:5px;
+    color:#fff;
   }
   .remove {
     display: flex;

@@ -110,7 +110,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                   group={i}
                   organizationId={organizationId}
                   onAddUser={refetch}
-                  closeModal={() => modalAction('close', 'addUser')}
+                  close={() => modalAction('close', 'addUser')}
                 />
               </Modal>
             </>
@@ -148,6 +148,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                           refetch().then(() => modalAction('close', 'deleteGroup'));
                           return <DeleteButton>Continue</DeleteButton>;
                         }
+                        
                         return (
                           <Button
                             variant="primary"

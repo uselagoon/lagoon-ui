@@ -8,7 +8,9 @@ const sharedStyles = css`
   border-radius: 3px;
   color: ${color.white};
   cursor: pointer;
-  padding: 10px 30px;
+  &:not(:has(span[role="img"])){
+    padding: 10px 30px;
+  }
   @media ${bp.tinyUp} {
     align-self: auto;
   }

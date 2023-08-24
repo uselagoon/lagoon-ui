@@ -20,7 +20,6 @@ const Button: FC<ButtonProps> = ({ action = undefined, href = undefined, disable
     return className;
   };
 
-  
   const onClick = action
     ? action
     : (e: React.MouseEvent) => {
@@ -36,7 +35,9 @@ const Button: FC<ButtonProps> = ({ action = undefined, href = undefined, disable
     </LinkElement>
   ) : (
     <ButtonElem className={createClassName()} onClick={onClick} disabled={disabled}>
-      {icon && <i className={`icon ${icon}`} />} {!icon && children}
+      {icon && (typeof icon === 'string' ? <i className={`icon ${icon}`} /> : icon)}
+
+      {!icon && children}
     </ButtonElem>
   );
 

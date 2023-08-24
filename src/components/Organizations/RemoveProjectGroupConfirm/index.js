@@ -13,9 +13,13 @@ import { Footer } from '../SharedStyles';
 export const RemoveProjectGroupConfirm = ({ onRemove, open, openModal, closeModal }) => {
   return (
     <React.Fragment>
-      <Button variant="red" action={openModal}>
-      <DisconnectOutlined />
-      </Button>
+      <Button
+        style={{ border: '10px solid hotpink' }}
+        variant="red"
+        action={openModal}
+        icon={<DisconnectOutlined className="delete" />}
+      />
+
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>
           <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>

@@ -6,18 +6,16 @@ import { withRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
-
-import User from 'components/Organizations/User';
-import UserSkeleton from 'components/Organizations/User/UserSkeleton';
-import {UserWrapper} from 'components/Organizations/User/Styles';
-
+import UserBreadcrumb from 'components/Breadcrumbs/Organizations/User';
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
+import User from 'components/Organizations/User';
+import { UserWrapper } from 'components/Organizations/User/Styles';
+import UserSkeleton from 'components/Organizations/User/UserSkeleton';
 import MainLayout from 'layouts/MainLayout';
-
-import UserByEmail from 'lib/query/organizations/UserByEmail';
 import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import UserByEmail from 'lib/query/organizations/UserByEmail';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
@@ -26,11 +24,20 @@ import QueryError from '../../components/errors/QueryError';
  * Displays a user page
  */
 export const PageUser = ({ router }) => {
-  const { data: user, error: userError, loading: userLoading, refetch } = useQuery(UserByEmail, {
-    variables: { email: router.query.userSlug},
+  const {
+    data: user,
+    error: userError,
+    loading: userLoading,
+    refetch,
+  } = useQuery(UserByEmail, {
+    variables: { email: router.query.userSlug },
   });
 
-  const { data: organization, error: orgError, loading: orgLoading } = useQuery(OrganizationByIDQuery, {
+  const {
+    data: organization,
+    error: orgError,
+    loading: orgLoading,
+  } = useQuery(OrganizationByIDQuery, {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
 
@@ -50,12 +57,18 @@ export const PageUser = ({ router }) => {
               organizationSlug={router.query.organizationSlug}
               organizationName={router.query.organizationName || ''}
             />
+            <UserBreadcrumb
+              userSlug={router.query.userSlug || ''}
+              loading
+              organizationSlug={router.query.organizationSlug}
+              organizationName={router.query.organizationName || ''}
+            />
           </Breadcrumbs>
 
           <OrganizationsWrapper>
             <OrgNavTabsSkeleton activeTab="user" />
             <UserWrapper>
-              <UserSkeleton/>
+              <UserSkeleton />
             </UserWrapper>
           </OrganizationsWrapper>
         </MainLayout>
@@ -84,15 +97,19 @@ export const PageUser = ({ router }) => {
       <MainLayout>
         <Breadcrumbs>
           <OrganizationBreadcrumb
-            organizationSlug={router.query.organizationSlug}
-            organizationName={organization.name}
+            organizationSlug={router.query.organizationSlug || organization.id}
+            organizationName={organization.organization.name}
+          />
+
+          <UserBreadcrumb
+            userSlug={router.query.userSlug}
+            organizationSlug={router.query.organizationSlug || organization.id}
+            organizationName={organization.organization.name}
           />
         </Breadcrumbs>
 
         <OrganizationsWrapper>
-          {organization && (
-            <OrgNavTabs activeTab="user" organization={organization?.organization} />
-          )}
+          {organization && <OrgNavTabs activeTab="user" organization={organization?.organization} />}
           <UserWrapper>
             <User
               organizationId={router.query.organizationSlug}
