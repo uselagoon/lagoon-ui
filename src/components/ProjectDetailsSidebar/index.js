@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import React, { useState } from "react";
+import * as R from "ramda";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import moment from "moment";
+import giturlparse from "git-url-parse";
+import ProjectChildPageLink from "components/link/ProjectChildPageLink";
 
-import giturlparse from 'git-url-parse';
-import moment from 'moment';
-import * as R from 'ramda';
+import { FieldWrapper, ProjectDetails } from "./StyledProjectSidebar";
 
-import { FieldWrapper, ProjectDetails } from './StyledProjectSidebar';
-
-const Project = ({ project }) => {
+const ProjectDetailsSidebar = ({ project }) => {
   const [copied, setCopied] = useState(false);
   const gitUrlParsed = giturlparse(project.gitUrl);
   const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
@@ -84,21 +84,15 @@ const Project = ({ project }) => {
         <FieldWrapper className="field-wrapper target">
           <div>
             <label>Deploy Targets</label>
-            {project.deployTargetConfigs.map(depTarget => (
-              <div key={depTarget.id}>
-                <div>
-                  <label className="field1">
-                    {depTarget.deployTarget.friendlyName != null
-                      ? depTarget.deployTarget.friendlyName
-                      : depTarget.deployTarget.name}
-                  </label>
-                </div>
-                <label className="field2">Branches enabled</label>
-                <div className="field2">{depTarget.branches}</div>
-                <label className="field2">Pull requests enabled</label>
-                <div className="field2">{depTarget.pullrequests}</div>
-              </div>
-            ))}
+            <div>
+              <ProjectChildPageLink
+                childPage={"deploy-targets"}
+                projectSlug={project.name}
+                className="deployLink deployTargets hover-state"
+              >
+                View
+              </ProjectChildPageLink>
+            </div>
           </div>
         </FieldWrapper>
       )}
@@ -106,4 +100,4 @@ const Project = ({ project }) => {
   );
 };
 
-export default Project;
+export default ProjectDetailsSidebar;

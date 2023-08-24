@@ -40,6 +40,15 @@ app
       app.render(req, res, '/project', { projectName: req.params.projectSlug });
     });
 
+    server.get('/projects/:projectSlug/project-variables', (req, res) => {
+      app.render(req, res, '/project-variables', { projectName: req.params.projectSlug });
+    });
+    
+    server.get('/projects/:projectSlug/deploy-targets', (req, res) => {
+      app.render(req, res, '/deploy-targets', { projectName: req.params.projectSlug });
+    });
+
+
     server.get('/projects/:projectSlug/:environmentSlug', (req, res) => {
       app.render(req, res, '/environment', {
         openshiftProjectName: req.params.environmentSlug,
@@ -105,6 +114,12 @@ app
     server.get('/projects/:projectSlug/:environmentSlug/insights', (req, res) => {
       app.render(req, res, '/insights', {
         openshiftProjectName: req.params.environmentSlug,
+      });
+    });
+
+    server.get('/projects/:projectSlug/:environmentSlug/environment-variables', (req, res) => {
+      app.render(req, res, '/environment-variables', {
+        openshiftProjectName: req.params.environmentSlug
       });
     });
 

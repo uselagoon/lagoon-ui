@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 /**
  * A styled modal dialog.
  */
-const Modal = ({ isOpen, onRequestClose, contentLabel, children, ...rest }) => {
+const Modal = ({ isOpen, onRequestClose, contentLabel, children, variant, ...rest }) => {
   // ReactModal throws an error in environments where the document isn't loaded.
   try {
     ReactModal.setAppElement('#__next');
@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onRequestClose, contentLabel, children, ...rest }) => {
   return (
     <>
       <ReactModal
-        className="modal__content"
+        className={`modal__content ${variant ? `modal-${variant}` : ''} `}
         overlayClassName="modal__overlay"
         isOpen={isOpen}
         onRequestClose={onRequestClose}

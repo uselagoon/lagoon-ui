@@ -101,7 +101,17 @@ export const StyledNavigation = styled.ul`
         background-image: url('/static/images/tasks-active.svg');
       }
     }
-
+    
+    &.environmentVariables {
+      &::before {
+        background-image: url('/static/images/variables.svg');
+        background-size: 22px;
+      }
+      &.active::before {
+        background-image: url('/static/images/variables-active.svg');
+      }
+    }
+    
     &.problems {
       &::before {
         background-image: url('/static/images/problems.svg');

@@ -98,6 +98,7 @@ export const ProblemsByDashBoard = styled.div`
     }
   }
 `;
+
 export const DeploymentWrapper = styled.div`
   flex: 1;
   ${props => commonBg(props.theme.backgrounds.content)}
@@ -131,6 +132,26 @@ export const EnvironmentWrapper = styled.div`
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
+  }
+`;
+
+export const VariableWrapper = styled.div`
+  ${(props) => commonBg(props.theme.backgrounds.content)}
+  flex: 1;
+  @media ${bp.tabletUp} {
+    display: flex;
+    padding: 0;
+  }
+  & > .content {
+    width: 100%;
+  }
+  .notification {
+    background-color: ${color.lightBlue};
+    color: ${color.white};
+    padding: 10px 20px;
+    text-align: center;
+    width: 84%;
+    margin: 0 auto;
   }
 `;
 
@@ -188,40 +209,66 @@ export const TaskWrapper = styled.div`
   }
 `;
 
+export const ProjectWrapper = styled.div`
+  ${(props) => commonBg(props.theme.backgrounds.content)}
+  flex: 1;
+  @media ${bp.tabletUp} {
+    display: flex;
+    padding: 0;
+  }
+
+  & > .content {
+    width: 100%;
+  }
+`;
+
 export const ProjectDetailsWrapper = styled.div`
+  display: flex;
+  min-width: 75%;
+  flex-direction: column;
+
   @media ${bp.tabletUp} {
     display: flex;
     justify-content: space-between;
   }
 
-  ${props => commonBg(props.theme.backgrounds.content)}
-  .project-details-sidebar {
-    background-color: ${props => props.theme.backgrounds.sidebar};
-    border-right: ${props =>
-      props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    @media ${bp.tabletUp} {
-      min-width: 50%;
-      width: 50%;
-    }
-    @media ${bp.desktopUp} {
-      min-width: 40%;
-      width: 40%;
-    }
-    @media ${bp.wideUp} {
-      min-width: 33.33%;
-      width: 33.33%;
-      width: calc((100vw / 16) * 5);
-    }
+  .environments-all {
+    max-width: 75%;
   }
 
+  .title h3 {
+    margin: 0 0 12px;
+  }
+
+  ${(props) => commonBg(props.theme.backgrounds.content)}
+  .project-details-sidebar {
+    background-color: ${(props) => props.theme.backgrounds.content};
+    border-right: ${(props) =>
+      props.theme.colorScheme === "dark"
+        ? `2px solid ${props.theme.borders.box}`
+        : `1px solid ${color.midGrey}`};
+    padding: 32px calc((100vw / 16) * 1);
+    max-width: 75%;
+    @media ${bp.tabletUp} {
+      padding: 48px calc(((100vw / 16) * 1) + 28px);
+    }
+    @media ${bp.desktopUp} {
+      padding: 48px calc((100vw / 50) * 1) 0;
+    }
+  }
   .environments-wrapper {
     flex-grow: 1;
-    padding: 40px calc((100vw / 16) * 1);
-    background: ${props => props.theme.backgrounds.content};
+    padding: 48px calc((100vw / 50) * 1) 0px calc((100vw / 50) * 1);
+    background: ${(props) => props.theme.backgrounds.content};
+    @media ${bp.xs_smallUp} {
+      padding: 0px calc((100vw / 16) * 1) 40px calc((100vw / 16) * 1);
+    }
+    @media ${bp.tabletUp} {
+      padding: 0 calc(((100vw / 20) * 1) + 28px) 48px;
+    }
+    @media ${bp.desktopUp} {
+      padding: 0 calc((100vw / 30) * 1) 48px;
+    }
   }
 `;
 

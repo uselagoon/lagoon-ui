@@ -5,10 +5,12 @@ import DeploymentsLink from 'components/link/Deployments';
 import EnvironmentLink from 'components/link/Environment';
 import FactsLink from 'components/link/Facts';
 import InsightsLink from 'components/link/Insights';
+import EnvironmentVariablesLink from 'components/link/EnvironmentVariables';
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+import {StyledNavigation} from "./StylednavTabs";
 import ProblemsLink from 'components/link/Problems';
 import TasksLink from 'components/link/Tasks';
-
-import { StyledNavigation } from './StylednavTabs';
 
 const NavTabs = ({ activeTab, environment }) => (
   <StyledNavigation className="navigation">
@@ -48,9 +50,21 @@ const NavTabs = ({ activeTab, environment }) => (
         Tasks
       </TasksLink>
     </li>
+    {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && <li
+      className={`environmentVariables ${activeTab == 'environmentVariables' ? 'active' : ''} ${"deployLink"}`}
+    >
+      <EnvironmentVariablesLink
+        environmentSlug={environment.openshiftProjectName}
+        projectSlug={environment.project.name}
+        className="deployLink"
+      >
+        Variables
+      </EnvironmentVariablesLink>
+    </li>
+    }
     {environment.project.problemsUi == 1 && (
       <li className={`problems ${activeTab == 'problems' ? 'active' : ''} deployLink`}>
-        <ProblemsLink
+      <ProblemsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
           className="deployLink"
