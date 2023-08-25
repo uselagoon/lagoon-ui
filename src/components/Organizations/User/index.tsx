@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { DisconnectOutlined, EyeOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
@@ -170,18 +169,19 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                       refetch();
                     }
                     return (
-                      <RemoveUserConfirm
-                        withText
-                        removeName={user?.email}
-                        onRemove={() => {
-                          void removeUserFromGroup({
+                      <Button
+                        variant="primary"
+                        action={() => {
+                          removeUserFromGroup({
                             variables: {
                               email: user?.email,
                               groupId: group?.id,
                             },
                           });
                         }}
-                      />
+                      >
+                        Continue
+                      </Button>
                     );
                   }}
                 </Mutation>
@@ -240,7 +240,15 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
               </p>
 
               <Footer>
-                <Mutation<{ remove: {} }> mutation={DELETE_USER_FROM_PROJECT} onError={e => console.error(e)}>
+                <Mutation<{
+                  removeUserFromProject: {
+                    email: string;
+                    projectName: string;
+                  };
+                }>
+                  mutation={DELETE_USER_FROM_PROJECT}
+                  onError={e => console.error(e)}
+                >
                   {(removeUserFromProject, { error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
@@ -249,10 +257,9 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                       refetch();
                     }
                     return (
-                      <RemoveUserConfirm
-                        withText
-                        removeName={user?.email}
-                        onRemove={() => {
+                      <Button
+                        variant="primary"
+                        action={() => {
                           removeUserFromProject({
                             variables: {
                               email: user.email,
@@ -260,7 +267,9 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                             },
                           });
                         }}
-                      />
+                      >
+                        Continue
+                      </Button>
                     );
                   }}
                 </Mutation>

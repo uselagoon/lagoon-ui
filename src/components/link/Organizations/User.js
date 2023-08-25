@@ -5,7 +5,7 @@ export const getLinkData = (organizationSlug, organizationName) => ({
     pathname: '/organizations/users',
     query: { organizationSlug: organizationSlug, organizationName: organizationName },
   },
-  asPath: `/organizations/${organizationSlug}/users/${userSlug}`
+  asPath: `/organizations/${organizationSlug}/users`,
 });
 
 /**

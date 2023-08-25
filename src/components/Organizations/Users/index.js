@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
@@ -6,16 +6,14 @@ import Link from 'next/link';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import withLogic from 'components/Organizations/users/logic';
 import gql from 'graphql-tag';
 
 import useSortableData from '../../../lib/withSortedItems';
 import AddUserToOrganization from '../AddUserToOrganization';
-import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { Footer, TableActions } from '../SharedStyles';
-import { Header, StyledUsers } from './Styles';
+import { StyledUsers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
@@ -42,19 +40,27 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
+  const [dynamicUsers, setDynamicUsers] = useState(users);
+
   const closeUserModal = () => {
     setSelectedUser('');
     setUserModalOpen(false);
   };
 
-  const { sortedItems } = useSortableData(users, {
+  useEffect(() => {
+    setDynamicUsers(users);
+  }, [users]);
+
+  const { sortedItems } = useSortableData(dynamicUsers, {
     key: 'email',
     direction: 'ascending',
   });
 
-  if (sortedItems) {
-    users = sortedItems;
-  }
+  useEffect(() => {
+    if (sortedItems) {
+      setDynamicUsers(sortedItems);
+    }
+  }, [sortedItems]);
 
   const UsersColumns = [
     {
@@ -172,7 +178,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
     <StyledUsers>
       <PaginatedTable
         limit={10}
-        data={users}
+        data={dynamicUsers}
         columns={UsersColumns}
         usersTable={true}
         labelText="Users"

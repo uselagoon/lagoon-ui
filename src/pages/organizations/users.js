@@ -6,17 +6,15 @@ import { withRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
-
-import Users from 'components/Organizations/Users';
-import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
-import {UsersWrapper } from 'components/Organizations/Users/Styles';
-
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
+import Users from 'components/Organizations/Users';
+import { UsersWrapper } from 'components/Organizations/Users/Styles';
+import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
 import MainLayout from 'layouts/MainLayout';
-
 import UsersByOrganization from 'lib/query/organizations/UsersByOrganization';
+
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
 
@@ -28,16 +26,13 @@ export const PageUsers = ({ router }) => {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
 
-  const handleRefetch = async () =>
-    await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
 
   if (loading) {
     return (
       <>
         <Head>
-          {router.query.organizationName
-            ? `${router.query.organizationName} | Organization`
-            : 'Organization'}
+          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
         </Head>
         <MainLayout>
           <Breadcrumbs>
@@ -62,8 +57,9 @@ export const PageUsers = ({ router }) => {
   }
 
   const organization = data.organization;
-  const users = data.organization.groups.map((group) => group.members.map((member) => member.user));
-  const allUsers = users.flat();
+  const users = data.organization.groups.map(group => group.members.map(member => member.user));
+
+  const allUsers = [...new Set(users.flat(2))];
 
   return (
     <>
@@ -92,4 +88,3 @@ export const PageUsers = ({ router }) => {
 };
 
 export default withRouter(PageUsers);
-
