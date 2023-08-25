@@ -59,15 +59,6 @@ const DELETE_USER_FROM_GROUP = gql`
   }
 `;
 
-const DELETE_USER_FROM_PROJECT = gql`
-  mutation removeUserFromProject($email: String!, $groupId: String!) {
-    removeUserFromProject(input: { user: { email: $email }, group: { id: $groupId } }) {
-      id
-      name
-    }
-  }
-`;
-
 interface UserProps {
   user: User;
   organizationName: string;
@@ -143,6 +134,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
               }}
             />
             <Modal
+              variant="delete"
               contentLabel="unlinkuser"
               isOpen={groupModalOpen && selectedGroup === group?.id}
               onRequestClose={closeGroupModal}
@@ -220,64 +212,6 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
             >
               <EyeOutlined className="edit" style={{ width: '27px' }} />
             </ProjectGroupLink>
-
-            <DisconnectOutlined
-              className="delete"
-              onClick={() => {
-                setSelectedProject(name);
-                setProjectModalOpen(true);
-              }}
-            />
-
-            <Modal
-              contentLabel="unlinkuser"
-              isOpen={projectModalOpen && selectedProject === name}
-              onRequestClose={closeProjectModal}
-            >
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
-              </p>
-
-              <Footer>
-                <Mutation<{
-                  removeUserFromProject: {
-                    email: string;
-                    projectName: string;
-                  };
-                }>
-                  mutation={DELETE_USER_FROM_PROJECT}
-                  onError={e => console.error(e)}
-                >
-                  {(removeUserFromProject, { error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    if (data) {
-                      refetch();
-                    }
-                    return (
-                      <Button
-                        variant="primary"
-                        action={() => {
-                          void removeUserFromProject({
-                            variables: {
-                              email: user.email,
-                              projectName: name,
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeProjectModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
           </TableActions>
         );
       },

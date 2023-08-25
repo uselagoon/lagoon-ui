@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import withLogic from 'components/Organizations/users/logic';
+import withLogic from 'components/Organizations/Users/logic';
 import gql from 'graphql-tag';
 
 import useSortableData from '../../../lib/withSortedItems';
