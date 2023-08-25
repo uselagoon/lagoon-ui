@@ -94,8 +94,8 @@ const InvokeRegisteredTask = ({
                         <div key={`env-text-${index}`} className="envSelect">
                           <label id="source-env">{d.displayName || d.name} :</label>
                           <ReactSelect
-                            aria-labelledby="{d.name}"
-                            name="{d.name}"
+                            aria-labelledby={d.name}
+                            name={d.name}
                             placeholder="Select environment..."
                             value={{
                               label: R.prop(d.name, advancedTaskArguments),
@@ -119,7 +119,7 @@ const InvokeRegisteredTask = ({
                           <label id="source-env">{d.displayName || d.name} :</label>
                           <input
                             type="text"
-                            name="{d.name}"
+                            name={d.name}
                             value={d.defaultValue}
                             onChange={event => {
                               setAdvancedTaskArguments({
