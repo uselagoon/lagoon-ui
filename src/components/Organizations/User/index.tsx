@@ -172,7 +172,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                       <Button
                         variant="primary"
                         action={() => {
-                          removeUserFromGroup({
+                          void removeUserFromGroup({
                             variables: {
                               email: user?.email,
                               groupId: group?.id,
@@ -260,7 +260,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                       <Button
                         variant="primary"
                         action={() => {
-                          removeUserFromProject({
+                          void removeUserFromProject({
                             variables: {
                               email: user.email,
                               projectName: name,
