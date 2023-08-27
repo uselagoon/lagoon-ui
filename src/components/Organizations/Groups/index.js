@@ -79,7 +79,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
       width: '20%',
       key: 'members',
       render: i => {
-        return i.members && <span>Members: {i.members.length} </span>;
+        return i.memberCount && <span>Members: {i.memberCount} </span>;
       },
     },
     {

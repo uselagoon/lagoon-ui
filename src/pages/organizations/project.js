@@ -74,7 +74,7 @@ export const PageGroupProject = ({ router }) => {
     return <QueryError error={error} />;
   }
 
-  const { organization } = data;
+  const { organization, project } = data;
 
   if (!organization) {
     return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
@@ -100,9 +100,7 @@ export const PageGroupProject = ({ router }) => {
         </Breadcrumbs>
 
         <OrganizationsWrapper>
-          {organization.projects.map(
-            project =>
-              project.name == router.query.projectName && (
+          {(
                 <>
                   <OrgNavTabs activeTab="projects" organization={organization} />
                   <OrgProjectWrapper>
@@ -129,7 +127,7 @@ export const PageGroupProject = ({ router }) => {
                   </OrgProjectWrapper>
                 </>
               )
-          )}
+          }
         </OrganizationsWrapper>
       </MainLayout>
     </>
