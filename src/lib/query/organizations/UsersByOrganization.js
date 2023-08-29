@@ -14,11 +14,14 @@ export default gql`
   #   }
   # }
 
-  query getOrganization($id: Int!){
-    organization: organizationById (organization: $id){
+  query getOrganization($id: Int!) {
+    organization: organizationById(organization: $id) {
       id
       name
       owners {
+        id
+        firstName
+        lastName
         email
         owner
       }
@@ -34,7 +37,7 @@ export default gql`
           user {
             id
             firstName
-        	lastName
+            lastName
             email
             comment
           }

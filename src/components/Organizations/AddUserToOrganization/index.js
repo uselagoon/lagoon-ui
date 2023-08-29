@@ -21,20 +21,14 @@ const ADD_USER_MUTATION = gql`
 /**
  * Confirms the deletion of the specified name and type.
  */
-export const AddUserToOrganization = ({
-  organization,
-  close,
-  inputValueEmail,
-  setInputValue,
-  onAddUser,
-}) => {
+export const AddUserToOrganization = ({ organization, close, inputValueEmail, setInputValue, onAddUser }) => {
   const [selectedOrganization, setSelectedOrganization] = useState(organization);
 
   let options = [
     {
       label: organization && organization.name,
       value: organization && organization.id,
-    }
+    },
   ];
 
   return (
@@ -88,7 +82,8 @@ export const AddUserToOrganization = ({
                     addUser({
                       variables: {
                         email: inputValueEmail,
-                        organization: organization.id
+                        organization: organization.id,
+                        owner: true,
                       },
                     });
                   }}

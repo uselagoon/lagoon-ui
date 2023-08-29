@@ -14,7 +14,6 @@ export const RemoveProjectGroupConfirm = ({ onRemove, open, openModal, closeModa
   return (
     <React.Fragment>
       <Button
-        style={{ border: '10px solid hotpink' }}
         variant="red"
         action={openModal}
         icon={<DisconnectOutlined className="delete" />}

@@ -58,7 +58,6 @@ export const PageUsers = ({ router }) => {
 
   const organization = data.organization;
   const users = data.organization.groups.map(group => group.members.map(member => member.user));
-
   const allUsers = [...new Set(users.flat(2))];
 
   return (
