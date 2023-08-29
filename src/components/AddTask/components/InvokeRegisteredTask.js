@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
@@ -44,6 +44,14 @@ const InvokeRegisteredTask = ({
   isConfirmOpen,
   setIsConfirmOpen,
 }) => {
+  useEffect(() => {
+    let defaultArgValues = {};
+    selectedTask.arguments.forEach(item => {
+      defaultArgValues[item.name] = item.defaultValue;
+    });
+    setAdvancedTaskArguments(defaultArgValues)
+  }, []);
+
   let taskArgumentsExist = false;
   let argumentVariablesHaveValues = true;
 
@@ -120,7 +128,7 @@ const InvokeRegisteredTask = ({
                           <input
                             type="text"
                             name={d.name}
-                            value={d.defaultValue}
+                            value={advancedTaskArguments[d.name] }
                             onChange={event => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
