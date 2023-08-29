@@ -47,7 +47,9 @@ const InvokeRegisteredTask = ({
   useEffect(() => {
     let defaultArgValues = {};
     selectedTask.arguments.forEach(item => {
-      defaultArgValues[item.name] = item.defaultValue;
+      if (item.defaultValue) {
+        defaultArgValues[item.name] = item.defaultValue;
+      }
     });
     setAdvancedTaskArguments(defaultArgValues)
   }, []);
