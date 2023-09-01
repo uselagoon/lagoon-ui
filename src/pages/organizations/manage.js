@@ -9,11 +9,10 @@ import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organiz
 import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
-import Users from 'components/Organizations/Users';
 import { UsersWrapper } from 'components/Organizations/Users/Styles';
 import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import GetOrganization from 'lib/query/organizations/organizationById';
+import GetOrganization from 'lib/query/organizations/organizationByID';
 
 import Manage from '../../components/Organizations/Manage';
 import QueryError from '../../components/errors/QueryError';
