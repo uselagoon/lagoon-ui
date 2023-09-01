@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DeleteOutlined, DisconnectOutlined } from '@ant-design/icons';
+import { DisconnectOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveProjectGroupConfirm/logic';

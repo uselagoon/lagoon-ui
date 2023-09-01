@@ -134,12 +134,14 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                   <RemoveUserConfirm
                     removeName={user.email}
                     onRemove={() => {
-                      removeUserFromGroup({
-                        variables: {
-                          groupName: groupName,
-                          email: user.email,
-                        },
-                      });
+                      return Promise.resolve(
+                        removeUserFromGroup({
+                          variables: {
+                            groupName: groupName,
+                            email: user.email,
+                          },
+                        })
+                      );
                     }}
                   />
                 );

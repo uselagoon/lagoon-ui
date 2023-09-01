@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { DisconnectOutlined, EyeOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
@@ -73,17 +72,9 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('');
 
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState('');
-
   const closeGroupModal = () => {
     setSelectedGroup('');
     setGroupModalOpen(false);
-  };
-
-  const closeProjectModal = () => {
-    setSelectedProject('');
-    setProjectModalOpen(false);
   };
 
   const UserColumns = [
@@ -188,40 +179,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
     },
   ];
 
-  const UserProjectColumns = [
-    {
-      width: '80%',
-      key: 'name',
-      render: ({ name }: { name: string }) => {
-        return name ? <div className="group">{name}</div> : <>Group name - </>;
-      },
-    },
-
-    {
-      width: '20%',
-      key: 'actions',
-      render: ({ name }: { name: string }) => {
-        return (
-          <TableActions>
-            <ProjectGroupLink
-              className="link"
-              projectGroupSlug={name}
-              organizationSlug={organizationId}
-              organizationName={organizationName}
-              key={name}
-            >
-              <EyeOutlined className="edit" style={{ width: '27px' }} />
-            </ProjectGroupLink>
-          </TableActions>
-        );
-      },
-    },
-  ];
-
   if (!user) return <p style={{ textAlign: 'center' }}>User not found</p>;
-
-  const userProjects = [...new Set(user.groups.map(g => g.projects).flat())];
-
   return (
     <StyledUser>
       <TableWrapper>
@@ -232,16 +190,6 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
             columns={UserColumns}
             labelText="Groups"
             emptyText="No groups"
-            disableUrlMutation
-          />
-          <div className="separator" style={{ margin: '3rem 0' }}></div>
-          <PaginatedTable
-            limit={10}
-            data={userProjects}
-            columns={UserProjectColumns}
-            labelText="Projects"
-            emptyText="No projects"
-            disableUrlMutation
           />
           <div className="separator" style={{ margin: '3rem 0' }}></div>
         </>

@@ -191,6 +191,12 @@ app
         organizationSlug: req.params.organizationSlug
       });
     });
+
+    server.get('/organizations/:organizationSlug/manage', (req, res) => {
+      app.render(req, res, '/organizations/manage', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
     // organizations end
 
     server.get('*', (req, res) => {

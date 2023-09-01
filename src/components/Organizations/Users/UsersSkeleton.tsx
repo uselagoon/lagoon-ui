@@ -14,22 +14,22 @@ const UsersSkeleton = () => {
       style={{ display: 'flex', gap: '1rem', paddingLeft: '1rem' }}
     >
       <div className="customer" style={{ width: '15%' }}>
-        <Skeleton height={30} />
+        <Skeleton height={40} />
       </div>
       <div className="customer" style={{ width: '15%' }}>
-        <Skeleton height={30} />
+        <Skeleton height={40} />
       </div>
       <div className="customer" style={{ width: '25%' }}>
-        <Skeleton height={30} />
+        <Skeleton height={40} />
       </div>
       <div className="customer" style={{ width: '15%' }}>
-        <Skeleton height={30} />
+        <Skeleton height={40} />
       </div>
       <div className="customer" style={{ width: '15%' }}>
-        <Skeleton height={30} />
+        <Skeleton height={40} />
       </div>
       <div className="customer" style={{ width: '15%' }}>
-        <Skeleton height={30} />
+        <Skeleton height={40} />
       </div>
     </div>
   );

@@ -13,29 +13,22 @@ import Users from 'components/Organizations/Users';
 import { UsersWrapper } from 'components/Organizations/Users/Styles';
 import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import UsersByOrganization, { getOrganization } from 'lib/query/organizations/UsersByOrganization';
+import GetOrganization from 'lib/query/organizations/organizationById';
 
+import Manage from '../../components/Organizations/Manage';
 import QueryError from '../../components/errors/QueryError';
 
 /**
- * Displays the users page
+ * Displays the manage page
  */
-export const PageUsers = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(UsersByOrganization, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
-  });
-
-  const {
-    data: orgData,
-    error: orgErr,
-    loading: orgLoading,
-  } = useQuery(getOrganization, {
+export const PageManage = ({ router }) => {
+  const { data, error, loading, refetch } = useQuery(GetOrganization, {
     variables: { id: parseInt(router.query.organizationSlug, 10) },
   });
 
   const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
 
-  if (loading || orgLoading) {
+  if (loading) {
     return (
       <>
         <Head>
@@ -49,7 +42,8 @@ export const PageUsers = ({ router }) => {
             />
           </Breadcrumbs>
           <OrganizationsWrapper>
-            <OrgNavTabsSkeleton activeTab="users" />
+            <OrgNavTabsSkeleton activeTab="manage" />
+
             <UsersWrapper>
               <UsersSkeleton />
             </UsersWrapper>
@@ -59,13 +53,15 @@ export const PageUsers = ({ router }) => {
     );
   }
 
-  if (error || orgErr) {
+  if (error) {
     return <QueryError error={error} />;
   }
 
-  const organization = orgData.organization;
-  const allUsers = data.users;
+  const organization = data.organization;
 
+  const owners = organization.owners;
+
+  console.warn(owners);
   return (
     <>
       <Head>
@@ -76,11 +72,11 @@ export const PageUsers = ({ router }) => {
           <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
         </Breadcrumbs>
         <OrganizationsWrapper>
-          <OrgNavTabs activeTab="users" organization={organization} />
+          <OrgNavTabs activeTab="manage" organization={organization} />
           <UsersWrapper>
-            <Users
+            <Manage
               refetch={handleRefetch}
-              users={allUsers}
+              users={owners}
               organization={organization}
               organizationId={router.query.organizationSlug}
               organizationName={organization.name}
@@ -92,4 +88,4 @@ export const PageUsers = ({ router }) => {
   );
 };
 
-export default withRouter(PageUsers);
+export default withRouter(PageManage);

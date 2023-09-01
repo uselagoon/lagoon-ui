@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { BellOutlined, DeploymentUnitOutlined, ReadOutlined, TeamOutlined } from '@ant-design/icons';
+import { BellOutlined, DeploymentUnitOutlined, ReadOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons';
 import OrgGroupsLink from 'components/link/Organizations/Groups';
 import OrgUsersLink from 'components/link/Organizations/Users';
 import OrgNotificationsLink from 'components/link/Organizations/Notifications';
+import OrgManageLink from "components/link/Organizations/Manage";
 import OrganizationLink from 'components/link/Organizations/Organization';
 import OrgProjectsLink from 'components/link/Organizations/Projects';
 
@@ -49,6 +50,14 @@ const OrgNavTabs = ({ activeTab, organization }) => (
         <span className="destination">Notifications</span>
       </OrgNotificationsLink>
     </li>
+
+    <li className={`manage ${activeTab == 'manage' ? 'active' : ''} linkContainer`}>
+      <OrgManageLink organizationSlug={organization.id} organizationName={organization.name} className="navLink">
+        <SettingOutlined className="icon" />
+        <span className="destination">Manage</span>
+      </OrgManageLink>
+    </li>
+
   </StyledNavigation>
 );
 

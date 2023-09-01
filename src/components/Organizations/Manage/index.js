@@ -10,10 +10,13 @@ import withLogic from 'components/Organizations/Users/logic';
 import gql from 'graphql-tag';
 
 import useSortableData from '../../../lib/withSortedItems';
-import AddUserToGroupSelect from '../AddUserToGroupSelect';
+
+import AddUserToOrganization from '../AddUserToOrganization';
+
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { Footer, TableActions } from '../SharedStyles';
-import { StyledUsers } from './Styles';
+import { StyledUsers } from '../Users/Styles';
+
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
@@ -31,9 +34,9 @@ const DELETE_USER = gql`
 `;
 
 /**
- * The primary list of users.
+ * The list of owners.
  */
-const Users = ({ users = [], organization, organizationId, organizationName, refetch }) => {
+const Manage = ({ users = [], organization, organizationId, organizationName, refetch }) => {
   const [userModalOpen, setUserModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
 
@@ -68,6 +71,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
     }
   }, [sortedItems]);
 
+
   const UsersColumns = [
     {
       width: '15%',
@@ -95,13 +99,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
             </Link>
           </div>
         );
-      },
-    },
-    {
-      width: '15%',
-      key: 'groups',
-      render: user => {
-        return <div className="groups">Groups: {user.groupRoles.length}</div>;
       },
     },
     {
@@ -184,30 +181,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         style={{ content: { width: '50%' } }}
         onRequestClose={() => setAddUserModalOpen(false)}
       >
-        <AddUserToGroupSelect
-          groups={organization.groups}
-          newUserState={newUserState}
-          setNewUserState={setNewUserState}
-          modalOpen={addUserModalOpen}
-          close={() => setAddUserModalOpen(false)}
-          onAddUser={refetch}
-        />
-      </Modal>
-
-      <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-          </span>
-        </Button>
-      </div>
-
-      {/* <Modal
-        isOpen={addUserModalOpen}
-        style={{ content: { width: '50%' } }}
-        onRequestClose={() => setAddUserModalOpen(false)}
-      >
         <AddUserToOrganization
           organization={organization}
           modalOpen={addUserModalOpen}
@@ -223,9 +196,9 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
             <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
           </span>
         </Button>
-      </div> */}
+      </div>
     </StyledUsers>
   );
 };
 
-export default withLogic(Users);
+export default withLogic(Manage);

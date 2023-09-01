@@ -10,20 +10,20 @@ const GroupMembersSkeleton = () => {
   const groupMembers = (
     <div className="data-row">
       <div className="name">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div className="name">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
 
       <div className="name">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div className="name">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div className="name">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
     </div>
   );

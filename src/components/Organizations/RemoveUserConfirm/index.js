@@ -31,7 +31,12 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
           </p>
 
           <Footer>
-            <Button action={onRemove} variant="primary">
+            <Button
+              action={() => {
+                onRemove().then(closeModal);
+              }}
+              variant="primary"
+            >
               Continue
             </Button>
             <Button action={closeModal} variant="ghost">

@@ -4,6 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 
 import { SearchBar } from '../Orgheader/Styles';
 import {
+  Checkbox,
   Filters,
   NextBtn,
   Pagination,
@@ -35,6 +36,7 @@ interface Props {
   usersTable?: boolean;
   withSorter?: boolean;
   disableUrlMutation?: boolean;
+  systemGroupCheckbox?: boolean;
   numericSortKey?: string;
   labelText?: string;
   limit: number;
@@ -60,6 +62,7 @@ const PaginatedTable: FC<Props> = ({
   columns,
   usersTable,
   withSorter,
+  systemGroupCheckbox,
   numericSortKey,
   emptyText,
   labelText,
@@ -87,12 +90,14 @@ const PaginatedTable: FC<Props> = ({
 
   const [unfilteredData, setUnfilteredData] = useState(data);
 
+  const [systemGroupsSelected, setSystemGroupsSelected] = useState(false);
+
   useEffect(() => {
     setUnfilteredData(data);
   }, [data]);
 
   const sortedFilteredData = useMemo(() => {
-    const filtered = !searchStr
+    let filtered = !searchStr
       ? unfilteredData
       : unfilteredData.filter(key => {
           // @ts-ignore
@@ -100,6 +105,9 @@ const PaginatedTable: FC<Props> = ({
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
+    if (!systemGroupsSelected) {
+      filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+    }
     if (withSorter) {
       if (sortMethod === 'alphabetical') {
         return filtered.sort(function (a, b) {
@@ -119,7 +127,7 @@ const PaginatedTable: FC<Props> = ({
     } else {
       return filtered;
     }
-  }, [searchStr, withSorter, sortMethod, unfilteredData]);
+  }, [searchStr, withSorter, sortMethod, unfilteredData, systemGroupsSelected]);
 
   const resultIndex = (currentPage - 1) * resultLimit;
 
@@ -208,6 +216,16 @@ const PaginatedTable: FC<Props> = ({
     <StyledTable className="paginatedTable">
       <Filters className="filters">
         {labelText ? <span className="labelText">{labelText}</span> : ''}
+        {systemGroupCheckbox ? (
+          <Checkbox>
+            Show system groups
+            <input
+              type="checkbox"
+              checked={systemGroupsSelected}
+              onChange={({ target: { checked } }) => setSystemGroupsSelected(checked)}
+            />
+          </Checkbox>
+        ) : null}
         {withSorter ? (
           <select onChange={handleSortChange} placeholder="Sort by">
             <option value="" disabled selected hidden>
