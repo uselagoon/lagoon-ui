@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import OrgHeader from '../Orgheader';
 import { StyledUsers } from './Styles';
 
-const UsersSkeleton = () => {
+interface Props {
+  title?: string;
+}
+
+const UsersSkeleton: FC<Props> = ({ title }) => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const groupSkeleton = (index: number) => (
@@ -35,7 +39,7 @@ const UsersSkeleton = () => {
   );
   return (
     <>
-      <OrgHeader headerText="Users" />
+      <OrgHeader headerText={title ? title : 'Users'} />
       <StyledUsers>
         <div className="data-table">
           {[...Array<undefined>(numberOfFields)].map((_, index) => groupSkeleton(index))}

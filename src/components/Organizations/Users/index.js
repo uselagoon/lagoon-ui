@@ -202,28 +202,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
           </span>
         </Button>
       </div>
-
-      {/* <Modal
-        isOpen={addUserModalOpen}
-        style={{ content: { width: '50%' } }}
-        onRequestClose={() => setAddUserModalOpen(false)}
-      >
-        <AddUserToOrganization
-          organization={organization}
-          modalOpen={addUserModalOpen}
-          close={() => setAddUserModalOpen(false)}
-          onAddUser={refetch}
-        />
-      </Modal>
-
-      <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-          </span>
-        </Button>
-      </div> */}
     </StyledUsers>
   );
 };

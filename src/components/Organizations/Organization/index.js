@@ -248,7 +248,7 @@ const Organization = ({ organization, refetch }) => {
             </div>
 
             <div className="users">
-              <span>Users</span>
+              <span>Administrators</span>
               {organization.owners.slice(0, 10).map(owner => (
                 <div key={owner.email} className="user">
                   <p>

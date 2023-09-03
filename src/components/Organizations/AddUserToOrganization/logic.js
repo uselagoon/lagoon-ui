@@ -10,19 +10,15 @@ const withInputHandlers = withHandlers({
       setInputValue(event.target.value),
 });
 
-const withNewMemberHanders = withHandlers({
-  onCompleted:
-    ({ setSelectedTask }) =>
-    () => {
-      setSelectedTask('Completed');
-    },
-  onError:
-    ({ setSelectedTask }) =>
-    () => {
-      setSelectedTask('Error');
+const withCheckboxValue = withState('checkboxValueOwner', 'setCheckboxValueOwner', false);
+const withCheckboxhandler = withHandlers({
+  setCheckboxValueOwner:
+    ({ setCheckboxValueOwner }) =>
+    event => {
+      setCheckboxValueOwner(event.target.checked);
     },
 });
 
 const withSelectedRole = withState('selectedRole', 'setSelectedRole', null);
 
-export default compose(withInputValue, withInputHandlers, withNewMemberHanders, withSelectedRole);
+export default compose(withInputValue, withInputHandlers, withCheckboxValue, withCheckboxhandler, withSelectedRole);

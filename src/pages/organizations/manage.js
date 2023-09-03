@@ -44,7 +44,7 @@ export const PageManage = ({ router }) => {
             <OrgNavTabsSkeleton activeTab="manage" />
 
             <UsersWrapper>
-              <UsersSkeleton />
+              <UsersSkeleton title={"Administrators"}/>
             </UsersWrapper>
           </OrganizationsWrapper>
         </MainLayout>

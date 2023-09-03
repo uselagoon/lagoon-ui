@@ -6,6 +6,13 @@ export const StyledAddToGroup = styled.div`
 `;
 
 export const NewUser = styled.div`
+  input.inputCheckbox {
+    margin-left: 5px;
+    width: 22px;
+    height: 22px;
+    transform: translateY(8px);
+  }
+
   .form-box input,
   textarea {
     display: block;

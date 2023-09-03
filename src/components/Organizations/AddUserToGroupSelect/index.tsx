@@ -85,7 +85,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
         }
         return (
           <NewMember>
-            <h4>Add User to group</h4>
+            <h4>Add user to a group</h4>
             <div className="form-box">
               <label>
                 User name: <span style={{ color: '#E30000' }}>*</span>

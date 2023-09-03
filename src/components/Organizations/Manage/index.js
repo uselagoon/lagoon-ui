@@ -3,20 +3,17 @@ import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
 
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/Users/logic';
 import gql from 'graphql-tag';
 
 import useSortableData from '../../../lib/withSortedItems';
-
 import AddUserToOrganization from '../AddUserToOrganization';
-
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions } from '../SharedStyles';
+import { Footer, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
-
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
@@ -26,8 +23,8 @@ export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
 const DELETE_USER = gql`
-  mutation removeUserFromOrganizationGroups($organization: Int!, $email: String!) {
-    removeUserFromOrganizationGroups(input: { user: { email: $email }, organization: $organization }) {
+  mutation removeUserFromOrganization($organization: Int!, $email: String!) {
+    removeUserFromOrganization(input: { user: { email: $email }, organization: $organization }) {
       id
     }
   }
@@ -41,12 +38,6 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
   const [selectedUser, setSelectedUser] = useState('');
 
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
-  const [newUserState, setNewUserState] = useState({
-    email: '',
-    role: '',
-    group: '',
-  });
-
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
   const [dynamicUsers, setDynamicUsers] = useState(users);
@@ -71,7 +62,6 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
     }
   }, [sortedItems]);
 
-
   const UsersColumns = [
     {
       width: '15%',
@@ -88,31 +78,37 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       },
     },
     {
-      width: '30%',
+      width: '60%',
       key: 'email',
-      render: ({ email }) => {
+      render: ({ email, owner }) => {
         const linkData = getLinkData(email, organizationId, organizationName);
         return (
-          <div className="email">
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a>{email}</a>
-            </Link>
-          </div>
+          <>
+            <div className="email" style={{ width: '200px' }}>
+              <Link href={linkData.urlObject} as={linkData.asPath}>
+                <a>{email}</a>
+              </Link>
+            </div>
+
+            {owner ? (
+              <Tag style={{ display: 'inline-block', marginLeft: '5rem' }} background="#47D3FF">
+                ORG OWNER
+              </Tag>
+            ) : (
+              <Tag style={{ display: 'inline-block', marginLeft: '5rem' }} background="#FF4747">
+                ORG VIEWER
+              </Tag>
+            )}
+          </>
         );
       },
     },
     {
-      width: '25%',
+      width: '10%',
       key: 'actions',
       render: ({ ...user }) => {
-        const linkData = getLinkData(user?.email, organizationId, organizationName);
         return (
           <TableActions>
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">
-                <EyeOutlined className="edit" />
-              </a>
-            </Link>
             <DeleteOutlined
               className="delete"
               onClick={() => {
@@ -128,7 +124,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
 
               <Footer>
                 <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganizationGroups, { error, data }) => {
+                  {(removeUserFromOrganization, { error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -141,9 +137,9 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
                       <Button
                         variant="primary"
                         action={() => {
-                          removeUserFromOrganizationGroups({
+                          removeUserFromOrganization({
                             variables: {
-                              email: user?.email,
+                              email: user.email,
                               organization: organization.id,
                             },
                           });
@@ -172,8 +168,8 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
         data={dynamicUsers}
         columns={UsersColumns}
         usersTable={true}
-        labelText="Users"
-        emptyText="No Users"
+        labelText="Administrators"
+        emptyText="No administrators"
       />
 
       <Modal
@@ -197,6 +193,8 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
           </span>
         </Button>
       </div>
+
+      <div className="separator" style={{ margin: '3rem 0' }}></div>
     </StyledUsers>
   );
 };

@@ -15,18 +15,14 @@ import { StyledUser } from './Styles';
 type Group = {
   id: string;
   name: string;
-  __typename?: 'Group';
-  projects?: {
-    id: string;
-    name: string;
-    __typename: 'Project';
-  }[];
+  role?: string;
+  __typename?: '"GroupRoleInterface"';
 };
 type User = {
   id: string;
   name: string;
   email: string;
-  groups: {
+  groupRoles: {
     id: string;
     name: string;
     projects: {
@@ -88,11 +84,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
     {
       width: '75%',
       key: 'roles',
-      render: (group: Group) => {
-        const { roles } = user;
-        const { id: groupId } = group;
-        const role = roles.find(r => r.id === groupId)?.role;
-
+      render: ({ role }: Group) => {
         return role ? <div className="role">{role}</div> : <>Role - </>;
       },
     },
@@ -186,7 +178,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
         <>
           <PaginatedTable
             limit={10}
-            data={user.groups}
+            data={user.groupRoles}
             columns={UserColumns}
             labelText="Groups"
             emptyText="No groups"

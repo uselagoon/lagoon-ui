@@ -21,7 +21,15 @@ const ADD_USER_MUTATION = gql`
 /**
  * Confirms the deletion of the specified name and type.
  */
-export const AddUserToOrganization = ({ organization, close, inputValueEmail, setInputValue, onAddUser }) => {
+export const AddUserToOrganization = ({
+  organization,
+  close,
+  inputValueEmail,
+  setInputValue,
+  checkboxValueOwner,
+  setCheckboxValueOwner,
+  onAddUser,
+}) => {
   const [selectedOrganization, setSelectedOrganization] = useState(organization);
 
   let options = [
@@ -74,6 +82,16 @@ export const AddUserToOrganization = ({ organization, close, inputValueEmail, se
                 />
               </OrganizationSelect>
             </label>
+            <label>
+              Owner: <span style={{ color: '#E30000' }}>*</span>
+              <input
+                className="inputCheckbox"
+                type="checkbox"
+                value={checkboxValueOwner}
+                onChange={setCheckboxValueOwner}
+              />
+            </label>
+
             <div>
               <Footer>
                 <Button
@@ -83,7 +101,7 @@ export const AddUserToOrganization = ({ organization, close, inputValueEmail, se
                       variables: {
                         email: inputValueEmail,
                         organization: organization.id,
-                        owner: true,
+                        owner: checkboxValueOwner,
                       },
                     });
                   }}

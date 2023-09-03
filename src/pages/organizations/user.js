@@ -30,7 +30,7 @@ export const PageUser = ({ router }) => {
     loading: userLoading,
     refetch,
   } = useQuery(UserByEmail, {
-    variables: { email: router.query.userSlug },
+    variables: { email: router.query.userSlug, organization: parseInt(router.query.organizationSlug, 10) },
   });
 
   const {
@@ -66,7 +66,7 @@ export const PageUser = ({ router }) => {
           </Breadcrumbs>
 
           <OrganizationsWrapper>
-            <OrgNavTabsSkeleton activeTab="user" />
+            <OrgNavTabsSkeleton activeTab="users" />
             <UserWrapper>
               <UserSkeleton />
             </UserWrapper>
@@ -109,13 +109,13 @@ export const PageUser = ({ router }) => {
         </Breadcrumbs>
 
         <OrganizationsWrapper>
-          {organization && <OrgNavTabs activeTab="user" organization={organization?.organization} />}
+          {organization && <OrgNavTabs activeTab="users" organization={organization?.organization} />}
           <UserWrapper>
             <User
               organizationId={router.query.organizationSlug}
               organizationName={organization.name}
               organization={organization || []}
-              user={user?.user || []}
+              user={user.userByEmailAndOrganization || []}
               refetch={handleUserRefetch}
             />
           </UserWrapper>
