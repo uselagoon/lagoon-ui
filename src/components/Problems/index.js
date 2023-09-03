@@ -12,8 +12,32 @@ const getOptionsFromProblems = (problems, key) => {
   return [...uniqueOptions];
 };
 
+// reduceProblemsDuplicatedByService will take a list of problems and remove duplicates
+// Duplicates are any items with the same source and identifier (multiple sources could report the same cve, but perhaps with different data)
+// it appends the duplicated service names.
+const reduceProblemsDuplicatedByService = problems => {
+  let reduceProblemsByService = new Map();
+
+  for (const c of problems) {
+    const { identifier, source, service } = c;
+    const id = `${identifier}-${source}`;
+
+    if (reduceProblemsByService.has(id)) {
+      let prob = Object.assign({}, reduceProblemsByService.get(id));
+      prob.service = `${prob.service}, ${c.service}`;
+      reduceProblemsByService.set(id, prob);
+    } else {
+      reduceProblemsByService.set(id, c);
+    }
+  }
+  return Array.from(reduceProblemsByService.values());
+}
+
 const Problems = ({ problems }) => {
-  const { sortedItems, requestSort, getClassNamesFor } = useSortableProblemsData(problems);
+
+  const reducedProblems = reduceProblemsDuplicatedByService(problems);
+
+  const { sortedItems, requestSort, getClassNamesFor } = useSortableProblemsData(reducedProblems);
   const [severitySelected, setSeverity] = useState([]);
   const [sourceSelected, setSource] = useState([]);
   const [servicesSelected, setService] = useState([]);
@@ -25,6 +49,7 @@ const Problems = ({ problems }) => {
   const severities = getOptionsFromProblems(problems, 'severity');
   const sources = getOptionsFromProblems(problems, 'source');
   const services = getOptionsFromProblems(problems, 'service');
+
 
   // Handlers
   const handleSort = key => requestSort(key);
@@ -70,40 +95,40 @@ const Problems = ({ problems }) => {
   const matchesSeveritySelector = item => {
     return severitySelected.length > 0
       ? Object.keys(item).some(key => {
-          if (item[key] !== null) {
-            return severitySelected.indexOf(item['severity'].toString()) > -1;
-          }
-        })
+        if (item[key] !== null) {
+          return severitySelected.indexOf(item['severity'].toString()) > -1;
+        }
+      })
       : true;
   };
 
   const matchesSourceSelector = item => {
     return sourceSelected.length > 0
       ? Object.keys(item).some(key => {
-          if (item[key] !== null) {
-            return sourceSelected.indexOf(item['source'].toString()) > -1;
-          }
-        })
+        if (item[key] !== null) {
+          return sourceSelected.indexOf(item['source'].toString()) > -1;
+        }
+      })
       : true;
   };
 
   const matchesServiceSelector = item => {
     return servicesSelected.length > 0
       ? Object.keys(item).some(key => {
-          if (item[key] !== null) {
-            return servicesSelected.indexOf(item['service'].toString()) > -1;
-          }
-        })
+        if (item[key] !== null) {
+          return servicesSelected.indexOf(item['service'].toString()) > -1;
+        }
+      })
       : true;
   };
 
   const matchesTextFilter = item => {
     return problemTerm != null || problemTerm !== ''
       ? Object.keys(item).some(key => {
-          if (item[key] !== null) {
-            return item[key].toString().toLowerCase().includes(problemTerm.toLowerCase());
-          }
-        })
+        if (item[key] !== null) {
+          return item[key].toString().toLowerCase().includes(problemTerm.toLowerCase());
+        }
+      })
       : true;
   };
 
@@ -115,6 +140,7 @@ const Problems = ({ problems }) => {
       matchesTextFilter(item)
     );
   };
+
 
   useEffect(() => {
     let stats = {
