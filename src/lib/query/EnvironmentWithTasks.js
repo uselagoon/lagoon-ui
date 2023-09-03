@@ -32,6 +32,8 @@ export default gql`
             displayName
             type
             range
+            defaultValue
+            optional
           }
         }
         ... on AdvancedTaskDefinitionImage {
@@ -51,6 +53,8 @@ export default gql`
             displayName
             type
             range
+            defaultValue
+            optional
           }
         }
       }

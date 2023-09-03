@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
@@ -44,6 +44,16 @@ const InvokeRegisteredTask = ({
   isConfirmOpen,
   setIsConfirmOpen,
 }) => {
+  useEffect(() => {
+    let defaultArgValues = {};
+    selectedTask.arguments.forEach(item => {
+      if (item.defaultValue) {
+        defaultArgValues[item.name] = item.defaultValue;
+      }
+    });
+    setAdvancedTaskArguments(defaultArgValues)
+  }, []);
+
   let taskArgumentsExist = false;
   let argumentVariablesHaveValues = true;
 
@@ -51,6 +61,9 @@ const InvokeRegisteredTask = ({
     taskArgumentsExist = true;
     argumentVariablesHaveValues = selectedTask.arguments.reduce((p, c) => {
       let hasArg = advancedTaskArguments[c['name']];
+      if (!advancedTaskArguments[c['optional']]) {
+        hasArg = !advancedTaskArguments[c['optional']];
+      }
       return hasArg && p;
     }, true);
   }
@@ -91,8 +104,8 @@ const InvokeRegisteredTask = ({
                         <div key={`env-text-${index}`} className="envSelect">
                           <label id="source-env">{d.displayName || d.name} :</label>
                           <ReactSelect
-                            aria-labelledby="{d.name}"
-                            name="{d.name}"
+                            aria-labelledby={d.name}
+                            name={d.name}
                             placeholder="Select environment..."
                             value={{
                               label: R.prop(d.name, advancedTaskArguments),
@@ -116,8 +129,8 @@ const InvokeRegisteredTask = ({
                           <label id="source-env">{d.displayName || d.name} :</label>
                           <input
                             type="text"
-                            name="{d.name}"
-                            value={R.prop(d.name, advancedTaskArguments)}
+                            name={d.name}
+                            value={advancedTaskArguments[d.name] }
                             onChange={event => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
