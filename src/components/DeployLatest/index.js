@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Mutation } from 'react-apollo';
 
 import Button from 'components/Button';
@@ -15,7 +15,7 @@ const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
 /**
  * Button that deploys the latest environment.
  */
-const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
+const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
   let deploymentsEnabled = true;
 
   if (environment.deployType === 'branch' || environment.deployType === 'promote') {
@@ -55,12 +55,14 @@ const DeployLatest = ({ pageEnvironment: environment, ...rest }) => {
           >
             {(deploy, { loading, error, data }) => {
               const success = data && data.deployEnvironmentLatest === 'success';
+              if (success) {
+                onDeploy();
+              }
               return (
                 <React.Fragment>
                   <Button action={deploy} disabled={loading}>
-                    Deploy
+                    {loading ? <span className="loader"></span> : "Deploy"}
                   </Button>
-
                   {success && <div className="deploy_result">Deployment queued.</div>}
 
                   {error && (

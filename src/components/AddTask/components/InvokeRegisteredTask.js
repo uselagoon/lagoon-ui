@@ -43,6 +43,7 @@ const InvokeRegisteredTask = ({
   onError,
   isConfirmOpen,
   setIsConfirmOpen,
+  onNewTask,
 }) => {
   useEffect(() => {
     let defaultArgValues = {};
@@ -91,7 +92,10 @@ const InvokeRegisteredTask = ({
         })(),
       }}
     >
-      {mutationInvokeRegisteredTask => {
+      {(mutationInvokeRegisteredTask, { loading, data }) => {
+        if (data) {
+          onNewTask();
+        }
         return (
           <StyledRegisteredTasks>
             <div className="taskArguments">
@@ -160,10 +164,10 @@ const InvokeRegisteredTask = ({
               />
             )) || (
               <Button
-                disabled={taskArgumentsExist && !argumentVariablesHaveValues}
+                disabled={taskArgumentsExist && !argumentVariablesHaveValues || loading}
                 action={mutationInvokeRegisteredTask}
               >
-                Run task
+                {loading ? <span className="loader"></span> : "Run task"}
               </Button>
             )}
           </StyledRegisteredTasks>
