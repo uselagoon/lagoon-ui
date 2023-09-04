@@ -54,6 +54,39 @@ export const Default: Story = {
   },
 };
 
+const duplicateProblemsAcrossServices = [
+  { ...problemData[0], service: "cli" },
+  { ...problemData[0], service: "php-nginx" },
+  { ...problemData[1], service: "cli" },
+  { ...problemData[1], service: "node" },
+  { ...problemData[1], service: "service" },
+];
+
+export const DuplicateData: Story = {
+  args: {
+    router: {
+      query: fakeQueryParams,
+    },
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('getEnvironment', (_, res, ctx) => {
+          return res(
+            ctx.delay(),
+            ctx.data({
+              environment: {
+                ...generateEnvironments(),
+                problems: duplicateProblemsAcrossServices,
+              },
+            })
+          );
+        }),
+      ],
+    },
+  },
+};
+
 export const Loading: Story = {
   parameters: {
     msw: {
@@ -65,4 +98,7 @@ export const Loading: Story = {
     },
   },
 };
+
+
+
 export default meta;

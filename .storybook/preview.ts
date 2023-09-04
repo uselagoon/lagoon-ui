@@ -29,8 +29,23 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        method: 'alphabetical',
-        order: ['Introduction', 'Components', 'Pages', '*'],
+        method: 'configure',
+        includeNames: true,
+        order: [
+          'Introduction',
+          'Components',
+          'Pages',
+          [
+            'Organizations/Overview',
+            'Organizations/Groups',
+            'Organizations/Group',
+            'Organizations/Projects',
+            'Organizations/Project',
+            'Organizations/Notifications',
+            'Organizations/AllOrganizations',
+          ],
+          '*',
+        ],
       },
     },
     actions: { argTypesRegex: '^on[A-Z].*' },

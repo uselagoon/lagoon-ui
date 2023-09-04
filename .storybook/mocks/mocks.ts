@@ -31,6 +31,7 @@ interface Task {
     name?: string;
   };
 }
+faker.setDefaultRefDate(new Date(`${new Date().getFullYear().toString()}-01-01`));
 
 export const seed = (val = 123) => faker.seed(val);
 
@@ -65,8 +66,7 @@ export function createTask(): Task {
     `::group::${eventName}\n` +
     `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]}:: Job '${jobName}'\n` +
     `::step-start::${stepName}\n` +
-    `::${
-      status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
+    `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
     }:: Job '${jobName}' step '${stepName}'\n` +
     `::step-end::${stepName}::${duration}\n` +
     `${generateLogMessage()}\n` +
@@ -143,12 +143,14 @@ export const Problem = (args: any) => {
   const links = `https://security-tracker.debian.org/tracker/${vuln_id}`;
   const severityScore = `0.${faker.number.int({ min: 1, max: 9 })}`;
   const data = JSON.stringify({ id: `${faker.number.int({ min: 1, max: 100 })}` }, null, '\t');
+  const service = faker.helpers.arrayElement(['cli', 'service1']);
   return {
     identifier: vuln_id,
     severity: args.hasOwnProperty('severity') ? args.severity : severity,
     source: args.hasOwnProperty('source') ? args.source : source,
     severityScore: severityScore,
     associatedPackage: associatedPackage,
+    service: service,
     description,
     links,
     data,
@@ -180,7 +182,7 @@ export const ProblemIdentifier = (val: number) => {
   };
 };
 
-const addTime = (originalDate: string, hoursLimit: number, seedVal?: number) => {
+const addTime = (originalDate: string, hoursLimit: number, seedVal: number) => {
   seed(seedVal);
   const date = new Date(originalDate);
   date.setTime(date.getTime() + faker.number.int(hoursLimit * 60 * 60 * 1000));
@@ -262,8 +264,8 @@ export const generateEnvironments = (args = Object.create(null)) => {
     deployHeadRef = 'source';
   }
   const created = faker.date.anytime().toDateString();
-  const updated = addTime(created, 4);
-  const deleted = addTime(updated, 2);
+  const updated = addTime(created, 4, args['seed']);
+  const deleted = addTime(updated, 2, args['seed']);
 
   const project: Project = { ...MockAllProjects(args['seed'])[0], factsUi: 1, problemsUi: 1, name: faker.lorem.slug() };
 
@@ -403,4 +405,147 @@ export const generateInsight = (val: number) => {
     size: faker.number.float({ precision: 0.1, min: 1, max: 5 }) + 'KB',
     type: 'image',
   };
+};
+// organizations
+export const organizationOwners = () => {
+  seed();
+  const numberOfOwners = faker.number.int({ min: 1, max: 5 });
+  return Array.from({ length: numberOfOwners }, () => {
+    return {
+      email: faker.internet.email({ provider: 'org.com' }),
+      owner: faker.helpers.arrayElement([true, false]),
+      __typename: 'OrgUser',
+    };
+  });
+};
+
+export const organizationMembers = () => {
+  const numberOfMembers = faker.number.int({ min: 1, max: 10 });
+
+  return Array.from({ length: numberOfMembers }, (_, idx) => {
+    seed((idx + 1) * 5);
+    return {
+      role: faker.helpers.arrayElement(['OWNER', 'MAINTAINER', 'DEVELOPER', 'REPORTER', 'GUEST']),
+      user: {
+        email: faker.internet.email(),
+        comment: 'organization member',
+        __typename: 'User',
+      },
+      __typename: 'GroupMembership',
+    };
+  });
+};
+
+export const organizationGroups = (groupQuota?: number) => {
+  const numberOfGroups = groupQuota ? Math.floor(groupQuota / 2) : faker.number.int({ min: 1, max: 10 });
+  return Array.from({ length: numberOfGroups }, (_, idx) => {
+    seed(idx);
+    return {
+      id: faker.lorem.slug(),
+      name: `${faker.word.words(1)}-group`,
+      type: faker.helpers.arrayElement(['null', 'project-default-group']),
+      members: organizationMembers(),
+      __typename: 'Group',
+    };
+  });
+};
+
+export const organizationEmails = () => {
+  seed();
+
+  const numberOfEmails = faker.number.int({ min: 1, max: 3 });
+
+  return Array.from({ length: numberOfEmails }, (_, idx) => {
+    return {
+      __typename: 'NotificationEmail',
+      emailAddress: faker.internet.email(),
+      name: `email-${idx + 1}-test`,
+    };
+  });
+};
+
+export const organizationNotifications = () => {
+  seed();
+
+  type NotificationType =
+    | 'NotificationRocketChat'
+    | 'NotificationSlack'
+    | 'NotificationMicrosoftTeams'
+    | 'NotificationWebhook';
+
+  type Notification<T extends NotificationType> = {
+    __typename: T;
+    webhook: string;
+    name: string;
+    channel: string;
+  };
+  interface Notifications {
+    slack: Notification<'NotificationSlack'>[];
+    rocketChat: Notification<'NotificationRocketChat'>[];
+    teams: Notification<'NotificationMicrosoftTeams'>[];
+    webhook: Notification<'NotificationWebhook'>[];
+  }
+
+  const notifications: Notifications = {
+    slack: [],
+    rocketChat: [],
+    teams: [],
+    webhook: [],
+  };
+
+  const generateNotifications = (type: string, seedVal: number) => {
+    seed(seedVal);
+    // random number of notifications
+    const numberOfItems = faker.number.int({ min: 1, max: 3 });
+
+    const getTypename = (type: string) => {
+      switch (type) {
+        case 'slack':
+          return 'NotificationSlack';
+        case 'rocketChat':
+          return 'NotificationRocketChat';
+        case 'teams':
+          return 'NotificationMicrosoftTeams';
+        case 'webhook':
+          return 'NotificationWebhook';
+        default:
+          return null;
+      }
+    };
+
+    return Array.from({ length: numberOfItems }, (_, idx) => {
+      return {
+        __typename: getTypename(type),
+        webhook: `${type}.example.com/hooks/${idx + 1}`,
+        name: `${type}-notification-${idx + 1}`,
+        channel: faker.word.words(1),
+      };
+    });
+  };
+
+  Object.keys(notifications).forEach((key, idx) => {
+    notifications[key] = generateNotifications(key, idx - 1);
+  });
+
+  return notifications;
+};
+
+export const organizationProjects = (projectQuota: number) => {
+  seed();
+
+  const { slack, rocketChat, webhook } = organizationNotifications();
+
+  return Array.from({ length: Math.floor(projectQuota / 2) }, () => {
+    return {
+      id: faker.number.int({ max: 300 }),
+      name: `project-${faker.word.noun()}`,
+      __typename: 'OrgProject',
+      groups: organizationGroups(),
+      notifications: [
+        { ...slack[0], type: 'SLACK' },
+        { ...rocketChat[0], type: 'ROCKETCHAT' },
+        { ...webhook[0], type: 'WEBHOOK' },
+      ],
+    };
+  });
 };

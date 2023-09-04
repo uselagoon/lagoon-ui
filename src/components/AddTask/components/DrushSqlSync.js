@@ -33,9 +33,13 @@ const DrushSqlSync = ({
   onError,
   options,
   getEnvName,
+  onNewTask,
 }) => (
   <Mutation mutation={taskDrushSqlSync} onCompleted={onCompleted} onError={onError}>
     {(taskDrushSqlSync, { loading, called, error, data }) => {
+      if (data) {
+        onNewTask();
+      }
       return (
         <SelectWrapper>
           <div className="warning">
@@ -82,9 +86,9 @@ const DrushSqlSync = ({
                 },
               })
             }
-            disabled={!selectedSourceEnv}
+            disabled={!selectedSourceEnv || loading}
           >
-            Run task
+            {loading ? <span className="loader"></span> : "Run task"}
           </Button>
         </SelectWrapper>
       );

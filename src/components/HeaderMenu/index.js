@@ -73,6 +73,12 @@ const HeaderMenu = ({ auth }) => {
               Your projects
             </a>
           </Link>,
+          <Link key="organizations" href="/organizations" prefetch>
+            <a key="organizations" className="menuitem">
+              Your organizations
+            </a>
+          </Link>,
+
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
             <Link href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`} passHref>
               <a key="account" className="menuitem">

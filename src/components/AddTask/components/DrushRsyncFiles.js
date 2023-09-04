@@ -33,9 +33,13 @@ const DrushRsyncFiles = ({
   onError,
   options,
   getEnvName,
+  onNewTask,
 }) => (
   <Mutation mutation={taskDrushRsyncFiles} onCompleted={onCompleted} onError={onError}>
     {(taskDrushRsyncFiles, { loading, called, error, data }) => {
+      if (data) {
+        onNewTask();
+      }
       return (
         <SelectWrapper>
           <div className="warning">
@@ -82,9 +86,9 @@ const DrushRsyncFiles = ({
                 },
               })
             }
-            disabled={!selectedSourceEnv}
+            disabled={!selectedSourceEnv || loading }
           >
-            Run task
+            {loading ? <span className="loader"></span> : "Run task"}
           </Button>
         </SelectWrapper>
       );

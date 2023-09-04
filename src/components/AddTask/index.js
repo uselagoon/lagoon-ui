@@ -26,6 +26,7 @@ const AddTask = ({
   onCompleted,
   onError,
   options,
+  onNewTask,
 }) => {
   const newTaskComponents = {
     DrushArchiveDump,
@@ -70,6 +71,7 @@ const AddTask = ({
                 selectedTask={selectedTask}
                 onCompleted={onCompleted}
                 onError={onError}
+                onNewTask={onNewTask}
               />
             </div>
           )}

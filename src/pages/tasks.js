@@ -48,12 +48,14 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  */
 export const PageTasks = ({ router, renderAddTasks }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithTasksQuery, {
+  const { data, error, loading, subscribeToMore, refetch } = useQuery(EnvironmentWithTasksQuery, {
     variables: {
       openshiftProjectName: router.query.openshiftProjectName,
       limit: resultLimit,
     },
   });
+
+  const handleRefetch = async () => await refetch({ openshiftProjectName: router.query.openshiftProjectName, limit: resultLimit, });
 
   useEffect(() => {
     if (!loading && data?.environment?.tasks.length) {
@@ -165,7 +167,7 @@ export const PageTasks = ({ router, renderAddTasks }) => {
         <TasksWrapper>
           <NavTabs activeTab="tasks" environment={environment} />
           <div className="content">
-            {!renderAddTasks && <AddTask pageEnvironment={environment} />}
+            {!renderAddTasks && <AddTask pageEnvironment={environment} onNewTask={handleRefetch} />}
             <Tasks
               tasks={environment.tasks}
               environmentSlug={environment.openshiftProjectName}

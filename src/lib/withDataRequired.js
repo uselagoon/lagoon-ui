@@ -2,6 +2,8 @@ import DeploymentNotFound from 'components/errors/DeploymentNotFound';
 import EnvironmentNotFound from 'components/errors/EnvironmentNotFound';
 import ProblemNotFound from 'components/errors/ProblemNotFound';
 import ProjectNotFound from 'components/errors/ProjectNotFound';
+import OrganizationNotFound from 'components/errors/OrganizationNotFound';
+import GroupNotFound from 'components/errors/GroupNotFound';
 import TaskNotFound from 'components/errors/TaskNotFound';
 import renderWhile from 'lib/renderWhile';
 import * as R from 'ramda';
@@ -9,6 +11,8 @@ import * as R from 'ramda';
 const noProp = R.complement(R.prop);
 const noEnvironmentData = noProp('environment');
 const noProjectData = noProp('project');
+const noOrganizationData = noProp('organization');
+const noGroupData = noProp('group');
 
 export const withEnvironmentRequired = renderWhile(({ data }) => noEnvironmentData(data), EnvironmentNotFound);
 
@@ -24,4 +28,19 @@ export const withDeploymentRequired = renderWhile(
   DeploymentNotFound
 );
 
-export const withProjectRequired = renderWhile(({ data }) => noProjectData(data), ProjectNotFound);
+export const withProjectRequired = renderWhile(
+  ({ data }) => noProjectData(data),
+  ProjectNotFound
+);
+
+// organizations start
+export const withOrganizationRequired = renderWhile(
+  ({ data }) => noOrganizationData(data),
+  OrganizationNotFound
+);
+
+export const withGroupRequired = renderWhile(
+  ({ data }) => noGroupData(data),
+  GroupNotFound
+);
+// organizations end

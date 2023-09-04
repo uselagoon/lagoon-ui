@@ -260,7 +260,7 @@ main{
   transform: translate(-50%, -50%);
   border: 1px solid ${color.midGrey};
 
-background:${(props) => props.theme.backgrounds.primary};
+  background:${(props) => props.theme.backgrounds.primary};
 
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -278,6 +278,16 @@ background:${(props) => props.theme.backgrounds.primary};
     max-width: 40vw;
     }
   }
+.modal-large{
+  max-width: 60vw;
+  max-height: 50vh;
+  width: 30vw;
+}
+.modal-xl{
+  max-width: 60vw;
+  max-height: 50vh;
+  width: 50vw;
+}
 
   #nprogress .bar {
   background-color: ${color.linkBlue} !important;

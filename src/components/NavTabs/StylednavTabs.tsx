@@ -49,9 +49,6 @@ export const StyledNavigation = styled.ul`
     }
 
     &.active {
-      &::before {
-        /* background-color: ${color.white}; */
-      }
       background-color: ${props => props.theme.backgrounds.content};
       border-right: 1px solid ${props => props.theme.backgrounds.content};
       width: calc(100% + 1px);
@@ -104,7 +101,17 @@ export const StyledNavigation = styled.ul`
         background-image: url('/static/images/tasks-active.svg');
       }
     }
-
+    
+    &.environmentVariables {
+      &::before {
+        background-image: url('/static/images/variables.svg');
+        background-size: 22px;
+      }
+      &.active::before {
+        background-image: url('/static/images/variables-active.svg');
+      }
+    }
+    
     &.problems {
       &::before {
         background-image: url('/static/images/problems.svg');

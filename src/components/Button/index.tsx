@@ -3,36 +3,44 @@ import React, { FC, MouseEvent, ReactNode } from 'react';
 import { ButtonElem, LinkElement } from './StyledButton';
 
 interface ButtonProps {
-  action: (e: MouseEvent<HTMLButtonElement>) => void;
-  href?: string;
-  disabled?: boolean;
-  children?: ReactNode;
-  variant?: string;
+    action: (e: MouseEvent<HTMLButtonElement>) => void;
+    href?: string;
+    disabled?: boolean;
+    children?: ReactNode;
+    variant?: string;
+    icon?: string;
 }
 
-const Button: FC<ButtonProps> = ({ action = undefined, href = undefined, disabled, children, variant }) => {
-  const createClassName = () => `${variant ? `btn-${variant}` : 'btn'} ${disabled ? 'btn--disabled' : ''} `;
-
-  const onClick = action
-    ? action
-    : (e: React.MouseEvent) => {
-        if (disabled) {
-          e.preventDefault();
-          return false;
+const Button: FC<ButtonProps> = ({ action = undefined, href = undefined, disabled, children, variant, icon }) => {
+    const createClassName = () => {
+        let className = `${variant ? `btn-${variant}` : 'btn'} ${disabled ? 'btn--disabled' : ''}`;
+        if (icon) {
+            className += `icon`;
         }
-      };
+        return className;
+    };
 
-  const ButtonElement = href ? (
-    <LinkElement className={createClassName()} href={href} target='_blank'>
-      {children}
-    </LinkElement>
-  ) : (
-    <ButtonElem className={createClassName()} onClick={onClick} disabled={disabled}>
-      {children}
-    </ButtonElem>
-  );
 
-  return <>{ButtonElement}</>;
+    const onClick = action
+        ? action
+        : (e: React.MouseEvent) => {
+            if (disabled) {
+                e.preventDefault();
+                return false;
+            }
+        };
+
+    const ButtonElement = href ? (
+        <LinkElement className={createClassName()} href={href}>
+            {icon && <i className={icon} />} {children}
+        </LinkElement>
+    ) : (
+        <ButtonElem className={createClassName()} onClick={onClick} disabled={disabled}>
+            {icon && <i className={`icon ${icon}`} />} {!icon && children}
+        </ButtonElem>
+    );
+
+    return <>{ButtonElement}</>;
 };
 
 export default Button;

@@ -2,25 +2,48 @@ import { bp, color, fontSize } from 'lib/variables';
 import styled from 'styled-components';
 
 export const ProjectDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: ${props => props.theme.backgrounds.sidebar};
-  padding: 48px 24px 48px clamp(5%, 4vw, 20%);
-
-  @media ${bp.xlWideDown} {
-    padding: 48px 24px 48px clamp(5%, 1vw, 10%);
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr;
+  background-color: ${props => props.theme.backgrounds.content};
+  @media ${bp.xs_smallUp} {
+    grid-template-columns: 1fr;
   }
-  width: 100%;
+  @media ${bp.tabletUp} {
+    grid-template-columns: 1f;
+  }
+  @media ${bp.desktopUp} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media ${bp.extraWideUp} {
+    grid-template-columns: 1fr 1fr 35%;
+  }
+  @media (min-width: 2400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 export const FieldWrapper = styled.div`
-  width: clamp(23rem, 95%, 24.375rem);
-  overflow: hidden;
-  white-space: nowrap;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  width: 100%;
+  @media ${bp.xs_smallUp} {
+    width: calc(50% + 24px);
+  }
 
+  @media ${bp.tabletUp} {
+    width: 100%;
+  }
+  @media ${bp.desktopUp} {
+    width: calc(50% + 24px);
+  }
+  @media ${bp.extraWideUp} {
+    width: calc(85% + 70px);
+    &:nth-child(3) {
+      width: calc(70% + 30px);
+    }
+  }
+  .deployTargets.hover-state {
+    color: ${color.linkBlue};
+  }
   > div {
     margin-left: 14px;
   }
@@ -35,7 +58,6 @@ export const FieldWrapper = styled.div`
     }
   }
   &.origin {
-    width: 100%;
     > div {
       width: 100%;
     }
@@ -59,6 +81,7 @@ export const FieldWrapper = styled.div`
   &.giturl {
     margin-bottom: 24px;
     overflow: visible;
+    white-space: nowrap;
     @media ${bp.xs_smallUp} {
       margin-bottom: 36px;
     }
@@ -145,7 +168,8 @@ export const FieldWrapper = styled.div`
 
   &.envlimit {
     &:before {
-      background-image: url('/static/images/environments-in-use.svg');
+      background-image: url("/static/images/environments-in-use.svg");
+      height: 84px;
     }
   }
 

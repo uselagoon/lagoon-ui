@@ -18,9 +18,6 @@ COPY --from=builder /app/node_modules /app/node_modules
 # Copying files from ui service
 COPY . /app/
 
-# Making sure we run in production
-ENV NODE_ENV=production
-
 ARG KEYCLOAK_API
 ENV KEYCLOAK_API=$KEYCLOAK_API
 

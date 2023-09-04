@@ -23,7 +23,7 @@ const taskDrushUserLogin = gql`
   }
 `;
 
-const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
+const DrushUserLogin = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
   <Mutation
     mutation={taskDrushUserLogin}
     onCompleted={onCompleted}
@@ -32,7 +32,10 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {taskDrushUserLogin => {
+    {(taskDrushUserLogin, { loading, data }) => {
+      if (data) {
+      onNewTask();
+    }
       return (
         <SelectWrapper>
           <div className="envSelect">
@@ -54,7 +57,7 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError }) => (
               required
             />
           </div>
-          <Button action={taskDrushUserLogin}>Run task</Button>
+          <Button action={taskDrushUserLogin} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
         </SelectWrapper>
       );
     }}
