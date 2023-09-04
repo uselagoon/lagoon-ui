@@ -15,7 +15,7 @@ import { UserWrapper } from 'components/Organizations/User/Styles';
 import UserSkeleton from 'components/Organizations/User/UserSkeleton';
 import MainLayout from 'layouts/MainLayout';
 import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
-import UserByEmail from 'lib/query/organizations/UserByEmail';
+import UserByEmailAndOrganization from 'lib/query/organizations/UserByEmailAndOrganization';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
@@ -29,7 +29,7 @@ export const PageUser = ({ router }) => {
     error: userError,
     loading: userLoading,
     refetch,
-  } = useQuery(UserByEmail, {
+  } = useQuery(UserByEmailAndOrganization, {
     variables: { email: router.query.userSlug, organization: parseInt(router.query.organizationSlug, 10) },
   });
 

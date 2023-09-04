@@ -30,14 +30,6 @@ export const AddUserToOrganization = ({
   setCheckboxValueOwner,
   onAddUser,
 }) => {
-  const [selectedOrganization, setSelectedOrganization] = useState(organization);
-
-  let options = [
-    {
-      label: organization && organization.name,
-      value: organization && organization.id,
-    },
-  ];
 
   return (
     <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
@@ -67,22 +59,6 @@ export const AddUserToOrganization = ({
               </label>
             </div>
             <label>
-              Organization <span style={{ color: '#E30000' }}>*</span>
-              <OrganizationSelect>
-                <ReactSelect
-                  className="select"
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
-                  aria-label="Organization"
-                  name="organization"
-                  value={options.find(o => o.value === selectedOrganization.id)}
-                  onChange={selectedOption => setSelectedOrganization(selectedOption)}
-                  options={options}
-                  required
-                />
-              </OrganizationSelect>
-            </label>
-            <label>
               Owner: <span style={{ color: '#E30000' }}>*</span>
               <input
                 className="inputCheckbox"
@@ -95,7 +71,7 @@ export const AddUserToOrganization = ({
             <div>
               <Footer>
                 <Button
-                  disabled={inputValueEmail === '' || !selectedOrganization}
+                  disabled={inputValueEmail === ''}
                   action={() => {
                     addUser({
                       variables: {

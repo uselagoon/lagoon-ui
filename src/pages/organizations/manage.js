@@ -60,7 +60,6 @@ export const PageManage = ({ router }) => {
 
   const owners = organization.owners;
 
-  console.warn(owners);
   return (
     <>
       <Head>

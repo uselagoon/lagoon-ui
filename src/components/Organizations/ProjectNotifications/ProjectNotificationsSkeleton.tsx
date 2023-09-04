@@ -6,16 +6,16 @@ import { StyledProjectNotifications } from './Styles';
 const ProjectNotificationsSkeleton = () => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor(((window.innerHeight / 2) * 8) / 10 / 65) : 10;
 
-  const notificationsSkeleton = (
-    <div className="data-row">
+  const notificationsSkeleton = (key: number) => (
+    <div className="data-row" key={key}>
       <div>
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div>
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div>
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
     </div>
   );
@@ -25,7 +25,9 @@ const ProjectNotificationsSkeleton = () => {
         <label style={{ paddingLeft: '0' }}>Notifications</label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>
-      <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => notificationsSkeleton)}</div>
+      <div className="data-table">
+        {[...Array<undefined>(numberOfFields)].map((_, idx) => notificationsSkeleton(idx))}
+      </div>
     </StyledProjectNotifications>
   );
 };

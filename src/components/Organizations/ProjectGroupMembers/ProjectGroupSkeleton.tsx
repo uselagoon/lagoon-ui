@@ -6,19 +6,19 @@ import { StyledGroupMembers } from './Styles';
 const ProjectGroupSkeleton = () => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor(((window.innerHeight / 2) * 8) / 10 / 65) : 10;
 
-  const groupsSkeleton = (
-    <div className="data-row">
+  const groupsSkeleton = (key: number) => (
+    <div className="data-row" key={key}>
       <div className="customer">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div className="customer">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div className="customer">
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
       <div>
-        <Skeleton />
+        <Skeleton height={40} />
       </div>
     </div>
   );
@@ -28,7 +28,7 @@ const ProjectGroupSkeleton = () => {
         <label style={{ paddingLeft: '0' }}>Groups</label>
         <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
       </div>
-      <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => groupsSkeleton)}</div>
+      <div className="data-table">{[...Array<undefined>(numberOfFields)].map((_, idx) => groupsSkeleton(idx))}</div>
     </StyledGroupMembers>
   );
 };

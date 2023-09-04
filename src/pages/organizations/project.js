@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -101,9 +101,9 @@ export const PageGroupProject = ({ router }) => {
 
         <OrganizationsWrapper>
           {organization.projects.map(
-            project =>
+            (project, idx) =>
               project.name == router.query.projectName && (
-                <>
+                <Fragment key={idx}>
                   <OrgNavTabs activeTab="projects" organization={organization} />
                   <OrgProjectWrapper>
                     <OrgHeader headerText="Project" />
@@ -127,7 +127,7 @@ export const PageGroupProject = ({ router }) => {
                       />
                     </TableWrapper>
                   </OrgProjectWrapper>
-                </>
+                </Fragment>
               )
           )}
         </OrganizationsWrapper>

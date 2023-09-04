@@ -89,8 +89,8 @@ export const StyledOverview = styled.div`
   .description {
     margin: 14px 0;
     .title {
-      display:block;
-      text-transform:uppercase;
+      display: block;
+      text-transform: uppercase;
       font-size: 13px;
       font-weight: 600;
       color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
@@ -115,6 +115,15 @@ export const StyledOverview = styled.div`
     .target,
     .user {
       margin-bottom: 8px;
+      .person {
+        margin: 0 0 1.25rem;
+
+        display: flex;
+        align-items: center;
+        .email {
+          min-width: 220px;
+        }
+      }
     }
     .targets,
     .users {

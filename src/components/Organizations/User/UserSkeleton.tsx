@@ -8,8 +8,8 @@ import { StyledUser } from './Styles';
 const UserSkeleton = () => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const userSkeleton = (
-    <div className="data-row" style={{ paddingLeft: '1rem', display: 'flex', gap: '1rem' }}>
+  const userSkeleton = (key: number) => (
+    <div className="data-row" key={key} style={{ paddingLeft: '1rem', display: 'flex', gap: '1rem' }}>
       <div style={{ width: '20%' }}>
         <Skeleton height={40} />
       </div>
@@ -28,7 +28,7 @@ const UserSkeleton = () => {
       <TableWrapper>
         <OrgHeader headerText="Groups" searchBar />
         <div className="data-table" style={{ margin: '60px 0' }}>
-          {[...Array<undefined>(Math.floor(numberOfFields / 2))].map(() => userSkeleton)}
+          {[...Array<undefined>(Math.floor(numberOfFields / 2))].map((_, idx) => userSkeleton(idx))}
         </div>
       </TableWrapper>
     </StyledUser>

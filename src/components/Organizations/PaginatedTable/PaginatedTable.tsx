@@ -227,8 +227,8 @@ const PaginatedTable: FC<Props> = ({
           </Checkbox>
         ) : null}
         {withSorter ? (
-          <select onChange={handleSortChange} placeholder="Sort by">
-            <option value="" disabled selected hidden>
+          <select onChange={handleSortChange} placeholder="Sort by" defaultValue={''}>
+            <option value="" disabled hidden>
               Sort by
             </option>
             <option value={undefined}>None</option>
@@ -257,10 +257,10 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow className="tableRow" key={i.id}>
+            <TableRow className="tableRow" key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}>
               {columns?.map(col => {
                 return (
-                  <TableColumn key={`${col.key}-${idx}`} width={col.width}>
+                  <TableColumn key={`${col.key}-${idx}-${labelText ? labelText : ''}`} width={col.width}>
                     {col.render(i)}
                   </TableColumn>
                 );
@@ -292,7 +292,7 @@ const PaginatedTable: FC<Props> = ({
             Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
               const page = startPage + idx;
               return (
-                <span key={idx} className={page === currentPage ? 'active' : ''}>
+                <span key={`${idx}-${labelText ? labelText : ''}`} className={page === currentPage ? 'active' : ''}>
                   {page}
                 </span>
               );
