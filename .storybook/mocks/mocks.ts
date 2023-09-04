@@ -444,6 +444,7 @@ export const organizationGroups = (groupQuota?: number) => {
       name: `${faker.word.words(1)}-group`,
       type: faker.helpers.arrayElement(['null', 'project-default-group']),
       members: organizationMembers(),
+      memberCount: faker.number.int({ min: 1, max: 10 }),
       __typename: 'Group',
     };
   });
@@ -540,6 +541,7 @@ export const organizationProjects = (projectQuota: number) => {
       name: `project-${faker.word.noun()}`,
       __typename: 'OrgProject',
       groups: organizationGroups(),
+      groupCount: organizationGroups().length,
       notifications: [
         { ...slack[0], type: 'SLACK' },
         { ...rocketChat[0], type: 'ROCKETCHAT' },

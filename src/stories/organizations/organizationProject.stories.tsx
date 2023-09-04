@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
-import { organizationGroups } from '../../../.storybook/mocks/mocks';
+import { organizationGroups, organizationProjects } from '../../../.storybook/mocks/mocks';
 import PageProject from '../../pages/organizations/project';
 
 faker.seed(123);
@@ -33,7 +33,7 @@ export const Default: Story = {
     msw: {
       handlers: [
         graphql.query('getOrganization', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ organization: mockOrganization }));
+          return res(ctx.delay(), ctx.data({ organization: mockOrganization, project: organizationProjects(2)[0] }));
         }),
 
         graphql.mutation('addProjectToGroup', (req, res, ctx) => {
