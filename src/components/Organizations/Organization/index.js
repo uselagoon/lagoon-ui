@@ -104,14 +104,14 @@ const Organization = ({ organization, refetch }) => {
             isOpen={nameModalOpen}
           >
             <ModalChildren>
-              <h4>Change Organisation name</h4>
+              <h4>Change Organization name</h4>
               <div className="form-box">
                 <label>
-                  Organisation name: <span style={{ color: '#E30000' }}>*</span>
+                  Organization name: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
                     type="text"
-                    placeholder="Existing org name"
+                    placeholder="Existing organization name"
                     value={friendlyName}
                     onChange={e => setFriendlyName(e.target.value)}
                   />
@@ -171,10 +171,10 @@ const Organization = ({ organization, refetch }) => {
             }}
           >
             <ModalChildren>
-              <h4>Change Organisation description</h4>
+              <h4>Change Organization description</h4>
               <div className="form-box">
                 <label>
-                  Organisation description: <span style={{ color: '#E30000' }}>*</span>
+                  Organization description: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
                     type="text"

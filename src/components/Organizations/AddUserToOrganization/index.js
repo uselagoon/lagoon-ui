@@ -52,7 +52,7 @@ export const AddUserToOrganization = ({
                 <input
                   className="inputEmail"
                   type="text"
-                  placeholder="Enter email"
+                  placeholder="Enter Email"
                   value={inputValueEmail}
                   onChange={setInputValue}
                 />

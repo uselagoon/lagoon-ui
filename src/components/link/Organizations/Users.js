@@ -9,7 +9,7 @@ export const getLinkData = (organizationSlug, organizationName) => ({
 });
 
 /**
- * Links to the users page given the organisation name.
+ * Links to the users page given the organization name.
  */
 const UsersLink = ({
   organizationSlug,
