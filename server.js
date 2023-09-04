@@ -93,18 +93,6 @@ app
       });
     });
 
-    server.get('/problems/project', (req, res) => {
-      app.render(req, res, '/problems-dashboard-by-project');
-    });
-
-    server.get('/problems', (req, res) => {
-      app.render(req, res, '/problems-dashboard-by-project-hex');
-    });
-
-    server.get('/problems/identifier', (req, res) => {
-      app.render(req, res, '/problems-dashboard');
-    });
-
     server.get('/projects/:projectSlug/:environmentSlug/facts', (req, res) => {
       app.render(req, res, '/facts', {
         openshiftProjectName: req.params.environmentSlug,
