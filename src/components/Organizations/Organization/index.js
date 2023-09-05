@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
 import { Footer, ModalChildren, Tag } from '../SharedStyles';
-import { LinkBtn, StyledOrganization, StyledOverview } from './Styles';
+import { LinkBtn, StyledOrganization, StyledOverview, ManageBtn } from './Styles';
 
 const UPDATE_ORGANIZATION_FRIENDLY_NAME = gql`
   mutation updateOrganizationFriendlyName($id: Int!, $friendlyName: String!) {
@@ -268,7 +268,9 @@ const Organization = ({ organization, refetch }) => {
                 </div>
               ))}
               <OrgManageLink organizationSlug={organization.id} organizationName={organization.name}>
-                Manage
+                <ManageBtn>
+                  <EyeOutlined className="icon" /> Manage
+                </ManageBtn>
               </OrgManageLink>
             </div>
           </div>

@@ -196,3 +196,28 @@ export const LinkBtn = styled.a`
     }
   }
 `;
+
+export const ManageBtn = styled.a`
+  margin-top: 25px;
+  background: #4b84ff;
+  color: #fff;
+  display: inline-block;
+  min-width: 115px;
+  width: max-content;
+  padding: 6px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s ease;
+  &:hover {
+    background: #4578e6;
+  }
+  .icon {
+    margin-bottom: 0 !important;
+    svg {
+      font-size: 22px;
+      fill: #fff;
+    }
+  }
+`;
