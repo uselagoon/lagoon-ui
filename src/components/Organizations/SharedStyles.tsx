@@ -183,9 +183,9 @@ export const sharedTableStyles = css`
         justify-content: space-between;
         padding-right: 40px;
       }
-      & > div {
-        padding-left: 20px;
-      }
+      // & > div {
+      //   padding-left: 20px;
+      // }
       &:hover {
         border: 1px solid ${color.brightBlue};
       }
@@ -286,6 +286,11 @@ export const TableActions = styled.div`
     &.link {
       border: 1px solid #4578e6 !important;
       background: #fff;
+    }
+    .view {
+      svg {
+        color: #4578e6;
+      }
     }
     .edit {
       svg {

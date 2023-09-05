@@ -6,7 +6,6 @@ import { withRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
-import GroupsBreadcrumb from 'components/Breadcrumbs/Organizations/Groups';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import GroupMembers from 'components/Organizations/GroupMembers';
 import GroupMembersSkeleton from 'components/Organizations/GroupMembers/GroupMembersSkeleton';
@@ -16,8 +15,6 @@ import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import { GroupPageWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
 import GroupByNameAndOrganization from 'lib/query/organizations/GroupByNameAndOrganization';
-
-import AddUserToGroup from '../../components/Organizations/AddUserToGroup';
 import GroupNotFound from '../../components/errors/GroupNotFound';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';

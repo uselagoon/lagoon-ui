@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { sharedTableStyles } from '../SharedStyles';
 
 export const StyledGroupMembers = styled.div`
-.default-group-label {
+  .default-group-label {
     color: ${color.white};
     display: inline-block;
     background: #262d65;
@@ -28,8 +28,19 @@ export const StyledGroupMembers = styled.div`
   .remove {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     width: 100%;
-    padding: 0;
+    height: 100%;
+    .btn-red {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 36px;
+      svg {
+        font-size: 1.35rem;
+      }
+    }
   }
   ${sharedTableStyles}
   .data-table {

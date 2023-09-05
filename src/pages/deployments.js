@@ -46,12 +46,14 @@ const resultLimit = urlResultLimit === -1 ? null : urlResultLimit;
  */
 export const PageDeployments = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithDeploymentsQuery, {
+  const { data, error, loading, subscribeToMore, refetch } = useQuery(EnvironmentWithDeploymentsQuery, {
     variables: {
       openshiftProjectName: router.query.openshiftProjectName,
       limit: resultLimit,
     },
   });
+
+  const handleRefetch = async () => await refetch({ openshiftProjectName: router.query.openshiftProjectName, limit: resultLimit, });
 
   useEffect(() => {
     if (!loading && data?.environment) {
@@ -160,7 +162,7 @@ export const PageDeployments = ({ router }) => {
         <DeploymentsWrapper>
           <NavTabs activeTab="deployments" environment={environment} />
           <div className="content">
-            <DeployLatest pageEnvironment={environment} />
+            <DeployLatest pageEnvironment={environment} onDeploy={handleRefetch} />
             <Deployments
               deployments={environment.deployments}
               environmentSlug={environment.openshiftProjectName}

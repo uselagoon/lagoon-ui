@@ -59,7 +59,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
 
   const Columns = [
     {
-      width: '30%',
+      width: '50%',
       key: 'name',
       render: i => {
         return (
@@ -69,28 +69,28 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
             organizationName={organizationName}
             key={i.id}
           >
-            {i.name}
+            <span>
+              {i.name}{' '}
+              {i.type === 'project-default-group' && (
+                <Tag style={{ display: 'inline' }} background="#262D65">
+                  SYSTEM GROUP
+                </Tag>
+              )}
+            </span>
           </OrgGroupsLink>
         );
       },
     },
 
     {
-      width: '20%',
+      width: '15%',
       key: 'members',
       render: i => {
         return i.memberCount && <span>Members: {i.memberCount} </span>;
       },
     },
     {
-      width: '25%',
-      key: 'type',
-      render: i => {
-        return i.type === 'project-default-group' && <Tag background="#262D65">{i.type}</Tag>;
-      },
-    },
-    {
-      width: '25%',
+      width: '35%',
       key: 'actions',
       render: function (i) {
         return (
@@ -110,7 +110,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                   group={i}
                   organizationId={organizationId}
                   onAddUser={refetch}
-                  closeModal={() => modalAction('close', 'addUser')}
+                  close={() => modalAction('close', 'addUser')}
                 />
               </Modal>
             </>
@@ -148,6 +148,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                           refetch().then(() => modalAction('close', 'deleteGroup'));
                           return <DeleteButton>Continue</DeleteButton>;
                         }
+
                         return (
                           <Button
                             variant="primary"
@@ -181,7 +182,15 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
     <GroupsWrapper>
       <OrgHeader headerText="Groups" />
       <StyledGroups>
-        <PaginatedTable limit={10} data={groups} columns={Columns} withSorter numericSortKey='members' emptyText="No groups found" />
+        <PaginatedTable
+          limit={10}
+          data={groups}
+          columns={Columns}
+          withSorter
+          systemGroupCheckbox
+          numericSortKey="members"
+          emptyText="No groups found"
+        />
         <NewGroup
           disabled={!ableToAddGroup}
           organizationId={organizationId}

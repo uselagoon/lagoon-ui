@@ -13,9 +13,8 @@ import { Footer } from '../SharedStyles';
 export const RemoveNotificationConfirm = ({ removeName, onRemove, open, openModal, closeModal }) => {
   return (
     <React.Fragment>
-      <Button variant="red" action={openModal}>
-        <DeleteOutlined />
-      </Button>
+      <Button variant="red" action={openModal} icon={<DeleteOutlined />}></Button>
+
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>
           <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>

@@ -24,7 +24,7 @@ const taskDrushCron = gql`
   }
 `;
 
-const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
+const DrushCron = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
   <Mutation
     mutation={taskDrushCron}
     onCompleted={onCompleted}
@@ -33,7 +33,10 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {taskDrushCron => {
+    {(taskDrushCron, { loading, data }) => {
+      if (data) {
+        onNewTask();
+      }
       return (
         <SelectWrapper>
           <div className="envSelect">
@@ -55,7 +58,8 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError }) => (
               required
             />
           </div>
-          <Button action={taskDrushCron}>Run task</Button>
+          <Button action={taskDrushCron} disabled={!loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
+          <Button action={taskDrushCron} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
         </SelectWrapper>
       );
     }}

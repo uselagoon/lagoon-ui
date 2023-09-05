@@ -66,8 +66,7 @@ export function createTask(): Task {
     `::group::${eventName}\n` +
     `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]}:: Job '${jobName}'\n` +
     `::step-start::${stepName}\n` +
-    `::${
-      status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
+    `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
     }:: Job '${jobName}' step '${stepName}'\n` +
     `::step-end::${stepName}::${duration}\n` +
     `${generateLogMessage()}\n` +
@@ -144,12 +143,14 @@ export const Problem = (args: any) => {
   const links = `https://security-tracker.debian.org/tracker/${vuln_id}`;
   const severityScore = `0.${faker.number.int({ min: 1, max: 9 })}`;
   const data = JSON.stringify({ id: `${faker.number.int({ min: 1, max: 100 })}` }, null, '\t');
+  const service = faker.helpers.arrayElement(['cli', 'service1']);
   return {
     identifier: vuln_id,
     severity: args.hasOwnProperty('severity') ? args.severity : severity,
     source: args.hasOwnProperty('source') ? args.source : source,
     severityScore: severityScore,
     associatedPackage: associatedPackage,
+    service: service,
     description,
     links,
     data,

@@ -46,7 +46,7 @@ let options = [
  */
 export const AddUserToGroup = ({
   group,
-  close,
+  closeModal,
   inputValueEmail,
   setInputValue,
   selectedRole,
@@ -62,7 +62,7 @@ export const AddUserToGroup = ({
         if (data) {
           onAddUser().then(() => {
             setInputValue({ target: { value: '' } });
-            close();
+            closeModal();
           });
         }
         return (
@@ -70,11 +70,11 @@ export const AddUserToGroup = ({
             <h4>Add User</h4>
             <div className="form-box">
               <label>
-                User name: <span style={{ color: '#E30000' }}>*</span>
+                User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
-                  className="inputName"
+                  className="inputEmail"
                   type="text"
-                  placeholder="Enter name"
+                  placeholder="Enter Email"
                   value={inputValueEmail}
                   onChange={setInputValue}
                 />
@@ -114,7 +114,7 @@ export const AddUserToGroup = ({
                 >
                   Add
                 </Button>
-                <Button variant="ghost" action={() => close()}>
+                <Button variant="ghost" action={() => closeModal()}>
                   Cancel
                 </Button>
               </Footer>

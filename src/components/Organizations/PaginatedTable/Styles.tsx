@@ -15,8 +15,12 @@ export const Filters = styled.div`
     height: 40px !important;
     font-size: 0.95rem !important;
   }
+  &:not(:has(input[type='checkbox'])) {
+    select {
+      margin-left: auto;
+    }
+  }
   > select {
-    margin-left: auto;
     min-width: 210px;
     padding: 10px;
   }
@@ -129,4 +133,17 @@ export const TableEmpty = styled.p`
   text-align: center;
   padding: 2.5rem;
   background: ${props => props.theme.backgrounds.box};
+`;
+
+export const Checkbox = styled.div`
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-right:16px;
+  input[type='checkbox'] {
+    width: 22px;
+    height: 22px;
+  }
 `;

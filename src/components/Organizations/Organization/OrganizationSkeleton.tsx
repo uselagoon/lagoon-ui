@@ -56,7 +56,7 @@ const OrganizationSkeleton = () => {
             </div>
 
             <div className="users">
-              <span>Users</span>
+              <span>ADMINISTRATORS</span>
               <div>
                 <UserOutlined className="userIcon" style={{ transform: 'translateY(-2px)' }} />
                 <Skeleton width={'200px'} />

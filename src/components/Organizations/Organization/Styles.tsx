@@ -89,8 +89,8 @@ export const StyledOverview = styled.div`
   .description {
     margin: 14px 0;
     .title {
-      display:block;
-      text-transform:uppercase;
+      display: block;
+      text-transform: uppercase;
       font-size: 13px;
       font-weight: 600;
       color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
@@ -115,6 +115,15 @@ export const StyledOverview = styled.div`
     .target,
     .user {
       margin-bottom: 8px;
+      .person {
+        margin: 0 0 1.25rem;
+
+        display: flex;
+        align-items: center;
+        .email {
+          min-width: 220px;
+        }
+      }
     }
     .targets,
     .users {
@@ -181,6 +190,31 @@ export const LinkBtn = styled.a`
     background: #4578e6;
   }
   .icon {
+    svg {
+      font-size: 22px;
+      fill: #fff;
+    }
+  }
+`;
+
+export const ManageBtn = styled.a`
+  margin-top: 25px;
+  background: #4b84ff;
+  color: #fff;
+  display: inline-block;
+  min-width: 115px;
+  width: max-content;
+  padding: 6px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s ease;
+  &:hover {
+    background: #4578e6;
+  }
+  .icon {
+    margin-bottom: 0 !important;
     svg {
       font-size: 22px;
       fill: #fff;

@@ -23,7 +23,7 @@ const taskDrushSqlDump = gql`
   }
 `;
 
-const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => (
+const DrushSqlDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
   <Mutation
     mutation={taskDrushSqlDump}
     onCompleted={onCompleted}
@@ -32,7 +32,10 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => (
       environment: pageEnvironment.id,
     }}
   >
-    {taskDrushSqlDump => {
+    {(taskDrushSqlDump, { loading, data }) => {
+      if (data) {
+        onNewTask();
+      }
       return (
         <SelectWrapper>
           <div className="envSelect">
@@ -54,7 +57,7 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError }) => (
               required
             />
           </div>
-          <Button action={taskDrushSqlDump}>Run task</Button>
+          <Button action={taskDrushSqlDump} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
         </SelectWrapper>
       );
     }}

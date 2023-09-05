@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DeleteOutlined, DisconnectOutlined } from '@ant-design/icons';
+import { DisconnectOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveProjectGroupConfirm/logic';
@@ -13,9 +13,12 @@ import { Footer } from '../SharedStyles';
 export const RemoveProjectGroupConfirm = ({ onRemove, open, openModal, closeModal }) => {
   return (
     <React.Fragment>
-      <Button variant="red" action={openModal}>
-      <DisconnectOutlined />
-      </Button>
+      <Button
+        variant="red"
+        action={openModal}
+        icon={<DisconnectOutlined className="delete" />}
+      />
+
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>
           <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
