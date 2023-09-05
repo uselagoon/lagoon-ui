@@ -86,7 +86,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
       width: '15%',
       key: 'members',
       render: i => {
-        return i.memberCount && <span>Members: {i.memberCount} </span>;
+        return typeof i.memberCount !== 'undefined' && <span>Members: {i.memberCount} </span>;
       },
     },
     {
