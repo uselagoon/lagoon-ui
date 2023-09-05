@@ -48,7 +48,7 @@ export const AddUserToOrganization = ({
             <h4>Add User</h4>
             <div className="form-box">
               <label>
-                User name: <span style={{ color: '#E30000' }}>*</span>
+                User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
                   className="inputEmail"
                   type="text"
