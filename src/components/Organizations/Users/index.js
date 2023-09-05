@@ -124,9 +124,9 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
               }}
             />
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
+              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Remove user?</h3>
               <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
+                This action will remove this user from all groups, you might not be able to reverse this.
               </p>
 
               <Footer>

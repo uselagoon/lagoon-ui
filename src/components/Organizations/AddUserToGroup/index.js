@@ -46,7 +46,7 @@ let options = [
  */
 export const AddUserToGroup = ({
   group,
-  closeModal,
+  close,
   inputValueEmail,
   setInputValue,
   selectedRole,
@@ -62,7 +62,7 @@ export const AddUserToGroup = ({
         if (data) {
           onAddUser().then(() => {
             setInputValue({ target: { value: '' } });
-            closeModal();
+            close();
           });
         }
         return (
@@ -114,7 +114,7 @@ export const AddUserToGroup = ({
                 >
                   Add
                 </Button>
-                <Button variant="ghost" action={() => closeModal()}>
+                <Button variant="ghost" action={() => close()}>
                   Cancel
                 </Button>
               </Footer>
