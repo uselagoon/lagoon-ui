@@ -116,52 +116,57 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                 <EyeOutlined className="edit" />
               </a>
             </Link>
-            <DeleteOutlined
-              className="delete"
-              onClick={() => {
-                setSelectedUser(user?.id);
-                setDeleteUserModalOpen(true);
-              }}
-            />
-            <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
-              <RemoveModalHeader>Remove user?</RemoveModalHeader>
-              <RemoveModalParagraph>
-                This action will remove this user from all groups, you might not be able to reverse this.
-              </RemoveModalParagraph>
 
-              <Footer>
-                <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganizationGroups, { error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    if (data) {
-                      refetch().then(() => {
-                        return setDeleteUserModalOpen(false);
-                      });
-                    }
-                    return (
-                      <Button
-                        variant="primary"
-                        action={() => {
-                          removeUserFromOrganizationGroups({
-                            variables: {
-                              email: user?.email,
-                              organization: organization.id,
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
+            {!user.email.startsWith('default-user') ? (
+              <>
+                <DeleteOutlined
+                  className="delete"
+                  onClick={() => {
+                    setSelectedUser(user?.id);
+                    setDeleteUserModalOpen(true);
                   }}
-                </Mutation>
-                <Button variant="ghost" action={closeUserModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
+                />
+                <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
+                  <RemoveModalHeader>Remove user?</RemoveModalHeader>
+                  <RemoveModalParagraph>
+                    This action will remove this user from all groups, you might not be able to reverse this.
+                  </RemoveModalParagraph>
+
+                  <Footer>
+                    <Mutation mutation={DELETE_USER}>
+                      {(removeUserFromOrganizationGroups, { error, data }) => {
+                        if (error) {
+                          return <div>{error.message}</div>;
+                        }
+                        if (data) {
+                          refetch().then(() => {
+                            return setDeleteUserModalOpen(false);
+                          });
+                        }
+                        return (
+                          <Button
+                            variant="primary"
+                            action={() => {
+                              removeUserFromOrganizationGroups({
+                                variables: {
+                                  email: user?.email,
+                                  organization: organization.id,
+                                },
+                              });
+                            }}
+                          >
+                            Continue
+                          </Button>
+                        );
+                      }}
+                    </Mutation>
+                    <Button variant="ghost" action={closeUserModal}>
+                      Cancel
+                    </Button>
+                  </Footer>
+                </Modal>
+              </>
+            ) : null}
           </TableActions>
         );
       },
