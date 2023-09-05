@@ -268,7 +268,7 @@ const Organization = ({ organization, refetch }) => {
                 </div>
               ))}
               <OrgManageLink organizationSlug={organization.id} organizationName={organization.name}>
-                View more ...
+                Manage
               </OrgManageLink>
             </div>
           </div>
