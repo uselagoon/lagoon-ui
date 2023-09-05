@@ -12,7 +12,7 @@ import gql from 'graphql-tag';
 import useSortableData from '../../../lib/withSortedItems';
 import AddUserToOrganization from '../AddUserToOrganization';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, Tag } from '../SharedStyles';
+import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -117,10 +117,10 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
               }}
             />
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+              <RemoveModalParagraph>
                 This action will delete this entry, you might not be able to get this back.
-              </p>
+              </RemoveModalParagraph>
 
               <Footer>
                 <Mutation mutation={DELETE_USER}>
@@ -187,10 +187,10 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
 
       <div style={{ width: '100px' }}>
         <Button action={() => setAddUserModalOpen(true)}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>User</span>
+          </AddButtonContent>
         </Button>
       </div>
 

@@ -23,7 +23,8 @@ export const NewUser = styled.div`
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 16px;
+    line-height:24px;
     color: ${props => props.theme.texts.primary};
     padding: 8px;
     box-sizing: border-box;

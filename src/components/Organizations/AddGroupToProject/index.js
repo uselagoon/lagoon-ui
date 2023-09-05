@@ -7,10 +7,9 @@ import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
 import withLogic from 'components/Organizations/AddGroupToProject/logic';
 import gql from 'graphql-tag';
-import { bp, color } from 'lib/variables';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
 
 const ADD_GROUP_PROJECT_MUTATION = gql`
   mutation addProjectToGroup($groupName: String!, $projectName: String!) {
@@ -43,10 +42,10 @@ export const AddGroupToProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>Group</span>
+          </AddButtonContent>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
@@ -66,9 +65,15 @@ export const AddGroupToProject = ({
                     Group
                     <RoleSelect>
                       <ReactSelect
-                        className='select'
+                        className="select"
                         menuPortalTarget={document.body}
-                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                        styles={{
+                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                          placeholder: base => ({ ...base, fontSize: '16px' }),
+                          menu: base => ({ ...base, fontSize: '16px' }),
+                          option: base => ({ ...base, fontSize: '16px' }),
+                          singleValue: base => ({ ...base, fontSize: '16px' }),
+                        }}
                         aria-label="Group"
                         placeholder="Select a group..."
                         name="group"
