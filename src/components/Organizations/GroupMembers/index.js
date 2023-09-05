@@ -14,7 +14,14 @@ import gql from 'graphql-tag';
 import AddUserToGroup from '../AddUserToGroup';
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, TableWrapper } from '../SharedStyles';
+import {
+  AddButtonContent,
+  Footer,
+  RemoveModalHeader,
+  RemoveModalParagraph,
+  TableActions,
+  TableWrapper,
+} from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -51,7 +58,15 @@ const ADD_GROUP_PROJECT_MUTATION = gql`
 /**
  * The primary list of members.
  */
-const GroupMembers = ({ members = [], groupName, organizationName, organizationId, orgProjects, projects, refetch }) => {
+const GroupMembers = ({
+  members = [],
+  groupName,
+  organizationName,
+  organizationId,
+  orgProjects,
+  projects,
+  refetch,
+}) => {
   const duRegex = new RegExp('^default-user@' + groupName.replace('project-', '') + '$', 'g');
 
   const [projectModalOpen, setProjectModalOpen] = useState(false);
@@ -195,10 +210,10 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
             />
 
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+              <RemoveModalParagraph>
                 This action will delete this entry, you might not be able to get this back.
-              </p>
+              </RemoveModalParagraph>
 
               <Footer>
                 <Mutation mutation={REMOVE_GROUP_FROM_PROJECT} onError={e => console.error(e)}>
@@ -252,10 +267,10 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
 
         <div className="tableAction">
           <Button action={() => setAddUserModalOpen(true)}>
-            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '28px' }}>+</span>
-              <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-            </span>
+            <AddButtonContent>
+              <span>+</span>
+              <span>User</span>
+            </AddButtonContent>
           </Button>
         </div>
 
@@ -283,10 +298,10 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
 
         <div className="tableAction">
           <Button action={() => setAddProjectModalOpen(true)}>
-            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '28px' }}>+</span>
-              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Project</span>
-            </span>
+            <AddButtonContent>
+              <span>+</span>
+              <span>Project</span>
+            </AddButtonContent>
           </Button>
         </div>
 
@@ -321,7 +336,13 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                       <ReactSelect
                         className="select"
                         menuPortalTarget={document.body}
-                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                        styles={{
+                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                          placeholder: base => ({ ...base, fontSize: '16px' }),
+                          menu: base => ({ ...base, fontSize: '16px' }),
+                          option: base => ({ ...base, fontSize: '16px' }),
+                          singleValue: base => ({ ...base, fontSize: '16px' }),
+                        }}
                         aria-label="project"
                         placeholder="Select a project..."
                         name="project"

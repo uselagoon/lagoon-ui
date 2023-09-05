@@ -11,7 +11,7 @@ import AddUserToGroup from '../AddUserToGroup';
 import NewGroup from '../NewGroup';
 import OrgHeader from '../Orgheader';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, Tag } from '../SharedStyles';
+import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { DeleteButton, GroupsWrapper, StyledGroups } from './Styles';
 
 const DELETE_GROUP = gql`
@@ -133,10 +133,10 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                   isOpen={modalStates.deleteGroup.open && modalStates.deleteGroup.current.name === i.name}
                   onRequestClose={() => modalAction('close', 'deleteGroup')}
                 >
-                  <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-                  <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+                  <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+                  <RemoveModalParagraph>
                     This action will delete this entry, you might not be able to get this back.
-                  </p>
+                  </RemoveModalParagraph>
 
                   <Footer>
                     <Mutation mutation={DELETE_GROUP}>

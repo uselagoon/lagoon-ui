@@ -8,7 +8,7 @@ import RemoveNotificationConfirm from 'components/Organizations/RemoveNotificati
 import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
-import { Footer, ModalChildren } from '../SharedStyles';
+import { AddButtonContent, Footer, ModalChildren } from '../SharedStyles';
 import AddNotifications from './AddNotifications';
 import { AddNotifButton, NameTagCol, StyledOrgNotifications } from './Styles';
 
@@ -768,10 +768,10 @@ const OrgNotifications = ({
       >
         <AddNotifButton>
           <Button action={() => setModalOpen(true)}>
-            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '28px' }}>+</span>
-              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Notification</span>
-            </span>
+            <AddButtonContent>
+              <span>+</span>
+              <span>Notification</span>
+            </AddButtonContent>
           </Button>
         </AddNotifButton>
       </AddNotifications>

@@ -8,7 +8,7 @@ import withLogic from 'components/Organizations/NewProject/logic';
 import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -67,10 +67,10 @@ const OrgNewProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Project</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>Project</span>
+          </AddButtonContent>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
@@ -134,8 +134,14 @@ const OrgNewProject = ({
                       Deploy Target: <span style={{ color: '#E30000' }}>*</span>
                       <RoleSelect>
                         <ReactSelect
-                          className='select'
-                          styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                          className="select"
+                          styles={{
+                            menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                            placeholder: base => ({ ...base, fontSize: '16px' }),
+                            menu: base => ({ ...base, fontSize: '16px' }),
+                            option: base => ({ ...base, fontSize: '16px' }),
+                            singleValue: base => ({ ...base, fontSize: '16px' }),
+                          }}
                           aria-label="Role"
                           placeholder="Select target..."
                           name="target"

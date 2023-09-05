@@ -46,7 +46,7 @@ let options = [
  */
 export const AddUserToGroup = ({
   group,
-  closeModal,
+  close,
   inputValueEmail,
   setInputValue,
   selectedRole,
@@ -62,7 +62,7 @@ export const AddUserToGroup = ({
         if (data) {
           onAddUser().then(() => {
             setInputValue({ target: { value: '' } });
-            closeModal();
+            close();
           });
         }
         return (
@@ -86,7 +86,13 @@ export const AddUserToGroup = ({
                 <ReactSelect
                   className="select"
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                    placeholder: base => ({ ...base, fontSize: '16px' }),
+                    menu: base => ({ ...base, fontSize: '16px' }),
+                    option: base => ({ ...base, fontSize: '16px' }),
+                    singleValue: base => ({ ...base, fontSize: '16px' }),
+                  }}
                   aria-label="Role"
                   placeholder="Select role"
                   name="role"
@@ -114,7 +120,7 @@ export const AddUserToGroup = ({
                 >
                   Add
                 </Button>
-                <Button variant="ghost" action={() => closeModal()}>
+                <Button variant="ghost" action={() => close()}>
                   Cancel
                 </Button>
               </Footer>

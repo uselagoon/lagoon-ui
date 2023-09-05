@@ -9,7 +9,7 @@ import Modal from 'components/Modal';
 import gql from 'graphql-tag';
 
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, TableWrapper } from '../SharedStyles';
+import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, TableWrapper } from '../SharedStyles';
 import { StyledUser } from './Styles';
 
 type Group = {
@@ -122,10 +122,10 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
               isOpen={groupModalOpen && selectedGroup === group?.id}
               onRequestClose={closeGroupModal}
             >
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
-              </p>
+              <RemoveModalHeader>Remove user?</RemoveModalHeader>
+              <RemoveModalParagraph>
+                This action will remove this user from a group, you might not be able to get this back.
+              </RemoveModalParagraph>
 
               <Footer>
                 <Mutation<{

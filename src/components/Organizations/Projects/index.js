@@ -7,10 +7,10 @@ import Modal from 'components/Modal';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
-import { CancelButton, DeleteButton, ModalFooter } from '../Groups/Styles';
+import { DeleteButton } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions } from '../SharedStyles';
+import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions } from '../SharedStyles';
 import { StyledOrgProjects } from './Styles';
 
 const DELETE_PROJECT = gql`
@@ -84,10 +84,10 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                 isOpen={modalState.open && modalState.current === project.name}
                 onRequestClose={() => setModalState({ open: false, current: null })}
               >
-                <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-                <p style={{ fontSize: '16px', lineHeight: '24px' }}>
+                <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+                <RemoveModalParagraph>
                   This action will delete this entry, you might not be able to get this back.
-                </p>
+                </RemoveModalParagraph>
 
                 <Footer>
                   <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>

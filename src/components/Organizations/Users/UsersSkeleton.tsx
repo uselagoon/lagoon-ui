@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import OrgHeader from '../Orgheader';
-import { StyledUsers } from './Styles';
+import { SkeletonWrapper, StyledUsers } from './Styles';
 
 interface Props {
   title?: string;
@@ -11,38 +11,37 @@ interface Props {
 const UsersSkeleton: FC<Props> = ({ title }) => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const groupSkeleton = (index: number) => (
-    <div
-      key={`groupSkeleton-${index}`}
+  const usersSkeleton = (index: number) => (
+    <SkeletonWrapper
+      key={`usersSkeleton-${index}`}
       className="data-row"
-      style={{ display: 'flex', gap: '1rem', paddingLeft: '1rem' }}
     >
-      <div className="customer" style={{ width: '15%' }}>
+      <div className="customer">
         <Skeleton height={40} />
       </div>
-      <div className="customer" style={{ width: '15%' }}>
+      <div className="customer">
         <Skeleton height={40} />
       </div>
-      <div className="customer" style={{ width: '25%' }}>
+      <div className="customer">
         <Skeleton height={40} />
       </div>
-      <div className="customer" style={{ width: '15%' }}>
+      <div className="customer">
         <Skeleton height={40} />
       </div>
-      <div className="customer" style={{ width: '15%' }}>
+      <div className="customer">
         <Skeleton height={40} />
       </div>
-      <div className="customer" style={{ width: '15%' }}>
+      <div className="customer">
         <Skeleton height={40} />
       </div>
-    </div>
+    </SkeletonWrapper>
   );
   return (
     <>
       <OrgHeader headerText={title ? title : 'Users'} />
       <StyledUsers>
         <div className="data-table">
-          {[...Array<undefined>(numberOfFields)].map((_, index) => groupSkeleton(index))}
+          {[...Array<undefined>(numberOfFields)].map((_, index) => usersSkeleton(index))}
         </div>
       </StyledUsers>
     </>
