@@ -6,22 +6,22 @@ import { StyledOrgProjects } from './Styles';
 const OrgProjectsSkeleton = () => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const projectSkeleton = (
-    <div className="data-row">
+  const projectSkeleton = (key: number) => (
+    <div className="data-row" key={key}>
       <div className="project">
-        <Skeleton />
+        <Skeleton height={40}/>
       </div>
       <div className="customer">
-        <Skeleton />
+        <Skeleton height={40}/>
       </div>
       <div className="customer">
-        <Skeleton />
+        <Skeleton height={40}/>
       </div>
     </div>
   );
   return (
     <StyledOrgProjects>
-      <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => projectSkeleton)}</div>
+      <div className="data-table">{[...Array<undefined>(numberOfFields)].map((_, idx) => projectSkeleton(idx))}</div>
     </StyledOrgProjects>
   );
 };

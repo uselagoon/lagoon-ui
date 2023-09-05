@@ -7,8 +7,8 @@ import { NameTagCol, StyledOrgNotifications } from './Styles';
 const NotificationSkeleton = () => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const notificationSkeleton = (
-    <div className="data-row">
+  const notificationSkeleton = (key: number) => (
+    <div className="data-row" key={key}>
       <NameTagCol>
         <div className="name">
           <Skeleton height={25} width={100} />
@@ -31,7 +31,9 @@ const NotificationSkeleton = () => {
   return (
     <StyledOrgNotifications>
       <OrgHeader headerText="Notifications" searchBar />
-      <div className="data-table">{[...Array<undefined>(numberOfFields)].map(() => notificationSkeleton)}</div>
+      <div className="data-table">
+        {[...Array<undefined>(numberOfFields)].map((_, idx) => notificationSkeleton(idx))}
+      </div>
     </StyledOrgNotifications>
   );
 };

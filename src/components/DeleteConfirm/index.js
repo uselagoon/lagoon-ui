@@ -11,9 +11,8 @@ import { color } from 'lib/variables';
 export const DeleteConfirm = ({
   deleteType,
   deleteName,
-  onDelete,
   icon,
-  loading,
+  onDelete,
   inputValue,
   setInputValue,
   open,
@@ -22,22 +21,10 @@ export const DeleteConfirm = ({
 }) => {
   return (
     <React.Fragment>
-      {
-        icon ?
-        <Button variant='red' icon={icon} action={openModal}>
-          Delete
-        </Button>
-        : 
-        <Button variant='red' action={openModal}>
-          Delete
-        </Button>
-      }
-      
-      <Modal
-        isOpen={open}
-        onRequestClose={closeModal}
-        contentLabel={`Confirm delete ${deleteType}`}
-      >
+      <Button variant="red" icon={icon} action={openModal}>
+        Delete
+      </Button>
+      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm delete ${deleteType}`}>
         <React.Fragment>
           <p>
             This will delete all resources associated with the {deleteType}{' '}
@@ -51,7 +38,7 @@ export const DeleteConfirm = ({
               cancel
             </button>
             <Button disabled={inputValue !== deleteName} action={onDelete} variant="red">
-              {loading ? 'Deleting...' : 'Delete'}
+              Delete
             </Button>
           </div>
         </React.Fragment>
@@ -72,9 +59,6 @@ export const DeleteConfirm = ({
         .form-input {
           display: flex;
           align-items: center;
-        }
-        .deleteConfirmImg span {
-          cursor: pointer;
         }
       `}</style>
     </React.Fragment>

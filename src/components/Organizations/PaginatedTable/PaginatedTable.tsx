@@ -4,6 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 
 import { SearchBar } from '../Orgheader/Styles';
 import {
+  Checkbox,
   Filters,
   NextBtn,
   Pagination,
@@ -17,7 +18,11 @@ import {
 } from './Styles';
 
 type DataType = {
-  [key: string]: string | Record<string, string | Pick<Props, 'data'> | string[]>;
+  [key: string]:
+    | string
+    | Record<string, string>
+    | Record<string, Pick<Props, 'data'> | string[]>
+    | Array<Record<string, string>>;
   name: string;
   id: string;
 };
@@ -31,6 +36,7 @@ interface Props {
   usersTable?: boolean;
   withSorter?: boolean;
   disableUrlMutation?: boolean;
+  systemGroupCheckbox?: boolean;
   numericSortKey?: string;
   labelText?: string;
   limit: number;
@@ -56,6 +62,7 @@ const PaginatedTable: FC<Props> = ({
   columns,
   usersTable,
   withSorter,
+  systemGroupCheckbox,
   numericSortKey,
   emptyText,
   labelText,
@@ -83,19 +90,24 @@ const PaginatedTable: FC<Props> = ({
 
   const [unfilteredData, setUnfilteredData] = useState(data);
 
+  const [systemGroupsSelected, setSystemGroupsSelected] = useState(false);
+
   useEffect(() => {
     setUnfilteredData(data);
   }, [data]);
 
   const sortedFilteredData = useMemo(() => {
-    const filtered = !searchStr
+    let filtered = !searchStr
       ? unfilteredData
       : unfilteredData.filter(key => {
           // @ts-ignore
-          const k = !usersTable ? key.name : (key.user.email as string);
+          const k = !usersTable ? key.name : ((key.user ? key.user?.email : key.email) as string);
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
+    if (!systemGroupsSelected) {
+      filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+    }
     if (withSorter) {
       if (sortMethod === 'alphabetical') {
         return filtered.sort(function (a, b) {
@@ -115,7 +127,7 @@ const PaginatedTable: FC<Props> = ({
     } else {
       return filtered;
     }
-  }, [searchStr, withSorter, sortMethod, unfilteredData]);
+  }, [searchStr, withSorter, sortMethod, unfilteredData, systemGroupsSelected]);
 
   const resultIndex = (currentPage - 1) * resultLimit;
 
@@ -201,12 +213,22 @@ const PaginatedTable: FC<Props> = ({
   const endPage = Math.min(startPage + maxPagination - 1, totalPages);
 
   return (
-    <StyledTable className='paginatedTable'>
-      <Filters className='filters'>
+    <StyledTable className="paginatedTable">
+      <Filters className="filters">
         {labelText ? <span className="labelText">{labelText}</span> : ''}
+        {systemGroupCheckbox ? (
+          <Checkbox>
+            Show system groups
+            <input
+              type="checkbox"
+              checked={systemGroupsSelected}
+              onChange={({ target: { checked } }) => setSystemGroupsSelected(checked)}
+            />
+          </Checkbox>
+        ) : null}
         {withSorter ? (
-          <select onChange={handleSortChange} placeholder="Sort by">
-            <option value="" disabled selected hidden>
+          <select onChange={handleSortChange} placeholder="Sort by" defaultValue={''}>
+            <option value="" disabled hidden>
               Sort by
             </option>
             <option value={undefined}>None</option>
@@ -235,10 +257,10 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow className='tableRow' key={i.id}>
+            <TableRow className="tableRow" key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}>
               {columns?.map(col => {
                 return (
-                  <TableColumn key={`${col.key}-${idx}`} width={col.width}>
+                  <TableColumn key={`${col.key}-${idx}-${labelText ? labelText : ''}`} width={col.width}>
                     {col.render(i)}
                   </TableColumn>
                 );
@@ -247,10 +269,10 @@ const PaginatedTable: FC<Props> = ({
           );
         })
       ) : (
-        <TableEmpty className='empty'>{emptyText}</TableEmpty>
+        <TableEmpty className="empty">{emptyText}</TableEmpty>
       )}
 
-      <TableFooter className='tableFooter'>
+      <TableFooter className="tableFooter">
         <SelectLimit>
           <span>Results per page</span>
           <select onChange={handleResultChange} value={resultLimit}>
@@ -270,7 +292,7 @@ const PaginatedTable: FC<Props> = ({
             Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
               const page = startPage + idx;
               return (
-                <span key={idx} className={page === currentPage ? 'active' : ''}>
+                <span key={`${idx}-${labelText ? labelText : ''}`} className={page === currentPage ? 'active' : ''}>
                   {page}
                 </span>
               );

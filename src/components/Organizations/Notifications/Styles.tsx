@@ -68,16 +68,19 @@ export const StyledOrgNotifications = styled.div`
     width: 40%;
     align-self: center;
     gap: 0.5rem;
-    
+
     .link {
       border: 1px solid #4578e6 !important;
       background: #fff;
       display: flex;
       height: 36px;
-      width: 76px;
+      width: 54px;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      &:hover {
+        background: #e4e4e4;
+      }
     }
     .edit {
       svg {
@@ -87,9 +90,14 @@ export const StyledOrgNotifications = styled.div`
   }
   .remove {
     height: 36px;
+    width: 54px;
+    button {
+      height: 100%;
+      width: 100%;
+    }
     > * {
-      max-width: 300px;
       justify-content: center;
+      align-items: center;
       display: flex;
     }
   }
@@ -120,6 +128,7 @@ export const StyledOrgNotifications = styled.div`
     display: flex;
     align-items: center;
     width: 35%;
+    padding-left: 0.5rem;
     .comment {
       font-size: 10px;
     }
@@ -221,8 +230,8 @@ export const StyledOrgNotifications = styled.div`
   .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
-    div{
-      border-radius:0 !important;
+    div {
+      border-radius: 0 !important;
     }
   }
   label {

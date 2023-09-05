@@ -70,11 +70,11 @@ export const AddUserToGroup = ({
             <h4>Add User</h4>
             <div className="form-box">
               <label>
-                User name: <span style={{ color: '#E30000' }}>*</span>
+                User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
-                  className="inputName"
+                  className="inputEmail"
                   type="text"
-                  placeholder="Enter name"
+                  placeholder="Enter Email"
                   value={inputValueEmail}
                   onChange={setInputValue}
                 />

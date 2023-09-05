@@ -75,8 +75,8 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
       width: '20%',
       key: 'name',
       render: ({ user }) => {
-        const name = user.name;
-        return name ? <div className="name">{name}</div> : <>First name - </>;
+        const name = user.firstName;
+        return name ? <div>{user.firstName}</div> : <>First name - </>;
       },
     },
     {
@@ -134,12 +134,14 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                   <RemoveUserConfirm
                     removeName={user.email}
                     onRemove={() => {
-                      removeUserFromGroup({
-                        variables: {
-                          groupName: groupName,
-                          email: user.email,
-                        },
-                      });
+                      return Promise.resolve(
+                        removeUserFromGroup({
+                          variables: {
+                            groupName: groupName,
+                            email: user.email,
+                          },
+                        })
+                      );
                     }}
                   />
                 );
@@ -183,13 +185,15 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
       render: project => {
         return (
           <TableActions>
-            <DisconnectOutlined
-              className="delete"
-              onClick={() => {
+            <Button
+              variant="red"
+              action={() => {
                 setSelectedProject(project.id);
                 setProjectModalOpen(true);
               }}
+              icon={<DisconnectOutlined className="delete" />}
             />
+
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
               <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
               <p style={{ fontSize: '16px', lineHeight: '24px' }}>

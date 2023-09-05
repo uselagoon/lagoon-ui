@@ -6,12 +6,12 @@ import Link from 'next/link';
 import { EditOutlined, EnvironmentOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import UsersLink from 'components/link/Organizations/User';
+import OrgManageLink from 'components/link/Organizations/Manage';
 import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
 import { Footer, ModalChildren, Tag } from '../SharedStyles';
-import { LinkBtn, StyledOrganization, StyledOverview } from './Styles';
+import { LinkBtn, StyledOrganization, StyledOverview, ManageBtn } from './Styles';
 
 const UPDATE_ORGANIZATION_FRIENDLY_NAME = gql`
   mutation updateOrganizationFriendlyName($id: Int!, $friendlyName: String!) {
@@ -104,14 +104,14 @@ const Organization = ({ organization, refetch }) => {
             isOpen={nameModalOpen}
           >
             <ModalChildren>
-              <h4>Change Organisation name</h4>
+              <h4>Change Organization name</h4>
               <div className="form-box">
                 <label>
-                  Organisation name: <span style={{ color: '#E30000' }}>*</span>
+                  Organization name: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
                     type="text"
-                    placeholder="Existing org name"
+                    placeholder="Existing organization name"
                     value={friendlyName}
                     onChange={e => setFriendlyName(e.target.value)}
                   />
@@ -171,10 +171,10 @@ const Organization = ({ organization, refetch }) => {
             }}
           >
             <ModalChildren>
-              <h4>Change Organisation description</h4>
+              <h4>Change Organization description</h4>
               <div className="form-box">
                 <label>
-                  Organisation description: <span style={{ color: '#E30000' }}>*</span>
+                  Organization description: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
                     type="text"
@@ -248,12 +248,13 @@ const Organization = ({ organization, refetch }) => {
             </div>
 
             <div className="users">
-              <span>Users</span>
+              <span>Administrators</span>
               {organization.owners.slice(0, 10).map(owner => (
                 <div key={owner.email} className="user">
-                  <p>
+                  <div className="person">
                     <UserOutlined className="userIcon" />
-                    {owner.email}{' '}
+                    <div className="email">{owner.email} </div>
+
                     {owner.owner ? (
                       <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} background="#47D3FF">
                         ORG OWNER
@@ -263,12 +264,14 @@ const Organization = ({ organization, refetch }) => {
                         ORG VIEWER
                       </Tag>
                     )}
-                  </p>
+                  </div>
                 </div>
               ))}
-              <UsersLink organizationSlug={organization.id} organizationName={organization.name}>
-                View more ...
-              </UsersLink>
+              <OrgManageLink organizationSlug={organization.id} organizationName={organization.name}>
+                <ManageBtn>
+                  <EyeOutlined className="icon" /> Manage
+                </ManageBtn>
+              </OrgManageLink>
             </div>
           </div>
         </div>

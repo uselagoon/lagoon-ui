@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
-import { BellOutlined, DeploymentUnitOutlined, ReadOutlined, TeamOutlined } from '@ant-design/icons';
+import { BellOutlined, DeploymentUnitOutlined, ReadOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons';
+
 import { StyledNavigation } from './StyledNavTabs';
 
 interface NavSkeletonProps {
@@ -22,6 +23,12 @@ const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
         <span className="destination">Groups</span>
       </a>
     </li>
+    <li className={`users ${activeTab == 'users' ? 'active' : ''} linkContainer`}>
+      <a className="navLink">
+        <TeamOutlined className="icon" />
+        <span className="destination">Users</span>
+      </a>
+    </li>
     <li className={`projects ${activeTab == 'projects' ? 'active' : ''} linkContainer`}>
       <a className="navLink">
         <DeploymentUnitOutlined className="icon" />
@@ -32,6 +39,12 @@ const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
       <a className="navLink">
         <BellOutlined className="icon" />
         <span className="destination">Notifications</span>
+      </a>
+    </li>
+    <li className={`manage ${activeTab == 'manage' ? 'active' : ''} linkContainer`}>
+      <a className="navLink">
+        <SettingOutlined className="icon" />
+        <span className="destination">Manage</span>
       </a>
     </li>
   </StyledNavigation>

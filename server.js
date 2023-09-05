@@ -148,6 +148,19 @@ app
       });
     });
 
+    server.get('/organizations/:organizationSlug/users', (req, res) => {
+      app.render(req, res, '/organizations/users', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/users/:userSlug', (req, res) => {
+      app.render(req, res, '/organizations/user', {
+        organizationSlug: req.params.organizationSlug,
+        userSlug: req.params.userSlug
+      });
+    });
+
     server.get('/organizations/:organizationSlug/projects', (req, res) => {
       app.render(req, res, '/organizations/projects', {
         organizationSlug: req.params.organizationSlug
@@ -163,6 +176,12 @@ app
 
     server.get('/organizations/:organizationSlug/notifications', (req, res) => {
       app.render(req, res, '/organizations/notifications', {
+        organizationSlug: req.params.organizationSlug
+      });
+    });
+
+    server.get('/organizations/:organizationSlug/manage', (req, res) => {
+      app.render(req, res, '/organizations/manage', {
         organizationSlug: req.params.organizationSlug
       });
     });
