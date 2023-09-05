@@ -51,7 +51,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       render: project => {
         return (
           <div className="groups" style={{ fontSize: '13px' }}>
-            Groups: {project.groups.length}
+            Groups: {project.groupCount}
           </div>
         );
       },

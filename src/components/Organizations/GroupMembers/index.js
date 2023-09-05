@@ -51,7 +51,7 @@ const ADD_GROUP_PROJECT_MUTATION = gql`
 /**
  * The primary list of members.
  */
-const GroupMembers = ({ members = [], groupName, organizationName, organizationId, projects, refetch }) => {
+const GroupMembers = ({ members = [], groupName, organizationName, organizationId, orgProjects, projects, refetch }) => {
   const duRegex = new RegExp('^default-user@' + groupName.replace('project-', '') + '$', 'g');
 
   const [projectModalOpen, setProjectModalOpen] = useState(false);
@@ -274,9 +274,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
 
         <PaginatedTable
           limit={10}
-          data={projects.filter(project => {
-            return project.groups.find(group => group.name === groupName);
-          })}
+          data={projects}
           columns={ProjectsColumns}
           labelText="Projects"
           emptyText="No Projects"
@@ -306,10 +304,8 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                 refetch().then(closeAddProjectModal);
               }
 
-              const filtered = projects.filter(project => {
-                if (project.groups.length === 0) return project;
-
-                return project.groups.every(group => group.name !== groupName);
+              const filtered = orgProjects.filter(project => {
+                return projects.every(p => p.name !== project.name);
               });
 
               const opts = filtered.map(p => {

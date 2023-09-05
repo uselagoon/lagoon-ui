@@ -56,7 +56,7 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
                 {group.name}
               </OrgGroupsLink>
             </div>
-            <div className="members">Members: {group.members.length}</div>
+            <div className="members">Members: {group.memberCount}</div>
 
             <div className="labels">
               {group.type.includes('project-default-group') && (

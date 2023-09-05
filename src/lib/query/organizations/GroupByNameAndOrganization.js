@@ -6,6 +6,10 @@ export default gql`
       id
       name
       type
+      projects {
+        id
+        name
+      }
       members{
         role
         user{
@@ -31,9 +35,6 @@ export default gql`
       projects {
         id
         name
-        groups{
-          name
-        }
       }
     }
   }

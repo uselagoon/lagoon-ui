@@ -32,24 +32,13 @@ export default gql`
       projects {
         id
         name
-        groups {
-          type
-          id
-          name
-        }
+        groupCount
       }
       groups {
         id
         name
         type
-        members {
-          role
-          user {
-            email
-            comment
-          }
-          role
-        }
+        memberCount
       }
       slacks: notifications(type: SLACK) {
         __typename
