@@ -20,7 +20,7 @@ const ProjectNavTabsSkeleton: FC<ProjectNavTabsSkeleton> = ({
           activeTab == "overview" ? "active" : ""
         } deployLink`}
       >
-        <ProjectLink projectSlug={projectName}>Overview</ProjectLink>
+        <ProjectLink projectSlug={projectName}>Project Overview</ProjectLink>
       </li>
       <li
         className={`variables ${

@@ -14,7 +14,7 @@ const ProjectNavTabs = ({ activeTab, project }) => {
           activeTab === "overview" ? "active" : ""
         } deployLink`}
       >
-        <ProjectLink projectSlug={project.name}>Overview</ProjectLink>
+        <ProjectLink projectSlug={project.name}>Project Overview</ProjectLink>
       </li>
       {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && 
         <li

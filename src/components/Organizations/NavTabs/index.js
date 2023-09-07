@@ -15,7 +15,7 @@ const OrgNavTabs = ({ activeTab, organization }) => (
     <li className={`overview ${activeTab == 'overview' ? 'active' : ''} linkContainer`}>
       <OrganizationLink organizationName={organization.name} organizationSlug={organization.id} className="navLink">
         <ReadOutlined className="icon" />
-        <span className="destination">Overview</span>
+        <span className="destination">Organization Overview</span>
       </OrganizationLink>
     </li>
     <li className={`groups ${activeTab == 'groups' ? 'active' : ''} linkContainer`}>

@@ -13,7 +13,7 @@ const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
     <li className={`overview ${activeTab == 'overview' ? 'active' : ''} linkContainer`}>
       <a className="navLink">
         <ReadOutlined className="icon" />
-        <span className="destination">Overview</span>
+        <span className="destination">Organization Overview</span>
       </a>
     </li>
 

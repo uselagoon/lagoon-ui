@@ -18,7 +18,7 @@ const NavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab, projectName, openshi
   <StyledNavigation className="navigation">
     <li className={`overview ${activeTab == 'overview' ? 'active' : ''} deployLink`}>
       <EnvironmentLink environmentSlug={openshiftProjectName} projectSlug={projectName} className="deployLink">
-        Overview
+        Environment Overview
       </EnvironmentLink>
     </li>
     <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} deployLink`}>

@@ -20,7 +20,7 @@ const NavTabs = ({ activeTab, environment }) => (
         projectSlug={environment.project.name}
         className="deployLink"
       >
-        Overview
+        Environment Overview
       </EnvironmentLink>
     </li>
     <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} deployLink`}>
