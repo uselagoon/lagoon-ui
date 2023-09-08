@@ -23,3 +23,9 @@ export const DeleteVariableModal = styled.div`
     cursor: pointer;
 }
 `;
+
+export const DeleteVariableButton = styled.div`
+  button.icon {
+    padding: 0 10px;
+  }
+`;
