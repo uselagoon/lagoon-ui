@@ -143,7 +143,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
         limit={10}
         data={projects}
         columns={Columns}
-        numericSortOptions={{ key: 'groups', displayName: 'Groups' }}
+        numericSortOptions={{ key: 'groupCount', displayName: 'Groups' }}
         withSorter
         labelText="Projects"
         emptyText="No Projects"
