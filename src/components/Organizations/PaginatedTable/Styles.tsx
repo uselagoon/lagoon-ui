@@ -67,6 +67,10 @@ export const TableColumn = styled.div<{ width: string }>`
   width: ${props => props.width};
   align-items: center;
   display: flex;
+  & > .email{
+    word-wrap:break-word;
+    word-break:break-all;
+  }
   &:last-child {
     justify-content: flex-end;
   }

@@ -14,7 +14,8 @@ import ProjectGroupMembers from 'components/Organizations/ProjectGroupMembers';
 import ProjectGroupSkeleton from 'components/Organizations/ProjectGroupMembers/ProjectGroupSkeleton';
 import ProjectNotifications from 'components/Organizations/ProjectNotifications';
 import ProjectNotificationsSkeleton from 'components/Organizations/ProjectNotifications/ProjectNotificationsSkeleton';
-import { OrgProjectWrapper } from 'components/Organizations/Projects/Styles';
+import { OrgProjectWrapper, ProjectRoute } from 'components/Organizations/Projects/Styles';
+import ProjectLink from 'components/link/Project';
 import MainLayout from 'layouts/MainLayout';
 import ProjectAndOrganizationByID from 'lib/query/organizations/ProjectAndOrganizationByID';
 
@@ -104,7 +105,12 @@ export const PageGroupProject = ({ router }) => {
           <OrgProjectWrapper>
             <OrgHeader headerText="Project" />
             <TableWrapper>
-              <h3>{project.name}</h3>
+              <h3>
+                {project.name}
+                <ProjectLink projectSlug={project.name} key={project.id}>
+                  <ProjectRoute>ROUTE</ProjectRoute>
+                </ProjectLink>
+              </h3>
               <ProjectGroupMembers
                 refresh={handleRefetch}
                 projectName={project.name}

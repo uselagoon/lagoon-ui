@@ -165,3 +165,11 @@ export const OrgProjectWrapper = styled.div`
     padding: 0;
   }
 `;
+
+export const ProjectRoute = styled.div`
+  margin-left:1.5rem;
+  font-size:13px;
+  background:${props => props.theme.backgrounds.sidebar};
+  padding:0.25rem 0.5rem;
+  color:#497ffa;
+`;
