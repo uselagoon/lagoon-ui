@@ -66,14 +66,25 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
     {
       width: '15%',
       key: 'firstName',
-      render: ({ firstName }) => {
+      render: ({ firstName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+
+        if (isDefaultUser) return <div className="firstName"></div>;
+
         return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '15%',
       key: 'lastName',
-      render: ({ lastName }) => {
+      render: ({ lastName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
         return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },

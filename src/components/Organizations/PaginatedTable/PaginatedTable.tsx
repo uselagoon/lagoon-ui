@@ -275,7 +275,7 @@ const PaginatedTable: FC<Props> = ({
       <Filters className="filters">
         {labelText ? (
           <span className="labelText">
-            {labelText} {`(${resultsToDisplay.length})`}
+            {labelText} {`(${sortedFilteredData.length})`}
           </span>
         ) : (
           ''

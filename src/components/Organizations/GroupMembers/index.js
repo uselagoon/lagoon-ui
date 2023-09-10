@@ -21,6 +21,7 @@ import {
   RemoveModalParagraph,
   TableActions,
   TableWrapper,
+  Tag,
 } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
@@ -89,15 +90,28 @@ const GroupMembers = ({
       width: '20%',
       key: 'name',
       render: ({ user }) => {
-        const name = user.firstName;
-        return name ? <div>{name}</div> : <> - </>;
+        const { firstName, email } = user;
+
+        const isDefaultUser = email.startsWith('default-user');
+
+        if (isDefaultUser) return <div className="firstName"></div>;
+
+        return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '20%',
       key: 'lastName',
       render: ({ user }) => {
-        const lastName = user.lastName;
+        const { lastName, email } = user;
+
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
         return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },

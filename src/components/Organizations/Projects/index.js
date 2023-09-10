@@ -12,7 +12,7 @@ import { DeleteButton } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
-import { ProjectRoute, StyledOrgProjects } from './Styles';
+import { ProjectDashboard, StyledOrgProjects } from './Styles';
 
 const DELETE_PROJECT = gql`
   mutation deleteProject($project: String!) {
@@ -45,8 +45,8 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               {project.name}
             </ProjectGroupLink>
 
-            <ProjectLink projectSlug={project.name} key={project.id}>
-              <ProjectRoute>ROUTE</ProjectRoute>
+            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+              <ProjectDashboard>View in Dashboard</ProjectDashboard>
             </ProjectLink>
           </>
         );

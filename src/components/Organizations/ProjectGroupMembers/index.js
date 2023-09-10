@@ -60,7 +60,7 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
 
             <div className="labels">
               {group.type.includes('project-default-group') && (
-                <label className="default-group-label">{group.type}</label>
+                <label className="default-group-label">SYSTEM GROUP</label>
               )}
             </div>
 

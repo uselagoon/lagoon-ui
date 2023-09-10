@@ -166,7 +166,7 @@ export const OrgProjectWrapper = styled.div`
   }
 `;
 
-export const ProjectRoute = styled.div`
+export const ProjectDashboard = styled.div`
   margin-left:1.5rem;
   font-size:13px;
   background:${props => props.theme.backgrounds.sidebar};
