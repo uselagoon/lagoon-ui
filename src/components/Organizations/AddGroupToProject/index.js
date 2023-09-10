@@ -51,7 +51,7 @@ export const AddGroupToProject = ({
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_GROUP_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupProject, { error, data }) => {
+            {(addGroupProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -86,7 +86,7 @@ export const AddGroupToProject = ({
                   </label>
                   <Footer>
                     <Button
-                      disabled={selectedProject === null}
+                      disabled={called || selectedProject === null}
                       action={() => {
                         addGroupProject({
                           variables: {
@@ -96,6 +96,7 @@ export const AddGroupToProject = ({
                         });
                       }}
                       variant="primary"
+                      loading={called}
                     >
                       Add
                     </Button>

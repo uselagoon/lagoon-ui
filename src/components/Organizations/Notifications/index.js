@@ -240,7 +240,7 @@ const OrgNotifications = ({
                 </ModalChildren>
                 <Footer>
                   <Mutation mutation={UPDATE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
-                    {(updateSlack, { error, data }) => {
+                    {(updateSlack, { called, error, data }) => {
                       if (error) {
                         return <div>{error.message}</div>;
                       }
@@ -252,6 +252,8 @@ const OrgNotifications = ({
                       return (
                         <Button
                           variant="primary"
+                          loading={called}
+                          disabled={called}
                           action={() => {
                             updateSlack({
                               variables: {
@@ -277,7 +279,7 @@ const OrgNotifications = ({
               </Modal>
               <div className="remove">
                 <Mutation mutation={REMOVE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
-                  {(removeNotification, { error, data }) => {
+                  {(removeNotification, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -286,7 +288,8 @@ const OrgNotifications = ({
                     }
                     return (
                       <RemoveNotificationConfirm
-                        removeName={project.name}
+                        loading={called}
+                        info={{ name: project.name }}
                         onRemove={() =>
                           removeNotification({
                             variables: {
@@ -366,7 +369,7 @@ const OrgNotifications = ({
                 </ModalChildren>
                 <Footer>
                   <Mutation mutation={UPDATE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
-                    {(updateRocketChat, { error, data }) => {
+                    {(updateRocketChat, { called, error, data }) => {
                       if (error) {
                         return <div>{error.message}</div>;
                       }
@@ -378,6 +381,8 @@ const OrgNotifications = ({
                       return (
                         <Button
                           variant="primary"
+                          loading={called}
+                          disabled={called}
                           action={() => {
                             updateRocketChat({
                               variables: {
@@ -403,7 +408,7 @@ const OrgNotifications = ({
               </Modal>
               <div className="remove">
                 <Mutation mutation={REMOVE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
-                  {(removeNotification, { error, data }) => {
+                  {(removeNotification, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -412,7 +417,8 @@ const OrgNotifications = ({
                     }
                     return (
                       <RemoveNotificationConfirm
-                        removeName={project.name}
+                        loading={called}
+                        info={{ name: project.name }}
                         onRemove={() =>
                           removeNotification({
                             variables: {
@@ -475,7 +481,7 @@ const OrgNotifications = ({
                 </ModalChildren>
                 <Footer>
                   <Mutation mutation={UPDATE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
-                    {(updateEmail, { error, data }) => {
+                    {(updateEmail, { called, error, data }) => {
                       if (error) {
                         return <div>{error.message}</div>;
                       }
@@ -486,6 +492,8 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          loading={called}
+                          disabled={called}
                           variant="primary"
                           action={() => {
                             updateEmail({
@@ -511,7 +519,7 @@ const OrgNotifications = ({
               </Modal>
               <div className="remove">
                 <Mutation mutation={REMOVE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
-                  {(removeNotification, { error, data }) => {
+                  {(removeNotification, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -520,7 +528,8 @@ const OrgNotifications = ({
                     }
                     return (
                       <RemoveNotificationConfirm
-                        removeName={project.name}
+                        loading={called}
+                        info={{ name: project.name }}
                         onRemove={() =>
                           removeNotification({
                             variables: {
@@ -584,7 +593,7 @@ const OrgNotifications = ({
                 </ModalChildren>
                 <Footer>
                   <Mutation mutation={UPDATE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
-                    {(updateWebhook, { error, data }) => {
+                    {(updateWebhook, { called, error, data }) => {
                       if (error) {
                         return <div>{error.message}</div>;
                       }
@@ -595,6 +604,8 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          loading={called}
+                          disabled={called}
                           variant="primary"
                           action={() => {
                             updateWebhook({
@@ -621,7 +632,7 @@ const OrgNotifications = ({
 
               <div className="remove">
                 <Mutation mutation={REMOVE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
-                  {(removeNotification, { error, data }) => {
+                  {(removeNotification, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -630,7 +641,8 @@ const OrgNotifications = ({
                     }
                     return (
                       <RemoveNotificationConfirm
-                        removeName={project.name}
+                        loading={called}
+                        info={{ name: project.name }}
                         onRemove={() =>
                           removeNotification({
                             variables: {
@@ -697,7 +709,7 @@ const OrgNotifications = ({
                 </ModalChildren>
                 <Footer>
                   <Mutation mutation={UPDATE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
-                    {(updateTeams, { error, data }) => {
+                    {(updateTeams, { called, error, data }) => {
                       if (error) {
                         return <div>{error.message}</div>;
                       }
@@ -708,6 +720,8 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          loading={called}
+                          disabled={called}
                           variant="primary"
                           action={() => {
                             updateTeams({
@@ -733,7 +747,7 @@ const OrgNotifications = ({
               </Modal>
               <div className="remove">
                 <Mutation mutation={REMOVE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
-                  {(removeNotification, { error, data }) => {
+                  {(removeNotification, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -742,7 +756,8 @@ const OrgNotifications = ({
                     }
                     return (
                       <RemoveNotificationConfirm
-                        removeName={project.name}
+                        loading={called}
+                        info={{ name: project.name }}
                         onRemove={() =>
                           removeNotification({
                             variables: {

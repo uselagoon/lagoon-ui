@@ -10,7 +10,7 @@ import { Footer, RemoveModalHeader, RemoveModalParagraph } from '../SharedStyles
 /**
  * Confirms the removal of the specified email from group
  */
-export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeModal }) => {
+export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeModal, info, loading }) => {
   return (
     <React.Fragment>
       {!withText ? (
@@ -27,7 +27,7 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
         <React.Fragment>
           <RemoveModalHeader>Are you sure?</RemoveModalHeader>
           <RemoveModalParagraph>
-            This action will delete this entry, you might not be able to get this back.
+            This action will unlink user <span>{info.userEmail}</span> from group <span>{info.groupName}. </span>
           </RemoveModalParagraph>
 
           <Footer>
@@ -36,6 +36,8 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
                 onRemove().then(closeModal);
               }}
               variant="primary"
+              disabled={loading}
+              loading={loading}
             >
               Continue
             </Button>

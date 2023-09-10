@@ -21,13 +21,14 @@ import {
   RemoveModalParagraph,
   TableActions,
   TableWrapper,
+  Tag,
 } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
-    pathname: '/organizations/users',
-    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    pathname: '/organizations/user',
+    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
@@ -76,7 +77,6 @@ const GroupMembers = ({
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
   const [addProjectModalOpen, setAddProjectModalOpen] = useState(false);
-
   const closeAddProjectModal = () => {
     setSelectedProject('');
     setAddProjectModalOpen(false);
@@ -90,20 +90,33 @@ const GroupMembers = ({
       width: '20%',
       key: 'name',
       render: ({ user }) => {
-        const name = user.firstName;
-        return name ? <div>{user.firstName}</div> : <>First name - </>;
+        const { firstName, email } = user;
+
+        const isDefaultUser = email.startsWith('default-user');
+
+        if (isDefaultUser) return <div className="firstName"></div>;
+
+        return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '20%',
       key: 'lastName',
       render: ({ user }) => {
-        const lastName = user.lastName;
-        return lastName ? <div className="lastname">{lastName}</div> : <>Last name -</>;
+        const { lastName, email } = user;
+
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
+        return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },
     {
-      width: '20%',
+      width: '30%',
       key: 'email',
       render: ({ user }) => {
         const linkData = getLinkData(user.email, organizationId, organizationName);
@@ -117,7 +130,7 @@ const GroupMembers = ({
       },
     },
     {
-      width: '20%',
+      width: '15%',
       key: 'role',
       render: u => {
         return <div className={`role ${u.role}-label`}>{u.role}</div>;
@@ -125,7 +138,7 @@ const GroupMembers = ({
     },
 
     {
-      width: '25%',
+      width: '15%',
       key: 'actions',
       render: ({ user }) => {
         const linkData = getLinkData(user.email, organizationId, organizationName);
@@ -138,16 +151,19 @@ const GroupMembers = ({
             </Link>
 
             <Mutation mutation={REMOVE_USER_FROM_GROUP}>
-              {(removeUserFromGroup, { error, data }) => {
+              {(removeUserFromGroup, { called, error, data }) => {
                 if (error) {
                   return <div>{error.message}</div>;
                 }
                 if (data) {
                   refetch().then(() => setDeleteUserModalOpen(false));
                 }
+
                 return (
                   <RemoveUserConfirm
+                    loading={called}
                     removeName={user.email}
+                    info={{ userEmail: user.email, groupName }}
                     onRemove={() => {
                       return Promise.resolve(
                         removeUserFromGroup({
@@ -212,12 +228,12 @@ const GroupMembers = ({
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
               <RemoveModalParagraph>
-                This action will delete this entry, you might not be able to get this back.
+                This action will unlink project <span>{project.name}</span> from group <span>{groupName}</span>.
               </RemoveModalParagraph>
 
               <Footer>
                 <Mutation mutation={REMOVE_GROUP_FROM_PROJECT} onError={e => console.error(e)}>
-                  {(removeGroupFromProject, { error, data }) => {
+                  {(removeGroupFromProject, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -227,6 +243,8 @@ const GroupMembers = ({
                     return (
                       <Button
                         variant="primary"
+                        disabled={called}
+                        loading={called}
                         action={() => {
                           removeGroupFromProject({
                             variables: {
@@ -263,8 +281,13 @@ const GroupMembers = ({
           labelText="Users"
           emptyText="No users"
           disableUrlMutation
+          withSorter
+          numericSortOptions={{
+            displayName: 'Role',
+            orderList: ['OWNER', 'MAINTAINER', 'DEVELOPER', 'REPORTER', 'GUEST'],
+            orderListKey: 'role',
+          }}
         />
-
         <div className="tableAction">
           <Button action={() => setAddUserModalOpen(true)}>
             <AddButtonContent>
@@ -280,6 +303,7 @@ const GroupMembers = ({
           onRequestClose={() => setAddUserModalOpen(false)}
         >
           <AddUserToGroup
+            users={members}
             group={{ name: groupName }}
             modalOpen={addUserModalOpen}
             close={() => setAddUserModalOpen(false)}
@@ -311,7 +335,7 @@ const GroupMembers = ({
           onRequestClose={() => closeAddProjectModal()}
         >
           <Mutation mutation={ADD_GROUP_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupToProject, { error, data }) => {
+            {(addGroupToProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -363,6 +387,8 @@ const GroupMembers = ({
                           },
                         });
                       }}
+                      disabled={called || !selectedProject}
+                      loading={called}
                       variant="primary"
                     >
                       Add

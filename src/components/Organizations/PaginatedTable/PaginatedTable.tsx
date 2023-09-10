@@ -36,8 +36,16 @@ interface Props {
   usersTable?: boolean;
   withSorter?: boolean;
   disableUrlMutation?: boolean;
-  systemGroupCheckbox?: boolean;
-  numericSortKey?: string;
+  defaultViewOptions?: {
+    type: 'group' | 'user';
+    selected: boolean;
+  };
+  numericSortOptions?: {
+    key?: string;
+    displayName: string;
+    orderList?: string[];
+    orderListKey?: string;
+  };
   labelText?: string;
   limit: number;
   emptyText: string;
@@ -62,8 +70,8 @@ const PaginatedTable: FC<Props> = ({
   columns,
   usersTable,
   withSorter,
-  systemGroupCheckbox,
-  numericSortKey,
+  defaultViewOptions,
+  numericSortOptions,
   emptyText,
   labelText,
   limit = 10,
@@ -90,7 +98,9 @@ const PaginatedTable: FC<Props> = ({
 
   const [unfilteredData, setUnfilteredData] = useState(data);
 
-  const [systemGroupsSelected, setSystemGroupsSelected] = useState(false);
+  const [defaultsSelected, setDefaultsSelected] = useState(
+    (defaultViewOptions && defaultViewOptions.selected) || false
+  );
 
   useEffect(() => {
     setUnfilteredData(data);
@@ -105,19 +115,67 @@ const PaginatedTable: FC<Props> = ({
           return k.toLowerCase().includes(searchStr.toLowerCase());
         });
 
-    if (!systemGroupsSelected) {
-      filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+    if (!defaultsSelected) {
+      if (defaultViewOptions?.type === 'group') {
+        filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+      }
+      if (defaultViewOptions?.type === 'user') {
+        filtered = filtered.filter(dataItem => !(dataItem.email as string).startsWith('default-user'));
+      }
     }
     if (withSorter) {
       if (sortMethod === 'alphabetical') {
         return filtered.sort(function (a, b) {
-          return a.name.localeCompare(b.name);
+          if (a.name && b.name) {
+            return a.name.localeCompare(b.name);
+          } else {
+            //@ts-ignore
+            return (a?.user?.firstName as string).localeCompare(b?.user?.firstName as string);
+          }
         });
       }
-      if (sortMethod === 'numeric' && numericSortKey) {
+      if (sortMethod === 'numeric' && typeof numericSortOptions !== 'undefined') {
         return filtered.sort(function (a, b) {
-          const first = a[numericSortKey].length as number;
-          const second = b[numericSortKey].length as number;
+          // determine if directly filtering an array value or a primitive.
+          let first: number = 0,
+            second: number = 0;
+
+          const key = numericSortOptions.key;
+          if (key) {
+            if (Array.isArray(a[key])) {
+              first = a[key].length as number;
+              second = b[key].length as number;
+            } else {
+              first = a[key] as unknown as number;
+              second = b[key] as unknown as number;
+            }
+            return second - first;
+          } else {
+            // precedence sort
+            const list = numericSortOptions.orderList;
+            const listKey = numericSortOptions.orderListKey;
+            if (list && listKey) {
+              const roleToIdx = {};
+              list.forEach((role, idx) => {
+                roleToIdx[role] = idx;
+              });
+              //@ts-ignore
+              first = roleToIdx[a[listKey]] as number;
+              //@ts-ignore
+              second = roleToIdx[b[listKey]] as number;
+
+              if (first === undefined && second === undefined) {
+                // not in the provided list, keep the original position
+                return 0;
+              } else if (first === undefined) {
+                return 1;
+              } else if (second === undefined) {
+                return -1;
+              } else {
+                return first - second;
+              }
+            }
+          }
 
           return second - first;
         });
@@ -127,7 +185,7 @@ const PaginatedTable: FC<Props> = ({
     } else {
       return filtered;
     }
-  }, [searchStr, withSorter, sortMethod, unfilteredData, systemGroupsSelected]);
+  }, [searchStr, withSorter, sortMethod, unfilteredData, defaultsSelected]);
 
   const resultIndex = (currentPage - 1) * resultLimit;
 
@@ -215,14 +273,20 @@ const PaginatedTable: FC<Props> = ({
   return (
     <StyledTable className="paginatedTable">
       <Filters className="filters">
-        {labelText ? <span className="labelText">{labelText}</span> : ''}
-        {systemGroupCheckbox ? (
+        {labelText ? (
+          <span className="labelText">
+            {labelText} {`(${sortedFilteredData.length})`}
+          </span>
+        ) : (
+          ''
+        )}
+        {defaultViewOptions ? (
           <Checkbox>
-            Show system groups
+            {defaultViewOptions.type === 'group' ? 'Show system groups' : 'Show default users'}
             <input
               type="checkbox"
-              checked={systemGroupsSelected}
-              onChange={({ target: { checked } }) => setSystemGroupsSelected(checked)}
+              checked={defaultsSelected}
+              onChange={({ target: { checked } }) => setDefaultsSelected(checked)}
             />
           </Checkbox>
         ) : null}
@@ -233,8 +297,8 @@ const PaginatedTable: FC<Props> = ({
             </option>
             <option value={undefined}>None</option>
             <option value="alphabetical">Alphabetical</option>
-            {numericSortKey && (
-              <option value="numeric">{numericSortKey[0].toUpperCase() + numericSortKey.slice(1)}</option>
+            {typeof numericSortOptions !== 'undefined' && (
+              <option value="numeric">{numericSortOptions.displayName}</option>
             )}
           </select>
         ) : null}

@@ -206,7 +206,7 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
   return (
     <StyledProjectNotifications>
       <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Notifications</label>
+        <label style={{ paddingLeft: '0' }}>Notifications ({notifications.length})</label>
         <input
           aria-labelledby="search"
           className="searchInput"
@@ -235,9 +235,6 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                   if (error) {
                     return <div>{error.message}</div>;
                   }
-                  if (called) {
-                    return <div>Success</div>;
-                  }
                   return (
                     <TableActions>
                       <span
@@ -256,7 +253,8 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                       </span>
 
                       <RemoveProjectGroupConfirm
-                        removeName={notification.name}
+                        loading={called}
+                        info={{ type: 'notification', projectName: projectName, deleteName: notification.name }}
                         onRemove={() => {
                           removeNotificationFromProject({
                             variables: {

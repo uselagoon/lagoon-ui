@@ -122,9 +122,9 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
               isOpen={groupModalOpen && selectedGroup === group?.id}
               onRequestClose={closeGroupModal}
             >
-              <RemoveModalHeader>Remove user?</RemoveModalHeader>
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
               <RemoveModalParagraph>
-                This action will remove this user from a group, you might not be able to get this back.
+                This action will unlink this user from group <span>{group.name}</span>.
               </RemoveModalParagraph>
 
               <Footer>
@@ -136,7 +136,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                 }>
                   mutation={DELETE_USER_FROM_GROUP}
                 >
-                  {(removeUserFromGroup, { error, data }) => {
+                  {(removeUserFromGroup, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -146,6 +146,8 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                     return (
                       <Button
                         variant="primary"
+                        disabled={called}
+                        loading={called}
                         action={() => {
                           void removeUserFromGroup({
                             variables: {
