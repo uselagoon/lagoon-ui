@@ -57,7 +57,7 @@ export const AddNotificationToProject = ({
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_PROJECT_NOTIFICATION_MUTATION} onError={e => console.error(e)}>
-            {(addNotificationToProject, {  error, data }) => {
+            {(addNotificationToProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -84,7 +84,7 @@ export const AddNotificationToProject = ({
                     Notification
                     <RoleSelect>
                       <ReactSelect
-                        className='select'
+                        className="select"
                         menuPortalTarget={document.body}
                         styles={{
                           menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
@@ -105,7 +105,7 @@ export const AddNotificationToProject = ({
                   </label>
                   <Footer>
                     <Button
-                      disabled={selectedProject === null}
+                      disabled={called || selectedProject === null}
                       action={() => {
                         addNotificationToProject({
                           variables: {
@@ -116,6 +116,7 @@ export const AddNotificationToProject = ({
                         });
                       }}
                       variant="primary"
+                      loading={called}
                     >
                       Add
                     </Button>

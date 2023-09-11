@@ -12,7 +12,7 @@ import gql from 'graphql-tag';
 import useSortableData from '../../../lib/withSortedItems';
 import AddUserToGroupSelect from '../AddUserToGroupSelect';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions } from '../SharedStyles';
+import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -72,15 +72,25 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
     {
       width: '15%',
       key: 'firstName',
-      render: ({ firstName }) => {
-        return firstName ? <div className="name">{firstName}</div> : <>First name - </>;
+      render: ({ firstName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser) return <div className="firstName"></div>;
+        return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '15%',
       key: 'lastName',
-      render: ({ lastName }) => {
-        return lastName ? <div className="lastname">{lastName}</div> : <>Last name -</>;
+      render: ({ lastName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
+
+        return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },
     {
@@ -134,7 +144,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
 
                   <Footer>
                     <Mutation mutation={DELETE_USER}>
-                      {(removeUserFromOrganizationGroups, { error, data }) => {
+                      {(removeUserFromOrganizationGroups, { called, error, data }) => {
                         if (error) {
                           return <div>{error.message}</div>;
                         }
@@ -145,6 +155,8 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                         }
                         return (
                           <Button
+                            disabled={called}
+                            loading={called}
                             variant="primary"
                             action={() => {
                               removeUserFromOrganizationGroups({
@@ -180,6 +192,10 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         data={dynamicUsers}
         columns={UsersColumns}
         usersTable={true}
+        defaultViewOptions={{
+          type: 'user',
+          selected: false,
+        }}
         labelText="Users"
         emptyText="No Users"
       />

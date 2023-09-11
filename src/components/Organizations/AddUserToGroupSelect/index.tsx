@@ -73,7 +73,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
       mutation={ADD_GROUP_MEMBER_MUTATION}
       onError={err => console.error(err)}
     >
-      {(addGroupMember, { error, data }) => {
+      {(addGroupMember, { called, error, data }) => {
         if (error) {
           return <div>{error.message}</div>;
         }
@@ -94,7 +94,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
                   type="text"
                   placeholder="Enter Email"
                   value={newUserState.email}
-                  onChange={e => setNewUserState({ ...newUserState, email: e.target.value })}
+                  onChange={e => setNewUserState({ ...newUserState, email: e.target.value.trim() })}
                 />
               </label>
             </div>
@@ -151,7 +151,8 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
             <div>
               <Footer>
                 <Button
-                  disabled={!Object.values(newUserState).every(item => !!item)}
+                  loading={called}
+                  disabled={called || !Object.values(newUserState).every(item => !!item)}
                   action={() => {
                     void addGroupMember({
                       variables: {

@@ -5,13 +5,14 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
+import ProjectLink from 'components/link/Project';
 import gql from 'graphql-tag';
 
 import { DeleteButton } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions } from '../SharedStyles';
-import { StyledOrgProjects } from './Styles';
+import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
+import { ProjectDashboard, StyledOrgProjects } from './Styles';
 
 const DELETE_PROJECT = gql`
   mutation deleteProject($project: String!) {
@@ -34,14 +35,20 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       key: 'name',
       render: project => {
         return (
-          <ProjectGroupLink
-            projectGroupSlug={project.name}
-            organizationSlug={organizationId}
-            organizationName={organizationName}
-            key={project.id}
-          >
-            {project.name}
-          </ProjectGroupLink>
+          <>
+            <ProjectGroupLink
+              projectGroupSlug={project.name}
+              organizationSlug={organizationId}
+              organizationName={organizationName}
+              key={project.id}
+            >
+              {project.name}
+            </ProjectGroupLink>
+
+            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+              <ProjectDashboard>View in Dashboard</ProjectDashboard>
+            </ProjectLink>
+          </>
         );
       },
     },
@@ -86,12 +93,12 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               >
                 <RemoveModalHeader>Are you sure?</RemoveModalHeader>
                 <RemoveModalParagraph>
-                  This action will delete this entry, you might not be able to get this back.
+                  This action will delete project <span>{project.name}</span> from this organization.
                 </RemoveModalParagraph>
 
                 <Footer>
                   <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
-                    {(deleteProject, { error, data }) => {
+                    {(deleteProject, { called, error, data }) => {
                       if (error) {
                         return <div>{error.message}</div>;
                       }
@@ -103,6 +110,8 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                       return (
                         <Button
                           variant="primary"
+                          disabled={called}
+                          loading={called}
                           action={() => {
                             deleteProject({
                               variables: {
@@ -134,7 +143,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
         limit={10}
         data={projects}
         columns={Columns}
-        numericSortKey="groups"
+        numericSortOptions={{ key: 'groupCount', displayName: 'Groups' }}
         withSorter
         labelText="Projects"
         emptyText="No Projects"

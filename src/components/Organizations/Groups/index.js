@@ -9,7 +9,6 @@ import gql from 'graphql-tag';
 
 import AddUserToGroup from '../AddUserToGroup';
 import NewGroup from '../NewGroup';
-import OrgHeader from '../Orgheader';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { DeleteButton, GroupsWrapper, StyledGroups } from './Styles';
@@ -135,23 +134,24 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                 >
                   <RemoveModalHeader>Are you sure?</RemoveModalHeader>
                   <RemoveModalParagraph>
-                    This action will delete this entry, you might not be able to get this back.
+                    This action will delete group <span>{i.name}</span> from this organization.
                   </RemoveModalParagraph>
 
                   <Footer>
                     <Mutation mutation={DELETE_GROUP}>
-                      {(deleteGroup, { error, data }) => {
+                      {(deleteGroup, { called, error, data }) => {
                         if (error) {
                           return <div>{error.message}</div>;
                         }
                         if (data) {
                           refetch().then(() => modalAction('close', 'deleteGroup'));
-                          return <DeleteButton>Continue</DeleteButton>;
                         }
 
                         return (
                           <Button
                             variant="primary"
+                            loading={called}
+                            disabled={called}
                             action={() => {
                               deleteGroup({
                                 variables: {
@@ -180,16 +180,19 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
 
   return (
     <GroupsWrapper>
-      <OrgHeader headerText="Groups" />
       <StyledGroups>
         <PaginatedTable
           limit={10}
           data={groups}
           columns={Columns}
           withSorter
-          systemGroupCheckbox
-          numericSortKey="members"
+          defaultViewOptions={{
+            selected: false,
+            type: 'group',
+          }}
+          numericSortOptions={{ key: 'memberCount', displayName: 'Members' }}
           emptyText="No groups found"
+          labelText="Groups"
         />
         <NewGroup
           disabled={!ableToAddGroup}

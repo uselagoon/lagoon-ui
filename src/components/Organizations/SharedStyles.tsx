@@ -384,6 +384,7 @@ export const TableWrapper = styled.div`
     line-height: 24px;
     margin-top: 15px;
     margin-bottom: 0;
+    display:flex;
   }
   .paginatedTable,
   .filters,
@@ -410,6 +411,9 @@ export const RemoveModalHeader = styled.h3`
 export const RemoveModalParagraph = styled.p`
   font-size: 16px;
   line-height: 24px;
+  span{
+    font-weight:bold;
+  }
 `;
 
 export const AddButtonContent = styled.span`

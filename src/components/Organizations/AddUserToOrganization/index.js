@@ -29,11 +29,12 @@ export const AddUserToOrganization = ({
   checkboxValueOwner,
   setCheckboxValueOwner,
   onAddUser,
+  users,
 }) => {
-
+  const userAlreadyExists = users.find(u => u.email === inputValueEmail);
   return (
     <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
-      {(addUser, { error, data }) => {
+      {(addUser, { called, error, data }) => {
         if (error) {
           return <div>{error.message}</div>;
         }
@@ -45,7 +46,7 @@ export const AddUserToOrganization = ({
         }
         return (
           <NewUser>
-            <h4>Add User</h4>
+            <h4>{userAlreadyExists ? 'Update user' : 'Add User'}</h4>
             <div className="form-box">
               <label>
                 User Email: <span style={{ color: '#E30000' }}>*</span>
@@ -54,7 +55,7 @@ export const AddUserToOrganization = ({
                   type="text"
                   placeholder="Enter Email"
                   value={inputValueEmail}
-                  onChange={setInputValue}
+                  onChange={e => setInputValue({ target: { value: e.target.value.trim() } })}
                 />
               </label>
             </div>
@@ -71,7 +72,8 @@ export const AddUserToOrganization = ({
             <div>
               <Footer>
                 <Button
-                  disabled={inputValueEmail === ''}
+                  disabled={called || inputValueEmail === ''}
+                  loading={called}
                   action={() => {
                     addUser({
                       variables: {
@@ -83,7 +85,7 @@ export const AddUserToOrganization = ({
                   }}
                   variant="primary"
                 >
-                  Add
+                  {userAlreadyExists ? 'Update' : 'Add'}
                 </Button>
                 <Button variant="ghost" action={() => close()}>
                   Cancel

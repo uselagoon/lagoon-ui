@@ -76,7 +76,7 @@ const OrgNewProject = ({
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupProject, { _, error, data }) => {
+            {(addGroupProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -156,6 +156,7 @@ const OrgNewProject = ({
                       <Footer>
                         <Button
                           disabled={
+                            called ||
                             inputProjectName === '' ||
                             inputProjectName.indexOf(' ') > 0 ||
                             inputGitURL === '' ||
@@ -176,6 +177,7 @@ const OrgNewProject = ({
                             });
                           }}
                           variant="primary"
+                          loading={called}
                         >
                           Add
                         </Button>
