@@ -18,6 +18,7 @@ import SidebarSkeleton from "components/ProjectDetailsSidebar/SidebarSkeleton";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
 import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
+import NewEnvironment from "../components/NewEnvironment";
 
 /**
  * Displays a project page, given the project name.
@@ -98,6 +99,7 @@ export const PageProject = ({ router }) => {
               <ProjectDetailsSidebar project={project} />
             </div>
             <div className="environments-wrapper">
+              <NewEnvironment inputProjectName={project.name}/>
               <div className="environments-all">
                 <Environments environments={environments} project={project} />
               </div>
