@@ -17,6 +17,9 @@ export const NewVariable = styled.div`
   .add-var-btn {
     margin-top: 16px;
   }
+  button.icon {
+    padding: 0 10px;
+  }
 `;
 
 export const NewVariableModal = styled.div`
