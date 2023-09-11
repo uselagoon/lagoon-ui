@@ -1,6 +1,17 @@
 import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
+export const VariableActions = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-evenly;
+  > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
 export const StyledProjectVariablesDetails = styled.div`
   padding: 32px calc((100vw / 16) * 1);
   width: 100%;
@@ -261,10 +272,20 @@ export const StyledProjectVariableTable = styled.div`
     & .varUpdate {
         display: flex;
         padding: 0;
-        width: 10%;
+
+        button {
+          background-color: #fff;
+        }
     }
-    & .varDelete {
-      width: 10%;
+    & .varActions {
+      width: 20%;
+      display: flex;
+      align-items: center;
+
+      &:last-child {
+        justify-content: flex-end;
+        -webkit-box-pack: end;
+      }
     }
   }
 
@@ -302,8 +323,17 @@ export const StyledProjectVariableTable = styled.div`
     & .varScope {
       width: 30%;
     }
-    & .varDelete {
+    & .varActions {
       width: 10%;
+      display: flex;
+
+      &:last-child {
+        justify-content: flex-end;
+        -webkit-box-pack: end;
+      }
+    }
+    & .varDelete {
+      padding-right: 10px;
     }
 
     &.skeleton {
