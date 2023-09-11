@@ -11,7 +11,7 @@ export const getLinkData = (projectSlug) => ({
 const DeployTargetsLink = ({
   projectSlug,
   children,
-  className = null,
+  className = '',
   prefetch = false,
 }) => {
   const linkData = getLinkData(projectSlug);
