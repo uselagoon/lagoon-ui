@@ -6,7 +6,7 @@ import {
   AlertOutlined,
   BarChartOutlined,
   CheckSquareOutlined,
-  LockOutlined,
+  UnorderedListOutlined,
   ReadOutlined,
   RocketOutlined,
   SaveOutlined,
@@ -78,7 +78,7 @@ const NavTabs = ({ activeTab, environment }) => (
           projectSlug={environment.project.name}
           className="navLink"
         >
-          <LockOutlined className="icon" />
+          <UnorderedListOutlined className="icon" />
           <span className="destination"> Variables</span>
         </EnvironmentVariablesLink>
       </li>

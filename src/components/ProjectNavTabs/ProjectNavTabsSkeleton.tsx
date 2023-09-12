@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { DeploymentUnitOutlined, KeyOutlined, ReadOutlined } from '@ant-design/icons';
+import { DeploymentUnitOutlined, UnorderedListOutlined, ReadOutlined } from '@ant-design/icons';
 import DeployTargetsLink from 'components/link/DeployTargets';
 import ProjectLink from 'components/link/Project';
 import ProjectChildPageLink from 'components/link/ProjectChildPageLink';
@@ -22,7 +22,7 @@ const ProjectNavTabsSkeleton: FC<ProjectNavTabsSkeleton> = ({ activeTab, project
     </li>
     <li className={`variables ${activeTab == 'variables' ? 'active' : ''} linkContainer`}>
       <ProjectChildPageLink childPage={'variables'} projectSlug={projectName} className="navLink">
-        <KeyOutlined className="icon" />
+        <UnorderedListOutlined className="icon" />
         <span className="destination"> Variables</span>
       </ProjectChildPageLink>
     </li>
