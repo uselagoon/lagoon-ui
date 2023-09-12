@@ -53,6 +53,7 @@ const NewEnvironment = ({
  openModal,
  closeModal,
  refresh,
+ setClear,
  }) => {
   const webhookURL = 'https://webhook-handler-lagoon-master.lagoon.ch.amazee.io/';
   let dkValue = "●●●●●●●●●●●●●●●●●●●●●●●●●"
@@ -75,12 +76,12 @@ const NewEnvironment = ({
   const toggleShowEnvType = () => {
     inputBranchName !== '' ? setShowEnvType(true) : setShowEnvType(false);
   }
-  environmentCount = 0;
+
   return (
       <StyledNotificationWrapper>
         <div className="margins">
           <Button action={openModal}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '0.5em' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '0.25em' }}>
             <span style={{ fontSize: '28px' }}>+</span>
             <span style={{ fontSize: '16px', lineHeight: '24px' }}>Create Environment</span>
           </span>
@@ -94,15 +95,14 @@ const NewEnvironment = ({
                   return <div>{error.message}</div>;
                 }
                 if (data) {
-                  refresh().then(() => {
-                    closeModal();
-                  });
+                  refresh().then(setClear).then(closeModal);
                 }
+
                 return (
                     <>
                       <StyledNewEnvironment>
                         <div className="env-modal-header">
-                        <span>Create an Environment</span>
+                          <span>Create an Environment</span>
                         </div>
                         <div className="modal-step">
                         <span><b>Step 1: </b>Add the branch you wsh to base this environment on, the branch must already exist.</span>

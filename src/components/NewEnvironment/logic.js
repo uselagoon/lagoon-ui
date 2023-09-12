@@ -3,9 +3,13 @@ import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 
 const withInputValue = withState('inputBranchName', 'setBranchName', '');
+const withInputClear = withState("clear", "setClear", "");
+
 const withInputHandlers = withHandlers({
   setBranchName: ({ setBranchName }) => (event) =>
-      setBranchName(event.target.value)
+      setBranchName(event.target.value),
+  setClear: ({ setBranchName }) => () =>
+      setBranchName(''),
 });
 
 const withModalState = withState('open', 'setOpen', false);
@@ -16,6 +20,7 @@ const withModalHandlers = withHandlers({
 
 export default compose(
     withInputValue,
+    withInputClear,
     withInputHandlers,
     withModalState,
     withModalHandlers

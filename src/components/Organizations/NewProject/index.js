@@ -8,7 +8,8 @@ import withLogic from 'components/Organizations/NewProject/logic';
 import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import { Footer, StyledNotificationWrapper } from '../SharedStyles';
+import {StyledNewProject, Checkbox} from './StyledNewProject';
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -21,6 +22,7 @@ const ADD_PROJECT_MUTATION = gql`
     $pullrequests: String
     $productionEnvironment: String!
     $developmentEnvironmentsLimit: Int
+    $addOrgOwner: Boolean
   ) {
     addProject(
       input: {
@@ -33,6 +35,7 @@ const ADD_PROJECT_MUTATION = gql`
         pullrequests: $pullrequests
         productionEnvironment: $productionEnvironment
         developmentEnvironmentsLimit: $developmentEnvironmentsLimit
+        addOrgOwner: $addOrgOwner
       }
     ) {
       id
@@ -63,6 +66,7 @@ const OrgNewProject = ({
   closeModal,
   refresh,
 }) => {
+  const [addUserToProject, setAddUserToProject] = React.useState(true);
   return (
     <StyledNotificationWrapper>
       <div className="margins">
@@ -76,7 +80,7 @@ const OrgNewProject = ({
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupProject, { _, error, data }) => {
+            {(addGroupProject, {_, error, data}, systemGroupsSelected) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -92,8 +96,10 @@ const OrgNewProject = ({
 
               return (
                 <>
-                  <StyledNotification>
-                    <h4>Add Project</h4>
+                  <StyledNewProject>
+                    <div className="add-project-header">
+                      <span>Add Project</span>
+                    </div>
                     <div className="form-box">
                       <label>
                         Project name: <span style={{ color: '#E30000' }}>*</span>
@@ -146,6 +152,17 @@ const OrgNewProject = ({
                         />
                       </RoleSelect>
                     </label>
+                    <div className="docs-link">
+                      <p>Please note, once the project has been created you will need to copy the <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Deploy Key</a> and <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-webhooks-endpoint-to-your-git-repository" target="_blank">Webhook</a> to your Git service, these will be generated in the ‘create environment’ wizard available from the project overview page.</p>
+                    </div>
+                    <Checkbox>
+                      <input
+                          type="checkbox"
+                          checked={addUserToProject}
+                          onChange={({ target: { checked } }) => setAddUserToProject(checked)}
+                      />
+                      <span>Add my user to this project</span>
+                    </Checkbox>
                     <div>
                       <Footer>
                         <Button
@@ -166,6 +183,7 @@ const OrgNewProject = ({
                                 kubernetes: parseInt(selectedDeployTarget.value, 10),
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
+                                addOrgOwner: addUserToProject
                               },
                             });
                           }}
@@ -179,7 +197,7 @@ const OrgNewProject = ({
                         </Button>
                       </Footer>
                     </div>
-                  </StyledNotification>
+                  </StyledNewProject>
                 </>
               );
             }}
