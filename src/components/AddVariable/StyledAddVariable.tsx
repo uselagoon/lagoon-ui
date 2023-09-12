@@ -19,6 +19,7 @@ export const NewVariable = styled.div`
   }
   button.icon {
     padding: 0 10px;
+    display: flex !important;
   }
 `;
 
