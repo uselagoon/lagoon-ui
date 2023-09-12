@@ -85,11 +85,25 @@ input {
   
   button {
     margin-right: 16px;
+    background-color: transparent;
+    border: 1px solid ${color.lightBlue};
+    color: ${color.lightBlue};
   }
 }
+  .docs-link {
+    margin-top: 2rem;
+    
+    a {
+      text-decoration: underline;
+      color: ${color.lightBlue};
+    }
+  }
+  span.envType {
+    color: ${color.lightBlue};
+  }
   .loader {
     display: inline-block;
-    width: 150px;
+    width: 48px;
     height: 15px;
   }
   .loader:after {
@@ -101,8 +115,8 @@ input {
     text-align: center;
     
     border-radius: 50%;
-    border: 2px solid ${color.blue};
-    border-color: ${color.blue} transparent ${color.blue} transparent;
+    border: 2px solid ${color.white};
+    border-color: ${color.white} transparent ${color.white} transparent;
     animation: loader 1.2s linear infinite;
   }
   @keyframes loader {

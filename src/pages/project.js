@@ -25,9 +25,11 @@ import NewEnvironment from "../components/NewEnvironment";
  */
 export const PageProject = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading } = useQuery(ProjectByNameQuery, {
+  const { data, error, loading, refetch } = useQuery(ProjectByNameQuery, {
     variables: { name: router.query.projectName },
   });
+
+  const handleRefetch = async () => await refetch({ name: router.query.projectName });
 
   useEffect(() => {
     if (!loading) {
@@ -81,6 +83,7 @@ export const PageProject = ({ router }) => {
     [R.descend(R.prop('environmentType')), R.ascend(R.prop('deployType'))],
     project.environments
   );
+  const environmentCount = environments.length;
 
   return (
     <>
@@ -99,7 +102,7 @@ export const PageProject = ({ router }) => {
               <ProjectDetailsSidebar project={project} />
             </div>
             <div className="environments-wrapper">
-              <NewEnvironment inputProjectName={project.name}/>
+              <NewEnvironment refresh={handleRefetch} inputProjectName={project.name} productionEnvironment={project.productionEnvironment} environmentCount={environmentCount}/>
               <div className="environments-all">
                 <Environments environments={environments} project={project} />
               </div>
