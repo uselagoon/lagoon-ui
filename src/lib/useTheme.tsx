@@ -5,12 +5,18 @@ const useTheme = () => {
 
   useEffect(() => {
     const storageTheme = localStorage.getItem('theme');
+    // already previously set in browser store.
     if (storageTheme && ['light', 'dark'].includes(storageTheme)) {
       setTheme(storageTheme);
     } else {
+      // try to automatically infer dark mode theme.
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         setTheme('dark');
         localStorage.setItem('theme', 'dark');
+      } else {
+        // default to light
+        setTheme('light');
+        localStorage.setItem('theme', 'light');
       }
     }
   }, []);
