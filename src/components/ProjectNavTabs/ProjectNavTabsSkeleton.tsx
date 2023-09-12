@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { DeploymentUnitOutlined, UnorderedListOutlined, ReadOutlined } from '@ant-design/icons';
 import DeployTargetsLink from 'components/link/DeployTargets';
@@ -34,6 +35,7 @@ const ProjectNavTabsSkeleton: FC<ProjectNavTabsSkeleton> = ({ activeTab, project
         </DeployTargetsLink>
       </li>
     )}
+    <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
   </StyledProjectNavTabs>
 );
 

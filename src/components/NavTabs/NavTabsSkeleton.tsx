@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { CheckSquareOutlined, ReadOutlined, RocketOutlined, SaveOutlined } from '@ant-design/icons';
+import { CheckSquareOutlined, ReadOutlined, RocketOutlined, SaveOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import BackupsLink from 'components/link/Backups';
 import DeploymentsLink from 'components/link/Deployments';
 import EnvironmentLink from 'components/link/Environment';
 import TasksLink from 'components/link/Tasks';
+import EnvironmentVariablesLink from 'components/link/EnvironmentVariables';
 
 import { StyledNavigation } from './StylednavTabs';
 
@@ -41,6 +42,13 @@ const NavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab, projectName, openshi
         <span className="destination"> Tasks</span>
       </TasksLink>
     </li>
+    <li className={`tasks ${activeTab == 'environmentVariables' ? 'active' : ''} ${'linkContainer'}`}>
+      <EnvironmentVariablesLink environmentSlug={openshiftProjectName} projectSlug={projectName} className="navLink">
+        <UnorderedListOutlined className="icon" />
+        <span className="destination"> Variables</span>
+      </EnvironmentVariablesLink>
+    </li>
+    <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
     <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
     <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
   </StyledNavigation>
