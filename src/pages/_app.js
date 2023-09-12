@@ -58,6 +58,8 @@ const LagoonApp = ({ Component, pageProps, err }) => {
     };
   }, [events]);
 
+  if (!theme) return null;
+
   // Catch runtime errors in production and skip authentication to avoid
   // infinite auth > error > auth > error loops.
   if (err) {
