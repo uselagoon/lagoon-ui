@@ -11,7 +11,8 @@ export const getLinkData = projectSlug => ({
 /**
  * Links to the project page given the project name.
  */
-const ProjectLink = ({ projectSlug, children, className = null, prefetch = false, openInTab = false }) => {
+const ProjectLink = ({ projectSlug, children, className = '', prefetch = false, openInTab = false }) => {
+  
   const linkData = getLinkData(projectSlug);
 
   return (
