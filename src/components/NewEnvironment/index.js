@@ -11,8 +11,9 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import {StyledNewEnvironment} from './StyledNewEnvironment';
 import {useQuery} from "@apollo/react-hooks";
 import ProjectByNameWithDeployKeyQuery from "../../lib/query/ProjectByNameWithDeployKey";
-
 import { Footer, StyledNotificationWrapper } from '../Organizations/SharedStyles';
+import getConfig from "next/config";
+const { WEBHOOK_URL } = getConfig().publicRuntimeConfig;
 
 const DEPLOY_ENVIRONMENT_BRANCH_MUTATION = gql`
   mutation (
@@ -55,7 +56,7 @@ const NewEnvironment = ({
  refresh,
  setClear,
  }) => {
-  const webhookURL = 'https://webhook-handler-lagoon-master.lagoon.ch.amazee.io/';
+  const webhookURL = WEBHOOK_URL ? WEBHOOK_URL : 'https://webhook-handler-lagoon-master.lagoon.ch.amazee.io/';
   let dkValue = "●●●●●●●●●●●●●●●●●●●●●●●●●"
   const [copiedDK, setCopiedDK] = useState(false);
   const [copiedWH, setCopiedWH] = useState(false);
@@ -76,7 +77,7 @@ const NewEnvironment = ({
   const toggleShowEnvType = () => {
     inputBranchName !== '' ? setShowEnvType(true) : setShowEnvType(false);
   }
-
+  environmentCount = 0 // Testing placeholder
   return (
       <StyledNotificationWrapper>
         <div className="margins">
