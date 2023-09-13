@@ -23,11 +23,18 @@ input {
 }
 
 .docs-link {
-  margin-top: 2rem;
+  margin: 1.5rem 0;
+  border: 1px solid ${props => props.theme.texts.primary};
+  padding: 1rem;
+  display: flex;
+  gap: 12px;
   
   a {
     text-decoration: underline;
     color: ${color.lightBlue};
+  }
+  .new-project-info {
+    width: 100%;
   }
 }
 `;
@@ -37,7 +44,7 @@ export const Checkbox = styled.div`
   align-items: center;
   display: flex;
   gap: 8px;
-  margin-right:16px;
+  margin-top: 1.5rem;
   input[type='checkbox'] {
     width: 22px;
     height: 22px;

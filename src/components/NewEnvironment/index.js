@@ -56,12 +56,11 @@ const NewEnvironment = ({
  refresh,
  setClear,
  }) => {
-  const webhookURL = WEBHOOK_URL ? WEBHOOK_URL : 'https://webhook-handler-lagoon-master.lagoon.ch.amazee.io/';
+  const webhookURL = WEBHOOK_URL ? WEBHOOK_URL : 'https://webhook-handler.example.com';
   let dkValue = "●●●●●●●●●●●●●●●●●●●●●●●●●"
   const [copiedDK, setCopiedDK] = useState(false);
   const [copiedWH, setCopiedWH] = useState(false);
   const [showDKField, setShowDKField] = React.useState(false);
-  const [showWHField, setShowWHField] = React.useState(false);
   const [showEnvType, setShowEnvType] = React.useState(false);
 
   const { loadingDK, error: dkError, data: deployKeyValue } = useQuery(ProjectByNameWithDeployKeyQuery, {
@@ -77,7 +76,7 @@ const NewEnvironment = ({
   const toggleShowEnvType = () => {
     inputBranchName !== '' ? setShowEnvType(true) : setShowEnvType(false);
   }
-  
+
   return (
       <StyledNotificationWrapper>
         <div className="margins">
@@ -88,7 +87,7 @@ const NewEnvironment = ({
           </span>
           </Button>
         </div>
-        <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
+        <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles} variant={"medium"}>
           <React.Fragment>
             <Mutation mutation={DEPLOY_ENVIRONMENT_BRANCH_MUTATION} onError={e => console.error(e)}>
               {(deployEnvironmentBranch, { loading, error, data }) => {
@@ -106,7 +105,7 @@ const NewEnvironment = ({
                           <span>Create an Environment</span>
                         </div>
                         <div className="modal-step">
-                        <span><b>Step 1: </b>Add the branch you wsh to base this environment on, the branch must already exist.</span>
+                          <span><b>Step 1: </b>Add the branch you wish to build this environment from. This branch must already exist in your git repository.</span>
                           <div className="environment-modal">
                             <label>
                               Branch name: <span style={{ color: '#E30000' }}>*</span>
@@ -115,7 +114,7 @@ const NewEnvironment = ({
                                 id="branchName"
                                 className="inputBranch"
                                 type="text"
-                                placeholder="eg Main or Master"
+                                placeholder="e.g. main or develop"
                                 value={inputBranchName}
                                 onChange={setBranchName}
                                 onBlur={() => toggleShowEnvType()}
@@ -124,14 +123,14 @@ const NewEnvironment = ({
                         </div>
                         { environmentCount <= 0 &&
                           <div className="modal-step">
-                            <p><b>Step 2: </b>Add this projects Deploy Key to your Git service.</p>
+                            <p><b>Step 2: </b>Add this project's Deploy Key to your Git service.</p>
                             <div className="showHideContainer">
                               <div className="copy-field">
                                 <div className="field">
                                   {loadingDK ? <div className="loader"></div>
                                       : !showDKField ?
                                           hashValue(dkValue).substring(0, 25)
-                                          : dkValue.length > 75 ? dkValue.substring(0, 50) + "..." : dkValue
+                                          : dkValue
                                   }
                                 </div>
                                 <span className="showHide" onClick={() => setShowDKField(!showDKField)}>
@@ -177,18 +176,8 @@ const NewEnvironment = ({
                             <div className="showHideContainer">
                               <div className="copy-field">
                                 <div className="field">
-                                  { !showWHField ?
-                                      hashValue(webhookURL).substring(0, 25) : webhookURL
-                                  }
+                                  { webhookURL }
                                 </div>
-                                <span className="showHide" onClick={() => setShowWHField(!showWHField)}>
-                                  <Image
-                                      src={showWHField ? show : hide}
-                                      className="showHide"
-                                      style={{ all: "unset" }}
-                                      alt=""
-                                  />
-                                </span>
                                 <span className="copied" style={copiedWH ? { top: '-20px', opacity: '0' } : null}>
                                   Copied
                                 </span>
@@ -214,14 +203,14 @@ const NewEnvironment = ({
                               </div>
                             </div>
                             <div className="docs-link">
-                              <p>Please ensure that all steps have been completed before creating your new environment. Follow <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Lagoon Docs</a> for more details.</p>
+                              <p>Please ensure that all these steps have been completed before creating your new environment. Follow the <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Lagoon Docs</a> for more details.</p>
                             </div>
                           </div>
                         }
                         <div>
                           <Footer>
                             { showEnvType ?
-                                <div>Create <span className="envType">{
+                                <div>Creating <span className="envType">{
                                   productionEnvironment === inputBranchName ? 'Production' : 'Development'
                                 }</span> environment: <b>{inputBranchName}</b></div>
                               : null

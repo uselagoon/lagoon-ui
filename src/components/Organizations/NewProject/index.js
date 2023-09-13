@@ -10,6 +10,8 @@ import gql from 'graphql-tag';
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import {StyledNewProject, Checkbox} from './StyledNewProject';
 import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedStyles';
+import Image from "next/image";
+import info from "../../../static/images/info.svg";
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -158,9 +160,6 @@ const OrgNewProject = ({
                         />
                       </RoleSelect>
                     </label>
-                    <div className="docs-link">
-                      <p>Please note, once the project has been created you will need to copy the <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Deploy Key</a> and <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-webhooks-endpoint-to-your-git-repository" target="_blank">Webhook</a> to your Git service, these will be generated in the ‘create environment’ wizard available from the project overview page.</p>
-                    </div>
                     <Checkbox>
                       <input
                           type="checkbox"
@@ -169,6 +168,17 @@ const OrgNewProject = ({
                       />
                       <span>Add my user to this project</span>
                     </Checkbox>
+                    <div className="docs-link">
+                      <div className="info-icon">
+                        <Image
+                            src={info}
+                            alt=""
+                        />
+                      </div>
+                      <div className="new-project-info">
+                        <p>Please note, once the project has been created you will need to add the <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Deploy Key</a> and <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-webhooks-endpoint-to-your-git-repository" target="_blank">Webhook</a> to your Git service, these will be generated in the ‘create environment’ wizard available from the project overview page.</p>
+                      </div>
+                    </div>
                     <div>
                       <Footer>
                         <Button

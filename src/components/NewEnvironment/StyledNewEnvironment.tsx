@@ -19,6 +19,13 @@ export const StyledNewEnvironment = styled.div`
   padding: 6px 13px 6px 15px;
   position: relative;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  @media only screen and (max-width: 1640px) {
+    max-width: 400px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 &.skeleton .field {
