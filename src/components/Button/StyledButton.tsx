@@ -8,7 +8,10 @@ const sharedStyles = css`
   border-radius: 3px;
   color: ${color.white};
   cursor: pointer;
-  &:not(:has(span[role="img"])){
+  &:not(:has(span[role='img'])) {
+    padding: 10px 30px;
+  }
+  &:has(span[aria-label='loading']) {
     padding: 10px 30px;
   }
   @media ${bp.tinyUp} {
@@ -42,7 +45,7 @@ const sharedStyles = css`
   &.btn-white {
     // background-color: ${color.white};
     background: transparent;
-    color:  ${color.blue};
+    color: ${color.blue};
     border: 1px solid ${color.blue};
     &.btn--disabled {
       background-color: ${color.lightestGrey};
@@ -103,7 +106,7 @@ const sharedStyles = css`
     width: 48px;
     height: 36px;
   }
-  
+
   i.edit {
     background-image: url('/static/images/edit.svg');
     width: 48px;

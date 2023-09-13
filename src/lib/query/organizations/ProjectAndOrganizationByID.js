@@ -6,28 +6,27 @@ import TeamsFragment from 'lib/fragment/Teams';
 import WebhookFragment from 'lib/fragment/Webhook';
 
 export default gql`
-  query getOrganization($id: Int!){
+  query getOrganization($project: String!, $id: Int!) {
+    project: orgProjectByName(name: $project){
+      id
+      name
+      groups {
+        type
+        id
+        name
+        memberCount
+      }
+      notifications{
+        name
+        type
+      }
+    }
+
     organization: organizationById (organization: $id){
       id
       name
       quotaGroup
       quotaNotification
-      projects {
-        id
-        name
-        groups {
-          type
-          id
-          name
-          members{
-            role
-          }
-        }
-        notifications{
-          name
-          type
-        }
-      }
       groups{
         type
         name

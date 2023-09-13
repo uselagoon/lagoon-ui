@@ -12,7 +12,7 @@ import gql from 'graphql-tag';
 import useSortableData from '../../../lib/withSortedItems';
 import AddUserToGroupSelect from '../AddUserToGroupSelect';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions } from '../SharedStyles';
+import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -72,15 +72,25 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
     {
       width: '15%',
       key: 'firstName',
-      render: ({ firstName }) => {
-        return firstName ? <div className="name">{firstName}</div> : <>First name - </>;
+      render: ({ firstName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser) return <div className="firstName"></div>;
+        return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '15%',
       key: 'lastName',
-      render: ({ lastName }) => {
-        return lastName ? <div className="lastname">{lastName}</div> : <>Last name -</>;
+      render: ({ lastName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
+
+        return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },
     {
@@ -116,52 +126,59 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                 <EyeOutlined className="edit" />
               </a>
             </Link>
-            <DeleteOutlined
-              className="delete"
-              onClick={() => {
-                setSelectedUser(user?.id);
-                setDeleteUserModalOpen(true);
-              }}
-            />
-            <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
-              </p>
 
-              <Footer>
-                <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganizationGroups, { error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    if (data) {
-                      refetch().then(() => {
-                        return setDeleteUserModalOpen(false);
-                      });
-                    }
-                    return (
-                      <Button
-                        variant="primary"
-                        action={() => {
-                          removeUserFromOrganizationGroups({
-                            variables: {
-                              email: user?.email,
-                              organization: organization.id,
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
+            {!user.email.startsWith('default-user') ? (
+              <>
+                <DeleteOutlined
+                  className="delete"
+                  onClick={() => {
+                    setSelectedUser(user?.id);
+                    setDeleteUserModalOpen(true);
                   }}
-                </Mutation>
-                <Button variant="ghost" action={closeUserModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
+                />
+                <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
+                  <RemoveModalHeader>Remove user?</RemoveModalHeader>
+                  <RemoveModalParagraph>
+                    This action will remove this user from all groups, you might not be able to reverse this.
+                  </RemoveModalParagraph>
+
+                  <Footer>
+                    <Mutation mutation={DELETE_USER}>
+                      {(removeUserFromOrganizationGroups, { called, error, data }) => {
+                        if (error) {
+                          return <div>{error.message}</div>;
+                        }
+                        if (data) {
+                          refetch().then(() => {
+                            return setDeleteUserModalOpen(false);
+                          });
+                        }
+                        return (
+                          <Button
+                            disabled={called}
+                            loading={called}
+                            variant="primary"
+                            action={() => {
+                              removeUserFromOrganizationGroups({
+                                variables: {
+                                  email: user?.email,
+                                  organization: organization.id,
+                                },
+                              });
+                            }}
+                          >
+                            Continue
+                          </Button>
+                        );
+                      }}
+                    </Mutation>
+                    <Button variant="ghost" action={closeUserModal}>
+                      Cancel
+                    </Button>
+                  </Footer>
+                </Modal>
+              </>
+            ) : null}
           </TableActions>
         );
       },
@@ -175,6 +192,10 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         data={dynamicUsers}
         columns={UsersColumns}
         usersTable={true}
+        defaultViewOptions={{
+          type: 'user',
+          selected: false,
+        }}
         labelText="Users"
         emptyText="No Users"
       />
@@ -196,10 +217,10 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
 
       <div style={{ width: '100px' }}>
         <Button action={() => setAddUserModalOpen(true)}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>User</span>
+          </AddButtonContent>
         </Button>
       </div>
     </StyledUsers>

@@ -13,6 +13,7 @@ import hide from "../../static/images/hide.svg";
 import {
   StyledProjectVariablesDetails,
   StyledProjectVariableTable,
+  VariableActions,
 } from "./StyledProjectVariables";
 import DeleteVariable from "components/DeleteVariable";
 
@@ -233,33 +234,37 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         )}
-                        <Collapse in={openPrjVars}>
-                          <div className="varUpdate">
-                            <Button
-                                onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
-                                style={{ all: 'unset'}}
-                            >
-                              <AddVariable
+                        <div className="varActions">
+                          <VariableActions>
+                            <Collapse in={openPrjVars}>
+                              <div className="varUpdate">
+                                <Button
+                                    onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
+                                    style={{ all: 'unset'}}
+                                >
+                                  <AddVariable
+                                      varProject={project.name}
+                                      varValues={displayVars}
+                                      varTarget="Project"
+                                      varName={updateVarName}
+                                      varValue={updateVarValue}
+                                      varScope={updateVarScope}
+                                      refresh={onVariableAdded}
+                                      icon="edit"
+                                  />
+                                </Button>
+                              </div>
+                            </Collapse>
+                            <div className="varDelete">
+                              <DeleteVariable
+                                  deleteType="Project variable"
+                                  deleteName={projEnvVar.name}
                                   varProject={project.name}
-                                  varValues={displayVars}
-                                  varTarget="Project"
-                                  varName={updateVarName}
-                                  varValue={updateVarValue}
-                                  varScope={updateVarScope}
+                                  icon="bin"
                                   refresh={onVariableAdded}
-                                  icon="edit"
                               />
-                            </Button>
-                          </div>
-                        </Collapse>
-                        <div className="varDelete">
-                          <DeleteVariable
-                              deleteType="Project variable"
-                              deleteName={projEnvVar.name}
-                              varProject={project.name}
-                              icon="bin"
-                              refresh={onVariableAdded}
-                          />
+                            </div>
+                          </VariableActions>
                         </div>
                       </div>
                     </Fragment>

@@ -1,7 +1,5 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
-
-
 
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -11,10 +9,7 @@ import gql from 'graphql-tag';
 import { color } from 'lib/variables';
 import styled from 'styled-components';
 
-
-
 import { Footer, StyledNotification } from '../SharedStyles';
-
 
 const ADD_GROUP_MUTATION = gql`
   mutation addGroup($group: String!, $organization: Int!) {
@@ -46,9 +41,10 @@ const StyledNewGroup = styled.div`
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 16px;
+    line-height: 24px;
     color: #000;
-    background:#fff;
+    background: #fff;
     padding: 8px;
     box-sizing: border-box;
   }
@@ -56,14 +52,14 @@ const StyledNewGroup = styled.div`
     border: 2px solid ${color.linkBlue};
     outline: none;
   }
-  input[type="text"]::placeholder{
-    color:#000;
+  input[type='text']::placeholder {
+    color: #000;
   }
   .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
-    div{
-      border-radius:0 !important;
+    div {
+      border-radius: 0 !important;
     }
   }
   .environment-name {
@@ -106,7 +102,7 @@ export const NewGroup = ({
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_GROUP_MUTATION}>
-            {(addGroup, { error, data }) => {
+            {(addGroup, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -143,6 +139,7 @@ export const NewGroup = ({
                       <Footer>
                         <Button
                           disabled={
+                            called ||
                             inputValueGroup === '' ||
                             inputValueGroup.indexOf(' ') > 0 ||
                             existingGroupNames.includes(inputValueGroup)
@@ -156,6 +153,7 @@ export const NewGroup = ({
                             });
                           }}
                           variant="primary"
+                          loading={called}
                         >
                           Create
                         </Button>

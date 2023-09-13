@@ -21,5 +21,12 @@ export const DeleteVariableModal = styled.div`
   }
   .deleteConfirmImg span {
     cursor: pointer;
-}
+  }
+`;
+
+export const DeleteVariableButton = styled.div`
+  button.icon {
+    padding: 0 10px;
+    display: flex !important;
+  }
 `;

@@ -8,8 +8,8 @@ import withLogic from 'components/Organizations/NewProject/logic';
 import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { Footer, StyledNotificationWrapper } from '../SharedStyles';
 import {StyledNewProject, Checkbox} from './StyledNewProject';
+import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedStyles';
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -71,16 +71,16 @@ const OrgNewProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Project</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>Project</span>
+          </AddButtonContent>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupProject, {_, error, data}, systemGroupsSelected) => {
+            {(addGroupProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -140,8 +140,14 @@ const OrgNewProject = ({
                       Deploy Target: <span style={{ color: '#E30000' }}>*</span>
                       <RoleSelect>
                         <ReactSelect
-                          className='select'
-                          styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                          className="select"
+                          styles={{
+                            menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                            placeholder: base => ({ ...base, fontSize: '16px' }),
+                            menu: base => ({ ...base, fontSize: '16px' }),
+                            option: base => ({ ...base, fontSize: '16px' }),
+                            singleValue: base => ({ ...base, fontSize: '16px' }),
+                          }}
                           aria-label="Role"
                           placeholder="Select target..."
                           name="target"
@@ -167,6 +173,7 @@ const OrgNewProject = ({
                       <Footer>
                         <Button
                           disabled={
+                            called ||
                             inputProjectName === '' ||
                             inputProjectName.indexOf(' ') > 0 ||
                             inputGitURL === '' ||
@@ -188,6 +195,7 @@ const OrgNewProject = ({
                             });
                           }}
                           variant="primary"
+                          loading={called}
                         >
                           Add
                         </Button>

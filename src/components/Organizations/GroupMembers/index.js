@@ -14,13 +14,21 @@ import gql from 'graphql-tag';
 import AddUserToGroup from '../AddUserToGroup';
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, TableWrapper } from '../SharedStyles';
+import {
+  AddButtonContent,
+  Footer,
+  RemoveModalHeader,
+  RemoveModalParagraph,
+  TableActions,
+  TableWrapper,
+  Tag,
+} from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
-    pathname: '/organizations/users',
-    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    pathname: '/organizations/user',
+    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
@@ -51,7 +59,15 @@ const ADD_GROUP_PROJECT_MUTATION = gql`
 /**
  * The primary list of members.
  */
-const GroupMembers = ({ members = [], groupName, organizationName, organizationId, projects, refetch }) => {
+const GroupMembers = ({
+  members = [],
+  groupName,
+  organizationName,
+  organizationId,
+  orgProjects,
+  projects,
+  refetch,
+}) => {
   const duRegex = new RegExp('^default-user@' + groupName.replace('project-', '') + '$', 'g');
 
   const [projectModalOpen, setProjectModalOpen] = useState(false);
@@ -61,7 +77,6 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
   const [addProjectModalOpen, setAddProjectModalOpen] = useState(false);
-
   const closeAddProjectModal = () => {
     setSelectedProject('');
     setAddProjectModalOpen(false);
@@ -75,20 +90,33 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
       width: '20%',
       key: 'name',
       render: ({ user }) => {
-        const name = user.firstName;
-        return name ? <div>{user.firstName}</div> : <>First name - </>;
+        const { firstName, email } = user;
+
+        const isDefaultUser = email.startsWith('default-user');
+
+        if (isDefaultUser) return <div className="firstName"></div>;
+
+        return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '20%',
       key: 'lastName',
       render: ({ user }) => {
-        const lastName = user.lastName;
-        return lastName ? <div className="lastname">{lastName}</div> : <>Last name -</>;
+        const { lastName, email } = user;
+
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
+        return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },
     {
-      width: '20%',
+      width: '30%',
       key: 'email',
       render: ({ user }) => {
         const linkData = getLinkData(user.email, organizationId, organizationName);
@@ -102,7 +130,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
       },
     },
     {
-      width: '20%',
+      width: '15%',
       key: 'role',
       render: u => {
         return <div className={`role ${u.role}-label`}>{u.role}</div>;
@@ -110,7 +138,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
     },
 
     {
-      width: '25%',
+      width: '15%',
       key: 'actions',
       render: ({ user }) => {
         const linkData = getLinkData(user.email, organizationId, organizationName);
@@ -123,16 +151,19 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
             </Link>
 
             <Mutation mutation={REMOVE_USER_FROM_GROUP}>
-              {(removeUserFromGroup, { error, data }) => {
+              {(removeUserFromGroup, { called, error, data }) => {
                 if (error) {
                   return <div>{error.message}</div>;
                 }
                 if (data) {
                   refetch().then(() => setDeleteUserModalOpen(false));
                 }
+
                 return (
                   <RemoveUserConfirm
+                    loading={called}
                     removeName={user.email}
+                    info={{ userEmail: user.email, groupName }}
                     onRemove={() => {
                       return Promise.resolve(
                         removeUserFromGroup({
@@ -195,14 +226,14 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
             />
 
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
-              </p>
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+              <RemoveModalParagraph>
+                This action will unlink project <span>{project.name}</span> from group <span>{groupName}</span>.
+              </RemoveModalParagraph>
 
               <Footer>
                 <Mutation mutation={REMOVE_GROUP_FROM_PROJECT} onError={e => console.error(e)}>
-                  {(removeGroupFromProject, { error, data }) => {
+                  {(removeGroupFromProject, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -212,6 +243,8 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                     return (
                       <Button
                         variant="primary"
+                        disabled={called}
+                        loading={called}
                         action={() => {
                           removeGroupFromProject({
                             variables: {
@@ -248,14 +281,19 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
           labelText="Users"
           emptyText="No users"
           disableUrlMutation
+          withSorter
+          numericSortOptions={{
+            displayName: 'Role',
+            orderList: ['OWNER', 'MAINTAINER', 'DEVELOPER', 'REPORTER', 'GUEST'],
+            orderListKey: 'role',
+          }}
         />
-
         <div className="tableAction">
           <Button action={() => setAddUserModalOpen(true)}>
-            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '28px' }}>+</span>
-              <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-            </span>
+            <AddButtonContent>
+              <span>+</span>
+              <span>User</span>
+            </AddButtonContent>
           </Button>
         </div>
 
@@ -265,6 +303,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
           onRequestClose={() => setAddUserModalOpen(false)}
         >
           <AddUserToGroup
+            users={members}
             group={{ name: groupName }}
             modalOpen={addUserModalOpen}
             close={() => setAddUserModalOpen(false)}
@@ -274,9 +313,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
 
         <PaginatedTable
           limit={10}
-          data={projects.filter(project => {
-            return project.groups.find(group => group.name === groupName);
-          })}
+          data={projects}
           columns={ProjectsColumns}
           labelText="Projects"
           emptyText="No Projects"
@@ -285,10 +322,10 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
 
         <div className="tableAction">
           <Button action={() => setAddProjectModalOpen(true)}>
-            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '28px' }}>+</span>
-              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Project</span>
-            </span>
+            <AddButtonContent>
+              <span>+</span>
+              <span>Project</span>
+            </AddButtonContent>
           </Button>
         </div>
 
@@ -298,7 +335,7 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
           onRequestClose={() => closeAddProjectModal()}
         >
           <Mutation mutation={ADD_GROUP_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupToProject, { error, data }) => {
+            {(addGroupToProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -306,10 +343,8 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                 refetch().then(closeAddProjectModal);
               }
 
-              const filtered = projects.filter(project => {
-                if (project.groups.length === 0) return project;
-
-                return project.groups.every(group => group.name !== groupName);
+              const filtered = orgProjects.filter(project => {
+                return projects.every(p => p.name !== project.name);
               });
 
               const opts = filtered.map(p => {
@@ -325,7 +360,13 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                       <ReactSelect
                         className="select"
                         menuPortalTarget={document.body}
-                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                        styles={{
+                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                          placeholder: base => ({ ...base, fontSize: '16px' }),
+                          menu: base => ({ ...base, fontSize: '16px' }),
+                          option: base => ({ ...base, fontSize: '16px' }),
+                          singleValue: base => ({ ...base, fontSize: '16px' }),
+                        }}
                         aria-label="project"
                         placeholder="Select a project..."
                         name="project"
@@ -346,6 +387,8 @@ const GroupMembers = ({ members = [], groupName, organizationName, organizationI
                           },
                         });
                       }}
+                      disabled={called || !selectedProject}
+                      loading={called}
                       variant="primary"
                     >
                       Add

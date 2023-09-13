@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -14,7 +14,8 @@ import ProjectGroupMembers from 'components/Organizations/ProjectGroupMembers';
 import ProjectGroupSkeleton from 'components/Organizations/ProjectGroupMembers/ProjectGroupSkeleton';
 import ProjectNotifications from 'components/Organizations/ProjectNotifications';
 import ProjectNotificationsSkeleton from 'components/Organizations/ProjectNotifications/ProjectNotificationsSkeleton';
-import { OrgProjectWrapper } from 'components/Organizations/Projects/Styles';
+import { OrgProjectWrapper, ProjectDashboard } from 'components/Organizations/Projects/Styles';
+import ProjectLink from 'components/link/Project';
 import MainLayout from 'layouts/MainLayout';
 import ProjectAndOrganizationByID from 'lib/query/organizations/ProjectAndOrganizationByID';
 
@@ -74,7 +75,7 @@ export const PageGroupProject = ({ router }) => {
     return <QueryError error={error} />;
   }
 
-  const { organization } = data;
+  const { organization, project } = data;
 
   if (!organization) {
     return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
@@ -100,36 +101,34 @@ export const PageGroupProject = ({ router }) => {
         </Breadcrumbs>
 
         <OrganizationsWrapper>
-          {organization.projects.map(
-            (project, idx) =>
-              project.name == router.query.projectName && (
-                <Fragment key={idx}>
-                  <OrgNavTabs activeTab="projects" organization={organization} />
-                  <OrgProjectWrapper>
-                    <OrgHeader headerText="Project" />
-                    <TableWrapper>
-                      <h3>{project.name}</h3>
-                      <ProjectGroupMembers
-                        refresh={handleRefetch}
-                        projectName={project.name}
-                        organizationId={organization.id}
-                        organizationName={organization.name}
-                        groups={project.groups || []}
-                        orgGroups={organization.groups}
-                      />
-                      <ProjectNotifications
-                        refresh={handleRefetch}
-                        projectName={project.name}
-                        organizationId={organization.id}
-                        organizationName={organization.name}
-                        notifications={project.notifications}
-                        organization={organization}
-                      />
-                    </TableWrapper>
-                  </OrgProjectWrapper>
-                </Fragment>
-              )
-          )}
+          <OrgNavTabs activeTab="projects" organization={organization} />
+          <OrgProjectWrapper>
+            <OrgHeader headerText="Project" />
+            <TableWrapper>
+              <h3>
+                {project.name}
+                <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+                  <ProjectDashboard>View in Dashboard</ProjectDashboard>
+                </ProjectLink>
+              </h3>
+              <ProjectGroupMembers
+                refresh={handleRefetch}
+                projectName={project.name}
+                organizationId={organization.id}
+                organizationName={organization.name}
+                groups={project.groups || []}
+                orgGroups={organization.groups}
+              />
+              <ProjectNotifications
+                refresh={handleRefetch}
+                projectName={project.name}
+                organizationId={organization.id}
+                organizationName={organization.name}
+                notifications={project.notifications}
+                organization={organization}
+              />
+            </TableWrapper>
+          </OrgProjectWrapper>
         </OrganizationsWrapper>
       </MainLayout>
     </>

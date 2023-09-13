@@ -73,7 +73,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
       mutation={ADD_GROUP_MEMBER_MUTATION}
       onError={err => console.error(err)}
     >
-      {(addGroupMember, { error, data }) => {
+      {(addGroupMember, { called, error, data }) => {
         if (error) {
           return <div>{error.message}</div>;
         }
@@ -88,13 +88,13 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
             <h4>Add user to a group</h4>
             <div className="form-box">
               <label>
-              User Email: <span style={{ color: '#E30000' }}>*</span>
+                User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
                   className="inputEmail"
                   type="text"
                   placeholder="Enter Email"
                   value={newUserState.email}
-                  onChange={e => setNewUserState({ ...newUserState, email: e.target.value })}
+                  onChange={e => setNewUserState({ ...newUserState, email: e.target.value.trim() })}
                 />
               </label>
             </div>
@@ -104,7 +104,13 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
                 <ReactSelect
                   className="select"
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                    placeholder: base => ({ ...base, fontSize: '16px' }),
+                    menu: base => ({ ...base, fontSize: '16px' }),
+                    option: base => ({ ...base, fontSize: '16px' }),
+                    singleValue: base => ({ ...base, fontSize: '16px' }),
+                  }}
                   aria-label="Group"
                   placeholder="Select group"
                   name="group"
@@ -123,7 +129,13 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
                 <ReactSelect
                   className="select"
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                    placeholder: base => ({ ...base, fontSize: '16px' }),
+                    menu: base => ({ ...base, fontSize: '16px' }),
+                    option: base => ({ ...base, fontSize: '16px' }),
+                    singleValue: base => ({ ...base, fontSize: '16px' }),
+                  }}
                   aria-label="Role"
                   placeholder="Select role"
                   name="role"
@@ -139,7 +151,8 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
             <div>
               <Footer>
                 <Button
-                  disabled={!Object.values(newUserState).every(item => !!item)}
+                  loading={called}
+                  disabled={called || !Object.values(newUserState).every(item => !!item)}
                   action={() => {
                     void addGroupMember({
                       variables: {

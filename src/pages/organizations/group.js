@@ -98,7 +98,8 @@ export const PageGroup = ({ router }) => {
             <GroupMembers
               organizationId={organization.id}
               organizationName={organization.name}
-              projects={organization.projects || []}
+              orgProjects={organization.projects || []}
+              projects={group.projects || []}
               members={group.members || []}
               groupName={group.name}
               projectDefaultGroup={(group.type.includes('project-default-group') && 'project') || 'user'}

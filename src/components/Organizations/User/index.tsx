@@ -9,7 +9,7 @@ import Modal from 'components/Modal';
 import gql from 'graphql-tag';
 
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, TableWrapper } from '../SharedStyles';
+import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, TableWrapper } from '../SharedStyles';
 import { StyledUser } from './Styles';
 
 type Group = {
@@ -122,10 +122,10 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
               isOpen={groupModalOpen && selectedGroup === group?.id}
               onRequestClose={closeGroupModal}
             >
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
-              </p>
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+              <RemoveModalParagraph>
+                This action will unlink this user from group <span>{group.name}</span>.
+              </RemoveModalParagraph>
 
               <Footer>
                 <Mutation<{
@@ -136,7 +136,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                 }>
                   mutation={DELETE_USER_FROM_GROUP}
                 >
-                  {(removeUserFromGroup, { error, data }) => {
+                  {(removeUserFromGroup, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -146,6 +146,8 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                     return (
                       <Button
                         variant="primary"
+                        disabled={called}
+                        loading={called}
                         action={() => {
                           void removeUserFromGroup({
                             variables: {

@@ -7,10 +7,9 @@ import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
 import withLogic from 'components/Organizations/AddNotificationToProject/logic';
 import gql from 'graphql-tag';
-import { bp, color } from 'lib/variables';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
 
 const ADD_PROJECT_NOTIFICATION_MUTATION = gql`
   mutation addNotificationToProject(
@@ -49,16 +48,16 @@ export const AddNotificationToProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Notification</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>Notification</span>
+          </AddButtonContent>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <Mutation mutation={ADD_PROJECT_NOTIFICATION_MUTATION} onError={e => console.error(e)}>
-            {(addNotificationToProject, {  error, data }) => {
+            {(addNotificationToProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
               }
@@ -85,9 +84,15 @@ export const AddNotificationToProject = ({
                     Notification
                     <RoleSelect>
                       <ReactSelect
-                        className='select'
+                        className="select"
                         menuPortalTarget={document.body}
-                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                        styles={{
+                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                          placeholder: base => ({ ...base, fontSize: '16px' }),
+                          menu: base => ({ ...base, fontSize: '16px' }),
+                          option: base => ({ ...base, fontSize: '16px' }),
+                          singleValue: base => ({ ...base, fontSize: '16px' }),
+                        }}
                         aria-label="Notification"
                         placeholder="Select a notification..."
                         name="notification"
@@ -100,7 +105,7 @@ export const AddNotificationToProject = ({
                   </label>
                   <Footer>
                     <Button
-                      disabled={selectedProject === null}
+                      disabled={called || selectedProject === null}
                       action={() => {
                         addNotificationToProject({
                           variables: {
@@ -111,6 +116,7 @@ export const AddNotificationToProject = ({
                         });
                       }}
                       variant="primary"
+                      loading={called}
                     >
                       Add
                     </Button>

@@ -30,7 +30,7 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
   return (
     <StyledGroupMembers>
       <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Groups</label>
+        <label style={{ paddingLeft: '0' }}>Groups ({groups.length})</label>
         <input
           aria-labelledby="search"
           className="searchInput"
@@ -56,11 +56,11 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
                 {group.name}
               </OrgGroupsLink>
             </div>
-            <div className="members">Members: {group.members.length}</div>
+            <div className="members">Members: {group.memberCount}</div>
 
             <div className="labels">
               {group.type.includes('project-default-group') && (
-                <label className="default-group-label">{group.type}</label>
+                <label className="default-group-label">SYSTEM GROUP</label>
               )}
             </div>
 
@@ -72,12 +72,14 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
                     if (error) {
                       return <div>{error.message}</div>;
                     }
-                    if (called) {
-                      return <div>Success</div>;
-                    }
                     return (
                       <RemoveProjectGroupConfirm
-                        removeName={group.name}
+                        loading={called}
+                        info={{
+                          type: 'group',
+                          deleteName: group.name,
+                          projectName: projectName,
+                        }}
                         onRemove={() => {
                           removeGroupFromProject({
                             variables: {

@@ -13,6 +13,7 @@ import {
   StyledEnvironmentVariableDetails,
   StyledProjectVariableTable,
   StyledVariableTable,
+  VariableActions,
 } from "./StyledEnvironmentVariables";
 import Image from "next/image";
 import show from "../../static/images/show.svg";
@@ -267,35 +268,39 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         )}
-                        <Collapse in={openEnvVars}>
-                        <div className="varUpdate">
-                          <Button
-                            onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
-                            style={{ all: 'unset'}}
-                          >
-                            <AddVariable
-                                varProject={environment.project.name}
-                                varEnvironment={environment.name}
-                                varValues={displayVars}
-                                varTarget="Environment"
-                                varName={updateVarName}
-                                varValue={updateVarValue}
-                                varScope={updateVarScope}
-                                refresh={onVariableAdded}
-                                icon="edit"
-                            />
-                          </Button>
-                        </div>
-                        </Collapse>
-                        <div className="varDelete">
-                          <DeleteVariable
-                              deleteType="Environment variable"
-                              deleteName={envVar.name}
-                              varProject={environment.project.name}
-                              varEnvironment={environment.name}
-                              icon="bin"
-                              refresh={onVariableAdded}
-                          />
+                        <div className="varActions">
+                          <VariableActions>
+                            <Collapse in={openEnvVars}>
+                              <div className="varUpdate">
+                                <Button
+                                  onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
+                                  style={{ all: 'unset'}}
+                                >
+                                  <AddVariable
+                                      varProject={environment.project.name}
+                                      varEnvironment={environment.name}
+                                      varValues={displayVars}
+                                      varTarget="Environment"
+                                      varName={updateVarName}
+                                      varValue={updateVarValue}
+                                      varScope={updateVarScope}
+                                      refresh={onVariableAdded}
+                                      icon="edit"
+                                  />
+                                </Button>
+                              </div>
+                            </Collapse>
+                            <div className="varDelete">
+                              <DeleteVariable
+                                  deleteType="Environment variable"
+                                  deleteName={envVar.name}
+                                  varProject={environment.project.name}
+                                  varEnvironment={environment.name}
+                                  icon="bin"
+                                  refresh={onVariableAdded}
+                              />
+                            </div>
+                          </VariableActions>
                         </div>
                       </div>
                     </Fragment>

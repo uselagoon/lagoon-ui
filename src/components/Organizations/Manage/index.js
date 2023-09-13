@@ -12,7 +12,7 @@ import gql from 'graphql-tag';
 import useSortableData from '../../../lib/withSortedItems';
 import AddUserToOrganization from '../AddUserToOrganization';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, TableActions, Tag } from '../SharedStyles';
+import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
 
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
@@ -66,15 +66,26 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
     {
       width: '15%',
       key: 'firstName',
-      render: ({ firstName }) => {
-        return firstName ? <div className="name">{firstName}</div> : <>First name - </>;
+      render: ({ firstName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+
+        if (isDefaultUser) return <div className="firstName"></div>;
+
+        return firstName ? <div className="name">{firstName}</div> : <> - </>;
       },
     },
     {
       width: '15%',
       key: 'lastName',
-      render: ({ lastName }) => {
-        return lastName ? <div className="lastname">{lastName}</div> : <>Last name -</>;
+      render: ({ lastName, email }) => {
+        const isDefaultUser = email.startsWith('default-user');
+        if (isDefaultUser)
+          return (
+            <Tag style={{ display: 'inline' }} background="#262D65">
+              DEFAULT USER
+            </Tag>
+          );
+        return lastName ? <div className="lastname">{lastName}</div> : <> - </>;
       },
     },
     {
@@ -84,18 +95,18 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
         const linkData = getLinkData(email, organizationId, organizationName);
         return (
           <>
-            <div className="email" style={{ width: '200px' }}>
+            <div className="email" style={{ width: '60%' }}>
               <Link href={linkData.urlObject} as={linkData.asPath}>
                 <a>{email}</a>
               </Link>
             </div>
 
             {owner ? (
-              <Tag style={{ display: 'inline-block', marginLeft: '5rem' }} background="#47D3FF">
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} background="#47D3FF">
                 ORG OWNER
               </Tag>
             ) : (
-              <Tag style={{ display: 'inline-block', marginLeft: '5rem' }} background="#FF4747">
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} background="#FF4747">
                 ORG VIEWER
               </Tag>
             )}
@@ -117,14 +128,15 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
               }}
             />
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
-              <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-              <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-                This action will delete this entry, you might not be able to get this back.
-              </p>
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+              <RemoveModalParagraph>
+                This action will delete user <span>{user.email}</span> from <span>{organizationName}</span>{' '}
+                Organization.
+              </RemoveModalParagraph>
 
               <Footer>
                 <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganization, { error, data }) => {
+                  {(removeUserFromOrganization, { called, error, data }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -136,6 +148,8 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
                     return (
                       <Button
                         variant="primary"
+                        loading={called}
+                        disabled={called}
                         action={() => {
                           removeUserFromOrganization({
                             variables: {
@@ -178,6 +192,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
         onRequestClose={() => setAddUserModalOpen(false)}
       >
         <AddUserToOrganization
+          users={dynamicUsers}
           organization={organization}
           modalOpen={addUserModalOpen}
           close={() => setAddUserModalOpen(false)}
@@ -187,10 +202,10 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
 
       <div style={{ width: '100px' }}>
         <Button action={() => setAddUserModalOpen(true)}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>User</span>
-          </span>
+          <AddButtonContent>
+            <span>+</span>
+            <span>User</span>
+          </AddButtonContent>
         </Button>
       </div>
 

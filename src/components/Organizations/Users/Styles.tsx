@@ -26,7 +26,7 @@ export const StyledUsers = styled.section`
   .firstName {
     font-family: 'source-code-pro', sans-serif;
     font-size: 1rem;
-    line-height:1.5rem;
+    line-height: 1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
 
@@ -35,7 +35,7 @@ export const StyledUsers = styled.section`
   .lastName {
     font-family: 'source-code-pro', sans-serif;
     font-size: 1rem;
-    line-height:1.5rem;
+    line-height: 1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
     font-weight: normal;
@@ -43,7 +43,7 @@ export const StyledUsers = styled.section`
   .email {
     font-family: 'source-code-pro', sans-serif;
     font-size: 1rem;
-    line-height:1.5rem;
+    line-height: 1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
     font-weight: normal;
@@ -64,7 +64,7 @@ export const StyledUsers = styled.section`
   .projects {
     font-family: 'source-code-pro', sans-serif;
     font-size: 1rem;
-    line-height:1.5rem;
+    line-height: 1.5rem;
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
     font-weight: normal;
@@ -80,7 +80,7 @@ export const StyledUsers = styled.section`
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 1rem;
-    line-height:1.5rem;
+    line-height: 1.5rem;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;
@@ -118,7 +118,7 @@ export const Header = styled.div`
     font-family: 'source-code-pro', sans-serif;
     font-size: 13px;
     font-size: 1rem;
-    line-height:1.5rem;
+    line-height: 1.5rem;
     line-height: 1.4;
     text-transform: uppercase;
     padding-left: 20px;
@@ -144,6 +144,18 @@ export const Header = styled.div`
 
     &:first-child {
       padding-left: 0;
+    }
+  }
+`;
+
+export const SkeletonWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  padding-left: 2rem !important;
+  & > .customer {
+    width: 15%;
+    &:nth-child(3) {
+      width: 25%;
     }
   }
 `;

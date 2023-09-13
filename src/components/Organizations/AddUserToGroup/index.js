@@ -46,28 +46,31 @@ let options = [
  */
 export const AddUserToGroup = ({
   group,
-  closeModal,
+  close,
   inputValueEmail,
   setInputValue,
   selectedRole,
   setSelectedRole,
   onAddUser,
+  users,
 }) => {
+  const userAlreadyExists = users && users.find(u => u.user.email === inputValueEmail);
+
   return (
     <Mutation mutation={ADD_GROUP_MEMBER_MUTATION} onError={err => console.error(err)}>
-      {(addGroupMember, { error, data }) => {
+      {(addGroupMember, { called, error, data }) => {
         if (error) {
           return <div>{error.message}</div>;
         }
         if (data) {
           onAddUser().then(() => {
             setInputValue({ target: { value: '' } });
-            closeModal();
+            close();
           });
         }
         return (
           <NewMember>
-            <h4>Add User</h4>
+            <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
             <div className="form-box">
               <label>
                 User Email: <span style={{ color: '#E30000' }}>*</span>
@@ -76,7 +79,7 @@ export const AddUserToGroup = ({
                   type="text"
                   placeholder="Enter Email"
                   value={inputValueEmail}
-                  onChange={setInputValue}
+                  onChange={e => setInputValue({ target: { value: e.target.value.trim() } })}
                 />
               </label>
             </div>
@@ -86,7 +89,13 @@ export const AddUserToGroup = ({
                 <ReactSelect
                   className="select"
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999, color: 'black' }) }}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                    placeholder: base => ({ ...base, fontSize: '16px' }),
+                    menu: base => ({ ...base, fontSize: '16px' }),
+                    option: base => ({ ...base, fontSize: '16px' }),
+                    singleValue: base => ({ ...base, fontSize: '16px' }),
+                  }}
                   aria-label="Role"
                   placeholder="Select role"
                   name="role"
@@ -100,7 +109,7 @@ export const AddUserToGroup = ({
             <div>
               <Footer>
                 <Button
-                  disabled={inputValueEmail === '' || !selectedRole}
+                  disabled={called || inputValueEmail === '' || !selectedRole}
                   action={() => {
                     addGroupMember({
                       variables: {
@@ -111,10 +120,11 @@ export const AddUserToGroup = ({
                     });
                   }}
                   variant="primary"
+                  loading={called}
                 >
-                  Add
+                  {userAlreadyExists ? 'Update' : 'Add'}
                 </Button>
-                <Button variant="ghost" action={() => closeModal()}>
+                <Button variant="ghost" action={() => close()}>
                   Cancel
                 </Button>
               </Footer>

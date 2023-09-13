@@ -4,7 +4,7 @@ import ButtonBootstrap from "react-bootstrap/Button";
 import Button from 'components/Button'
 import { Mutation } from "react-apollo";
 import withLogic from "components/AddVariable/logic";
-import {DeleteVariableModal} from "./StyledDeleteVariable";
+import {DeleteVariableModal, DeleteVariableButton} from "./StyledDeleteVariable";
 import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByName";
 
 /**
@@ -27,16 +27,18 @@ export const DeleteVariable = ({
 }) => {
   return (
       <React.Fragment>
-      {
-        icon ?
-          <Button variant='red' icon={icon} action={openModal}>
-            Delete
-          </Button>
-          :
-          <Button variant='red' action={openModal}>
-            Delete
-          </Button>
-      }
+        <DeleteVariableButton>
+          {
+            icon ?
+              <Button variant='red' icon={icon} action={openModal}>
+                Delete
+              </Button>
+              :
+              <Button variant='red' action={openModal}>
+                Delete
+              </Button>
+          }
+        </DeleteVariableButton>
       <Modal
         isOpen={open}
         onRequestClose={closeModal}

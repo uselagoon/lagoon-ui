@@ -5,12 +5,12 @@ import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveUserConfirm/logic';
 
-import { Footer } from '../SharedStyles';
+import { Footer, RemoveModalHeader, RemoveModalParagraph } from '../SharedStyles';
 
 /**
  * Confirms the removal of the specified email from group
  */
-export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeModal }) => {
+export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeModal, info, loading }) => {
   return (
     <React.Fragment>
       {!withText ? (
@@ -25,10 +25,10 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
 
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>
-          <h3 style={{ fontSize: '24px', lineHeight: '24px', paddingTop: '32px' }}>Are you sure?</h3>
-          <p style={{ fontSize: '16px', lineHeight: '24px' }}>
-            This action will delete this entry, you might not be able to get this back.
-          </p>
+          <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+          <RemoveModalParagraph>
+            This action will unlink user <span>{info.userEmail}</span> from group <span>{info.groupName}. </span>
+          </RemoveModalParagraph>
 
           <Footer>
             <Button
@@ -36,6 +36,8 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
                 onRemove().then(closeModal);
               }}
               variant="primary"
+              disabled={loading}
+              loading={loading}
             >
               Continue
             </Button>

@@ -83,7 +83,8 @@ export const StyledUser = styled.section`
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 16px;
+    line-height:24px;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;

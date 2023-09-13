@@ -12,7 +12,7 @@ const ProjectChildPageLink = ({
   childPage,
   projectSlug,
   children,
-  className = null,
+  className = '',
   prefetch = false
 }) => {
   const linkData = getLinkData(childPage, projectSlug);

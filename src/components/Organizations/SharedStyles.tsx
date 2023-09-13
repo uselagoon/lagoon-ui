@@ -118,7 +118,8 @@ export const StyledNotification = styled.div`
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 16px;
+    line-height: 24px;
     color: #000;
     background: #fff;
     padding: 8px;
@@ -347,7 +348,8 @@ export const ModalChildren = styled.div`
     min-height: 38px;
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 16px;
+    line-height: 24px;
     color: #000;
     background: #fff;
     padding: 8px;
@@ -382,6 +384,7 @@ export const TableWrapper = styled.div`
     line-height: 24px;
     margin-top: 15px;
     margin-bottom: 0;
+    display:flex;
   }
   .paginatedTable,
   .filters,
@@ -397,5 +400,31 @@ export const TableWrapper = styled.div`
   }
   .tableAction {
     margin: 24px 0 36px 0;
+  }
+`;
+
+export const RemoveModalHeader = styled.h3`
+  font-size: 24px;
+  line-height: 24px;
+  padding-top: 32px;
+`;
+export const RemoveModalParagraph = styled.p`
+  font-size: 16px;
+  line-height: 24px;
+  span{
+    font-weight:bold;
+  }
+`;
+
+export const AddButtonContent = styled.span`
+  display: inline-flex;
+  align-content: center;
+  gap: 10px;
+  & > span:nth-child(1) {
+    font-size: 28px;
+  }
+  & > span:nth-child(2) {
+    font-size: 16px;
+    line-height: 28px;
   }
 `;
