@@ -77,7 +77,7 @@ const NewEnvironment = ({
   const toggleShowEnvType = () => {
     inputBranchName !== '' ? setShowEnvType(true) : setShowEnvType(false);
   }
-  environmentCount = 0 // Testing placeholder
+  
   return (
       <StyledNotificationWrapper>
         <div className="margins">
