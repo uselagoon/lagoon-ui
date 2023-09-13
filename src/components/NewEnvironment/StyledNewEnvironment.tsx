@@ -9,6 +9,9 @@ export const StyledNewEnvironment = styled.div`
   transform: translateX(-13px);
   align-items: center;
 }
+.copy-btn {
+  width: 2rem;
+}
 .field {
   background-color: ${props => props.theme.backgrounds.copy};
   // border-right: 28px solid ${color.white};

@@ -178,20 +178,22 @@ const NewEnvironment = ({
                                 <div className="field">
                                   { webhookURL }
                                 </div>
-                                <span className="copied" style={copiedWH ? { top: '-20px', opacity: '0' } : null}>
-                                  Copied
-                                </span>
-                                <CopyToClipboard
-                                    text={webhookURL}
-                                    onCopy={() => {
-                                      setCopiedWH(true);
-                                      setTimeout(function () {
-                                        setCopiedWH(false);
-                                      }, 750);
-                                    }}
-                                >
-                                  <span className="copy" />
-                                </CopyToClipboard>
+                                <div className="copy-btn">
+                                  <span className="copied" style={copiedWH ? { top: '-20px', opacity: '0' } : null}>
+                                    Copied
+                                  </span>
+                                  <CopyToClipboard
+                                      text={webhookURL}
+                                      onCopy={() => {
+                                        setCopiedWH(true);
+                                        setTimeout(function () {
+                                          setCopiedWH(false);
+                                        }, 750);
+                                      }}
+                                  >
+                                    <span className="copy" />
+                                  </CopyToClipboard>
+                                </div>
                               </div>
                             </div>
                             <div className="guide-links">

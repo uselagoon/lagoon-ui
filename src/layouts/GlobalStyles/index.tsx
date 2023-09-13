@@ -279,7 +279,7 @@ main{
     }
   }
 .modal-medium{
-  max-width: 45vw;
+  max-width: 44vw;
 }
 .modal-large{
   max-width: 60vw;
