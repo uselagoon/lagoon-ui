@@ -117,7 +117,7 @@ export const PageTasks = ({ router, renderAddTasks }) => {
       />
     );
   }
-
+  
   subscribeToMore({
     document: TasksSubscription,
     variables: { environment: environment.id },
@@ -170,8 +170,10 @@ export const PageTasks = ({ router, renderAddTasks }) => {
             {!renderAddTasks && <AddTask pageEnvironment={environment} onNewTask={handleRefetch} />}
             <Tasks
               tasks={environment.tasks}
+              environmentId={environment.id}
               environmentSlug={environment.openshiftProjectName}
               projectSlug={environment.project.name}
+              projectId={environment.project.id}
             />
             <ResultsLimited
               limit={resultLimit}

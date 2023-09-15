@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import CancelTask from 'components/CancelTask';
 import LogViewer from 'components/LogViewer';
 import moment from 'moment';
 
@@ -12,19 +13,23 @@ type TaskFile = {
 };
 interface TaskProps {
   task: {
+    id: string;
     created: string;
     service: string;
     status: string;
     files: TaskFile[];
     logs: string;
+    taskName: string;
   };
+  projectId: number;
+  environmentId: number;
 }
 
 /**
  * Displays information about an environment task.
  */
-const Task: FC<TaskProps> = ({ task }) => {
-  if (!task) return <p style={{textAlign:"center"}}>Task not found</p>;
+const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
+  if (!task) return <p style={{ textAlign: 'center' }}>Task not found</p>;
   return (
     <StyledTask className="task">
       <div className="details">
@@ -45,7 +50,20 @@ const Task: FC<TaskProps> = ({ task }) => {
             <label>Status</label>
             <div className="field">{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</div>
           </div>
+
+          {['new', 'pending', 'queued', 'running'].includes(task.status) && (
+            <div className="cancel-button">
+              <CancelTask
+                task={task}
+                afterText="Cancelled"
+                beforeText="Cancel"
+                environmentId={environmentId}
+                projectId={projectId}
+              />
+            </div>
+          )}
         </div>
+
         {task.files.length > 0 && (
           <div className="field-wrapper files">
             <div>

@@ -48,21 +48,17 @@ export const PageTask = ({ router }) => {
           <title>{`${router.query.taskName} | Task`}</title>
         </Head>
         <MainLayout>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-            </Breadcrumbs>
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+          </Breadcrumbs>
 
-            <TaskWrapper>
-              <NavTabsSkeleton
-                activeTab="tasks"
-                projectName={projectSlug}
-                openshiftProjectName={openshiftProjectName}
-              />
-              <div className="content">
-                <TaskSkeleton />
-              </div>
-            </TaskWrapper>
+          <TaskWrapper>
+            <NavTabsSkeleton activeTab="tasks" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
+            <div className="content">
+              <TaskSkeleton />
+            </div>
+          </TaskWrapper>
         </MainLayout>
       </>
     );
@@ -116,7 +112,11 @@ export const PageTask = ({ router }) => {
         <TaskWrapper>
           <NavTabs activeTab="tasks" environment={environment} />
           <div className="content">
-            <Task task={environment.tasks[0] || undefined} />
+            <Task
+              task={environment.tasks[0] || undefined}
+              projectId={environment.project.id}
+              environmentId={environment.id}
+            />
           </div>
         </TaskWrapper>
       </MainLayout>

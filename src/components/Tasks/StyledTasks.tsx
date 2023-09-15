@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const StyledTasks = styled.div`
   .header {
+    width: calc(90% - 20px);
     @media ${bp.tinyUp} {
       align-items: center;
       display: flex;
@@ -41,7 +42,28 @@ export const TasksTable = styled.div`
     border: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
-
+    .taskRow {
+      display: flex;
+      align-items: center;
+      border: 1px solid ${props => props.theme.borders.tableRow};
+      transition: all 0.2s ease;
+      padding-right: 20px;
+      &:hover {
+        border: 1px solid #2bc0d8;
+      }
+      & > :nth-child(1) {
+        flex-basis: 90%;
+      }
+      & > :nth-child(2) {
+        flex-basis: 10%;
+        max-width: 120px;
+        padding: unset;
+        height: 30px;
+        &.btn--disabled {
+          margin-right: unset;
+        }
+      }
+    }
     .data-none {
       border: 1px solid ${props => props.theme.borders.tableRow};
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
@@ -56,11 +78,13 @@ export const TasksTable = styled.div`
       background-position: right 20px center;
       background-repeat: no-repeat;
       background-size: 18px 11px;
-      border: 1px solid ${props => props.theme.borders.tableRow};
-      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
+      &:hover {
+        // override shared style
+        border-width: 0px !important;
+      }
       @media ${bp.tinyUp} {
         display: flex;
         justify-content: space-between;
