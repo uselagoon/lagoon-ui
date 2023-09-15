@@ -36,7 +36,7 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, environmentId, projectS
     <TasksTable className="data-table">
       {!tasks.length && <div className="data-none">No Tasks</div>}
       {tasks.map(task => (
-        <div className='taskRow'>
+        <div className='taskRow' key={task.id}>
           <TaskLink
             taskSlug={task.taskName}
             environmentSlug={environmentSlug}

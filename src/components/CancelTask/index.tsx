@@ -34,7 +34,7 @@ interface CancelTaskButtonProps {
   error: ApolloError | undefined;
   beforeText: string;
   afterText: string;
-
+  
 }
 
 export const CancelTaskButton: FC<CancelTaskButtonProps> = ({
@@ -80,7 +80,9 @@ const CancelTask: FC<CancelTaskProps> = ({
   >
     {(cancelTask, { loading, error, data }) => (
       <CancelTaskButton
-        action={cancelTask}
+        action={() => {
+          void cancelTask();
+        }}
         success={(data && data.cancelTask === 'success') || false}
         loading={loading}
         error={error}
