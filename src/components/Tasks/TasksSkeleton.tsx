@@ -7,20 +7,23 @@ const TasksSkeleton = () => {
   const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const itemRender = (
-    <div className="data-row">
-      <div className="name">
-        <Skeleton />
-      </div>
-      <div className="started">
-        <Skeleton />
-      </div>
-      <div className="service">
-        <Skeleton />
-      </div>
-      <div className="status">
-        <span>
+    <div className="taskRow">
+      <div className="data-row">
+        <div className="name">
           <Skeleton />
-        </span>
+        </div>
+        <div className="started">
+          <Skeleton />
+        </div>
+        <div className="service">
+          <Skeleton />
+        </div>
+        <div className="status">
+          <Skeleton />
+        </div>
+      </div>
+      <div className="cancel-button">
+        <Skeleton />
       </div>
     </div>
   );
