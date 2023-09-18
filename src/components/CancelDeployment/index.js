@@ -12,7 +12,7 @@ const CANCEL_DEPLOYMENT_MUTATION = gql`
 
 export const CancelDeploymentButton = ({ action, success, loading, error, beforeText, afterText }) => (
   <>
-    <Button action={action} disabled={loading || success}>
+    <Button action={action} loading={loading} disabled={loading || success}>
       {success ? afterText || 'Cancellation requested' : beforeText || 'Cancel deployment'}
     </Button>
 
