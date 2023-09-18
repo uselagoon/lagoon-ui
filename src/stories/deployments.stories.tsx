@@ -29,7 +29,7 @@ export const Default: Story = {
             ctx.data({
               environment: {
                 ...generateEnvironments(123),
-                deployments: [getDeployment(1), getDeployment(22), getDeployment(30), getDeployment(123)],
+                deployments: [getDeployment(1), getDeployment(115), getDeployment(30), getDeployment(123)],
               },
             })
           );

@@ -74,10 +74,6 @@ export const TasksTable = styled.div`
     }
 
     .data-row {
-      background-image: url('/static/images/right-arrow.svg');
-      background-position: right 20px center;
-      background-repeat: no-repeat;
-      background-size: 18px 11px;
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
