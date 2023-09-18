@@ -16,10 +16,11 @@ import {
   VariableActions,
 } from "./StyledEnvironmentVariables";
 import Image from "next/image";
+import Link from "next/link";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
-
+import ErrorModal from 'components/ErrorModal';
 /**
  * Displays the environment variable information.
  */
@@ -45,12 +46,21 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
   const [updateVarValue, setUpdateVarValue ] = useState('');
   const [updateVarName, setUpdateVarName ] = useState('');
   const [updateVarScope, setUpdateVarScope ] = useState('');
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+
+  const closeErrorModal = () => {
+    setErrorModalOpen(false);
+  };
 
   const [
     getEnvVarValues,
     { loading: envLoading, error: envError, data: envValues },
   ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
     variables: { openshiftProjectName: environment.openshiftProjectName },
+    onError: () => {
+      setOpenEnvVars(!openEnvVars);
+      setErrorModalOpen(true);
+    }
   });
 
   if (envValues) {
@@ -64,6 +74,10 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
     { loading: prjLoading, error: prjError, data: prjEnvValues },
   ] = useLazyQuery(EnvironmentProjectByProjectNameWithEnvVarsValueQuery, {
     variables: { openshiftProjectName: environment.openshiftProjectName },
+    onError: () => {
+      setOpenPrjVars(!openPrjVars);
+      setErrorModalOpen(true);
+    }
   });
 
   if (prjEnvValues) {
@@ -152,7 +166,8 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                 aria-controls="example-collapse-text"
                 aria-expanded={openEnvVars}
               >
-                {!openEnvVars ? "Show values" : "Hide values"}
+                { errorModalOpen ? <div className="loader value-btn"></div>
+                    : !openEnvVars ? "Show values" : "Hide values"}
               </Button>
             </div>
           </div>
@@ -261,12 +276,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          <Collapse in={openEnvVars}>
-                            <div className="varValue" id={index}>
-                              Unauthorized: You don't have permission to view
-                              this variable.
-                            </div>
-                          </Collapse>
+                            errorModalOpen && (
+                              <ErrorModal open={errorModalOpen} close={closeErrorModal} />
+                            )
                         )}
                         <div className="varActions">
                           <VariableActions>
@@ -349,7 +361,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                 aria-controls="example-collapse-text"
                 aria-expanded={openPrjVars}
               >
-                {!openPrjVars ? "Show values" : "Hide values"}
+                {/* {!openPrjVars ? "Show values" : "Hide values"} */}
+                { errorModalOpen ? <div className="loader value-btn"></div>
+                    : !openPrjVars ? "Show values" : "Hide values"}
               </Button>
             </div>
           </div>
@@ -461,12 +475,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          <Collapse in={openPrjVars}>
-                            <div className="varValue" id={index}>
-                              Unauthorized: You don't have permission to view
-                              this variable.
-                            </div>
-                          </Collapse>
+                          errorModalOpen && (
+                            <ErrorModal open={errorModalOpen} close={closeErrorModal} />
+                          )
                         )}
                       </div>
                     </Fragment>

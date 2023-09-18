@@ -16,6 +16,7 @@ import {
   VariableActions,
 } from "./StyledProjectVariables";
 import DeleteVariable from "components/DeleteVariable";
+import ErrorModal from 'components/ErrorModal';
 
 /**
  * Displays the projects variable information.
@@ -38,12 +39,21 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   const [updateVarValue, setUpdateVarValue ] = useState('');
   const [updateVarName, setUpdateVarName ] = useState('');
   const [updateVarScope, setUpdateVarScope ] = useState('');
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+
+  const closeErrorModal = () => {
+    setErrorModalOpen(false);
+  };
 
   const [
     getPrjEnvVarValues,
     { loading: prjLoading, error: prjError, data: prjEnvValues },
   ] = useLazyQuery(ProjectByNameWithEnvVarsValueQuery, {
     variables: { name: project.name },
+    onError: () => {
+      setOpenPrjVars(!openPrjVars);
+      setErrorModalOpen(true);
+    }
   });
 
   if (prjEnvValues) {
@@ -115,7 +125,8 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                 aria-controls="example-collapse-text"
                 aria-expanded={openPrjVars}
               >
-                {!openPrjVars ? "Show values" : "Hide values"}
+                { errorModalOpen ? <div className="loader value-btn"></div>
+                    : !openPrjVars ? "Show values" : "Hide values"}
               </Button>
             </div>
           </div>
@@ -227,12 +238,9 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          <Collapse in={openPrjVars}>
-                            <div className="varValue" id={index}>
-                              Unauthorized: You don't have permission to view
-                              this variable.
-                            </div>
-                          </Collapse>
+                          errorModalOpen && (
+                            <ErrorModal open={errorModalOpen} close={closeErrorModal} />
+                          )
                         )}
                         <div className="varActions">
                           <VariableActions>
