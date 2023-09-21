@@ -81,7 +81,14 @@ const Environment = ({ environment }) => {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="field-wrapper giturl">
+          <div>
+            <label>Git URL</label>
+            <p>{environment.project.gitUrl}</p>
+          </div>
+        </div>
+      )}
 
       <div className="field-wrapper routes">
         {environment.project.productionEnvironment &&
