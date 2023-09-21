@@ -5,9 +5,9 @@ import Router from 'next/router';
 
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import DeleteConfirm from 'components/DeleteConfirm';
+import giturlparse from 'git-url-parse';
 import DeleteEnvironmentMutation from 'lib/mutation/DeleteEnvironment';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
-import parseGitUrl from 'lib/parseGitUrl';
 import moment from 'moment';
 
 import { StyledEnvironmentDetails } from './StyledEnvironment';
@@ -16,12 +16,21 @@ import { StyledEnvironmentDetails } from './StyledEnvironment';
  * Displays the environment information.
  */
 const Environment = ({ environment }) => {
-  const gitUrlParsed = parseGitUrl(environment.project.gitUrl);
-  const gitBranchLink = `${
-    gitUrlParsed.showRaw ? gitUrlParsed.rawUrl : `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`
-  }/${
-    environment.deployType === 'branch' ? `tree/${environment.name}` : `pull/${environment.name.replace(/pr-/i, '')}`
-  }`;
+  let gitUrlParsed;
+
+  try {
+    gitUrlParsed = giturlparse(environment.project.gitUrl);
+  } catch {
+    gitUrlParsed = null;
+  }
+
+  const gitBranchLink = gitUrlParsed
+    ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}/${
+        environment.deployType === 'branch'
+          ? `tree/${environment.name}`
+          : `pull/${environment.name.replace(/pr-/i, '')}`
+      }`
+    : '';
 
   return (
     <StyledEnvironmentDetails className="details">
@@ -61,16 +70,19 @@ const Environment = ({ environment }) => {
           <div className="field">{moment.utc(environment.updated).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
         </div>
       </div>
-      <div className="field-wrapper source">
-        <div>
-          <label>Source</label>
-          <div className="field">
-            <a className="hover-state" target="_blank" href={`https://${gitBranchLink}`}>
-              {gitBranchLink}
-            </a>
+      {gitBranchLink ? (
+        <div className="field-wrapper source">
+          <div>
+            <label>Source</label>
+            <div className="field">
+              <a className="hover-state" target="_blank" href={`https://${gitBranchLink}`}>
+                {gitBranchLink}
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
+
       <div className="field-wrapper routes">
         {environment.project.productionEnvironment &&
           environment.project.standbyProductionEnvironment &&
