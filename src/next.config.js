@@ -28,6 +28,7 @@ module.exports = {
     LAGOON_UI_YOUR_ACCOUNT_DISABLED: process.env.LAGOON_UI_YOUR_ACCOUNT_DISABLED,
     LAGOON_UI_TOURS_ENABLED: process.env.LAGOON_UI_TOURS_ENABLED,
     PLUGIN_SCRIPTS: pluginRegistry,
+    WEBHOOK_URL: process.env.WEBHOOK_URL,
   },
   distDir: '../build',
   webpack(config, options) {
