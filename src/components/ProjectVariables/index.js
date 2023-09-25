@@ -16,7 +16,7 @@ import {
   VariableActions,
 } from "./StyledProjectVariables";
 import DeleteVariable from "components/DeleteVariable";
-import ErrorModal from 'components/ErrorModal';
+import Alert from 'components/Alert'
 
 /**
  * Displays the projects variable information.
@@ -39,11 +39,12 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   const [updateVarValue, setUpdateVarValue ] = useState('');
   const [updateVarName, setUpdateVarName ] = useState('');
   const [updateVarScope, setUpdateVarScope ] = useState('');
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [projectErrorAlert, setProjectErrorAlert] = useState(false);
 
-  const closeErrorModal = () => {
-    setErrorModalOpen(false);
+  const closeProjectError = () => {
+    setProjectErrorAlert(false);
   };
+
 
   const [
     getPrjEnvVarValues,
@@ -52,7 +53,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
     variables: { name: project.name },
     onError: () => {
       setOpenPrjVars(!openPrjVars);
-      setErrorModalOpen(true);
+      setProjectErrorAlert(true);
     }
   });
 
@@ -106,6 +107,16 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
         </>
       ) : (
         <>
+          {
+            projectErrorAlert && (
+              <Alert
+                type="error"
+                closeAlert={closeProjectError}
+                header="Unauthorized:"
+                message="You don't have permission to view project variable values. Contact your administrator to obtain the relevant permissions."
+              />
+            )
+          }
           <div className="header">
             <label>Project Variables</label>
             <div className="header-buttons">
@@ -125,8 +136,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                 aria-controls="example-collapse-text"
                 aria-expanded={openPrjVars}
               >
-                { errorModalOpen ? <div className="loader value-btn"></div>
-                    : !openPrjVars ? "Show values" : "Hide values"}
+                {!openPrjVars ? "Show values" : "Hide values"}
               </Button>
             </div>
           </div>
@@ -238,9 +248,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          errorModalOpen && (
-                            <ErrorModal open={errorModalOpen} close={closeErrorModal} />
-                          )
+                          ''
                         )}
                         <div className="varActions">
                           <VariableActions>
