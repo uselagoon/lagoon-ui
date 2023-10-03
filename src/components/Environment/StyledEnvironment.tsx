@@ -78,11 +78,22 @@ export const StyledEnvironmentDetails = styled.div`
         background-size: 17px 16px;
       }
     }
-    &.source {
+    &.source,
+    &.giturl {
       width: 100%;
       &::before {
-        background-image: url('/static/images/git-lab.svg');
         background-size: 19px 17px;
+      }
+
+      &.source {
+        &::before {
+          background-image: url('/static/images/git-lab.svg');
+        }
+      }
+      &.giturl {
+        &::before {
+          background-image: url('/static/images/git.svg');
+        }
       }
       .field {
         color: ${color.linkBlue};
