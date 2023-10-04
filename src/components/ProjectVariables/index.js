@@ -16,6 +16,7 @@ import {
   VariableActions,
 } from "./StyledProjectVariables";
 import DeleteVariable from "components/DeleteVariable";
+import Alert from 'components/Alert'
 
 /**
  * Displays the projects variable information.
@@ -38,12 +39,22 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   const [updateVarValue, setUpdateVarValue ] = useState('');
   const [updateVarName, setUpdateVarName ] = useState('');
   const [updateVarScope, setUpdateVarScope ] = useState('');
+  const [projectErrorAlert, setProjectErrorAlert] = useState(false);
+
+  const closeProjectError = () => {
+    setProjectErrorAlert(false);
+  };
+
 
   const [
     getPrjEnvVarValues,
     { loading: prjLoading, error: prjError, data: prjEnvValues },
   ] = useLazyQuery(ProjectByNameWithEnvVarsValueQuery, {
     variables: { name: project.name },
+    onError: () => {
+      setOpenPrjVars(!openPrjVars);
+      setProjectErrorAlert(true);
+    }
   });
 
   if (prjEnvValues) {
@@ -96,6 +107,16 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
         </>
       ) : (
         <>
+          {
+            projectErrorAlert && (
+              <Alert
+                type="error"
+                closeAlert={closeProjectError}
+                header="Unauthorized:"
+                message="You don't have permission to view project variable values. Contact your administrator to obtain the relevant permissions."
+              />
+            )
+          }
           <div className="header">
             <label>Project Variables</label>
             <div className="header-buttons">
@@ -227,12 +248,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          <Collapse in={openPrjVars}>
-                            <div className="varValue" id={index}>
-                              Unauthorized: You don't have permission to view
-                              this variable.
-                            </div>
-                          </Collapse>
+                          ''
                         )}
                         <div className="varActions">
                           <VariableActions>

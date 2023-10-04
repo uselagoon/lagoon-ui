@@ -122,6 +122,11 @@ export const StyledEnvironmentVariableDetails = styled.div`
     display: inline-block;
     width: 36px;
     height: 36px;
+    
+    &.value-btn {
+      width: 90px;
+      height: 17px;
+    }
   }
   .loader:after {
     content: " ";
@@ -133,6 +138,11 @@ export const StyledEnvironmentVariableDetails = styled.div`
     border: 2px solid ${color.blue};
     border-color: ${color.blue} transparent ${color.blue} transparent;
     animation: loader 1.2s linear infinite;
+  }
+  .loader.value-btn:after {
+    margin: 0 auto;
+    border: 2px solid ${color.white};
+    border-color: ${color.white} transparent ${color.white} transparent;
   }
   @keyframes loader {
     0% {
