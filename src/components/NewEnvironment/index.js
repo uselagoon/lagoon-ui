@@ -8,10 +8,10 @@ import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import {StyledNewEnvironment} from './StyledNewEnvironment';
+import {StyledNewEnvironment, StyledEnvironmentWrapper} from './StyledNewEnvironment';
 import {useQuery} from "@apollo/react-hooks";
 import ProjectByNameWithDeployKeyQuery from "../../lib/query/ProjectByNameWithDeployKey";
-import { Footer, StyledNotificationWrapper } from '../Organizations/SharedStyles';
+import { Footer } from '../Organizations/SharedStyles';
 import getConfig from "next/config";
 const { WEBHOOK_URL } = getConfig().publicRuntimeConfig;
 
@@ -78,7 +78,7 @@ const NewEnvironment = ({
   }
 
   return (
-      <StyledNotificationWrapper>
+      <StyledEnvironmentWrapper>
         <div className="margins">
           <Button action={openModal}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '0.25em' }}>
@@ -244,7 +244,7 @@ const NewEnvironment = ({
             </Mutation>
           </React.Fragment>
         </Modal>
-      </StyledNotificationWrapper>
+      </StyledEnvironmentWrapper>
   );
 };
 
