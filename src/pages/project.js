@@ -102,9 +102,13 @@ export const PageProject = ({ router }) => {
               <ProjectDetailsSidebar project={project} />
             </div>
             <div className="environments-wrapper">
-              <NewEnvironment refresh={handleRefetch} inputProjectName={project.name} productionEnvironment={project.productionEnvironment} environmentCount={environmentCount}/>
               <div className="environments-all">
-                <Environments environments={environments} project={project} />
+                <Environments environments={environments} project={project} refresh={handleRefetch} environmentCount={environmentCount}/>
+                {
+                  environmentCount === 0 && (
+                    <NewEnvironment inputProjectName={project.name} productionEnvironment={project.productionEnvironment} refresh={handleRefetch} environmentCount={environmentCount} />
+                  )
+                }
               </div>
             </div>
           </ProjectDetailsWrapper>
