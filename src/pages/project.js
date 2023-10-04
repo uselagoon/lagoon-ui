@@ -104,6 +104,11 @@ export const PageProject = ({ router }) => {
             <div className="environments-wrapper">
               <div className="environments-all">
                 <Environments environments={environments} project={project} refresh={handleRefetch} environmentCount={environmentCount}/>
+                {
+                  environmentCount === 0 && (
+                    <NewEnvironment inputProjectName={project.name} productionEnvironment={project.productionEnvironment} refresh={handleRefetch} environmentCount={environmentCount} />
+                  )
+                }
               </div>
             </div>
           </ProjectDetailsWrapper>
