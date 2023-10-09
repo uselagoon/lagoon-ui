@@ -7,7 +7,7 @@ import WebhookFragment from 'lib/fragment/Webhook';
 
 export default gql`
   query getOrganization($id: Int!) {
-    organization: organizationById(organization: $id) {
+    organization: organizationById(id: $id) {
       id
       name
       description

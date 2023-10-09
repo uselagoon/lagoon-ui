@@ -17,7 +17,7 @@ export default gql`
 
 export const getOrganization = gql`
   query getOrganization($id: Int!) {
-    organization: organizationById(organization: $id) {
+    organization: organizationById(id: $id) {
       id
       name
       groups{

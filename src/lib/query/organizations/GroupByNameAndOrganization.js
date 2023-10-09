@@ -21,7 +21,7 @@ export default gql`
       }
     }
 
-    organization: organizationById (organization: $organization){
+    organization: organizationById (id: $organization){
       id
       name
       description
