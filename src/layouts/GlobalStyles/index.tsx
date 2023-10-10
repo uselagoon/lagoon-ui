@@ -278,6 +278,9 @@ main{
     max-width: 40vw;
     }
   }
+.modal-medium{
+  max-width: 44vw;
+}
 .modal-large{
   max-width: 60vw;
   max-height: 50vh;

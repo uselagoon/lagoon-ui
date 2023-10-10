@@ -8,7 +8,10 @@ import withLogic from 'components/Organizations/NewProject/logic';
 import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import {StyledNewProject, Checkbox} from './StyledNewProject';
+import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedStyles';
+import Image from "next/image";
+import info from "../../../static/images/info.svg";
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -21,6 +24,7 @@ const ADD_PROJECT_MUTATION = gql`
     $pullrequests: String
     $productionEnvironment: String!
     $developmentEnvironmentsLimit: Int
+    $addOrgOwner: Boolean
   ) {
     addProject(
       input: {
@@ -33,6 +37,7 @@ const ADD_PROJECT_MUTATION = gql`
         pullrequests: $pullrequests
         productionEnvironment: $productionEnvironment
         developmentEnvironmentsLimit: $developmentEnvironmentsLimit
+        addOrgOwner: $addOrgOwner
       }
     ) {
       id
@@ -63,6 +68,7 @@ const OrgNewProject = ({
   closeModal,
   refresh,
 }) => {
+  const [addUserToProject, setAddUserToProject] = React.useState(true);
   return (
     <StyledNotificationWrapper>
       <div className="margins">
@@ -92,8 +98,10 @@ const OrgNewProject = ({
 
               return (
                 <>
-                  <StyledNotification>
-                    <h4>Add Project</h4>
+                  <StyledNewProject>
+                    <div className="add-project-header">
+                      <span>Add Project</span>
+                    </div>
                     <div className="form-box">
                       <label>
                         Project name: <span style={{ color: '#E30000' }}>*</span>
@@ -152,6 +160,25 @@ const OrgNewProject = ({
                         />
                       </RoleSelect>
                     </label>
+                    <Checkbox>
+                      <input
+                          type="checkbox"
+                          checked={addUserToProject}
+                          onChange={({ target: { checked } }) => setAddUserToProject(checked)}
+                      />
+                      <span>Add my user to this project</span>
+                    </Checkbox>
+                    <div className="docs-link">
+                      <div className="info-icon">
+                        <Image
+                            src={info}
+                            alt=""
+                        />
+                      </div>
+                      <div className="new-project-info">
+                        <p>Please note, once the project has been created you will need to add the <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Deploy Key</a> and <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-webhooks-endpoint-to-your-git-repository" target="_blank">Webhook</a> to your Git service, these will be generated in the ‘create environment’ wizard available from the project overview page.</p>
+                      </div>
+                    </div>
                     <div>
                       <Footer>
                         <Button
@@ -173,6 +200,7 @@ const OrgNewProject = ({
                                 kubernetes: parseInt(selectedDeployTarget.value, 10),
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
+                                addOrgOwner: addUserToProject
                               },
                             });
                           }}
@@ -187,7 +215,7 @@ const OrgNewProject = ({
                         </Button>
                       </Footer>
                     </div>
-                  </StyledNotification>
+                  </StyledNewProject>
                 </>
               );
             }}

@@ -5,6 +5,7 @@ import getConfig from 'next/config';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
+import { StyleProvider, createCache, extractStyle } from '@ant-design/cssinjs';
 // styled-components
 import { ServerStyleSheet } from 'styled-components';
 
@@ -14,19 +15,27 @@ class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
     const originalRenderpage = ctx.renderPage;
+    const cache = createCache();
 
     try {
       ctx.renderPage = () =>
         originalRenderpage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
+          enhanceApp: App => props =>
+            sheet.collectStyles(
+              <StyleProvider cache={cache}>
+                <App {...props} />
+              </StyleProvider>
+            ),
         });
       const initialProps = await Document.getInitialProps(ctx);
+      const antdStyle = extractStyle(cache, true);
       return {
         ...initialProps,
         styles: (
           <>
             {initialProps.styles}
             {sheet.getStyleElement()}
+            <style dangerouslySetInnerHTML={{ __html: antdStyle }} />
           </>
         ),
       };

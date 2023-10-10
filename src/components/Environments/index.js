@@ -6,6 +6,7 @@ import { makeSafe } from 'lib/util';
 import * as R from 'ramda';
 
 import { StyledEnvironments } from './StyledEnvironments';
+import NewEnvironment from "../NewEnvironment";
 
 const bgImages = {
   branch: {
@@ -22,7 +23,7 @@ const bgImages = {
   },
 };
 
-const Environments = ({ environments = [], project }) => {
+const Environments = ({ environments = [], project, refresh, environmentCount }) => {
   if (environments.length === 0) {
     return null;
   }
@@ -94,6 +95,7 @@ const Environments = ({ environments = [], project }) => {
           </div>
         );
       })}
+      <NewEnvironment refresh={refresh} inputProjectName={project.name} productionEnvironment={project.productionEnvironment} environmentCount={environmentCount}/>
     </StyledEnvironments>
   );
 };

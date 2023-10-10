@@ -19,6 +19,7 @@ import Image from "next/image";
 import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
+import Alert from 'components/Alert'
 
 /**
  * Displays the environment variable information.
@@ -32,7 +33,7 @@ const hashValue = (value) => {
   return hashedVal;
 };
 
-const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
+const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   let displayVars = environment.envVariables;
   let displayProjectVars = environment.project.envVariables;
   let initValueState = new Array(displayVars.length).fill(false);
@@ -45,12 +46,26 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
   const [updateVarValue, setUpdateVarValue ] = useState('');
   const [updateVarName, setUpdateVarName ] = useState('');
   const [updateVarScope, setUpdateVarScope ] = useState('');
+  const [environmentErrorAlert, setEnvironmentErrorAlert] = useState(false);
+  const [projectErrorAlert, setProjectErrorAlert] = useState(false);
+
+  const closeEnvironmentError = () => {
+    setEnvironmentErrorAlert(false);
+  };
+
+  const closeProjectError = () => {
+    setProjectErrorAlert(false);
+  };
 
   const [
     getEnvVarValues,
     { loading: envLoading, error: envError, data: envValues },
   ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
     variables: { openshiftProjectName: environment.openshiftProjectName },
+    onError: () => {
+      setOpenEnvVars(!openEnvVars);
+      setEnvironmentErrorAlert(true);
+    }
   });
 
   if (envValues) {
@@ -64,6 +79,10 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
     { loading: prjLoading, error: prjError, data: prjEnvValues },
   ] = useLazyQuery(EnvironmentProjectByProjectNameWithEnvVarsValueQuery, {
     variables: { openshiftProjectName: environment.openshiftProjectName },
+    onError: () => {
+      setOpenPrjVars(!openPrjVars);
+      setProjectErrorAlert(true);
+    }
   });
 
   if (prjEnvValues) {
@@ -132,6 +151,16 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
         </>
       ) : (
         <>
+          {
+            environmentErrorAlert && (
+              <Alert 
+                type="error"
+                closeAlert={closeEnvironmentError}
+                header="Unauthorized:"
+                message="You don't have permission to view environment variable values. Contact your administrator to obtain the relevant permissions."
+              />
+            )
+          }         
           <div className="header">
             <label>Environment Variables</label>
             <div className="header-buttons">
@@ -152,7 +181,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                 aria-controls="example-collapse-text"
                 aria-expanded={openEnvVars}
               >
-                {!openEnvVars ? "Show values" : "Hide values"}
+                { !openEnvVars ? "Show values" : "Hide values"}
               </Button>
             </div>
           </div>
@@ -261,12 +290,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          <Collapse in={openEnvVars}>
-                            <div className="varValue" id={index}>
-                              Unauthorized: You don't have permission to view
-                              this variable.
-                            </div>
-                          </Collapse>
+                            ''
                         )}
                         <div className="varActions">
                           <VariableActions>
@@ -333,6 +357,16 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
       ) : (
         <>
           <hr style={{ margin: "30px 0" }} />
+          {
+            projectErrorAlert && (
+              <Alert 
+                type="error"
+                closeAlert={closeProjectError}
+                header="Unauthorized:"
+                message="You don't have permission to view project variable values. Contact your administrator to obtain the relevant permissions."
+              />
+            )
+          }
           <div className="header">
             <label>Project Variables</label>
             <div className="header-buttons">
@@ -461,12 +495,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded, closeModal }) => {
                             </div>
                           </Collapse>
                         ) : (
-                          <Collapse in={openPrjVars}>
-                            <div className="varValue" id={index}>
-                              Unauthorized: You don't have permission to view
-                              this variable.
-                            </div>
-                          </Collapse>
+                          ''
                         )}
                       </div>
                     </Fragment>

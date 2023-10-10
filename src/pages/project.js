@@ -18,15 +18,18 @@ import SidebarSkeleton from "components/ProjectDetailsSidebar/SidebarSkeleton";
 import QueryError from "../components/errors/QueryError";
 import { useTourContext } from "../tours/TourContext";
 import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
+import NewEnvironment from "../components/NewEnvironment";
 
 /**
  * Displays a project page, given the project name.
  */
 export const PageProject = ({ router }) => {
   const { continueTour } = useTourContext();
-  const { data, error, loading } = useQuery(ProjectByNameQuery, {
+  const { data, error, loading, refetch } = useQuery(ProjectByNameQuery, {
     variables: { name: router.query.projectName },
   });
+
+  const handleRefetch = async () => await refetch({ name: router.query.projectName });
 
   useEffect(() => {
     if (!loading) {
@@ -80,6 +83,7 @@ export const PageProject = ({ router }) => {
     [R.descend(R.prop('environmentType')), R.ascend(R.prop('deployType'))],
     project.environments
   );
+  const environmentCount = environments.length;
 
   return (
     <>
@@ -99,7 +103,12 @@ export const PageProject = ({ router }) => {
             </div>
             <div className="environments-wrapper">
               <div className="environments-all">
-                <Environments environments={environments} project={project} />
+                <Environments environments={environments} project={project} refresh={handleRefetch} environmentCount={environmentCount}/>
+                {
+                  environmentCount === 0 && (
+                    <NewEnvironment inputProjectName={project.name} productionEnvironment={project.productionEnvironment} refresh={handleRefetch} environmentCount={environmentCount} />
+                  )
+                }
               </div>
             </div>
           </ProjectDetailsWrapper>

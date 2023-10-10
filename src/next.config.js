@@ -27,7 +27,9 @@ module.exports = {
     LAGOON_UI_BACKUPS_LIMIT_MESSAGE: process.env.LAGOON_UI_BACKUPS_LIMIT_MESSAGE,
     LAGOON_UI_YOUR_ACCOUNT_DISABLED: process.env.LAGOON_UI_YOUR_ACCOUNT_DISABLED,
     LAGOON_UI_TOURS_ENABLED: process.env.LAGOON_UI_TOURS_ENABLED,
+    LAGOON_UI_STATUS_TIMEOUT:process.env.LAGOON_UI_STATUS_TIMEOUT,
     PLUGIN_SCRIPTS: pluginRegistry,
+    WEBHOOK_URL: process.env.WEBHOOK_URL,
   },
   distDir: '../build',
   webpack(config, options) {

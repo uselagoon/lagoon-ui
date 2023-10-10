@@ -9,12 +9,19 @@ import { FieldWrapper, ProjectDetails } from "./StyledProjectSidebar";
 
 const ProjectDetailsSidebar = ({ project }) => {
   const [copied, setCopied] = useState(false);
-  const gitUrlParsed = giturlparse(project.gitUrl);
-  const gitLink = `${gitUrlParsed.resource}/${gitUrlParsed.full_name}`;
-
   const environmentCount = R.countBy(R.prop('environmentType'))(project.environments);
   const developEnvironmentCount = R.propOr(0, 'development', environmentCount);
   const projectUsesDeployTargets = project.deployTargetConfigs.length > 0;
+
+  let gitUrlParsed;
+
+  try {
+    gitUrlParsed = giturlparse(project.gitUrl);
+  } catch {
+    gitUrlParsed = null;
+  }
+
+  const gitLink = gitUrlParsed ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}` : '';
 
   return (
     <ProjectDetails className="details">
@@ -24,16 +31,19 @@ const ProjectDetailsSidebar = ({ project }) => {
           <div className="field">{moment.utc(project.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
         </div>
       </FieldWrapper>
-      <FieldWrapper className="field-wrapper origin">
-        <div>
-          <label>Origin</label>
-          <div className="field">
-            <a className="hover-state" target="_blank" href={`https://${gitLink}`}>
-              {gitLink}
-            </a>
+      {gitLink ? (
+        <FieldWrapper className="field-wrapper origin">
+          <div>
+            <label>Origin</label>
+            <div className="field">
+              <a className="hover-state" target="_blank" href={`https://${gitLink}`}>
+                {gitLink}
+              </a>
+            </div>
           </div>
-        </div>
-      </FieldWrapper>
+        </FieldWrapper>
+      ) : null}
+
       <FieldWrapper className="field-wrapper giturl">
         <div>
           <label>Git URL</label>
