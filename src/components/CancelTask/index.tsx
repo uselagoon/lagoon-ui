@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Mutation } from 'react-apollo';
 
+import { notification } from 'antd';
 import { ApolloError } from 'apollo-client';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
@@ -34,7 +35,6 @@ interface CancelTaskButtonProps {
   error: ApolloError | undefined;
   beforeText: string;
   afterText: string;
-  
 }
 
 export const CancelTaskButton: FC<CancelTaskButtonProps> = ({
@@ -44,20 +44,30 @@ export const CancelTaskButton: FC<CancelTaskButtonProps> = ({
   error,
   beforeText,
   afterText,
-}) => (
-  <>
-    <Button action={action} disabled={loading || success} loading={loading}>
-      {success ? afterText : beforeText}
-    </Button>
+}) => {
+  const [api, contextHolder] = notification.useNotification();
 
-    {error && (
-      <div className="cancelTask_result">
-        <p>There was a problem cancelling a task.</p>
-        <p>{error.message}</p>
-      </div>
-    )}
-  </>
-);
+  const openNotificationWithIcon = (errorMessage: string) => {
+    api['error']({
+      message: 'There was a problem cancelling a task.',
+      description: errorMessage,
+      placement: 'top',
+      duration: 0,
+      style: { width: '500px' },
+    });
+  };
+
+  return (
+    <>
+      {contextHolder}
+      <Button action={action} disabled={loading || success} loading={loading}>
+        {success ? afterText : beforeText}
+      </Button>
+
+      {error && openNotificationWithIcon(error.message)}
+    </>
+  );
+};
 
 const CancelTask: FC<CancelTaskProps> = ({
   task,
