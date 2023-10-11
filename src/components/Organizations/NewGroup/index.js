@@ -12,8 +12,8 @@ import styled from 'styled-components';
 import { Footer, StyledNotification } from '../SharedStyles';
 
 const ADD_GROUP_MUTATION = gql`
-  mutation addGroup($group: String!, $organization: Int!) {
-    addGroup(input: { name: $group, organization: $organization }) {
+  mutation addGroupToOrganization($group: String!, $organization: Int!) {
+    addGroupToOrganization(input: { name: $group, organization: $organization }) {
       name
     }
   }
