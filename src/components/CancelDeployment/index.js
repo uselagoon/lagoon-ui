@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 
+import { notification } from 'antd';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 
@@ -10,20 +11,28 @@ const CANCEL_DEPLOYMENT_MUTATION = gql`
   }
 `;
 
-export const CancelDeploymentButton = ({ action, success, loading, error, beforeText, afterText }) => (
-  <>
-    <Button action={action} loading={loading} disabled={loading || success}>
-      {success ? afterText || 'Cancellation requested' : beforeText || 'Cancel deployment'}
-    </Button>
+export const CancelDeploymentButton = ({ action, success, loading, error, beforeText, afterText }) => {
+  const [api, contextHolder] = notification.useNotification();
 
-    {error && (
-      <div className="deploy_result">
-        <p>There was a problem cancelling deployment.</p>
-        <p>{error.message}</p>
-      </div>
-    )}
-  </>
-);
+  const openNotificationWithIcon = errorMessage => {
+    api['error']({
+      message: 'There was a problem cancelling deployment.',
+      description: errorMessage,
+      placement: 'top',
+      duration: 0,
+      style: { width: '500px' },
+    });
+  };
+  return (
+    <>
+      {contextHolder}
+      <Button action={action} loading={loading} disabled={loading || success}>
+        {success ? afterText || 'Cancellation requested' : beforeText || 'Cancel deployment'}
+      </Button>
+      {error && openNotificationWithIcon(error.message)}
+    </>
+  );
+};
 
 const CancelDeployment = ({ deployment, beforeText, afterText }) => (
   <Mutation
