@@ -10,11 +10,6 @@ const options = [
   { value: '100', label: '100' },
   { value: '-1', label: 'all' },
 ];
-const handleChange = values => {
-  // window.location.href = window.location.href.split('?')[0] + '?limit=' + values.value;
-
-  history.pushState(null,"", window.location.href.split('?')[0] + '?limit=' + values.value);
-};
 const customStyles = {
   menu: (provided, state) => ({
     ...provided,
@@ -29,7 +24,15 @@ const customStyles = {
 /**
  * Button that deploys the latest environment.
  */
-const ResultsLimited = ({ limit, message, disableHandler}) => {
+const ResultsLimited = ({ limit, changeLimit, message, disableHandler }) => {
+  const handleChange = values => {
+    const limitValueParsed = parseInt(values.value);
+    if (!Number.isNaN(limitValueParsed) && changeLimit) {
+      history.pushState(null, '', window.location.href.split('?')[0] + '?limit=' + values.value);
+      changeLimit(limitValueParsed === -1 ? null : limitValueParsed);
+    }
+  };
+
   return (
     // if the number of results = the limit, then display a message that the results are limited
     // if the number of results is less than the limit, the message won't be displayed
@@ -54,6 +57,7 @@ const ResultsLimited = ({ limit, message, disableHandler}) => {
             onChange={!disableHandler ? handleChange : () => {}}
             options={options}
             required
+            menuPlacement="top"
           />
         }
       </div>
