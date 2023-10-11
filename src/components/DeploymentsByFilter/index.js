@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import CancelDeployment from 'components/CancelDeployment';
 import { getDeploymentDuration } from 'components/Deployment';
+import HoverTag from 'components/HoverTag';
 import DeploymentLink from 'components/link/Deployment';
 import DeploymentsLink from 'components/link/Deployments';
 import ProjectLink from 'components/link/Project';
@@ -199,6 +200,10 @@ const DeploymentsByFilter = ({ deployments }) => {
                 </div>
                 <div className={`status ${deployment.status}`}>
                   {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
+
+                  {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
+                    <HoverTag text={`Step: ${deployment.buildStep}`} maxWidth="100px" tooltipPosition="bottom" />
+                  )}
                 </div>
                 <div className="duration">{getDeploymentDuration(deployment)}</div>
                 <div>

@@ -168,6 +168,10 @@ export const DeploymentsDataTable = styled.div`
       background-repeat: no-repeat;
       background-size: 10px 10px;
       text-indent: 20px;
+      .ant-tag {
+        display: block !important;
+        width: max-content;
+      }
 
       &.active {
         background-image: url('/static/images/in-progress.svg');

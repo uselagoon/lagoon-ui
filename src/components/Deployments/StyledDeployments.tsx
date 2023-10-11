@@ -18,10 +18,10 @@ export const StyledDeployments = styled.div`
     }
 
     label {
-      width:25%;
+      width: 25%;
       display: none;
-      display:inline-block;
-      padding-left:20px;
+      display: inline-block;
+      padding-left: 20px;
       @media ${bp.tinyUp} {
         display: block;
       }
@@ -68,10 +68,10 @@ export const StyledDeployments = styled.div`
       .cancel-button {
         width: 10%;
         button {
-          width:90%;
-          padding:0 !important;
+          width: 90%;
+          padding: 0 !important;
           margin-right: unset !important;
-          height:30px;
+          height: 30px;
         }
         max-height: 100px;
       }
@@ -119,10 +119,16 @@ export const StyledDeployments = styled.div`
         @media ${bp.xs_smallOnly} {
           margin-left: 20px;
         }
+
         background-position: left 7px;
         background-repeat: no-repeat;
         background-size: 10px 10px;
-
+        display: flex;
+        gap: 0.5rem;
+        align-items: start;
+        @media screen and (max-width: 1300px) {
+          flex-wrap: wrap;
+        }
         &.new {
           background-image: url('/static/images/pending.svg');
         }

@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'components/Button';
 import CancelDeployment from 'components/CancelDeployment';
+import HoverTag from 'components/HoverTag';
 import LogViewer from 'components/LogViewer';
 import BulkDeploymentLink from 'components/link/BulkDeployment';
 import moment from 'moment';
@@ -45,7 +46,10 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
       <FieldWrapper className={`status ${deployment.status}`}>
         <div>
           <label>Status</label>
-          <div className="field">{deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}</div>
+          <div className="field">{deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}</div>{' '}
+          {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
+            <HoverTag text={`Step: ${deployment.buildStep}`} />
+          )}
         </div>
       </FieldWrapper>
       <FieldWrapper className="duration">
