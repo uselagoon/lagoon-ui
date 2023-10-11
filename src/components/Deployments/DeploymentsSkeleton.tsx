@@ -7,18 +7,23 @@ const DeploymentsSkeleton = () => {
   const numberOfDeploymentFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const skeletonItem = (
-    <div className="data-row">
-      <div className="name">
-        <Skeleton />
+    <div className="deploymentRow">
+      <div className="data-row">
+        <div className="name">
+          <Skeleton />
+        </div>
+        <div className="started">
+          <Skeleton />
+        </div>
+        <div className="status">
+          <Skeleton width={'80%'} />
+        </div>
+        <div className="duration">
+          <Skeleton width={'80%'} />
+        </div>
       </div>
-      <div className="started">
-        <Skeleton />
-      </div>
-      <div className="status">
-        <Skeleton width={'50%'} />
-      </div>
-      <div className="duration">
-        <Skeleton width={'50%'} />
+      <div className="cancel-button">
+        <Skeleton width={'80%'} />
       </div>
     </div>
   );

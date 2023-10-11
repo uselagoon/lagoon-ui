@@ -7,11 +7,13 @@ export default gql`
       name
       openshiftProjectName
       project {
+        id
         name
         problemsUi
         factsUi
       }
       tasks(taskName: $taskName) {
+        id
         name
         taskName
         status

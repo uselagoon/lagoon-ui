@@ -7,6 +7,7 @@ export default gql`
       name
       openshiftProjectName
       project {
+        id
         name
         problemsUi
         factsUi

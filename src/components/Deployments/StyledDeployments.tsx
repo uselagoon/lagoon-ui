@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 export const StyledDeployments = styled.div`
   .header {
+    width: 90%;
     @media ${bp.tinyUp} {
       align-items: center;
       display: flex;
       justify-content: space-between;
       margin: 0 0 14px;
-      padding-right: 40px;
     }
     @media ${bp.smallOnly} {
       flex-wrap: wrap;
@@ -18,9 +18,10 @@ export const StyledDeployments = styled.div`
     }
 
     label {
+      width:25%;
       display: none;
-      padding-left: 20px;
-      width: 25%;
+      display:inline-block;
+      padding-left:20px;
       @media ${bp.tinyUp} {
         display: block;
       }
@@ -45,6 +46,36 @@ export const StyledDeployments = styled.div`
     border-radius: 3px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
 
+    .deploymentRow {
+      display: flex;
+      align-items: center;
+      border: 1px solid ${props => props.theme.borders.tableRow};
+      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+      &:hover {
+        border: 1px solid #2bc0d8;
+      }
+      & > :nth-child(1) {
+        width: 90% !important;
+      }
+      & > :nth-child(2) {
+        padding: unset;
+        height: 30px;
+        &.btn--disabled {
+          margin-right: unset;
+        }
+      }
+      .cancel-button {
+        width: 10%;
+        button {
+          width:90%;
+          padding:0 !important;
+          margin-right: unset !important;
+          height:30px;
+        }
+        max-height: 100px;
+      }
+    }
     .data-none {
       border: 1px solid ${props => props.theme.borders.tableRow};
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
@@ -56,33 +87,24 @@ export const StyledDeployments = styled.div`
     }
 
     .data-row {
-      background-image: url('/static/images/right-arrow.svg');
-      background-position: right 20px center;
-      background-repeat: no-repeat;
-      background-size: 18px 11px;
-      border: 1px solid ${props => props.theme.borders.tableRow};
-      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      border: 0px transparent;
+      border-bottom: 0px solid transparent;
       border-radius: 0;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;
-      transition: all 0.3s ease;
       @media ${bp.tinyUp} {
         display: flex;
         justify-content: space-between;
-        padding-right: 40px;
       }
 
       & > div {
         padding-left: 20px;
-        @media ${bp.tinyUp} {
-          width: 25%;
-        }
+        width: 25%;
       }
 
       &:hover {
-        border: 1px solid ${color.brightBlue};
+        border-width: 0px !important;
       }
-
       &:first-child {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;

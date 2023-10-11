@@ -30,6 +30,13 @@ export const StyledTask = styled.div`
     }
 
     .field-wrapper {
+      .cancel-button {
+        button {
+          margin-right: unset !important;
+        }
+        max-height: 100px;
+        max-width: 120px;
+      }
       & > div:first-of-type {
         margin-left: 14px;
       }
