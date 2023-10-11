@@ -22,7 +22,7 @@ export default gql`
       }
     }
 
-    organization: organizationById (organization: $id){
+    organization: organizationById (id: $id){
       id
       name
       quotaGroup
