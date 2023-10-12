@@ -14,6 +14,7 @@ export default gql`
       quotaProject
       quotaGroup
       quotaNotification
+      quotaEnvironment
       owners {
         email
       }

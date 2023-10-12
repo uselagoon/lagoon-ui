@@ -4,19 +4,21 @@ import ReactSelect from 'react-select';
 
 import Link from 'next/link';
 
-import { DisconnectOutlined, EyeOutlined } from '@ant-design/icons';
+import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/react-hooks';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import gql from 'graphql-tag';
 
-import AddUserToGroup from '../AddUserToGroup';
+import AddUserToGroup, { ADD_GROUP_MEMBER_MUTATION, options } from '../AddUserToGroup';
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import {
   AddButtonContent,
   Footer,
+  ModalChildren,
   RemoveModalHeader,
   RemoveModalParagraph,
   TableActions,
@@ -77,6 +79,19 @@ const GroupMembers = ({
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
   const [addProjectModalOpen, setAddProjectModalOpen] = useState(false);
+  const [updatePending, setUpdatePending] = useState(false);
+
+  const [modalState, setModalState] = useState({
+    open: false,
+    current: '',
+  });
+
+  const [updateUser] = useMutation(ADD_GROUP_MEMBER_MUTATION);
+
+  const closeModal = () => {
+    setModalState({ open: false, current: '' });
+  };
+
   const closeAddProjectModal = () => {
     setSelectedProject('');
     setAddProjectModalOpen(false);
@@ -96,7 +111,7 @@ const GroupMembers = ({
 
         if (isDefaultUser) return <div className="firstName"></div>;
 
-        return firstName ? <div className="name">{firstName}</div> : <> - </>;
+        return firstName ? <div className="firstName">{firstName}</div> : <> - </>;
       },
     },
     {
@@ -144,6 +159,21 @@ const GroupMembers = ({
         const linkData = getLinkData(user.email, organizationId, organizationName);
         return (
           <TableActions>
+            <span
+              className="link"
+              onClick={() =>
+                setModalState({
+                  open: true,
+                  current: {
+                    email: user.email,
+                    role: user.role,
+                  },
+                })
+              }
+            >
+              <EditOutlined className="edit" />
+            </span>
+
             <Link href={linkData.urlObject} as={linkData.asPath}>
               <a className="link">
                 <EyeOutlined className="view" />
@@ -403,6 +433,74 @@ const GroupMembers = ({
           </Mutation>
         </Modal>
       </TableWrapper>
+
+      <Modal style={{ content: { width: '50%' } }} isOpen={modalState.open} onRequestClose={closeModal}>
+        <ModalChildren>
+          <div className="form-box">
+            <label>
+              Email:
+              <input disabled className="inputName" type="text" value={modalState.current.email} />
+            </label>
+          </div>
+          <label>
+            User Role: <span style={{ color: '#E30000' }}>*</span>
+            <RoleSelect>
+              <ReactSelect
+                className="select"
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                  placeholder: base => ({ ...base, fontSize: '16px' }),
+                  menu: base => ({ ...base, fontSize: '16px' }),
+                  option: base => ({ ...base, fontSize: '16px' }),
+                  singleValue: base => ({ ...base, fontSize: '16px' }),
+                }}
+                aria-label="Role"
+                placeholder="Select role"
+                name="role"
+                value={options.find(o => o.value === modalState.current.role)}
+                onChange={selectedOption => {
+                  const clone = { ...modalState };
+                  clone.current.role = selectedOption.value;
+
+                  setModalState(clone);
+                }}
+                options={options}
+                required
+              />
+            </RoleSelect>
+          </label>
+        </ModalChildren>
+
+        <Footer>
+          <Button
+            disabled={updatePending}
+            loading={updatePending}
+            action={() => {
+              setUpdatePending(true);
+              updateUser({
+                variables: {
+                  email: modalState.current.email,
+                  role: modalState.current.role,
+                  group: groupName,
+                },
+              })
+                .then(() => {
+                  closeModal();
+                  refetch();
+                })
+                .finally(() => setUpdatePending(false));
+            }}
+            variant="primary"
+          >
+            Update
+          </Button>
+
+          <Button variant="ghost" action={closeModal}>
+            Cancel
+          </Button>
+        </Footer>
+      </Modal>
     </StyledGroupMembers>
   );
 };

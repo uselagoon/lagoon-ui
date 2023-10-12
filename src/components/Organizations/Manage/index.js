@@ -3,14 +3,15 @@ import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
 
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/Users/logic';
 import gql from 'graphql-tag';
 
 import useSortableData from '../../../lib/withSortedItems';
-import AddUserToOrganization from '../AddUserToOrganization';
+import AddUserToOrganization, { ADD_USER_MUTATION } from '../AddUserToOrganization';
+import { NewUser } from '../AddUserToOrganization/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
@@ -41,10 +42,17 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
   const [dynamicUsers, setDynamicUsers] = useState(users);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedUserOwner, setSelectedUserOwner] = useState(false);
 
   const closeUserModal = () => {
     setSelectedUser('');
     setUserModalOpen(false);
+  };
+
+  const closeEditModal = () => {
+    setSelectedUser('');
+    setEditModalOpen(false);
   };
 
   useEffect(() => {
@@ -120,6 +128,79 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       render: ({ ...user }) => {
         return (
           <TableActions>
+            <span
+              className="link"
+              onClick={() => {
+                setSelectedUser(user?.id);
+                setEditModalOpen(true);
+                setSelectedUserOwner(user.owner);
+              }}
+            >
+              <EditOutlined className="edit" />
+            </span>
+
+            <Modal
+              style={{ content: { width: '50%' } }}
+              isOpen={editModalOpen && selectedUser === user?.id}
+              onRequestClose={closeEditModal}
+            >
+              <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
+                {(addUser, { called, error, data }) => {
+                  if (error) {
+                    return <div>{error.message}</div>;
+                  }
+                  if (data) {
+                    setSelectedUser('');
+                    refetch().then(closeEditModal);
+                  }
+                  return (
+                    <NewUser>
+                      <h4>Update user</h4>
+                      <div className="form-box">
+                        <label>
+                          User Email: <span style={{ color: '#E30000' }}></span>
+                          <input className="inputEmail" type="text" value={user.email} disabled />
+                        </label>
+                      </div>
+                      <label>
+                        Owner: <span style={{ color: '#E30000' }}>*</span>
+                        <input
+                          className="inputCheckbox"
+                          type="checkbox"
+                          checked={selectedUserOwner}
+                          onChange={() => setSelectedUserOwner(!selectedUserOwner)}
+                        />
+                      </label>
+
+                      <div>
+                        <Footer>
+                          <Button
+                            disabled={called}
+                            loading={called}
+                            action={() => {
+                              addUser({
+                                variables: {
+                                  email: user.email,
+                                  organization: organization.id,
+                                  owner: selectedUserOwner,
+                                },
+                              });
+                            }}
+                            variant="primary"
+                          >
+                            Update
+                          </Button>
+                          <Button variant="ghost" action={closeEditModal}>
+                            Cancel
+                          </Button>
+                        </Footer>
+                      </div>
+                    </NewUser>
+                  );
+                }}
+              </Mutation>
+            </Modal>
+
             <DeleteOutlined
               className="delete"
               onClick={() => {
@@ -127,6 +208,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
                 setDeleteUserModalOpen(true);
               }}
             />
+
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
               <RemoveModalParagraph>

@@ -45,7 +45,7 @@ export const CancelTaskButton: FC<CancelTaskButtonProps> = ({
   beforeText,
   afterText,
 }) => {
-  const [api, contextHolder] = notification.useNotification();
+  const [api, contextHolder] = notification.useNotification({ maxCount: 1 });
 
   const openNotificationWithIcon = (errorMessage: string) => {
     api['error']({

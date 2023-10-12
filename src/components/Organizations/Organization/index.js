@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
 import { Footer, ModalChildren, Tag } from '../SharedStyles';
-import { LinkBtn, StyledOrganization, StyledOverview, ManageBtn } from './Styles';
+import { LinkBtn, ManageBtn, StyledOrganization, StyledOverview } from './Styles';
 
 const UPDATE_ORGANIZATION_FRIENDLY_NAME = gql`
   mutation updateOrganizationFriendlyName($id: Int!, $friendlyName: String!) {
@@ -53,7 +53,7 @@ const Organization = ({ organization, refetch }) => {
   const [descModalOpen, setDescModalOpen] = useState(false);
   const [description, setDescription] = useState('');
 
-  const quotaDisplay = (quota, quotaNumber, quotaLimit) => {
+  const quotaDisplay = (quota, quotaNumber, quotaLimit, showLink = true) => {
     const pluralName = quota + 's';
     const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -69,14 +69,16 @@ const Organization = ({ organization, refetch }) => {
       <div className="quotaField">
         <span>{pluralName.toUpperCase()}</span>
         <span className="quota">
-          {capitalize(quota)} quota: {quotaNumber} of {quotaLimit}
+          {capitalize(quota)} quota: {quotaNumber} of {quotaLimit == '-1' ? 'unlimited' : quotaLimit}
         </span>
 
-        <Link href={link.urlObject} as={link.asPath}>
-          <LinkBtn>
-            <EyeOutlined className="icon" /> {capitalize(pluralName)}
-          </LinkBtn>
-        </Link>
+        {showLink && (
+          <Link href={link.urlObject} as={link.asPath}>
+            <LinkBtn>
+              <EyeOutlined className="icon" /> {capitalize(pluralName)}
+            </LinkBtn>
+          </Link>
+        )}
       </div>
     );
   };
@@ -120,7 +122,7 @@ const Organization = ({ organization, refetch }) => {
 
               <Footer>
                 <Mutation mutation={UPDATE_ORGANIZATION_FRIENDLY_NAME} onError={e => console.error(e)}>
-                  {(updateOrgFriendlyName, { error, data }) => {
+                  {(updateOrgFriendlyName, { error, data, called }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -133,6 +135,8 @@ const Organization = ({ organization, refetch }) => {
                     return (
                       <Button
                         variant="primary"
+                        disabled={called}
+                        loading={called}
                         action={() => {
                           friendlyName &&
                             updateOrgFriendlyName({
@@ -186,7 +190,7 @@ const Organization = ({ organization, refetch }) => {
               </div>
               <Footer>
                 <Mutation mutation={UPDATE_ORGANIZATION_DESCRIPTION} onError={e => console.error(e)}>
-                  {(updateOrgDescription, { error, data }) => {
+                  {(updateOrgDescription, { error, data, called }) => {
                     if (error) {
                       return <div>{error.message}</div>;
                     }
@@ -199,6 +203,8 @@ const Organization = ({ organization, refetch }) => {
                     return (
                       <Button
                         variant="primary"
+                        disabled={called}
+                        loading={called}
                         action={() => {
                           description &&
                             updateOrgDescription({
@@ -234,6 +240,7 @@ const Organization = ({ organization, refetch }) => {
                 organization.webhook.length,
               organization.quotaNotification
             )}
+            {quotaDisplay('environment', organization.environments.length, organization.quotaEnvironment, false)}
           </div>
 
           <div className="targetwrapper">

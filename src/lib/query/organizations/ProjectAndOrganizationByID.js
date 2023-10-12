@@ -27,6 +27,7 @@ export default gql`
       name
       quotaGroup
       quotaNotification
+      quotaEnvironment
       groups{
         type
         name

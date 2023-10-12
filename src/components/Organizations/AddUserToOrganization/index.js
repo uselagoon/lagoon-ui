@@ -8,9 +8,9 @@ import withLogic from 'components/Organizations/AddUserToOrganization/logic';
 import gql from 'graphql-tag';
 
 import { Footer } from '../SharedStyles';
-import { NewUser, OrganizationSelect } from './Styles';
+import { NewUser } from './Styles';
 
-const ADD_USER_MUTATION = gql`
+export const ADD_USER_MUTATION = gql`
   mutation AddUserToOrganization($email: String!, $organization: Int!, $owner: Boolean) {
     addUserToOrganization(input: { user: { email: $email }, organization: $organization, owner: $owner }) {
       id
@@ -19,7 +19,7 @@ const ADD_USER_MUTATION = gql`
 `;
 
 /**
- * Confirms the deletion of the specified name and type.
+ *  Adds/edits user to an organization
  */
 export const AddUserToOrganization = ({
   organization,
