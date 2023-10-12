@@ -7,6 +7,7 @@ export default gql`
       name
       status
       created
+      buildStep
       priority
       started
       completed
