@@ -283,7 +283,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
                   setLoading(true);
                   cb()
                     .then(() => {
-                      onNotificationAdded();
+                      void onNotificationAdded();
                     })
                     .then(() => {
                       resetState();
