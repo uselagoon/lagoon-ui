@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 import { Footer } from '../SharedStyles';
 import { NewMember, RoleSelect } from './Styles';
 
-const ADD_GROUP_MEMBER_MUTATION = gql`
+export const ADD_GROUP_MEMBER_MUTATION = gql`
   mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!) {
     addUserToGroup(input: { user: { email: $email }, group: { name: $group }, role: $role }) {
       name
@@ -18,7 +18,7 @@ const ADD_GROUP_MEMBER_MUTATION = gql`
   }
 `;
 
-let options = [
+export const options = [
   {
     label: 'Guest',
     value: 'GUEST',
@@ -69,6 +69,7 @@ export const AddUserToGroup = ({
           });
         }
         return (
+        
           <NewMember>
             <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
             <div className="form-box">

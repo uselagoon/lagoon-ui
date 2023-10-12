@@ -15,6 +15,7 @@ export default gql`
       friendlyName
       quotaGroup
       quotaNotification
+      quotaEnvironment
       deployTargets {
         id
         name
@@ -33,6 +34,9 @@ export default gql`
         id
         name
         groupCount
+      }
+      environments {
+        id
       }
       groups {
         id

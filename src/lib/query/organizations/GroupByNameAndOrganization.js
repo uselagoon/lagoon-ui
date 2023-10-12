@@ -28,6 +28,7 @@ export default gql`
       quotaProject
       quotaGroup
       quotaNotification
+      quotaEnvironment
       deployTargets{
         id
         name

@@ -95,6 +95,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
   const [addTeams] = useMutation(ADD_MICROSOFTTEAMS_NOTIFICATION);
   const [addWebhook] = useMutation(ADD_WEBHOOK_NOTIFICATION);
 
+  const [loading, setLoading] = useState(false);
   const resetState = () => {
     setNotificationName('');
     setEmail('');
@@ -278,16 +279,23 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
               action={() => {
                 const cb = getAction();
 
-                cb &&
+                if (cb) {
+                  setLoading(true);
                   cb()
-                    .then(onNotificationAdded)
+                    .then(() => {
+                      onNotificationAdded();
+                    })
                     .then(() => {
                       resetState();
                       closeModal();
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => console.error(err))
+                    .finally(() => setLoading(false));
+                }
               }}
               variant="primary"
+              loading={loading}
+              disabled={loading}
             >
               Add
             </Button>
