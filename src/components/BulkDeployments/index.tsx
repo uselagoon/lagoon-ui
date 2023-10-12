@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import CancelDeployment from 'components/CancelDeployment';
 import { getDeploymentDuration } from 'components/Deployment';
+import HoverTag from 'components/HoverTag';
 import DeploymentLink from 'components/link/Deployment';
 import DeploymentsLink from 'components/link/Deployments';
 import ProjectLink from 'components/link/Project';
@@ -19,6 +20,7 @@ interface BulkDeploymentsProps {
     priority: string;
     status: string;
     created: string;
+    buildStep?: string;
     environment: {
       openshiftProjectName: string;
       name: string;
@@ -72,6 +74,9 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
           <div className="started">{moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
           <div className={`status ${deployment.status}`}>
             {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
+            {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
+              <HoverTag text={`Step: ${deployment.buildStep}`} />
+            )}
           </div>
           <div className="duration">{getDeploymentDuration(deployment)}</div>
           <div>
