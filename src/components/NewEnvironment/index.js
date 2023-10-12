@@ -13,6 +13,7 @@ import {useQuery} from "@apollo/react-hooks";
 import ProjectByNameWithDeployKeyQuery from "../../lib/query/ProjectByNameWithDeployKey";
 import { Footer } from '../Organizations/SharedStyles';
 import getConfig from "next/config";
+import NewEnvironmentButton from "./NewEnvironmentButton";
 const { WEBHOOK_URL } = getConfig().publicRuntimeConfig;
 
 const DEPLOY_ENVIRONMENT_BRANCH_MUTATION = gql`
@@ -94,8 +95,8 @@ const NewEnvironment = ({
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (data) {
-                  refresh().then(setClear).then(closeModal);
+                if (data && !data.deployEnvironmentBranch.includes("Skipped")) {
+                    refresh().then(setClear).then(closeModal);
                 }
 
                 return (
@@ -217,22 +218,17 @@ const NewEnvironment = ({
                                 }</span> environment: <b>{inputBranchName}</b></div>
                               : null
                             }
-                            <Button
+                            <NewEnvironmentButton
                                 disabled={inputBranchName === ''}
-                                action={() => {
-                                  deployEnvironmentBranch({
-                                    variables: {
-                                      branch: inputBranchName,
-                                      project: inputProjectName,
-                                    },
-                                  });
-                                }}
-                                variant="primary"
-                            >
-                              {loading ? <div className="loader"></div> : "Create"}
-                            </Button>
+                                deployEnvironmentBranch={deployEnvironmentBranch}
+                                inputBranchName={inputBranchName}
+                                inputProjectName={inputProjectName}
+                                loading={loading}
+                                error={data && data.deployEnvironmentBranch.includes("Skipped")}
+                                data={data}
+                            />
 
-                            <Button action={() => closeModal()} variant="ghost">
+                            <Button action={() => [setClear(), closeModal()]} variant="ghost">
                               Cancel
                             </Button>
                           </Footer>
