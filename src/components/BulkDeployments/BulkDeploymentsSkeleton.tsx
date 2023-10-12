@@ -8,25 +8,29 @@ const BulkDeploymentsSkeleton = () => {
   const rowItem = (
     <div className="data-row">
       <div className="project">
-        <Skeleton />
+        <Skeleton width={'100%'} />
       </div>
       <div className="environment">
-        <Skeleton />
+        <Skeleton width={'100%'} />
       </div>
       <div className="name">
-        <Skeleton />
+        <Skeleton width={'100%'} />
       </div>
       <div className="priority">
-        <Skeleton />
+        <Skeleton width={'100%'} />
       </div>
-      <div className="started">
-        <Skeleton />
+      <div className="created">
+        <Skeleton width={'100%'} />
       </div>
-      <div className="status">
-        <Skeleton />
+      <div>
+        <Skeleton width={'100%'} />
       </div>
-      <div className="duration"></div>
-      <div></div>
+      <div className="duration">
+        <Skeleton width={'100%'} />
+      </div>
+      <div>
+        <Skeleton width={'100%'} />
+      </div>
     </div>
   );
 
@@ -35,11 +39,11 @@ const BulkDeploymentsSkeleton = () => {
       <BulkDeploymentsHeader>
         <label>Project</label>
         <label>Environment</label>
-        <label>Name</label>
+        <label className="name">Name</label>
         <label className="priority">Priority</label>
-        <label>Created</label>
-        <label>Status</label>
-        <label>Duration</label>
+        <label className="created">Created</label>
+        <label className="status">Status</label>
+        <label className="duration">Duration</label>
         <label></label>
       </BulkDeploymentsHeader>
       <BulkDeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => rowItem)}</BulkDeploymentsDataTable>
