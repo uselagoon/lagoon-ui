@@ -15,7 +15,7 @@ const DeploymentsSkeleton = () => {
         <div className="started">
           <Skeleton />
         </div>
-        <div className="status">
+        <div>
           <Skeleton width={'80%'} />
         </div>
         <div className="duration">

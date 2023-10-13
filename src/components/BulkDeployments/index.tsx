@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import CancelDeployment from 'components/CancelDeployment';
 import { getDeploymentDuration } from 'components/Deployment';
+import HoverTag from 'components/HoverTag';
 import DeploymentLink from 'components/link/Deployment';
 import DeploymentsLink from 'components/link/Deployments';
 import ProjectLink from 'components/link/Project';
@@ -19,6 +20,7 @@ interface BulkDeploymentsProps {
     priority: string;
     status: string;
     created: string;
+    buildStep: string;
     environment: {
       openshiftProjectName: string;
       name: string;
@@ -34,11 +36,11 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
     <BulkDeploymentsHeader>
       <label>Project</label>
       <label>Environment</label>
-      <label>Name</label>
+      <label className="name">Name</label>
       <label className="priority">Priority</label>
-      <label>Created</label>
-      <label>Status</label>
-      <label>Duration</label>
+      <label className="created">Created</label>
+      <label className="status">Status</label>
+      <label className="duration">Duration</label>
       <label></label>
     </BulkDeploymentsHeader>
     <BulkDeploymentsDataTable>
@@ -71,7 +73,10 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
           <div className="priority">{deployment.priority}</div>
           <div className="started">{moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
           <div className={`status ${deployment.status}`}>
-            {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
+            <span>{deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)} </span>
+            {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
+              <HoverTag text={deployment.buildStep} maxWidth="160px" />
+            )}
           </div>
           <div className="duration">{getDeploymentDuration(deployment)}</div>
           <div>

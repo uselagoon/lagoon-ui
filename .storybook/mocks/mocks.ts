@@ -311,6 +311,7 @@ export const getDeployment = (seed: number) => {
     status: deployStatus(),
     created,
     started,
+    buildStep:faker.word.words(3),
     completed,
     environment: generateEnvironments({ seed }),
     remoteId: faker.number.int(),

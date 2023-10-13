@@ -2,12 +2,12 @@ import { bp, color } from 'lib/variables';
 import styled from 'styled-components';
 
 export const BulkDeploymentsHeader = styled.div`
+  padding-left: 20px;
   @media ${bp.tinyUp} {
     align-items: center;
     display: flex;
     justify-content: space-between;
     margin: 0 0 14px;
-    padding-right: 40px;
   }
   @media ${bp.smallOnly} {
     flex-wrap: wrap;
@@ -16,17 +16,17 @@ export const BulkDeploymentsHeader = styled.div`
     margin-top: 40px;
   }
 
-  label {
+  label:not(.priority) {
     display: none;
-    padding-left: 20px;
-    width: 25%;
+    width: 12.5%;
+    flex: 1;
+    gap: 0.25rem;
     @media ${bp.tinyUp} {
       display: block;
     }
   }
-
-  .priority {
-    width: 10%;
+  label.priority {
+    width: 8%;
   }
 `;
 
@@ -46,26 +46,19 @@ export const BulkDeploymentsDataTable = styled.div`
   }
 
   .data-row {
-    background-image: url('/static/images/right-arrow.svg');
-    background-position: right 20px center;
-    background-repeat: no-repeat;
-    background-size: 18px 11px;
-
     border: 1px solid ${props => props.theme.borders.tableRow};
     border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
-    @media ${bp.tinyUp} {
-      display: flex;
-      justify-content: space-between;
-      padding-right: 40px;
-    }
-
-    & > div {
-      padding-left: 20px;
-      @media ${bp.tinyUp} {
-        width: 25%;
+    display: flex;
+    gap: 0.25rem;
+    padding-left: 20px;
+    & > div:not(.priority) {
+      width: 12.5%;
+      flex: 1;
+      &:last-child {
+        padding-left: 0;
       }
     }
 
@@ -92,7 +85,7 @@ export const BulkDeploymentsDataTable = styled.div`
     }
 
     .priority {
-      width: 10%;
+      width: 8%;
     }
 
     .status {
@@ -102,7 +95,17 @@ export const BulkDeploymentsDataTable = styled.div`
       background-position: left 7px;
       background-repeat: no-repeat;
       background-size: 10px 10px;
-
+      display: flex;
+      gap: 0.5rem;
+      align-items: start;
+      flex-wrap: wrap;
+      span:first-child {
+        @media screen and (min-width: 1500px) {
+          width: 40%;
+        }
+        display: inline-block;
+        margin-left: 20px;
+      }
       &.new {
         background-image: url('/static/images/pending.svg');
       }

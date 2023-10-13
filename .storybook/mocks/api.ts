@@ -125,6 +125,7 @@ export const MockBulkDeployments = (seed: number) => {
       name: faker.lorem.slug({ min: 1, max: 5 }),
       created: faker.date.past().toDateString(),
       started: faker.date.past().toDateString(),
+      buildStep:faker.word.words(),
       completed: faker.date.past().toDateString(),
       buildLog: faker.word.words(),
       bulkId: faker.string.uuid(),

@@ -19,6 +19,7 @@ export default gql`
         name
         status
         created
+        buildStep
         started
         completed
         bulkId
