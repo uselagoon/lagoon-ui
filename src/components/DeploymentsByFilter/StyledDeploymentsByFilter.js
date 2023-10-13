@@ -171,6 +171,7 @@ export const DeploymentsDataTable = styled.div`
       .ant-tag {
         display: block !important;
         width: max-content;
+        text-indent: 0px;
       }
 
       &.active {
