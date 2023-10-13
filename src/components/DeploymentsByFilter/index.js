@@ -202,7 +202,7 @@ const DeploymentsByFilter = ({ deployments }) => {
                   {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
 
                   {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
-                    <HoverTag text={deployment.buildStep} maxWidth="100px" tooltipPosition="bottom" />
+                    <HoverTag text={deployment.buildStep} maxWidth="160px" tooltipPosition="bottom" />
                   )}
                 </div>
                 <div className="duration">{getDeploymentDuration(deployment)}</div>
