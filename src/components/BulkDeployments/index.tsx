@@ -75,7 +75,7 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
           <div className={`status ${deployment.status}`}>
             <span>{deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)} </span>
             {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
-              <HoverTag text={`step: ${deployment.buildStep}`} maxWidth="100px" />
+              <HoverTag text={deployment.buildStep} maxWidth="100px" />
             )}
           </div>
           <div className="duration">{getDeploymentDuration(deployment)}</div>
