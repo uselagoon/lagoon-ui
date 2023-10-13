@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 
+import { notification } from 'antd';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 
@@ -29,6 +30,18 @@ const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
   } else {
     deploymentsEnabled = false;
   }
+
+  const [api, contextHolder] = notification.useNotification({ maxCount: 1 });
+
+  const openNotificationWithIcon = errorMessage => {
+    api['error']({
+      message: 'There was a problem deploying.',
+      description: errorMessage,
+      placement: 'top',
+      duration: 0,
+      style: { width: '500px' },
+    });
+  };
 
   return (
     <NewDeployment>
@@ -60,17 +73,12 @@ const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
               }
               return (
                 <React.Fragment>
-                  <Button action={deploy} disabled={loading}>
-                    {loading ? <span className="loader"></span> : "Deploy"}
+                  {contextHolder}
+                  <Button action={deploy} disabled={loading} loading={loading}>
+                    Deploy
                   </Button>
                   {success && <div className="deploy_result">Deployment queued.</div>}
-
-                  {error && (
-                    <div className="deploy_result">
-                      <p>There was a problem deploying.</p>
-                      <p>{error.message}</p>
-                    </div>
-                  )}
+                  {error && openNotificationWithIcon(error.message)}
                 </React.Fragment>
               );
             }}
