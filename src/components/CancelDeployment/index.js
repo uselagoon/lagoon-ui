@@ -12,7 +12,7 @@ const CANCEL_DEPLOYMENT_MUTATION = gql`
 `;
 
 export const CancelDeploymentButton = ({ action, success, loading, error, beforeText, afterText }) => {
-  const [api, contextHolder] = notification.useNotification();
+  const [api, contextHolder] = notification.useNotification({ maxCount: 1 });
 
   const openNotificationWithIcon = errorMessage => {
     api['error']({
