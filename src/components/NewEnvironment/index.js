@@ -95,7 +95,10 @@ const NewEnvironment = ({
                 if (error) {
                   return <div>{error.message}</div>;
                 }
-                if (data && !data.deployEnvironmentBranch.includes("Skipped")) {
+                const errors = ["Skipped", "Error"]
+                const regex = new RegExp(errors.join("|"), "i");
+                const err = regex.test(data && data.deployEnvironmentBranch);
+                if (data && !err) {
                     refresh().then(setClear).then(closeModal);
                 }
 
@@ -224,7 +227,7 @@ const NewEnvironment = ({
                                 inputBranchName={inputBranchName}
                                 inputProjectName={inputProjectName}
                                 loading={loading}
-                                error={data && data.deployEnvironmentBranch.includes("Skipped")}
+                                error={err}
                                 data={data}
                             />
 
