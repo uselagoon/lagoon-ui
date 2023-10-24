@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-export const getLinkData = (organizationSlug, organizationName) => ({
+export const getLinkData = (organizationSlug) => ({
   urlObject: {
-    pathname: '/organizations/notifications',
-    query: { organizationSlug: organizationSlug, organizationName: organizationName }
+    pathname: `/organizations/notifications`,
+    query: { organizationSlug: organizationSlug },
   },
   asPath: `/organizations/${organizationSlug}/notifications`
 });
@@ -13,12 +13,11 @@ export const getLinkData = (organizationSlug, organizationName) => ({
  */
 const OrgNotificationsLink = ({
   organizationSlug,
-  organizationName,
   children,
-  className = '',
-  prefetch = false
+  className = null,
+  prefetch = false,
 }) => {
-  const linkData = getLinkData(organizationSlug, organizationName);
+  const linkData = getLinkData(organizationSlug);
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
       <a className={className}>{children}</a>
@@ -27,3 +26,4 @@ const OrgNotificationsLink = ({
 };
 
 export default OrgNotificationsLink;
+
