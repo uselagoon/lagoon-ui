@@ -115,6 +115,7 @@ export const AddVariable = ({
           <div className="var-modal">
             <label htmlFor="varName">Name</label>
             <input
+              data-cy="varName"
               id="varNameId"
               name="varName"
               className="addVarnameInput"
@@ -127,6 +128,7 @@ export const AddVariable = ({
           <div className="var-modal">
             <label htmlFor="varName">Value</label>
             <input
+              data-cy="varValue"
               id="varValueId"
               name="varValue"
               className="addVarValueInput"

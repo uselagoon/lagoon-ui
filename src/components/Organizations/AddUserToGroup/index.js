@@ -69,7 +69,6 @@ export const AddUserToGroup = ({
           });
         }
         return (
-        
           <NewMember>
             <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
             <div className="form-box">
@@ -88,6 +87,7 @@ export const AddUserToGroup = ({
               User Role: <span style={{ color: '#E30000' }}>*</span>
               <RoleSelect>
                 <ReactSelect
+                  classNamePrefix="react-select"
                   className="select"
                   menuPortalTarget={document.body}
                   styles={{
@@ -110,6 +110,7 @@ export const AddUserToGroup = ({
             <div>
               <Footer>
                 <Button
+                  testId="addUserToGroup"
                   disabled={called || inputValueEmail === '' || !selectedRole}
                   action={() => {
                     addGroupMember({

@@ -155,6 +155,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                         Owner: <span style={{ color: '#E30000' }}>*</span>
                         <input
                           className="inputCheckbox"
+                          data-cy="userIsOwner"
                           type="checkbox"
                           checked={selectedUserOwner}
                           onChange={() => setSelectedUserOwner(!selectedUserOwner)}
@@ -164,6 +165,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                       <div>
                         <Footer>
                           <Button
+                            testId="updateUser"
                             disabled={called}
                             loading={called}
                             action={() => {
@@ -220,6 +222,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                     }
                     return (
                       <Button
+                        testId="deleteConfirm"
                         variant="primary"
                         loading={called}
                         disabled={called}
@@ -276,7 +279,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
       <div>
         <Tooltip overlayClassName="orgTooltip" title="Add an administrator" placement="bottom">
           <>
-            <Button action={() => setAddUserModalOpen(true)}>
+            <Button testId="addUserbtn" action={() => setAddUserModalOpen(true)}>
               <AddButtonContent>Add user</AddButtonContent>
             </Button>
           </>

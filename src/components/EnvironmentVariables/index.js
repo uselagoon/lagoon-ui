@@ -215,6 +215,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               <Button
                 onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
+                data-cy="hideShowValues"
                 aria-expanded={openEnvVars}
               >
                 { !openEnvVars ? "Show values" : "Hide values"}

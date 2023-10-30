@@ -21,7 +21,7 @@ const ProjectNavTabs = ({ activeTab, project }) => {
         </ProjectLink>
       </li>
       {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && (
-        <li className={`variables ${activeTab === 'variables' ? 'active' : ''} linkContainer`}>
+        <li data-cy="variablesLink" className={`variables ${activeTab === 'variables' ? 'active' : ''} linkContainer`}>
           <ProjectVariablesLink projectSlug={project.name} className="navLink">
             <UnorderedListOutlined className="icon" />
             <span className="destination"> Variables</span>

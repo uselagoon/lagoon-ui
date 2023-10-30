@@ -95,7 +95,7 @@ export const NewGroup = ({
       <div className="margins">
         <Tooltip overlayClassName="orgTooltip" title="Add a new group" placement="bottom">
           <>
-            <Button disabled={disabled} action={openModal}>
+            <Button testId="addNewGroup" disabled={disabled} action={openModal}>
               <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>Add Group</span>
             </Button>
           </>
@@ -103,7 +103,7 @@ export const NewGroup = ({
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_GROUP_MUTATION}>
+          <Mutation mutation={ADD_GROUP_MUTATION} onError={e => console.error(e)}>
             {(addGroup, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
@@ -124,6 +124,7 @@ export const NewGroup = ({
                         Group Name: <span style={{ color: '#E30000' }}>*</span>{' '}
                         <input
                           className="inputEmail"
+                          data-cy="groupName-input"
                           type="text"
                           placeholder="Enter name"
                           value={inputValueGroup}
@@ -141,6 +142,7 @@ export const NewGroup = ({
                       <Footer>
                         <p className="explainer">Please use (a to z) lower case, numbers and - only</p>
                         <Button
+                          testId="createGroup"
                           disabled={
                             called ||
                             inputValueGroup === '' ||

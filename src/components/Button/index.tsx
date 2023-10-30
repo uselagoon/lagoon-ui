@@ -12,6 +12,7 @@ interface ButtonProps {
   children?: ReactNode;
   variant?: string;
   icon?: string;
+  testId?: string;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -22,6 +23,7 @@ const Button: FC<ButtonProps> = ({
   children,
   variant,
   icon,
+  testId,
 }) => {
   const createClassName = () => {
     let className = `${variant ? `btn-${variant}` : 'btn'} ${disabled ? 'btn--disabled' : ''}`;
@@ -42,7 +44,7 @@ const Button: FC<ButtonProps> = ({
 
   const ButtonElement = href ? (
     <LinkElement className={createClassName()} href={href}>
-      {icon && <i className={icon} />} {children}
+      {icon && <i data-cy={testId || ''} className={icon} />} {children}
     </LinkElement>
   ) : (
     <ButtonElem
@@ -50,6 +52,7 @@ const Button: FC<ButtonProps> = ({
       className={createClassName()}
       onClick={onClick}
       disabled={loading || disabled}
+      data-cy={testId || ''}
     >
       {icon && (typeof icon === 'string' ? <i className={`icon ${icon}`} /> : icon)}
 

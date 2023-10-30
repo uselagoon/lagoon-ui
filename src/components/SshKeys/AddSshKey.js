@@ -3,9 +3,7 @@ import { Mutation } from 'react-apollo';
 
 import Button from 'components/Button';
 import Me from 'lib/query/Me';
-import { bp, color, fontSize } from 'lib/variables';
-import { none } from 'ramda';
-import css from 'styled-jsx/css';
+
 
 import AddSshKeyMutation from '../../lib/mutation/AddSshKey';
 
@@ -57,6 +55,7 @@ const AddSshKey = ({ me: { id, email } }) => {
               <div>
                 <label htmlFor="sshKeyName">SSH Key Name</label>
                 <input
+                  data-cy="sshKeyName"
                   id="sshKeyName"
                   name="sshKeyName"
                   className="addSshKeyInput"
@@ -69,6 +68,7 @@ const AddSshKey = ({ me: { id, email } }) => {
               <div>
                 <label htmlFor="sshKey">SSH Key</label>
                 <textarea
+                  data-cy="sshKey"
                   id="sshKey"
                   name="sshKey"
                   className="addSshKeyInput"
