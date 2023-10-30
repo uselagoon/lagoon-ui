@@ -57,37 +57,37 @@ const HeaderMenu = ({ auth }) => {
       <Dropdown
         open={open}
         trigger={
-          <DropdownButton ref={ref} onClick={handleOpen}>
+          <DropdownButton data-cy="headerMenu" ref={ref} onClick={handleOpen}>
             {auth.user.username}
           </DropdownButton>
         }
         menu={[
           <Link key="settings" href="/settings" prefetch>
-            <a key="settings" className="settings">
+            <a key="settings" className="settings" data-cy="settings">
               Settings
             </a>
           </Link>,
           <hr key="line" />,
           <Link key="projects" href="/projects" prefetch>
-            <a key="projects" className="menuitem">
+            <a key="projects" className="menuitem" data-cy="projects">
               Your projects
             </a>
           </Link>,
           <Link key="organizations" href="/organizations" prefetch>
-            <a key="organizations" className="menuitem">
+            <a key="organizations" className="menuitem" data-cy="organizations">
               Your organizations
             </a>
           </Link>,
 
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
             <Link href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`} passHref>
-              <a key="account" className="menuitem">
+              <a key="account" className="menuitem" data-cy="account">
                 Your account
               </a>
             </Link>
           ),
           <hr key="lastline" />,
-          <a key="logout" className="logout" onClick={auth.logout}>
+          <a key="logout" data-cy="logout" className="logout" onClick={auth.logout}>
             Sign out
           </a>,
         ]}
@@ -102,7 +102,7 @@ const Dropdown = ({ open, trigger, menu }) => {
       <StyledDropdown>
         {trigger}
         {open ? (
-          <DropdownMenu>
+          <DropdownMenu data-cy="menuList">
             {menu.map((menuItem, index) => (
               <li key={index} className="menu-item">
                 {menuItem}

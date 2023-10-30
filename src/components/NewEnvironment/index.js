@@ -84,7 +84,7 @@ const NewEnvironment = ({
           <Button action={openModal}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '0.25em' }}>
             <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Create Environment</span>
+            <span style={{ fontSize: '16px', lineHeight: '24px' }} data-cy="createEnvironment">Create Environment</span>
           </span>
           </Button>
         </div>
@@ -115,6 +115,7 @@ const NewEnvironment = ({
                               Branch name: <span style={{ color: '#E30000' }}>*</span>
                             </label>
                               <input
+                                data-cy="branchName"
                                 id="branchName"
                                 className="inputBranch"
                                 type="text"

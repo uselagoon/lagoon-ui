@@ -2,16 +2,17 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
+import Image from 'next/image';
+
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/NewProject/logic';
 import gql from 'graphql-tag';
 
+import info from '../../../static/images/info.svg';
 import { RoleSelect } from '../AddUserToGroup/Styles';
-import {StyledNewProject, Checkbox} from './StyledNewProject';
 import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedStyles';
-import Image from "next/image";
-import info from "../../../static/images/info.svg";
+import { Checkbox, StyledNewProject } from './StyledNewProject';
 
 const ADD_PROJECT_MUTATION = gql`
   mutation (
@@ -72,7 +73,7 @@ const OrgNewProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button action={openModal}>
+        <Button testId="addNewProject" action={openModal}>
           <AddButtonContent>
             <span>+</span>
             <span>Project</span>
@@ -106,7 +107,7 @@ const OrgNewProject = ({
                       <label>
                         Project name: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputEmail"
+                          className="inputName"
                           type="text"
                           placeholder="Enter name"
                           value={inputProjectName}
@@ -118,7 +119,7 @@ const OrgNewProject = ({
                       <label>
                         Git URL: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputEmail"
+                          className="inputGit"
                           type="text"
                           placeholder="Enter URL"
                           value={inputGitURL}
@@ -130,7 +131,7 @@ const OrgNewProject = ({
                       <label>
                         Production Environment: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputEmail"
+                          className="inputEnv"
                           type="text"
                           placeholder="eg Main or Master"
                           value={inputProdEnv}
@@ -142,6 +143,7 @@ const OrgNewProject = ({
                       Deploy Target: <span style={{ color: '#E30000' }}>*</span>
                       <RoleSelect>
                         <ReactSelect
+                          classNamePrefix="react-select"
                           className="select"
                           styles={{
                             menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
@@ -162,26 +164,41 @@ const OrgNewProject = ({
                     </label>
                     <Checkbox>
                       <input
-                          type="checkbox"
-                          checked={addUserToProject}
-                          onChange={({ target: { checked } }) => setAddUserToProject(checked)}
+                        type="checkbox"
+                        checked={addUserToProject}
+                        onChange={({ target: { checked } }) => setAddUserToProject(checked)}
                       />
                       <span>Add my user to this project</span>
                     </Checkbox>
                     <div className="docs-link">
                       <div className="info-icon">
-                        <Image
-                            src={info}
-                            alt=""
-                        />
+                        <Image src={info} alt="" />
                       </div>
                       <div className="new-project-info">
-                        <p>Please note, once the project has been created you will need to add the <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository" target="_blank">Deploy Key</a> and <a href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-webhooks-endpoint-to-your-git-repository" target="_blank">Webhook</a> to your Git service, these will be generated in the ‘create environment’ wizard available from the project overview page.</p>
+                        <p>
+                          Please note, once the project has been created you will need to add the{' '}
+                          <a
+                            href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-deploy-key-to-your-git-repository"
+                            target="_blank"
+                          >
+                            Deploy Key
+                          </a>{' '}
+                          and{' '}
+                          <a
+                            href="https://docs.lagoon.sh/installing-lagoon/add-project/#add-the-webhooks-endpoint-to-your-git-repository"
+                            target="_blank"
+                          >
+                            Webhook
+                          </a>{' '}
+                          to your Git service, these will be generated in the ‘create environment’ wizard available from
+                          the project overview page.
+                        </p>
                       </div>
                     </div>
                     <div>
                       <Footer>
                         <Button
+                          testId="addProjectConfirm"
                           disabled={
                             called ||
                             inputProjectName === '' ||
@@ -200,7 +217,7 @@ const OrgNewProject = ({
                                 kubernetes: parseInt(selectedDeployTarget.value, 10),
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
-                                addOrgOwner: addUserToProject
+                                addOrgOwner: addUserToProject,
                               },
                             });
                           }}

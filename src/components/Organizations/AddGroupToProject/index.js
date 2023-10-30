@@ -41,7 +41,7 @@ export const AddGroupToProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button action={openModal}>
+        <Button testId='addGroupToProject' action={openModal}>
           <AddButtonContent>
             <span>+</span>
             <span>Group</span>
@@ -65,6 +65,7 @@ export const AddGroupToProject = ({
                     Group
                     <RoleSelect>
                       <ReactSelect
+                        classNamePrefix="react-select"
                         className="select"
                         menuPortalTarget={document.body}
                         styles={{
@@ -86,6 +87,7 @@ export const AddGroupToProject = ({
                   </label>
                   <Footer>
                     <Button
+                      testId='addGroupToProjectConfirm'
                       disabled={called || selectedProject === null}
                       action={() => {
                         addGroupProject({

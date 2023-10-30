@@ -33,11 +33,12 @@ const Projects = ({ projects = [] }) => {
   return (
     <ProjectsPage id="projects">
       <ProjectsHeader>
-        <label>
+        <label data-cy="projectsLength">
           {filteredProjects.length <= 1 ? `${filteredProjects.length} Project` : `${filteredProjects.length} Projects`}
         </label>
         <label></label>
         <SearchInput
+          data-cy="searchBar"
           aria-labelledby="search"
           className="searchInput"
           type="text"
@@ -49,14 +50,14 @@ const Projects = ({ projects = [] }) => {
       </ProjectsHeader>
       {!projects.length && (
         <Box className="box">
-          <div className="project">
+          <div className="project" data-cy="noProjects">
             <h4>No projects</h4>
           </div>
         </Box>
       )}
       {searchInput && !filteredProjects.length && (
         <Box className="box">
-          <div className="project">
+          <div className="project" data-cy="noMatch">
             <h4>No projects matching "{searchInput}"</h4>
           </div>
         </Box>
@@ -68,7 +69,7 @@ const Projects = ({ projects = [] }) => {
               <h4>
                 <Highlighter searchWords={[searchInput.trim()]} autoEscape={true} textToHighlight={project.name} />
               </h4>
-              <StyledRoute>
+              <StyledRoute data-cy="projects">
                 {project.environments.map((environment, index) => (
                   <Highlighter
                     key={index}

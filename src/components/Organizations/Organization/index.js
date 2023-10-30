@@ -68,13 +68,13 @@ const Organization = ({ organization, refetch }) => {
     return (
       <div className="quotaField">
         <span>{pluralName.toUpperCase()}</span>
-        <span className="quota">
+        <span className="quota" data-cy={`${quota}`}>
           {capitalize(quota)} quota: {quotaNumber} of {quotaLimit == '-1' ? 'unlimited' : quotaLimit}
         </span>
 
         {showLink && (
           <Link href={link.urlObject} as={link.asPath}>
-            <LinkBtn>
+            <LinkBtn data-cy={`${quota}-link`}>
               <EyeOutlined className="icon" /> {capitalize(pluralName)}
             </LinkBtn>
           </Link>
@@ -88,13 +88,15 @@ const Organization = ({ organization, refetch }) => {
     return modalName === 'name' ? () => setNameModalOpen(modalAction) : () => setDescModalOpen(modalAction);
   };
 
-  const renderEditBtn = type => <EditOutlined style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />;
+  const renderEditBtn = type => (
+    <EditOutlined data-cy={`edit-${type}`} style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />
+  );
 
   return (
     <StyledOrganization>
       <OrgHeader headerText="overview" />
       <StyledOverview>
-        <span className="orgname">
+        <span className="orgname" data-cy="friendlyName">
           {organization.friendlyName || organization.name} {renderEditBtn('name')}
           <Modal
             style={{
@@ -162,7 +164,7 @@ const Organization = ({ organization, refetch }) => {
 
         <div className="description">
           <span className="title">Description</span> {!organization.description && renderEditBtn('description')}
-          <p>
+          <p data-cy="description">
             {organization.description} {organization.description && renderEditBtn('description')}
           </p>
           <Modal
@@ -275,7 +277,7 @@ const Organization = ({ organization, refetch }) => {
                 </div>
               ))}
               <OrgManageLink organizationSlug={organization.id} organizationName={organization.name}>
-                <ManageBtn>
+                <ManageBtn data-cy="manage-link">
                   <EyeOutlined className="icon" /> Manage
                 </ManageBtn>
               </OrgManageLink>

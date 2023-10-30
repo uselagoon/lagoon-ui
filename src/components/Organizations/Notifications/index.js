@@ -251,6 +251,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           variant="primary"
                           loading={called}
                           disabled={called}
@@ -380,6 +381,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           variant="primary"
                           loading={called}
                           disabled={called}
@@ -492,6 +494,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           loading={called}
                           disabled={called}
                           variant="primary"
@@ -604,6 +607,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           loading={called}
                           disabled={called}
                           variant="primary"
@@ -720,6 +724,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           loading={called}
                           disabled={called}
                           variant="primary"
@@ -782,7 +787,7 @@ const OrgNotifications = ({
         closeModal={() => setModalOpen(false)}
       >
         <AddNotifButton>
-          <Button action={() => setModalOpen(true)}>
+          <Button testId="addNotification" action={() => setModalOpen(true)}>
             <AddButtonContent>
               <span>+</span>
               <span>Notification</span>

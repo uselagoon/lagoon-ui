@@ -109,6 +109,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
 
                       return (
                         <Button
+                          testId='deleteConfirm'
                           variant="primary"
                           disabled={called}
                           loading={called}

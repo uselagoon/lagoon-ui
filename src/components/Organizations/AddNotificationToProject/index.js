@@ -47,7 +47,7 @@ export const AddNotificationToProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button action={openModal}>
+        <Button testId='addNotificationToProject' action={openModal}>
           <AddButtonContent>
             <span>+</span>
             <span>Notification</span>
@@ -105,6 +105,7 @@ export const AddNotificationToProject = ({
                   </label>
                   <Footer>
                     <Button
+                      testId='addNotificationToProjectConfirm'
                       disabled={called || selectedProject === null}
                       action={() => {
                         addNotificationToProject({

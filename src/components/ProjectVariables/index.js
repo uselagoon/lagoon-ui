@@ -121,6 +121,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
             <label>Project Variables</label>
             <div className="header-buttons">
               <Button
+                  data-cy="addVariable"
                   onClick={() => setOpenPrjVars(false)}
                   style={{ all: "unset" }}
               >
@@ -134,6 +135,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
               <Button
                 onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
+                data-cy="hideShowValues"
                 aria-expanded={openPrjVars}
               >
                 {!openPrjVars ? "Show values" : "Hide values"}
@@ -271,7 +273,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                 </Button>
                               </div>
                             </Collapse>
-                            <div className="varDelete">
+                            <div className="varDelete" data-cy="varDelete">
                               <DeleteVariable
                                   deleteType="Project variable"
                                   deleteName={projEnvVar.name}

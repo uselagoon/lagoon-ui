@@ -92,7 +92,7 @@ export const NewGroup = ({
   return (
     <StyledNewGroup>
       <div className="margins">
-        <Button disabled={disabled} action={openModal}>
+        <Button disabled={disabled} action={openModal} testId="addNewGroup">
           <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
             <span style={{ fontSize: '28px' }}>+</span>
             <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
@@ -138,6 +138,7 @@ export const NewGroup = ({
                     <div>
                       <Footer>
                         <Button
+                          testId='createGroup'
                           disabled={
                             called ||
                             inputValueGroup === '' ||

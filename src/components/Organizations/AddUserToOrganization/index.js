@@ -51,6 +51,7 @@ export const AddUserToOrganization = ({
               <label>
                 User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
+                  data-cy="manageEmail"
                   className="inputEmail"
                   type="text"
                   placeholder="Enter Email"
@@ -62,6 +63,7 @@ export const AddUserToOrganization = ({
             <label>
               Owner: <span style={{ color: '#E30000' }}>*</span>
               <input
+                data-cy="manageOwner"
                 className="inputCheckbox"
                 type="checkbox"
                 value={checkboxValueOwner}
@@ -72,6 +74,7 @@ export const AddUserToOrganization = ({
             <div>
               <Footer>
                 <Button
+                  testId="addUserConfirm"
                   disabled={called || inputValueEmail === ''}
                   loading={called}
                   action={() => {

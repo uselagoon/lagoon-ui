@@ -155,6 +155,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                         }
                         return (
                           <Button
+                            testId="confirmDeletion"
                             disabled={called}
                             loading={called}
                             variant="primary"
@@ -216,7 +217,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       </Modal>
 
       <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
+        <Button testId="addUser" action={() => setAddUserModalOpen(true)}>
           <AddButtonContent>
             <span>+</span>
             <span>User</span>

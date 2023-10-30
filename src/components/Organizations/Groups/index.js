@@ -85,7 +85,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
       width: '15%',
       key: 'members',
       render: i => {
-        return typeof i.memberCount !== 'undefined' && <span>Members: {i.memberCount} </span>;
+        return typeof i.memberCount !== 'undefined' && <span data-cy="memberCount">Members: {i.memberCount} </span>;
       },
     },
     {
@@ -95,7 +95,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
         return (
           <TableActions>
             <>
-              <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+              <UserAddOutlined data-cy="adduser" className="add" onClick={() => modalAction('open', 'addUser', i)} />
               <Modal
                 style={{
                   content: {
@@ -126,7 +126,11 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
 
             {i.type !== 'project-default-group' && (
               <>
-                <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                <DeleteOutlined
+                  data-cy="deleteGroup"
+                  className="delete"
+                  onClick={() => modalAction('open', 'deleteGroup', i)}
+                />
 
                 <Modal
                   isOpen={modalStates.deleteGroup.open && modalStates.deleteGroup.current.name === i.name}
@@ -149,6 +153,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
 
                         return (
                           <Button
+                            testId="confirm"
                             variant="primary"
                             loading={called}
                             disabled={called}

@@ -175,6 +175,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
                       <div>
                         <Footer>
                           <Button
+                            testId="updateUser"
                             disabled={called}
                             loading={called}
                             action={() => {
@@ -229,6 +230,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
                     }
                     return (
                       <Button
+                        testId="deleteConfirm"
                         variant="primary"
                         loading={called}
                         disabled={called}
@@ -283,7 +285,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       </Modal>
 
       <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
+        <Button testId="addUserbtn" action={() => setAddUserModalOpen(true)}>
           <AddButtonContent>
             <span>+</span>
             <span>User</span>
