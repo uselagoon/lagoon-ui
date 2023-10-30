@@ -36,6 +36,7 @@ describe('Organizations user journey', () => {
     cy.location('pathname').should('equal', '/organizations/84/projects');
 
     project.doAddProject();
+    project.doDeleteProject();
   });
 
   it('Navigate to notifications and create a couple', () => {
@@ -67,4 +68,8 @@ describe('Organizations user journey', () => {
 
     cy.getBySel('addNotificationToProjectConfirm').click();
   });
+
+  cy.get('.groups').click();
+  cy.wait(3000);
+  group.doDeleteGroup();
 });

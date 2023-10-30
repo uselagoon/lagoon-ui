@@ -14,44 +14,44 @@ export const testData = {
       description: 'Test org description',
     },
     groups: {
-      newGroupName: 'group-cy-test-1',
-      newGroupName2:"group-cy-test-2",
+      newGroupName: 'cy-test-first-group',
+      newGroupName2: 'cy-test-second-group',
     },
     users: {
       email: 'davit.darsavelidze+100@amazee.io',
       role: 'developer',
     },
     projects: {
-      projectName: 'drupal-example-test-cy',
+      projectName: 'cy-drupal-test',
       gitUrl: 'git@github.com:amazeeio/drupal-example.git',
       prodEnv: 'main',
     },
     notifications: {
       slack: {
-        name: 'cy-slack-notification',
-        webhook: 'cy-slack-webhook',
-        channel: 'cy-slack-channel',
+        name: 'cy-slack-notification-test',
+        webhook: 'cy-slack-webhook-test',
+        channel: 'cy-slack-channel-test',
       },
       rocketChat: {
-        name: 'cy-rocketChat-notification',
-        webhook: 'cy-rocketChat-webhook',
-        channel: 'cy-rocketChat-channel',
+        name: 'cy-rocketChat-notification-test',
+        webhook: 'cy-rocketChat-webhook-test',
+        channel: 'cy-rocketChat-channel-test',
       },
       email: {
-        name: 'cy-email-notification',
-        email: 'cy-email',
+        name: 'cy-email-notification-test',
+        email: 'cy-email-test',
       },
       teams: {
-        name: 'cy-msTeams-notification',
-        webhook: 'cy-msTeams-webhook',
+        name: 'cy-msTeams-notification-test',
+        webhook: 'cy-msTeams-webhook-test',
       },
       webhook: {
-        name: 'cy-webhook-notification',
-        webhook: 'cy-webhook',
+        name: 'cy-webhook-notification-test',
+        webhook: 'cy-webhook-test',
       },
     },
-    manage:{
-      user:"davit.darsavelidze+101@amazee.io"
-    }
+    manage: {
+      user: 'davit.darsavelidze+101@amazee.io',
+    },
   },
 };

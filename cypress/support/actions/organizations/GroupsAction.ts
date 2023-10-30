@@ -9,16 +9,19 @@ export default class GroupAction {
     groupRepo.getGroupNameInput().type(testData.organizations.groups.newGroupName);
     groupRepo.getAddGroupSubmitBtn().click();
 
+    cy.wait(3000);
+
     cy.get('.tableRow').first().should('contain', testData.organizations.groups.newGroupName);
 
-    if(returnEarly) return;
+    if (returnEarly) return;
 
     cy.log('Add another');
 
-    cy.wait(1000);
     groupRepo.getAddGroupBtn('addNewGroup').click();
     groupRepo.getGroupNameInput().type(testData.organizations.groups.newGroupName2);
     groupRepo.getAddGroupSubmitBtn().click();
+
+    cy.wait(3000);
 
     cy.get('.tableRow').eq(1).should('contain', testData.organizations.groups.newGroupName2);
   }
@@ -44,7 +47,7 @@ export default class GroupAction {
     cy.get('#react-select-2-option-2').click();
     cy.getBySel('addUserToGroup').click();
 
-    cy.wait(500);
+    cy.wait(3000);
     cy.getBySel('memberCount')
       .first()
       .invoke('text')
@@ -57,7 +60,7 @@ export default class GroupAction {
   doDeleteGroup() {
     groupRepo.getDeleteGroupBtn('deleteGroup').first().click();
     cy.getBySel('confirm').click();
-
+    cy.wait(3000);
     cy.get('.tableRow').eq(0).should('not.contain', testData.organizations.groups.newGroupName);
   }
 }
