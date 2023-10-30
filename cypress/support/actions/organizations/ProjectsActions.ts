@@ -19,7 +19,7 @@ export default class ProjectsActions {
 
     projects.getAddConfirm().click();
 
-    cy.wait(1000);
+    cy.wait(3000);
 
     projects.getProjectRows().contains(testData.organizations.projects.projectName).should('exist');
   }
@@ -29,7 +29,7 @@ export default class ProjectsActions {
 
     projects.getDeleteConfirm().click();
 
-    cy.wait(1000);
+    cy.wait(3000);
     projects.getProjectRows().should('not.exist');
   }
 }

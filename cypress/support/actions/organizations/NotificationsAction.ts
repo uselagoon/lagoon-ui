@@ -37,6 +37,7 @@ export default class NotificationsAction {
 
     cy.getBySel('addNotifBtn').click();
 
+    cy.wait(3000);
     // notification name
     cy.get('div.data-table .data-row').should('include.text', data.name);
   }
@@ -48,6 +49,8 @@ export default class NotificationsAction {
 
     cy.getBySel('continueEdit').click();
 
+    cy.wait(3000);
+    
     cy.get('div.data-table .data-row').should('include.text', '-edited');
   }
   doDeleteNotification() {
