@@ -552,3 +552,10 @@ export const organizationProjects = (projectQuota: number) => {
     };
   });
 };
+
+export const organizationEnvironments = (environmentQuota: number) => {
+  seed();
+  return Array.from({ length: Math.floor(environmentQuota / 2) }, () => {
+    return generateEnvironments({ seed });
+  });
+};
