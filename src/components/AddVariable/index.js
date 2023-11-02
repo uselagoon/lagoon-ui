@@ -56,17 +56,15 @@ export const AddVariable = ({
   }, [varValue]);
 
   return (
-      <NewVariable>
+    <NewVariable>
       {
         icon ?
-            <Button variant='white' icon={icon} action={openModal}>
-              Update
-            </Button>
-          :
+          <Button variant='white' icon={icon} action={openModal}>
+            Update
+          </Button>
+        :
           <ButtonBootstrap onClick={openModal}>
-            {
-              noVars || !updateName ? "Add" : "Update"
-            }
+            Add
           </ButtonBootstrap>
       }
       <Modal

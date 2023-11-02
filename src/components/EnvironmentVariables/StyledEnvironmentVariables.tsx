@@ -113,6 +113,11 @@ export const StyledEnvironmentVariableDetails = styled.div`
   .header-buttons {
     display: flex;
     margin: 0 4px;
+    
+    .add-variable {
+      width: 54px;
+      height: 38px;
+    }
 
     button {
       margin-right: 4px;

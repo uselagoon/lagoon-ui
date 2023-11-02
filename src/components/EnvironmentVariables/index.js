@@ -20,6 +20,9 @@ import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
 import Alert from 'components/Alert'
+import ButtonComp from 'components/Button'
+import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
+import {LoadingOutlined} from "@ant-design/icons";
 
 /**
  * Displays the environment variable information.
@@ -48,6 +51,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   const [updateVarScope, setUpdateVarScope ] = useState('');
   const [environmentErrorAlert, setEnvironmentErrorAlert] = useState(false);
   const [projectErrorAlert, setProjectErrorAlert] = useState(false);
+  const [action, setAction] = useState('');
 
   const closeEnvironmentError = () => {
     setEnvironmentErrorAlert(false);
@@ -63,7 +67,8 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
     variables: { openshiftProjectName: environment.openshiftProjectName },
     onError: () => {
-      setOpenEnvVars(!openEnvVars);
+      setOpenEnvVars(false);
+      setValueState(initValueState);
       setEnvironmentErrorAlert(true);
     }
   });
@@ -116,6 +121,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     getEnvVarValues();
     setOpenEnvVars(!openEnvVars);
     setValueState(initValueState);
+    setAction("view")
   };
 
   const showPrjVarValue = () => {
@@ -126,8 +132,15 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
 
   const setUpdateValue = (rowValue, rowName, rowScope) => {
     setUpdateVarValue(rowValue);
-    setUpdateVarName(rowName)
-    setUpdateVarScope(rowScope)
+    setUpdateVarName(rowName);
+    setUpdateVarScope(rowScope);
+  }
+
+  const permissionCheck = (action, index) => {
+    setOpenEnvVars(false);
+    setAction(action);
+    valuesShow(index);
+    getEnvVarValues();
   }
 
   return (
@@ -153,28 +166,30 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         <>
           {
             environmentErrorAlert && (
-              <Alert 
+              <Alert
                 type="error"
                 closeAlert={closeEnvironmentError}
                 header="Unauthorized:"
-                message="You don't have permission to view environment variable values. Contact your administrator to obtain the relevant permissions."
+                message={`You don't have permission to ${action} environment ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
               />
             )
-          }         
+          }
           <div className="header">
             <label>Environment Variables</label>
             <div className="header-buttons">
               <Button
-                  onClick={() => setOpenEnvVars(false)}
-                  style={{ all: "unset" }}
+                onClick={() => permissionCheck("add")}
+                style={{ all: "unset" }}
               >
-                <AddVariable
-                  varProject={environment.project.name}
-                  varEnvironment={environment.name}
-                  varValues={displayVars}
-                  varTarget="Environment"
-                  refresh={onVariableAdded}
-                />
+                {envLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                  <AddVariable
+                    varProject={environment.project.name}
+                    varEnvironment={environment.name}
+                    varValues={displayVars}
+                    varTarget="Environment"
+                    refresh={onVariableAdded}
+                  />
+                }
               </Button>
               <Button
                 onClick={() => showVarValue()}
@@ -315,14 +330,23 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                               </div>
                             </Collapse>
                             <div className="varDelete">
-                              <DeleteVariable
-                                  deleteType="Environment variable"
-                                  deleteName={envVar.name}
-                                  varProject={environment.project.name}
-                                  varEnvironment={environment.name}
-                                  icon="bin"
-                                  refresh={onVariableAdded}
-                              />
+                              <Button
+                                onClick={() => permissionCheck("delete", index)}
+                                style={{ all: "unset" }}
+                              >
+                                {envLoading ? <DeleteVariableButton><ButtonComp index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}</ButtonComp>
+                                </DeleteVariableButton>:
+                                  <DeleteVariable
+                                    deleteType="Environment variable"
+                                    deleteName={envVar.name}
+                                    varProject={environment.project.name}
+                                    varEnvironment={environment.name}
+                                    icon="bin"
+                                    refresh={onVariableAdded}
+                                  />
+                                }
+                              </Button>
                             </div>
                           </VariableActions>
                         </div>
@@ -359,7 +383,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <hr style={{ margin: "30px 0" }} />
           {
             projectErrorAlert && (
-              <Alert 
+              <Alert
                 type="error"
                 closeAlert={closeProjectError}
                 header="Unauthorized:"
