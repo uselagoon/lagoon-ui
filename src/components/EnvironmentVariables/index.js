@@ -20,7 +20,7 @@ import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
 import Alert from 'components/Alert'
-import ButtonComp from 'components/Button'
+import Btn from 'components/Button'
 import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
 import {LoadingOutlined} from "@ant-design/icons";
 
@@ -136,7 +136,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     setUpdateVarScope(rowScope);
   }
 
-  const permissionCheck = (action, index) => {
+  const permissionCheck = (action, index = 0) => {
     setOpenEnvVars(false);
     setAction(action);
     valuesShow(index);
@@ -145,7 +145,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
 
   return (
     <StyledEnvironmentVariableDetails className="details">
-      {environment.envVariables.length == 0 ? (
+      {environment.envVariables.length === 0 ? (
         <>
           <div className="header no-vars">
             <AddVariable
@@ -334,9 +334,13 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                                 onClick={() => permissionCheck("delete", index)}
                                 style={{ all: "unset" }}
                               >
-                                {envLoading ? <DeleteVariableButton><ButtonComp index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
-                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}</ButtonComp>
-                                </DeleteVariableButton>:
+                                {envLoading && action === "delete" ?
+                                  <DeleteVariableButton>
+                                    <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}
+                                    </Btn>
+                                  </DeleteVariableButton>
+                                :
                                   <DeleteVariable
                                     deleteType="Environment variable"
                                     deleteName={envVar.name}
@@ -359,7 +363,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           </div>
         </>
       )}
-      {displayProjectVars.length == 0 ? (
+      {displayProjectVars.length === 0 ? (
         <>
           <hr style={{ margin: "30px 0" }} />
           <div className="header no-vars">
