@@ -6,21 +6,21 @@ const overviewRepo = new OverviewRepository();
 export default class OverviewAction {
   doNavLinkCheck() {
     overviewRepo.getLinkElement('group-link').click();
-    cy.location('pathname').should('equal', '/organizations/84/groups');
+    cy.location('pathname').should('equal', '/organizations/99/groups');
 
-    cy.visit(`${Cypress.env().CY_URL}/organizations/84`);
+    cy.visit(`${Cypress.env().CY_URL}/organizations/99`);
 
     overviewRepo.getLinkElement('project-link').click();
-    cy.location('pathname').should('equal', '/organizations/84/projects');
+    cy.location('pathname').should('equal', '/organizations/99/projects');
 
-    cy.visit(`${Cypress.env().CY_URL}/organizations/84`);
+    cy.visit(`${Cypress.env().CY_URL}/organizations/99`);
 
     overviewRepo.getLinkElement('notification-link').click();
-    cy.location('pathname').should('equal', '/organizations/84/notifications');
+    cy.location('pathname').should('equal', '/organizations/99/notifications');
 
-    cy.visit(`${Cypress.env().CY_URL}/organizations/84`);
+    cy.visit(`${Cypress.env().CY_URL}/organizations/99`);
     overviewRepo.getLinkElement('manage-link').click();
-    cy.location('pathname').should('equal', '/organizations/84/manage');
+    cy.location('pathname').should('equal', '/organizations/99/manage');
   }
 
   doQuotaFieldCheck() {
@@ -38,7 +38,7 @@ export default class OverviewAction {
     overviewRepo.getEditField().type(testData.organizations.overview.friendlyName);
     overviewRepo.getSubmitButton().click();
 
-    cy.wait(1000);
+    cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
 
     overviewRepo
       .getfriendlyName()
@@ -55,7 +55,7 @@ export default class OverviewAction {
     overviewRepo.getEditField().type(testData.organizations.overview.description);
     overviewRepo.getSubmitButton().click();
 
-    cy.wait(1000);
+    cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
 
     overviewRepo
       .getDescription()

@@ -4,24 +4,22 @@ import GroupsRepository from 'cypress/support/repositories/organizations/GroupsR
 const groupRepo = new GroupsRepository();
 
 export default class GroupAction {
-  doAddGroup(returnEarly?: boolean) {
+  doAddGroup() {
     groupRepo.getAddGroupBtn('addNewGroup').click();
     groupRepo.getGroupNameInput().type(testData.organizations.groups.newGroupName);
     groupRepo.getAddGroupSubmitBtn().click();
 
-    cy.wait(3000);
-
+    cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
     cy.get('.tableRow').first().should('contain', testData.organizations.groups.newGroupName);
 
-    if (returnEarly) return;
-
     cy.log('Add another');
+    cy.reload();
 
     groupRepo.getAddGroupBtn('addNewGroup').click();
     groupRepo.getGroupNameInput().type(testData.organizations.groups.newGroupName2);
     groupRepo.getAddGroupSubmitBtn().click();
 
-    cy.wait(3000);
+    cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
 
     cy.get('.tableRow').eq(1).should('contain', testData.organizations.groups.newGroupName2);
   }
@@ -47,7 +45,9 @@ export default class GroupAction {
     cy.get('#react-select-2-option-2').click();
     cy.getBySel('addUserToGroup').click();
 
-    cy.wait(3000);
+    cy.wait(['@gqladdUserToGroupMutation', '@gqlgetOrganizationQuery']);
+    cy.waitForNetworkIdle('@groupQuery', 500);
+
     cy.getBySel('memberCount')
       .first()
       .invoke('text')
@@ -60,7 +60,10 @@ export default class GroupAction {
   doDeleteGroup() {
     groupRepo.getDeleteGroupBtn('deleteGroup').first().click();
     cy.getBySel('confirm').click();
-    cy.wait(3000);
+
+    cy.intercept('POST', Cypress.env().CY_API).as('deleteGroup');
+    cy.wait('@deleteGroup');
+
     cy.get('.tableRow').eq(0).should('not.contain', testData.organizations.groups.newGroupName);
   }
 }

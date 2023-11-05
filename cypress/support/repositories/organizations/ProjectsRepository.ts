@@ -18,7 +18,7 @@ export default class ProjectsRepository {
   }
   selectTarget() {
     cy.get('.react-select__indicator').click({ force: true });
-    cy.get('#react-select-3-option-0').click();
+    cy.get('#react-select-2-option-0').click();
   }
   getProjectRows() {
     return cy.get('.tableRow');

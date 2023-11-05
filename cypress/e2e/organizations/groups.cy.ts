@@ -1,11 +1,20 @@
 import GroupAction from 'cypress/support/actions/organizations/GroupsAction';
+import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const group = new GroupAction();
 
 describe('Organization Groups page', () => {
   beforeEach(() => {
+    // register interceptors/idle handler
+    cy.intercept('POST', Cypress.env().CY_API, req => {
+      aliasQuery(req, 'getOrganization');
+      aliasMutation(req, 'addUserToGroup');
+      aliasMutation(req, 'addGroupToOrganization');
+    });
+    registerIdleHandler('groupQuery');
+
     cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
-    cy.visit(`${Cypress.env().CY_URL}/organizations/84/groups`);
+    cy.visit(`${Cypress.env().CY_URL}/organizations/99/groups`);
   });
 
   it('Add a group', () => {
@@ -20,7 +29,8 @@ describe('Organization Groups page', () => {
     group.doAddMemberToGroup();
   });
 
-  it('Delete group', () => {
+  it('Delete groups', () => {
+    group.doDeleteGroup();
     group.doDeleteGroup();
   });
 });

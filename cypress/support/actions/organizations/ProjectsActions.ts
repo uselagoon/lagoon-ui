@@ -5,21 +5,17 @@ const projects = new ProjectsRepository();
 
 export default class ProjectsActions {
   doAddProject() {
-    // weird - it just closes the first time...
     projects.getAddBtn().click({ force: true });
     projects.getName().type(testData.organizations.projects.projectName);
     projects.getGit().type(testData.organizations.projects.gitUrl);
 
-    projects.getAddBtn().click({ force: true });
-    projects.getName().type(testData.organizations.projects.projectName);
-    projects.getGit().type(testData.organizations.projects.gitUrl);
     projects.getEnv().type(testData.organizations.projects.prodEnv);
 
     projects.selectTarget();
 
     projects.getAddConfirm().click();
 
-    cy.wait(3000);
+    cy.wait('@gqladdProjectToOrganizationMutation');
 
     projects.getProjectRows().contains(testData.organizations.projects.projectName).should('exist');
   }
@@ -29,7 +25,8 @@ export default class ProjectsActions {
 
     projects.getDeleteConfirm().click();
 
-    cy.wait(3000);
+    cy.wait('@gqldeleteProjectMutation');
+
     projects.getProjectRows().should('not.exist');
   }
 }
