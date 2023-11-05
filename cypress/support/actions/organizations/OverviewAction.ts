@@ -1,4 +1,3 @@
-import { testData } from 'cypress/fixtures/variables';
 import OverviewRepository from 'cypress/support/repositories/organizations/OverviewRepository';
 
 const overviewRepo = new OverviewRepository();
@@ -33,9 +32,9 @@ export default class OverviewAction {
     overviewRepo.getFieldElement('environment').should('exist').should('not.be.empty');
   }
 
-  changeOrgFriendlyname() {
+  changeOrgFriendlyname(friendlyName: string) {
     overviewRepo.getNameEditButton('edit-name').click();
-    overviewRepo.getEditField().type(testData.organizations.overview.friendlyName);
+    overviewRepo.getEditField().type(friendlyName);
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
@@ -47,12 +46,12 @@ export default class OverviewAction {
         const trimmedText = text.trim();
 
         // Assert that the trimmed text is equal to the expected value
-        expect(trimmedText).to.equal(testData.organizations.overview.friendlyName);
+        expect(trimmedText).to.equal(friendlyName);
       });
   }
-  changeOrgDescription() {
+  changeOrgDescription(description: string) {
     overviewRepo.getDescEditButton('edit-description').click();
-    overviewRepo.getEditField().type(testData.organizations.overview.description);
+    overviewRepo.getEditField().type(description);
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
@@ -62,7 +61,7 @@ export default class OverviewAction {
       .invoke('text')
       .then(text => {
         const trimmedText = text.trim();
-        expect(trimmedText).to.equal(testData.organizations.overview.description);
+        expect(trimmedText).to.equal(description);
       });
   }
 }

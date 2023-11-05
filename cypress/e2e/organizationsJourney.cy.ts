@@ -27,8 +27,8 @@ describe('Organizations user journey', () => {
   });
 
   it('Change org name and desc', () => {
-    overview.changeOrgFriendlyname();
-    overview.changeOrgDescription();
+    overview.changeOrgFriendlyname(testData.organizations.overview.friendlyName);
+    overview.changeOrgDescription(testData.organizations.overview.description);
   });
 
   it('Navigate to groups to create', () => {
@@ -37,9 +37,9 @@ describe('Organizations user journey', () => {
     cy.get('.groups').click();
     cy.location('pathname').should('equal', '/organizations/99/groups');
 
-    group.doAddGroup();
+    group.doAddGroup(testData.organizations.groups.newGroupName, testData.organizations.groups.newGroupName2);
     registerIdleHandler('groupQuery');
-    group.doAddMemberToGroup();
+    group.doAddMemberToGroup(testData.organizations.users.email);
   });
 
   it('Navigate to projects and create a new one', () => {
@@ -54,7 +54,7 @@ describe('Organizations user journey', () => {
     cy.location('pathname').should('equal', '/organizations/99/projects');
     cy.waitForNetworkIdle('@projectsQuery', 1000);
 
-    project.doAddProject();
+    project.doAddProject(testData.organizations.project);
   });
 
   it('Navigate to notifications and create a couple', () => {
@@ -74,13 +74,15 @@ describe('Organizations user journey', () => {
     cy.location('pathname').should('equal', '/organizations/99/notifications');
     cy.waitForNetworkIdle('@notificationsQuery', 1000);
 
-    notifications.doAddNotification('slack');
-    notifications.doAddNotification('email');
-    notifications.doAddNotification('webhook');
+    const { slack: slackData, email: emailData, webhook: webhookData } = testData.organizations.notifications;
+
+    notifications.doAddNotification('slack', slackData);
+    notifications.doAddNotification('email', emailData);
+    notifications.doAddNotification('webhook', webhookData);
   });
 
   it('Nav to a project, add group and notifications', () => {
-    cy.visit(`${Cypress.env().CY_URL}/organizations/99/projects/${testData.organizations.projects.projectName}`);
+    cy.visit(`${Cypress.env().CY_URL}/organizations/99/projects/${testData.organizations.project.projectName}`);
 
     cy.getBySel('addGroupToProject').click();
 
@@ -102,7 +104,7 @@ describe('Organizations user journey', () => {
   // cleanup
   after(() => {
     registerIdleHandler('projectsQuery');
-
+    registerIdleHandler('groupQuery');
     cy.intercept('POST', Cypress.env().CY_API, req => {
       aliasMutation(req, 'removeNotification');
       aliasMutation(req, 'deleteGroup');
@@ -112,10 +114,10 @@ describe('Organizations user journey', () => {
     cy.waitForNetworkIdle('@idle', 500);
     cy.get('.groups').click();
 
-    group.doDeleteGroup();
+    group.doDeleteGroup(testData.organizations.groups.newGroupName);
     cy.wait('@gqldeleteGroupMutation');
 
-    group.doDeleteGroup();
+    group.doDeleteGroup(testData.organizations.groups.newGroupName2);
     cy.wait('@gqldeleteGroupMutation');
 
     cy.waitForNetworkIdle('@idle', 500);

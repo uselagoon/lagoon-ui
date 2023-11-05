@@ -9,10 +9,10 @@ describe('Navigation tests', () => {
     registerIdleHandler('idle');
   });
 
-  it('Settings/Projects/Organizations', () => {
+  it('Checks navigation to settings, organizations and projects pages', () => {
     cy.visit(Cypress.env().CY_URL);
 
-    context('From /projects to /settings', () => {
+    context('Navigates from /projects to /settings', () => {
       cy.getBySel('headerMenu').click();
 
       navigation.getLinkElement('settings').click();
@@ -22,7 +22,7 @@ describe('Navigation tests', () => {
 
     cy.waitForNetworkIdle('@idle', 500);
 
-    context('From /settings to /organizations', () => {
+    context('Navigates from /settings to /organizations', () => {
       cy.getBySel('headerMenu').click();
 
       navigation.getLinkElement('organizations').click();
@@ -32,7 +32,7 @@ describe('Navigation tests', () => {
 
     cy.waitForNetworkIdle('@idle', 500);
 
-    context('From /organizations to /projects', () => {
+    context('Navigates from /organizations to /projects', () => {
       cy.getBySel('headerMenu').click();
 
       navigation.getLinkElement('projects').click();
@@ -41,7 +41,7 @@ describe('Navigation tests', () => {
     });
 
     cy.waitForNetworkIdle('@idle', 500);
-    context('From /projects to /account', () => {
+    context('Navigates from /projects to /account', () => {
       cy.getBySel('headerMenu').click();
 
       navigation.getLinkElement('account').click();

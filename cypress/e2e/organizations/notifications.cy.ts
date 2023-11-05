@@ -1,3 +1,4 @@
+import { testData } from 'cypress/fixtures/variables';
 import NotificationsAction from 'cypress/support/actions/organizations/NotificationsAction';
 import { aliasMutation } from 'cypress/utils/aliasQuery';
 
@@ -18,27 +19,33 @@ describe('Org Notifications page', () => {
     });
   });
 
-  it('Add Slack notification', () => {
-    notifications.doAddNotification('slack');
+  it('Adds Slack notification', () => {
+    const slackData = testData.organizations.notifications.slack;
+
+    notifications.doAddNotification('slack', slackData);
   });
-  it('Add Rocketchat notification', () => {
-    notifications.doAddNotification('rocketChat');
+  it('Adds Rocketchat notification', () => {
+    const rocketData = testData.organizations.notifications.rocketChat;
+    notifications.doAddNotification('rocketChat', rocketData);
   });
-  it('Add Teams notification', () => {
-    notifications.doAddNotification('teams');
+  it('Adds Teams notification', () => {
+    const teamsData = testData.organizations.notifications.teams;
+    notifications.doAddNotification('teams', teamsData);
   });
-  it('Add Email notification', () => {
-    notifications.doAddNotification('email');
+  it('Adds Email notification', () => {
+    const emailData = testData.organizations.notifications.email;
+    notifications.doAddNotification('email', emailData);
   });
-  it('Add Webhook notification', () => {
-    notifications.doAddNotification('webhook');
+  it('Adds Webhook notification', () => {
+    const webhookData = testData.organizations.notifications.webhook;
+    notifications.doAddNotification('webhook', webhookData);
   });
 
-  it('Edit notification', () => {
+  it('Edits notification', () => {
     notifications.doEditNotification();
   });
 
-  it('Delete notifications', () => {
+  it('Deletes notifications', () => {
     notifications.doDeleteNotification('webhook');
     notifications.doDeleteNotification('email');
     notifications.doDeleteNotification('teams');

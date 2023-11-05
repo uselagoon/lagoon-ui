@@ -6,7 +6,7 @@ describe('Org sidebar navigation', () => {
     registerIdleHandler('idle');
   });
 
-  it('Groups/Users/Projects/Notifications/Manage', () => {
+  it('Traverses sidebar nav from Groups -> Users -> Projects -> Notifications -> Manage', () => {
     cy.visit(`${Cypress.env().CY_URL}/organizations/99`);
 
     context('From /org/id to /groups', () => {

@@ -20,7 +20,7 @@ describe('Environment page', () => {
     environment.doEnvNavigation();
   });
 
-  it('Hide/Show values', () => {
+  it('Toggles Hide/Show values', () => {
     environment.doHideShowToggle();
 
     cy.log('show all values');
@@ -32,24 +32,28 @@ describe('Environment page', () => {
     environment.doHideShowToggle();
   });
 
-  it('Add/update a variable', () => {
-    environment.doAddVariable();
+  it('Adds or updates a variable', () => {
+    const { name, value } = testData.variables[0];
+
+    environment.doAddVariable(name, value);
 
     cy.intercept('POST', Cypress.env().CY_API).as('addRequest');
 
     cy.wait('@addRequest');
 
     cy.log('check if variable was created');
-    cy.get('.data-table > .data-row').should('contain', testData.variables.name);
+    cy.get('.data-table > .data-row').should('contain', name);
   });
 
-  it('Delete a variable', () => {
-    environment.doDeleteVariable();
+  it('Deletes a variable', () => {
+    const { name } = testData.variables[0];
 
-    cy.intercept("POST", Cypress.env().CY_API).as("deleteRequest");
+    environment.doDeleteVariable(name);
 
-    cy.wait("@deleteRequest");
+    cy.intercept('POST', Cypress.env().CY_API).as('deleteRequest');
 
-    cy.get('.data-table > .data-row').should('not.contain', testData.variables.name);
+    cy.wait('@deleteRequest');
+
+    cy.get('.data-table > .data-row').should('not.contain', name);
   });
 });

@@ -1,4 +1,3 @@
-import { testData } from 'cypress/fixtures/variables';
 import NotificationsRepository from 'cypress/support/repositories/organizations/NotificationsRepository';
 
 const notificationRepo = new NotificationsRepository();
@@ -9,7 +8,14 @@ const notifMap = {
   email: ['name', 'email'],
   teams: ['name', 'webhook'],
   webhook: ['name', 'webhook'],
-} as const;
+};
+
+type NotificationData = {
+  name: string;
+  webhook?: string;
+  channel?: string;
+  email?: string;
+};
 
 const getMutationName = (notification: keyof typeof notifMap) => {
   const mutations = {
@@ -23,7 +29,7 @@ const getMutationName = (notification: keyof typeof notifMap) => {
   return mutations[notification];
 };
 export default class NotificationsAction {
-  doAddNotification(notifType: keyof typeof notifMap) {
+  doAddNotification(notifType: keyof typeof notifMap, notificationData: NotificationData) {
     const fieldsToFill = notifMap[notifType];
 
     const optionIndexMap = {
@@ -40,10 +46,10 @@ export default class NotificationsAction {
     // Select the option based on the mapping
     cy.get(`[id^="react-select-"][id$=-option-${optionIndexMap[notifType]}]`).click();
 
-    const data = testData.organizations.notifications[notifType];
+    // const data = testData.organizations.notifications[notifType];
 
     fieldsToFill.forEach(field => {
-      cy.get(`.input${field.charAt(0).toUpperCase() + field.slice(1)}`).type(data[field]);
+      cy.get(`.input${field.charAt(0).toUpperCase() + field.slice(1)}`).type(notificationData[field]);
     });
 
     cy.getBySel('addNotifBtn').click();
@@ -51,7 +57,7 @@ export default class NotificationsAction {
     cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`);
 
     // notification name
-    cy.get('div.data-table .data-row').should('include.text', data.name);
+    cy.get('div.data-table .data-row').should('include.text', notificationData.name);
   }
   doEditNotification() {
     notificationRepo.getLast('link').first().click();

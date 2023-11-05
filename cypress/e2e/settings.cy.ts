@@ -1,3 +1,4 @@
+import { testData } from 'cypress/fixtures/variables';
 import SettingAction from 'cypress/support/actions/settings/SettingsAction';
 
 const settings = new SettingAction();
@@ -15,12 +16,12 @@ describe('Settings page', () => {
   it('Add SSH key', () => {
     cy.visit(`${Cypress.env().CY_URL}/settings`);
 
-    settings.addSshKey();
+    settings.addSshKey(testData.ssh.name, testData.ssh.value);
   });
 
   it('Delete SSH key', () => {
     cy.visit(`${Cypress.env().CY_URL}/settings`);
 
-    settings.deleteSshKey();
+    settings.deleteSshKey(testData.ssh.name);
   });
 });

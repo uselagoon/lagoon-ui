@@ -1,3 +1,4 @@
+import { testData } from 'cypress/fixtures/variables';
 import ProjectsActions from 'cypress/support/actions/organizations/ProjectsActions';
 import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
@@ -15,12 +16,12 @@ describe('Org Projects page', () => {
     registerIdleHandler('projectsQuery');
   });
 
-  it('Add a project', () => {
+  it('Adds a project', () => {
     cy.waitForNetworkIdle('@projectsQuery', 1000);
-    project.doAddProject();
+    project.doAddProject(testData.organizations.project);
   });
 
-  it('Delete a project', () => {
+  it('Deletes a project', () => {
     project.doDeleteProject();
   });
 });
