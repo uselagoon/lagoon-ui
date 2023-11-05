@@ -14,8 +14,8 @@ export const testData = {
       description: 'Test org description',
     },
     groups: {
-      newGroupName: 'cy-test-first-group',
-      newGroupName2: 'cy-test-second-group',
+      newGroupName: 'cypress-group1',
+      newGroupName2: 'cypress-group2',
     },
     users: {
       email: 'davit.darsavelidze+100@amazee.io',
@@ -28,26 +28,26 @@ export const testData = {
     },
     notifications: {
       slack: {
-        name: 'cy-slack-notification-test',
-        webhook: 'cy-slack-webhook-test',
-        channel: 'cy-slack-channel-test',
+        name: 'cy-slack-notification-1',
+        webhook: 'cy-slack-webhook-1',
+        channel: 'cy-slack-channel-1',
       },
       rocketChat: {
-        name: 'cy-rocketChat-notification-test',
-        webhook: 'cy-rocketChat-webhook-test',
-        channel: 'cy-rocketChat-channel-test',
+        name: 'cy-rocketChat-notification-1',
+        webhook: 'cy-rocketChat-webhook-1',
+        channel: 'cy-rocketChat-channel-1',
       },
       email: {
-        name: 'cy-email-notification-test',
-        email: 'cy-email-test',
+        name: 'cy-email-notification-1',
+        email: 'cy-email-1',
       },
       teams: {
-        name: 'cy-msTeams-notification-test',
-        webhook: 'cy-msTeams-webhook-test',
+        name: 'cy-msTeams-notification-1',
+        webhook: 'cy-msTeams-webhook-1',
       },
       webhook: {
-        name: 'cy-webhook-notification-test',
-        webhook: 'cy-webhook-test',
+        name: 'cy-webhook-notification-1',
+        webhook: 'cy-webhook-1',
       },
     },
     manage: {

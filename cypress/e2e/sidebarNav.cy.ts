@@ -1,6 +1,9 @@
+import { registerIdleHandler } from 'cypress/utils/aliasQuery';
+
 describe('Environment sidebar navigation', () => {
   beforeEach(() => {
     cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
+    registerIdleHandler('idle');
   });
 
   it('Overview/Deployments/Backups/Tasks/Vars/Problems/Facts/Insights', () => {
@@ -8,14 +11,14 @@ describe('Environment sidebar navigation', () => {
     cy.visit(`${Cypress.env().CY_URL}${suffix}`);
 
     context('From /Overview to /Deployments', () => {
-      cy.wait(3500);
+      cy.waitForNetworkIdle('@idle', 500);
 
       cy.get('.deployments').click();
 
       cy.location('pathname').should('equal', `${suffix}/deployments`);
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /deployments to /backups', () => {
       cy.get('.backups').click();
@@ -23,7 +26,7 @@ describe('Environment sidebar navigation', () => {
       cy.location('pathname').should('equal', `${suffix}/backups`);
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /backups to /tasks', () => {
       cy.get('.tasks').click();
@@ -31,7 +34,7 @@ describe('Environment sidebar navigation', () => {
       cy.location('pathname').should('equal', `${suffix}/tasks`);
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /tasks to /variables', () => {
       cy.get('.environmentVariables').click();
@@ -39,7 +42,7 @@ describe('Environment sidebar navigation', () => {
       cy.location('pathname').should('equal', `${suffix}/environment-variables`);
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /variables to /problems', () => {
       cy.get('.problems').click();
@@ -47,7 +50,7 @@ describe('Environment sidebar navigation', () => {
       cy.location('pathname').should('equal', `${suffix}/problems`);
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /problems to /facts', () => {
       cy.get('.facts').click();
@@ -55,7 +58,7 @@ describe('Environment sidebar navigation', () => {
       cy.location('pathname').should('equal', `${suffix}/facts`);
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /facts to /insights', () => {
       cy.get('.insights').click();
@@ -64,7 +67,7 @@ describe('Environment sidebar navigation', () => {
     });
 
     context('From /facts to /overview', () => {
-      cy.get('.overview').click();
+      cy.get('.overview').first().click();
 
       cy.location('pathname').should('equal', `${suffix}`);
     });

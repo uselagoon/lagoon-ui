@@ -1,52 +1,55 @@
+import { registerIdleHandler } from 'cypress/utils/aliasQuery';
+
 describe('Org sidebar navigation', () => {
   beforeEach(() => {
     cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
+    registerIdleHandler('idle');
   });
 
   it('Groups/Users/Projects/Notifications/Manage', () => {
-    cy.visit(`${Cypress.env().CY_URL}/organizations/84`);
+    cy.visit(`${Cypress.env().CY_URL}/organizations/99`);
 
     context('From /org/id to /groups', () => {
-      cy.wait(3500);
+      cy.waitForNetworkIdle('@idle', 500);
 
       cy.get('.groups').click();
 
-      cy.location('pathname').should('equal', '/organizations/84/groups');
+      cy.location('pathname').should('equal', '/organizations/99/groups');
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /groups to /users', () => {
       cy.get('.users').click();
 
-      cy.location('pathname').should('equal', '/organizations/84/users');
+      cy.location('pathname').should('equal', '/organizations/99/users');
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /users to /projects', () => {
       cy.get('.projects').click();
 
-      cy.location('pathname').should('equal', '/organizations/84/projects');
+      cy.location('pathname').should('equal', '/organizations/99/projects');
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
     context('From /projects to /notifications', () => {
       cy.get('.notifications').click();
-      cy.location('pathname').should('equal', '/organizations/84/notifications');
+      cy.location('pathname').should('equal', '/organizations/99/notifications');
     });
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /notifications to /manage', () => {
       cy.get('.manage').click();
-      cy.location('pathname').should('equal', '/organizations/84/manage');
+      cy.location('pathname').should('equal', '/organizations/99/manage');
     });
 
-    cy.wait(3500);
+    cy.waitForNetworkIdle('@idle', 500);
 
     context('From /manage to /overview', () => {
       cy.get('.overview').click();
-      cy.location('pathname').should('equal', '/organizations/84');
+      cy.location('pathname').should('equal', '/organizations/99');
     });
   });
 });

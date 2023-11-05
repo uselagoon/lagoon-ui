@@ -34,13 +34,22 @@ describe('Environment page', () => {
 
   it('Add/update a variable', () => {
     environment.doAddVariable();
-    cy.wait(1000);
+
+    cy.intercept('POST', Cypress.env().CY_API).as('addRequest');
+
+    cy.wait('@addRequest');
+
     cy.log('check if variable was created');
     cy.get('.data-table > .data-row').should('contain', testData.variables.name);
   });
 
   it('Delete a variable', () => {
     environment.doDeleteVariable();
+
+    cy.intercept("POST", Cypress.env().CY_API).as("deleteRequest");
+
+    cy.wait("@deleteRequest");
+
     cy.get('.data-table > .data-row').should('not.contain', testData.variables.name);
   });
 });

@@ -9,7 +9,7 @@ export default class ManageAction {
     manageRepo.getUserEmailField().type(testData.organizations.manage.user);
     manageRepo.getSubmitBtn().click();
 
-    cy.wait(500);
+    cy.wait('@gqlAddUserToOrganizationMutation');
 
     manageRepo.getUserRows().should($element => {
       const elementText = $element.text();
@@ -24,7 +24,7 @@ export default class ManageAction {
 
     manageRepo.getUpdateBtn().click();
 
-    cy.wait(500);
+    cy.wait('@gqlAddUserToOrganizationMutation');
 
     manageRepo
       .getUserRows()

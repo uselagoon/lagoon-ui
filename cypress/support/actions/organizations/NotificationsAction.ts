@@ -11,6 +11,17 @@ const notifMap = {
   webhook: ['name', 'webhook'],
 } as const;
 
+const getMutationName = (notification: keyof typeof notifMap) => {
+  const mutations = {
+    slack: 'Slack',
+    rocketChat: 'RocketChat',
+    email: 'Email',
+    teams: 'MicrosoftTeams',
+    webhook: 'Webhook',
+  } as const;
+
+  return mutations[notification];
+};
 export default class NotificationsAction {
   doAddNotification(notifType: keyof typeof notifMap) {
     const fieldsToFill = notifMap[notifType];
@@ -27,7 +38,7 @@ export default class NotificationsAction {
     cy.get('.react-select__indicator').click({ force: true });
 
     // Select the option based on the mapping
-    cy.get(`#react-select-2-option-${optionIndexMap[notifType]}`).click();
+    cy.get(`[id^="react-select-"][id$=-option-${optionIndexMap[notifType]}]`).click();
 
     const data = testData.organizations.notifications[notifType];
 
@@ -37,26 +48,27 @@ export default class NotificationsAction {
 
     cy.getBySel('addNotifBtn').click();
 
-    cy.wait(3000);
+    cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`);
+
     // notification name
     cy.get('div.data-table .data-row').should('include.text', data.name);
   }
   doEditNotification() {
-    notificationRepo.getLast('link').click();
+    notificationRepo.getLast('link').first().click();
 
-    cy.get('.inputName').type('-edited');
+    cy.get('.inputName').first().type('-edited');
     cy.get('.inputWebhook').type('-edited');
 
     cy.getBySel('continueEdit').click();
 
-    cy.wait(3000);
-    
+    cy.wait(`@gqlUpdateNotificationSlackMutation`);
+
     cy.get('div.data-table .data-row').should('include.text', '-edited');
   }
-  doDeleteNotification() {
-    notificationRepo.getLast('btn-red').click();
+  doDeleteNotification(notification: keyof typeof notifMap) {
+    notificationRepo.getLast('btn-red').first().click();
     cy.getBySel('confirmDelete').click();
 
-    cy.get('div.data-table .data-row').should('not.have.text', 'msTeams');
+    cy.get('div.data-table .data-row').should('not.have.text', notification);
   }
 }

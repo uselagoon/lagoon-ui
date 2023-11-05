@@ -11,8 +11,8 @@ export default class UsersActions {
 
     userRepo.getAddUserConfirm().click();
 
-    cy.wait(3000);
-    
+    cy.wait('@gqladdUserToGroupMutation');
+
     userRepo.getRows().should($element => {
       const elementText = $element.text();
       expect(elementText).to.include(testData.organizations.users.email);
@@ -27,7 +27,6 @@ export default class UsersActions {
       .find("[aria-label='delete']")
       .click();
 
-    cy.wait(3000);
     userRepo.getConfirmDeleteBtn().click();
   }
 }
