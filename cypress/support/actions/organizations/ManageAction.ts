@@ -1,24 +1,23 @@
-import { testData } from 'cypress/fixtures/variables';
 import ManageRepository from 'cypress/support/repositories/organizations/ManageRepository';
 
 const manageRepo = new ManageRepository();
 
 export default class ManageAction {
-  doAddOrgViewer() {
+  doAddOrgViewer(viewerUser: string) {
     manageRepo.getAddUserBtn().click();
-    manageRepo.getUserEmailField().type(testData.organizations.manage.user);
+    manageRepo.getUserEmailField().type(viewerUser);
     manageRepo.getSubmitBtn().click();
 
     cy.wait('@gqlAddUserToOrganizationMutation');
 
     manageRepo.getUserRows().should($element => {
       const elementText = $element.text();
-      expect(elementText).to.include(testData.organizations.manage.user);
+      expect(elementText).to.include(viewerUser);
     });
   }
 
-  doEditOrgViewer() {
-    manageRepo.getUserRows().contains(testData.organizations.manage.user).parents('.tableRow').find('.link').click();
+  doEditOrgViewer(user: string) {
+    manageRepo.getUserRows().contains(user).parents('.tableRow').find('.link').click();
 
     manageRepo.getUserIsOwnerCheckbox().check();
 
@@ -28,16 +27,16 @@ export default class ManageAction {
 
     manageRepo
       .getUserRows()
-      .contains(testData.organizations.manage.user)
+      .contains(user)
       .parents('.tableRow')
       .find(':contains("ORG OWNER")')
       .should('exist');
   }
 
-  doDeleteUser() {
+  doDeleteUser(user: string) {
     manageRepo
       .getUserRows()
-      .contains(testData.organizations.manage.user)
+      .contains(user)
       .parents('.tableRow')
       .find("[aria-label='delete']")
       .click();

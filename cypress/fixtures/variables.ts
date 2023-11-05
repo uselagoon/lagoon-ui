@@ -1,8 +1,10 @@
 export const testData = {
-  variables: {
-    name: 'Test variable',
-    value: '123456789',
-  },
+  variables: [
+    {
+      name: 'Test variable',
+      value: '123456789',
+    },
+  ],
   ssh: {
     name: 'Test SSH',
     value:
@@ -21,7 +23,7 @@ export const testData = {
       email: 'davit.darsavelidze+100@amazee.io',
       role: 'developer',
     },
-    projects: {
+    project: {
       projectName: 'cy-drupal-test',
       gitUrl: 'git@github.com:amazeeio/drupal-example.git',
       prodEnv: 'main',

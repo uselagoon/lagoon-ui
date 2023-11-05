@@ -1,15 +1,19 @@
-import { testData } from 'cypress/fixtures/variables';
 import ProjectsRepository from 'cypress/support/repositories/organizations/ProjectsRepository';
 
 const projects = new ProjectsRepository();
 
+type ProjectData = {
+  projectName: string;
+  gitUrl: string;
+  prodEnv: string;
+};
 export default class ProjectsActions {
-  doAddProject() {
+  doAddProject(projectData: ProjectData) {
     projects.getAddBtn().click({ force: true });
-    projects.getName().type(testData.organizations.projects.projectName);
-    projects.getGit().type(testData.organizations.projects.gitUrl);
+    projects.getName().type(projectData.projectName);
+    projects.getGit().type(projectData.gitUrl);
 
-    projects.getEnv().type(testData.organizations.projects.prodEnv);
+    projects.getEnv().type(projectData.prodEnv);
 
     projects.selectTarget();
 
@@ -17,7 +21,7 @@ export default class ProjectsActions {
 
     cy.wait('@gqladdProjectToOrganizationMutation');
 
-    projects.getProjectRows().contains(testData.organizations.projects.projectName).should('exist');
+    projects.getProjectRows().contains(projectData.projectName).should('exist');
   }
 
   doDeleteProject() {

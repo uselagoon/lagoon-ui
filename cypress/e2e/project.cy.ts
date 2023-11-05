@@ -23,12 +23,12 @@ describe('Project page', () => {
     project.doExternalLinkCheck();
   });
 
-  it("Check environment routes", () => {
+  it('Checks environment routes', () => {
     cy.visit(`${Cypress.env().CY_URL}/projects/drupal-example`);
     project.doEnvRouteCheck();
-  })
+  });
 
-  it('Bad environment creation', () => {
+  it('Should not create a nonexistent environment', () => {
     cy.visit(`${Cypress.env().CY_URL}/projects/drupal-example`);
 
     project.doBadEnvCreation();

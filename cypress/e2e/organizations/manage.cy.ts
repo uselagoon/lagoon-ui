@@ -1,3 +1,4 @@
+import { testData } from 'cypress/fixtures/variables';
 import ManageAction from 'cypress/support/actions/organizations/ManageAction';
 import { aliasMutation } from 'cypress/utils/aliasQuery';
 
@@ -9,20 +10,17 @@ describe('Org Manage page', () => {
     cy.visit(`${Cypress.env().CY_URL}/organizations/99/manage`);
 
     cy.intercept('POST', Cypress.env().CY_API, req => {
-      aliasMutation(req, "AddUserToOrganization");
-
+      aliasMutation(req, 'AddUserToOrganization');
     });
-
-
   });
 
-  it('Add a org viewer', () => {
-    manage.doAddOrgViewer();
+  it('Adds a org viewer', () => {
+    manage.doAddOrgViewer(testData.organizations.manage.user);
   });
-  it('Upgrade/edit org viewer to owner', () => {
-    manage.doEditOrgViewer();
+  it('Should upgrade org viewer to owner', () => {
+    manage.doEditOrgViewer(testData.organizations.manage.user);
   });
-  it('Delete user', () => {
-    manage.doDeleteUser();
+  it('Deletes user', () => {
+    manage.doDeleteUser(testData.organizations.manage.user);
   });
 });

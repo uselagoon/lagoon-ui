@@ -1,11 +1,10 @@
-import { testData } from 'cypress/fixtures/variables';
 import UsersRepository from 'cypress/support/repositories/organizations/UsersRepository';
 
 const userRepo = new UsersRepository();
 export default class UsersActions {
-  doAddUser() {
+  doAddUser(email: string) {
     userRepo.getAddUserBtn().click();
-    userRepo.getAddUserEmail().type(testData.organizations.users.email);
+    userRepo.getAddUserEmail().type(email);
     userRepo.getAddUserGroup();
     userRepo.getAddUserRole();
 
@@ -15,17 +14,12 @@ export default class UsersActions {
 
     userRepo.getRows().should($element => {
       const elementText = $element.text();
-      expect(elementText).to.include(testData.organizations.users.email);
+      expect(elementText).to.include(email);
     });
   }
 
-  doDeleteUser() {
-    userRepo
-      .getRows()
-      .contains(testData.organizations.users.email)
-      .parents('.tableRow')
-      .find("[aria-label='delete']")
-      .click();
+  doDeleteUser(email: string) {
+    userRepo.getRows().contains(email).parents('.tableRow').find("[aria-label='delete']").click();
 
     userRepo.getConfirmDeleteBtn().click();
   }

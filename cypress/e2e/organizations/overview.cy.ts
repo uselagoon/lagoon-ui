@@ -1,3 +1,4 @@
+import { testData } from 'cypress/fixtures/variables';
 import OverviewAction from 'cypress/support/actions/organizations/OverviewAction';
 import { aliasMutation } from 'cypress/utils/aliasQuery';
 
@@ -13,18 +14,18 @@ describe('Organization overview page', () => {
     });
   });
 
-  it('Check navigation links', () => {
+  it('Checks navigation links', () => {
     overview.doNavLinkCheck();
   });
 
-  it('Check quota fields', () => {
+  it('Checks quota fields', () => {
     // groups, projects, notifications, envs
     overview.doQuotaFieldCheck();
   });
 
-  it('Change org friendlty name/description', () => {
-    overview.changeOrgFriendlyname();
+  it('Changes org friendlty name/description', () => {
+    overview.changeOrgFriendlyname(testData.organizations.overview.friendlyName);
 
-    overview.changeOrgDescription();
+    overview.changeOrgDescription(testData.organizations.overview.description);
   });
 });
