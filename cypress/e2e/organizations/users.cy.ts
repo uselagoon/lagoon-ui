@@ -1,7 +1,7 @@
 import { testData } from 'cypress/fixtures/variables';
 import GroupAction from 'cypress/support/actions/organizations/GroupsAction';
 import UsersActions from 'cypress/support/actions/organizations/UsersAction';
-import { aliasMutation, aliasQuery } from 'cypress/utils/aliasQuery';
+import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const users = new UsersActions();
 const group = new GroupAction();
@@ -33,6 +33,7 @@ describe('Org Users page', () => {
   });
 
   after(() => {
+    registerIdleHandler('groupQuery');
     cy.visit(`${Cypress.env().CY_URL}/organizations/99/groups`);
     group.doDeleteGroup(testData.organizations.groups.newGroupName);
     group.doDeleteGroup(testData.organizations.groups.newGroupName2);
