@@ -10,13 +10,14 @@ interface Props {
   tooltipPosition?: TooltipPlacement;
   tagColor?: string;
   maxWidth?: string;
+  textColor?: string;
 }
-const HoverTag: FC<Props> = ({ tooltipPosition, tagColor, maxWidth, text }) => {
+const HoverTag: FC<Props> = ({ tooltipPosition, tagColor, maxWidth, text, textColor }) => {
   return (
     <Tag color={tagColor || '#108ee9'}>
       {
         <Tooltip placement={tooltipPosition || 'right'} title={text}>
-          <TooltipText maxWidth={maxWidth}>{text}</TooltipText>
+          <TooltipText maxWidth={maxWidth} textColor={textColor}>{text}</TooltipText>
         </Tooltip>
       }
     </Tag>

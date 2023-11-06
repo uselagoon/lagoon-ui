@@ -50,6 +50,9 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
           {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
             <HoverTag text={deployment.buildStep} maxWidth="160px"/>
           )}
+          {['deployCompletedWithWarnings'].includes(deployment.buildStep) && deployment.buildStep && (
+            <HoverTag text={deployment.buildStep} maxWidth="160px" tagColor="#ffbe00" textColor="#000" />
+          )}
         </div>
       </FieldWrapper>
       <FieldWrapper className="duration">

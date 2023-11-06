@@ -126,4 +126,27 @@ export const StyledLogAccordion = styled.div`
       }
     }
   }
+  &.data-row {
+    .accordion-heading {
+      .log-warning-state {
+        ::before {
+          color: #000000;
+          background-color: #ffbe00;
+        }
+      }
+    }
+  }
+  &.data-row {
+    .accordion-heading-warning {
+      color: #000000;
+      background-color: #c59c26;
+      .warning {
+        background-image: url('/static/images/logs2microsoftteams/warning.png');
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position: center;
+        padding: 15px;
+      }
+    }
+  }
 `;
