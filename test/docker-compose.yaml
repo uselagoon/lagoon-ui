@@ -1,0 +1,67 @@
+version: '3.2'
+
+name: lagoon-minimal
+
+services:
+  api-db:
+    image: uselagoon/api-db:latest
+    networks:
+      - default
+  broker:
+    image: uselagoon/broker-single:latest
+    restart: on-failure
+    networks:
+      - default
+  api-init:
+    image: uselagoon/api:latest
+    command: ./node_modules/.bin/knex migrate:latest --cwd /app/services/api/database
+    depends_on:
+      - api-db
+      - keycloak
+  api:
+    image: uselagoon/api:latest
+    ports:
+      - '33000:3000'
+    networks:
+      - default
+    environment:
+      - KEYCLOAK_URL=http://172.17.0.1:38088
+      - NODE_ENV=development
+      - OPENSEARCH_INTEGRATION_ENABLED=false
+      - DISABLE_CORE_HARBOR=true
+      - CI=${CI:-true}
+      - S3_FILES_HOST=http://172.17.0.1:39000
+      - S3_BAAS_ACCESS_KEY_ID=minio
+      - S3_BAAS_SECRET_ACCESS_KEY=minio123
+      - CONSOLE_LOGGING_LEVEL=trace
+    depends_on:
+      - api-init
+  api-redis:
+    image: uselagoon/api-redis:latest
+  keycloak:
+    image: uselagoon/keycloak:latest
+    depends_on:
+      - keycloak-db
+    ports:
+      - '38088:8080'
+    volumes:
+      - ./keycloak:/upload
+  keycloak-db:
+    image: uselagoon/keycloak-db:latest
+  local-api-data-watcher-pusher:
+    image: uselagoon/local-api-data-watcher-pusher
+    depends_on:
+      - api
+  local-minio:
+    image: minio/minio
+    entrypoint: sh
+    command: -c 'mkdir -p /export/restores  && mkdir -p /export/lagoon-files && mkdir -p /export/harbor-images && minio server /export --console-address ":9001" '
+    ports:
+      - '39000:9000'
+      - '39001:9001'
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    volumes:
+      - ./minio:/upload
+
