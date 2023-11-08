@@ -9,6 +9,7 @@ import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
 import ProjectLink from 'components/link/Project';
 import gql from 'graphql-tag';
 
+import { IconDashboard } from '../CustomIcons/OrganizationIcons';
 import { DeleteButton } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
@@ -67,8 +68,10 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
         return (
           <TableActions style={{ marginLeft: 'auto', gap: '1rem' }}>
             <ProjectLink projectSlug={project.name} key={project.id} openInTab>
-              <Tooltip title="View" placement="bottom">
-                <ProjectDashboard inlineLink>View Dashboard</ProjectDashboard>
+              <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
+                <ProjectDashboard inlineLink>
+                  <IconDashboard />
+                </ProjectDashboard>
               </Tooltip>
             </ProjectLink>
 
@@ -79,13 +82,13 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               organizationName={organizationName}
               key={project.id}
             >
-              <Tooltip title="Edit" placement="bottom">
+              <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
                 <EditOutlined className="edit" />
               </Tooltip>
             </ProjectGroupLink>
 
             <>
-              <Tooltip title="Delete" placement="bottom">
+              <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
                 <DeleteOutlined
                   className="delete"
                   onClick={() => {

@@ -96,7 +96,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
         return (
           <TableActions>
             <>
-              <Tooltip title="Add a user to the group" placement="bottom">
+              <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
                 <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
               </Tooltip>
               <Modal
@@ -124,14 +124,14 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
               organizationName={organizationName}
               key={i.id}
             >
-              <Tooltip title="Edit" placement="bottom">
+              <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
                 <EditOutlined className="edit" />
               </Tooltip>
             </OrgGroupsLink>
 
             {i.type !== 'project-default-group' && (
               <>
-                <Tooltip title="Delete" placement="bottom">
+                <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
                   <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
                 </Tooltip>
 

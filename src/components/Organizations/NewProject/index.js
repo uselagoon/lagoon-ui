@@ -4,6 +4,7 @@ import ReactSelect from 'react-select';
 
 import Image from 'next/image';
 
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -75,7 +76,7 @@ const OrgNewProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <Tooltip title="Add a new project" placement="bottom">
+          <Tooltip overlayClassName="orgTooltip" title="Add a new project" placement="bottom">
             <AddButtonContent>
               <span>+</span>
               <span>Project</span>
@@ -120,7 +121,14 @@ const OrgNewProject = ({
                     </div>
                     <div className="form-box">
                       <label>
-                        Git URL: <span style={{ color: '#E30000' }}>*</span>
+                        Git URL: <span style={{ color: '#E30000' }}>*</span>{' '}
+                        <Tooltip
+                          overlayClassName="orgTooltip"
+                          title="When using an SSH git URL make sure that you copy the full path and have permission to add a deploy key and webhook. Public repositories can also be used."
+                          placement="right"
+                        >
+                          <InfoCircleOutlined style={{ fontSize: '1rem' }} />
+                        </Tooltip>
                         <input
                           className="inputEmail"
                           type="text"

@@ -285,7 +285,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
 
       <div style={{ width: '100px' }}>
         <Button action={() => setAddUserModalOpen(true)}>
-          <Tooltip title="Add an administrator" placement="bottom">
+          <Tooltip overlayClassName='orgTooltip'  title="Add an administrator" placement="bottom">
             <AddButtonContent>
               <span>+</span>
               <span>User</span>

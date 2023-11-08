@@ -18,7 +18,7 @@ export const RemoveProjectGroupConfirm = ({ info, onRemove, open, openModal, clo
         variant="red"
         action={openModal}
         icon={
-          <Tooltip title="Unlink" placement="bottom">
+          <Tooltip overlayClassName="orgTooltip" title="Unlink" placement="bottom">
             <DisconnectOutlined className="delete" />
           </Tooltip>
         }

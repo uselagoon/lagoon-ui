@@ -176,17 +176,13 @@ export const ProjectDashboard = styled.div<{ inlineLink?: boolean }>`
   padding:0.25rem 0.5rem;
   color:#497ffa;
   `
-      : `
-  margin-right: 1.25rem;
-  font-size: 12px;
-  background: #fff !important;
-  text-align: center;
-  line-height: 18px;
-  padding-bottom: 0.1rem;
-  padding-inline: 0.15rem;
-  height: 36px;
-  color: #497ffa;
-  border: 1px solid #4578e6;
-
+      : ` background: #fff !important;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:100%;
+    border-radius:0.1rem;
+    border: 1px solid #4578e6;
   `}
 `;

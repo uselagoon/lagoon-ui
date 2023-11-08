@@ -8,6 +8,7 @@ width: 100%;
 `;
 
 export const OrganizationsWrapper = styled.div`
+
   @media ${bp.tabletUp} {
     display: flex;
     padding: 0;
@@ -266,6 +267,10 @@ export const TableActions = styled.div`
   display: flex;
   gap: 10px;
   justify-content: space-evenly;
+  span > button, span > a {
+    height: 100%;
+    width: 100%;
+  }
   > * {
     height: 36px;
     width: 54px;
@@ -289,6 +294,12 @@ export const TableActions = styled.div`
       background: #fff;
     }
     .view {
+      border: 1px solid #4578e6 !important;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width:100%;
       svg {
         color: #4578e6;
       }
@@ -335,6 +346,10 @@ export const Footer = styled.div`
       background: #2e69e6;
       color: #fff;
     }
+  }
+  p.explainer{
+    color:#E30000;
+    font-size: 11px;
   }
 `;
 
@@ -384,7 +399,7 @@ export const TableWrapper = styled.div`
     line-height: 24px;
     margin-top: 15px;
     margin-bottom: 0;
-    display:flex;
+    display: flex;
   }
   .paginatedTable,
   .filters,
@@ -411,8 +426,8 @@ export const RemoveModalHeader = styled.h3`
 export const RemoveModalParagraph = styled.p`
   font-size: 16px;
   line-height: 24px;
-  span{
-    font-weight:bold;
+  span {
+    font-weight: bold;
   }
 `;
 

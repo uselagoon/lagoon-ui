@@ -250,7 +250,7 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                           })
                         }
                       >
-                        <Tooltip title="Edit" placement="bottom">
+                        <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
                           <EditOutlined className="edit" />
                         </Tooltip>
                       </span>

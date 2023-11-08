@@ -15,11 +15,13 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
   return (
     <React.Fragment>
       {!withText ? (
-        <Button variant="red" action={openModal}>
-          <Tooltip placement="bottom" title="Unlink">
-            <DisconnectOutlined className="delete" />
-          </Tooltip>
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Unlink">
+          <>
+            <Button variant="red" action={openModal}>
+              <DisconnectOutlined className="delete" />
+            </Button>
+          </>
+        </Tooltip>
       ) : (
         <Button variant="primary" action={openModal}>
           Continue

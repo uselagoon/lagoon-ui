@@ -57,7 +57,7 @@ export const AddGroupToProject = ({
               }
               return (
                 <StyledNotification>
-                  <h4>Add Group</h4>
+                  <h4>Link Group</h4>
                   <label>
                     Group
                     <RoleSelect>

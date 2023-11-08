@@ -76,7 +76,7 @@ export const AddNotificationToProject = ({
               });
               return (
                 <StyledNotification>
-                  <h4>Add Notification</h4>
+                  <h4>Link Notification</h4>
                   <label>
                     Notification
                     <RoleSelect>
