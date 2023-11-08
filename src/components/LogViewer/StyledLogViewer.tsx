@@ -1,3 +1,4 @@
+import { WarningTwoTone } from '@ant-design/icons';
 import { color } from 'lib/variables';
 import styled from 'styled-components';
 
@@ -129,6 +130,7 @@ export const StyledLogAccordion = styled.div`
   &.data-row {
     .accordion-heading {
       .log-warning-state {
+        margin-top: 1rem;
         ::before {
           color: #000000;
           background-color: #ffbe00;
@@ -139,13 +141,23 @@ export const StyledLogAccordion = styled.div`
   &.data-row {
     .accordion-heading-warning {
       color: #000000;
-      background-color: #c59c26;
-      .warning {
-        background-image: url('/static/images/logs2microsoftteams/warning.png');
-        background-repeat: no-repeat;
-        background-size: 15px;
-        background-position: center;
-        padding: 15px;
+      background-color: #c59d26d4;
+    }
+  }
+`;
+
+export const StyledWarningIcon = styled(WarningTwoTone)`
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+  svg {
+    path {
+      &:nth-child(1),
+      &:nth-child(2) {
+        fill: #fece30;
+      }
+
+      &:nth-child(3) {
+        fill: black;
       }
     }
   }

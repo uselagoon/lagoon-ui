@@ -48,10 +48,16 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
           <label>Status</label>
           <div className="field">{deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}</div>{' '}
           {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
-            <HoverTag text={deployment.buildStep} maxWidth="160px"/>
+            <HoverTag text={deployment.buildStep} maxWidth="160px" />
           )}
-          {['deployCompletedWithWarnings'].includes(deployment.buildStep) && deployment.buildStep && (
-            <HoverTag text={deployment.buildStep} maxWidth="160px" tagColor="#ffbe00" textColor="#000" />
+          {deployment.buildStep && ['deployCompletedWithWarnings'].includes(deployment.buildStep) && (
+            <HoverTag
+              text={deployment.buildStep}
+              formatToReadableText
+              maxWidth="160px"
+              tagColor="#ffbe00"
+              textColor="#000"
+            />
           )}
         </div>
       </FieldWrapper>
