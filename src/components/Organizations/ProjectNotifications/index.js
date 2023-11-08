@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo';
 
 import { EditOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/react-hooks';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
@@ -249,7 +250,9 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                           })
                         }
                       >
-                        <EditOutlined className="edit" />
+                        <Tooltip title="Edit" placement="bottom">
+                          <EditOutlined className="edit" />
+                        </Tooltip>
                       </span>
 
                       <RemoveProjectGroupConfirm

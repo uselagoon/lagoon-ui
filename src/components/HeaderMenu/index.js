@@ -29,7 +29,7 @@ const useOutsideClick = callback => {
   return ref;
 };
 
-const HeaderMenu = ({ auth }) => {
+const HeaderMenu = ({ auth, isOrganizationsPath }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOutside = () => {
@@ -55,6 +55,7 @@ const HeaderMenu = ({ auth }) => {
   return (
     <>
       <Dropdown
+        isOrganizationsPath={isOrganizationsPath}
         open={open}
         trigger={
           <DropdownButton ref={ref} onClick={handleOpen}>
@@ -96,10 +97,10 @@ const HeaderMenu = ({ auth }) => {
   );
 };
 
-const Dropdown = ({ open, trigger, menu }) => {
+const Dropdown = ({ open, trigger, menu, isOrganizationsPath }) => {
   return (
     <>
-      <StyledDropdown>
+      <StyledDropdown isOrganizationsPath={isOrganizationsPath}>
         {trigger}
         {open ? (
           <DropdownMenu>

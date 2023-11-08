@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import OrgGroupsLink from 'components/link/Organizations/Group';
@@ -95,7 +96,9 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
         return (
           <TableActions>
             <>
-              <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+              <Tooltip title="Add a user to the group" placement="bottom">
+                <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+              </Tooltip>
               <Modal
                 style={{
                   content: {
@@ -121,12 +124,16 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
               organizationName={organizationName}
               key={i.id}
             >
-              <EditOutlined className="edit" />
+              <Tooltip title="Edit" placement="bottom">
+                <EditOutlined className="edit" />
+              </Tooltip>
             </OrgGroupsLink>
 
             {i.type !== 'project-default-group' && (
               <>
-                <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                <Tooltip title="Delete" placement="bottom">
+                  <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                </Tooltip>
 
                 <Modal
                   isOpen={modalStates.deleteGroup.open && modalStates.deleteGroup.current.name === i.name}

@@ -250,7 +250,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
                   singleValue: base => ({ ...base, fontSize: '16px' }),
                 }}
                 aria-label="service"
-                placeholder="Select target"
+                placeholder="Select service"
                 name="service"
                 value={options.find(o => o.value === selectedService?.value)}
                 onChange={selectedOption => setSelectedService(selectedOption)}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
@@ -44,10 +45,6 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
             >
               {project.name}
             </ProjectGroupLink>
-
-            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
-              <ProjectDashboard>View in Dashboard</ProjectDashboard>
-            </ProjectLink>
           </>
         );
       },
@@ -68,7 +65,13 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       key: 'actions',
       render: function (project) {
         return (
-          <TableActions style={{ marginLeft: 'auto' }}>
+          <TableActions style={{ marginLeft: 'auto', gap: '1rem' }}>
+            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+              <Tooltip title="View" placement="bottom">
+                <ProjectDashboard inlineLink>View Dashboard</ProjectDashboard>
+              </Tooltip>
+            </ProjectLink>
+
             <ProjectGroupLink
               className="link"
               projectGroupSlug={project.name}
@@ -76,16 +79,20 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               organizationName={organizationName}
               key={project.id}
             >
-              <EditOutlined className="edit" />
+              <Tooltip title="Edit" placement="bottom">
+                <EditOutlined className="edit" />
+              </Tooltip>
             </ProjectGroupLink>
 
             <>
-              <DeleteOutlined
-                className="delete"
-                onClick={() => {
-                  setModalState({ open: true, current: project.name });
-                }}
-              />
+              <Tooltip title="Delete" placement="bottom">
+                <DeleteOutlined
+                  className="delete"
+                  onClick={() => {
+                    setModalState({ open: true, current: project.name });
+                  }}
+                />
+              </Tooltip>
 
               <Modal
                 isOpen={modalState.open && modalState.current === project.name}

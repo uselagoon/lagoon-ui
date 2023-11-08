@@ -187,9 +187,9 @@ export const sharedTableStyles = css`
       // & > div {
       //   padding-left: 20px;
       // }
-      &:hover {
+      /* &:hover {
         border: 1px solid ${color.brightBlue};
-      }
+      } */
       &:first-child {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
@@ -393,9 +393,9 @@ export const TableWrapper = styled.div`
     .tableRow {
       border: 2px solid ${props => props.theme.borders.tableRow};
 
-      &:hover {
+      /* &:hover {
         border: 2px solid #2bc0d8;
-      }
+      } */
     }
   }
   .tableAction {

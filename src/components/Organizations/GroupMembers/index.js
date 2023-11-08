@@ -6,15 +6,18 @@ import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/react-hooks';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
+import ProjectLink from 'components/link/Project';
 import gql from 'graphql-tag';
 
 import AddUserToGroup, { ADD_GROUP_MEMBER_MUTATION, options } from '../AddUserToGroup';
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { ProjectDashboard } from '../Projects/Styles';
 import {
   AddButtonContent,
   Footer,
@@ -171,12 +174,16 @@ const GroupMembers = ({
                 })
               }
             >
-              <EditOutlined className="edit" />
+              <Tooltip placement="bottom" title="Edit">
+                <EditOutlined className="edit" />
+              </Tooltip>
             </span>
 
             <Link href={linkData.urlObject} as={linkData.asPath}>
               <a className="link">
-                <EyeOutlined className="view" />
+                <Tooltip placement="bottom" title="View">
+                  <EyeOutlined className="view" />
+                </Tooltip>
               </a>
             </Link>
 
@@ -246,13 +253,23 @@ const GroupMembers = ({
       render: project => {
         return (
           <TableActions>
+            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+              <Tooltip title="View" placement="bottom">
+                <ProjectDashboard inlineLink>View Dashboard</ProjectDashboard>
+              </Tooltip>
+            </ProjectLink>
+
             <Button
               variant="red"
               action={() => {
                 setSelectedProject(project.id);
                 setProjectModalOpen(true);
               }}
-              icon={<DisconnectOutlined className="delete" />}
+              icon={
+                <Tooltip title="Unlink" placement="bottom">
+                  <DisconnectOutlined className="delete" />
+                </Tooltip>
+              }
             />
 
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
@@ -320,10 +337,12 @@ const GroupMembers = ({
         />
         <div className="tableAction">
           <Button action={() => setAddUserModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>User</span>
-            </AddButtonContent>
+            <Tooltip title="Add a user to the group" placement="bottom">
+              <AddButtonContent>
+                <span>+</span>
+                <span>User</span>
+              </AddButtonContent>
+            </Tooltip>
           </Button>
         </div>
 
@@ -352,10 +371,12 @@ const GroupMembers = ({
 
         <div className="tableAction">
           <Button action={() => setAddProjectModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>Project</span>
-            </AddButtonContent>
+            <Tooltip title="Add the group to a project" placement="bottom">
+              <AddButtonContent>
+                <span>+</span>
+                <span>Project</span>
+              </AddButtonContent>
+            </Tooltip>
           </Button>
         </div>
 

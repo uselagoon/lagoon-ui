@@ -42,10 +42,7 @@ export const AddGroupToProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>Group</span>
-          </AddButtonContent>
+          <AddButtonContent>Link Group</AddButtonContent>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>

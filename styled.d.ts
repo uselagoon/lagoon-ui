@@ -36,6 +36,7 @@ export interface LagoonTheme {
   };
   gradients: {
     headerFooterGradient: string;
+    organizationsHeaderGradient: string;
   };
   skeleton: {
     base: string;

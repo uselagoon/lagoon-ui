@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
@@ -93,10 +94,12 @@ export const NewGroup = ({
     <StyledNewGroup>
       <div className="margins">
         <Button disabled={disabled} action={openModal}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
-          </span>
+          <Tooltip title="Add a new group" placement="bottom">
+            <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '28px' }}>+</span>
+              <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
+            </span>
+          </Tooltip>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>

@@ -69,7 +69,7 @@ export const StyledOrgProjects = styled.div`
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 16px;
-    line-height:24px;
+    line-height: 24px;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;
@@ -81,8 +81,8 @@ export const StyledOrgProjects = styled.div`
   .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
-    div{
-      border-radius:0 !important;
+    div {
+      border-radius: 0 !important;
     }
   }
   label {
@@ -166,10 +166,27 @@ export const OrgProjectWrapper = styled.div`
   }
 `;
 
-export const ProjectDashboard = styled.div`
+export const ProjectDashboard = styled.div<{ inlineLink?: boolean }>`
+  ${props =>
+    !props.inlineLink
+      ? `
   margin-left:1.5rem;
   font-size:13px;
-  background:${props => props.theme.backgrounds.sidebar};
+  background:${props.theme.backgrounds.sidebar};
   padding:0.25rem 0.5rem;
   color:#497ffa;
+  `
+      : `
+  margin-right: 1.25rem;
+  font-size: 12px;
+  background: #fff !important;
+  text-align: center;
+  line-height: 18px;
+  padding-bottom: 0.1rem;
+  padding-inline: 0.15rem;
+  height: 36px;
+  color: #497ffa;
+  border: 1px solid #4578e6;
+
+  `}
 `;
