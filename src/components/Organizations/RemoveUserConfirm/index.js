@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { DisconnectOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveUserConfirm/logic';
@@ -14,9 +15,13 @@ export const RemoveUserConfirm = ({ withText, onRemove, open, openModal, closeMo
   return (
     <React.Fragment>
       {!withText ? (
-        <Button variant="red" action={openModal}>
-          <DisconnectOutlined className="delete" />
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Unlink">
+          <>
+            <Button variant="red" action={openModal}>
+              <DisconnectOutlined className="delete" />
+            </Button>
+          </>
+        </Tooltip>
       ) : (
         <Button variant="primary" action={openModal}>
           Continue

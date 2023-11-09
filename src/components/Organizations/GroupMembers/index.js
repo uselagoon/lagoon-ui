@@ -6,15 +6,19 @@ import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/react-hooks';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
+import ProjectLink from 'components/link/Project';
 import gql from 'graphql-tag';
 
 import AddUserToGroup, { ADD_GROUP_MEMBER_MUTATION, options } from '../AddUserToGroup';
 import { RoleSelect } from '../AddUserToGroup/Styles';
+import { IconDashboard } from '../CustomIcons/OrganizationIcons';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { ProjectDashboard } from '../Projects/Styles';
 import {
   AddButtonContent,
   Footer,
@@ -134,12 +138,9 @@ const GroupMembers = ({
       width: '30%',
       key: 'email',
       render: ({ user }) => {
-        const linkData = getLinkData(user.email, organizationId, organizationName);
         return (
           <div className="email">
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a> {user.email}</a>
-            </Link>
+            <span> {user.email}</span>
           </div>
         );
       },
@@ -155,31 +156,35 @@ const GroupMembers = ({
     {
       width: '15%',
       key: 'actions',
-      render: ({ user }) => {
+      render: ({ user, role }) => {
         const linkData = getLinkData(user.email, organizationId, organizationName);
         return (
           <TableActions>
-            <span
-              className="link"
-              onClick={() =>
-                setModalState({
-                  open: true,
-                  current: {
-                    email: user.email,
-                    role: user.role,
-                  },
-                })
-              }
-            >
-              <EditOutlined className="edit" />
-            </span>
-
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">
-                <EyeOutlined className="view" />
-              </a>
-            </Link>
-
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit role">
+              <span
+                className="link"
+                onClick={() =>
+                  setModalState({
+                    open: true,
+                    current: {
+                      email: user.email,
+                      role,
+                    },
+                  })
+                }
+              >
+                <EditOutlined className="edit" />
+              </span>
+            </Tooltip>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
+              <>
+                <Link href={linkData.urlObject} as={linkData.asPath}>
+                  <a className="link">
+                    <EyeOutlined className="view" />
+                  </a>
+                </Link>
+              </>
+            </Tooltip>
             <Mutation mutation={REMOVE_USER_FROM_GROUP}>
               {(removeUserFromGroup, { called, error, data }) => {
                 if (error) {
@@ -221,16 +226,7 @@ const GroupMembers = ({
       render: project => {
         const { id, name } = project;
 
-        return (
-          <ProjectGroupLink
-            projectGroupSlug={name}
-            organizationSlug={organizationId}
-            organizationName={organizationName}
-            key={id}
-          >
-            {name}
-          </ProjectGroupLink>
-        );
+        return <span>{name}</span>;
       },
     },
     {
@@ -246,14 +242,40 @@ const GroupMembers = ({
       render: project => {
         return (
           <TableActions>
-            <Button
-              variant="red"
-              action={() => {
-                setSelectedProject(project.id);
-                setProjectModalOpen(true);
-              }}
-              icon={<DisconnectOutlined className="delete" />}
-            />
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View project">
+              <>
+                <ProjectGroupLink
+                  className="link"
+                  projectGroupSlug={project.name}
+                  organizationSlug={organizationId}
+                  organizationName={organizationName}
+                  key={project.id}
+                >
+                  <EyeOutlined className="view" />
+                </ProjectGroupLink>
+              </>
+            </Tooltip>
+
+            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+              <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
+                <ProjectDashboard inlineLink>
+                  <IconDashboard />
+                </ProjectDashboard>
+              </Tooltip>
+            </ProjectLink>
+
+            <Tooltip overlayClassName="orgTooltip" title="Unlink" placement="bottom">
+              <>
+                <Button
+                  variant="red"
+                  action={() => {
+                    setSelectedProject(project.id);
+                    setProjectModalOpen(true);
+                  }}
+                  icon={<DisconnectOutlined className="delete" />}
+                />
+              </>
+            </Tooltip>
 
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
@@ -320,10 +342,12 @@ const GroupMembers = ({
         />
         <div className="tableAction">
           <Button action={() => setAddUserModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>User</span>
-            </AddButtonContent>
+            <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
+              <AddButtonContent>
+                <span>+</span>
+                <span>User</span>
+              </AddButtonContent>
+            </Tooltip>
           </Button>
         </div>
 
@@ -352,10 +376,12 @@ const GroupMembers = ({
 
         <div className="tableAction">
           <Button action={() => setAddProjectModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>Project</span>
-            </AddButtonContent>
+            <Tooltip overlayClassName="orgTooltip" title="Add the group to a project" placement="bottom">
+              <AddButtonContent>
+                <span>+</span>
+                <span>Project</span>
+              </AddButtonContent>
+            </Tooltip>
           </Button>
         </div>
 

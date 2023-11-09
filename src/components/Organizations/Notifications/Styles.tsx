@@ -251,9 +251,9 @@ export const StyledOrgNotifications = styled.div`
     &:not(:last-child) {
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     }
-    &:hover {
+    /* &:hover {
       border: 1px solid #2bc0d8;
-    }
+    } */
   }
   .description {
     line-height: 24px;

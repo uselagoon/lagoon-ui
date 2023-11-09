@@ -96,11 +96,22 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
   const [addWebhook] = useMutation(ADD_WEBHOOK_NOTIFICATION);
 
   const [loading, setLoading] = useState(false);
+
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
   const resetState = () => {
     setNotificationName('');
     setEmail('');
     setWebhook('');
     setChannel('');
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    setIsValidEmail(emailRegex.test(newEmail));
   };
 
   const getAction = () => {
@@ -167,9 +178,10 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
                 type="text"
                 placeholder="Enter Email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => handleEmailChange(e)}
               />
             </label>
+            {!isValidEmail && <p style={{ color: '#E30000' }}>Invalid email address</p>}
           </div>
         );
       case 'slack':
@@ -250,7 +262,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
                   singleValue: base => ({ ...base, fontSize: '16px' }),
                 }}
                 aria-label="service"
-                placeholder="Select target"
+                placeholder="Make a selection"
                 name="service"
                 value={options.find(o => o.value === selectedService?.value)}
                 onChange={selectedOption => setSelectedService(selectedOption)}
@@ -295,7 +307,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
               }}
               variant="primary"
               loading={loading}
-              disabled={loading}
+              disabled={loading || (selectedService?.value === 'email' && !isValidEmail)}
             >
               Add
             </Button>

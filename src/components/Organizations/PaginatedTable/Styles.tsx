@@ -53,9 +53,9 @@ export const TableRow = styled.div`
     border: 2px solid transparent;
     border-bottom: 2px solid ${props => props.theme.borders.tableRow};
   }
-  &:hover {
+  /* &:hover {
     border: 2px solid #2bc0d8;
-  }
+  } */
 `;
 export const TableColumn = styled.div<{ width: string }>`
   &:not(:last-child) {

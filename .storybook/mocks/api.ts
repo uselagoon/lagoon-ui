@@ -8,6 +8,7 @@ import {
   organizationNotifications,
   organizationOwners,
   organizationProjects,
+  organizationEnvironments
 } from './mocks';
 
 faker.setDefaultRefDate(new Date(`${new Date().getFullYear().toString()}-01-01`));
@@ -165,6 +166,8 @@ export const getOrganization = () => {
 
   const projectQuota = faker.number.int({ min: 1, max: 10 });
   const groupQuota = faker.number.int({ min: 1, max: 10 });
+  const environmentQuota = faker.number.int({ min: 1, max: 10 });
+  const routeQuota = faker.number.int({ min: 1, max: 10 });
 
   const { slack, rocketChat, teams, webhook } = organizationNotifications();
 
@@ -175,6 +178,8 @@ export const getOrganization = () => {
     quotaProject: projectQuota,
     quotaGroup: groupQuota,
     quotaNotification: 10,
+    quotaEnvironment: environmentQuota,
+    quotaRoute: routeQuota,
     __typename: 'Organization',
     deployTargets: [
       {
@@ -186,6 +191,7 @@ export const getOrganization = () => {
     owners: organizationOwners(),
     projects: organizationProjects(projectQuota),
     groups: organizationGroups(groupQuota),
+    environments: organizationEnvironments(environmentQuota),
     slacks: slack,
     rocketchats: rocketChat,
     teams,

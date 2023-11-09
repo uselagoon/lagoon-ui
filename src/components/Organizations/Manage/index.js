@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo';
 import Link from 'next/link';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/Users/logic';
@@ -284,10 +285,12 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
 
       <div style={{ width: '100px' }}>
         <Button action={() => setAddUserModalOpen(true)}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>User</span>
-          </AddButtonContent>
+          <Tooltip overlayClassName='orgTooltip'  title="Add an administrator" placement="bottom">
+            <AddButtonContent>
+              <span>+</span>
+              <span>User</span>
+            </AddButtonContent>
+          </Tooltip>
         </Button>
       </div>
 

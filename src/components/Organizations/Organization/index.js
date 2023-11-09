@@ -245,7 +245,7 @@ const Organization = ({ organization, refetch }) => {
 
           <div className="targetwrapper">
             <div className="targets">
-              <span>Available Deployments</span>
+              <span>Available deploy targets</span>
               {organization.deployTargets.map(deploytarget => (
                 <div key={deploytarget.id} className="target">
                   <EnvironmentOutlined className="targetIcon" />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
@@ -92,12 +93,16 @@ export const NewGroup = ({
   return (
     <StyledNewGroup>
       <div className="margins">
-        <Button disabled={disabled} action={openModal}>
-          <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '28px' }}>+</span>
-            <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
-          </span>
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" title="Add a new group" placement="bottom">
+          <>
+            <Button disabled={disabled} action={openModal}>
+              <span style={{ display: 'inline-flex', alignContent: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '28px' }}>+</span>
+                <span style={{ fontSize: '16px', lineHeight: '24px' }}>Group</span>
+              </span>
+            </Button>
+          </>
+        </Tooltip>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
@@ -137,6 +142,7 @@ export const NewGroup = ({
                     </div>
                     <div>
                       <Footer>
+                        <p className="explainer">Please use (a to z) lower case, numbers and - only</p>
                         <Button
                           disabled={
                             called ||

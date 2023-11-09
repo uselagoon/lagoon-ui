@@ -48,10 +48,7 @@ export const AddNotificationToProject = ({
     <StyledNotificationWrapper>
       <div className="margins">
         <Button action={openModal}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>Notification</span>
-          </AddButtonContent>
+          <AddButtonContent>Link Notification</AddButtonContent>
         </Button>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
@@ -79,7 +76,7 @@ export const AddNotificationToProject = ({
               });
               return (
                 <StyledNotification>
-                  <h4>Add Notification</h4>
+                  <h4>Link Notification</h4>
                   <label>
                     Notification
                     <RoleSelect>
