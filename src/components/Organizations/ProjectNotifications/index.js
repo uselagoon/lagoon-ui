@@ -4,8 +4,9 @@ import { Mutation } from 'react-apollo';
 import { EditOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
-import gql from 'graphql-tag';
 import OrgNotificationsLink from 'components/link/Organizations/Notifications';
+import gql from 'graphql-tag';
+
 import AddNotificationToProject from '../AddNotificationToProject';
 import { TableActions } from '../SharedStyles';
 import { StyledProjectNotifications } from './Styles';
@@ -69,11 +70,13 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                   }
                   return (
                     <TableActions>
-                      <OrgNotificationsLink organizationSlug={organizationId} className="link">
-                        <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
-                          <EditOutlined className="edit" />
-                        </Tooltip>
-                      </OrgNotificationsLink>
+                      <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
+                        <>
+                          <OrgNotificationsLink organizationSlug={organizationId} className="link">
+                            <EditOutlined className="edit" />
+                          </OrgNotificationsLink>
+                        </>
+                      </Tooltip>
                       <RemoveProjectGroupConfirm
                         loading={called}
                         info={{ type: 'notification', projectName: projectName, deleteName: notification.name }}
