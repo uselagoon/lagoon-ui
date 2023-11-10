@@ -67,6 +67,9 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       render: function (project) {
         return (
           <TableActions style={{ marginLeft: 'auto', gap: '1rem' }}>
+
+
+
             <ProjectLink projectSlug={project.name} key={project.id} openInTab>
               <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
                 <ProjectDashboard inlineLink>
@@ -75,6 +78,9 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               </Tooltip>
             </ProjectLink>
 
+            <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
+              <>
+         
             <ProjectGroupLink
               className="link"
               projectGroupSlug={project.name}
@@ -82,11 +88,12 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               organizationName={organizationName}
               key={project.id}
             >
-              <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
-                <EditOutlined className="edit" />
-              </Tooltip>
-            </ProjectGroupLink>
 
+                <EditOutlined className="edit" />
+     
+            </ProjectGroupLink>
+            </>
+            </Tooltip>
             <>
               <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
                 <DeleteOutlined

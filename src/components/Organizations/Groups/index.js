@@ -12,7 +12,7 @@ import AddUserToGroup from '../AddUserToGroup';
 import NewGroup from '../NewGroup';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
-import { DeleteButton, GroupsWrapper, StyledGroups } from './Styles';
+import { GroupsWrapper, StyledGroups } from './Styles';
 
 const DELETE_GROUP = gql`
   mutation deleteGroup($groupName: String!) {
@@ -116,18 +116,19 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                 />
               </Modal>
             </>
-
-            <OrgGroupsLink
-              className="link"
-              groupSlug={i.name}
-              organizationSlug={organizationId}
-              organizationName={organizationName}
-              key={i.id}
-            >
-              <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
-                <EditOutlined className="edit" />
-              </Tooltip>
-            </OrgGroupsLink>
+            <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
+              <>
+                <OrgGroupsLink
+                  className="link"
+                  groupSlug={i.name}
+                  organizationSlug={organizationId}
+                  organizationName={organizationName}
+                  key={i.id}
+                >
+                  <EditOutlined className="edit" />
+                </OrgGroupsLink>
+              </>
+            </Tooltip>
 
             {i.type !== 'project-default-group' && (
               <>

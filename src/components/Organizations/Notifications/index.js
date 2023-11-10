@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { EditOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveNotificationConfirm from 'components/Organizations/RemoveNotificationConfirm';
 import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
-import { AddButtonContent, Footer, ModalChildren } from '../SharedStyles';
+import { AddButtonContent, Footer, ModalChildren, ViewMore } from '../SharedStyles';
 import AddNotifications from './AddNotifications';
 import { AddNotifButton, NameTagCol, StyledOrgNotifications } from './Styles';
 
@@ -131,6 +132,8 @@ const OrgNotifications = ({
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [valueModalOpen, setValueModalOpen] = useState(false);
+
   const initialEditState = {
     open: false,
     type: '',
@@ -141,6 +144,10 @@ const OrgNotifications = ({
 
   const closeEditModal = () => {
     setEditState(initialEditState);
+  };
+
+  const closeValueModal = () => {
+    setValueModalOpen(false);
   };
 
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -161,6 +168,19 @@ const OrgNotifications = ({
     }
   };
 
+  const renderWebbook = (webhook, action) => {
+    if (webhook.length < 50) return <p>Webhook: {webhook}</p>;
+
+    const openValModal = () => {
+      action();
+      setValueModalOpen(true);
+    };
+    return (
+      <p>
+        Webhook: {webhook.slice(0, 50) + '...'} <ViewMore onClick={openValModal}>VIEW FULL VALUE</ViewMore>
+      </p>
+    );
+  };
   return (
     <StyledOrgNotifications>
       <OrgHeader
@@ -194,12 +214,14 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
             <div className="notifdata">
-              Webhook: {project.webhook}
-              <br></br>
-              Channel: {project.channel}
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+              <p> Channel: {project.channel}</p>
             </div>
             <div className="actions">
-              <span
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+            <span
                 className="link"
                 onClick={() => {
                   setEditState({ open: true, current: project, type: 'slack' });
@@ -207,6 +229,8 @@ const OrgNotifications = ({
               >
                 <EditOutlined className="edit" />
               </span>
+              </Tooltip>
+
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'slack'}
@@ -328,14 +352,19 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
             <div className="notifdata">
-              Webhook: {project.webhook}
-              <br></br>
-              Channel: {project.channel}
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+              <p>Channel: {project.channel}</p>
             </div>
             <div className="actions">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}>
+
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+            <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}>
                 <EditOutlined className="edit" />
               </span>
+              </Tooltip>
+
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'rocketchat'}
@@ -456,11 +485,15 @@ const OrgNotifications = ({
                 <label className="email-group-label">EMAIL</label>
               </div>
             </NameTagCol>
-            <div className="notifdata">Address: {project.emailAddress}</div>
+            <div className="notifdata">
+              <p>Address: {project.emailAddress}</p>
+            </div>
             <div className="actions">
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'email' })}>
                 <EditOutlined className="edit" />
               </span>
+              </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'email'}
@@ -570,12 +603,18 @@ const OrgNotifications = ({
                 <label className="webhook-group-label">WEBHOOK</label>
               </div>
             </NameTagCol>
-            <div className="notifdata">Webhook: {project.webhook}</div>
+            <div className="notifdata">
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+            </div>
             <div className="actions">
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+
               <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'webhook' })}>
                 <EditOutlined className="edit" />
               </span>
-
+</Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'webhook'}
@@ -684,11 +723,17 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
 
-            <div className="notifdata">Webhook: {project.webhook}</div>
+            <div className="notifdata">
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+            </div>
             <div className="actions">
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'teams' })}>
                 <EditOutlined className="edit" />
               </span>
+              </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'teams'}
@@ -789,6 +834,23 @@ const OrgNotifications = ({
         ))}
       </div>
 
+      <Modal style={{ content: { width: '50%' } }} isOpen={valueModalOpen} onRequestClose={closeValueModal}>
+        <ModalChildren>
+          <div className="notificationItem">
+            <p>Notification Name:</p>
+            <p>{editState?.current?.name}</p>
+          </div>
+
+          <div className="notificationItem">
+            <p>Webhook:</p>
+            <p>{editState?.current?.webhook} </p>
+          </div>
+        </ModalChildren>
+        <Footer>
+          <Button action={closeValueModal}>Close</Button>
+        </Footer>
+      </Modal>
+
       <AddNotifications
         organizationId={organizationId}
         onNotificationAdded={refresh}
@@ -796,12 +858,13 @@ const OrgNotifications = ({
         closeModal={() => setModalOpen(false)}
       >
         <AddNotifButton>
-          <Button action={() => setModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>Notification</span>
-            </AddButtonContent>
-          </Button>
+          <Tooltip overlayClassName="orgTooltip" title="Add a new notification" placement="bottom">
+            <>
+              <Button action={() => setModalOpen(true)}>
+                <AddButtonContent>Add notification</AddButtonContent>
+              </Button>
+            </>
+          </Tooltip>
         </AddNotifButton>
       </AddNotifications>
     </StyledOrgNotifications>

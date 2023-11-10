@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo';
 import Link from 'next/link';
 
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/Users/logic';
@@ -121,21 +122,26 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         const linkData = getLinkData(user?.email, organizationId, organizationName);
         return (
           <TableActions>
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">
-                <EyeOutlined className="edit" />
-              </a>
-            </Link>
-
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
+              <>
+                <Link href={linkData.urlObject} as={linkData.asPath}>
+                  <a className="link">
+                    <EyeOutlined className="edit" />
+                  </a>
+                </Link>
+              </>
+            </Tooltip>
             {!user.email.startsWith('default-user') ? (
               <>
-                <DeleteOutlined
-                  className="delete"
-                  onClick={() => {
-                    setSelectedUser(user?.id);
-                    setDeleteUserModalOpen(true);
-                  }}
-                />
+                <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Delete user">
+                  <DeleteOutlined
+                    className="delete"
+                    onClick={() => {
+                      setSelectedUser(user?.id);
+                      setDeleteUserModalOpen(true);
+                    }}
+                  />
+                </Tooltip>
                 <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
                   <RemoveModalHeader>Remove user?</RemoveModalHeader>
                   <RemoveModalParagraph>
@@ -215,13 +221,14 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         />
       </Modal>
 
-      <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>User</span>
-          </AddButtonContent>
-        </Button>
+      <div>
+        <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Add user">
+          <>
+            <Button action={() => setAddUserModalOpen(true)}>
+              <AddButtonContent>Add user</AddButtonContent>
+            </Button>
+          </>
+        </Tooltip>
       </div>
     </StyledUsers>
   );

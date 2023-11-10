@@ -238,6 +238,7 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                   }
                   return (
                     <TableActions>
+                                   <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
                       <span
                         className="link"
                         onClick={() =>
@@ -250,11 +251,11 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                           })
                         }
                       >
-                        <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
+           
                           <EditOutlined className="edit" />
-                        </Tooltip>
+            
                       </span>
-
+                      </Tooltip>
                       <RemoveProjectGroupConfirm
                         loading={called}
                         info={{ type: 'notification', projectName: projectName, deleteName: notification.name }}

@@ -65,7 +65,7 @@ export const StyledOrgNotifications = styled.div`
     display: flex;
     justify-content: flex-end;
     padding: 0;
-    width: 40%;
+    width: 20%;
     align-self: center;
     gap: 0.5rem;
 
@@ -91,6 +91,9 @@ export const StyledOrgNotifications = styled.div`
   .remove {
     height: 36px;
     width: 54px;
+    span {
+      height: 36px;
+    }
     button {
       height: 100%;
       width: 100%;
@@ -124,10 +127,20 @@ export const StyledOrgNotifications = styled.div`
     font-family: 'roboto', sans-serif;
     font-size: 0.8125rem;
     border-right: 2px solid ${props => props.theme.borders.tableRow};
-    height: 100%;
+    min-height: 100%;
     display: flex;
-    align-items: center;
-    width: 35%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
+
+    width: 55%;
+    p {
+      margin: unset;
+    }
+    word-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+
     padding-left: 0.5rem;
     .comment {
       font-size: 10px;
@@ -219,7 +232,7 @@ export const StyledOrgNotifications = styled.div`
     border-color: hsl(0, 0%, 80%);
     font-family: 'roboto', sans-serif;
     font-size: 16px;
-    line-height:24px;
+    line-height: 24px;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;
@@ -242,7 +255,8 @@ export const StyledOrgNotifications = styled.div`
 
   ${sharedTableStyles}
   .data-row {
-    height: 63px;
+    min-height: 63px;
+    height: max-content;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     transition: 0.3s ease;
@@ -251,9 +265,12 @@ export const StyledOrgNotifications = styled.div`
     &:not(:last-child) {
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     }
-    /* &:hover {
-      border: 1px solid #2bc0d8;
-    } */
+
+    display: flex;
+    align-items: stretch !important;
+    & > * {
+      height: unset !important;
+    }
   }
   .description {
     line-height: 24px;

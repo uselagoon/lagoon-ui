@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo';
 import Link from 'next/link';
 
 import { DisconnectOutlined, EyeOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import gql from 'graphql-tag';
@@ -72,13 +73,25 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
     setSelectedGroup('');
     setGroupModalOpen(false);
   };
+  const groupLinkData = (groupSlug: string, organizationSlug: string, organizationName: string) => ({
+    urlObject: {
+      pathname: '/organizations/group',
+      query: { groupName: groupSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    },
+    asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
+  });
 
   const UserColumns = [
     {
       width: '20%',
       key: 'group',
       render: ({ name }: Group) => {
-        return name ? <div className="group">{name}</div> : <>Group name - </>;
+        const linkData = groupLinkData(name, organizationId, organizationName);
+        return (
+          <Link href={linkData.urlObject} as={linkData.asPath}>
+            <a className="link">{name ? name : <>Group name - </>}</a>
+          </Link>
+        );
       },
     },
     {
@@ -92,30 +105,28 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '25%',
       key: 'actions',
       render: (group: Group) => {
-        const groupLinkData = (groupSlug: string, organizationSlug: string, organizationName: string) => ({
-          urlObject: {
-            pathname: '/organizations/group',
-            query: { groupName: groupSlug, organizationSlug: organizationSlug, organizationName: organizationName },
-          },
-          asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
-        });
-
         const linkData = groupLinkData(group.name, organizationId, organizationName);
 
         return (
           <TableActions>
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">
-                <EyeOutlined className="view" />
-              </a>
-            </Link>
-            <DisconnectOutlined
-              className="delete"
-              onClick={() => {
-                setSelectedGroup(group?.id);
-                setGroupModalOpen(true);
-              }}
-            />
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View Group">
+              <>
+                <Link href={linkData.urlObject} as={linkData.asPath}>
+                  <a className="link">
+                    <EyeOutlined className="view" />
+                  </a>
+                </Link>
+              </>
+            </Tooltip>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Unlink Group">
+              <DisconnectOutlined
+                className="delete"
+                onClick={() => {
+                  setSelectedGroup(group?.id);
+                  setGroupModalOpen(true);
+                }}
+              />
+            </Tooltip>
             <Modal
               variant="delete"
               contentLabel="unlinkuser"

@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
 
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -98,7 +98,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       },
     },
     {
-      width: '60%',
+      width: '55%',
       key: 'email',
       render: ({ email, owner }) => {
         const linkData = getLinkData(email, organizationId, organizationName);
@@ -124,22 +124,32 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       },
     },
     {
-      width: '10%',
+      width: '15%',
       key: 'actions',
       render: ({ ...user }) => {
+        const linkData = getLinkData(user.email, organizationId, organizationName);
         return (
           <TableActions>
-            <span
-              className="link"
-              onClick={() => {
-                setSelectedUser(user?.id);
-                setEditModalOpen(true);
-                setSelectedUserOwner(user.owner);
-              }}
-            >
-              <EditOutlined className="edit" />
-            </span>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
+              <>
+                <Link href={linkData.urlObject} as={linkData.asPath}>
+                  <EyeOutlined className="link" />
+                </Link>
+              </>
+            </Tooltip>
 
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit user">
+              <span
+                className="link"
+                onClick={() => {
+                  setSelectedUser(user?.id);
+                  setEditModalOpen(true);
+                  setSelectedUserOwner(user.owner);
+                }}
+              >
+                <EditOutlined className="edit" />
+              </span>
+            </Tooltip>
             <Modal
               style={{ content: { width: '50%' } }}
               isOpen={editModalOpen && selectedUser === user?.id}
@@ -202,13 +212,15 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
               </Mutation>
             </Modal>
 
-            <DeleteOutlined
-              className="delete"
-              onClick={() => {
-                setSelectedUser(user?.id);
-                setDeleteUserModalOpen(true);
-              }}
-            />
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Delete user">
+              <DeleteOutlined
+                className="delete"
+                onClick={() => {
+                  setSelectedUser(user?.id);
+                  setDeleteUserModalOpen(true);
+                }}
+              />
+            </Tooltip>
 
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
@@ -283,15 +295,14 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
         />
       </Modal>
 
-      <div style={{ width: '100px' }}>
-        <Button action={() => setAddUserModalOpen(true)}>
-          <Tooltip overlayClassName='orgTooltip'  title="Add an administrator" placement="bottom">
-            <AddButtonContent>
-              <span>+</span>
-              <span>User</span>
-            </AddButtonContent>
-          </Tooltip>
-        </Button>
+      <div>
+        <Tooltip overlayClassName="orgTooltip" title="Add an administrator" placement="bottom">
+          <>
+            <Button action={() => setAddUserModalOpen(true)}>
+              <AddButtonContent>Add user</AddButtonContent>
+            </Button>
+          </>
+        </Tooltip>
       </div>
 
       <div className="separator" style={{ margin: '3rem 0' }}></div>

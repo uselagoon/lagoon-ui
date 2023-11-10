@@ -14,16 +14,11 @@ import { Footer, RemoveModalHeader, RemoveModalParagraph } from '../SharedStyles
 export const RemoveProjectGroupConfirm = ({ info, onRemove, open, openModal, closeModal, loading }) => {
   return (
     <React.Fragment>
-      <Button
-        variant="red"
-        action={openModal}
-        icon={
-          <Tooltip overlayClassName="orgTooltip" title="Unlink" placement="bottom">
-            <DisconnectOutlined className="delete" />
-          </Tooltip>
-        }
-      />
-
+      <Tooltip overlayClassName="orgTooltip" title="Unlink" placement="bottom">
+        <>
+          <Button variant="red" action={openModal} icon={<DisconnectOutlined className="delete" />} />
+        </>
+      </Tooltip>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>
           <RemoveModalHeader>Are you sure?</RemoveModalHeader>

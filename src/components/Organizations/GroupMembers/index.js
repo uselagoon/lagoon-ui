@@ -138,9 +138,12 @@ const GroupMembers = ({
       width: '30%',
       key: 'email',
       render: ({ user }) => {
+        const linkData = getLinkData(user.email, organizationId, organizationName);
         return (
           <div className="email">
-            <span> {user.email}</span>
+            <Link href={linkData.urlObject} as={linkData.asPath}>
+              <a className="link">{user.email}</a>
+            </Link>
           </div>
         );
       },
@@ -226,7 +229,17 @@ const GroupMembers = ({
       render: project => {
         const { id, name } = project;
 
-        return <span>{name}</span>;
+        return (
+          <ProjectGroupLink
+            className="link"
+            projectGroupSlug={project.name}
+            organizationSlug={organizationId}
+            organizationName={organizationName}
+            key={id}
+          >
+            {name}
+          </ProjectGroupLink>
+        );
       },
     },
     {
@@ -341,14 +354,13 @@ const GroupMembers = ({
           }}
         />
         <div className="tableAction">
-          <Button action={() => setAddUserModalOpen(true)}>
-            <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
-              <AddButtonContent>
-                <span>+</span>
-                <span>User</span>
-              </AddButtonContent>
-            </Tooltip>
-          </Button>
+          <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
+            <>
+              <Button action={() => setAddUserModalOpen(true)}>
+                <AddButtonContent>Add user</AddButtonContent>
+              </Button>
+            </>
+          </Tooltip>
         </div>
 
         <Modal
@@ -375,14 +387,13 @@ const GroupMembers = ({
         />
 
         <div className="tableAction">
-          <Button action={() => setAddProjectModalOpen(true)}>
-            <Tooltip overlayClassName="orgTooltip" title="Add the group to a project" placement="bottom">
-              <AddButtonContent>
-                <span>+</span>
-                <span>Project</span>
-              </AddButtonContent>
-            </Tooltip>
-          </Button>
+          <Tooltip overlayClassName="orgTooltip" title="Add the group to a project" placement="bottom">
+            <>
+              <Button action={() => setAddProjectModalOpen(true)}>
+                <AddButtonContent>Add project</AddButtonContent>
+              </Button>
+            </>
+          </Tooltip>
         </div>
 
         <Modal

@@ -75,14 +75,13 @@ const OrgNewProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button action={openModal}>
-          <Tooltip overlayClassName="orgTooltip" title="Add a new project" placement="bottom">
-            <AddButtonContent>
-              <span>+</span>
-              <span>Project</span>
-            </AddButtonContent>
-          </Tooltip>
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" title="Add a new project" placement="bottom">
+          <>
+            <Button action={openModal}>
+              <AddButtonContent>Add project</AddButtonContent>
+            </Button>
+          </>
+        </Tooltip>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>

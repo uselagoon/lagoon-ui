@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
+import { EyeOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
 import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 
 import AddGroupToProject from '../AddGroupToProject';
+import { TableActions } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 const REMOVE_GROUP_FROM_PROJECT = gql`
@@ -64,36 +67,53 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
               )}
             </div>
 
-            {/* even though we can't prevent users from removing the project default group from the api, we can make it harder to do from the ui */}
-            {(!group.name.includes('project-' + projectName.toLowerCase()) && (
-              <div className="remove">
-                <Mutation mutation={REMOVE_GROUP_FROM_PROJECT}>
-                  {(removeGroupFromProject, { _, called, error }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
-                    }
-                    return (
-                      <RemoveProjectGroupConfirm
-                        loading={called}
-                        info={{
-                          type: 'group',
-                          deleteName: group.name,
-                          projectName: projectName,
-                        }}
-                        onRemove={() => {
-                          removeGroupFromProject({
-                            variables: {
-                              groupName: group.name,
-                              projectName: projectName,
-                            },
-                          }).then(refresh);
-                        }}
-                      />
-                    );
-                  }}
-                </Mutation>
-              </div>
-            )) || <div className="remove"></div>}
+            <div className="actions">
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View group">
+                <div className="link">
+                  <>
+                    <OrgGroupsLink
+                      groupSlug={group.name}
+                      organizationSlug={organizationId}
+                      organizationName={organizationName}
+                    >
+                      <EyeOutlined />
+                    </OrgGroupsLink>
+                  </>
+                </div>
+              </Tooltip>
+              {/* even though we can't prevent users from removing the project default group from the api, we can make it harder to do from the ui */}
+              {!group.name.includes('project-' + projectName.toLowerCase()) ? (
+                <div className="remove">
+                  <Mutation mutation={REMOVE_GROUP_FROM_PROJECT}>
+                    {(removeGroupFromProject, { _, called, error }) => {
+                      if (error) {
+                        return <div>{error.message}</div>;
+                      }
+                      return (
+                        <RemoveProjectGroupConfirm
+                          loading={called}
+                          info={{
+                            type: 'group',
+                            deleteName: group.name,
+                            projectName: projectName,
+                          }}
+                          onRemove={() => {
+                            removeGroupFromProject({
+                              variables: {
+                                groupName: group.name,
+                                projectName: projectName,
+                              },
+                            }).then(refresh);
+                          }}
+                        />
+                      );
+                    }}
+                  </Mutation>
+                </div>
+              ) : (
+                <div className="remove"></div>
+              )}
+            </div>
           </div>
         ))}
       </div>

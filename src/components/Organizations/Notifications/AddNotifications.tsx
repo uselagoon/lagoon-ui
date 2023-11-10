@@ -237,6 +237,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
     <>
       {children}
       <Modal
+      variant={null}
         style={{
           content: {
             width: '50%',
