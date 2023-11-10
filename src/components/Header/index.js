@@ -20,9 +20,7 @@ const { publicRuntimeConfig } = getConfig();
 const Header = ({ logo }) => {
   const { asPath } = useRouter();
 
-  const isOrganizationsPath = asPath.includes('/organizations');
-
-  console.log(isOrganizationsPath);
+  const isOrganizationsPath = asPath.includes('/organizations');  
 
   return (
     <StyledHeader isOrganizationsPath={isOrganizationsPath}>
