@@ -352,6 +352,10 @@ const GroupMembers = ({
             orderList: ['OWNER', 'MAINTAINER', 'DEVELOPER', 'REPORTER', 'GUEST'],
             orderListKey: 'role',
           }}
+          defaultViewOptions={{
+            type: 'user',
+            selected: false,
+          }}
         />
         <div className="tableAction">
           <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">

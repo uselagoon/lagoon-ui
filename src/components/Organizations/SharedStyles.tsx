@@ -407,6 +407,7 @@ export const ViewMore = styled.span`
   color: #4578e6 !important;
   text-decoration: underline;
   cursor: pointer;
+  white-space: pre;
 `;
 
 export const TableWrapper = styled.div`

@@ -8,7 +8,7 @@ import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 
 import AddGroupToProject from '../AddGroupToProject';
-import { TableActions } from '../SharedStyles';
+import { Checkbox } from '../PaginatedTable/Styles';
 import { StyledGroupMembers } from './Styles';
 
 const REMOVE_GROUP_FROM_PROJECT = gql`
@@ -25,7 +25,11 @@ const REMOVE_GROUP_FROM_PROJECT = gql`
 const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, projectName, orgGroups, refresh }) => {
   const [searchInput, setSearchInput] = useState('');
 
-  const filteredMembers = groups.filter(key => {
+  const [showDefaults, setShowDefaults] = useState(false);
+
+  const filteredGroups = showDefaults ? groups : groups.filter(group => group.type !== 'project-default-group');
+
+  const filteredMembers = filteredGroups.filter(key => {
     const sortByName = key.name.toLowerCase().includes(searchInput.toLowerCase());
     return ['name', 'role', '__typename'].includes(key) ? false : true && sortByName;
   });
@@ -34,6 +38,15 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
     <StyledGroupMembers>
       <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
         <label style={{ paddingLeft: '0' }}>Groups ({groups.length})</label>
+        <Checkbox>
+          Show system groups
+          <input
+            type="checkbox"
+            checked={showDefaults}
+            onChange={({ target: { checked } }) => setShowDefaults(checked)}
+          />
+        </Checkbox>
+
         <input
           aria-labelledby="search"
           className="searchInput"
