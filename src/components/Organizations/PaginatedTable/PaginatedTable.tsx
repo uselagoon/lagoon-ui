@@ -122,7 +122,7 @@ const PaginatedTable: FC<Props> = ({
       if (defaultViewOptions?.type === 'user') {
         filtered = filtered.filter(dataItem => {
           //@ts-ignore
-          const filterItem = dataItem.email ? dataItem.email : dataItem.user.email;
+          const filterItem = dataItem.email ? dataItem.email : (dataItem.user.email as string);
           return !(filterItem as string).startsWith('default-user');
         });
       }
