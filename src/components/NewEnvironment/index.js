@@ -134,7 +134,9 @@ const NewEnvironment = ({
                                   {loadingDK ? <div className="loader"></div>
                                       : !showDKField ?
                                           hashValue(dkValue).substring(0, 25)
-                                          : dkValue
+                                          : dkValue.length > 80 ?
+                                              dkValue.substring(0, 80) + '...'
+                                              : dkValue
                                   }
                                 </div>
                                 <span className="showHide" onClick={() => setShowDKField(!showDKField)}>
