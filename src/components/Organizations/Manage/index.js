@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 
-import Link from 'next/link';
-
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -17,13 +15,6 @@ import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
 
-export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
-  urlObject: {
-    pathname: '/organizations/user',
-    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
-  },
-  asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
-});
 const DELETE_USER = gql`
   mutation removeUserFromOrganization($organization: Int!, $email: String!) {
     removeUserFromOrganization(input: { user: { email: $email }, organization: $organization }) {
@@ -35,8 +26,7 @@ const DELETE_USER = gql`
 /**
  * The list of owners.
  */
-const Manage = ({ users = [], organization, organizationId, organizationName, refetch }) => {
-  const [userModalOpen, setUserModalOpen] = useState(false);
+const Manage = ({ users = [], organization, organizationName, refetch }) => {
   const [selectedUser, setSelectedUser] = useState('');
 
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
@@ -48,7 +38,7 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
 
   const closeUserModal = () => {
     setSelectedUser('');
-    setUserModalOpen(false);
+    setDeleteUserModalOpen(false);
   };
 
   const closeEditModal = () => {
@@ -101,13 +91,10 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       width: '55%',
       key: 'email',
       render: ({ email, owner }) => {
-        const linkData = getLinkData(email, organizationId, organizationName);
         return (
           <>
             <div className="email" style={{ width: '60%' }}>
-              <Link href={linkData.urlObject} as={linkData.asPath}>
-                <a>{email}</a>
-              </Link>
+              <span>{email}</span>
             </div>
 
             {owner ? (
@@ -127,17 +114,8 @@ const Manage = ({ users = [], organization, organizationId, organizationName, re
       width: '15%',
       key: 'actions',
       render: ({ ...user }) => {
-        const linkData = getLinkData(user.email, organizationId, organizationName);
         return (
           <TableActions>
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
-              <>
-                <Link href={linkData.urlObject} as={linkData.asPath}>
-                  <EyeOutlined className="link" />
-                </Link>
-              </>
-            </Tooltip>
-
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit user">
               <span
                 className="link"

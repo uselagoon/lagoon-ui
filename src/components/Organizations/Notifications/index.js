@@ -220,15 +220,15 @@ const OrgNotifications = ({
               <p> Channel: {project.channel}</p>
             </div>
             <div className="actions">
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-            <span
-                className="link"
-                onClick={() => {
-                  setEditState({ open: true, current: project, type: 'slack' });
-                }}
-              >
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span
+                  className="link"
+                  onClick={() => {
+                    setEditState({ open: true, current: project, type: 'slack' });
+                  }}
+                >
+                  <EditOutlined className="edit" />
+                </span>
               </Tooltip>
 
               <Modal
@@ -358,11 +358,13 @@ const OrgNotifications = ({
               <p>Channel: {project.channel}</p>
             </div>
             <div className="actions">
-
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-            <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}>
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span
+                  className="link"
+                  onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}
+                >
+                  <EditOutlined className="edit" />
+                </span>
               </Tooltip>
 
               <Modal
@@ -489,10 +491,10 @@ const OrgNotifications = ({
               <p>Address: {project.emailAddress}</p>
             </div>
             <div className="actions">
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'email' })}>
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'email' })}>
+                  <EditOutlined className="edit" />
+                </span>
               </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
@@ -609,12 +611,11 @@ const OrgNotifications = ({
               })}
             </div>
             <div className="actions">
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'webhook' })}>
-                <EditOutlined className="edit" />
-              </span>
-</Tooltip>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'webhook' })}>
+                  <EditOutlined className="edit" />
+                </span>
+              </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'webhook'}
@@ -729,10 +730,10 @@ const OrgNotifications = ({
               })}
             </div>
             <div className="actions">
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'teams' })}>
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'teams' })}>
+                  <EditOutlined className="edit" />
+                </span>
               </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}

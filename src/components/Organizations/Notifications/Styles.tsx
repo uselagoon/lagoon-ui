@@ -82,6 +82,13 @@ export const StyledOrgNotifications = styled.div`
         background: #e4e4e4;
       }
     }
+    .edit,
+    .remove {
+      svg {
+        height: 22px;
+        width: 22px;
+      }
+    }
     .edit {
       svg {
         color: #4578e6;
@@ -106,7 +113,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .name {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 
     .comment {
       font-size: 10px;
@@ -115,7 +122,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .notiftype {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 
     color: ${color.darkGrey};
     .comment {
@@ -125,7 +132,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .notifdata {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     border-right: 2px solid ${props => props.theme.borders.tableRow};
     min-height: 100%;
     display: flex;
@@ -149,7 +156,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .channel {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     .comment {
       font-size: 10px;
     }
@@ -157,7 +164,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .emailAddress {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 
     width: 55%;
     .comment {
@@ -254,16 +261,20 @@ export const StyledOrgNotifications = styled.div`
   }
 
   ${sharedTableStyles}
+  .data-table {
+    border: none;
+  }
   .data-row {
     min-height: 63px;
     height: max-content;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     transition: 0.3s ease;
-    border: 2px solid transparent;
+    border: none !important;
     justify-content: flex-start !important;
+    background: ${props => props.theme.backgrounds.box};
     &:not(:last-child) {
-      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      border-bottom: 2px solid ${props => props.theme.borders.tableRow} !important;
     }
 
     display: flex;
