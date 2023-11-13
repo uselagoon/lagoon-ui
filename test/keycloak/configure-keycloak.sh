@@ -8,10 +8,21 @@ function is_keycloak_running {
 }
 
 function configure_users {
-  echo Configuring maintainer password
-  /opt/jboss/keycloak/bin/kcadm.sh set-password --config $CONFIG_PATH --username maintainer@example.com -p maintainer@example.com --target-realm Lagoon  
-  echo Configuring developer password
-  /opt/jboss/keycloak/bin/kcadm.sh set-password --config $CONFIG_PATH --username developer@example.com -p developer@example.com --target-realm Lagoon  
+
+  LAGOON_DEMO_USERS=("guest@example.com" "reporter@example.com" "developer@example.com" "maintainer@example.com" "owner@example.com")
+  LAGOON_DEMO_ORG_USERS=("orguser@example.com" "orgviewer@example.com" "orgowner@example.com" "platformowner@example.com")
+
+  for i in ${LAGOON_DEMO_USERS[@]}
+  do
+    echo Configuring password for $i
+     /opt/jboss/keycloak/bin/kcadm.sh set-password --config $CONFIG_PATH --username $i -p $i --target-realm Lagoon
+  done
+
+  for i in ${LAGOON_DEMO_ORG_USERS[@]}
+  do
+    echo Configuring password for $i
+     /opt/jboss/keycloak/bin/kcadm.sh set-password --config $CONFIG_PATH --username $i -p $i --target-realm Lagoon
+  done
 }
 
 function configure_keycloak {
