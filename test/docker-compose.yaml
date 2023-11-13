@@ -4,22 +4,22 @@ name: lagoon-minimal
 
 services:
   api-db:
-    image: uselagoon/api-db:latest
+    image: testlagoon/api-db:main
     networks:
       - default
   broker:
-    image: uselagoon/broker-single:latest
+    image: testlagoon/broker-single:main
     restart: on-failure
     networks:
       - default
   api-init:
-    image: uselagoon/api:latest
+    image: testlagoon/api:main
     command: ./node_modules/.bin/knex migrate:latest --cwd /app/services/api/database
     depends_on:
       - api-db
       - keycloak
   api:
-    image: uselagoon/api:latest
+    image: testlagoon/api:main
     ports:
       - '33000:3000'
     networks:
@@ -37,9 +37,9 @@ services:
     depends_on:
       - api-init
   api-redis:
-    image: uselagoon/api-redis:latest
+    image: testlagoon/api-redis:main
   keycloak:
-    image: uselagoon/keycloak:latest
+    image: testlagoon/keycloak:main
     depends_on:
       - keycloak-db
     ports:
@@ -47,11 +47,7 @@ services:
     volumes:
       - ./keycloak:/upload
   keycloak-db:
-    image: uselagoon/keycloak-db:latest
-  local-api-data-watcher-pusher:
-    image: uselagoon/local-api-data-watcher-pusher
-    depends_on:
-      - api
+    image: testlagoon/keycloak-db:main
   local-minio:
     image: minio/minio
     entrypoint: sh
@@ -62,6 +58,11 @@ services:
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
-    volumes:
-      - ./minio:/upload
-
+  local-api-data-watcher-pusher:
+    image: testlagoon/local-api-data-watcher-pusher:main
+    depends_on:
+      - api
+    command: ["bash", "-c", "
+        wait-for api:3000 -t 600;
+        /home/data-init-push.sh;
+        "]
