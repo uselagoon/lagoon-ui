@@ -78,6 +78,16 @@ const NewEnvironment = ({
     inputBranchName !== '' ? setShowEnvType(true) : setShowEnvType(false);
   }
 
+  const renderDeploykeyValue = (charLimit) => {
+    if (loadingDK) {
+      return < div className = "loader" > < /div>;
+    }
+    if (!showDKField) {
+      return hashValue(dkValue).substring(0, 25);
+    }
+    return dkValue.length > charLimit ? dkValue.substring(0, charLimit) + '...' : dkValue;
+  }
+
   return (
       <StyledEnvironmentWrapper>
         <div className="margins">
@@ -129,17 +139,11 @@ const NewEnvironment = ({
                             <div className="copy-field deploy-key">
                               <div className="field">
                                 <label>Deploy Key: </label>
-                                {loadingDK ? <div className="loader"></div>
-                                    : !showDKField ?
-                                        hashValue(dkValue).substring(0, 25)
-                                        : dkValue.length > 65 ?
-                                            dkValue.substring(0, 65) + '...'
-                                            : dkValue
-                                }
+                                { renderDeploykeyValue(65)}
                               </div>
                               <span className="showHide" onClick={() => setShowDKField(!showDKField)}>
                                   <Image
-                                      src={showDKField ? show : hide}
+                                      src={!showDKField ? show : hide}
                                       className="showHide"
                                       style={{all: "unset"}}
                                       alt=""
@@ -169,17 +173,11 @@ const NewEnvironment = ({
                             <div className="showHideContainer">
                               <div className="copy-field">
                                 <div className="field">
-                                  {loadingDK ? <div className="loader"></div>
-                                      : !showDKField ?
-                                          hashValue(dkValue).substring(0, 25)
-                                          : dkValue.length > 80 ?
-                                              dkValue.substring(0, 80) + '...'
-                                              : dkValue
-                                  }
+                                  { renderDeploykeyValue(80)}
                                 </div>
                                 <span className="showHide" onClick={() => setShowDKField(!showDKField)}>
                                   <Image
-                                      src={showDKField ? show : hide}
+                                      src={!showDKField ? show : hide}
                                       className="showHide"
                                       style={{all: "unset"}}
                                       alt=""
