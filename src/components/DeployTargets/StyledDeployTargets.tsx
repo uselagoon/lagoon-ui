@@ -13,7 +13,6 @@ export const DeployTargetWrapper = styled.div`
   label.dt-branch,
   div.dt-branch {
     flex: 1.8;
-    font-family: monospace;
   }
 
   label.dt-pr,
