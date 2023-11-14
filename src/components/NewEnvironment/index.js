@@ -124,6 +124,44 @@ const NewEnvironment = ({
                                 onBlur={() => toggleShowEnvType()}
                               />
                           </div>
+                          { environmentCount > 0 &&
+                          <div className="showHideContainer">
+                            <div className="copy-field deploy-key">
+                              <div className="field">
+                                <label>Deploy Key: </label>
+                                {loadingDK ? <div className="loader"></div>
+                                    : !showDKField ?
+                                        hashValue(dkValue).substring(0, 25)
+                                        : dkValue.length > 65 ?
+                                            dkValue.substring(0, 65) + '...'
+                                            : dkValue
+                                }
+                              </div>
+                              <span className="showHide" onClick={() => setShowDKField(!showDKField)}>
+                                  <Image
+                                      src={showDKField ? show : hide}
+                                      className="showHide"
+                                      style={{all: "unset"}}
+                                      alt=""
+                                  />
+                                </span>
+                              <span className="copied" style={copiedDK ? {top: '-20px', opacity: '0'} : null}>
+                                  Copied
+                                </span>
+                              <CopyToClipboard
+                                  text={dkValue}
+                                  onCopy={() => {
+                                    setCopiedDK(true);
+                                    setTimeout(function () {
+                                      setCopiedDK(false);
+                                    }, 750);
+                                  }}
+                              >
+                                <span className="copy deploy-key"/>
+                              </CopyToClipboard>
+                            </div>
+                          </div>
+                          }
                         </div>
                         { environmentCount <= 0 &&
                           <div className="modal-step">

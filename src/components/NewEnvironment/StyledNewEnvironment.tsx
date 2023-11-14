@@ -46,6 +46,10 @@ export const StyledNewEnvironment = styled.div`
   overflow: visible;
   transform: translateX(-13px);
   align-items: center;
+  
+  &.deploy-key {
+    margin-top: 12px;
+  }
 }
 .copy-btn {
   width: 2rem;
