@@ -142,6 +142,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               varTarget="Environment"
               noVars="Add"
               refresh={onVariableAdded}
+              action="add"
             />
           </div>
           <hr style={{ margin: "30px 0" }} />
@@ -174,6 +175,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                   varValues={displayVars}
                   varTarget="Environment"
                   refresh={onVariableAdded}
+                  action="add"
                 />
               </Button>
               <Button
@@ -302,15 +304,16 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                                   style={{ all: 'unset'}}
                                 >
                                   <AddVariable
-                                      varProject={environment.project.name}
-                                      varEnvironment={environment.name}
-                                      varValues={displayVars}
-                                      varTarget="Environment"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
+                                    varProject={environment.project.name}
+                                    varEnvironment={environment.name}
+                                    varValues={displayVars}
+                                    varTarget="Environment"
+                                    varName={updateVarName}
+                                    varValue={updateVarValue}
+                                    varScope={updateVarScope}
+                                    refresh={onVariableAdded}
+                                    icon="edit"
+                                    action="edit"
                                   />
                                 </Button>
                               </div>

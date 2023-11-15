@@ -97,6 +97,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
               varValues={displayVars}
               varTarget="Project"
               refresh={onVariableAdded}
+              action="add"
             />
           </div>
           <hr style={{ margin: "30px 0" }} />
@@ -129,6 +130,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                   varValues={displayVars}
                   varTarget="Project"
                   refresh={onVariableAdded}
+                  action="add"
                 />
               </Button>
               <Button
@@ -260,14 +262,15 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     style={{ all: 'unset'}}
                                 >
                                   <AddVariable
-                                      varProject={project.name}
-                                      varValues={displayVars}
-                                      varTarget="Project"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
+                                    varProject={project.name}
+                                    varValues={displayVars}
+                                    varTarget="Project"
+                                    varName={updateVarName}
+                                    varValue={updateVarValue}
+                                    varScope={updateVarScope}
+                                    refresh={onVariableAdded}
+                                    icon="edit"
+                                    action="edit"
                                   />
                                 </Button>
                               </div>

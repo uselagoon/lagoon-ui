@@ -45,6 +45,7 @@ export const AddVariable = ({
   openModal,
   closeModal,
   setClear,
+  action,
 }) => {
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
@@ -155,7 +156,7 @@ export const AddVariable = ({
                   refresh().then(setClear).then(closeModal);
                 }
 
-                if (inputValue === '' && updateValue !== undefined && updateValue !== '' || inputValue !== '' && updateValue === undefined) {
+                if (action === "add" && inputValue !== '' || action === "edit" && updateValue !== '') {
                   if (updateVar && called || updateName && called ) {
                     return <div>Updating variable</div>;
                   } else if (called) {
@@ -180,10 +181,10 @@ export const AddVariable = ({
                   }, 1000);
                 };
 
-                if (inputValue === '' && updateValue === '' || inputValue === '' && updateValue === undefined) {
+                if (action === "add" && inputValue === '' || action === "edit" && updateValue === '') {
                   return (
                     <Popconfirm
-                      title="No value set"
+                      title="No value set for this variable."
                       description="Are you sure you want to continue?"
                       open={openPop}
                       onConfirm={addOrUpdateEnvVariableHandler}
