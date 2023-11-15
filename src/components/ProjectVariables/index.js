@@ -161,6 +161,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
               </div>
               <div className="data-table">
                 {displayVars.map((projEnvVar, index) => {
+                  projEnvVar.value === '' ? projEnvVar.value = '-' : projEnvVar.value
                   return (
                     <Fragment key={index}>
                       <div

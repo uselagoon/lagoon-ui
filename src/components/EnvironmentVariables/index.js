@@ -153,14 +153,14 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         <>
           {
             environmentErrorAlert && (
-              <Alert 
+              <Alert
                 type="error"
                 closeAlert={closeEnvironmentError}
                 header="Unauthorized:"
                 message="You don't have permission to view environment variable values. Contact your administrator to obtain the relevant permissions."
               />
             )
-          }         
+          }
           <div className="header">
             <label>Environment Variables</label>
             <div className="header-buttons">
@@ -206,6 +206,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               </div>
               <div className="data-table">
                 {displayVars.map((envVar, index) => {
+                  envVar.value === '' ? envVar.value = '-' : envVar.value
                   return (
                     <Fragment key={index}>
                       <div
@@ -359,7 +360,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <hr style={{ margin: "30px 0" }} />
           {
             projectErrorAlert && (
-              <Alert 
+              <Alert
                 type="error"
                 closeAlert={closeProjectError}
                 header="Unauthorized:"
@@ -408,6 +409,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               </div>
               <div className="data-table">
                 {displayProjectVars.map((projEnvVar, index) => {
+                  projEnvVar.value === '' ? projEnvVar.value = '-' : projEnvVar.value
                   return (
                     <Fragment key={index}>
                       <div
