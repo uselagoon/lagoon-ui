@@ -282,7 +282,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                 >
                   {(removeUserFromGroup, { called, error, data }) => {
                     if (error) {
-                      return <div>{error.message}</div>;
+                      return <div className='error'>{error.message}</div>;
                     }
                     if (data) {
                       refetch();

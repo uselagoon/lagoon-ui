@@ -175,6 +175,9 @@ export const ProjectDashboard = styled.div<{ inlineLink?: boolean }>`
   background:${props.theme.backgrounds.sidebar};
   padding:0.25rem 0.5rem;
   color:#497ffa;
+  display:flex;
+  gap: 0.15rem;
+
   `
       : ` background: #fff !important;
     display:flex;

@@ -149,7 +149,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                     <Mutation mutation={DELETE_GROUP}>
                       {(deleteGroup, { called, error, data }) => {
                         if (error) {
-                          return <div>{error.message}</div>;
+                          return <div className="error">{error.message}</div>;
                         }
                         if (data) {
                           refetch().then(() => modalAction('close', 'deleteGroup'));

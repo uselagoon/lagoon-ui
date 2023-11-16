@@ -348,6 +348,9 @@ export const Footer = styled.div`
       color: #fff;
     }
   }
+  .error {
+    color: #dc3545;
+  }
   p.explainer {
     color: #e30000;
     font-size: 11px;
@@ -377,6 +380,9 @@ export const ModalChildren = styled.div`
   }
   input[type='text']::placeholder {
     color: #000;
+  }
+  .error {
+    color: #dc3545;
   }
   .select {
     font-family: 'source-sans-pro', sans-serif;

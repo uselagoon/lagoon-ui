@@ -152,7 +152,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                     <Mutation mutation={DELETE_USER}>
                       {(removeUserFromOrganizationGroups, { called, error, data }) => {
                         if (error) {
-                          return <div>{error.message}</div>;
+                          return <div className='error'>{error.message}</div>;
                         }
                         if (data) {
                           refetch().then(() => {

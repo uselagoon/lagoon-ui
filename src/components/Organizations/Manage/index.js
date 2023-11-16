@@ -190,7 +190,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
               </Mutation>
             </Modal>
 
-            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Delete user">
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Remove user">
               <DeleteOutlined
                 className="delete"
                 onClick={() => {
@@ -203,7 +203,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
               <RemoveModalParagraph>
-                This action will delete user <span>{user.email}</span> from <span>{organizationName}</span>{' '}
+                This action will remove user <span>{user.email}</span> from <span>{organizationName}</span>{' '}
                 Organization.
               </RemoveModalParagraph>
 

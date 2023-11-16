@@ -117,7 +117,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                   <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
                     {(deleteProject, { called, error, data }) => {
                       if (error) {
-                        return <div>{error.message}</div>;
+                        return <div className='error'>{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => setModalState({ open: false, current: null }));

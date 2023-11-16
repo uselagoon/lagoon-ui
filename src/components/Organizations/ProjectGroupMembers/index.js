@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { EyeOutlined } from '@ant-design/icons';
@@ -34,10 +34,16 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
     return ['name', 'role', '__typename'].includes(key) ? false : true && sortByName;
   });
 
+  useEffect(() => {
+    // tick the "show system groups" box if all groups are of that type.
+    const allDefaults = filteredMembers.every(group => group.type === 'project-default-group');
+    if (allDefaults) setShowDefaults(true);
+  }, []);
+
   return (
     <StyledGroupMembers>
       <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Groups ({groups.length})</label>
+        <label style={{ paddingLeft: '0' }}>Groups ({filteredMembers.length})</label>
         <Checkbox>
           Show system groups
           <input
@@ -59,7 +65,7 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationName, pr
       </div>
 
       <div className="data-table">
-        {!groups.length && <div className="data-none">No groups</div>}
+        {!filteredMembers.length && <div className="data-none">No groups</div>}
         {searchInput && !filteredMembers.length && <div className="data-none">No groups matching "{searchInput}"</div>}
         {filteredMembers.map(group => (
           <div className="data-row" key={group.id}>

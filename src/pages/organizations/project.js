@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { withRouter } from 'next/router';
 
 import { useQuery } from '@apollo/react-hooks';
+import { Tooltip } from 'antd';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgProjectBreadcrumb from 'components/Breadcrumbs/Organizations/Project';
@@ -22,6 +23,7 @@ import ProjectAndOrganizationByID from 'lib/query/organizations/ProjectAndOrgani
 import { OrganizationsWrapper, TableWrapper } from '../../components/Organizations/SharedStyles';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
+import { ExportOutlined } from '@ant-design/icons';
 
 /**
  * Displays a task page, given the openshift project and task ID.
@@ -108,7 +110,9 @@ export const PageGroupProject = ({ router }) => {
               <h3>
                 {project.name}
                 <ProjectLink projectSlug={project.name} key={project.id} openInTab>
-                  <ProjectDashboard>View in Dashboard</ProjectDashboard>
+                  <Tooltip overlayClassName="orgTooltip" title="View project in project overview" placement="bottom">
+                    <ProjectDashboard>View in Dashboard <ExportOutlined /></ProjectDashboard>
+                  </Tooltip>
                 </ProjectLink>
               </h3>
               <ProjectGroupMembers
