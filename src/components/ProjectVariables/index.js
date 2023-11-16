@@ -105,12 +105,20 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
       {displayVars.length === 0 ? (
         <>
           <div className="header no-vars">
-            <AddVariable
-              varProject={project.name}
-              varValues={displayVars}
-              varTarget="Project"
-              refresh={onVariableAdded}
-            />
+            <Button
+              onClick={() => permissionCheck("add")}
+              style={{ all: "unset" }}
+            >
+              {prjLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                <AddVariable
+                  varProject={project.name}
+                  varValues={displayVars}
+                  varTarget="Project"
+                  refresh={onVariableAdded}
+                  noVars="Add"
+                />
+              }
+            </Button>
           </div>
           <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>

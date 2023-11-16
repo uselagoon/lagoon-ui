@@ -148,14 +148,21 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
       {environment.envVariables.length === 0 ? (
         <>
           <div className="header no-vars">
-            <AddVariable
-              varProject={environment.project.name}
-              varEnvironment={environment.name}
-              varValues={displayVars}
-              varTarget="Environment"
-              noVars="Add"
-              refresh={onVariableAdded}
-            />
+            <Button
+              onClick={() => permissionCheck("add")}
+              style={{ all: "unset" }}
+            >
+              {envLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                <AddVariable
+                  varProject={environment.project.name}
+                  varEnvironment={environment.name}
+                  varValues={displayVars}
+                  varTarget="Environment"
+                  noVars="Add"
+                  refresh={onVariableAdded}
+                />
+              }
+            </Button>
           </div>
           <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>
