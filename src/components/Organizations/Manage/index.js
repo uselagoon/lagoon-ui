@@ -203,8 +203,8 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
             <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
               <RemoveModalParagraph>
-                This action will remove user <span>{user.email}</span> from <span>{organizationName}</span>{' '}
-                Organization.
+                This action will remove user <span>{user.email}</span> from management of the organization{' '}
+                <span>{organizationName}</span>.
               </RemoveModalParagraph>
 
               <Footer>

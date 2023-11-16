@@ -67,9 +67,6 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       render: function (project) {
         return (
           <TableActions style={{ marginLeft: 'auto', gap: '1rem' }}>
-
-
-
             <ProjectLink projectSlug={project.name} key={project.id} openInTab>
               <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
                 <ProjectDashboard inlineLink>
@@ -80,19 +77,16 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
 
             <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
               <>
-         
-            <ProjectGroupLink
-              className="link"
-              projectGroupSlug={project.name}
-              organizationSlug={organizationId}
-              organizationName={organizationName}
-              key={project.id}
-            >
-
-                <EditOutlined className="edit" />
-     
-            </ProjectGroupLink>
-            </>
+                <ProjectGroupLink
+                  className="link"
+                  projectGroupSlug={project.name}
+                  organizationSlug={organizationId}
+                  organizationName={organizationName}
+                  key={project.id}
+                >
+                  <EditOutlined className="edit" />
+                </ProjectGroupLink>
+              </>
             </Tooltip>
             <>
               <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
@@ -110,14 +104,14 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               >
                 <RemoveModalHeader>Are you sure?</RemoveModalHeader>
                 <RemoveModalParagraph>
-                  This action will delete project <span>{project.name}</span> from this organization.
+                  This action will delete project <span>{project.name}</span> from Lagoon and the organization.
                 </RemoveModalParagraph>
 
                 <Footer>
                   <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
                     {(deleteProject, { called, error, data }) => {
                       if (error) {
-                        return <div className='error'>{error.message}</div>;
+                        return <div className="error">{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => setModalState({ open: false, current: null }));
