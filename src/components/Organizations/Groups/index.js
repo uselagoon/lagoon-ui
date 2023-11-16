@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import OrgGroupsLink from 'components/link/Organizations/Group';
@@ -11,7 +12,7 @@ import AddUserToGroup from '../AddUserToGroup';
 import NewGroup from '../NewGroup';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
-import { DeleteButton, GroupsWrapper, StyledGroups } from './Styles';
+import { GroupsWrapper, StyledGroups } from './Styles';
 
 const DELETE_GROUP = gql`
   mutation deleteGroup($groupName: String!) {
@@ -95,7 +96,9 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
         return (
           <TableActions>
             <>
-              <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+              <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
+                <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+              </Tooltip>
               <Modal
                 style={{
                   content: {
@@ -113,20 +116,25 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                 />
               </Modal>
             </>
-
-            <OrgGroupsLink
-              className="link"
-              groupSlug={i.name}
-              organizationSlug={organizationId}
-              organizationName={organizationName}
-              key={i.id}
-            >
-              <EditOutlined className="edit" />
-            </OrgGroupsLink>
+            <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
+              <>
+                <OrgGroupsLink
+                  className="link"
+                  groupSlug={i.name}
+                  organizationSlug={organizationId}
+                  organizationName={organizationName}
+                  key={i.id}
+                >
+                  <EditOutlined className="edit" />
+                </OrgGroupsLink>
+              </>
+            </Tooltip>
 
             {i.type !== 'project-default-group' && (
               <>
-                <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
+                  <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                </Tooltip>
 
                 <Modal
                   isOpen={modalStates.deleteGroup.open && modalStates.deleteGroup.current.name === i.name}
@@ -141,7 +149,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                     <Mutation mutation={DELETE_GROUP}>
                       {(deleteGroup, { called, error, data }) => {
                         if (error) {
-                          return <div>{error.message}</div>;
+                          return <div className="error">{error.message}</div>;
                         }
                         if (data) {
                           refetch().then(() => modalAction('close', 'deleteGroup'));

@@ -1,3 +1,4 @@
+import { color } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledTable = styled.div`
@@ -53,9 +54,9 @@ export const TableRow = styled.div`
     border: 2px solid transparent;
     border-bottom: 2px solid ${props => props.theme.borders.tableRow};
   }
-  &:hover {
+  /* &:hover {
     border: 2px solid #2bc0d8;
-  }
+  } */
 `;
 export const TableColumn = styled.div<{ width: string }>`
   &:not(:last-child) {
@@ -67,12 +68,44 @@ export const TableColumn = styled.div<{ width: string }>`
   width: ${props => props.width};
   align-items: center;
   display: flex;
-  & > .email{
-    word-wrap:break-word;
-    word-break:break-all;
+  & > .email {
+    word-wrap: break-word;
+    word-break: break-all;
   }
   &:last-child {
     justify-content: flex-end;
+  }
+  [class$='-label'] {
+    margin-left: 10px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+  }
+  .default-group-label,
+  .default-user-label {
+    color: ${color.white};
+    display: inline-block;
+    background: #262d65;
+  }
+  .OWNER-label {
+    color: ${color.white};
+    background-color: ${color.lightRed};
+  }
+  .MAINTAINER-label {
+    color: ${color.white};
+    background-color: ${color.lightBlue};
+  }
+  .DEVELOPER-label {
+    color: ${color.white};
+    background-color: ${color.teal};
+  }
+  .REPORTER-label {
+    color: ${color.darkGrey};
+    background-color: ${color.midGrey};
+  }
+  .GUEST-label {
+    color: ${color.black};
+    background-color: ${color.lightGreen};
   }
 `;
 export const SelectLimit = styled.div`
@@ -145,7 +178,7 @@ export const Checkbox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
-  margin-right:16px;
+  margin-right: 16px;
   input[type='checkbox'] {
     width: 22px;
     height: 22px;

@@ -37,6 +37,7 @@ export const darkTheme: DefaultTheme = {
   },
   gradients: {
     headerFooterGradient: 'linear-gradient(to right, #24aec4 0%, #2a6dfe 25%)',
+    organizationsHeaderGradient: 'linear-gradient(to left, #24aec4 0%, #2a6dfe 75%)',
   },
   skeleton: {
     base: '#353535',
@@ -80,6 +81,7 @@ export const lightTheme: DefaultTheme = {
   },
   gradients: {
     headerFooterGradient: `linear-gradient(to right, ${color.brightBlue} 0%,${color.lightBlue} 25%)`,
+    organizationsHeaderGradient: 'linear-gradient(to left, #24aec4 0%, #2a6dfe 75%)',
   },
   skeleton: {
     base: '#ebebeb',

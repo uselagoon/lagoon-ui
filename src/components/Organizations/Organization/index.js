@@ -124,7 +124,7 @@ const Organization = ({ organization, refetch }) => {
                 <Mutation mutation={UPDATE_ORGANIZATION_FRIENDLY_NAME} onError={e => console.error(e)}>
                   {(updateOrgFriendlyName, { error, data, called }) => {
                     if (error) {
-                      return <div>{error.message}</div>;
+                      return <div className='error'>{error.message}</div>;
                     }
                     if (data) {
                       refetch().then(() => {
@@ -192,7 +192,7 @@ const Organization = ({ organization, refetch }) => {
                 <Mutation mutation={UPDATE_ORGANIZATION_DESCRIPTION} onError={e => console.error(e)}>
                   {(updateOrgDescription, { error, data, called }) => {
                     if (error) {
-                      return <div>{error.message}</div>;
+                      return <div className="error">{error.message}</div>;
                     }
                     if (data) {
                       refetch().then(() => {
@@ -245,7 +245,7 @@ const Organization = ({ organization, refetch }) => {
 
           <div className="targetwrapper">
             <div className="targets">
-              <span>Available Deployments</span>
+              <span>Available deploy targets</span>
               {organization.deployTargets.map(deploytarget => (
                 <div key={deploytarget.id} className="target">
                   <EnvironmentOutlined className="targetIcon" />

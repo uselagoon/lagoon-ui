@@ -88,6 +88,18 @@ export const PageUser = ({ router }) => {
     return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
   }
 
+  const orgGroups = organization.organization.groups;
+  const userGroupRoles = user.userByEmailAndOrganization.groupRoles;
+
+  orgGroups.length &&
+    userGroupRoles.forEach((groupRole, idx, selfArr) => {
+      const found = orgGroups.find(group => {
+        return group.id == groupRole.id;
+      });
+
+      if (found) selfArr[idx].type = found.type;
+    });
+
   return (
     <>
       <Head>

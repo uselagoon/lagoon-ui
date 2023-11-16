@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { DeleteOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/RemoveNotificationConfirm/logic';
@@ -13,7 +14,11 @@ import { Footer, RemoveModalHeader, RemoveModalParagraph } from '../SharedStyles
 export const RemoveNotificationConfirm = ({ info, onRemove, open, openModal, closeModal, loading }) => {
   return (
     <React.Fragment>
-      <Button variant="red" action={openModal} icon={<DeleteOutlined />}></Button>
+      <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Delete notification">
+        <>
+          <Button variant="red" action={openModal} icon={<DeleteOutlined />}></Button>
+        </>
+      </Tooltip>
 
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm removal`}>
         <React.Fragment>

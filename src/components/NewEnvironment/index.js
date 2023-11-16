@@ -118,7 +118,7 @@ const NewEnvironment = ({
                                 id="branchName"
                                 className="inputBranch"
                                 type="text"
-                                placeholder="e.g. main or develop"
+                                placeholder="Enter branch name"
                                 value={inputBranchName}
                                 onChange={setBranchName}
                                 onBlur={() => toggleShowEnvType()}
