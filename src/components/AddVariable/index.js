@@ -7,7 +7,6 @@ import { Mutation } from "react-apollo";
 import withLogic from "components/AddVariable/logic";
 import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
 import { NewVariable, NewVariableModal } from "./StyledAddVariable";
-import { Alert } from 'antd';
 
 /**
  * Adds a Variable.
@@ -49,7 +48,6 @@ export const AddVariable = ({
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
   const [updateScope, setUpdateScope] = useState(varScope);
-  const [addVarErr, setAddVarErr] = useState(false);
   const handleUpdateValue = (event) => {setUpdateValue(event.target.value)};
   useEffect(() => {
     setUpdateValue(varValue);
@@ -77,20 +75,11 @@ export const AddVariable = ({
       >
         <NewVariableModal>
           <div className="variable-target">
-            {addVarErr ?
-              <Alert
-                message="Unauthorized"
-                description="You don't have permission to create this variable."
-                type="error"
-                showIcon
-                closable={true}
-              /> :
-              <span className="variable-target">
-                {
-                  noVars || !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`
-                }
-              </span>
-            }
+            <span className="variable-target">
+              {
+                noVars || !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`
+              }
+            </span>
           </div>
           <div className="var-modal">
             <label htmlFor="varName">Scope</label>
@@ -143,8 +132,11 @@ export const AddVariable = ({
                 });
                 updateVar = updateVar.includes(inputName);
                 if (error) {
-                  setAddVarErr(true);
-                  return <div>Unauthorized</div>;
+                  return (
+                    <div>
+                      <b>Unauthorized:</b> Insufficient permission to create variables.
+                    </div>
+                  );
                 }
 
                 if (data) {
@@ -179,7 +171,7 @@ export const AddVariable = ({
                       inputName === "" || inputValue === "" || inputScope === ""
                     }
                     onClick={addOrUpdateEnvVariableHandler}
-                >
+                  >
                   {varTarget == "Environment"
                     ? updateVar || varName
                       ? "Update environment variable"
