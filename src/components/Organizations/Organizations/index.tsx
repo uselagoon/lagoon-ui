@@ -55,7 +55,7 @@ const Organizations = ({ organizations = [] }: { organizations: IOrganization[] 
         </Box>
       )}
       {filteredOrganizations.map(organization => (
-        <OrganizationLink organizationSlug={organization.id} organizationName={organization.name} key={organization.id}>
+        <OrganizationLink organizationSlug={organization.name} organizationId={organization.id} key={organization.id}>
           <Box className="box">
             <Organization>
               <h4>

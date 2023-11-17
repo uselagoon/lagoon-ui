@@ -34,7 +34,7 @@ import { StyledGroupMembers } from './Styles';
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
     pathname: '/organizations/user',
-    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    query: { userSlug, organizationSlug, organizationName },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
@@ -138,7 +138,7 @@ const GroupMembers = ({
       width: '30%',
       key: 'email',
       render: ({ user }) => {
-        const linkData = getLinkData(user.email, organizationId, organizationName);
+        const linkData = getLinkData(user.email, organizationName, organizationId);
         return (
           <div className="email">
             <Link href={linkData.urlObject} as={linkData.asPath}>
@@ -160,7 +160,7 @@ const GroupMembers = ({
       width: '15%',
       key: 'actions',
       render: ({ user, role }) => {
-        const linkData = getLinkData(user.email, organizationId, organizationName);
+        const linkData = getLinkData(user.email, organizationName, organizationId);
         return (
           <TableActions>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit role">
@@ -233,8 +233,8 @@ const GroupMembers = ({
           <ProjectGroupLink
             className="link"
             projectGroupSlug={project.name}
-            organizationSlug={organizationId}
-            organizationName={organizationName}
+            organizationSlug={organizationName}
+            organizationId={organizationId}
             key={id}
           >
             {name}
@@ -260,8 +260,8 @@ const GroupMembers = ({
                 <ProjectGroupLink
                   className="link"
                   projectGroupSlug={project.name}
-                  organizationSlug={organizationId}
-                  organizationName={organizationName}
+                  organizationSlug={organizationName}
+                  organizationId={organizationId}
                   key={project.id}
                 >
                   <EyeOutlined className="view" />

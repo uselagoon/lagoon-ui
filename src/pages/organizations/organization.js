@@ -12,7 +12,7 @@ import Organization from 'components/Organizations/Organization';
 import OrganizationSkeleton from 'components/Organizations/Organization/OrganizationSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
 
 import { useTourContext } from '../../../src/tours/TourContext';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -22,8 +22,8 @@ import QueryError from '../../components/errors/QueryError';
  * Displays a organization page, given the organization id.
  */
 export const PageOrganization = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(OrganizationByIDQuery, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
+    variables: { name: router.query.organizationSlug },
   });
 
   const { startTour } = useTourContext();

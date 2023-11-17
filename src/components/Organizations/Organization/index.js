@@ -60,9 +60,9 @@ const Organization = ({ organization, refetch }) => {
     const link = {
       urlObject: {
         pathname: `/organizations/${pluralName}`,
-        query: { organizationSlug: organization.id },
+        query: { organizationSlug: organization.id, organizationName: organization.name },
       },
-      asPath: `/organizations/${organization.id}/${pluralName}`,
+      asPath: `/organizations/${organization.name}/${pluralName}`,
     };
 
     return (
@@ -124,7 +124,7 @@ const Organization = ({ organization, refetch }) => {
                 <Mutation mutation={UPDATE_ORGANIZATION_FRIENDLY_NAME} onError={e => console.error(e)}>
                   {(updateOrgFriendlyName, { error, data, called }) => {
                     if (error) {
-                      return <div className='error'>{error.message}</div>;
+                      return <div className="error">{error.message}</div>;
                     }
                     if (data) {
                       refetch().then(() => {
@@ -274,7 +274,7 @@ const Organization = ({ organization, refetch }) => {
                   </div>
                 </div>
               ))}
-              <OrgManageLink organizationSlug={organization.id} organizationName={organization.name}>
+              <OrgManageLink organizationSlug={organization.name} organizationId={organization.id}>
                 <ManageBtn>
                   <EyeOutlined className="icon" /> Manage
                 </ManageBtn>

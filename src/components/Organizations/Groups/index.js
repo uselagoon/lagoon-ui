@@ -65,8 +65,8 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
         return (
           <OrgGroupsLink
             groupSlug={i.name}
-            organizationSlug={organizationId}
-            organizationName={organizationName}
+            organizationSlug={organizationName}
+            organizationId={organizationId}
             key={i.id}
           >
             <span>
@@ -121,8 +121,8 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                 <OrgGroupsLink
                   className="link"
                   groupSlug={i.name}
-                  organizationSlug={organizationId}
-                  organizationName={organizationName}
+                  organizationSlug={organizationName}
+                  organizationId={organizationId}
                   key={i.id}
                 >
                   <EditOutlined className="edit" />

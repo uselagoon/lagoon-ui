@@ -1,25 +1,18 @@
 import Link from 'next/link';
 
-export const getLinkData = (organizationSlug, organizationName) => ({
+export const getLinkData = (organizationSlug, organizationId) => ({
   urlObject: {
     pathname: '/organizations/users',
-    query: { organizationSlug: organizationSlug, organizationName: organizationName }
+    query: { organizationSlug, organizationId },
   },
-  asPath: `/organizations/${organizationSlug}/users`
+  asPath: `/organizations/${organizationSlug}/users`,
 });
 
 /**
  * Links to the users page given the organization name.
  */
-const UsersLink = ({
-  organizationSlug,
-  organizationName,
-  children,
-  className = '',
-  prefetch = false
-}) => {
-
-  const linkData = getLinkData(organizationSlug, organizationName);
+const UsersLink = ({ organizationSlug, organizationId, children, className = '', prefetch = false }) => {
+  const linkData = getLinkData(organizationSlug, organizationId);
 
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>

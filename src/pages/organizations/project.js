@@ -119,7 +119,7 @@ export const PageGroupProject = ({ router }) => {
                 refresh={handleRefetch}
                 projectName={project.name}
                 organizationId={organization.id}
-                organizationName={organization.name}
+                organizationSlug={organization.name}
                 groups={project.groups || []}
                 orgGroups={organization.groups}
               />
@@ -127,7 +127,7 @@ export const PageGroupProject = ({ router }) => {
                 refresh={handleRefetch}
                 projectName={project.name}
                 organizationId={organization.id}
-                organizationName={organization.name}
+                organizationSlug={organization.name}
                 notifications={project.notifications}
                 organization={organization}
               />

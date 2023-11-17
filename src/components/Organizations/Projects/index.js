@@ -40,8 +40,8 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
           <>
             <ProjectGroupLink
               projectGroupSlug={project.name}
-              organizationSlug={organizationId}
-              organizationName={organizationName}
+              organizationSlug={organizationName}
+              organizationId={organizationId}
               key={project.id}
             >
               {project.name}
@@ -80,8 +80,8 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                 <ProjectGroupLink
                   className="link"
                   projectGroupSlug={project.name}
-                  organizationSlug={organizationId}
-                  organizationName={organizationName}
+                  organizationSlug={organizationName}
+                  organizationId={organizationId}
                   key={project.id}
                 >
                   <EditOutlined className="edit" />

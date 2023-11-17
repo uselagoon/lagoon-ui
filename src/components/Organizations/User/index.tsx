@@ -53,9 +53,9 @@ type User = {
 export const getLinkData = (userSlug: string, organizationSlug: string, organizationName: string) => ({
   urlObject: {
     pathname: '/organizations/users',
-    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    query: { user: userSlug, organizationSlug, organizationName },
   },
-  asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
+  asPath: `/organizations/${organizationName}/users/${userSlug}`,
 });
 
 const DELETE_USER_FROM_GROUP = gql`
@@ -111,9 +111,9 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
   const groupLinkData = (groupSlug: string, organizationSlug: string, organizationName: string) => ({
     urlObject: {
       pathname: '/organizations/group',
-      query: { groupName: groupSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+      query: { groupName: groupSlug, organizationSlug, organizationName },
     },
-    asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
+    asPath: `/organizations/${organizationName}/groups/${groupSlug}`,
   });
 
   const UserColumns = [
@@ -282,7 +282,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                 >
                   {(removeUserFromGroup, { called, error, data }) => {
                     if (error) {
-                      return <div className='error'>{error.message}</div>;
+                      return <div className="error">{error.message}</div>;
                     }
                     if (data) {
                       refetch();
