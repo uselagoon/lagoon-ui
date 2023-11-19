@@ -1,5 +1,6 @@
 import { bp, color, fontSize } from 'lib/variables';
 import styled from 'styled-components';
+import { Collapse } from 'antd';
 
 export const StyledEnvironmentWrapper = styled.div`
     width: 100%;
@@ -46,6 +47,10 @@ export const StyledNewEnvironment = styled.div`
   overflow: visible;
   transform: translateX(-13px);
   align-items: center;
+  
+  &.deploy-key {
+    margin-top: 12px;
+  }
 }
 .copy-btn {
   width: 2rem;
@@ -93,6 +98,7 @@ export const StyledNewEnvironment = styled.div`
 
 .copied {
   background-color: ${props => props.theme.backgrounds.copy};
+  color: ${props => props.theme.texts.primary};
   ${fontSize(9, 16)};
   border-radius: 3px;
   padding: 0 2px;
@@ -130,6 +136,8 @@ input {
 
 .guide-links {
   margin: 1rem 0;
+  font-size: 1rem;
+  color: ${props => props.theme.texts.primary};
   
   button {
     margin-right: 16px;
@@ -140,6 +148,8 @@ input {
 }
   .docs-link {
     margin-top: 2rem;
+    font-size: 1rem;
+    color: ${props => props.theme.texts.primary};
     
     a {
       text-decoration: underline;
@@ -177,3 +187,24 @@ input {
   }
 }
   `;
+
+export const StyledAntdCollapse = styled(Collapse)`
+  border: none;
+  .ant-collapse-header-text {
+    color: ${props => props.theme.texts.primary};
+    font-size: 1rem;
+  }
+  .ant-collapse-expand-icon {
+    color: ${props => props.theme.texts.primary};
+  }
+  .ant-collapse-header {
+    padding: 0 !important;
+  }
+  .ant-collapse-content-box {
+    padding: 0 !important;
+  }
+  .ant-collapse-item {
+    background-color: ${props => props.theme.backgrounds.primary};
+    border-bottom: 1px solid ${props => props.theme.backgrounds.primary};
+  }
+`;
