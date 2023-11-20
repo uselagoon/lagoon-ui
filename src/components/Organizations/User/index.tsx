@@ -70,7 +70,7 @@ const DELETE_USER_FROM_GROUP = gql`
 interface UserProps {
   user: User;
   organizationName: string;
-  organizationId: string;
+  organizationId: number;
   refetch: () => void;
 }
 
@@ -108,12 +108,12 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
     setSelectedGroup('');
     setGroupModalOpen(false);
   };
-  const groupLinkData = (groupSlug: string, organizationSlug: string, organizationName: string) => ({
+  const groupLinkData = (groupSlug: string, organizationSlug: string, organizationId: number) => ({
     urlObject: {
       pathname: '/organizations/group',
-      query: { groupName: groupSlug, organizationSlug, organizationName },
+      query: { groupName: groupSlug, organizationSlug, organizationId },
     },
-    asPath: `/organizations/${organizationName}/groups/${groupSlug}`,
+    asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
   });
 
   const UserColumns = [
@@ -121,7 +121,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '50%',
       key: 'group',
       render: ({ name, type }: Group) => {
-        const linkData = groupLinkData(name, organizationId, organizationName);
+        const linkData = groupLinkData(name, organizationName, organizationId);
         return (
           <>
             <Link href={linkData.urlObject} as={linkData.asPath}>
@@ -144,7 +144,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '25%',
       key: 'actions',
       render: (group: Group) => {
-        const linkData = groupLinkData(group.name, organizationId, organizationName);
+        const linkData = groupLinkData(group.name, organizationName, organizationId);
 
         return (
           <TableActions>

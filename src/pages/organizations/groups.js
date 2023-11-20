@@ -31,14 +31,16 @@ export const PageGroups = ({ router }) => {
     return (
       <>
         <Head>
-          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+          <title>
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
+          </title>
         </Head>
 
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -72,7 +74,7 @@ export const PageGroups = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="groups" organization={organization} />

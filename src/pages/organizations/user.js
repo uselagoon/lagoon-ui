@@ -49,20 +49,20 @@ export const PageUser = ({ router }) => {
     return (
       <>
         <Head>
-          <title>{`${router.query.groupName} | Group`}</title>
+          <title>{`${router.query.userSlug} | User`}</title>
         </Head>
 
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
             <UserBreadcrumb
               userSlug={router.query.userSlug || ''}
               loading
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -104,30 +104,29 @@ export const PageUser = ({ router }) => {
   return (
     <>
       <Head>
-        <title>{`${router && router.query.userSlug} | User`}</title>
+        <title>{`${router.query.userSlug} | User`}</title>
       </Head>
 
       <MainLayout>
         <Breadcrumbs>
           <OrganizationBreadcrumb
-            organizationSlug={router.query.organizationSlug || organization.id}
-            organizationName={organization.organization.name}
+            organizationSlug={router.query.organizationSlug || organization.name}
+            organizationId={organization.organization.id}
           />
 
           <UserBreadcrumb
             userSlug={router.query.userSlug}
-            organizationSlug={router.query.organizationSlug || organization.id}
-            organizationName={organization.organization.name}
+            organizationSlug={router.query.organizationSlug || organization.name}
+            organizationId={organization.organization.id}
           />
         </Breadcrumbs>
-
         <OrganizationsWrapper>
           {organization && <OrgNavTabs activeTab="users" organization={organization?.organization} />}
           <UserWrapper>
             <User
-              organizationId={router.query.organizationSlug}
-              organizationName={organization.name}
-              organization={organization || []}
+              organizationId={organization.organization.id}
+              organizationName={organization.organization.name}
+              organization={organization.organization || []}
               user={user.userByEmailAndOrganization || []}
               refetch={handleUserRefetch}
             />

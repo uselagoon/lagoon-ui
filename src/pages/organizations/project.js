@@ -3,6 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
+import { ExportOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/react-hooks';
 import { Tooltip } from 'antd';
 import Breadcrumbs from 'components/Breadcrumbs';
@@ -19,23 +20,23 @@ import { OrgProjectWrapper, ProjectDashboard } from 'components/Organizations/Pr
 import ProjectLink from 'components/link/Project';
 import MainLayout from 'layouts/MainLayout';
 import ProjectAndOrganizationByID from 'lib/query/organizations/ProjectAndOrganizationByID';
+import ProjectAndOrganizationByName from 'lib/query/organizations/ProjectAndOrganizationByName';
 
 import { OrganizationsWrapper, TableWrapper } from '../../components/Organizations/SharedStyles';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
-import { ExportOutlined } from '@ant-design/icons';
 
 /**
  * Displays a task page, given the openshift project and task ID.
  */
 
 export const PageGroupProject = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(ProjectAndOrganizationByID, {
-    variables: { id: parseInt(router.query.organizationSlug, 10), project: router.query.projectName },
+  const { data, error, loading, refetch } = useQuery(ProjectAndOrganizationByName, {
+    variables: { name: router.query.organizationSlug, project: router.query.projectName },
   });
 
   const handleRefetch = async () =>
-    await refetch({ id: parseInt(router.query.organizationSlug, 10), project: router.query.projectName });
+    await refetch({ name: router.query.organizationSlug, project: router.query.projectName });
 
   if (loading) {
     return (
@@ -47,7 +48,7 @@ export const PageGroupProject = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
-              organizationName={router.query.organizationName}
+              organizationId={router.query.organizationId}
               organizationSlug={router.query.organizationSlug}
               loading
             />
@@ -91,14 +92,11 @@ export const PageGroupProject = ({ router }) => {
 
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb
-            organizationSlug={router.query.organizationSlug}
-            organizationName={organization.name}
-          />
+          <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} organizationId={organization.id} />
           <OrgProjectBreadcrumb
             projectSlug={router.query.projectName}
             organizationSlug={router.query.organizationSlug}
-            organizationName={organization.name}
+            organization={organization.id}
           />
         </Breadcrumbs>
 
@@ -111,7 +109,9 @@ export const PageGroupProject = ({ router }) => {
                 {project.name}
                 <ProjectLink projectSlug={project.name} key={project.id} openInTab>
                   <Tooltip overlayClassName="orgTooltip" title="View project in project overview" placement="bottom">
-                    <ProjectDashboard>View in Dashboard <ExportOutlined /></ProjectDashboard>
+                    <ProjectDashboard>
+                      View in Dashboard <ExportOutlined />
+                    </ProjectDashboard>
                   </Tooltip>
                 </ProjectLink>
               </h3>

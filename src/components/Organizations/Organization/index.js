@@ -60,7 +60,7 @@ const Organization = ({ organization, refetch }) => {
     const link = {
       urlObject: {
         pathname: `/organizations/${pluralName}`,
-        query: { organizationSlug: organization.id, organizationName: organization.name },
+        query: { organizationSlug: organization.name, organizationId: organization.id },
       },
       asPath: `/organizations/${organization.name}/${pluralName}`,
     };

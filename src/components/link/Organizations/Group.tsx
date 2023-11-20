@@ -1,6 +1,10 @@
+import { FC } from 'react';
+
 import Link from 'next/link';
 
-export const getLinkData = (groupSlug, organizationSlug, organizationId) => ({
+import { ExtendableOrgLinkProps } from './commons';
+
+export const getLinkData = (groupSlug: string, organizationSlug: string, organizationId: number) => ({
   urlObject: {
     pathname: '/organizations/group',
     query: { groupName: groupSlug, organizationSlug, organizationId },
@@ -11,12 +15,26 @@ export const getLinkData = (groupSlug, organizationSlug, organizationId) => ({
 /**
  * Links to the group page given the project name and the openshift project name.
  */
-const GroupLink = ({ groupSlug, organizationSlug, organizationId, children, className = null, prefetch = false }) => {
+
+interface GroupLinkProps extends ExtendableOrgLinkProps {
+  groupSlug: string;
+}
+
+const GroupLink: FC<GroupLinkProps> = ({
+  groupSlug,
+  organizationSlug,
+  organizationId,
+  children,
+  className = null,
+  prefetch = false,
+}) => {
   const linkData = getLinkData(groupSlug, organizationSlug, organizationId);
+
+  const linkProps = className ? { className } : {};
 
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a className={className}>{children}</a>
+      <a {...linkProps}>{children}</a>
     </Link>
   );
 };

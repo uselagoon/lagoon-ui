@@ -7,7 +7,7 @@ import OrganizationLink from 'components/link/Organizations/Organization';
 import { Organization, OrganizationsPage, OrgsHeader, SearchInput } from './StyledOrganizations';
 
 export interface IOrganization {
-  id: string;
+  id: number;
   name: string;
   description: string;
   __typename: 'Organization';

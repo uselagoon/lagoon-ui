@@ -11,7 +11,7 @@ interface BreadcrumbProps {
   urlObject: {
     pathname: string;
     query: {
-      [key: string]: string;
+      [key: string]: string | number;
     };
   };
   asPath: string;

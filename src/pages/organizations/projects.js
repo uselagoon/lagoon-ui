@@ -13,7 +13,7 @@ import OrgHeader from 'components/Organizations/Orgheader';
 import OrgProjects from 'components/Organizations/Projects';
 import OrgProjectsSkeleton from 'components/Organizations/Projects/OrgProjectsSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
 
 import { OrganizationsWrapper } from '../../components/Organizations/SharedStyles';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -23,17 +23,17 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the projects page, given the organization id
  */
 export const PageOrgProjects = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(OrganizationByIDQuery, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
+    variables: { name: router.query.organizationSlug },
   });
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const handleRefetch = async () => await refetch({ name: router.query.organizationSlug });
 
   if (loading) {
     return (
       <>
         <Head>
           <title>
-            {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
           </title>
         </Head>
 
@@ -41,7 +41,7 @@ export const PageOrgProjects = ({ router }) => {
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -79,7 +79,7 @@ export const PageOrgProjects = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
         </Breadcrumbs>
 
         <OrganizationsWrapper>

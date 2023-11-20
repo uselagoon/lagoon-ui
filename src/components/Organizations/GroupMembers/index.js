@@ -31,10 +31,10 @@ import {
 } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
-export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+export const getLinkData = (userSlug, organizationSlug, organizationId) => ({
   urlObject: {
     pathname: '/organizations/user',
-    query: { userSlug, organizationSlug, organizationName },
+    query: { userSlug, organizationSlug, organizationId },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
