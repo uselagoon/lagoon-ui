@@ -90,9 +90,10 @@ export const PageUser = ({ router }) => {
   }
 
   const orgGroups = organization.organization.groups;
-  const userGroupRoles = user.userByEmailAndOrganization.groupRoles;
+  const userGroupRoles = user?.userByEmailAndOrganization?.groupRoles;
 
   orgGroups.length &&
+    Array.isArray(userGroupRoles) &&
     userGroupRoles.forEach((groupRole, idx, selfArr) => {
       const found = orgGroups.find(group => {
         return group.id == groupRole.id;
