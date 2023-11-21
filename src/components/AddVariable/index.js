@@ -44,6 +44,8 @@ export const AddVariable = ({
   openModal,
   closeModal,
   setClear,
+  setEnvironmentErrorAlert,
+  setProjectErrorAlert
 }) => {
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
@@ -54,6 +56,9 @@ export const AddVariable = ({
     setUpdateName(varName);
     setUpdateScope(varScope);
   }, [varValue]);
+  const handleError = () => {
+    setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true)
+  }
 
   return (
     <NewVariable>
@@ -131,16 +136,13 @@ export const AddVariable = ({
                   return varName.name;
                 });
                 updateVar = updateVar.includes(inputName);
-                if (error) {
-                  return (
-                    <div>
-                      <b>Unauthorized:</b> Insufficient permission to create variables.
-                    </div>
-                  );
-                }
 
                 if (data) {
                   refresh().then(setClear).then(closeModal);
+                }
+
+                if (error) {
+                  refresh().then(closeModal).then(handleError);
                 }
 
                 if (updateVar && called || updateName && called ) {

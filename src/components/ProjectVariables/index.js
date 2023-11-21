@@ -104,6 +104,16 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
     <StyledProjectVariablesDetails className="details">
       {displayVars.length === 0 ? (
         <>
+          {
+            projectErrorAlert && (
+              <Alert
+                type="error"
+                closeAlert={closeProjectError}
+                header="Unauthorized:"
+                message={`You don't have permission to ${action} project ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
+              />
+            )
+          }
           <div className="header no-vars">
             <Button
               onClick={() => permissionCheck("add")}
@@ -116,6 +126,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                   varTarget="Project"
                   refresh={onVariableAdded}
                   noVars="Add"
+                  setProjectErrorAlert={setProjectErrorAlert}
                 />
               }
             </Button>

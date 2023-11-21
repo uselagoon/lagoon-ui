@@ -147,6 +147,16 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     <StyledEnvironmentVariableDetails className="details">
       {environment.envVariables.length === 0 ? (
         <>
+          {
+            environmentErrorAlert && (
+              <Alert
+                type="error"
+                closeAlert={closeEnvironmentError}
+                header="Unauthorized:"
+                message={`You don't have permission to ${action} environment ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
+              />
+            )
+          }
           <div className="header no-vars">
             <Button
               onClick={() => permissionCheck("add")}
@@ -160,6 +170,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                   varTarget="Environment"
                   noVars="Add"
                   refresh={onVariableAdded}
+                  setEnvironmentErrorAlert={setEnvironmentErrorAlert}
                 />
               }
             </Button>
