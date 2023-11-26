@@ -53,9 +53,9 @@ type User = {
 export const getLinkData = (userSlug: string, organizationSlug: string, organizationName: string) => ({
   urlObject: {
     pathname: '/organizations/users',
-    query: { user: userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    query: { user: userSlug, organizationSlug, organizationName },
   },
-  asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
+  asPath: `/organizations/${organizationName}/users/${userSlug}`,
 });
 
 const DELETE_USER_FROM_GROUP = gql`
@@ -70,7 +70,7 @@ const DELETE_USER_FROM_GROUP = gql`
 interface UserProps {
   user: User;
   organizationName: string;
-  organizationId: string;
+  organizationId: number;
   refetch: () => void;
 }
 
@@ -108,10 +108,10 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
     setSelectedGroup('');
     setGroupModalOpen(false);
   };
-  const groupLinkData = (groupSlug: string, organizationSlug: string, organizationName: string) => ({
+  const groupLinkData = (groupSlug: string, organizationSlug: string, organizationId: number) => ({
     urlObject: {
       pathname: '/organizations/group',
-      query: { groupName: groupSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+      query: { groupName: groupSlug, organizationSlug, organizationId },
     },
     asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
   });
@@ -121,7 +121,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '50%',
       key: 'group',
       render: ({ name, type }: Group) => {
-        const linkData = groupLinkData(name, organizationId, organizationName);
+        const linkData = groupLinkData(name, organizationName, organizationId);
         return (
           <>
             <Link href={linkData.urlObject} as={linkData.asPath}>
@@ -144,7 +144,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '25%',
       key: 'actions',
       render: (group: Group) => {
-        const linkData = groupLinkData(group.name, organizationId, organizationName);
+        const linkData = groupLinkData(group.name, organizationName, organizationId);
 
         return (
           <TableActions>
@@ -282,7 +282,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                 >
                   {(removeUserFromGroup, { called, error, data }) => {
                     if (error) {
-                      return <div className='error'>{error.message}</div>;
+                      return <div className="error">{error.message}</div>;
                     }
                     if (data) {
                       refetch();

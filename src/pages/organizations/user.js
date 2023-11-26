@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import UserBreadcrumb from 'components/Breadcrumbs/Organizations/User';
@@ -14,7 +14,7 @@ import User from 'components/Organizations/User';
 import { UserWrapper } from 'components/Organizations/User/Styles';
 import UserSkeleton from 'components/Organizations/User/UserSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
 import UserByEmailAndOrganization from 'lib/query/organizations/UserByEmailAndOrganization';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -25,43 +25,44 @@ import QueryError from '../../components/errors/QueryError';
  */
 export const PageUser = ({ router }) => {
   const {
-    data: user,
-    error: userError,
-    loading: userLoading,
-    refetch,
-  } = useQuery(UserByEmailAndOrganization, {
-    variables: { email: router.query.userSlug, organization: parseInt(router.query.organizationSlug, 10) },
-  });
-
-  const {
     data: organization,
     error: orgError,
     loading: orgLoading,
-  } = useQuery(OrganizationByIDQuery, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  } = useQuery(OrganizationByNameQuery, {
+    variables: { name: router.query.organizationSlug },
+    onCompleted: ({ organization }) => {
+      if (organization) {
+        getUserByEmailAndOrg({
+          variables: { email: router.query.userSlug, organization: organization.id },
+        });
+      }
+    },
   });
 
-  const handleUserRefetch = async () =>
-    await refetch({ name: router.query.userSlug, organization: parseInt(router.query.organizationSlug, 10) });
+  const [getUserByEmailAndOrg, { data: user, error: userError, loading: userLoading, refetch }] =
+    useLazyQuery(UserByEmailAndOrganization);
 
-  if (userLoading || orgLoading) {
+  const handleUserRefetch = async () =>
+    await refetch({ name: router.query.userSlug, organization: organization.organization.id });
+
+  if (userLoading || orgLoading || !organization || !user) {
     return (
       <>
         <Head>
-          <title>{`${router.query.groupName} | Group`}</title>
+          <title>{`${router.query.userSlug} | User`}</title>
         </Head>
 
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
             <UserBreadcrumb
               userSlug={router.query.userSlug || ''}
               loading
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -89,9 +90,10 @@ export const PageUser = ({ router }) => {
   }
 
   const orgGroups = organization.organization.groups;
-  const userGroupRoles = user.userByEmailAndOrganization.groupRoles;
+  const userGroupRoles = user?.userByEmailAndOrganization?.groupRoles;
 
   orgGroups.length &&
+    Array.isArray(userGroupRoles) &&
     userGroupRoles.forEach((groupRole, idx, selfArr) => {
       const found = orgGroups.find(group => {
         return group.id == groupRole.id;
@@ -103,30 +105,29 @@ export const PageUser = ({ router }) => {
   return (
     <>
       <Head>
-        <title>{`${router && router.query.userSlug} | User`}</title>
+        <title>{`${router.query.userSlug} | User`}</title>
       </Head>
 
       <MainLayout>
         <Breadcrumbs>
           <OrganizationBreadcrumb
-            organizationSlug={router.query.organizationSlug || organization.id}
-            organizationName={organization.organization.name}
+            organizationSlug={router.query.organizationSlug || organization.name}
+            organizationId={organization.organization.id}
           />
 
           <UserBreadcrumb
             userSlug={router.query.userSlug}
-            organizationSlug={router.query.organizationSlug || organization.id}
-            organizationName={organization.organization.name}
+            organizationSlug={router.query.organizationSlug || organization.name}
+            organizationId={organization.organization.id}
           />
         </Breadcrumbs>
-
         <OrganizationsWrapper>
           {organization && <OrgNavTabs activeTab="users" organization={organization?.organization} />}
           <UserWrapper>
             <User
-              organizationId={router.query.organizationSlug}
-              organizationName={organization.name}
-              organization={organization || []}
+              organizationId={organization.organization.id}
+              organizationName={organization.organization.name}
+              organization={organization.organization || []}
               user={user.userByEmailAndOrganization || []}
               refetch={handleUserRefetch}
             />

@@ -28,7 +28,7 @@ const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectNotifications = ({ notifications = [], organizationId, projectName, organization, refresh }) => {
+const ProjectNotifications = ({ notifications = [], organizationSlug ,organizationId, projectName, organization, refresh }) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredMembers = notifications.filter(key => {
@@ -72,7 +72,7 @@ const ProjectNotifications = ({ notifications = [], organizationId, projectName,
                     <TableActions>
                       <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
                         <>
-                          <OrgNotificationsLink organizationSlug={organizationId} className="link">
+                          <OrgNotificationsLink organizationSlug={organizationSlug} className="link">
                             <EditOutlined className="edit" />
                           </OrgNotificationsLink>
                         </>

@@ -12,6 +12,7 @@ import OrgNotifications from 'components/Organizations/Notifications';
 import NotificationsSkeleton from 'components/Organizations/Notifications/NotificationsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
+import OrganizationNotificationsByNameQuery from 'lib/query/organizations/OrganizationByName';
 import OrganizationNotificationsByIDQuery from 'lib/query/organizations/OrganizationNotificationsByID';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -21,18 +22,18 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the projects page, given the organization id
  */
 export const PageOrgNotifications = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(OrganizationNotificationsByIDQuery, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  const { data, error, loading, refetch } = useQuery(OrganizationNotificationsByNameQuery, {
+    variables: { name: router.query.organizationSlug },
   });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const handleRefetch = async () => await refetch({ name: router.query.organizationSlug });
 
   if (loading) {
     return (
       <>
         <Head>
           <title>
-            {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
           </title>
         </Head>
 
@@ -40,7 +41,7 @@ export const PageOrgNotifications = ({ router }) => {
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -70,7 +71,7 @@ export const PageOrgNotifications = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="notifications" organization={organization} />

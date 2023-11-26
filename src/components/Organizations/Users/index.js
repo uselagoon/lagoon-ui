@@ -19,10 +19,11 @@ import { StyledUsers } from './Styles';
 export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
   urlObject: {
     pathname: '/organizations/user',
-    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    query: { userSlug, organizationSlug, organizationName },
   },
-  asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
+  asPath: `/organizations/${organizationName}/users/${userSlug}`,
 });
+
 const DELETE_USER = gql`
   mutation removeUserFromOrganizationGroups($organization: Int!, $email: String!) {
     removeUserFromOrganizationGroups(input: { user: { email: $email }, organization: $organization }) {
@@ -152,7 +153,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                     <Mutation mutation={DELETE_USER}>
                       {(removeUserFromOrganizationGroups, { called, error, data }) => {
                         if (error) {
-                          return <div className='error'>{error.message}</div>;
+                          return <div className="error">{error.message}</div>;
                         }
                         if (data) {
                           refetch().then(() => {
