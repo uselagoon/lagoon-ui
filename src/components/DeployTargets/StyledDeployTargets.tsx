@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { bp, color } from "lib/variables";
 
 export const DeployTargetWrapper = styled.div`
-  text-align: center;
   width: 50%;
   margin: 10px auto;
 
@@ -41,7 +40,6 @@ export const DeployTargetWrapper = styled.div`
 
     @media ${bp.wideUp} {
       align-items: center;
-      display: flex;
       margin: 0 0 14px;
     }
     @media ${bp.smallOnly} {
@@ -52,7 +50,6 @@ export const DeployTargetWrapper = styled.div`
     }
 
     label {
-      display: none;
       padding-left: 20px;
       @media ${bp.wideUp} {
         display: block;
@@ -80,14 +77,11 @@ export const DeployTargetWrapper = styled.div`
       border-radius: 0;
       line-height: 2rem;
       padding: 8px 0 7px 0;
-
+      display: flex;
+      justify-content: space-between
       > div {
         word-wrap: break-word;
         word-break: break-all;
-      }
-      @media ${bp.wideUp} {
-        display: flex;
-        justify-content: space-between;
       }
 
       & > div {

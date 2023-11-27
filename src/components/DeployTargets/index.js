@@ -4,7 +4,6 @@ import { DeployTargetWrapper } from "./StyledDeployTargets";
 const DeployTargets = ({ project }) => {
   return (
     <DeployTargetWrapper>
-      <h3>Deploy Targets</h3>
       <div className="header">
         <label className="dt-name">Deploy Target Name</label>
         <label className="dt-branch">Branches enabled</label>
