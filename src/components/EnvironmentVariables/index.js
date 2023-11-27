@@ -20,6 +20,7 @@ import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
 import Alert from 'components/Alert'
+import {Tag} from "antd";
 
 /**
  * Displays the environment variable information.
@@ -208,7 +209,6 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               </div>
               <div className="data-table">
                 {displayVars.map((envVar, index) => {
-                  envVar.value === '' ? envVar.value = '-' : envVar.value
                   return (
                     <Fragment key={index}>
                       <div
@@ -224,10 +224,23 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                               <div className="loader"></div>
                             </div>
                           </Collapse>
-                        ) : envVar.value ? (
+                        ) : envVar.value !== undefined ? (
                           <Collapse in={openEnvVars}>
                             <div className="varValue" id={index}>
-                              {envVar.value.length <= 100 &&
+                              {envVar.value.length === 0 &&
+                              valueState[index] ? (
+                                <div className="showHideContainer">
+                                  <Tag color="#4578e6">Empty</Tag>
+                                  <span onClick={() => valuesHide(index)}>
+                                  <Image
+                                    src={hide}
+                                    className="showHide"
+                                    style={{ all: "unset" }}
+                                    alt=""
+                                  />
+                                  </span>
+                                </div>
+                              ) : envVar.value.length <= 100 &&
                               !valueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(envVar.value).substring(0, 25)}
@@ -412,7 +425,6 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               </div>
               <div className="data-table">
                 {displayProjectVars.map((projEnvVar, index) => {
-                  projEnvVar.value === '' ? projEnvVar.value = '-' : projEnvVar.value
                   return (
                     <Fragment key={index}>
                       <div
@@ -428,10 +440,23 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                               <div className="loader"></div>
                             </div>
                           </Collapse>
-                        ) : projEnvVar.value ? (
+                        ) : projEnvVar.value !== undefined ? (
                           <Collapse in={openPrjVars}>
                             <div className="varValue" id={index}>
-                              {projEnvVar.value.length <= 100 &&
+                              {projEnvVar.value.length == 0 &&
+                              prjValueState[index] ? (
+                                <div className="showHideContainer">
+                                  <Tag color="#4578e6">Empty</Tag>
+                                  <span onClick={() => prjValuesHide(index)}>
+                                  <Image
+                                    src={hide}
+                                    className="showHide"
+                                    style={{ all: "unset" }}
+                                    alt=""
+                                  />
+                                  </span>
+                                </div>
+                              ) : projEnvVar.value.length <= 100 &&
                               !prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}

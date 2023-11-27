@@ -62,15 +62,15 @@ export const AddVariable = ({
     setUpdateValue(varValue);
     setUpdateName(varName);
     setUpdateScope(varScope);
-  }, [varValue]);
+  }, [varName, varValue]);
 
   return (
       <NewVariable>
       {
         icon ?
-            <Button variant='white' icon={icon} action={openModal}>
-              Update
-            </Button>
+          <Button variant='white' icon={icon} action={openModal}>
+            Update
+          </Button>
           :
           <ButtonBootstrap onClick={openModal}>
             {
@@ -102,7 +102,7 @@ export const AddVariable = ({
                 name="results"
                 value={varScope ? scopeOptions.find((o) => o.value === updateScope.toUpperCase()) : scopeOptions.find((o) => o.value === inputScope)}
                 onChange={varScope ? (selectedOption) => setUpdateScope(selectedOption.value)
-                    : (selectedOption) => setInputScope(selectedOption.value)
+                  : (selectedOption) => setInputScope(selectedOption.value)
                 }
                 options={scopeOptions}
                 required
@@ -156,10 +156,10 @@ export const AddVariable = ({
                   refresh().then(setClear).then(closeModal);
                 }
 
-                if (action === "add" && inputValue !== '' || action === "edit" && updateValue !== '') {
-                  if (updateVar && called || updateName && called ) {
+                if (action === "add" && inputValue !== '' || action === "edit" && updateValue !== '' || action === "edit" && inputValue !== '') {
+                  if (action === "edit" && called ) {
                     return <div>Updating variable</div>;
-                  } else if (called) {
+                  } else if (action === "add" && called) {
                     return <div>Adding variable</div>;
                   }
                 }
@@ -181,7 +181,7 @@ export const AddVariable = ({
                   }, 1000);
                 };
 
-                if (action === "add" && inputValue === '' || action === "edit" && updateValue === '') {
+                if (action === "add" && inputValue === '' || action === "edit" && updateValue === '' && inputValue === '') {
                   return (
                     <Popconfirm
                       title="No value set for this variable."

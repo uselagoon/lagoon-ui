@@ -17,6 +17,7 @@ import {
 } from "./StyledProjectVariables";
 import DeleteVariable from "components/DeleteVariable";
 import Alert from 'components/Alert'
+import {Tag} from "antd";
 
 /**
  * Displays the projects variable information.
@@ -163,7 +164,6 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
               </div>
               <div className="data-table">
                 {displayVars.map((projEnvVar, index) => {
-                  projEnvVar.value === '' ? projEnvVar.value = '-' : projEnvVar.value
                   return (
                     <Fragment key={index}>
                       <div
@@ -179,10 +179,23 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                               <div className="loader"></div>
                             </div>
                           </Collapse>
-                        ) : projEnvVar.value ? (
+                        ) : projEnvVar.value !== undefined ? (
                           <Collapse in={openPrjVars}>
                             <div className="varValue" id={index}>
-                              {projEnvVar.value.length <= 100 &&
+                              {projEnvVar.value.length === 0 &&
+                              valueState[index] ? (
+                                <div className="showHideContainer">
+                                  <Tag color="#4578e6">Empty</Tag>
+                                  <span onClick={() => valuesHide(index)}>
+                                  <Image
+                                    src={hide}
+                                    className="showHide"
+                                    style={{ all: "unset" }}
+                                    alt=""
+                                  />
+                                  </span>
+                                </div>
+                              ) : projEnvVar.value.length <= 100 &&
                               !valueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
