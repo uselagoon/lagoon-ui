@@ -46,7 +46,7 @@ export const AddVariable = ({
   closeModal,
   setClear,
   setEnvironmentErrorAlert,
-  setProjectErrorAlert
+  setProjectErrorAlert,
   action,
 }) => {
   const [updateName, setUpdateName] = useState(varName);
