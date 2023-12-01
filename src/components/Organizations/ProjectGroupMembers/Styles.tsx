@@ -25,10 +25,32 @@ export const StyledGroupMembers = styled.div`
     width: 35%;
     border-right: 1px solid ${props => props.theme.borders.tableRow};
   }
+  .actions {
+    display: flex;
+    gap: 1rem;
+    width: max-content !important;
+  }
+  .link {
+    border: 1px solid #4578e6 !important;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    height: 36px;
+    svg {
+      color: #4578e6;
+    }
+    > * {
+      width: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   .remove {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    min-width: 54px;
     width: 100%;
     height: 100%;
     .btn-red {
@@ -61,9 +83,6 @@ export const StyledGroupMembers = styled.div`
       justify-content: flex-start !important;
       &:not(:last-child) {
         border-bottom: 1px solid ${props => props.theme.borders.tableRow};
-      }
-      &:hover {
-        border: 1px solid #2bc0d8;
       }
     }
   }

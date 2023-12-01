@@ -60,6 +60,16 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
                 {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
                   <HoverTag text={deployment.buildStep} maxWidth="160px" tooltipPosition="top" />
                 )}
+                {deployment.buildStep && ['deployCompletedWithWarnings'].includes(deployment.buildStep) && (
+                  <HoverTag
+                    text={deployment.buildStep}
+                    formatToReadableText
+                    maxWidth="160px"
+                    tooltipPosition="top"
+                    tagColor="#ffbe00"
+                    textColor="#000"
+                  />
+                )}
               </div>
               <div className="duration">{getDeploymentDuration(deployment)} </div>
             </div>

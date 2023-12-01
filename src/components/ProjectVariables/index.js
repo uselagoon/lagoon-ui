@@ -18,6 +18,7 @@ import {
 } from "./StyledProjectVariables";
 import DeleteVariable from "components/DeleteVariable";
 import Alert from 'components/Alert'
+import {Tag} from "antd";
 import {LoadingOutlined} from "@ant-design/icons";
 import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
 
@@ -127,6 +128,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                   refresh={onVariableAdded}
                   noVars="Add"
                   setProjectErrorAlert={setProjectErrorAlert}
+                  action="add"
                 />
               }
             </Button>
@@ -162,6 +164,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                     varValues={displayVars}
                     varTarget="Project"
                     refresh={onVariableAdded}
+                    action="add"
                   />
                 }
               </Button>
@@ -210,10 +213,23 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                               <div className="loader"></div>
                             </div>
                           </Collapse>
-                        ) : projEnvVar.value ? (
+                        ) : projEnvVar.value !== undefined ? (
                           <Collapse in={openPrjVars}>
                             <div className="varValue" id={index}>
-                              {projEnvVar.value.length <= 100 &&
+                              {projEnvVar.value.length === 0 &&
+                              valueState[index] ? (
+                                <div className="showHideContainer">
+                                  <Tag color="#4578e6">Empty</Tag>
+                                  <span onClick={() => valuesHide(index)}>
+                                  <Image
+                                    src={hide}
+                                    className="showHide"
+                                    style={{ all: "unset" }}
+                                    alt=""
+                                  />
+                                  </span>
+                                </div>
+                              ) : projEnvVar.value.length <= 100 &&
                               !valueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}
@@ -293,14 +309,15 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     style={{ all: 'unset'}}
                                 >
                                   <AddVariable
-                                      varProject={project.name}
-                                      varValues={displayVars}
-                                      varTarget="Project"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
+                                    varProject={project.name}
+                                    varValues={displayVars}
+                                    varTarget="Project"
+                                    varName={updateVarName}
+                                    varValue={updateVarValue}
+                                    varScope={updateVarScope}
+                                    refresh={onVariableAdded}
+                                    icon="edit"
+                                    action="edit"
                                   />
                                 </Button>
                               </div>

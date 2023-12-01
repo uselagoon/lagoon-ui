@@ -6,15 +6,19 @@ import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/react-hooks';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveUserConfirm from 'components/Organizations/RemoveUserConfirm';
 import ProjectGroupLink from 'components/link/Organizations/ProjectGroup';
+import ProjectLink from 'components/link/Project';
 import gql from 'graphql-tag';
 
 import AddUserToGroup, { ADD_GROUP_MEMBER_MUTATION, options } from '../AddUserToGroup';
 import { RoleSelect } from '../AddUserToGroup/Styles';
+import { IconDashboard } from '../CustomIcons/OrganizationIcons';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { ProjectDashboard } from '../Projects/Styles';
 import {
   AddButtonContent,
   Footer,
@@ -27,10 +31,10 @@ import {
 } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
-export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+export const getLinkData = (userSlug, organizationSlug, organizationId) => ({
   urlObject: {
     pathname: '/organizations/user',
-    query: { userSlug, organizationSlug: organizationSlug, organizationName: organizationName },
+    query: { userSlug, organizationSlug, organizationId },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
@@ -134,11 +138,11 @@ const GroupMembers = ({
       width: '30%',
       key: 'email',
       render: ({ user }) => {
-        const linkData = getLinkData(user.email, organizationId, organizationName);
+        const linkData = getLinkData(user.email, organizationName, organizationId);
         return (
           <div className="email">
             <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a> {user.email}</a>
+              <a className="link">{user.email}</a>
             </Link>
           </div>
         );
@@ -155,31 +159,35 @@ const GroupMembers = ({
     {
       width: '15%',
       key: 'actions',
-      render: ({ user }) => {
-        const linkData = getLinkData(user.email, organizationId, organizationName);
+      render: ({ user, role }) => {
+        const linkData = getLinkData(user.email, organizationName, organizationId);
         return (
           <TableActions>
-            <span
-              className="link"
-              onClick={() =>
-                setModalState({
-                  open: true,
-                  current: {
-                    email: user.email,
-                    role: user.role,
-                  },
-                })
-              }
-            >
-              <EditOutlined className="edit" />
-            </span>
-
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">
-                <EyeOutlined className="view" />
-              </a>
-            </Link>
-
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit role">
+              <span
+                className="link"
+                onClick={() =>
+                  setModalState({
+                    open: true,
+                    current: {
+                      email: user.email,
+                      role,
+                    },
+                  })
+                }
+              >
+                <EditOutlined className="edit" />
+              </span>
+            </Tooltip>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
+              <>
+                <Link href={linkData.urlObject} as={linkData.asPath}>
+                  <a className="link">
+                    <EyeOutlined className="view" />
+                  </a>
+                </Link>
+              </>
+            </Tooltip>
             <Mutation mutation={REMOVE_USER_FROM_GROUP}>
               {(removeUserFromGroup, { called, error, data }) => {
                 if (error) {
@@ -223,9 +231,10 @@ const GroupMembers = ({
 
         return (
           <ProjectGroupLink
-            projectGroupSlug={name}
-            organizationSlug={organizationId}
-            organizationName={organizationName}
+            className="link"
+            projectGroupSlug={project.name}
+            organizationSlug={organizationName}
+            organizationId={organizationId}
             key={id}
           >
             {name}
@@ -246,14 +255,40 @@ const GroupMembers = ({
       render: project => {
         return (
           <TableActions>
-            <Button
-              variant="red"
-              action={() => {
-                setSelectedProject(project.id);
-                setProjectModalOpen(true);
-              }}
-              icon={<DisconnectOutlined className="delete" />}
-            />
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View project">
+              <>
+                <ProjectGroupLink
+                  className="link"
+                  projectGroupSlug={project.name}
+                  organizationSlug={organizationName}
+                  organizationId={organizationId}
+                  key={project.id}
+                >
+                  <EyeOutlined className="view" />
+                </ProjectGroupLink>
+              </>
+            </Tooltip>
+
+            <ProjectLink projectSlug={project.name} key={project.id} openInTab>
+              <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
+                <ProjectDashboard inlineLink>
+                  <IconDashboard />
+                </ProjectDashboard>
+              </Tooltip>
+            </ProjectLink>
+
+            <Tooltip overlayClassName="orgTooltip" title="Unlink" placement="bottom">
+              <>
+                <Button
+                  variant="red"
+                  action={() => {
+                    setSelectedProject(project.id);
+                    setProjectModalOpen(true);
+                  }}
+                  icon={<DisconnectOutlined className="delete" />}
+                />
+              </>
+            </Tooltip>
 
             <Modal isOpen={projectModalOpen && selectedProject === project.id} onRequestClose={closeProjectModal}>
               <RemoveModalHeader>Are you sure?</RemoveModalHeader>
@@ -317,14 +352,19 @@ const GroupMembers = ({
             orderList: ['OWNER', 'MAINTAINER', 'DEVELOPER', 'REPORTER', 'GUEST'],
             orderListKey: 'role',
           }}
+          defaultViewOptions={{
+            type: 'user',
+            selected: false,
+          }}
         />
         <div className="tableAction">
-          <Button action={() => setAddUserModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>User</span>
-            </AddButtonContent>
-          </Button>
+          <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
+            <>
+              <Button action={() => setAddUserModalOpen(true)}>
+                <AddButtonContent>Add user</AddButtonContent>
+              </Button>
+            </>
+          </Tooltip>
         </div>
 
         <Modal
@@ -351,12 +391,13 @@ const GroupMembers = ({
         />
 
         <div className="tableAction">
-          <Button action={() => setAddProjectModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>Project</span>
-            </AddButtonContent>
-          </Button>
+          <Tooltip overlayClassName="orgTooltip" title="Add the group to a project" placement="bottom">
+            <>
+              <Button action={() => setAddProjectModalOpen(true)}>
+                <AddButtonContent>Add project</AddButtonContent>
+              </Button>
+            </>
+          </Tooltip>
         </div>
 
         <Modal

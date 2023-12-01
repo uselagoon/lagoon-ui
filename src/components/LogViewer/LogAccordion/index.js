@@ -2,10 +2,10 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 import PropTypes from 'prop-types';
 
-import { StyledLogAccordion } from '../StyledLogViewer';
+import { StyledLogAccordion, StyledWarningIcon } from '../StyledLogViewer';
 
 const LogAccordion = forwardRef(
-  ({ children, onToggle, header, className = '', defaultValue = false, metadata = '' }, ref) => {
+  ({ children, onToggle, header, className = '', defaultValue = false, metadata = ['', false] }, ref) => {
     const logsTopRef = useRef(null);
     const logsEndRef = useRef(null);
     const [visibility, setVisibility] = useState(defaultValue);
@@ -27,17 +27,23 @@ const LogAccordion = forwardRef(
       }
     }, [ref, visibility, scrollHidden]);
 
+    const hasWarning = metadata[1] === true;
+
     return (
       <StyledLogAccordion className={className}>
         <div
-          className={`accordion-heading`}
-          onClick={e => {
+          className={hasWarning ? `accordion-heading accordion-heading-warning` : `accordion-heading`}
+          onClick={() => {
             setVisibility(!visibility);
             if (onToggle) onToggle(!visibility);
           }}
         >
-          <div key="1" className={'log-header' + (visibility ? ' visible' : '')}>
-            {header} {metadata.length > 0 ? '(' + metadata + ')' : ''}
+          <div
+            key="1"
+            className={'log-header' + (hasWarning ? ' log-warning-state' : '') + (visibility ? ' visible' : '')}
+          >
+            {hasWarning ? <StyledWarningIcon /> : ''}
+            {header} {metadata[0].length > 0 ? '(' + metadata[0] + ')' : ''}
           </div>
         </div>
         <div ref={logsTopRef} />
