@@ -5,6 +5,7 @@ import { useLazyQuery } from "@apollo/react-hooks";
 import AddVariable from "../AddVariable";
 import ViewVariableValue from "../ViewVariableValue";
 import Button from "react-bootstrap/Button";
+import Btn from 'components/Button'
 import Collapse from "react-bootstrap/Collapse";
 import withLogic from 'components/DeleteConfirm/logic';
 import Image from "next/image";
@@ -18,6 +19,8 @@ import {
 import DeleteVariable from "components/DeleteVariable";
 import Alert from 'components/Alert'
 import {Tag} from "antd";
+import {LoadingOutlined} from "@ant-design/icons";
+import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
 
 /**
  * Displays the projects variable information.
@@ -41,6 +44,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   const [updateVarName, setUpdateVarName ] = useState('');
   const [updateVarScope, setUpdateVarScope ] = useState('');
   const [projectErrorAlert, setProjectErrorAlert] = useState(false);
+  const [action, setAction] = useState('');
 
   const closeProjectError = () => {
     setProjectErrorAlert(false);
@@ -53,7 +57,8 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
   ] = useLazyQuery(ProjectByNameWithEnvVarsValueQuery, {
     variables: { name: project.name },
     onError: () => {
-      setOpenPrjVars(!openPrjVars);
+      setOpenPrjVars(false);
+      setValueState(initValueState);
       setProjectErrorAlert(true);
     }
   });
@@ -80,6 +85,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
     getPrjEnvVarValues();
     setOpenPrjVars(!openPrjVars);
     setValueState(initValueState);
+    setAction("view")
   };
 
   const setUpdateValue = (rowValue, rowName, rowScope) => {
@@ -88,18 +94,44 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
     setUpdateVarScope(rowScope)
   }
 
+  const permissionCheck = (action, index = 0) => {
+    setOpenPrjVars(false);
+    setAction(action);
+    valuesShow(index);
+    getPrjEnvVarValues();
+  }
+
   return (
     <StyledProjectVariablesDetails className="details">
-      {displayVars.length == 0 ? (
+      {displayVars.length === 0 ? (
         <>
+          {
+            projectErrorAlert && (
+              <Alert
+                type="error"
+                closeAlert={closeProjectError}
+                header="Unauthorized:"
+                message={`You don't have permission to ${action} project ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
+              />
+            )
+          }
           <div className="header no-vars">
-            <AddVariable
-              varProject={project.name}
-              varValues={displayVars}
-              varTarget="Project"
-              refresh={onVariableAdded}
-              action="add"
-            />
+            <Button
+              onClick={() => permissionCheck("add")}
+              style={{ all: "unset" }}
+            >
+              {prjLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                <AddVariable
+                  varProject={project.name}
+                  varValues={displayVars}
+                  varTarget="Project"
+                  refresh={onVariableAdded}
+                  noVars="Add"
+                  setProjectErrorAlert={setProjectErrorAlert}
+                  action="add"
+                />
+              }
+            </Button>
           </div>
           <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>
@@ -115,7 +147,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                 type="error"
                 closeAlert={closeProjectError}
                 header="Unauthorized:"
-                message="You don't have permission to view project variable values. Contact your administrator to obtain the relevant permissions."
+                message={`You don't have permission to ${action} project ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
               />
             )
           }
@@ -123,16 +155,18 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
             <label>Project Variables</label>
             <div className="header-buttons">
               <Button
-                  onClick={() => setOpenPrjVars(false)}
-                  style={{ all: "unset" }}
+                onClick={() => permissionCheck("add")}
+                style={{ all: "unset" }}
               >
-                <AddVariable
-                  varProject={project.name}
-                  varValues={displayVars}
-                  varTarget="Project"
-                  refresh={onVariableAdded}
-                  action="add"
-                />
+                {prjLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                  <AddVariable
+                    varProject={project.name}
+                    varValues={displayVars}
+                    varTarget="Project"
+                    refresh={onVariableAdded}
+                    action="add"
+                  />
+                }
               </Button>
               <Button
                 onClick={() => showVarValue()}
@@ -289,13 +323,26 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                               </div>
                             </Collapse>
                             <div className="varDelete">
-                              <DeleteVariable
-                                  deleteType="Project variable"
-                                  deleteName={projEnvVar.name}
-                                  varProject={project.name}
-                                  icon="bin"
-                                  refresh={onVariableAdded}
-                              />
+                              <Button
+                                onClick={() => permissionCheck("delete", index)}
+                                style={{ all: "unset" }}
+                              >
+                                {prjLoading && action === "delete" ?
+                                  <DeleteVariableButton>
+                                    <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}
+                                    </Btn>
+                                  </DeleteVariableButton>
+                                :
+                                  <DeleteVariable
+                                    deleteType="Project variable"
+                                    deleteName={projEnvVar.name}
+                                    varProject={project.name}
+                                    icon="bin"
+                                    refresh={onVariableAdded}
+                                  />
+                                }
+                              </Button>
                             </div>
                           </VariableActions>
                         </div>

@@ -45,6 +45,8 @@ export const AddVariable = ({
   openModal,
   closeModal,
   setClear,
+  setEnvironmentErrorAlert,
+  setProjectErrorAlert,
   action,
 }) => {
   const [updateName, setUpdateName] = useState(varName);
@@ -63,9 +65,12 @@ export const AddVariable = ({
     setUpdateName(varName);
     setUpdateScope(varScope);
   }, [varName, varValue]);
+  const handleError = () => {
+    setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true)
+  }
 
   return (
-      <NewVariable>
+    <NewVariable>
       {
         icon ?
           <Button variant='white' icon={icon} action={openModal}>
@@ -73,9 +78,7 @@ export const AddVariable = ({
           </Button>
           :
           <ButtonBootstrap onClick={openModal}>
-            {
-              noVars || !updateName ? "Add" : "Update"
-            }
+            Add
           </ButtonBootstrap>
       }
       <Modal
@@ -142,18 +145,13 @@ export const AddVariable = ({
                   return varName.name;
                 });
                 updateVar = updateVar.includes(inputName);
-                if (error) {
-                  console.error(error);
-                  return (
-                    <div>
-                      Unauthorized: You don't have permission to create this
-                      variable.
-                    </div>
-                  );
-                }
 
                 if (data) {
                   refresh().then(setClear).then(closeModal);
+                }
+
+                if (error) {
+                  refresh().then(closeModal).then(handleError);
                 }
 
                 if (action === "add" && inputValue !== '' || action === "edit" && updateValue !== '' || action === "edit" && inputValue !== '') {
