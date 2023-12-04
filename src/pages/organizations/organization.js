@@ -12,7 +12,7 @@ import Organization from 'components/Organizations/Organization';
 import OrganizationSkeleton from 'components/Organizations/Organization/OrganizationSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
 
 import { useTourContext } from '../../../src/tours/TourContext';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -22,8 +22,8 @@ import QueryError from '../../components/errors/QueryError';
  * Displays a organization page, given the organization id.
  */
 export const PageOrganization = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(OrganizationByIDQuery, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
+    variables: { name: router.query.organizationSlug },
   });
 
   const { startTour } = useTourContext();
@@ -39,7 +39,7 @@ export const PageOrganization = ({ router }) => {
       <>
         <Head>
           <title>
-            {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
           </title>
         </Head>
 
@@ -47,7 +47,7 @@ export const PageOrganization = ({ router }) => {
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -79,7 +79,7 @@ export const PageOrganization = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={data.organization.id} organizationName={data.organization.name} />
+          <OrganizationBreadcrumb organizationSlug={data.organization.name} organizationId={data.organization.id} />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="overview" organization={data.organization} />

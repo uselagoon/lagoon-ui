@@ -114,7 +114,9 @@ export const StyledDeployments = styled.div`
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
       }
-
+      .warning {
+        width: 15px;
+      }
       .status {
         @media ${bp.xs_smallOnly} {
           margin-left: 20px;

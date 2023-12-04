@@ -48,7 +48,7 @@ const OrganizationSkeleton = () => {
           </div>
           <div className="targetwrapper">
             <div className="targets">
-              <span>Available Deployments</span>
+              <span>Available deploy targets</span>
               <div>
                 <EnvironmentOutlined className="targetIcon" style={{ transform: 'translateY(-2px)' }} />
                 <Skeleton width={'200px'} />

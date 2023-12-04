@@ -187,9 +187,9 @@ export const sharedTableStyles = css`
       // & > div {
       //   padding-left: 20px;
       // }
-      &:hover {
+      /* &:hover {
         border: 1px solid ${color.brightBlue};
-      }
+      } */
       &:first-child {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
@@ -266,6 +266,11 @@ export const TableActions = styled.div`
   display: flex;
   gap: 10px;
   justify-content: space-evenly;
+  span > button,
+  span > a {
+    height: 100%;
+    width: 100%;
+  }
   > * {
     height: 36px;
     width: 54px;
@@ -288,7 +293,14 @@ export const TableActions = styled.div`
       border: 1px solid #4578e6 !important;
       background: #fff;
     }
-    .view {
+    .view,
+    .link {
+      border: 1px solid #4578e6 !important;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
       svg {
         color: #4578e6;
       }
@@ -336,6 +348,13 @@ export const Footer = styled.div`
       color: #fff;
     }
   }
+  .error {
+    color: #dc3545;
+  }
+  p.explainer {
+    color: #e30000;
+    font-size: 11px;
+  }
 `;
 
 export const ModalChildren = styled.div`
@@ -362,6 +381,9 @@ export const ModalChildren = styled.div`
   input[type='text']::placeholder {
     color: #000;
   }
+  .error {
+    color: #dc3545;
+  }
   .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
@@ -373,6 +395,25 @@ export const ModalChildren = styled.div`
     display: flex;
     align-items: center;
   }
+  .notificationItem {
+    p {
+      &:nth-child(1) {
+        color: #4578e6;
+      }
+
+      &:nth-child(2) {
+        padding: 0 0.5rem;
+        word-break: break-all;
+        white-space: normal;
+      }
+    }
+  }
+`;
+export const ViewMore = styled.span`
+  color: #4578e6 !important;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: pre;
 `;
 
 export const TableWrapper = styled.div`
@@ -384,7 +425,7 @@ export const TableWrapper = styled.div`
     line-height: 24px;
     margin-top: 15px;
     margin-bottom: 0;
-    display:flex;
+    display: flex;
   }
   .paginatedTable,
   .filters,
@@ -392,10 +433,6 @@ export const TableWrapper = styled.div`
     background: ${props => (props.theme.colorScheme === 'dark' ? props.theme.backgrounds.primary : '#fff')};
     .tableRow {
       border: 2px solid ${props => props.theme.borders.tableRow};
-
-      &:hover {
-        border: 2px solid #2bc0d8;
-      }
     }
   }
   .tableAction {
@@ -411,8 +448,8 @@ export const RemoveModalHeader = styled.h3`
 export const RemoveModalParagraph = styled.p`
   font-size: 16px;
   line-height: 24px;
-  span{
-    font-weight:bold;
+  span {
+    font-weight: bold;
   }
 `;
 
@@ -420,6 +457,7 @@ export const AddButtonContent = styled.span`
   display: inline-flex;
   align-content: center;
   gap: 10px;
+  font-size: 16px;
   & > span:nth-child(1) {
     font-size: 28px;
   }

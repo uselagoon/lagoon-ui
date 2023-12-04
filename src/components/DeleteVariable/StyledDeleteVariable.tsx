@@ -25,6 +25,9 @@ export const DeleteVariableModal = styled.div`
 `;
 
 export const DeleteVariableButton = styled.div`
+  button.btn-red:not(.icon) {
+    padding: 8px 26px;
+  }
   button.icon {
     padding: 0 10px;
     display: flex !important;

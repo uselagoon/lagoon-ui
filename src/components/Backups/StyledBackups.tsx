@@ -72,6 +72,23 @@ export const DataTable = styled.div`
       padding-right: 15px;
     }
 
+    .btn-download {
+      width: 173px;
+      padding-inline: 22px;
+      white-space: nowrap;
+
+      &-lg {
+        font-size: 80%;
+      }
+
+      @media (max-width: 1200px) {
+        width: unset;
+        &-lg {
+          font-size: initial;
+        }
+      }
+    }
+
     & > div {
       padding-left: 20px;
       @media ${bp.wideDown} {

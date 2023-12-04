@@ -47,6 +47,9 @@ export const StyledUsers = styled.section`
     padding: 5px 10px 5px 10px;
     color: ${props => (props.theme.colorScheme === 'dark' ? color.grey : color.darkGrey)};
     font-weight: normal;
+    span {
+      color: #fff;
+    }
   }
   .view {
     display: flex;

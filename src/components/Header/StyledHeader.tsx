@@ -1,10 +1,14 @@
 import { color } from 'lib/variables';
 import styled from 'styled-components';
 
-export const StyledHeader = styled.header`
+export const StyledHeader = styled.header<{ isOrganizationsPath: boolean }>`
   background: ${color.brightBlue} ${color.lightBlue};
   background: ${color.lightBlue};
-  background: ${props => props.theme.gradients.headerFooterGradient};
+  background: ${props =>
+    props.isOrganizationsPath
+      ? props.theme.gradients.organizationsHeaderGradient
+      : props.theme.gradients.headerFooterGradient};
+
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${color.brightBlue}', endColorstr='${color.lightBlue}',GradientType=1 );
   display: flex;
   justify-content: space-between;
@@ -38,7 +42,10 @@ export const StyledHeader = styled.header`
     }
     &.navitem {
       align-items: center;
-      border-left: 1px solid ${color.blue};
+      border-left: 1px solid ${props =>
+    props.isOrganizationsPath
+      ? "transparent"
+      : color.blue};
       cursor: pointer;
       display: flex;
       &::before {

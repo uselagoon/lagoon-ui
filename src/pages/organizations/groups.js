@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -12,7 +12,7 @@ import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByIDQuery from 'lib/query/organizations/OrganizationByID';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
@@ -21,8 +21,8 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the groups page, given the openshift project name.
  */
 export const PageGroups = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(OrganizationByIDQuery, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
+    variables: { name: router.query.organizationSlug },
   });
 
   const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
@@ -31,14 +31,16 @@ export const PageGroups = ({ router }) => {
     return (
       <>
         <Head>
-          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+          <title>
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
+          </title>
         </Head>
 
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
 
@@ -72,7 +74,7 @@ export const PageGroups = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="groups" organization={organization} />

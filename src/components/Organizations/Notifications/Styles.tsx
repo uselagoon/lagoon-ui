@@ -65,7 +65,7 @@ export const StyledOrgNotifications = styled.div`
     display: flex;
     justify-content: flex-end;
     padding: 0;
-    width: 40%;
+    width: 20%;
     align-self: center;
     gap: 0.5rem;
 
@@ -82,6 +82,13 @@ export const StyledOrgNotifications = styled.div`
         background: #e4e4e4;
       }
     }
+    .edit,
+    .remove {
+      svg {
+        height: 22px;
+        width: 22px;
+      }
+    }
     .edit {
       svg {
         color: #4578e6;
@@ -91,6 +98,9 @@ export const StyledOrgNotifications = styled.div`
   .remove {
     height: 36px;
     width: 54px;
+    span {
+      height: 36px;
+    }
     button {
       height: 100%;
       width: 100%;
@@ -103,7 +113,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .name {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 
     .comment {
       font-size: 10px;
@@ -112,7 +122,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .notiftype {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 
     color: ${color.darkGrey};
     .comment {
@@ -122,12 +132,22 @@ export const StyledOrgNotifications = styled.div`
   }
   .notifdata {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     border-right: 2px solid ${props => props.theme.borders.tableRow};
-    height: 100%;
+    min-height: 100%;
     display: flex;
-    align-items: center;
-    width: 35%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
+
+    width: 55%;
+    p {
+      margin: unset;
+    }
+    word-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+
     padding-left: 0.5rem;
     .comment {
       font-size: 10px;
@@ -136,7 +156,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .channel {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     .comment {
       font-size: 10px;
     }
@@ -144,7 +164,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .emailAddress {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
 
     width: 55%;
     .comment {
@@ -219,7 +239,7 @@ export const StyledOrgNotifications = styled.div`
     border-color: hsl(0, 0%, 80%);
     font-family: 'roboto', sans-serif;
     font-size: 16px;
-    line-height:24px;
+    line-height: 24px;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;
@@ -241,18 +261,26 @@ export const StyledOrgNotifications = styled.div`
   }
 
   ${sharedTableStyles}
+  .data-table {
+    border: none;
+  }
   .data-row {
-    height: 63px;
+    min-height: 63px;
+    height: max-content;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     transition: 0.3s ease;
-    border: 2px solid transparent;
+    border: none !important;
     justify-content: flex-start !important;
+    background: ${props => props.theme.backgrounds.box};
     &:not(:last-child) {
-      border-bottom: 1px solid ${props => props.theme.borders.tableRow};
+      border-bottom: 2px solid ${props => props.theme.borders.tableRow} !important;
     }
-    &:hover {
-      border: 1px solid #2bc0d8;
+
+    display: flex;
+    align-items: stretch !important;
+    & > * {
+      height: unset !important;
     }
   }
   .description {

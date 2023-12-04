@@ -25,8 +25,8 @@ export const DropdownButton = styled.a`
   }
 `;
 
-export const StyledDropdown = styled.div`
-  border-left: 1px solid ${color.blue};
+export const StyledDropdown = styled.div<{ isOrganizationsPath: boolean }>`
+  border-left: 1px solid ${props => (props.isOrganizationsPath ? 'transparent' : color.blue)};
   cursor: pointer;
   padding: 10px 20px;
   hr {
