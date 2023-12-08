@@ -5,21 +5,21 @@ const overviewRepo = new OverviewRepository();
 export default class OverviewAction {
   doNavLinkCheck() {
     overviewRepo.getLinkElement('group-link').click();
-    cy.location('pathname').should('equal', '/organizations/1/groups');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
-    cy.visit(`${Cypress.env("url")}/organizations/1`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
 
     overviewRepo.getLinkElement('project-link').click();
-    cy.location('pathname').should('equal', '/organizations/1/projects');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/projects');
 
-    cy.visit(`${Cypress.env("url")}/organizations/1`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
 
     overviewRepo.getLinkElement('notification-link').click();
-    cy.location('pathname').should('equal', '/organizations/1/notifications');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/notifications');
 
-    cy.visit(`${Cypress.env("url")}/organizations/1`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
     overviewRepo.getLinkElement('manage-link').click();
-    cy.location('pathname').should('equal', '/organizations/1/manage');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/manage');
   }
 
   doQuotaFieldCheck() {

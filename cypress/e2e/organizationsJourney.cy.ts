@@ -23,7 +23,7 @@ describe('Organizations user journey', () => {
     registerIdleHandler('idle');
 
     cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/1`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
   });
 
   it('Change org name and desc', () => {
@@ -35,7 +35,7 @@ describe('Organizations user journey', () => {
     cy.waitForNetworkIdle('@idle', 500);
 
     cy.get('.groups').click();
-    cy.location('pathname').should('equal', '/organizations/1/groups');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
     group.doAddGroup(testData.organizations.groups.newGroupName, testData.organizations.groups.newGroupName2);
     registerIdleHandler('groupQuery');
@@ -51,7 +51,7 @@ describe('Organizations user journey', () => {
     cy.waitForNetworkIdle('@idle', 500);
 
     cy.get('.projects').click();
-    cy.location('pathname').should('equal', '/organizations/1/projects');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/projects');
     cy.waitForNetworkIdle('@projectsQuery', 1000);
 
     project.doAddProject(testData.organizations.project);
@@ -71,7 +71,7 @@ describe('Organizations user journey', () => {
 
     cy.waitForNetworkIdle('@idle', 500);
     cy.get('.notifications').click();
-    cy.location('pathname').should('equal', '/organizations/1/notifications');
+    cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/notifications');
     cy.waitForNetworkIdle('@notificationsQuery', 1000);
 
     const { slack: slackData, email: emailData, webhook: webhookData } = testData.organizations.notifications;
@@ -82,7 +82,7 @@ describe('Organizations user journey', () => {
   });
 
   it('Nav to a project, add group and notifications', () => {
-    cy.visit(`${Cypress.env("url")}/organizations/1/projects/${testData.organizations.project.projectName}`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/projects/${testData.organizations.project.projectName}`);
 
     cy.getBySel('addGroupToProject').click();
 

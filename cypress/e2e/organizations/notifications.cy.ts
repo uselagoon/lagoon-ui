@@ -7,7 +7,7 @@ const notifications = new NotificationsAction();
 describe('Org Notifications page', () => {
   beforeEach(() => {
     cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/1/notifications`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/notifications`);
 
     cy.intercept('POST', Cypress.env("api"), req => {
       aliasMutation(req, 'addNotificationSlack');

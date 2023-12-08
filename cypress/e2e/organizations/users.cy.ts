@@ -9,7 +9,7 @@ const group = new GroupAction();
 describe('Org Users page', () => {
   beforeEach(() => {
     cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/1/users`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/users`);
 
     cy.intercept('POST', Cypress.env("api"), req => {
       aliasQuery(req, 'getOrganization');
@@ -20,7 +20,7 @@ describe('Org Users page', () => {
   });
 
   it('Creates a group', () => {
-    cy.visit(`${Cypress.env("url")}/organizations/1/groups`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/groups`);
     group.doAddGroup(testData.organizations.groups.newGroupName, testData.organizations.groups.newGroupName2);
   });
 
@@ -34,7 +34,7 @@ describe('Org Users page', () => {
 
   after(() => {
     registerIdleHandler('groupQuery');
-    cy.visit(`${Cypress.env("url")}/organizations/1/groups`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/groups`);
     group.doDeleteGroup(testData.organizations.groups.newGroupName);
     group.doDeleteGroup(testData.organizations.groups.newGroupName2);
   });
