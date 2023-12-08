@@ -340,7 +340,10 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         <>
           <hr style={{ margin: "30px 0" }} />
           <div className="header no-vars">
-            <Button>
+            <Button
+            data-cy="addVariable"
+            >
+              
               <ProjectVariablesLink
                 projectSlug={environment.project.name}
                 className="deployLink hover-state"

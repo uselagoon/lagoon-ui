@@ -48,11 +48,21 @@ Lagoon UI uses cypress for e2e tests.
 
 A couple of environment variables are required:
 
-- CYPRESS_CY_EMAIL - keycloak user
-- CYPRESS_CY_PASSWORD - keycloak password
-- CYPRESS_CY_KEYCLOAK_URL - Keycloak url (used for cypress sessions)
-- CYPRESS_CY_API - GraphQL api endpoint
-- CYPRESS_CY_URL - running UI instance url
+- email - keycloak user
+- password - keycloak password
+- keycloak - Keycloak url (used for cypress sessions)
+- api - GraphQL api endpoint
+- url - running UI instance url
+- user_guest - user with guest role 
+- user_reporter - user with reporter role 
+- user_developer - user with developer role 
+- user_maintainer -  user with maintainer role 
+- user_owner -  user with owner role 
+- user_orguser -  Organization user
+- user_orgviewer -  Organization viewer 
+- user_orgowner -  Organization owner
+- user_platformowner -  Platform owner
+
 
 
 These environment variables can either be inlined or saved in `Cypress.config.ts` file:

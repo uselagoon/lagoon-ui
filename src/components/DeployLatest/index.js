@@ -61,6 +61,7 @@ const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
               `Start a new deployment from environment ${environment.project.name}-${environment.deployBaseRef}.`}
           </div>
           <Mutation
+            onError={e => console.error(e)}
             mutation={DEPLOY_ENVIRONMENT_LATEST_MUTATION}
             variables={{
               environmentId: environment.id,
@@ -74,10 +75,10 @@ const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
               return (
                 <React.Fragment>
                   {contextHolder}
-                  <Button action={deploy} disabled={loading} loading={loading}>
+                  <Button action={deploy} disabled={loading} loading={loading} testId='deploy'>
                     Deploy
                   </Button>
-                  {success && <div className="deploy_result">Deployment queued.</div>}
+                  {success && <div className="deploy_result" data-cy="deploy_result">Deployment queued.</div>}
                   {error && openNotificationWithIcon(error.message)}
                 </React.Fragment>
               );

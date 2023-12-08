@@ -60,7 +60,7 @@ export default class GroupAction {
     groupRepo.getDeleteGroupBtn('deleteGroup').first().click();
     cy.getBySel('confirm').click();
 
-    cy.intercept('POST', Cypress.env().CY_API).as('deleteGroup');
+    cy.intercept('POST', Cypress.env("api")).as('deleteGroup');
     cy.wait('@deleteGroup');
     cy.waitForNetworkIdle('@groupQuery', 500);
 

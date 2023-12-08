@@ -1,6 +1,5 @@
-import { testData } from 'cypress/fixtures/variables';
 
-export default class EnvironmentRepository {
+export default class VariablesRepository {
   getVariablesLink() {
     return cy.getBySel('variablesLink');
   }

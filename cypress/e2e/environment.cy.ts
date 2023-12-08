@@ -1,59 +1,30 @@
-import { testData } from 'cypress/fixtures/variables';
-import EnvironmentAction from 'cypress/support/actions/environment/EnvironmentAction';
-import ProjectAction from 'cypress/support/actions/project/ProjectAction';
+import EnvOverviewAction from 'cypress/support/actions/envOverview/EnvOverviewAction';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
 
-const project = new ProjectAction();
-
-const environment = new EnvironmentAction();
+const environmentOverview = new EnvOverviewAction();
 
 describe('Environment page', () => {
   beforeEach(() => {
-    cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
-
-    cy.wait(500);
-    cy.log('Full user navigation from /projects page');
-
-    cy.visit(Cypress.env().CY_URL);
-
-    project.doNavigateToFirst();
-
-    environment.doEnvNavigation();
+    cy.login(Cypress.env('user_owner'), Cypress.env('user_owner'));
   });
 
-  it('Toggles Hide/Show values', () => {
-    environment.doHideShowToggle();
+  it('Checks environment details', () => {
+    cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main`);
 
-    cy.log('show all values');
+    environmentOverview.doEnvTypeCheck();
+    environmentOverview.doDeployTypeCheck();
 
-    environment.doValueToggle();
+    environmentOverview.doSourceCheck();
 
-    cy.log('disable show/edit buttons');
-
-    environment.doHideShowToggle();
+    environmentOverview.doRoutesCheck();
   });
+  it('Deletes the environment', () => {
+    cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main`);
 
-  it('Adds or updates a variable', () => {
-    const { name, value } = testData.variables[0];
+    cy.intercept('POST', Cypress.env('api'), req => {
+      aliasMutation(req, 'deleteEnvironment');
+    });
 
-    environment.doAddVariable(name, value);
-
-    cy.intercept('POST', Cypress.env().CY_API).as('addRequest');
-
-    cy.wait('@addRequest');
-
-    cy.log('check if variable was created');
-    cy.get('.data-table > .data-row').should('contain', name);
-  });
-
-  it('Deletes a variable', () => {
-    const { name } = testData.variables[0];
-
-    environment.doDeleteVariable(name);
-
-    cy.intercept('POST', Cypress.env().CY_API).as('deleteRequest');
-
-    cy.wait('@deleteRequest');
-
-    cy.get('.data-table > .data-row').should('not.contain', name);
+    environmentOverview.doDeleteEnvironment('main');
   });
 });

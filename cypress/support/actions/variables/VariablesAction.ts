@@ -1,8 +1,8 @@
-import EnvironmentRepository from 'cypress/support/repositories/environment/EnvironmentRepository';
+import VariablesRepository from 'cypress/support/repositories/variables/VariablesRepository';
 
-const environment = new EnvironmentRepository();
+const environment = new VariablesRepository();
 
-export default class EnvironmentAction {
+export default class VariablesAction {
   doEnvNavigation() {
     environment.getVariablesLink().click();
   }

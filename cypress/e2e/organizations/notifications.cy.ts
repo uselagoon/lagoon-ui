@@ -6,10 +6,10 @@ const notifications = new NotificationsAction();
 
 describe('Org Notifications page', () => {
   beforeEach(() => {
-    cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
-    cy.visit(`${Cypress.env().CY_URL}/organizations/99/notifications`);
+    cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
+    cy.visit(`${Cypress.env("url")}/organizations/1/notifications`);
 
-    cy.intercept('POST', Cypress.env().CY_API, req => {
+    cy.intercept('POST', Cypress.env("api"), req => {
       aliasMutation(req, 'addNotificationSlack');
       aliasMutation(req, 'UpdateNotificationSlack');
       aliasMutation(req, 'addNotificationRocketChat');

@@ -29,7 +29,15 @@ export default class ProjectRepository {
   getErrorNotification() {
     return cy.get('.ant-notification-notice');
   }
+
+  getErrorModal() {
+    return cy.get('.ReactModal__Content');
+  }
+
   getEnvRoutes() {
     return cy.get('.routeLink > label');
+  }
+  getEnvNames() {
+    return cy.get('.box .content a h4');
   }
 }

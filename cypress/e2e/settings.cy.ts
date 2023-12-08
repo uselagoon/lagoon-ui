@@ -5,22 +5,22 @@ const settings = new SettingAction();
 
 describe('Settings page', () => {
   beforeEach(() => {
-    cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
+    cy.login(Cypress.env("user_owner"), Cypress.env("user_owner"));
   });
 
   it('Initial SSH keys', () => {
-    cy.visit(`${Cypress.env().CY_URL}/settings`);
+    cy.visit(`${Cypress.env("url")}/settings`);
     settings.doEmptySshCheck();
   });
 
   it('Add SSH key', () => {
-    cy.visit(`${Cypress.env().CY_URL}/settings`);
+    cy.visit(`${Cypress.env("url")}/settings`);
 
     settings.addSshKey(testData.ssh.name, testData.ssh.value);
   });
 
   it('Delete SSH key', () => {
-    cy.visit(`${Cypress.env().CY_URL}/settings`);
+    cy.visit(`${Cypress.env("url")}/settings`);
 
     settings.deleteSshKey(testData.ssh.name);
   });

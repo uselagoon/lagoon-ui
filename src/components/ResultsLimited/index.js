@@ -41,7 +41,7 @@ const ResultsLimited = ({ limit, changeLimit, message, disableHandler }) => {
     <StyledResultsLimited>
       {limit && (
         <React.Fragment>
-          <div className="description">
+          <div className="description" data-cy="resultsLimited">
             Number of results displayed is limited to {limit}
             {message}
           </div>
@@ -50,6 +50,7 @@ const ResultsLimited = ({ limit, changeLimit, message, disableHandler }) => {
       <div className="results">
         {
           <ReactSelect
+            data-cy="result_selector"
             styles={customStyles}
             aria-label="Results"
             placeholder="Results to display..."

@@ -63,7 +63,10 @@ export const AddVariable = ({
               Update
             </Button>
           :
-          <ButtonBootstrap onClick={openModal}>
+          <ButtonBootstrap 
+            data-cy="addVariable"
+            onClick={openModal}
+          >
             {
               noVars || !updateName ? "Add" : "Update"
             }
@@ -129,7 +132,7 @@ export const AddVariable = ({
             <a href="#" className="hover-state" onClick={closeModal}>
               cancel
             </a>
-            <Mutation mutation={addOrUpdateEnvVariableMutation}>
+            <Mutation mutation={addOrUpdateEnvVariableMutation} onError={(e)=>console.error(e)}>
               {(addOrUpdateEnvVariableByName, { called, error, data }) => {
                 let updateVar = varValues.map((varName) => {
                   return varName.name;

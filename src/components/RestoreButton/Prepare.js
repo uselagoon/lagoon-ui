@@ -13,7 +13,7 @@ const addRestore = gql`
 `;
 
 const Prepare = ({ backupId }) => (
-  <Mutation mutation={addRestore} variables={{ input: { backupId } }}>
+  <Mutation mutation={addRestore} variables={{ input: { backupId } }} onError={e => console.error(e)}>
     {(addRestore, { loading, called, error, data }) => {
       if (error) {
         return <Button disabled>Retrieve failed</Button>;
@@ -23,7 +23,7 @@ const Prepare = ({ backupId }) => (
         return <Button disabled>Retrieving ...</Button>;
       }
 
-      return <Button action={addRestore}>Retrieve</Button>;
+      return <Button testId='retrieve' action={addRestore}>Retrieve</Button>;
     }}
   </Mutation>
 );

@@ -2,13 +2,13 @@ import { registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 describe('Environment sidebar navigation', () => {
   beforeEach(() => {
-    cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
+    cy.login(Cypress.env("user_owner"), Cypress.env("user_owner"));
     registerIdleHandler('idle');
   });
 
   it('Overview/Deployments/Backups/Tasks/Vars/Problems/Facts/Insights', () => {
     const suffix = '/projects/drupal-example/drupal-example-develop';
-    cy.visit(`${Cypress.env().CY_URL}${suffix}`);
+    cy.visit(`${Cypress.env("url")}${suffix}`);
 
     context('From /Overview to /Deployments', () => {
       cy.waitForNetworkIdle('@idle', 500);
