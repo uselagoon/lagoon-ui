@@ -10,6 +10,7 @@ import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
+import { Tooltip } from 'antd';
 
 const ADD_GROUP_PROJECT_MUTATION = gql`
   mutation addProjectToGroup($groupName: String!, $projectName: String!) {
@@ -41,12 +42,13 @@ export const AddGroupToProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button testId='addGroupToProject' action={openModal}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>Group</span>
-          </AddButtonContent>
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Link a group to this project">
+          <>
+            <Button action={openModal}>
+              <AddButtonContent>Link Group</AddButtonContent>
+            </Button>
+          </>
+        </Tooltip>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
@@ -60,13 +62,13 @@ export const AddGroupToProject = ({
               }
               return (
                 <StyledNotification>
-                  <h4>Add Group</h4>
+                  <h4>Link Group</h4>
                   <label>
                     Group
                     <RoleSelect>
                       <ReactSelect
-                        classNamePrefix="react-select"
                         className="select"
+                        classNamePrefix="react-select"
                         menuPortalTarget={document.body}
                         styles={{
                           menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
@@ -87,8 +89,8 @@ export const AddGroupToProject = ({
                   </label>
                   <Footer>
                     <Button
-                      testId='addGroupToProjectConfirm'
                       disabled={called || selectedProject === null}
+                      testId='addGroupToProjectConfirm'
                       action={() => {
                         addGroupProject({
                           variables: {

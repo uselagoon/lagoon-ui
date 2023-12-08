@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import GroupBreadcrumb from 'components/Breadcrumbs/Organizations/Group';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
@@ -15,6 +15,8 @@ import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import { GroupPageWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
 import GroupByNameAndOrganization from 'lib/query/organizations/GroupByNameAndOrganization';
+import OrganizationIdByName from 'lib/query/organizations/OrganizationIdByName';
+
 import GroupNotFound from '../../components/errors/GroupNotFound';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
@@ -24,14 +26,27 @@ import QueryError from '../../components/errors/QueryError';
  */
 
 export const PageGroup = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(GroupByNameAndOrganization, {
-    variables: { name: router.query.groupName, organization: parseInt(router.query.organizationSlug, 10) },
+  const {
+    data: orgData,
+    error: orgErr,
+    loading: orgLoading,
+  } = useQuery(OrganizationIdByName, {
+    variables: { name: router.query.organizationSlug },
+    onCompleted: ({ organization }) => {
+      if (organization) {
+        getGroupByNameAndOrg({
+          variables: { name: router.query.groupName, organization: orgData.organization.id },
+        });
+      }
+    },
   });
 
-  const handleRefetch = async () =>
-    await refetch({ name: router.query.groupName, organization: parseInt(router.query.organizationSlug, 10) });
+  const [getGroupByNameAndOrg, { data, error, loading, refetch }] = useLazyQuery(GroupByNameAndOrganization, {});
 
-  if (loading) {
+  const handleRefetch = async () =>
+    await refetch({ name: router.query.groupName, organization: orgData.organization.id });
+
+  if (loading || orgLoading || !data) {
     return (
       <>
         <Head>
@@ -42,9 +57,9 @@ export const PageGroup = ({ router }) => {
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
-            <GroupBreadcrumb organizationSlug={router.query.organizationSlug} organizationName="" loading />
+            <GroupBreadcrumb organizationSlug={router.query.organizationSlug} organizationId={null} loading />
           </Breadcrumbs>
 
           <OrganizationsWrapper>
@@ -59,7 +74,7 @@ export const PageGroup = ({ router }) => {
     );
   }
 
-  if (error) {
+  if (error || orgErr) {
     return <QueryError error={error} />;
   }
 
@@ -80,14 +95,11 @@ export const PageGroup = ({ router }) => {
 
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb
-            organizationSlug={router.query.organizationSlug}
-            organizationName={organization.name}
-          />
+          <OrganizationBreadcrumb organizationSlug={router.query.organizationSlug} organizationId={organization.id} />
           <GroupBreadcrumb
             groupSlug={group.name}
             organizationSlug={router.query.organizationSlug}
-            organizationName={organization.name}
+            organizationId={organization.id}
           />
         </Breadcrumbs>
 

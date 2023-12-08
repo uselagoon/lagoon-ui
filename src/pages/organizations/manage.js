@@ -12,7 +12,7 @@ import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import { UsersWrapper } from 'components/Organizations/Users/Styles';
 import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import GetOrganization from 'lib/query/organizations/OrganizationByID';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
 
 import Manage from '../../components/Organizations/Manage';
 import QueryError from '../../components/errors/QueryError';
@@ -21,30 +21,32 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the manage page
  */
 export const PageManage = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(GetOrganization, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
+    variables: { name: router.query.organizationSlug },
   });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const handleRefetch = async () => await refetch({ name: router.query.organizationSlug });
 
   if (loading) {
     return (
       <>
         <Head>
-          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+          <title>
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
+          </title>
         </Head>
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
           <OrganizationsWrapper>
             <OrgNavTabsSkeleton activeTab="manage" />
 
             <UsersWrapper>
-              <UsersSkeleton title={"Administrators"}/>
+              <UsersSkeleton title={'Administrators'} />
             </UsersWrapper>
           </OrganizationsWrapper>
         </MainLayout>
@@ -67,7 +69,7 @@ export const PageManage = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="manage" organization={organization} />

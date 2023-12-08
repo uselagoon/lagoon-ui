@@ -4,6 +4,8 @@ import ReactSelect from 'react-select';
 
 import Image from 'next/image';
 
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import withLogic from 'components/Organizations/NewProject/logic';
@@ -15,7 +17,7 @@ import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedSt
 import { Checkbox, StyledNewProject } from './StyledNewProject';
 
 const ADD_PROJECT_MUTATION = gql`
-  mutation addProjectToOrganization(
+  mutation (
     $organization: Int!
     $name: String!
     $gitUrl: String!
@@ -73,18 +75,17 @@ const OrgNewProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button testId="addNewProject" action={openModal}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>Project</span>
-          </AddButtonContent>
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" title="Add a new project" placement="bottom">
+          <>
+            <Button testId="addNewProject" action={openModal}>
+              <AddButtonContent>Add project</AddButtonContent>
+            </Button>
+          </>
+        </Tooltip>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_PROJECT_MUTATION} 
-          
-          onError={e => console.error(e)}>
+          <Mutation mutation={ADD_PROJECT_MUTATION} onError={e => console.error(e)}>
             {(addGroupProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;
@@ -109,7 +110,7 @@ const OrgNewProject = ({
                       <label>
                         Project name: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputName"
+                          className="inputEmail"
                           type="text"
                           placeholder="Enter name"
                           value={inputProjectName}
@@ -119,9 +120,16 @@ const OrgNewProject = ({
                     </div>
                     <div className="form-box">
                       <label>
-                        Git URL: <span style={{ color: '#E30000' }}>*</span>
+                        Git URL: <span style={{ color: '#E30000' }}>*</span>{' '}
+                        <Tooltip
+                          overlayClassName="orgTooltip"
+                          title="When using an SSH git URL make sure that you copy the full path and have permission to add a deploy key and webhook. Public repositories can also be used."
+                          placement="right"
+                        >
+                          <InfoCircleOutlined style={{ fontSize: '1rem' }} />
+                        </Tooltip>
                         <input
-                          className="inputGit"
+                          className="inputEmail"
                           type="text"
                           placeholder="Enter URL"
                           value={inputGitURL}
@@ -133,9 +141,9 @@ const OrgNewProject = ({
                       <label>
                         Production Environment: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputEnv"
+                          className="inputEmail"
                           type="text"
-                          placeholder="eg Main or Master"
+                          placeholder="Enter branch name"
                           value={inputProdEnv}
                           onChange={setProdEnv}
                         />
@@ -145,7 +153,6 @@ const OrgNewProject = ({
                       Deploy Target: <span style={{ color: '#E30000' }}>*</span>
                       <RoleSelect>
                         <ReactSelect
-                          classNamePrefix="react-select"
                           className="select"
                           styles={{
                             menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),

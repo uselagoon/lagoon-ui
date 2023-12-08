@@ -1,5 +1,6 @@
-import { bp, color, fontSize } from 'lib/variables';
 import React from 'react';
+
+import { bp, color, fontSize } from 'lib/variables';
 import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
 
 /**
@@ -32,6 +33,16 @@ body {
   background-color:${props => props.theme.backgrounds.primary};
   flex: 1 0 auto;
   width: 100%;
+}
+.orgTooltip {
+  .ant-tooltip-arrow:before{
+   background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+  }
+  .ant-tooltip-content .ant-tooltip-inner{
+  color: ${props => (props.theme.colorScheme === 'dark' ? '#000' : '#fff')};
+  background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+  }
+
 }
 
 #__next {
@@ -260,7 +271,7 @@ main{
   transform: translate(-50%, -50%);
   border: 1px solid ${color.midGrey};
 
-  background:${(props) => props.theme.backgrounds.primary};
+  background:${props => props.theme.backgrounds.primary};
 
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -302,4 +313,4 @@ main{
 }
 `;
 
-export default React.memo(() => <GlobalStyles />);;
+export default React.memo(() => <GlobalStyles />);

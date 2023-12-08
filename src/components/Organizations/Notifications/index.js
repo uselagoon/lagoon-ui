@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { EditOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import RemoveNotificationConfirm from 'components/Organizations/RemoveNotificationConfirm';
 import gql from 'graphql-tag';
 
 import OrgHeader from '../Orgheader';
-import { AddButtonContent, Footer, ModalChildren } from '../SharedStyles';
+import { AddButtonContent, Footer, ModalChildren, ViewMore } from '../SharedStyles';
 import AddNotifications from './AddNotifications';
 import { AddNotifButton, NameTagCol, StyledOrgNotifications } from './Styles';
 
@@ -131,6 +132,8 @@ const OrgNotifications = ({
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [valueModalOpen, setValueModalOpen] = useState(false);
+
   const initialEditState = {
     open: false,
     type: '',
@@ -139,19 +142,45 @@ const OrgNotifications = ({
 
   const [editState, setEditState] = useState(initialEditState);
 
-  const [notificationName, setNotificationName] = useState('');
-  const [email, setEmail] = useState('');
-  const [webhook, setWebhook] = useState('');
-  const [channel, setChannel] = useState('');
-
   const closeEditModal = () => {
     setEditState(initialEditState);
-    setNotificationName('');
-    setEmail('');
-    setWebhook('');
-    setChannel('');
   };
 
+  const closeValueModal = () => {
+    setValueModalOpen(false);
+  };
+
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
+  const handleInputChange = (e, property) => {
+    const newValue = e.target.value;
+    setEditState(prevState => ({
+      ...prevState,
+      current: {
+        ...prevState.current,
+        [property]: newValue,
+      },
+    }));
+
+    if (property === 'emailAddress') {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      newValue && setIsValidEmail(emailRegex.test(newValue));
+    }
+  };
+
+  const renderWebbook = (webhook, action) => {
+    if (webhook.length < 50) return <p>Webhook: {webhook}</p>;
+
+    const openValModal = () => {
+      action();
+      setValueModalOpen(true);
+    };
+    return (
+      <p>
+        Webhook: {webhook.slice(0, 50) + '...'} <ViewMore onClick={openValModal}>VIEW FULL VALUE</ViewMore>
+      </p>
+    );
+  };
   return (
     <StyledOrgNotifications>
       <OrgHeader
@@ -185,14 +214,23 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
             <div className="notifdata">
-              Webhook: {project.webhook}
-              <br></br>
-              Channel: {project.channel}
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+              <p> Channel: {project.channel}</p>
             </div>
             <div className="actions">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'slack' })}>
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span
+                  className="link"
+                  onClick={() => {
+                    setEditState({ open: true, current: project, type: 'slack' });
+                  }}
+                >
+                  <EditOutlined className="edit" />
+                </span>
+              </Tooltip>
+
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'slack'}
@@ -206,8 +244,8 @@ const OrgNotifications = ({
                         className="inputName"
                         type="text"
                         placeholder="Enter name"
-                        value={notificationName || editState.current.name}
-                        onChange={e => setNotificationName(e.target.value)}
+                        value={editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
                       />
                     </label>
                   </div>
@@ -219,8 +257,8 @@ const OrgNotifications = ({
                         className="inputWebhook"
                         type="text"
                         placeholder="Enter Webhook"
-                        value={webhook || editState.current.webhook}
-                        onChange={e => setWebhook(e.target.value)}
+                        value={editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
                       />
                     </label>
                   </div>
@@ -232,8 +270,8 @@ const OrgNotifications = ({
                         className="inputChannel"
                         type="text"
                         placeholder="Enter channel"
-                        value={channel || editState.current.channel}
-                        onChange={e => setChannel(e.target.value)}
+                        value={editState.current.channel}
+                        onChange={e => handleInputChange(e, 'channel')}
                       />
                     </label>
                   </div>
@@ -242,7 +280,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
                     {(updateSlack, { called, error, data }) => {
                       if (error) {
-                        return <div>{error.message}</div>;
+                        return <div className='error'>{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -258,11 +296,11 @@ const OrgNotifications = ({
                           action={() => {
                             updateSlack({
                               variables: {
-                                name: editState.current.name,
+                                name: project.name,
                                 patch: {
-                                  ...(notificationName ? { name: notificationName } : {}),
-                                  ...(channel ? { channel } : {}),
-                                  ...(webhook ? { webhook } : {}),
+                                  ...(editState.current.name ? { name: editState.current.name } : {}),
+                                  ...(editState.current.channel ? { channel: editState.current.channel } : {}),
+                                  ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
                                 },
                               },
                             });
@@ -315,14 +353,21 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
             <div className="notifdata">
-              Webhook: {project.webhook}
-              <br></br>
-              Channel: {project.channel}
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+              <p>Channel: {project.channel}</p>
             </div>
             <div className="actions">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}>
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span
+                  className="link"
+                  onClick={() => setEditState({ open: true, current: project, type: 'rocketchat' })}
+                >
+                  <EditOutlined className="edit" />
+                </span>
+              </Tooltip>
+
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'rocketchat'}
@@ -336,8 +381,8 @@ const OrgNotifications = ({
                         className="inputName"
                         type="text"
                         placeholder="Enter name"
-                        value={notificationName || editState.current.name}
-                        onChange={e => setNotificationName(e.target.value)}
+                        value={editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
                       />
                     </label>
                   </div>
@@ -349,8 +394,8 @@ const OrgNotifications = ({
                         className="inputWebhook"
                         type="text"
                         placeholder="Enter Webhook"
-                        value={webhook || editState.current.webhook}
-                        onChange={e => setWebhook(e.target.value)}
+                        value={editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
                       />
                     </label>
                   </div>
@@ -362,8 +407,8 @@ const OrgNotifications = ({
                         className="inputChannel"
                         type="text"
                         placeholder="Enter channel"
-                        value={channel || editState.current.channel}
-                        onChange={e => setChannel(e.target.value)}
+                        value={editState.current.channel}
+                        onChange={e => handleInputChange(e, 'channel')}
                       />
                     </label>
                   </div>
@@ -372,7 +417,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
                     {(updateRocketChat, { called, error, data }) => {
                       if (error) {
-                        return <div>{error.message}</div>;
+                        return <div className='error'>{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -388,11 +433,11 @@ const OrgNotifications = ({
                           action={() => {
                             updateRocketChat({
                               variables: {
-                                name: editState.current.name,
+                                name: project.name,
                                 patch: {
-                                  ...(notificationName ? { name: notificationName } : {}),
-                                  ...(channel ? { channel } : {}),
-                                  ...(webhook ? { webhook } : {}),
+                                  ...(editState.current.name ? { name: editState.current.name } : {}),
+                                  ...(editState.current.channel ? { channel: editState.current.channel } : {}),
+                                  ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
                                 },
                               },
                             });
@@ -444,11 +489,15 @@ const OrgNotifications = ({
                 <label className="email-group-label">EMAIL</label>
               </div>
             </NameTagCol>
-            <div className="notifdata">Address: {project.emailAddress}</div>
+            <div className="notifdata">
+              <p>Address: {project.emailAddress}</p>
+            </div>
             <div className="actions">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'email' })}>
-                <EditOutlined className="edit" />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'email' })}>
+                  <EditOutlined className="edit" />
+                </span>
+              </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'email'}
@@ -462,8 +511,8 @@ const OrgNotifications = ({
                         className="inputName"
                         type="text"
                         placeholder="Enter name"
-                        value={notificationName || editState.current.name}
-                        onChange={e => setNotificationName(e.target.value)}
+                        value={editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
                       />
                     </label>
                   </div>
@@ -475,17 +524,18 @@ const OrgNotifications = ({
                         className="inputEmail"
                         type="text"
                         placeholder="Enter Email"
-                        value={email || editState.current.emailAddress}
-                        onChange={e => setEmail(e.target.value)}
+                        value={editState.current.emailAddress}
+                        onChange={e => handleInputChange(e, 'emailAddress')}
                       />
                     </label>
+                    {!isValidEmail && <p style={{ color: '#E30000' }}>Invalid email address</p>}
                   </div>
                 </ModalChildren>
                 <Footer>
                   <Mutation mutation={UPDATE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
                     {(updateEmail, { called, error, data }) => {
                       if (error) {
-                        return <div>{error.message}</div>;
+                        return <div className='error'>{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -496,15 +546,17 @@ const OrgNotifications = ({
                         <Button
                           testId="continueEdit"
                           loading={called}
-                          disabled={called}
+                          disabled={called || !isValidEmail}
                           variant="primary"
                           action={() => {
                             updateEmail({
                               variables: {
-                                name: editState.current.name,
+                                name: project.name,
                                 patch: {
-                                  ...(notificationName ? { name: notificationName } : {}),
-                                  ...(email ? { emailAddress: email } : {}),
+                                  ...(editState.current.name ? { name: editState.current.name } : {}),
+                                  ...(editState.current.emailAddress
+                                    ? { emailAddress: editState.current.emailAddress }
+                                    : {}),
                                 },
                               },
                             });
@@ -556,12 +608,17 @@ const OrgNotifications = ({
                 <label className="webhook-group-label">WEBHOOK</label>
               </div>
             </NameTagCol>
-            <div className="notifdata">Webhook: {project.webhook}</div>
+            <div className="notifdata">
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+            </div>
             <div className="actions">
-              <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'webhook' })}>
-                <EditOutlined className="edit" />
-              </span>
-
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'webhook' })}>
+                  <EditOutlined className="edit" />
+                </span>
+              </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'webhook'}
@@ -575,8 +632,8 @@ const OrgNotifications = ({
                         className="inputName"
                         type="text"
                         placeholder="Enter name"
-                        value={notificationName || editState.current.name}
-                        onChange={e => setNotificationName(e.target.value)}
+                        value={editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
                       />
                     </label>
                   </div>
@@ -588,8 +645,8 @@ const OrgNotifications = ({
                         className="inputWebhook"
                         type="text"
                         placeholder="Enter Webhook"
-                        value={webhook || editState.current.webhook}
-                        onChange={e => setWebhook(e.target.value)}
+                        value={editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
                       />
                     </label>
                   </div>
@@ -598,7 +655,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
                     {(updateWebhook, { called, error, data }) => {
                       if (error) {
-                        return <div>{error.message}</div>;
+                        return <div className='error'>{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -614,10 +671,10 @@ const OrgNotifications = ({
                           action={() => {
                             updateWebhook({
                               variables: {
-                                name: editState.current.name,
+                                name: project.name,
                                 patch: {
-                                  ...(notificationName ? { name: notificationName } : {}),
-                                  ...(webhook ? { webhook } : {}),
+                                  ...(editState.current.name ? { name: editState.current.name } : {}),
+                                  ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
                                 },
                               },
                             });
@@ -671,14 +728,17 @@ const OrgNotifications = ({
               </div>
             </NameTagCol>
 
-            <div className="notifdata">Webhook: {project.webhook}</div>
+            <div className="notifdata">
+              {renderWebbook(project.webhook, () => {
+                setEditState({ open: false, current: project });
+              })}
+            </div>
             <div className="actions">
-              <span className="link">
-                <EditOutlined
-                  className="edit"
-                  onClick={() => setEditState({ open: true, current: project, type: 'teams' })}
-                />
-              </span>
+              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+                <span className="link" onClick={() => setEditState({ open: true, current: project, type: 'teams' })}>
+                  <EditOutlined className="edit" />
+                </span>
+              </Tooltip>
               <Modal
                 style={{ content: { width: '50%' } }}
                 isOpen={editState.open && editState.type === 'teams'}
@@ -692,8 +752,8 @@ const OrgNotifications = ({
                         className="inputName"
                         type="text"
                         placeholder="Enter name"
-                        value={notificationName || editState.current.name}
-                        onChange={e => setNotificationName(e.target.value)}
+                        value={editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
                       />
                     </label>
                   </div>
@@ -705,8 +765,8 @@ const OrgNotifications = ({
                         className="inputWebhook"
                         type="text"
                         placeholder="Enter Webhook"
-                        value={webhook || editState.current.webhook}
-                        onChange={e => setWebhook(e.target.value)}
+                        value={editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
                       />
                     </label>
                   </div>
@@ -715,7 +775,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
                     {(updateTeams, { called, error, data }) => {
                       if (error) {
-                        return <div>{error.message}</div>;
+                        return <div className='error'>{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -731,10 +791,10 @@ const OrgNotifications = ({
                           action={() => {
                             updateTeams({
                               variables: {
-                                name: editState.current.name,
+                                name: project.name,
                                 patch: {
-                                  ...(notificationName ? { name: notificationName } : {}),
-                                  ...(webhook ? { webhook } : {}),
+                                  ...(editState.current.name ? { name: editState.current.name } : {}),
+                                  ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
                                 },
                               },
                             });
@@ -780,6 +840,23 @@ const OrgNotifications = ({
         ))}
       </div>
 
+      <Modal style={{ content: { width: '50%' } }} isOpen={valueModalOpen} onRequestClose={closeValueModal}>
+        <ModalChildren>
+          <div className="notificationItem">
+            <p>Notification Name:</p>
+            <p>{editState?.current?.name}</p>
+          </div>
+
+          <div className="notificationItem">
+            <p>Webhook:</p>
+            <p>{editState?.current?.webhook} </p>
+          </div>
+        </ModalChildren>
+        <Footer>
+          <Button action={closeValueModal}>Close</Button>
+        </Footer>
+      </Modal>
+
       <AddNotifications
         organizationId={organizationId}
         onNotificationAdded={refresh}
@@ -787,12 +864,13 @@ const OrgNotifications = ({
         closeModal={() => setModalOpen(false)}
       >
         <AddNotifButton>
-          <Button testId="addNotification" action={() => setModalOpen(true)}>
-            <AddButtonContent>
-              <span>+</span>
-              <span>Notification</span>
-            </AddButtonContent>
-          </Button>
+          <Tooltip overlayClassName="orgTooltip" title="Add a new notification" placement="bottom">
+            <>
+              <Button testId="addNotification" action={() => setModalOpen(true)}>
+                <AddButtonContent>Add notification</AddButtonContent>
+              </Button>
+            </>
+          </Tooltip>
         </AddNotifButton>
       </AddNotifications>
     </StyledOrgNotifications>

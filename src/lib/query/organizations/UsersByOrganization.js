@@ -7,7 +7,7 @@ export default gql`
       firstName
       lastName
       email
-      groupRoles{
+      groupRoles {
         id
         role
       }
@@ -20,7 +20,27 @@ export const getOrganization = gql`
     organization: organizationById(id: $id) {
       id
       name
-      groups{
+      groups {
+        id
+        name
+      }
+      owners {
+        id
+        firstName
+        lastName
+        email
+        owner
+      }
+    }
+  }
+`;
+
+export const getOrganizationByName = gql`
+  query getOrganization($name: String!) {
+    organization: organizationByName(name: $name) {
+      id
+      name
+      groups {
         id
         name
       }

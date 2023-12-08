@@ -2,6 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
@@ -47,12 +48,13 @@ export const AddNotificationToProject = ({
   return (
     <StyledNotificationWrapper>
       <div className="margins">
-        <Button testId='addNotificationToProject' action={openModal}>
-          <AddButtonContent>
-            <span>+</span>
-            <span>Notification</span>
-          </AddButtonContent>
-        </Button>
+        <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Link a notification to this project">
+          <>
+            <Button action={openModal} testId='addNotificationToProject'>
+              <AddButtonContent>Link Notification</AddButtonContent>
+            </Button>
+          </>
+        </Tooltip>
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
@@ -79,7 +81,7 @@ export const AddNotificationToProject = ({
               });
               return (
                 <StyledNotification>
-                  <h4>Add Notification</h4>
+                  <h4>Link Notification</h4>
                   <label>
                     Notification
                     <RoleSelect>

@@ -20,6 +20,10 @@ import show from "../../static/images/show.svg";
 import hide from "../../static/images/hide.svg";
 import ProjectVariablesLink from "components/link/ProjectVariables";
 import Alert from 'components/Alert'
+import {Tag} from "antd";
+import Btn from 'components/Button'
+import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
+import {LoadingOutlined} from "@ant-design/icons";
 
 /**
  * Displays the environment variable information.
@@ -48,6 +52,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   const [updateVarScope, setUpdateVarScope ] = useState('');
   const [environmentErrorAlert, setEnvironmentErrorAlert] = useState(false);
   const [projectErrorAlert, setProjectErrorAlert] = useState(false);
+  const [action, setAction] = useState('');
 
   const closeEnvironmentError = () => {
     setEnvironmentErrorAlert(false);
@@ -63,7 +68,8 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
     variables: { openshiftProjectName: environment.openshiftProjectName },
     onError: () => {
-      setOpenEnvVars(!openEnvVars);
+      setOpenEnvVars(false);
+      setValueState(initValueState);
       setEnvironmentErrorAlert(true);
     }
   });
@@ -116,6 +122,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     getEnvVarValues();
     setOpenEnvVars(!openEnvVars);
     setValueState(initValueState);
+    setAction("view")
   };
 
   const showPrjVarValue = () => {
@@ -126,23 +133,49 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
 
   const setUpdateValue = (rowValue, rowName, rowScope) => {
     setUpdateVarValue(rowValue);
-    setUpdateVarName(rowName)
-    setUpdateVarScope(rowScope)
+    setUpdateVarName(rowName);
+    setUpdateVarScope(rowScope);
+  }
+
+  const permissionCheck = (action, index = 0) => {
+    setOpenEnvVars(false);
+    setAction(action);
+    valuesShow(index);
+    getEnvVarValues();
   }
 
   return (
     <StyledEnvironmentVariableDetails className="details">
-      {environment.envVariables.length == 0 ? (
+      {environment.envVariables.length === 0 ? (
         <>
+          {
+            environmentErrorAlert && (
+              <Alert
+                type="error"
+                closeAlert={closeEnvironmentError}
+                header="Unauthorized:"
+                message={`You don't have permission to ${action} environment ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
+              />
+            )
+          }
           <div className="header no-vars">
-            <AddVariable
-              varProject={environment.project.name}
-              varEnvironment={environment.name}
-              varValues={displayVars}
-              varTarget="Environment"
-              noVars="Add"
-              refresh={onVariableAdded}
-            />
+            <Button
+              onClick={() => permissionCheck("add")}
+              style={{ all: "unset" }}
+            >
+              {envLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                <AddVariable
+                  varProject={environment.project.name}
+                  varEnvironment={environment.name}
+                  varValues={displayVars}
+                  varTarget="Environment"
+                  noVars="Add"
+                  refresh={onVariableAdded}
+                  setEnvironmentErrorAlert={setEnvironmentErrorAlert}
+                  action="add"
+                />
+              }
+            </Button>
           </div>
           <hr style={{ margin: "30px 0" }} />
           <div style={{ textAlign: "center" }}>
@@ -153,28 +186,31 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         <>
           {
             environmentErrorAlert && (
-              <Alert 
+              <Alert
                 type="error"
                 closeAlert={closeEnvironmentError}
                 header="Unauthorized:"
-                message="You don't have permission to view environment variable values. Contact your administrator to obtain the relevant permissions."
+                message={`You don't have permission to ${action} environment ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
               />
             )
-          }         
+          }
           <div className="header">
             <label>Environment Variables</label>
             <div className="header-buttons">
               <Button
-                  onClick={() => setOpenEnvVars(false)}
-                  style={{ all: "unset" }}
+                onClick={() => permissionCheck("add")}
+                style={{ all: "unset" }}
               >
-                <AddVariable
-                  varProject={environment.project.name}
-                  varEnvironment={environment.name}
-                  varValues={displayVars}
-                  varTarget="Environment"
-                  refresh={onVariableAdded}
-                />
+                {envLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
+                  <AddVariable
+                    varProject={environment.project.name}
+                    varEnvironment={environment.name}
+                    varValues={displayVars}
+                    varTarget="Environment"
+                    refresh={onVariableAdded}
+                    action="add"
+                  />
+                }
               </Button>
               <Button
                 onClick={() => showVarValue()}
@@ -222,10 +258,23 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                               <div className="loader"></div>
                             </div>
                           </Collapse>
-                        ) : envVar.value ? (
+                        ) : envVar.value !== undefined ? (
                           <Collapse in={openEnvVars}>
                             <div className="varValue" id={index}>
-                              {envVar.value.length <= 100 &&
+                              {envVar.value.length === 0 &&
+                              valueState[index] ? (
+                                <div className="showHideContainer">
+                                  <Tag color="#4578e6">Empty</Tag>
+                                  <span onClick={() => valuesHide(index)}>
+                                  <Image
+                                    src={hide}
+                                    className="showHide"
+                                    style={{ all: "unset" }}
+                                    alt=""
+                                  />
+                                  </span>
+                                </div>
+                              ) : envVar.value.length <= 100 &&
                               !valueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(envVar.value).substring(0, 25)}
@@ -302,28 +351,42 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                                   style={{ all: 'unset'}}
                                 >
                                   <AddVariable
-                                      varProject={environment.project.name}
-                                      varEnvironment={environment.name}
-                                      varValues={displayVars}
-                                      varTarget="Environment"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
+                                    varProject={environment.project.name}
+                                    varEnvironment={environment.name}
+                                    varValues={displayVars}
+                                    varTarget="Environment"
+                                    varName={updateVarName}
+                                    varValue={updateVarValue}
+                                    varScope={updateVarScope}
+                                    refresh={onVariableAdded}
+                                    icon="edit"
+                                    action="edit"
                                   />
                                 </Button>
                               </div>
                             </Collapse>
                             <div className="varDelete">
-                              <DeleteVariable
-                                  deleteType="Environment variable"
-                                  deleteName={envVar.name}
-                                  varProject={environment.project.name}
-                                  varEnvironment={environment.name}
-                                  icon="bin"
-                                  refresh={onVariableAdded}
-                              />
+                              <Button
+                                onClick={() => permissionCheck("delete", index)}
+                                style={{ all: "unset" }}
+                              >
+                                {envLoading && action === "delete" ?
+                                  <DeleteVariableButton>
+                                    <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}
+                                    </Btn>
+                                  </DeleteVariableButton>
+                                :
+                                  <DeleteVariable
+                                    deleteType="Environment variable"
+                                    deleteName={envVar.name}
+                                    varProject={environment.project.name}
+                                    varEnvironment={environment.name}
+                                    icon="bin"
+                                    refresh={onVariableAdded}
+                                  />
+                                }
+                              </Button>
                             </div>
                           </VariableActions>
                         </div>
@@ -336,7 +399,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           </div>
         </>
       )}
-      {displayProjectVars.length == 0 ? (
+      {displayProjectVars.length === 0 ? (
         <>
           <hr style={{ margin: "30px 0" }} />
           <div className="header no-vars">
@@ -363,7 +426,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <hr style={{ margin: "30px 0" }} />
           {
             projectErrorAlert && (
-              <Alert 
+              <Alert
                 type="error"
                 closeAlert={closeProjectError}
                 header="Unauthorized:"
@@ -427,10 +490,23 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                               <div className="loader"></div>
                             </div>
                           </Collapse>
-                        ) : projEnvVar.value ? (
+                        ) : projEnvVar.value !== undefined ? (
                           <Collapse in={openPrjVars}>
                             <div className="varValue" id={index}>
-                              {projEnvVar.value.length <= 100 &&
+                              {projEnvVar.value.length == 0 &&
+                              prjValueState[index] ? (
+                                <div className="showHideContainer">
+                                  <Tag color="#4578e6">Empty</Tag>
+                                  <span onClick={() => prjValuesHide(index)}>
+                                  <Image
+                                    src={hide}
+                                    className="showHide"
+                                    style={{ all: "unset" }}
+                                    alt=""
+                                  />
+                                  </span>
+                                </div>
+                              ) : projEnvVar.value.length <= 100 &&
                               !prjValueState[index] ? (
                                 <div className="showHideContainer">
                                   {hashValue(projEnvVar.value).substring(0, 25)}

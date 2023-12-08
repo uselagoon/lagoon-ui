@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgNavTabs from 'components/Organizations/NavTabs';
@@ -13,39 +13,47 @@ import Users from 'components/Organizations/Users';
 import { UsersWrapper } from 'components/Organizations/Users/Styles';
 import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import UsersByOrganization, { getOrganization } from 'lib/query/organizations/UsersByOrganization';
+import UsersByOrganization, { getOrganizationByName } from 'lib/query/organizations/UsersByOrganization';
 
 import QueryError from '../../components/errors/QueryError';
 
 /**
  * Displays the users page
  */
-export const PageUsers = ({ router }) => {
-  const { data, error, loading, refetch } = useQuery(UsersByOrganization, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
-  });
 
+export const PageUsers = ({ router }) => {
   const {
     data: orgData,
     error: orgErr,
     loading: orgLoading,
-  } = useQuery(getOrganization, {
-    variables: { id: parseInt(router.query.organizationSlug, 10) },
+  } = useQuery(getOrganizationByName, {
+    variables: { name: router.query.organizationSlug },
+    onCompleted: ({ organization }) => {
+      if (organization) {
+        getUsers({
+          variables: { id: orgData.organization.id },
+        });
+      }
+    },
   });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const [getUsers, { data, error, loading, refetch }] = useLazyQuery(UsersByOrganization);
 
-  if (loading || orgLoading) {
+  const handleRefetch = async () => await refetch({ id: orgData.organization.id });
+
+  if (loading || orgLoading || !data) {
     return (
       <>
         <Head>
-          {router.query.organizationName ? `${router.query.organizationName} | Organization` : 'Organization'}
+          <title>
+            {router.query.organizationSlug ? `${router.query.organizationSlug} | Organization` : 'Organization'}
+          </title>
         </Head>
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
               organizationSlug={router.query.organizationSlug}
-              organizationName={router.query.organizationName || ''}
+              organizationId={router.query.organizationId || ''}
             />
           </Breadcrumbs>
           <OrganizationsWrapper>
@@ -73,7 +81,7 @@ export const PageUsers = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.id} organizationName={organization.name} />
+          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="users" organization={organization} />

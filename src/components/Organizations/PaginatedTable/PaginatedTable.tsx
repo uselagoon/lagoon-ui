@@ -120,7 +120,11 @@ const PaginatedTable: FC<Props> = ({
         filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
       }
       if (defaultViewOptions?.type === 'user') {
-        filtered = filtered.filter(dataItem => !(dataItem.email as string).startsWith('default-user'));
+        filtered = filtered.filter(dataItem => {
+          //@ts-ignore
+          const filterItem = dataItem.email ? dataItem.email : (dataItem.user.email as string);
+          return !(filterItem as string).startsWith('default-user');
+        });
       }
     }
     if (withSorter) {
@@ -130,7 +134,7 @@ const PaginatedTable: FC<Props> = ({
             return a.name.localeCompare(b.name);
           } else {
             //@ts-ignore
-            return (a?.user?.firstName as string).localeCompare(b?.user?.firstName as string);
+            return (a?.user?.firstName as string)?.localeCompare(b?.user?.firstName as string);
           }
         });
       }

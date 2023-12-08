@@ -21,6 +21,7 @@ const backupsData = [
     restore: {
       status: 'completed',
       restoreLocation: 'https://example.com/backup',
+      restoreSize: 300
     },
   },
   {

@@ -7,7 +7,7 @@ import OrganizationLink from 'components/link/Organizations/Organization';
 import { Organization, OrganizationsPage, OrgsHeader, SearchInput } from './StyledOrganizations';
 
 export interface IOrganization {
-  id: string;
+  id: number;
   name: string;
   description: string;
   __typename: 'Organization';
@@ -55,7 +55,7 @@ const Organizations = ({ organizations = [] }: { organizations: IOrganization[] 
         </Box>
       )}
       {filteredOrganizations.map(organization => (
-        <OrganizationLink organizationSlug={organization.id} organizationName={organization.name} key={organization.id}>
+        <OrganizationLink organizationSlug={organization.name} organizationId={organization.id} key={organization.id}>
           <Box className="box">
             <Organization>
               <h4>
