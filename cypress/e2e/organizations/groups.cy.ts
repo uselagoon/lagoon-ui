@@ -7,15 +7,15 @@ const group = new GroupAction();
 describe('Organization Groups page', () => {
   beforeEach(() => {
     // register interceptors/idle handler
-    cy.intercept('POST', Cypress.env().CY_API, req => {
+    cy.intercept('POST', Cypress.env("api"), req => {
       aliasQuery(req, 'getOrganization');
       aliasMutation(req, 'addUserToGroup');
       aliasMutation(req, 'addGroupToOrganization');
     });
     registerIdleHandler('groupQuery');
 
-    cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
-    cy.visit(`${Cypress.env().CY_URL}/organizations/99/groups`);
+    cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
+    cy.visit(`${Cypress.env("url")}/organizations/1/groups`);
   });
 
   it('Adds a group', () => {

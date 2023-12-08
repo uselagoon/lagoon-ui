@@ -26,15 +26,29 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
 
+// stubbing clipboard for localhost on http.
+Cypress.on('window:before:load', win => {
+  if (!win.navigator.clipboard) {
+    // @ts-ignore
+    win.navigator.clipboard = {
+      copyText: null,
+    };
+  }
+
+  // @ts-ignore
+  win.navigator.clipboard.writeText = text => (this.copyText = text);
+  // @ts-ignore
+  win.navigator.clipboard.readText = () => Promise.resolve(this.copyText);
+});
+
 Cypress.Commands.add('getBySel', (selector: string) => {
   return cy.get(`[data-cy=${selector}]`);
 });
 
 Cypress.Commands.add('login', (username: string, password: string) => {
   cy.session([username, password], () => {
-    cy.visit(Cypress.env().CY_URL);
-    cy.origin(Cypress.env().CY_KEYCLOAK_URL, { args: { username, password } }, ({ username, password }) => {
-      // do the stuff here
+    cy.visit(Cypress.env('url'));
+    cy.origin(Cypress.env('keycloak'), { args: { username, password } }, ({ username, password }) => {
       cy.get('#username').type(username);
       cy.get('#password').type(password);
       cy.get('#kc-login').click();

@@ -14,8 +14,8 @@ export default class ProjectAction {
     project.getCopyButton().realClick();
 
     cy.window().then(win => {
-      win.navigator.clipboard.readText().then(text => {
-        project.getGitUrl().invoke('text').should('match', text);
+      win.navigator.clipboard.readText().then(() => {
+        project.getGitUrl().invoke('text').should('eq', '//git@example.com/lagoon-demo');
       });
     });
   }
@@ -29,7 +29,7 @@ export default class ProjectAction {
   }
 
   doExternalLinkCheck() {
-    cy.getBySel('gitLink').contains('drupal-example');
+    cy.getBySel('gitLink').contains('lagoon-demo');
   }
 
   doEnvRouteCheck() {
@@ -38,16 +38,27 @@ export default class ProjectAction {
     });
   }
 
-  doBadEnvCreation() {
+  doCreateDummyEnv() {
     project.getEnvBtn().click();
 
-    project.getBranchNameInput().focus().type('does not exist');
+    project.getBranchNameInput().focus().type('123123');
 
     project.getSubmitBtn().click();
 
+    project.getEnvNames().contains('123123').should('exist');
+  }
+  
+  doCreateEnvWithPermissionError() {
+    project.getEnvBtn().click();
+    project.getBranchNameInput().focus().type('123123');
+    project.getSubmitBtn().click();
+
     project
-      .getErrorNotification()
+      .getErrorModal()
       .should('exist')
-      .should('include.text', 'There was a problem creating an Environment.');
+      .should(
+        'include.text',
+        'GraphQL error: Unauthorized: You don\'t have permission to "deploy:development" on "environment": {"project":18}'
+      );
   }
 }

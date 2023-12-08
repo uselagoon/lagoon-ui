@@ -20,7 +20,7 @@ export const testData = {
       newGroupName2: 'cypress-group2',
     },
     users: {
-      email: 'davit.darsavelidze+100@amazee.io',
+      email: 'orguser@example.com',
       role: 'developer',
     },
     project: {
@@ -53,7 +53,7 @@ export const testData = {
       },
     },
     manage: {
-      user: 'davit.darsavelidze+101@amazee.io',
+      user: 'orguser@example.com',
     },
   },
 };

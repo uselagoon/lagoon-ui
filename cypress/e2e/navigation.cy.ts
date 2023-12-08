@@ -5,12 +5,12 @@ const navigation = new NavigationRepository();
 
 describe('Navigation tests', () => {
   beforeEach(() => {
-    cy.login(Cypress.env().CY_EMAIL, Cypress.env().CY_PASSWORD);
+    cy.login(Cypress.env("user_owner"), Cypress.env("user_owner"));
     registerIdleHandler('idle');
   });
 
   it('Checks navigation to settings, organizations and projects pages', () => {
-    cy.visit(Cypress.env().CY_URL);
+    cy.visit(Cypress.env("url"));
 
     context('Navigates from /projects to /settings', () => {
       cy.getBySel('headerMenu').click();
@@ -46,7 +46,7 @@ describe('Navigation tests', () => {
 
       navigation.getLinkElement('account').click();
 
-      const redirect = `${Cypress.env().CY_KEYCLOAK_URL}/auth/realms/lagoon/account/`;
+      const redirect = `${Cypress.env("keycloak")}/auth/realms/lagoon/account/`;
       cy.origin(redirect, { args: { redirect } }, ({ redirect }) => {
         cy.location().should(loc => {
           expect(loc.toString()).to.eq(redirect);

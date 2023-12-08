@@ -17,8 +17,8 @@
     "serve-storybook": "storybook-server -s ./src",
     "format": "yarn prettier --write .",
     "format-check": "yarn prettier --c .",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
+    "cypress:run": "cypress run --config-file cypress/cypress.config.ts"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.17.0",
@@ -110,7 +110,7 @@
     "babel-loader": "^9.1.2",
     "babel-plugin-macros": "^3.1.0",
     "chromatic": "^6.19.5",
-    "cypress": "13.4.0",
+    "cypress": "13.6.1",
     "cypress-network-idle": "^1.14.2",
     "eslint-plugin-storybook": "^0.6.12",
     "faker": "^6.6.6",
