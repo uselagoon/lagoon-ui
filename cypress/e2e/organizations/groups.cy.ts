@@ -15,7 +15,7 @@ describe('Organization Groups page', () => {
     registerIdleHandler('groupQuery');
 
     cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/1/groups`);
+    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/groups`);
   });
 
   it('Adds a group', () => {
