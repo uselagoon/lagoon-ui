@@ -16,8 +16,8 @@ import {
 /**
  * The primary list of projects.
  */
-const Projects = ({ projects = [] }) => {
-  const [searchInput, setSearchInput] = useState('');
+const Projects = ({ projects = [], initialSearch }) => {
+  const [searchInput, setSearchInput] = useState(initialSearch);
 
   const filteredProjects = projects.filter(key => {
     const sortByName = key.name.toLowerCase().includes(searchInput.trim().toLowerCase());

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 
@@ -17,6 +17,8 @@ import { useTourContext } from '../tours/TourContext';
  */
 const ProjectsPage = () => {
   const { startTour } = useTourContext();
+
+  const [searchInput, setSearchInput] = useState('');
 
   const { data, loading, error } = useQuery(AllProjectsQuery, {
     displayName: 'AllProjectsQuery',
@@ -42,9 +44,12 @@ const ProjectsPage = () => {
         <CommonWrapper>
           <h2>Projects</h2>
           <div className="content">
-            {loading ? <ProjectsSkeleton /> : <Projects projects={data.allProjects || []} />}
+            {loading ? (
+              <ProjectsSkeleton setSearch={setSearchInput} />
+            ) : (
+              <Projects initialSearch={searchInput} projects={data.allProjects || []} />
+            )}
           </div>
-        
         </CommonWrapper>
       </MainLayout>
     </>
