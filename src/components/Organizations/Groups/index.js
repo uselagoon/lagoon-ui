@@ -146,7 +146,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                   </RemoveModalParagraph>
 
                   <Footer>
-                    <Mutation mutation={DELETE_GROUP}>
+                    <Mutation mutation={DELETE_GROUP} onError={e => console.error(e)}>
                       {(deleteGroup, { called, error, data }) => {
                         if (error) {
                           return <div className="error">{error.message}</div>;
@@ -157,6 +157,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
 
                         return (
                           <Button
+                            testId="confirm"
                             variant="primary"
                             loading={called}
                             disabled={called}

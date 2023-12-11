@@ -23,14 +23,33 @@ export default class ProjectsActions {
 
     projects.getProjectRows().contains(projectData.projectName).should('exist');
   }
+  doFailedaddProject(projectData: ProjectData) {
+    projects.getAddBtn().click({ force: true });
+    projects.getName().type(projectData.projectName);
+    projects.getGit().type(projectData.gitUrl);
 
-  doDeleteProject() {
-    projects.getDeleteBtn().click();
+    projects.getEnv().type(projectData.prodEnv);
+
+    projects.selectTarget();
+
+    projects.getAddConfirm().click();
+
+    cy.wait('@gqladdProjectToOrganizationMutation').then(interception => {
+      expect(interception.response?.statusCode).to.eq(200);
+
+      const errorMessage = `Unauthorized: You don't have permission to "addProject" on "organization": {"organization":1}`;
+      expect(interception.response?.body).to.have.property('errors');
+
+      cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
+    });
+  }
+  doDeleteProject(projectName: string) {
+    projects.getDeleteBtn().eq(1).click();
 
     projects.getDeleteConfirm().click();
 
     cy.wait('@gqldeleteProjectMutation');
 
-    projects.getProjectRows().should('not.exist');
+    projects.getProjectRows().contains(projectName).should('not.exist');
   }
 }

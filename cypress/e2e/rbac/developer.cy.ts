@@ -175,17 +175,13 @@ describe('DEVELOPER permission test suites', () => {
   });
 
   context('Backups', () => {
-    it('Retrieves a backup', () => {
+    it('Checks backup retrieve btns', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/backups`);
       registerIdleHandler('idle');
 
       cy.waitForNetworkIdle('@idle', 500);
 
-      cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'addRestore');
-      });
-
-      backups.doRetrieveBackup();
+      backups.doCheckAllRetrieveButtons();
     });
   });
 

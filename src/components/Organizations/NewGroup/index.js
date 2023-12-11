@@ -103,7 +103,7 @@ export const NewGroup = ({
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_GROUP_MUTATION}>
+          <Mutation mutation={ADD_GROUP_MUTATION} onError={e => console.error(e)}>
             {(addGroup, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;

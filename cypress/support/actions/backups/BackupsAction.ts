@@ -5,12 +5,27 @@ const backups = new BackupsRepository();
 export default class BackupsAction {
   doRetrieveBackup() {
     backups.getRetrieveButton().first().click();
-
     cy.wait('@gqladdRestoreMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
     });
   }
 
+  doCheckAllRetrieveButtons() {
+    cy.get('.backups')
+      .children()
+      .eq(2)
+      .find('.data-row')
+      .should('have.length', 4)
+      .each(($row, idx) => {
+        if (idx < 3) {
+          cy.wrap($row)
+            .find('.download')
+            .should('exist')
+            .find('button')
+            .contains(/Retrieving ...|Retrieve/);
+        }
+      });
+  }
   doResultsLimitedchangeCheck(val: string | number) {
     const vals = {
       10: 0,

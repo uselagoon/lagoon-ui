@@ -26,6 +26,9 @@ export default class OverviewRepository {
   getSubmitButton() {
     return cy.get('button').first();
   }
+  getCancelButton() {
+    return cy.getBySel('cancel');
+  }
 
   getDescEditButton(selector: string) {
     return this.getElement(selector);

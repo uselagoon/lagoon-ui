@@ -7,7 +7,7 @@ describe('Environment sidebar navigation', () => {
   });
 
   it('Overview/Deployments/Backups/Tasks/Vars/Problems/Facts/Insights', () => {
-    const suffix = '/projects/drupal-example/drupal-example-develop';
+    const suffix = '/projects/lagoon-demo/lagoon-demo-main';
     cy.visit(`${Cypress.env("url")}${suffix}`);
 
     context('From /Overview to /Deployments', () => {

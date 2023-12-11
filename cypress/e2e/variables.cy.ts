@@ -1,6 +1,7 @@
 import { testData } from 'cypress/fixtures/variables';
 import ProjectAction from 'cypress/support/actions/project/ProjectAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
+import { registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const project = new ProjectAction();
 
@@ -11,6 +12,7 @@ describe('Project variables page', () => {
     cy.login(Cypress.env('user_owner'), Cypress.env('user_owner'));
 
     cy.wait(500);
+    registerIdleHandler("idle");
     cy.log('Full user navigation from /projects page');
 
     cy.visit(Cypress.env('url'));

@@ -44,7 +44,7 @@ export const AddGroupToProject = ({
       <div className="margins">
         <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Link a group to this project">
           <>
-            <Button action={openModal}>
+            <Button action={openModal} testId="addGroupToProject">
               <AddButtonContent>Link Group</AddButtonContent>
             </Button>
           </>
@@ -105,7 +105,7 @@ export const AddGroupToProject = ({
                       Add
                     </Button>
 
-                    <Button variant="ghost" action={() => closeModal()}>
+                    <Button testId='cancel' variant="ghost" action={() => closeModal()}>
                       Cancel
                     </Button>
                   </Footer>

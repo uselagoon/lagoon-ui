@@ -22,6 +22,6 @@ describe('Org Projects page', () => {
   });
 
   it('Deletes a project', () => {
-    project.doDeleteProject();
+    project.doDeleteProject(testData.organizations.project.projectName);
   });
 });

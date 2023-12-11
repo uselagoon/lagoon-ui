@@ -152,7 +152,7 @@ const Organization = ({ organization, refetch }) => {
                     );
                   }}
                 </Mutation>
-                <Button variant="ghost" action={modalAction('close', 'name')}>
+                <Button testId="cancel" variant="ghost" action={modalAction('close', 'name')}>
                   Cancel
                 </Button>
               </Footer>
@@ -220,7 +220,7 @@ const Organization = ({ organization, refetch }) => {
                     );
                   }}
                 </Mutation>
-                <Button variant="ghost" action={modalAction('close', 'description')}>
+                <Button testId="cancel" variant="ghost" action={modalAction('close', 'description')}>
                   Cancel
                 </Button>
               </Footer>

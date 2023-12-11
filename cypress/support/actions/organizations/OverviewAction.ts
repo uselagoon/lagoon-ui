@@ -7,17 +7,17 @@ export default class OverviewAction {
     overviewRepo.getLinkElement('group-link').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
 
     overviewRepo.getLinkElement('project-link').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/projects');
 
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
 
     overviewRepo.getLinkElement('notification-link').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/notifications');
 
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
     overviewRepo.getLinkElement('manage-link').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/manage');
   }
@@ -49,6 +49,21 @@ export default class OverviewAction {
         expect(trimmedText).to.equal(friendlyName);
       });
   }
+  doFailedChangeOrgFriendlyname(friendlyName: string) {
+    overviewRepo.getNameEditButton('edit-name').click();
+    overviewRepo.getEditField().type(friendlyName);
+    overviewRepo.getSubmitButton().click();
+
+    cy.wait('@gqlupdateOrganizationFriendlyNameMutation').then(interception => {
+      expect(interception.response?.statusCode).to.eq(200);
+
+      const errorMessage = 'Unauthorized: You don\'t have permission to "updateOrganization" on "organization": 1';
+      expect(interception.response?.body).to.have.property('errors');
+
+      cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
+    });
+  }
+
   changeOrgDescription(description: string) {
     overviewRepo.getDescEditButton('edit-description').click();
     overviewRepo.getEditField().type(description);
@@ -63,5 +78,22 @@ export default class OverviewAction {
         const trimmedText = text.trim();
         expect(trimmedText).to.equal(description);
       });
+  }
+  doFailedChangeOrgDescription(description: string) {
+    overviewRepo.getDescEditButton('edit-description').click();
+    overviewRepo.getEditField().type(description);
+    overviewRepo.getSubmitButton().click();
+
+    cy.wait('@gqlupdateOrganizationFriendlyNameMutation').then(interception => {
+      expect(interception.response?.statusCode).to.eq(200);
+
+      const errorMessage = 'Unauthorized: You don\'t have permission to "updateOrganization" on "organization": 1';
+      expect(interception.response?.body).to.have.property('errors');
+
+      cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
+    });
+  }
+  closeModal() {
+    overviewRepo.getCancelButton().click();
   }
 }

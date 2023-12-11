@@ -1,6 +1,6 @@
 import { testData } from 'cypress/fixtures/variables';
 import NotificationsAction from 'cypress/support/actions/organizations/NotificationsAction';
-import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const notifications = new NotificationsAction();
 
@@ -8,6 +8,8 @@ describe('Org Notifications page', () => {
   beforeEach(() => {
     cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
     cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/notifications`);
+
+    registerIdleHandler("idle");
 
     cy.intercept('POST', Cypress.env("api"), req => {
       aliasMutation(req, 'addNotificationSlack');
@@ -42,6 +44,7 @@ describe('Org Notifications page', () => {
   });
 
   it('Edits notification', () => {
+    cy.waitForNetworkIdle('@idle', 500);
     notifications.doEditNotification();
   });
 

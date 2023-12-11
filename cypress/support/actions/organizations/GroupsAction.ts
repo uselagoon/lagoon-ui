@@ -23,6 +23,20 @@ export default class GroupAction {
     cy.get('.tableRow').eq(1).should('contain', newGroup2);
   }
 
+  doFailedAddGroup(newGroup1: string, newGroup2: string) {
+    groupRepo.getAddGroupBtn('addNewGroup').click();
+    groupRepo.getGroupNameInput().type(newGroup1);
+    groupRepo.getAddGroupSubmitBtn().click();
+
+    cy.wait('@gqladdGroupToOrganizationMutation').then(interception => {
+      expect(interception.response?.statusCode).to.eq(200);
+
+      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization": {"organization":1}`;
+      expect(interception.response?.body).to.have.property('errors');
+
+      cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
+    });
+  }
   doGroupSearch(group1: string, group2: string) {
     cy.log('First group');
     groupRepo.getSearchBar().type(group1);
@@ -60,7 +74,7 @@ export default class GroupAction {
     groupRepo.getDeleteGroupBtn('deleteGroup').first().click();
     cy.getBySel('confirm').click();
 
-    cy.intercept('POST', Cypress.env("api")).as('deleteGroup');
+    cy.intercept('POST', Cypress.env('api')).as('deleteGroup');
     cy.wait('@deleteGroup');
     cy.waitForNetworkIdle('@groupQuery', 500);
 

@@ -28,13 +28,10 @@ export default class VariablesAction {
   }
 
   doDeleteVariable(name: string) {
-    environment
-      .getVariableToDelete()
-      .contains(name)
-      .parent()
-      .within(() => {
-        cy.getBySel('varDelete').click();
-      });
+    environment.getDeleteBtn(name);
+    cy.waitForNetworkIdle('@idle', 500);
+    environment.getDeleteBtn(name);
+
     cy.log('enter the  name and confirm');
     cy.get('.form-input > input').type(name);
     cy.get('.btn-danger').click();
