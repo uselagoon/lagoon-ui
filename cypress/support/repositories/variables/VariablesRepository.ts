@@ -1,4 +1,3 @@
-
 export default class VariablesRepository {
   getVariablesLink() {
     return cy.getBySel('variablesLink');
@@ -16,5 +15,13 @@ export default class VariablesRepository {
   }
   getVariableToDelete() {
     return cy.get('.data-table > .data-row');
+  }
+  getDeleteBtn(name: string) {
+    this.getVariableToDelete()
+      .contains(name)
+      .parent()
+      .within(() => {
+        cy.getBySel('varDelete').click();
+      });
   }
 }

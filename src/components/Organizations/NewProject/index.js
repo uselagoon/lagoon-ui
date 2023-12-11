@@ -85,9 +85,7 @@ const OrgNewProject = ({
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_PROJECT_MUTATION} 
-          
-          onError={e => console.error(e)}>
+          <Mutation mutation={ADD_PROJECT_MUTATION} onError={e => console.error(e)}>
             {(addGroupProject, { called, error, data }) => {
               if (error) {
                 return <div>{error.message}</div>;

@@ -315,7 +315,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
               Add
             </Button>
 
-            <Button variant="ghost" action={() => closeModal()}>
+            <Button testId='cancel' variant="ghost" action={() => closeModal()}>
               Cancel
             </Button>
           </Footer>

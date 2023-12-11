@@ -25,7 +25,7 @@ export const testData = {
     },
     project: {
       projectName: 'cy-drupal-test',
-      gitUrl: 'git@github.com:amazeeio/drupal-example.git',
+      gitUrl: 'git@github.com:amazeeio/lagoon-demo.git',
       prodEnv: 'main',
     },
     notifications: {
@@ -41,7 +41,7 @@ export const testData = {
       },
       email: {
         name: 'cy-email-notification-1',
-        email: 'cy-email-1',
+        email: 'cy-email-1@example.com',
       },
       teams: {
         name: 'cy-msTeams-notification-1',

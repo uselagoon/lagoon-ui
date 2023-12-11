@@ -8,8 +8,8 @@ export default class ProjectAction {
   }
 
   doSearch() {
-    projectRepo.getSearchBar().type('drupal-example');
-    projectRepo.getProjects().its('length').should('equal', 3);
+    projectRepo.getSearchBar().type('lagoon-demo');
+    projectRepo.getProjects().its('length').should('equal', 1);
   }
 
   doEmptySearch() {
