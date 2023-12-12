@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+
 import { MockAllProjects } from '../../../.storybook/mocks/api';
 import ProjectsSkeleton from './ProjectsSkeleton';
 import Projects from './index';
@@ -8,13 +9,13 @@ import Projects from './index';
 const meta: Meta<typeof Projects> = {
   title: 'Components/Projects',
   component: Projects,
-  tags:["autodocs"],
+  tags: ['autodocs'],
 };
 type Story = StoryObj<typeof Projects>;
 
 export const Default: Story = {
   render: (data, args) => {
-    return <Projects projects={data.projects} {...args} />;
+    return <Projects initialSearch={''} projects={data.projects} {...args} />;
   },
   args: {
     projects: MockAllProjects(123),
@@ -28,7 +29,11 @@ export const Empty: Story = {
 };
 
 export const Loading: Story = {
-  render: () => <ProjectsSkeleton />,
+  render: () => {
+    const [_, setSearchInput] = useState('');
+
+    return <ProjectsSkeleton setSearch={setSearchInput} />;
+  },
 };
 
 export default meta;

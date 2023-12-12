@@ -6,7 +6,7 @@ import Box from 'components/Box';
 import { ProjectsHeader, ProjectsPage, SearchInput, StyledProject } from './StyledProjects';
 
 interface Props {
-  setSearch: (text: string) => React.SetStateAction<string>;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 const ProjectsSkeleton = ({ setSearch }: Props) => {
   const RenderSkeletonBox = (index: number) => {
