@@ -1,6 +1,6 @@
 import { testData } from 'cypress/fixtures/variables';
 import OverviewAction from 'cypress/support/actions/organizations/OverviewAction';
-import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const overview = new OverviewAction();
 
@@ -23,9 +23,12 @@ describe('Organization overview page', () => {
     overview.doQuotaFieldCheck();
   });
 
-  it('Changes org friendlty name/description', () => {
+  it.only('Changes org friendly name/description', () => {
+    registerIdleHandler("idle");
+    
     overview.changeOrgFriendlyname(testData.organizations.overview.friendlyName);
 
+    cy.waitForNetworkIdle("@idle", 500);
     overview.changeOrgDescription(testData.organizations.overview.description);
   });
 });

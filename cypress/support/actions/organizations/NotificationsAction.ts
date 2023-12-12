@@ -40,7 +40,7 @@ export default class NotificationsAction {
       webhook: 4,
     };
 
-    notificationRepo.getAddNotification().click();
+    notificationRepo.getAddNotification().click({ force: true });
     cy.get('.react-select__indicator').click({ force: true });
 
     // Select the option based on the mapping
@@ -60,7 +60,7 @@ export default class NotificationsAction {
     cy.get('div.data-table .data-row').should('include.text', notificationData.name);
   }
 
-  doFailedAddNotification(notifType: keyof typeof notifMap, notificationData: NotificationData){
+  doFailedAddNotification(notifType: keyof typeof notifMap, notificationData: NotificationData) {
     const fieldsToFill = notifMap[notifType];
 
     const optionIndexMap = {
@@ -99,10 +99,10 @@ export default class NotificationsAction {
   doEditNotification() {
     notificationRepo.getLast('link').first().click();
 
-    cy.get('.inputName').first().type('-edited');
-    cy.get('.inputWebhook').type('-edited');
+    cy.get('.inputName').first().type('-edited', { force: true });
+    cy.get('.inputWebhook').first().type('-edited', { force: true });
 
-    cy.getBySel('continueEdit').click();
+    cy.getBySel('continueEdit').first().click({ force: true });
 
     cy.wait(`@gqlUpdateNotificationSlackMutation`);
 
@@ -114,7 +114,7 @@ export default class NotificationsAction {
 
     cy.get('div.data-table .data-row').should('not.have.text', notification);
   }
-  closeModal(){
-    cy.getBySel("cancel").click();
+  closeModal() {
+    cy.getBySel('cancel').click();
   }
 }
