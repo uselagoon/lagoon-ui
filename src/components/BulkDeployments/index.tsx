@@ -72,7 +72,7 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
           </div>
           <div className="priority">{deployment.priority}</div>
           <div className="started">{moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
-          <div className={`status ${deployment.status}`}>
+          <div className={`status buildstep ${deployment.status}`}>
             <span>{deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)} </span>
             {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
               <HoverTag text={deployment.buildStep} maxWidth="160px" />

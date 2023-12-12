@@ -54,7 +54,7 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
               <div className="started">
                 {moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
               </div>
-              <div className={`status ${deployment.status}`}>
+              <div className={`status buildstep ${deployment.status}`}>
                 {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
 
                 {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (

@@ -117,6 +117,10 @@ export const StyledDeployments = styled.div`
       .warning {
         width: 15px;
       }
+      .buildstep{
+        display:flex;
+        flex-direction:column;
+      }
       .status {
         @media ${bp.xs_smallOnly} {
           margin-left: 20px;
