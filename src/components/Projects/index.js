@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 
 import Box from 'components/Box';
@@ -16,9 +16,16 @@ import {
 /**
  * The primary list of projects.
  */
-const Projects = ({ projects = [] }) => {
-  const [searchInput, setSearchInput] = useState('');
+const Projects = ({ projects = [], initialSearch }) => {
+  const [searchInput, setSearchInput] = useState(initialSearch);
 
+  const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    if (initialSearch && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
   const filteredProjects = projects.filter(key => {
     const sortByName = key.name.toLowerCase().includes(searchInput.trim().toLowerCase());
     let sortByUrl = '';
@@ -39,6 +46,7 @@ const Projects = ({ projects = [] }) => {
         <label></label>
         <SearchInput
           data-cy="searchBar"
+          ref={searchInputRef}
           aria-labelledby="search"
           className="searchInput"
           type="text"

@@ -5,7 +5,10 @@ import Box from 'components/Box';
 
 import { ProjectsHeader, ProjectsPage, SearchInput, StyledProject } from './StyledProjects';
 
-const ProjectsSkeleton = () => {
+interface Props {
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+const ProjectsSkeleton = ({ setSearch }: Props) => {
   const RenderSkeletonBox = (index: number) => {
     return (
       <Box className="box">
@@ -22,14 +25,20 @@ const ProjectsSkeleton = () => {
 
   return (
     <ProjectsPage>
-        <ProjectsHeader>
-          <label>
-            <Skeleton width={'20%'} />
-          </label>
-          <label></label>
-          <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
-        </ProjectsHeader>
-        <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
+      <ProjectsHeader>
+        <label>
+          <Skeleton width={'20%'} />
+        </label>
+        <label></label>
+        <SearchInput
+          onChange={e => setSearch(e.target.value)}
+          aria-labelledby="search"
+          className="searchInput"
+          type="text"
+          placeholder="Type to search"
+        />
+      </ProjectsHeader>
+      <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
     </ProjectsPage>
   );
 };
