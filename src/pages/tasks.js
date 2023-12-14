@@ -17,8 +17,6 @@ import Tasks from 'components/Tasks';
 import TasksSkeleton from 'components/Tasks/TasksSkeleton';
 import MainLayout from 'layouts/MainLayout';
 import EnvironmentWithTasksQuery from 'lib/query/EnvironmentWithTasks';
-import TasksSubscription from 'lib/subscription/Tasks';
-
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
 import { TasksWrapper } from '../styles/pageStyles';
@@ -35,7 +33,7 @@ export const PageTasks = ({ router, renderAddTasks }) => {
   const [resultLimit, setResultLimit] = useState(null);
 
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore, refetch } = useQuery(EnvironmentWithTasksQuery, {
+  const { data, error, loading, refetch } = useQuery(EnvironmentWithTasksQuery, {
     variables: {
       openshiftProjectName: router.query.openshiftProjectName,
       limit: resultLimit,
@@ -119,39 +117,6 @@ export const PageTasks = ({ router, renderAddTasks }) => {
       />
     );
   }
-
-  subscribeToMore({
-    document: TasksSubscription,
-    variables: { environment: environment.id },
-    updateQuery: (prevStore, { subscriptionData }) => {
-      if (!subscriptionData.data) return prevStore;
-      const prevTasks = prevStore.environment.tasks;
-      const incomingTask = subscriptionData.data.taskChanged;
-      const existingIndex = prevTasks.findIndex(prevTask => prevTask.id === incomingTask.id);
-      let newTasks;
-
-      // New task.
-      if (existingIndex === -1) {
-        newTasks = [incomingTask, ...prevTasks];
-      }
-      // Updated task
-      else {
-        newTasks = Object.assign([...prevTasks], {
-          [existingIndex]: incomingTask,
-        });
-      }
-
-      const newStore = {
-        ...prevStore,
-        environment: {
-          ...prevStore.environment,
-          tasks: newTasks,
-        },
-      };
-
-      return newStore;
-    },
-  });
 
   return (
     <>
