@@ -14,7 +14,6 @@ export interface BackupsProps {
     restore: {
       status: 'completed' | 'pending' | 'failed';
       restoreLocation?: string;
-      restoreSize?: number;
     };
   }[];
 }
