@@ -8,6 +8,7 @@ import withLogic from "components/AddVariable/logic";
 import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
 import { NewVariable, NewVariableModal } from "./StyledAddVariable";
 import { Popconfirm } from 'antd';
+import {LoadingOutlined} from "@ant-design/icons";
 
 /**
  * Adds a Variable.
@@ -47,6 +48,9 @@ export const AddVariable = ({
   setEnvironmentErrorAlert,
   setProjectErrorAlert,
   action,
+  loading,
+  prjEnvValues,
+  envValues,
 }) => {
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
@@ -68,6 +72,16 @@ export const AddVariable = ({
     setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true)
   }
 
+  const handlePermissionCheck = () => {
+    let waitForGQL = setTimeout(() => {
+      openModal();
+    }, [1000])
+    if (prjEnvValues || envValues) {
+      clearTimeout(waitForGQL);
+      openModal();
+    }
+  }
+
   return (
     <NewVariable>
       {
@@ -75,10 +89,11 @@ export const AddVariable = ({
           <Button variant='white' icon={icon} action={openModal}>
             Update
           </Button>
-          :
-          <ButtonBootstrap onClick={openModal}>
-            Add
-          </ButtonBootstrap>
+          : !loading ?
+            <ButtonBootstrap onClick={handlePermissionCheck}>
+              Add
+            </ButtonBootstrap>
+            : <ButtonBootstrap className="add-variable"><LoadingOutlined/></ButtonBootstrap>
       }
       <Modal
         isOpen={open}

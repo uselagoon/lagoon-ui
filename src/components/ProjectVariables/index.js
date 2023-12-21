@@ -34,7 +34,7 @@ const hashValue = (value) => {
   return hashedVal;
 };
 
-const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
+const ProjectVariables = ({ project, onVariableAdded }) => {
   let displayVars = project.envVariables;
   let initValueState = new Array(displayVars.length).fill(false);
 
@@ -144,143 +144,143 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
 
   return (
     <StyledProjectVariablesDetails className="details">
-        <>
-          {projectErrorAlert && (
-            <Alert
-              type="error"
-              closeAlert={closeProjectError}
-              header="Unauthorized:"
-              message={`You don't have permission to ${action} project ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
-            />
-          )}
-          <div className="header">
-            <label>Project Variables</label>
-            <div className="header-buttons">
-              <Button
-                onClick={() => permissionCheck("add")}
-                style={{ all: "unset" }}
-              >
-                {prjLoading && action === "add" ? <Button className="add-variable"><LoadingOutlined/></Button> :
-                  <AddVariable
-                    varProject={project.name}
-                    varValues={displayVars}
-                    varTarget="Project"
-                    refresh={onVariableAdded}
-                    setProjectErrorAlert={setProjectErrorAlert}
-                    err={projectErrorAlert}
-                    permissionCheck={getPrjEnvVarValues}
-                    action="add"
-                  />
-                }
-              </Button>
+      <>
+        {projectErrorAlert && (
+          <Alert
+            type="error"
+            closeAlert={closeProjectError}
+            header="Unauthorized:"
+            message={`You don't have permission to ${action} project ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
+          />
+        )}
+        <div className="header">
+          <label>Project Variables</label>
+          <div className="header-buttons">
+            <Button
+              onClick={() => permissionCheck("add")}
+              style={{ all: "unset" }}
+            >
+              {projectErrorAlert ? <Button className="add-variable">Add</Button> :
+                <AddVariable
+                  varProject={project.name}
+                  varValues={displayVars}
+                  varTarget="Project"
+                  refresh={onVariableAdded}
+                  setProjectErrorAlert={setProjectErrorAlert}
+                  action="add"
+                  loading={prjLoading && action === "add"}
+                  prjEnvValues={prjEnvValues}
+                />
+              }
+            </Button>
 
-              { displayVars.length > 0 && (
-                <Button
-                  onClick={() => showVarValue()}
-                  aria-controls="example-collapse-text"
-                  aria-expanded={openPrjVars}
-                >
+            { displayVars.length > 0 && (
+              <Button
+                onClick={() => showVarValue()}
+                aria-controls="example-collapse-text"
+                aria-expanded={openPrjVars}
+              >
                 {!openPrjVars ? "Show values" : "Hide values"}
-                </Button>
-              )}
-            </div>
+              </Button>
+            )}
           </div>
-          { !displayVars.length && (
-            <>
-            <hr style={{ margin: "30px 0" }} />
-            <div style={{ textAlign: "center" }}>
-              <label>No Project variables set</label>
-            </div>
-            <hr style={{ margin: "30px 0" }} />
-            </>
-          )}
-          { displayVars.length > 0 && (
-            <div className="field-wrapper env-vars">
-              <StyledProjectVariableTable>
-                <div
-                  className={
-                    openPrjVars ? "values-present table-header" : "table-header"
-                  }
-                >
-                  <div className="name">
-                    <label>Name</label>
-                  </div>
-                  <div className="scope">
-                    <label>Scope</label>
-                  </div>
-                  <Collapse in={openPrjVars}>
-                    <div className="value">
-                      <label>Value</label>
-                    </div>
-                  </Collapse>
+        </div>
+        { !displayVars.length && (
+          <>
+          <hr style={{ margin: "30px 0" }} />
+          <div style={{ textAlign: "center" }}>
+            <label>No Project variables set</label>
+          </div>
+          <hr style={{ margin: "30px 0" }} />
+          </>
+        )}
+        { displayVars.length > 0 && (
+          <div className="field-wrapper env-vars">
+            <StyledProjectVariableTable>
+              <div
+                className={
+                  openPrjVars ? "values-present table-header" : "table-header"
+                }
+              >
+                <div className="name">
+                  <label>Name</label>
                 </div>
-                <div className="data-table">
-                  {displayVars.map((projEnvVar, index) => {
-                    return (
-                      <Fragment key={index}>
-                        <div
-                          className={
-                            openPrjVars ? "values-present data-row" : "data-row"
-                          }
-                        >
-                          <div className="varName">{projEnvVar.name}</div>
-                          <div className="varScope">{projEnvVar.scope}</div>
-                          {renderValues(projEnvVar, index)}
-                          <div className="varActions">
-                            <VariableActions>
-                              <Collapse in={openPrjVars}>
-                                <div className="varUpdate">
-                                  <Button
-                                      onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
-                                      style={{ all: 'unset'}}
-                                  >
-                                    <AddVariable
-                                      varProject={project.name}
-                                      varValues={displayVars}
-                                      varTarget="Project"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
-                                      action="edit"
-                                    />
-                                  </Button>
-                                </div>
-                              </Collapse>
-                              <div className="varDelete">
+                <div className="scope">
+                  <label>Scope</label>
+                </div>
+                <Collapse in={openPrjVars}>
+                  <div className="value">
+                    <label>Value</label>
+                  </div>
+                </Collapse>
+              </div>
+              <div className="data-table">
+                {displayVars.map((projEnvVar, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <div
+                        className={
+                          openPrjVars ? "values-present data-row" : "data-row"
+                        }
+                      >
+                        <div className="varName">{projEnvVar.name}</div>
+                        <div className="varScope">{projEnvVar.scope}</div>
+                        {renderValues(projEnvVar, index)}
+                        <div className="varActions">
+                          <VariableActions>
+                            <Collapse in={openPrjVars}>
+                              <div className="varUpdate">
                                 <Button
-                                  onClick={() => permissionCheck("delete", index)}
-                                  style={{ all: "unset" }}
+                                    onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
+                                    style={{ all: 'unset'}}
                                 >
-                                  {prjLoading && action === "delete" ?
-                                    <DeleteVariableButton>
-                                      <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
-                                        {valueState[index] ? <LoadingOutlined/> : "Delete"}
-                                      </Btn>
-                                    </DeleteVariableButton>
-                                  :
-                                    <DeleteVariable
-                                      deleteType="Project variable"
-                                      deleteName={projEnvVar.name}
-                                      varProject={project.name}
-                                      icon="bin"
-                                      refresh={onVariableAdded}
-                                    />
-                                  }
+                                  <AddVariable
+                                    varProject={project.name}
+                                    varValues={displayVars}
+                                    varTarget="Project"
+                                    varName={updateVarName}
+                                    varValue={updateVarValue}
+                                    varScope={updateVarScope}
+                                    refresh={onVariableAdded}
+                                    icon="edit"
+                                    action="edit"
+                                  />
                                 </Button>
                               </div>
-                            </VariableActions>
-                          </div>
+                            </Collapse>
+                            <div className="varDelete">
+                              <Button
+                                onClick={() => permissionCheck("delete", index)}
+                                style={{ all: "unset" }}
+                              >
+                                {prjLoading && action === "delete" ?
+                                  <DeleteVariableButton>
+                                    <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}
+                                    </Btn>
+                                  </DeleteVariableButton>
+                                :
+                                  <DeleteVariable
+                                    deleteType="Project variable"
+                                    deleteName={projEnvVar.name}
+                                    varProject={project.name}
+                                    icon="bin"
+                                    refresh={onVariableAdded}
+                                  />
+                                }
+                              </Button>
+                            </div>
+                          </VariableActions>
                         </div>
-                      </Fragment>
-                    );
-                  })}
-                </div>
-              </StyledProjectVariableTable>
-            </div>
-          )}
-        </>
+                      </div>
+                    </Fragment>
+                  );
+                })}
+              </div>
+            </StyledProjectVariableTable>
+          </div>
+        )}
+      </>
     </StyledProjectVariablesDetails>
   );
 };
