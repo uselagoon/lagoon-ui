@@ -29,7 +29,6 @@ export const AddVariable = ({
   varEnvironment,
   varValues,
   varTarget,
-  noVars,
   varName,
   varValue,
   varScope,
@@ -91,7 +90,7 @@ export const AddVariable = ({
           <div className="variable-target">
             <span className="variable-target">
               {
-                noVars || !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`
+                !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`
               }
             </span>
           </div>
