@@ -247,7 +247,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
             onClick={() => permissionCheck("add")}
             style={{ all: "unset" }}
           >
-            {projectErrorAlert ? <Button className="add-variable">Add</Button> :
+            {environmentErrorAlert ? <Button className="add-variable">Add</Button> :
               <AddVariable
                 varProject={environment.project.name}
                 varEnvironment={environment.name}
