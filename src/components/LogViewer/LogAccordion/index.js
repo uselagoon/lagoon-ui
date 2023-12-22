@@ -25,6 +25,9 @@ const LogAccordion = forwardRef(
           setScrollHidden(true);
         }
       }
+      if (hasWarning) {
+        setVisibility(true);
+      }
     }, [ref, visibility, scrollHidden]);
 
     const hasWarning = metadata[1] === true;
