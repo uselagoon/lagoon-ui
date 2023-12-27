@@ -79,7 +79,7 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
           </div>
         )}
       </div>
-      <LogViewer logs={task.logs} status={task.status} changeState={null} checkedParseState={true} forceLastSectionOpen={true} />
+      <LogViewer logs={task.logs} status={task.status} changeState={null} checkedParseState={true} forceLastSectionOpen={true} logsTarget={"tasks"} />
     </StyledTask>
   );
 };
