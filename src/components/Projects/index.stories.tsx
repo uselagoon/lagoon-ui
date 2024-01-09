@@ -30,7 +30,7 @@ export const Empty: Story = {
 
 export const Loading: Story = {
   render: function Render() {
-    const [_, setSearchInput] = useState('');
+    const [, setSearchInput] = useState('');
     return <ProjectsSkeleton setSearch={setSearchInput} />;
   },
 };

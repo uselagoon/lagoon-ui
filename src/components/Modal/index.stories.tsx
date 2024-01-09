@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, ReactNode, useState } from 'react';
 
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
@@ -23,7 +23,14 @@ const SampleContent = () => (
   </>
 );
 
-const ModalWrapper = (args: any) => {
+interface ModalArgs {
+  isOpen: boolean;
+  onRequestClose: ()=>void;
+  children: ReactNode;
+  contentLabel: string;
+  variant: string;
+}
+const ModalWrapper = (args: ModalArgs ) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);

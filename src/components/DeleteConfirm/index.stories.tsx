@@ -14,7 +14,19 @@ interface Props {
   closeModalFunction: () => void;
 }
 
-const DeleteConfirmWrapper = (args: any) => {
+interface ConfirmArgs {
+  deleteType: string;
+  deleteName: string;
+  icon:  string;
+  onDelete: () => void;
+  inputValue: string | number;
+  setInputValue: () => void;
+  open: boolean;
+  openModal: () => void,
+  closeModal :() => void,
+}
+
+const DeleteConfirmWrapper = (args: ConfirmArgs) => {
   const [open, setOpen] = useState(true);
 
   return <DeleteConfirm {...args} open={open} closeModal={() => setOpen(false)} />;
@@ -51,6 +63,7 @@ export const WithConfirmationBlocked = ({
     open={openBoolean}
     openModal={openModalFunction}
     closeModal={closeModalFunction}
+    icon=""
   />
 );
 
