@@ -35,11 +35,17 @@ export default (App, initialAuth) => {
 
       if (!keycloak.authenticated) {
         const urlQuery = queryStringToObject(location.search);
-        const options = urlQuery.idpHint ? { idpHint: urlQuery.idpHint } : {};
+
+        const options = {
+          redirectUri: `${window.location.origin}?redirect=${location.pathname}`,
+        };
+        
+        if (urlQuery.idpHint) {
+          options['idpHint'] = urlQuery.idpHint;
+        }
 
         await keycloak.login(options);
       }
-
       this.setAuth(keycloak);
     }
 

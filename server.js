@@ -188,6 +188,14 @@ app
     // organizations end
 
     server.get('*', (req, res) => {
+      const { query } = req;
+
+      const redirect = query.redirect;
+
+      if (redirect) {
+        return res.redirect(301, redirect);
+      }
+
       return handle(req, res);
     });
 
