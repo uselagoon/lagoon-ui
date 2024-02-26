@@ -53,17 +53,14 @@ jobs:
         cd test
         make up
 
-    - name: Start Frontend
-      run: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start
-
-    - name: Wait for frontend to be ready
-      run: npx wait-on "http://localhost:3000"
-
     - name: Run Cypress Tests
+      uses: cypress-io/github-action@v6
       with:
         config-file: ./cypress/cypress.config.ts
-      run: yarn cypress:runAll
-
+        auto-cancel-after-failures: 1
+        build: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start
+        command: yarn cypress:runAll
+        
     - name: Stop Docker containers
       run: |
         cd test
