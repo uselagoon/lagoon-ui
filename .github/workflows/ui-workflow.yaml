@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3.1
+      uses: actions/checkout@v4
 
     - name: Formatting check
       run: yarn prettier --check --config .prettierrc
@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3.1
+      uses: actions/checkout@v4
 
     - name: Linting
       run: |
@@ -38,7 +38,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3.1
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
       uses: actions/setup-node@v3.1
@@ -60,7 +60,7 @@ jobs:
         auto-cancel-after-failures: 1
         build: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start
         command: yarn cypress:runAll
-        
+
     - name: Stop Docker containers
       run: |
         cd test
