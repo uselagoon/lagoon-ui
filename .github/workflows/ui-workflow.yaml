@@ -22,8 +22,8 @@ jobs:
 
     - name: Formatting check
       run: |
-           yarn add prettier@2.8.7 @trivago/prettier-plugin-sort-imports
-           yarn format-check
+        yarn add prettier@2.8.7 @trivago/prettier-plugin-sort-imports
+        yarn format-check
 
   lint:
     runs-on: ubuntu-latest
@@ -61,6 +61,7 @@ jobs:
         GRAPHQL_API: http://0.0.0.0:33000/graphql
         KEYCLOAK_API: http://0.0.0.0:38088/auth
       run: |
+        yarn install
         yarn build
         yarn start
 
