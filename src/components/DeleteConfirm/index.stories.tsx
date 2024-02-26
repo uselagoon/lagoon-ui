@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { DeleteOutlined } from '@ant-design/icons';
 import { action } from '@storybook/addon-actions';
 import { Meta } from '@storybook/react';
 
@@ -41,6 +42,7 @@ export const WithConfirmationBlocked = ({
   closeModalFunction,
 }: Props) => (
   <DeleteConfirmBaseComponent
+    icon={<DeleteOutlined />}
     deleteType="environment"
     deleteName="Forty-two"
     onDelete={onDeleteFunction}

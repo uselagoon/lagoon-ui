@@ -7,7 +7,7 @@ import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-co
  * Applies styles globally to any component nested inside it.
  */
 
-export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
+export const GlobalStyles: GlobalStyleComponent<Record<string, never>, DefaultTheme> = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
@@ -313,4 +313,8 @@ main{
 }
 `;
 
-export default React.memo(() => <GlobalStyles />);
+const AppGlobalStyles = React.memo(() => <GlobalStyles />);
+
+AppGlobalStyles.displayName = 'GlobalStyles';
+
+export default AppGlobalStyles;
