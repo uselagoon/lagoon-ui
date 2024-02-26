@@ -90,7 +90,7 @@ describe(`Organizations ORGVIEWER journey`, () => {
     notifications.closeModal();
   });
 
-  it('Nav to a project, fail to add a group or notifications - no permission for ORGVIEWER', () => {
+  it('Navigates to a project, fails to add a group or notifications - no permission for ORGVIEWER', () => {
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/lagoon-demo-org`);
 
     cy.getBySel('addGroupToProject').click();

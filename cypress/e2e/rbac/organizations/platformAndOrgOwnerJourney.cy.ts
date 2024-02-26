@@ -43,13 +43,13 @@ orgownerAndPlatformOwner.forEach(owner => {
         overview.closeModal();
       });
     } else {
-      it('Change org name and desc', () => {
+      it('Changes org name and desc', () => {
         overview.changeOrgFriendlyname(testData.organizations.overview.friendlyName);
         overview.changeOrgDescription(testData.organizations.overview.description);
       });
     }
 
-    it('Navigate to groups to create', () => {
+    it('Navigates to groups and creates', () => {
       cy.waitForNetworkIdle('@idle', 500);
 
       cy.get('.groups').click();
@@ -60,7 +60,7 @@ orgownerAndPlatformOwner.forEach(owner => {
       group.doAddMemberToGroup(testData.organizations.users.email);
     });
 
-    it('Navigate to projects and create a new one', () => {
+    it('Navigates to projects and creates a new one', () => {
       registerIdleHandler('projectsQuery');
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'addProjectToOrganization');
@@ -75,7 +75,7 @@ orgownerAndPlatformOwner.forEach(owner => {
       project.doAddProject(testData.organizations.project);
     });
 
-    it('Navigate to notifications and create a couple', () => {
+    it('Navigates to notifications and creates a couple', () => {
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'addNotificationSlack');
         aliasMutation(req, 'UpdateNotificationSlack');
@@ -99,7 +99,7 @@ orgownerAndPlatformOwner.forEach(owner => {
       notifications.doAddNotification('webhook', webhookData);
     });
 
-    it('Nav to a project, add group and notifications', () => {
+    it('Navigates to a project, adds a group and notifications', () => {
       cy.visit(
         `${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/${
           testData.organizations.project.projectName

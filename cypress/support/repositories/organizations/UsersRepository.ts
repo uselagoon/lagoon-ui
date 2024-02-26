@@ -18,7 +18,7 @@ export default class UsersRepository {
     return cy.getBySel('addUserConfirm');
   }
   getRows() {
-    return cy.get('.tableRow');
+    return cy.getBySel('table-row');
   }
 
   getConfirmDeleteBtn() {

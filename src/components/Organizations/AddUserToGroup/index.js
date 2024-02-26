@@ -76,6 +76,7 @@ export const AddUserToGroup = ({
                 User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
                   className="inputEmail"
+                  data-cy="orgUser-email-input"
                   type="text"
                   placeholder="Enter Email"
                   value={inputValueEmail}

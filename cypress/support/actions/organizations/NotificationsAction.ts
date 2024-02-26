@@ -57,7 +57,7 @@ export default class NotificationsAction {
     cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`);
 
     // notification name
-    cy.get('div.data-table .data-row').should('include.text', notificationData.name);
+    cy.getBySel('notification-row').should('include.text', notificationData.name);
   }
 
   doFailedAddNotification(notifType: keyof typeof notifMap, notificationData: NotificationData) {
@@ -99,20 +99,20 @@ export default class NotificationsAction {
   doEditNotification() {
     notificationRepo.getLast('link').first().click();
 
-    cy.get('.inputName').first().type('-edited', { force: true });
-    cy.get('.inputWebhook').first().type('-edited', { force: true });
+    cy.getBySel('notification-name').first().type('-edited', { force: true });
+    cy.getBySel('input-webhook').first().type('-edited', { force: true });
 
     cy.getBySel('continueEdit').first().click({ force: true });
 
     cy.wait(`@gqlUpdateNotificationSlackMutation`);
 
-    cy.get('div.data-table .data-row').should('include.text', '-edited');
+    cy.getBySel('notification-row').should('include.text', '-edited');
   }
   doDeleteNotification(notification: keyof typeof notifMap) {
     notificationRepo.getLast('btn-red').first().click();
     cy.getBySel('confirmDelete').click();
 
-    cy.get('div.data-table .data-row').should('not.have.text', notification);
+    cy.getBySel('notification-row').should('not.have.text', notification);
   }
   closeModal() {
     cy.getBySel('cancel').click();

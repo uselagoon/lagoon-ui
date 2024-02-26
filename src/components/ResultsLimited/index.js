@@ -47,7 +47,7 @@ const ResultsLimited = ({ limit, changeLimit, message, disableHandler }) => {
           </div>
         </React.Fragment>
       )}
-      <div className="results">
+      <div className="results" data-cy='select-results'>
         {
           <ReactSelect
             data-cy="result_selector"

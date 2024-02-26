@@ -4,13 +4,13 @@ const task = new TaskRepository();
 
 export default class TaskAction {
   doNavToRunningTask() {
-    cy.get('.results div').eq(6).click({ force: true });
+    cy.getBySel('select-results').find("div").eq(6).click({ force: true });
 
     cy.waitForNetworkIdle('@idle', 500);
 
     cy.get(`[id^="react-select-"][id$=-option-4]`).click();
 
-    cy.get('.taskRow').find('.pending').click();
+    cy.getBySel('task-row').getBySel('pending').click();
   }
   doCancelTask() {
     task.getCancelBtn().first().click();

@@ -17,7 +17,7 @@ export const NewEnvButton = ({ action, loading, error, disabled, data }) => {
   return (
       <>
         {contextHolder}
-        <Button action={action} loading={loading} disabled={disabled} variant="primary">
+        <Button testId='create-env' action={action} loading={loading} disabled={disabled} variant="primary">
           {loading ? "Creating" : "Create"}
         </Button>
         {error && openNotificationWithIcon(data.deployEnvironmentBranch)}

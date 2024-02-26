@@ -21,13 +21,13 @@ export default class OverviewRepository {
     return this.getElement('description');
   }
   getEditField() {
-    return cy.get('.inputName');
+    return this.getElement('input-orgName');
   }
   getSubmitButton() {
-    return cy.get('button').first();
+    return this.getElement('submit-btn').first();
   }
   getCancelButton() {
-    return cy.getBySel('cancel');
+    return this.getElement('cancel');
   }
 
   getDescEditButton(selector: string) {

@@ -19,6 +19,6 @@ export default class EnvOverviewRepository {
     return cy.getBySel('deleteConfirm');
   }
   getDeleteInfo() {
-    return cy.get('.content .details div').last();
+    return cy.getBySel('env-details').get('div').last();
   }
 }

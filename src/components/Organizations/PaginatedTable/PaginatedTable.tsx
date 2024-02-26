@@ -278,7 +278,7 @@ const PaginatedTable: FC<Props> = ({
     <StyledTable className="paginatedTable">
       <Filters className="filters">
         {labelText ? (
-          <span className="labelText">
+          <span className="labelText" data-cy="label-text">
             {labelText} {`(${sortedFilteredData.length})`}
           </span>
         ) : (
@@ -310,6 +310,7 @@ const PaginatedTable: FC<Props> = ({
           <SearchOutlined className="icon" />
           <input
             type="text"
+            data-cy="search-bar"
             value={inputValue}
             aria-labelledby="search"
             className="searchBar"
@@ -325,7 +326,7 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow className="tableRow" key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}>
+            <TableRow data-cy="table-row" className="tableRow" key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}>
               {columns?.map(col => {
                 return (
                   <TableColumn key={`${col.key}-${idx}-${labelText ? labelText : ''}`} width={col.width}>

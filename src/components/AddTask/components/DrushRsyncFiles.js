@@ -78,6 +78,7 @@ const DrushRsyncFiles = ({
             />
           </div>
           <Button
+            testId='task-btn'
             action={() =>
               taskDrushRsyncFiles({
                 variables: {

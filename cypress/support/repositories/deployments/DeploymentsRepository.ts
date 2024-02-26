@@ -6,10 +6,10 @@ export default class DeploymentsRepository {
     return cy.getBySel("deploy_result");
   }
   getDeployments(){
-    return cy.get(".data-table");
+    return cy.getBySel("deploy-table");
   }
   getCancelBtn() {
-    return this.getDeployments().get(".deploymentRow").first().get(".cancel-button")
+    return this.getDeployments().getBySel("deployment-row").first().getBySel("cancel-button")
   }
   getResultsLimited() {
     return cy.getBySel('resultsLimited');
