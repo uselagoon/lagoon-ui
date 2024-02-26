@@ -63,13 +63,14 @@ jobs:
       run: |
         yarn install
         yarn build
-        yarn start
+        yarn start &
 
     - name: Run Cypress Tests
       uses: cypress-io/github-action@v6
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3000'
         command: yarn cypress:runAll
 
     - name: Stop Docker containers
