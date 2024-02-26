@@ -8,18 +8,18 @@ describe('Settings page', () => {
     cy.login(Cypress.env("user_owner"), Cypress.env("user_owner"));
   });
 
-  it('Initial SSH keys', () => {
+  it('Checks initial SSH keys', () => {
     cy.visit(`${Cypress.env("url")}/settings`);
     settings.doEmptySshCheck();
   });
 
-  it('Add SSH key', () => {
+  it('Adds SSH key', () => {
     cy.visit(`${Cypress.env("url")}/settings`);
 
     settings.addSshKey(testData.ssh.name, testData.ssh.value);
   });
 
-  it('Delete SSH key', () => {
+  it('Deletes SSH key', () => {
     cy.visit(`${Cypress.env("url")}/settings`);
 
     settings.deleteSshKey(testData.ssh.name);

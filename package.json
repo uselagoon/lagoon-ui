@@ -18,7 +18,10 @@
     "format": "yarn prettier --write .",
     "format-check": "yarn prettier --c .",
     "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
-    "cypress:run": "cypress run --config-file cypress/cypress.config.ts"
+    "cypress:runAll": "cypress run --config-file cypress/cypress.config.ts",
+    "cypress:runGeneral": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/general/**/*.cy.ts'",
+    "cypress:runOrganizations": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/organizations/**/*.cy.ts'",
+    "cypress:runRbac": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/rbac/**/*.cy.ts'"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.17.0",

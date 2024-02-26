@@ -18,12 +18,12 @@ export default class GroupsRepository {
     return this.getElement(selector);
   }
   getSearchBar() {
-    return cy.get(".searchBar");
+    return this.getElement('search-bar');
   }
-  getGroupNameInput(){
-    return cy.get(".inputEmail")
+  getGroupNameInput() {
+    return cy.getBySel('groupName-input');
   }
-  getAddGroupSubmitBtn(){
-    return this.getElement("createGroup");
+  getAddGroupSubmitBtn() {
+    return this.getElement('createGroup');
   }
 }

@@ -137,7 +137,7 @@ export const AddVariable = ({
               onChange={varValue ? handleUpdateValue : setInputValue}
             />
           </div>
-          <div className="form-input add-var-btn">
+          <div className="form-input add-var-btn" data-cy="add-variable">
             <a href="#" className="hover-state" onClick={closeModal}>
               cancel
             </a>

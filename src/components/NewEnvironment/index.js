@@ -99,7 +99,7 @@ const NewEnvironment = ({
             <div className="field">
               { renderDeploykeyValue(80)}
             </div>
-            <span className="showHide" onClick={() => setShowDKField(!showDKField)}>
+            <span data-cy="showhide-toggle" className="showHide" onClick={() => setShowDKField(!showDKField)}>
             <Image
               src={!showDKField ? show : hide}
               className="showHide"

@@ -33,7 +33,7 @@ const Environment = ({ environment }) => {
     : '';
 
   return (
-    <StyledEnvironmentDetails className="details">
+    <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">
         <div>
           <label>Environment Type</label>

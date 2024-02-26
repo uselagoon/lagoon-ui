@@ -155,6 +155,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                         Owner: <span style={{ color: '#E30000' }}>*</span>
                         <input
                           className="inputCheckbox"
+                          data-cy="userIsOwner"
                           type="checkbox"
                           checked={selectedUserOwner}
                           onChange={() => setSelectedUserOwner(!selectedUserOwner)}

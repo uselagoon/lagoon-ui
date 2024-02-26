@@ -49,11 +49,11 @@ export default class deploymentAction {
       }
 
       for (let i = 0; i < $headings.length - 1; i++) {
-        cy.wrap($headings.eq(i)).next().next().find('.section-details').find('.log-text').should('exist');
+        cy.wrap($headings.eq(i)).next().next().getBySel('section-details').getBySel('log-text').should('exist');
       }
     });
   }
-  navigateToRunningDeployment(){
-    cy.get(".deploymentRow").find("a").find(".running").first().click();
+  navigateToRunningDeployment() {
+    cy.getBySel('deployment-row').getBySel('running').first().click();
   }
 }

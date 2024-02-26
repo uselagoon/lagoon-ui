@@ -1,22 +1,22 @@
 export default class TasksRepository {
   getTasks() {
-    return cy.get('.data-table');
+    return cy.getBySel('tasks-table');
   }
   getCancelBtn() {
     return cy.getBySel('cancel-task').first();
   }
   getTaskSelector(taskNumber: number) {
-    cy.get('.selectTask').click();
+    cy.getBySel('select-task').click();
 
     return cy.get(`[id^="react-select-"][id$=-option-${taskNumber}]`);
   }
 
   getRunTaskBtn() {
-    return cy.get('button').contains('Run task');
+    return cy.getBySel('task-btn').contains('Run task');
   }
 
   getTaskConfirmed() {
-    return cy.get('.taskForm').find('div');
+    return cy.getBySel('task-form').find('div');
   }
 
   getResultsLimited() {

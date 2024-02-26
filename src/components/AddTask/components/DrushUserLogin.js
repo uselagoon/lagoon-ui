@@ -57,7 +57,7 @@ const DrushUserLogin = ({ pageEnvironment, onCompleted, onError, onNewTask }) =>
               required
             />
           </div>
-          <Button action={taskDrushUserLogin} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
+          <Button testId='task-btn' action={taskDrushUserLogin} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
         </SelectWrapper>
       );
     }}

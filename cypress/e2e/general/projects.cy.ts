@@ -1,4 +1,4 @@
-import ProjectAction from '../support/actions/projects/ProjectsAction';
+import ProjectAction from '../../support/actions/projects/ProjectsAction';
 
 const projects = new ProjectAction();
 

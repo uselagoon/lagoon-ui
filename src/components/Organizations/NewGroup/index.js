@@ -124,6 +124,7 @@ export const NewGroup = ({
                         Group Name: <span style={{ color: '#E30000' }}>*</span>{' '}
                         <input
                           className="inputEmail"
+                          data-cy="groupName-input"
                           type="text"
                           placeholder="Enter name"
                           value={inputValueGroup}

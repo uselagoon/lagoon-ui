@@ -32,7 +32,7 @@ export default class EnvOverviewAction {
 
   doDeleteEnvironment(branch: string) {
     environment.getDeleteButton().click();
-    cy.get('input').type(branch);
+    cy.getBySel('confirm-input').type(branch);
     environment.getDeleteButtonConfirm().click();
 
     cy.wait('@gqldeleteEnvironmentMutation');
@@ -42,7 +42,7 @@ export default class EnvOverviewAction {
 
   doDeleteEnvironmentError(branch: string) {
     environment.getDeleteButton().click();
-    cy.get('input').type(branch);
+    cy.getBySel('confirm-input').type(branch);
     environment.getDeleteButtonConfirm().click();
 
     const errorMessage = `Unauthorized: You don\'t have permission to "delete:${

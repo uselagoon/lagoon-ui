@@ -88,7 +88,9 @@ const Organization = ({ organization, refetch }) => {
     return modalName === 'name' ? () => setNameModalOpen(modalAction) : () => setDescModalOpen(modalAction);
   };
 
-  const renderEditBtn = type => <EditOutlined data-cy={`edit-${type}`} style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />;
+  const renderEditBtn = type => (
+    <EditOutlined data-cy={`edit-${type}`} style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />
+  );
 
   return (
     <StyledOrganization>
@@ -112,6 +114,7 @@ const Organization = ({ organization, refetch }) => {
                   Organization name: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
+                    data-cy="input-orgName"
                     type="text"
                     placeholder="Existing organization name"
                     value={friendlyName}
@@ -134,6 +137,7 @@ const Organization = ({ organization, refetch }) => {
                     }
                     return (
                       <Button
+                        testId='submit-btn'
                         variant="primary"
                         disabled={called}
                         loading={called}
@@ -181,6 +185,7 @@ const Organization = ({ organization, refetch }) => {
                   Organization description: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
+                    data-cy="input-orgName"
                     type="text"
                     placeholder="Org description"
                     value={description}
@@ -202,6 +207,7 @@ const Organization = ({ organization, refetch }) => {
                     }
                     return (
                       <Button
+                        testId="submit-btn"
                         variant="primary"
                         disabled={called}
                         loading={called}

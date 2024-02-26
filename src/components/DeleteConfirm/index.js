@@ -33,7 +33,7 @@ export const DeleteConfirm = ({
           </p>
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
-            <input type="text" value={inputValue} onChange={setInputValue} />
+            <input type="text" value={inputValue} onChange={setInputValue} data-cy="confirm-input"/>
             <button className="hover-state" onClick={closeModal}>
               cancel
             </button>

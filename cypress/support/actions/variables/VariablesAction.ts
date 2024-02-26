@@ -12,7 +12,7 @@ export default class VariablesAction {
   }
 
   doValueToggle() {
-    environment.getEnvDataRows().get('.showHide').click({ multiple: true });
+    environment.getEnvDataRows().getBySel('showhide-toggle').click({ multiple: true });
   }
 
   doAddVariable(name: string, value: string) {
@@ -24,7 +24,7 @@ export default class VariablesAction {
     cy.getBySel('varName').focus().type(name);
     cy.getBySel('varValue').focus().type(value);
 
-    cy.get('.add-var-btn').click();
+    cy.getBySel('add-variable').click();
   }
 
   doDeleteVariable(name: string) {
@@ -33,7 +33,7 @@ export default class VariablesAction {
     environment.getDeleteBtn(name);
 
     cy.log('enter the  name and confirm');
-    cy.get('.form-input > input').type(name);
-    cy.get('.btn-danger').click();
+    cy.getBySel('variable-input').type(name);
+    cy.getBySel('delete-button').click();
   }
 }

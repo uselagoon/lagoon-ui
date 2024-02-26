@@ -4,6 +4,6 @@ export default class NotificationsRepository {
   }
 
   getLast(identifier: string) {
-    return cy.get('div.data-table .data-row').find(`.${identifier}`);
+    return cy.getBySel('notification-row').find(`.${identifier}`);
   }
 }

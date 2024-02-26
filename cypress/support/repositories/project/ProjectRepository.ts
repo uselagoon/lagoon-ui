@@ -24,7 +24,7 @@ export default class ProjectRepository {
     return cy.getBySel('branchName');
   }
   getSubmitBtn() {
-    return cy.get('.btn-primary');
+    return cy.getBySel('create-env');
   }
   getErrorNotification() {
     return cy.get('.ant-notification-notice');
@@ -35,9 +35,9 @@ export default class ProjectRepository {
   }
 
   getEnvRoutes() {
-    return cy.get('.routeLink > label');
+    return cy.getBySel('route-label');
   }
   getEnvNames() {
-    return cy.get('.box .content a h4');
+    return cy.getBySel('environment-name');
   }
 }

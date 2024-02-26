@@ -198,7 +198,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                   </div>
                 </Collapse>
               </div>
-              <div className="data-table">
+              <div className="data-table" data-cy="environment-table">
                 {displayVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
@@ -206,6 +206,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                         className={
                           openPrjVars ? "values-present data-row" : "data-row"
                         }
+                        data-cy="environment-row"
                       >
                         <div className="varName">{projEnvVar.name}</div>
                         <div className="varScope">{projEnvVar.scope}</div>
@@ -226,6 +227,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                   <Image
                                     src={hide}
                                     className="showHide"
+                                    data-cy="showhide-toggle"
                                     style={{ all: "unset" }}
                                     alt=""
                                   />
@@ -239,6 +241,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     <Image
                                       src={show}
                                       className="showHide"
+                                      data-cy="showhide-toggle"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
@@ -252,6 +255,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     <Image
                                       src={hide}
                                       className="showHide"
+                                      data-cy="showhide-toggle"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
@@ -265,6 +269,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     <Image
                                       src={show}
                                       className="showHide"
+                                      data-cy="showhide-toggle"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />
@@ -278,6 +283,7 @@ const ProjectVariables = ({ project, onVariableAdded, closeModal }) => {
                                     <Image
                                       src={hide}
                                       className="showHide"
+                                      data-cy="showhide-toggle"
                                       style={{ all: "unset" }}
                                       alt=""
                                     />

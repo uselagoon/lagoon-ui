@@ -43,7 +43,7 @@ export default class DeploymentsAction {
       100: 3,
       all: 4,
     };
-    cy.get('.results div').eq(6).click({ force: true });
+    cy.getBySel('select-results').find("div").eq(6).click({ force: true });
 
     cy.get(`[id^="react-select-"][id$=-option-${vals[val]}]`).click();
 

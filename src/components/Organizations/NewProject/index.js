@@ -17,7 +17,7 @@ import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedSt
 import { Checkbox, StyledNewProject } from './StyledNewProject';
 
 const ADD_PROJECT_MUTATION = gql`
-  mutation addProjectToOrganization (
+  mutation addProjectToOrganization(
     $organization: Int!
     $name: String!
     $gitUrl: String!
@@ -111,6 +111,7 @@ const OrgNewProject = ({
                         Project name: <span style={{ color: '#E30000' }}>*</span>
                         <input
                           className="inputName"
+                          data-cy="project-name"
                           type="text"
                           placeholder="Enter name"
                           value={inputProjectName}
@@ -130,6 +131,7 @@ const OrgNewProject = ({
                         </Tooltip>
                         <input
                           className="inputGit"
+                          data-cy="input-git"
                           type="text"
                           placeholder="Enter URL"
                           value={inputGitURL}
@@ -142,6 +144,7 @@ const OrgNewProject = ({
                         Production Environment: <span style={{ color: '#E30000' }}>*</span>
                         <input
                           className="inputEnv"
+                          data-cy="input-env"
                           type="text"
                           placeholder="Enter branch name"
                           value={inputProdEnv}

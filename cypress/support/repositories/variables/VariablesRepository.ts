@@ -11,10 +11,10 @@ export default class VariablesRepository {
   }
 
   getEnvDataRows() {
-    return cy.get('.data-table > .data-row');
+    return cy.getBySel('environment-row');
   }
   getVariableToDelete() {
-    return cy.get('.data-table > .data-row');
+    return cy.getBySel('environment-row');
   }
   getDeleteBtn(name: string) {
     this.getVariableToDelete()
