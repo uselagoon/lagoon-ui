@@ -97,8 +97,8 @@ describe('MAINTAINER permission test suites', () => {
     it('Deletes a variable', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);
 
-      registerIdleHandler("idle");
-      
+      registerIdleHandler('idle');
+
       const { name } = testData.variables[0];
 
       variable.doDeleteVariable(name);

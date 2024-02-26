@@ -78,7 +78,7 @@ const DrushSqlSync = ({
             />
           </div>
           <Button
-            testId='task-btn'
+            testId="task-btn"
             action={() =>
               taskDrushSqlSync({
                 variables: {
@@ -89,7 +89,7 @@ const DrushSqlSync = ({
             }
             disabled={!selectedSourceEnv || loading}
           >
-            {loading ? <span className="loader"></span> : "Run task"}
+            {loading ? <span className="loader"></span> : 'Run task'}
           </Button>
         </SelectWrapper>
       );

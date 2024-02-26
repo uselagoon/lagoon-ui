@@ -1,6 +1,13 @@
 import React, { FC } from 'react';
 
-import { BellOutlined, GroupOutlined, ReadOutlined, SettingOutlined, GlobalOutlined, TeamOutlined } from '@ant-design/icons';
+import {
+  BellOutlined,
+  GlobalOutlined,
+  GroupOutlined,
+  ReadOutlined,
+  SettingOutlined,
+  TeamOutlined,
+} from '@ant-design/icons';
 
 import { StyledNavigation } from './StyledNavTabs';
 

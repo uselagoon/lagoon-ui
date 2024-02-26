@@ -1,5 +1,6 @@
-import React from "react";
-import { DeployTargetWrapper } from "./StyledDeployTargets";
+import React from 'react';
+
+import { DeployTargetWrapper } from './StyledDeployTargets';
 
 const DeployTargets = ({ project }) => {
   return (
@@ -10,7 +11,7 @@ const DeployTargets = ({ project }) => {
         <label className="dt-pr">Pull requests enabled</label>
       </div>
       <div className="data-table">
-        {project.deployTargetConfigs.map((depTarget) => (
+        {project.deployTargetConfigs.map(depTarget => (
           <div className="data-row" key={depTarget.id}>
             <div className="dt-name">
               {depTarget.deployTarget.friendlyName != null

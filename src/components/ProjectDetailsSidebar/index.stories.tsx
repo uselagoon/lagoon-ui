@@ -12,7 +12,7 @@ import ProjectDetailsSidebar from './index';
 const meta: Meta<typeof ProjectDetailsSidebar> = {
   component: ProjectDetailsSidebar,
   title: 'Components/ProjectDetailsSidebar',
-  tags:["autodocs"],
+  tags: ['autodocs'],
 };
 
 type Story = StoryObj<typeof ProjectDetailsSidebar>;

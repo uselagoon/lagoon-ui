@@ -4,7 +4,7 @@ const task = new TaskRepository();
 
 export default class TaskAction {
   doNavToRunningTask() {
-    cy.getBySel('select-results').find("div").eq(6).click({ force: true });
+    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
 
     cy.waitForNetworkIdle('@idle', 500);
 

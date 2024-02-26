@@ -16,7 +16,7 @@ export const NewMember = styled.div`
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 16px;
-    line-height:24px;
+    line-height: 24px;
     color: #000;
     padding: 8px;
     box-sizing: border-box;
@@ -25,18 +25,17 @@ export const NewMember = styled.div`
   input[type='text']:focus {
     border: 2px solid ${color.linkBlue};
     outline: none;
-
   }
 
   input::placeholder {
     font-size: 1rem;
-    color:#000;
+    color: #000;
   }
   .select {
     font-family: 'source-sans-pro', sans-serif;
     line-height: 1.25rem;
-    div{
-      border-radius:0 !important;
+    div {
+      border-radius: 0 !important;
     }
   }
   .environment-name {

@@ -47,7 +47,7 @@ export default class ProjectAction {
 
     project.getEnvNames().contains('123123').should('exist');
   }
-  
+
   doCreateEnvWithPermissionError() {
     project.getEnvBtn().click();
     project.getBranchNameInput().focus().type('123123');

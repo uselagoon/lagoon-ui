@@ -35,7 +35,6 @@ orgownerAndPlatformOwner.forEach(owner => {
     });
 
     if (owner === Cypress.env('user_orgowner')) {
-      
       it('Fails to change org name and desc - no permission for ORGOWNER', () => {
         overview.doFailedChangeOrgFriendlyname(testData.organizations.overview.friendlyName);
         overview.closeModal();

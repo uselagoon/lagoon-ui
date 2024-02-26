@@ -19,11 +19,10 @@ export const Default = () => (
         min: 1,
         max: 10,
       }),
-    }).map((_,idx) => {
+    }).map((_, idx) => {
       return ProblemIdentifier(idx);
     })}
   />
 );
-
 
 export const NoProblems = () => <ProblemsByIdentifier problems={[]} />;

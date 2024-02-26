@@ -1,3 +1,4 @@
-import "./commands";
-import "cypress-real-events";
-import 'cypress-network-idle'
+import 'cypress-network-idle';
+import 'cypress-real-events';
+
+import './commands';

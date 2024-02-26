@@ -1,10 +1,10 @@
+import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
 import { generateEnvironments, generateFact, seed } from '../../.storybook/mocks/mocks';
 import PageFacts from '../pages/facts';
-import { faker } from '@faker-js/faker';
 
 const meta: Meta<typeof PageFacts> = {
   title: 'Pages/Facts',
@@ -17,17 +17,14 @@ faker.seed(123);
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),
-
 };
 
-seed()
+seed();
 const environment = generateEnvironments(123);
 environment.facts = [generateFact(1), generateFact(2), generateFact(3), generateFact(123)] as any;
 
-
-
 export const Default: Story = {
-  args:{
+  args: {
     router: {
       asPath: '/projects/lagoon-deploy-123',
       query: fakeQueryParams,
@@ -57,7 +54,7 @@ export const NoFacts: Story = {
           return res(
             ctx.delay(),
             ctx.data({
-              environment:{...environment, facts:[]},
+              environment: { ...environment, facts: [] },
             })
           );
         }),
@@ -65,7 +62,6 @@ export const NoFacts: Story = {
     },
   },
 };
-
 
 export const Loading: Story = {
   parameters: {

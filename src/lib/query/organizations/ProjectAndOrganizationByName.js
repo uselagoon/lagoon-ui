@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
-import SlackFragment from 'lib/fragment/Slack';
-import RocketChatFragment from 'lib/fragment/RocketChat';
 import EmailFragment from 'lib/fragment/Email';
+import RocketChatFragment from 'lib/fragment/RocketChat';
+import SlackFragment from 'lib/fragment/Slack';
 import TeamsFragment from 'lib/fragment/Teams';
 import WebhookFragment from 'lib/fragment/Webhook';
 
 export default gql`
   query getOrganization($project: String!, $name: String!) {
-    project: orgProjectByName(name: $project){
+    project: orgProjectByName(name: $project) {
       id
       name
       groups {
@@ -16,39 +16,39 @@ export default gql`
         name
         memberCount
       }
-      notifications{
+      notifications {
         name
         type
       }
     }
 
-    organization: organizationByName (name: $name){
+    organization: organizationByName(name: $name) {
       id
       name
       quotaGroup
       quotaNotification
       quotaEnvironment
-      groups{
+      groups {
         type
         name
       }
-      slacks: notifications(type: SLACK){
+      slacks: notifications(type: SLACK) {
         __typename
         ...Slack
       }
-      rocketchats: notifications(type: ROCKETCHAT){
+      rocketchats: notifications(type: ROCKETCHAT) {
         __typename
         ...RocketChat
       }
-      teams: notifications(type: MICROSOFTTEAMS){
+      teams: notifications(type: MICROSOFTTEAMS) {
         __typename
         ...Teams
       }
-      webhook: notifications(type: WEBHOOK){
+      webhook: notifications(type: WEBHOOK) {
         __typename
         ...Webhook
       }
-      emails: notifications(type: EMAIL){
+      emails: notifications(type: EMAIL) {
         __typename
         ...Email
       }

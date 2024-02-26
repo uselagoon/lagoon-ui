@@ -57,7 +57,9 @@ const DrushArchiveDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) 
               required
             />
           </div>
-          <Button testId='task-btn' action={taskDrushArchiveDump} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
+          <Button testId="task-btn" action={taskDrushArchiveDump} disabled={loading}>
+            {loading ? <span className="loader"></span> : 'Run task'}
+          </Button>
         </SelectWrapper>
       );
     }}

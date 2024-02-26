@@ -21,7 +21,7 @@ export default class ProjectAction {
   }
 
   doEmptyProjectCheck() {
-    cy.intercept('POST', Cypress.env("api"), req => {
+    cy.intercept('POST', Cypress.env('api'), req => {
       req.reply({
         statusCode: 200,
         body: {

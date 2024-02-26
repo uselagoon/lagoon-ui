@@ -45,21 +45,21 @@ export const PageEnvironment = ({ router }) => {
           <title>{`${openshiftProjectName} | Environment`}</title>
         </Head>
         <MainLayout>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-            </Breadcrumbs>
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+          </Breadcrumbs>
 
-            <EnvironmentWrapper>
-              <NavTabsSkeleton
-                activeTab="overview"
-                projectName={projectSlug}
-                openshiftProjectName={openshiftProjectName}
-              />
-              <div className="content">
-                <EnvironmentSkeleton />
-              </div>
-            </EnvironmentWrapper>
+          <EnvironmentWrapper>
+            <NavTabsSkeleton
+              activeTab="overview"
+              projectName={projectSlug}
+              openshiftProjectName={openshiftProjectName}
+            />
+            <div className="content">
+              <EnvironmentSkeleton />
+            </div>
+          </EnvironmentWrapper>
         </MainLayout>
       </>
     );

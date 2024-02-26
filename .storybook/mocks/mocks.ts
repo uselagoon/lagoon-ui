@@ -66,7 +66,8 @@ export function createTask(): Task {
     `::group::${eventName}\n` +
     `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]}:: Job '${jobName}'\n` +
     `::step-start::${stepName}\n` +
-    `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
+    `::${
+      status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
     }:: Job '${jobName}' step '${stepName}'\n` +
     `::step-end::${stepName}::${duration}\n` +
     `${generateLogMessage()}\n` +
@@ -311,7 +312,7 @@ export const getDeployment = (seed: number) => {
     status: deployStatus(),
     created,
     started,
-    buildStep:faker.word.words(3),
+    buildStep: faker.word.words(3),
     completed,
     environment: generateEnvironments({ seed }),
     remoteId: faker.number.int(),

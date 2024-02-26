@@ -28,7 +28,6 @@ const tasks = new TasksAction();
 
 const task = new TaskAction();
 
-
 describe('DEVELOPER permission test suites', () => {
   beforeEach(() => {
     cy.login(Cypress.env('user_developer'), Cypress.env('user_developer'));
@@ -51,7 +50,7 @@ describe('DEVELOPER permission test suites', () => {
   context('Project overview', () => {
     it('Checks environment routes', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo`);
-      
+
       project.doEnvRouteCheck();
     });
 

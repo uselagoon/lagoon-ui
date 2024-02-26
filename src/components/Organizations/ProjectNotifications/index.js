@@ -28,7 +28,14 @@ const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectNotifications = ({ notifications = [], organizationSlug ,organizationId, projectName, organization, refresh }) => {
+const ProjectNotifications = ({
+  notifications = [],
+  organizationSlug,
+  organizationId,
+  projectName,
+  organization,
+  refresh,
+}) => {
   const [searchInput, setSearchInput] = useState('');
 
   const filteredMembers = notifications.filter(key => {

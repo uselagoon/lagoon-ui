@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const DeployTargetWrapper = styled.div`
   width: 50%;

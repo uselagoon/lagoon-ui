@@ -1,10 +1,8 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import {
-  StyledProjectVariablesDetails,
-  StyledProjectVariableTable,
-} from "./StyledProjectVariables";
-import Button from "react-bootstrap/Button";
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Skeleton from 'react-loading-skeleton';
+
+import { StyledProjectVariableTable, StyledProjectVariablesDetails } from './StyledProjectVariables';
 
 const ProjectVariablesSkeleton = () => {
   const numberOfVariableFields = 3;
@@ -12,10 +10,10 @@ const ProjectVariablesSkeleton = () => {
   const skeletonItem = (
     <div className="data-row">
       <div className="varName">
-        <Skeleton width={"90%"} />
+        <Skeleton width={'90%'} />
       </div>
       <div className="scope">
-        <Skeleton width={"90%"} />
+        <Skeleton width={'90%'} />
       </div>
     </div>
   );
@@ -38,11 +36,7 @@ const ProjectVariablesSkeleton = () => {
             <label>Scope</label>
           </div>
         </div>
-        <div className="data-table">
-          {[...Array<undefined>(numberOfVariableFields)].map(
-            () => skeletonItem
-          )}
-        </div>
+        <div className="data-table">{[...Array<undefined>(numberOfVariableFields)].map(() => skeletonItem)}</div>
       </StyledProjectVariableTable>
     </StyledProjectVariablesDetails>
   );

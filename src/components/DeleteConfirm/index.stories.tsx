@@ -5,7 +5,6 @@ import { Meta } from '@storybook/react';
 
 import DeleteConfirm, { DeleteConfirm as DeleteConfirmBaseComponent } from './index';
 
-
 interface Props {
   onDeleteFunction: () => void;
   setInputValueFunction: () => void;

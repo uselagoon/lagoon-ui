@@ -23,7 +23,11 @@ const Prepare = ({ backupId }) => (
         return <Button disabled>Retrieving ...</Button>;
       }
 
-      return <Button testId='retrieve' action={addRestore}>Retrieve</Button>;
+      return (
+        <Button testId="retrieve" action={addRestore}>
+          Retrieve
+        </Button>
+      );
     }}
   </Mutation>
 );

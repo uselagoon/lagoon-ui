@@ -5,8 +5,8 @@ import EnvironmentLink from 'components/link/Environment';
 import { makeSafe } from 'lib/util';
 import * as R from 'ramda';
 
+import NewEnvironment from '../NewEnvironment';
 import { StyledEnvironments } from './StyledEnvironments';
-import NewEnvironment from "../NewEnvironment";
 
 const bgImages = {
   branch: {
@@ -95,7 +95,12 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
           </div>
         );
       })}
-      <NewEnvironment refresh={refresh} inputProjectName={project.name} productionEnvironment={project.productionEnvironment} environmentCount={environmentCount}/>
+      <NewEnvironment
+        refresh={refresh}
+        inputProjectName={project.name}
+        productionEnvironment={project.productionEnvironment}
+        environmentCount={environmentCount}
+      />
     </StyledEnvironments>
   );
 };
