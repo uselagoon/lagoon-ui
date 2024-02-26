@@ -61,7 +61,7 @@ jobs:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
         wait-on: "http://0.0.0.0:3000"
-        build: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start-testUI
+        build: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start
         command: yarn cypress:runAll
 
     - name: Stop Docker containers
