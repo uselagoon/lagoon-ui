@@ -71,7 +71,9 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
         <div>
           <label>Log view</label>
           <div className="field">
-            <Button testId='logviewer_toggle' action={changeState}>{checkedParseState ? 'View raw' : 'View parsed'}</Button>
+            <Button testId="logviewer_toggle" action={changeState}>
+              {checkedParseState ? 'View raw' : 'View parsed'}
+            </Button>
           </div>
         </div>
       </FieldWrapper>

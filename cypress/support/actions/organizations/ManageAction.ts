@@ -25,21 +25,11 @@ export default class ManageAction {
 
     cy.wait('@gqlAddUserToOrganizationMutation');
 
-    manageRepo
-      .getUserRows()
-      .contains(user)
-      .parents('.tableRow')
-      .find(':contains("ORG OWNER")')
-      .should('exist');
+    manageRepo.getUserRows().contains(user).parents('.tableRow').find(':contains("ORG OWNER")').should('exist');
   }
 
   doDeleteUser(user: string) {
-    manageRepo
-      .getUserRows()
-      .contains(user)
-      .parents('.tableRow')
-      .find("[aria-label='delete']")
-      .click();
+    manageRepo.getUserRows().contains(user).parents('.tableRow').find("[aria-label='delete']").click();
 
     manageRepo.getDeleteConfirmBtn().click();
   }

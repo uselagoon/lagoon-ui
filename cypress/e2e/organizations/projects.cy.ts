@@ -6,10 +6,10 @@ const project = new ProjectsActions();
 
 describe('Org Projects page', () => {
   beforeEach(() => {
-    cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/projects`);
+    cy.login(Cypress.env('user_platformowner'), Cypress.env('user_platformowner'));
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/projects`);
 
-    cy.intercept('POST', Cypress.env("api"), req => {
+    cy.intercept('POST', Cypress.env('api'), req => {
       aliasMutation(req, 'addProjectToOrganization');
       aliasMutation(req, 'deleteProject');
     });

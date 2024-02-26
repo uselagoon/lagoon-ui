@@ -142,7 +142,7 @@ export const NewGroup = ({
                       <Footer>
                         <p className="explainer">Please use (a to z) lower case, numbers and - only</p>
                         <Button
-                          testId='createGroup'
+                          testId="createGroup"
                           disabled={
                             called ||
                             inputValueGroup === '' ||

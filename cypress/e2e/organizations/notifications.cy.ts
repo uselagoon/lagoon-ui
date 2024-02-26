@@ -6,12 +6,12 @@ const notifications = new NotificationsAction();
 
 describe('Org Notifications page', () => {
   beforeEach(() => {
-    cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/notifications`);
+    cy.login(Cypress.env('user_platformowner'), Cypress.env('user_platformowner'));
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/notifications`);
 
-    registerIdleHandler("idle");
+    registerIdleHandler('idle');
 
-    cy.intercept('POST', Cypress.env("api"), req => {
+    cy.intercept('POST', Cypress.env('api'), req => {
       aliasMutation(req, 'addNotificationSlack');
       aliasMutation(req, 'UpdateNotificationSlack');
       aliasMutation(req, 'addNotificationRocketChat');

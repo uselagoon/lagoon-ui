@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
+import QueryError from 'components/errors/QueryError';
 import { graphql } from 'msw';
 
 import { MockAllProjects } from '../../.storybook/mocks/api';
 import ProjectsPage from '../pages/projects';
-import QueryError from 'components/errors/QueryError';
 
 const meta: Meta<typeof ProjectsPage> = {
   title: 'Pages/Projects',

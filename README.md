@@ -53,17 +53,15 @@ A couple of environment variables are required:
 - keycloak - Keycloak url (used for cypress sessions)
 - api - GraphQL api endpoint
 - url - running UI instance url
-- user_guest - user with guest role 
-- user_reporter - user with reporter role 
-- user_developer - user with developer role 
-- user_maintainer -  user with maintainer role 
-- user_owner -  user with owner role 
-- user_orguser -  Organization user
-- user_orgviewer -  Organization viewer 
-- user_orgowner -  Organization owner
-- user_platformowner -  Platform owner
-
-
+- user_guest - user with guest role
+- user_reporter - user with reporter role
+- user_developer - user with developer role
+- user_maintainer - user with maintainer role
+- user_owner - user with owner role
+- user_orguser - Organization user
+- user_orgviewer - Organization viewer
+- user_orgowner - Organization owner
+- user_platformowner - Platform owner
 
 These environment variables can either be inlined or saved in `Cypress.config.ts` file:
 
@@ -79,12 +77,14 @@ export default defineConfig({
 })
 ```
 
-
 To open cypress in a browser:
+
 ```sh
 npx cypress open
 ```
+
 To run cypress tests in headless mode:
+
 ```sh
 npx cypress run
 ```

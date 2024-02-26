@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
@@ -52,7 +52,7 @@ const InvokeRegisteredTask = ({
         defaultArgValues[item.name] = item.defaultValue;
       }
     });
-    setAdvancedTaskArguments(defaultArgValues)
+    setAdvancedTaskArguments(defaultArgValues);
   }, []);
 
   let taskArgumentsExist = false;
@@ -134,7 +134,7 @@ const InvokeRegisteredTask = ({
                           <input
                             type="text"
                             name={d.name}
-                            value={advancedTaskArguments[d.name] }
+                            value={advancedTaskArguments[d.name]}
                             onChange={event => {
                               setAdvancedTaskArguments({
                                 ...advancedTaskArguments,
@@ -164,11 +164,11 @@ const InvokeRegisteredTask = ({
               />
             )) || (
               <Button
-                testId='task-btn'
-                disabled={taskArgumentsExist && !argumentVariablesHaveValues || loading}
+                testId="task-btn"
+                disabled={(taskArgumentsExist && !argumentVariablesHaveValues) || loading}
                 action={mutationInvokeRegisteredTask}
               >
-                {loading ? <span className="loader"></span> : "Run task"}
+                {loading ? <span className="loader"></span> : 'Run task'}
               </Button>
             )}
           </StyledRegisteredTasks>

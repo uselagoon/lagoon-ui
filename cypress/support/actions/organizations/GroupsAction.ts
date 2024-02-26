@@ -52,7 +52,7 @@ export default class GroupAction {
   }
   doAddMemberToGroup(userEmail: string) {
     groupRepo.getAddUserBtn('adduser').first().click();
-    cy.getBySel("orgUser-email-input").type(userEmail);
+    cy.getBySel('orgUser-email-input').type(userEmail);
 
     cy.get('.react-select__indicator').click({ force: true });
     cy.get('#react-select-2-option-2').click();

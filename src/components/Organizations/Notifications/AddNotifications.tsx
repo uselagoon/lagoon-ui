@@ -237,7 +237,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
     <>
       {children}
       <Modal
-      variant={null}
+        variant={null}
         style={{
           content: {
             width: '50%',
@@ -315,7 +315,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
               Add
             </Button>
 
-            <Button testId='cancel' variant="ghost" action={() => closeModal()}>
+            <Button testId="cancel" variant="ghost" action={() => closeModal()}>
               Cancel
             </Button>
           </Footer>

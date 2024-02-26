@@ -136,7 +136,7 @@ export const EnvironmentWrapper = styled.div`
 `;
 
 export const VariableWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -210,7 +210,7 @@ export const TaskWrapper = styled.div`
 `;
 
 export const ProjectWrapper = styled.div`
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   flex: 1;
   @media ${bp.tabletUp} {
     display: flex;
@@ -240,13 +240,11 @@ export const ProjectDetailsWrapper = styled.div`
     margin: 0 0 12px;
   }
 
-  ${(props) => commonBg(props.theme.backgrounds.content)}
+  ${props => commonBg(props.theme.backgrounds.content)}
   .project-details-sidebar {
-    background-color: ${(props) => props.theme.backgrounds.content};
-    border-right: ${(props) =>
-      props.theme.colorScheme === "dark"
-        ? `2px solid ${props.theme.borders.box}`
-        : `1px solid ${color.midGrey}`};
+    background-color: ${props => props.theme.backgrounds.content};
+    border-right: ${props =>
+      props.theme.colorScheme === 'dark' ? `2px solid ${props.theme.borders.box}` : `1px solid ${color.midGrey}`};
     padding: 32px calc((100vw / 16) * 1);
     max-width: 75%;
     @media ${bp.tabletUp} {
@@ -259,7 +257,7 @@ export const ProjectDetailsWrapper = styled.div`
   .environments-wrapper {
     flex-grow: 1;
     padding: 48px calc((100vw / 50) * 1) 0px calc((100vw / 50) * 1);
-    background: ${(props) => props.theme.backgrounds.content};
+    background: ${props => props.theme.backgrounds.content};
     @media ${bp.xs_smallUp} {
       padding: 0px calc((100vw / 16) * 1) 40px calc((100vw / 16) * 1);
     }

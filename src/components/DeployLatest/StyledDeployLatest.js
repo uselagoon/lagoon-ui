@@ -41,7 +41,7 @@ export const NewDeployment = styled.div`
     height: 15px;
   }
   .loader:after {
-    content: " ";
+    content: ' ';
     display: block;
     width: 20px;
     height: 20px;

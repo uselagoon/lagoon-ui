@@ -13,4 +13,3 @@ All usernames have matching passwords (eg user:owner@example.com pass:owner@exam
 The file is configured to start the API and keycloak on non-usual ports to avoid any collisions
 
 Use `GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth` with any tools.
-

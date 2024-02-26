@@ -75,10 +75,14 @@ const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
               return (
                 <React.Fragment>
                   {contextHolder}
-                  <Button action={deploy} disabled={loading} loading={loading} testId='deploy'>
+                  <Button action={deploy} disabled={loading} loading={loading} testId="deploy">
                     Deploy
                   </Button>
-                  {success && <div className="deploy_result" data-cy="deploy_result">Deployment queued.</div>}
+                  {success && (
+                    <div className="deploy_result" data-cy="deploy_result">
+                      Deployment queued.
+                    </div>
+                  )}
                   {error && openNotificationWithIcon(error.message)}
                 </React.Fragment>
               );

@@ -133,7 +133,11 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
             {i.type !== 'project-default-group' && (
               <>
                 <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
-                  <DeleteOutlined className="delete" data-cy="deleteGroup" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                  <DeleteOutlined
+                    className="delete"
+                    data-cy="deleteGroup"
+                    onClick={() => modalAction('open', 'deleteGroup', i)}
+                  />
                 </Tooltip>
 
                 <Modal

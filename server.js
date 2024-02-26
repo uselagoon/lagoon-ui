@@ -43,11 +43,10 @@ app
     server.get('/projects/:projectSlug/project-variables', (req, res) => {
       app.render(req, res, '/project-variables', { projectName: req.params.projectSlug });
     });
-    
+
     server.get('/projects/:projectSlug/deploy-targets', (req, res) => {
       app.render(req, res, '/deploy-targets', { projectName: req.params.projectSlug });
     });
-
 
     server.get('/projects/:projectSlug/:environmentSlug', (req, res) => {
       app.render(req, res, '/environment', {
@@ -107,7 +106,7 @@ app
 
     server.get('/projects/:projectSlug/:environmentSlug/environment-variables', (req, res) => {
       app.render(req, res, '/environment-variables', {
-        openshiftProjectName: req.params.environmentSlug
+        openshiftProjectName: req.params.environmentSlug,
       });
     });
 
@@ -131,58 +130,58 @@ app
 
     server.get('/organizations/:organizationSlug', (req, res) => {
       app.render(req, res, '/organizations/organization', {
-        organizationSlug: req.params.organizationSlug
+        organizationSlug: req.params.organizationSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/groups', (req, res) => {
       app.render(req, res, '/organizations/groups', {
-        organizationSlug: req.params.organizationSlug
+        organizationSlug: req.params.organizationSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/groups/:groupSlug', (req, res) => {
       app.render(req, res, '/organizations/group', {
         organizationSlug: req.params.organizationSlug,
-        groupName: req.params.groupSlug
+        groupName: req.params.groupSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/users', (req, res) => {
       app.render(req, res, '/organizations/users', {
-        organizationSlug: req.params.organizationSlug
+        organizationSlug: req.params.organizationSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/users/:userSlug', (req, res) => {
       app.render(req, res, '/organizations/user', {
         organizationSlug: req.params.organizationSlug,
-        userSlug: req.params.userSlug
+        userSlug: req.params.userSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/projects', (req, res) => {
       app.render(req, res, '/organizations/projects', {
-        organizationSlug: req.params.organizationSlug
+        organizationSlug: req.params.organizationSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/projects/:projectGroupSlug', (req, res) => {
       app.render(req, res, '/organizations/project', {
         organizationSlug: req.params.organizationSlug,
-        projectName: req.params.projectGroupSlug
+        projectName: req.params.projectGroupSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/notifications', (req, res) => {
       app.render(req, res, '/organizations/notifications', {
-        organizationSlug: req.params.organizationSlug
+        organizationSlug: req.params.organizationSlug,
       });
     });
 
     server.get('/organizations/:organizationSlug/manage', (req, res) => {
       app.render(req, res, '/organizations/manage', {
-        organizationSlug: req.params.organizationSlug
+        organizationSlug: req.params.organizationSlug,
       });
     });
     // organizations end

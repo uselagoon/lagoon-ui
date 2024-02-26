@@ -2,7 +2,7 @@ import React from 'react';
 
 import getConfig from 'next/config';
 
-import { DeploymentUnitOutlined, UnorderedListOutlined, ReadOutlined } from '@ant-design/icons';
+import { DeploymentUnitOutlined, ReadOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import DeployTargetsLink from 'components/link/DeployTargets';
 import ProjectLink from 'components/link/Project';
 import ProjectVariablesLink from 'components/link/ProjectVariables';

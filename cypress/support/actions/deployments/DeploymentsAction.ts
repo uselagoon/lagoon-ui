@@ -10,13 +10,15 @@ export default class DeploymentsAction {
 
     deployments.getCancelBtn().first().should('have.text', 'Cancelled');
   }
-  doFailedCancelDeployment(){
-
+  doFailedCancelDeployment() {
     deployments.getCancelBtn().first().click();
 
     cy.wait('@gqlcancelDeploymentMutation');
 
-    deployments.getErrorNotification().should('exist').should('include.text', 'There was a problem cancelling deployment.');
+    deployments
+      .getErrorNotification()
+      .should('exist')
+      .should('include.text', 'There was a problem cancelling deployment.');
   }
 
   doDeployment() {
@@ -43,7 +45,7 @@ export default class DeploymentsAction {
       100: 3,
       all: 4,
     };
-    cy.getBySel('select-results').find("div").eq(6).click({ force: true });
+    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
 
     cy.get(`[id^="react-select-"][id$=-option-${vals[val]}]`).click();
 

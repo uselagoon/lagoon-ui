@@ -2,14 +2,14 @@ export default class DeploymentsRepository {
   getDeployBtn() {
     return cy.getBySel('deploy');
   }
-  getDeployQueued(){
-    return cy.getBySel("deploy_result");
+  getDeployQueued() {
+    return cy.getBySel('deploy_result');
   }
-  getDeployments(){
-    return cy.getBySel("deploy-table");
+  getDeployments() {
+    return cy.getBySel('deploy-table');
   }
   getCancelBtn() {
-    return this.getDeployments().getBySel("deployment-row").first().getBySel("cancel-button")
+    return this.getDeployments().getBySel('deployment-row').first().getBySel('cancel-button');
   }
   getResultsLimited() {
     return cy.getBySel('resultsLimited');

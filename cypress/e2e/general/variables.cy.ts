@@ -12,7 +12,7 @@ describe('Project variables page', () => {
     cy.login(Cypress.env('user_owner'), Cypress.env('user_owner'));
 
     cy.wait(500);
-    registerIdleHandler("idle");
+    registerIdleHandler('idle');
     cy.log('Full user navigation from /projects page');
 
     cy.visit(Cypress.env('url'));

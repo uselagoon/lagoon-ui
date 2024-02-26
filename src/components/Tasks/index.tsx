@@ -8,7 +8,7 @@ import { StyledTasks, TasksTable } from './StyledTasks';
 
 interface TasksProps {
   tasks: {
-    id:string;
+    id: string;
     taskName: string;
     name: string;
     adminOnlyView: boolean;
@@ -36,7 +36,7 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, environmentId, projectS
     <TasksTable className="data-table" data-cy="tasks-table">
       {!tasks.length && <div className="data-none">No Tasks</div>}
       {tasks.map(task => (
-        <div className='taskRow' key={task.id} data-cy="task-row">
+        <div className="taskRow" key={task.id} data-cy="task-row">
           <TaskLink
             taskSlug={task.taskName}
             environmentSlug={environmentSlug}

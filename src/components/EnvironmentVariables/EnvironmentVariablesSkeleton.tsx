@@ -1,10 +1,8 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import {
-  StyledEnvironmentVariableDetails,
-  StyledProjectVariableTable,
-} from "./StyledEnvironmentVariables";
-import Button from "react-bootstrap/Button";
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Skeleton from 'react-loading-skeleton';
+
+import { StyledEnvironmentVariableDetails, StyledProjectVariableTable } from './StyledEnvironmentVariables';
 
 const EnvironmentVariablesSkeleton = () => {
   const numberOfVariableFields = 3;
@@ -12,10 +10,10 @@ const EnvironmentVariablesSkeleton = () => {
   const skeletonItem = (
     <div className="data-row">
       <div className="varName">
-        <Skeleton width={"90%"} />
+        <Skeleton width={'90%'} />
       </div>
       <div className="scope">
-        <Skeleton width={"90%"} />
+        <Skeleton width={'90%'} />
       </div>
     </div>
   );
@@ -23,10 +21,10 @@ const EnvironmentVariablesSkeleton = () => {
   const projectSkeletonItem = (
     <div className="data-row">
       <div className="varName">
-        <Skeleton width={"90%"} />
+        <Skeleton width={'90%'} />
       </div>
       <div className="scope">
-        <Skeleton width={"90%"} />
+        <Skeleton width={'90%'} />
       </div>
     </div>
   );
@@ -49,13 +47,9 @@ const EnvironmentVariablesSkeleton = () => {
             <label>Scope</label>
           </div>
         </div>
-        <div className="data-table">
-          {[...Array<undefined>(numberOfVariableFields)].map(
-            () => skeletonItem
-          )}
-        </div>
+        <div className="data-table">{[...Array<undefined>(numberOfVariableFields)].map(() => skeletonItem)}</div>
       </StyledProjectVariableTable>
-      <hr style={{ margin: "30px 0" }} />
+      <hr style={{ margin: '30px 0' }} />
       <div className="header">
         <label>Project Variables</label>
         <div className="header-buttons">
@@ -72,11 +66,7 @@ const EnvironmentVariablesSkeleton = () => {
             <label>Scope</label>
           </div>
         </div>
-        <div className="data-table">
-          {[...Array<undefined>(numberOfVariableFields)].map(
-            () => projectSkeletonItem
-          )}
-        </div>
+        <div className="data-table">{[...Array<undefined>(numberOfVariableFields)].map(() => projectSkeletonItem)}</div>
       </StyledProjectVariableTable>
     </StyledEnvironmentVariableDetails>
   );

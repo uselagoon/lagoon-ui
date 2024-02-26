@@ -9,13 +9,13 @@ const OrgProjectsSkeleton = () => {
   const projectSkeleton = (key: number) => (
     <div className="data-row" key={key}>
       <div className="project">
-        <Skeleton height={40}/>
+        <Skeleton height={40} />
       </div>
       <div className="customer">
-        <Skeleton height={40}/>
+        <Skeleton height={40} />
       </div>
       <div className="customer">
-        <Skeleton height={40}/>
+        <Skeleton height={40} />
       </div>
     </div>
   );

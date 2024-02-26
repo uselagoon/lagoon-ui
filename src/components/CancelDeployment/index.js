@@ -26,7 +26,7 @@ export const CancelDeploymentButton = ({ action, success, loading, error, before
   return (
     <>
       {contextHolder}
-      <Button testId='cancelDeployment' action={action} loading={loading} disabled={loading || success}>
+      <Button testId="cancelDeployment" action={action} loading={loading} disabled={loading || success}>
         {success ? afterText || 'Cancellation requested' : beforeText || 'Cancel deployment'}
       </Button>
       {error && openNotificationWithIcon(error.message)}

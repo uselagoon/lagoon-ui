@@ -11,14 +11,15 @@ export default class BackupsAction {
   }
 
   doCheckAllRetrieveButtons() {
-    backups.getBackups()
+    backups
+      .getBackups()
       .children()
-      .getBySel("backup-row")
+      .getBySel('backup-row')
       .should('have.length', 4)
       .each(($row, idx) => {
         if (idx < 3) {
           cy.wrap($row)
-            .getBySel("backup-download")
+            .getBySel('backup-download')
             .should('exist')
             .find('button')
             .contains(/Retrieving ...|Retrieve/);
@@ -33,7 +34,7 @@ export default class BackupsAction {
       100: 3,
       all: 4,
     };
-    cy.getBySel('select-results').find("div").eq(6).click({ force: true });
+    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
 
     cy.get(`[id^="react-select-"][id$=-option-${vals[val]}]`).click();
 

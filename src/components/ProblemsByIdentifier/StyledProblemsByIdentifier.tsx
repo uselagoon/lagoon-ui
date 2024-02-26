@@ -116,7 +116,7 @@ export const StyledProblemsByIdentifier = styled.div`
     .data-none {
       border: 1px solid ${props => props.theme.borders.tableRow};
       border-bottom: 1px solid ${props => props.theme.borders.tableRow};
-      background:${props => props.theme.backgrounds.primary} !important;
+      background: ${props => props.theme.backgrounds.primary} !important;
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;

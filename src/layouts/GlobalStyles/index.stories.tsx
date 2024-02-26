@@ -9,11 +9,11 @@ const meta: Meta<typeof React.Component> = {
   component: GlobalStyles,
   tags: ['autodocs'],
   title: 'Layouts/Global Styles',
-  parameters:{
-    controls:{hideNoControlsWarning: true},
-    options:{
-        showPanel: false
-    }
+  parameters: {
+    controls: { hideNoControlsWarning: true },
+    options: {
+      showPanel: false,
+    },
   },
   decorators: [
     Story => (

@@ -326,7 +326,11 @@ const PaginatedTable: FC<Props> = ({
       {resultsToDisplay.length ? (
         resultsToDisplay.map((i, idx) => {
           return (
-            <TableRow data-cy="table-row" className="tableRow" key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}>
+            <TableRow
+              data-cy="table-row"
+              className="tableRow"
+              key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}
+            >
               {columns?.map(col => {
                 return (
                   <TableColumn key={`${col.key}-${idx}-${labelText ? labelText : ''}`} width={col.width}>

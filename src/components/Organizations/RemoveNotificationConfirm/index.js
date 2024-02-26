@@ -27,7 +27,7 @@ export const RemoveNotificationConfirm = ({ info, onRemove, open, openModal, clo
             This action will delete <span>{info.name}</span> notification.
           </RemoveModalParagraph>
           <Footer>
-            <Button testId='confirmDelete' action={onRemove} disabled={loading} loading={loading} variant="primary">
+            <Button testId="confirmDelete" action={onRemove} disabled={loading} loading={loading} variant="primary">
               Continue
             </Button>
             <Button action={closeModal} variant="ghost">

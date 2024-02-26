@@ -16,8 +16,8 @@ describe('Backups page', () => {
       aliasMutation(req, 'addRestore');
     });
 
-    cy.waitForNetworkIdle("@idle", 500);
-    
+    cy.waitForNetworkIdle('@idle', 500);
+
     backups.doRetrieveBackup();
   });
 

@@ -13,5 +13,4 @@ export default class SettingsRepository {
   getDeleteBtn() {
     return cy.getBySel('deleteKey').first().get('button').first();
   }
-
 }

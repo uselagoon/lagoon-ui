@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import * as R from "ramda";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import moment from "moment";
-import giturlparse from "git-url-parse";
-import ProjectChildPageLink from "components/link/ProjectChildPageLink";
+import React, { useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { FieldWrapper, ProjectDetails } from "./StyledProjectSidebar";
+import ProjectChildPageLink from 'components/link/ProjectChildPageLink';
+import giturlparse from 'git-url-parse';
+import moment from 'moment';
+import * as R from 'ramda';
+
+import { FieldWrapper, ProjectDetails } from './StyledProjectSidebar';
 
 const ProjectDetailsSidebar = ({ project }) => {
   const [copied, setCopied] = useState(false);
@@ -28,7 +29,9 @@ const ProjectDetailsSidebar = ({ project }) => {
       <FieldWrapper className="field-wrapper created">
         <div>
           <label>Created</label>
-          <div className="field" data-cy="created">{moment.utc(project.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
+          <div className="field" data-cy="created">
+            {moment.utc(project.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
+          </div>
         </div>
       </FieldWrapper>
       {gitLink ? (
@@ -71,7 +74,9 @@ const ProjectDetailsSidebar = ({ project }) => {
         <FieldWrapper className="field-wrapper branches">
           <div>
             <label>Branches enabled</label>
-            <div className="field" data-cy="branches">{project.branches}</div>
+            <div className="field" data-cy="branches">
+              {project.branches}
+            </div>
           </div>
         </FieldWrapper>
       )}
@@ -79,7 +84,9 @@ const ProjectDetailsSidebar = ({ project }) => {
         <FieldWrapper className="field-wrapper prs">
           <div>
             <label>Pull requests enabled</label>
-            <div className="field" data-cy="pullRequests">{project.pullrequests}</div>
+            <div className="field" data-cy="pullRequests">
+              {project.pullrequests}
+            </div>
           </div>
         </FieldWrapper>
       )}
@@ -97,7 +104,7 @@ const ProjectDetailsSidebar = ({ project }) => {
             <label>Deploy Targets</label>
             <div>
               <ProjectChildPageLink
-                childPage={"deploy-targets"}
+                childPage={'deploy-targets'}
                 projectSlug={project.name}
                 className="deployLink deployTargets hover-state"
               >

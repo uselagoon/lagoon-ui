@@ -42,8 +42,8 @@ const Button: FC<ButtonProps> = ({
         }
       };
 
-  const buttonTestProps = testId ? { ["data-cy"]: testId } : {};
-  
+  const buttonTestProps = testId ? { ['data-cy']: testId } : {};
+
   const ButtonElement = href ? (
     <LinkElement className={createClassName()} href={href}>
       {icon && <i {...buttonTestProps} className={icon} />} {children}

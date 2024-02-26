@@ -6,10 +6,10 @@ const manage = new ManageAction();
 
 describe('Org Manage page', () => {
   beforeEach(() => {
-    cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization/manage`);
+    cy.login(Cypress.env('user_platformowner'), Cypress.env('user_platformowner'));
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/manage`);
 
-    cy.intercept('POST', Cypress.env("api"), req => {
+    cy.intercept('POST', Cypress.env('api'), req => {
       aliasMutation(req, 'AddUserToOrganization');
     });
   });

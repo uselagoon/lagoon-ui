@@ -67,7 +67,7 @@ export default class TasksAction {
   doLoginLinkTask() {
     tasks.getTaskSelector(6).click();
     tasks.getRunTaskBtn().click();
-    
+
     tasks.getTaskConfirmed().should('contain', 'Task added');
   }
   doFailedLoginLinkTask() {
@@ -123,7 +123,7 @@ export default class TasksAction {
       100: 3,
       all: 4,
     };
-    cy.getBySel('select-results').find("div").eq(6).click({ force: true });
+    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
 
     cy.get(`[id^="react-select-"][id$=-option-${vals[val]}]`).click();
 

@@ -55,7 +55,9 @@ const Environment = ({ environment }) => {
       <div className="field-wrapper deployType">
         <div>
           <label>Deployment Type</label>
-          <div className="field" data-cy="deployType">{environment.deployType}</div>
+          <div className="field" data-cy="deployType">
+            {environment.deployType}
+          </div>
         </div>
       </div>
       <div className="field-wrapper created">
@@ -175,7 +177,7 @@ const Environment = ({ environment }) => {
             }}
           </Mutation>
         )}
-      <Mutation mutation={DeleteEnvironmentMutation} onError={(e)=>console.error(e)}>
+      <Mutation mutation={DeleteEnvironmentMutation} onError={e => console.error(e)}>
         {(deleteEnvironment, { loading, called, error, data }) => {
           if (error) {
             return <div>{error.message}</div>;

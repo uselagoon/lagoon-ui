@@ -2,12 +2,12 @@ import { registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 describe('Org sidebar navigation', () => {
   beforeEach(() => {
-    cy.login(Cypress.env("user_platformowner"), Cypress.env("user_platformowner"));
+    cy.login(Cypress.env('user_platformowner'), Cypress.env('user_platformowner'));
     registerIdleHandler('idle');
   });
 
   it('Traverses sidebar nav from Groups -> Users -> Projects -> Notifications -> Manage', () => {
-    cy.visit(`${Cypress.env("url")}/organizations/lagoon-demo-organization`);
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
 
     context('From /org/id to /groups', () => {
       cy.waitForNetworkIdle('@idle', 500);

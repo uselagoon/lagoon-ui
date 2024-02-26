@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { generateEnvironments, generateProjectInfo, seed } from '../../../.storybook/mocks/mocks';
-
 import Environment from './index';
 
 export default {

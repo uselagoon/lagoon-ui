@@ -21,6 +21,6 @@ export default class ProjectRepository {
     return cy.getBySel('noProjects');
   }
   getProject() {
-    return cy.getBySel("project");
+    return cy.getBySel('project');
   }
 }

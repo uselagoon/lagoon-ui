@@ -50,7 +50,7 @@ export const AddNotificationToProject = ({
       <div className="margins">
         <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Link a notification to this project">
           <>
-            <Button action={openModal} testId='addNotificationToProject'>
+            <Button action={openModal} testId="addNotificationToProject">
               <AddButtonContent>Link Notification</AddButtonContent>
             </Button>
           </>
@@ -107,7 +107,7 @@ export const AddNotificationToProject = ({
                   </label>
                   <Footer>
                     <Button
-                      testId='addNotificationToProjectConfirm'
+                      testId="addNotificationToProjectConfirm"
                       disabled={called || selectedProject === null}
                       action={() => {
                         addNotificationToProject({
