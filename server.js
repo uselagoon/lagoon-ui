@@ -3,6 +3,8 @@ const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = dev ? 3003 : 3000;
+const hostName = process.env.HOST || "localhost";
+
 const app = next({
   dev,
   dir: 'src',
@@ -190,9 +192,9 @@ app
       return handle(req, res);
     });
 
-    server.listen(port, err => {
+    server.listen(port, hostName ,err => {
       if (err) throw err;
-      console.log('> Ready on http://localhost:' + port);
+      console.log(`> Ready on http://${hostName}:${port}`);
     });
   })
   .catch(ex => {

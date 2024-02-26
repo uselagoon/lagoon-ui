@@ -10,6 +10,7 @@
     "lint": "tsc && eslint -- src/",
     "build": "next build src",
     "start": "NODE_ENV=production node server.js",
+    "start-testUI": "NODE_ENV=production HOST=0.0.0.0 node server.js",
     "generateTourHash": "node tourHash.js",
     "storybook": "storybook dev -p 6006",
     "test-storybook": "test-storybook",
