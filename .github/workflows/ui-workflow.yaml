@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install dependencies
+      run: yarn
+
     - name: Checkout Repository
       uses: actions/checkout@v4
 
     - name: Formatting check
-      run: yarn prettier --check --config .prettierrc
+      run: |
+           yarn prettier@2.8.7 @trivago/prettier-plugin-sort-imports
+           yarn prettier --check --config .prettierrc
 
   lint:
     runs-on: ubuntu-latest
@@ -44,10 +49,7 @@ jobs:
       uses: actions/setup-node@v3.1
       with:
         node-version: '16'
-
-    - name: Install Dependencies
-      run: yarn install
-
+        
     - name: Build and start Lagoon-minimal
       run: |
         cd test
