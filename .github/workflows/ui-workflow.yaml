@@ -1,0 +1,71 @@
+name: Lagoon UI CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3.1
+
+    - name: Formatting check
+      run: yarn prettier --check --config .prettierrc
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3.1
+
+    - name: Linting
+      run: |
+        yarn tsc
+        yarn eslint -- src/
+
+  cypress-tests:
+    runs-on: ubuntu-latest
+
+    needs: [format-check, lint]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3.1
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3.1
+      with:
+        node-version: '16'
+
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Build and start Lagoon-minimal
+      run: |
+        cd test
+        make up
+
+    - name: Start Frontend
+      run: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start
+
+    - name: Wait for frontend to be ready
+      run: npx wait-on "http://localhost:3000"
+
+    - name: Run Cypress Tests
+      uses: cypress-io/github-action@v4
+      with:
+        config-file: ./cypress/cypress.config.ts
+      run: yarn cypress:runAll
+
+    - name: Stop Docker containers
+      run: |
+        cd test
+        make down
