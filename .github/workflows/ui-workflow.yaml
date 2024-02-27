@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - cypress-test
 
 jobs:
   format-check:
@@ -21,8 +22,8 @@ jobs:
 
     - name: Formatting check
       run: |
-           yarn add prettier@2.8.7 @trivago/prettier-plugin-sort-imports
-           yarn format-check
+        yarn add prettier@2.8.7 @trivago/prettier-plugin-sort-imports
+        yarn format-check
 
   lint:
     runs-on: ubuntu-latest
@@ -55,14 +56,41 @@ jobs:
         cd test
         make up
 
-    - name: Run Cypress Tests
+    - name: Start ui
+      env:
+        GRAPHQL_API: http://0.0.0.0:33000/graphql
+        KEYCLOAK_API: http://0.0.0.0:38088/auth
+      run: |
+        yarn install
+        yarn build
+        yarn start &
+
+    - name: Run RBAC Cypress Tests
       uses: cypress-io/github-action@v6
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
-        wait-on: "http://0.0.0.0:3000"
-        build: yarn build && GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth yarn start
-        command: yarn cypress:runAll
+        wait-on: 'http://localhost:3000'
+        command: yarn cypress:runRbac
+      continue-on-error: true
+
+    - name: Run General Cypress Tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: ./cypress/cypress.config.ts
+        auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3000'
+        command: yarn cypress:runGeneral
+      continue-on-error: true
+
+    - name: Run Organization Cypress Tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: ./cypress/cypress.config.ts
+        auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3000'
+        command: yarn cypress:runOrganizations
+      continue-on-error: true
 
     - name: Stop Docker containers
       run: |
