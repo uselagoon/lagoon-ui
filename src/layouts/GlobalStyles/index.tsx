@@ -42,7 +42,15 @@ body {
   color: ${props => (props.theme.colorScheme === 'dark' ? '#000' : '#fff')};
   background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
   }
-
+}
+.componentTooltip {
+  .ant-tooltip-arrow:before{
+   background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+  }
+  .ant-tooltip-content .ant-tooltip-inner{
+  color: ${props => (props.theme.colorScheme === 'dark' ? '#000' : '#fff')};
+  background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+  }
 }
 
 #__next {

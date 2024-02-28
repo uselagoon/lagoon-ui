@@ -24,6 +24,7 @@ import {Tag} from "antd";
 import Btn from 'components/Button'
 import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
 import {LoadingOutlined} from "@ant-design/icons";
+import { Tooltip } from 'antd';
 
 /**
  * Displays the environment variable information.
@@ -345,47 +346,51 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                           <VariableActions>
                             <Collapse in={openEnvVars}>
                               <div className="varUpdate">
-                                <Button
-                                  onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
-                                  style={{ all: 'unset'}}
-                                >
-                                  <AddVariable
-                                    varProject={environment.project.name}
-                                    varEnvironment={environment.name}
-                                    varValues={displayVars}
-                                    varTarget="Environment"
-                                    varName={updateVarName}
-                                    varValue={updateVarValue}
-                                    varScope={updateVarScope}
-                                    refresh={onVariableAdded}
-                                    icon="edit"
-                                    action="edit"
-                                  />
-                                </Button>
+                                <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
+                                  <Button
+                                    onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
+                                    style={{ all: 'unset'}}
+                                  >
+                                    <AddVariable
+                                      varProject={environment.project.name}
+                                      varEnvironment={environment.name}
+                                      varValues={displayVars}
+                                      varTarget="Environment"
+                                      varName={updateVarName}
+                                      varValue={updateVarValue}
+                                      varScope={updateVarScope}
+                                      refresh={onVariableAdded}
+                                      icon="edit"
+                                      action="edit"
+                                    />
+                                  </Button>
+                                </Tooltip>
                               </div>
                             </Collapse>
                             <div className="varDelete">
-                              <Button
-                                onClick={() => permissionCheck("delete", index)}
-                                style={{ all: "unset" }}
-                              >
-                                {envLoading && action === "delete" ?
-                                  <DeleteVariableButton>
-                                    <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
-                                      {valueState[index] ? <LoadingOutlined/> : "Delete"}
-                                    </Btn>
-                                  </DeleteVariableButton>
-                                :
-                                  <DeleteVariable
-                                    deleteType="Environment variable"
-                                    deleteName={envVar.name}
-                                    varProject={environment.project.name}
-                                    varEnvironment={environment.name}
-                                    icon="bin"
-                                    refresh={onVariableAdded}
-                                  />
-                                }
-                              </Button>
+                              <Tooltip overlayClassName="componentTooltip" title="Delete Variable" placement="bottom">
+                                <Button
+                                  onClick={() => permissionCheck("delete", index)}
+                                  style={{ all: "unset" }}
+                                >
+                                  {envLoading && action === "delete" ?
+                                    <DeleteVariableButton>
+                                      <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                        {valueState[index] ? <LoadingOutlined/> : "Delete"}
+                                      </Btn>
+                                    </DeleteVariableButton>
+                                  :
+                                    <DeleteVariable
+                                      deleteType="Environment variable"
+                                      deleteName={envVar.name}
+                                      varProject={environment.project.name}
+                                      varEnvironment={environment.name}
+                                      icon="bin"
+                                      refresh={onVariableAdded}
+                                    />
+                                  }
+                                </Button>
+                              </Tooltip>
                             </div>
                           </VariableActions>
                         </div>
