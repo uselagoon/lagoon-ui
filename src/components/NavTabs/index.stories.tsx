@@ -12,16 +12,15 @@ seed();
 const meta: Meta<typeof NavTabs> = {
   component: NavTabs,
   title: 'Components/NavTabs',
-  tags:["autodocs"],
+  tags: ['autodocs'],
   args: {
     environment: generateEnvironments(),
   },
-  argTypes:{
+  argTypes: {
     environment: {
       description: 'Project environment object',
     },
-  }
-
+  },
 };
 
 type Story = StoryObj<typeof NavTabs>;

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { DeploymentUnitOutlined, UnorderedListOutlined, ReadOutlined } from '@ant-design/icons';
+import { DeploymentUnitOutlined, ReadOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import DeployTargetsLink from 'components/link/DeployTargets';
 import ProjectLink from 'components/link/Project';
 import ProjectChildPageLink from 'components/link/ProjectChildPageLink';

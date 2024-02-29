@@ -53,11 +53,11 @@ export const StyledUser = styled.section`
     padding: 0;
     width: 5%;
   }
-  .role{
-    background:#9747FF;
-    padding:5px 8px;
-    border-radius:5px;
-    color:#fff;
+  .role {
+    background: #9747ff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    color: #fff;
   }
   .remove {
     display: flex;
@@ -65,7 +65,8 @@ export const StyledUser = styled.section`
     padding: 0;
     width: 5%;
   }
-  .groups, .projects {
+  .groups,
+  .projects {
     font-family: 'source-code-pro', sans-serif;
     font-size: 0.8125rem;
     padding: 5px 10px 5px 10px;
@@ -84,7 +85,7 @@ export const StyledUser = styled.section`
     border-color: hsl(0, 0%, 80%);
     font-family: 'source-code-pro', sans-serif;
     font-size: 16px;
-    line-height:24px;
+    line-height: 24px;
     color: #5f6f7a;
     padding: 8px;
     box-sizing: border-box;
@@ -117,36 +118,36 @@ export const Header = styled.div`
   display: flex;
 
   .button-sort {
-      color: #5f6f7a;
-      position: relative;
-      font-family: 'source-code-pro', sans-serif;
-      font-size: 13px;
-      font-size: 0.8125rem;
-      line-height: 1.4;
-      text-transform: uppercase;
-      padding-left: 20px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      width: 10%;
+    color: #5f6f7a;
+    position: relative;
+    font-family: 'source-code-pro', sans-serif;
+    font-size: 13px;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    padding-left: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 10%;
 
-      &:after {
-        position: absolute;
-        top: 0;
-        width: 20px;
-        height: 20px;
-      }
-
-      &.ascending:after {
-        content: ' \\25B2';
-      }
-
-      &.descending:after {
-        content: ' \\25BC';
-      }
-
-      &:first-child {
-        padding-left: 0;
-      }
+    &:after {
+      position: absolute;
+      top: 0;
+      width: 20px;
+      height: 20px;
     }
+
+    &.ascending:after {
+      content: ' \\25B2';
+    }
+
+    &.descending:after {
+      content: ' \\25BC';
+    }
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
 `;

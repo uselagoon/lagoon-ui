@@ -42,10 +42,7 @@ export const StyledHeader = styled.header<{ isOrganizationsPath: boolean }>`
     }
     &.navitem {
       align-items: center;
-      border-left: 1px solid ${props =>
-    props.isOrganizationsPath
-      ? "transparent"
-      : color.blue};
+      border-left: 1px solid ${props => (props.isOrganizationsPath ? 'transparent' : color.blue)};
       cursor: pointer;
       display: flex;
       &::before {

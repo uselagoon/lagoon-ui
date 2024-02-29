@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 
 import Box from 'components/Box';
 
-import { OrgsHeader, OrganizationsPage, SearchInput, Organization } from './StyledOrganizations';
+import { Organization, OrganizationsPage, OrgsHeader, SearchInput } from './StyledOrganizations';
 
 const OrganizationsSkeleton = () => {
   const RenderSkeletonBox = (index: number) => {
@@ -22,14 +22,14 @@ const OrganizationsSkeleton = () => {
 
   return (
     <OrganizationsPage>
-        <OrgsHeader>
-          <label>
-            <Skeleton width={'20%'} />
-          </label>
-          <label></label>
-          <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
-        </OrgsHeader>
-        <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
+      <OrgsHeader>
+        <label>
+          <Skeleton width={'20%'} />
+        </label>
+        <label></label>
+        <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
+      </OrgsHeader>
+      <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
     </OrganizationsPage>
   );
 };

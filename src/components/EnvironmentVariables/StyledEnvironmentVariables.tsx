@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { bp, color } from "lib/variables";
+import { bp, color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const VariableActions = styled.div`
   display: flex;
@@ -72,7 +72,7 @@ export const StyledEnvironmentVariableDetails = styled.div`
       width: 100%;
 
       &::before {
-        background-image: url("/static/images/git-lab.svg");
+        background-image: url('/static/images/git-lab.svg');
         background-size: 19px 17px;
       }
 
@@ -113,7 +113,7 @@ export const StyledEnvironmentVariableDetails = styled.div`
   .header-buttons {
     display: flex;
     margin: 0 4px;
-    
+
     .add-variable {
       width: 54px;
       height: 38px;
@@ -127,14 +127,14 @@ export const StyledEnvironmentVariableDetails = styled.div`
     display: inline-block;
     width: 36px;
     height: 36px;
-    
+
     &.value-btn {
       width: 90px;
       height: 17px;
     }
   }
   .loader:after {
-    content: " ";
+    content: ' ';
     display: block;
     width: 24px;
     height: 24px;
@@ -236,15 +236,15 @@ export const StyledVariableTable = styled.div`
   }
 
   .data-table {
-    background-color: ${(props) => props.theme.backgrounds.table};
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    background-color: ${props => props.theme.backgrounds.table};
+    border: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
 
   .data-none {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -252,8 +252,8 @@ export const StyledVariableTable = styled.div`
   }
 
   .values-present.data-row {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -291,12 +291,12 @@ export const StyledVariableTable = styled.div`
       width: 32.5%;
     }
     & .varUpdate {
-        display: flex;
-        padding: 0;
+      display: flex;
+      padding: 0;
 
-        button {
-          background-color: #fff;
-        }
+      button {
+        background-color: #fff;
+      }
     }
     & .varActions {
       width: 20%;
@@ -311,8 +311,8 @@ export const StyledVariableTable = styled.div`
   }
 
   .data-row {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     align-items: center;
@@ -438,7 +438,7 @@ export const StyledProjectVariableTable = styled.div`
         padding-left: 20px;
 
         @media ${bp.tabletDown} {
-          width: 30%
+          width: 30%;
         }
       }
       &.scope {
@@ -459,15 +459,15 @@ export const StyledProjectVariableTable = styled.div`
   }
 
   .data-table {
-    background-color: ${(props) => props.theme.backgrounds.table};
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
+    background-color: ${props => props.theme.backgrounds.table};
+    border: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
 
   .data-none {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 3px;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -475,8 +475,8 @@ export const StyledProjectVariableTable = styled.div`
   }
 
   .values-present.data-row {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     padding: 8px 0 7px 0;
@@ -520,8 +520,8 @@ export const StyledProjectVariableTable = styled.div`
   }
 
   .data-row {
-    border: 1px solid ${(props) => props.theme.borders.tableRow};
-    border-bottom: 1px solid ${(props) => props.theme.borders.tableRow};
+    border: 1px solid ${props => props.theme.borders.tableRow};
+    border-bottom: 1px solid ${props => props.theme.borders.tableRow};
     border-radius: 0;
     line-height: 1.5rem;
     align-items: center;

@@ -10,6 +10,7 @@ interface Tasks {
     created: string;
     service: string;
     status: string;
+    id: string;
   }[];
   environmentSlug: string;
   projectSlug: string;
@@ -27,8 +28,9 @@ interface Task {
     status: string;
     files: TaskFile[];
     logs: string;
-    taskName?: string;
+    taskName: string;
     name?: string;
+    id: string;
   };
 }
 faker.setDefaultRefDate(new Date(`${new Date().getFullYear().toString()}-01-01`));
@@ -45,6 +47,7 @@ export function createTasks(): Tasks {
       created: faker.date.anytime().toDateString(),
       service: 'cli',
       status: faker.helpers.arrayElement(['Pending', 'In progress', 'Completed']),
+      id: faker.string.uuid(),
     };
   });
 
@@ -66,7 +69,8 @@ export function createTask(): Task {
     `::group::${eventName}\n` +
     `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]}:: Job '${jobName}'\n` +
     `::step-start::${stepName}\n` +
-    `::${status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
+    `::${
+      status[Math.floor(faker.number.int({ min: 0, max: 1 }) * status.length)]
     }:: Job '${jobName}' step '${stepName}'\n` +
     `::step-end::${stepName}::${duration}\n` +
     `${generateLogMessage()}\n` +
@@ -88,6 +92,7 @@ export function createTask(): Task {
       files,
       logs: log,
       taskName: faker.lorem.slug(2),
+      id: faker.string.uuid(),
     },
   };
 }
@@ -311,7 +316,7 @@ export const getDeployment = (seed: number) => {
     status: deployStatus(),
     created,
     started,
-    buildStep:faker.word.words(3),
+    buildStep: faker.word.words(3),
     completed,
     environment: generateEnvironments({ seed }),
     remoteId: faker.number.int(),

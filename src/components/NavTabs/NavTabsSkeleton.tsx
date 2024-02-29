@@ -1,12 +1,18 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { CheckSquareOutlined, ReadOutlined, RocketOutlined, SaveOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import {
+  CheckSquareOutlined,
+  ReadOutlined,
+  RocketOutlined,
+  SaveOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import BackupsLink from 'components/link/Backups';
 import DeploymentsLink from 'components/link/Deployments';
 import EnvironmentLink from 'components/link/Environment';
-import TasksLink from 'components/link/Tasks';
 import EnvironmentVariablesLink from 'components/link/EnvironmentVariables';
+import TasksLink from 'components/link/Tasks';
 
 import { StyledNavigation } from './StylednavTabs';
 

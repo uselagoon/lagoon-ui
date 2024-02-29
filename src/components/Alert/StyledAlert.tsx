@@ -1,5 +1,5 @@
+import { color } from 'lib/variables';
 import styled, { css } from 'styled-components';
-import { color } from "lib/variables";
 
 const sharedStyles = css`
   position: relative;
@@ -32,14 +32,13 @@ export const StyledAlert = styled.div`
     cursor: pointer;
     transition: 0.3s;
     cursor: pointer;
-    
+
     &.closebtn:hover {
       color: black;
     }
   }
-  
 `;
 
 export const StyledAlertContent = styled.div`
-    ${sharedStyles}
+  ${sharedStyles}
 `;
