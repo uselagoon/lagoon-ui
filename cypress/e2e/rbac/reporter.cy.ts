@@ -118,7 +118,7 @@ describe('REPORTER permission test suites', () => {
   });
 
   context('Deployments', () => {
-    it('Fails to do a PROD deployment - no permission for GUEST', () => {
+    it('Fails to do a PROD deployment - no permission for REPORTER', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
 
       cy.intercept('POST', Cypress.env('api'), req => {
