@@ -7,8 +7,7 @@ KCADM_LOGIN = $(KCADM) config credentials --config $(KCADM_CONFIG) $(KCADM_STRIN
 
 .PHONY: build-lagoon
 build-lagoon:
-	docker compose pull
-	docker compose up -d
+	docker compose up -d --quiet-pull
 	$(MAKE) wait-for-keycloak
 	@echo "\nYour Lagoon stack is now running locally - use 'GRAPHQL_API=http://0.0.0.0:33000/graphql KEYCLOAK_API=http://0.0.0.0:38088/auth' as the variables to access it\n"
 
