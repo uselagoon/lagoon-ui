@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo';
 import ButtonBootstrap from 'react-bootstrap/Button';
 import ReactSelect from 'react-select';
 
+import { LoadingOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
@@ -31,7 +32,6 @@ export const AddVariable = ({
   varEnvironment,
   varValues,
   varTarget,
-  noVars,
   varName,
   varValue,
   varScope,
@@ -50,6 +50,9 @@ export const AddVariable = ({
   setEnvironmentErrorAlert,
   setProjectErrorAlert,
   action,
+  loading,
+  prjEnvValues,
+  envValues,
 }) => {
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
@@ -73,22 +76,36 @@ export const AddVariable = ({
     setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true);
   };
 
+  const handlePermissionCheck = () => {
+    let waitForGQL = setTimeout(() => {
+      openModal();
+    }, [1000]);
+    if (prjEnvValues || envValues) {
+      clearTimeout(waitForGQL);
+      openModal();
+    }
+  };
+
   return (
     <NewVariable>
       {icon ? (
         <Button variant="white" icon={icon} action={openModal}>
           Update
         </Button>
-      ) : (
-        <ButtonBootstrap data-cy="addVariable" onClick={openModal}>
+      ) : !loading ? (
+        <ButtonBootstrap data-cy="addVariable" onClick={handlePermissionCheck}>
           Add
+        </ButtonBootstrap>
+      ) : (
+        <ButtonBootstrap className="add-variable">
+          <LoadingOutlined />
         </ButtonBootstrap>
       )}
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
         <NewVariableModal>
           <div className="variable-target">
             <span className="variable-target">
-              {noVars || !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`}
+              {!updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`}
             </span>
           </div>
           <div className="var-modal">
