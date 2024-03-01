@@ -4,7 +4,7 @@ const deployment = new DeploymentRepository();
 
 export default class deploymentAction {
   doCancelDeployment() {
-    deployment.getCancelDeploymentBtn().click();
+    deployment.getCancelDeploymentBtn().first().click();
 
     cy.wait('@gqlcancelDeploymentMutation');
 

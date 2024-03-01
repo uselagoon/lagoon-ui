@@ -28,6 +28,7 @@ describe('Project variables page', () => {
   it('Adds or updates a variable', () => {
     const { name, value } = testData.variables[0];
 
+    cy.waitForNetworkIdle('@idle', 500);
     environment.doAddVariable(name, value);
 
     cy.intercept('POST', Cypress.env('api')).as('addRequest');
