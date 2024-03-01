@@ -1,6 +1,7 @@
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
-import {expect} from "@storybook/jest";
+
 import Accordion from './index';
 
 /**
@@ -41,25 +42,25 @@ export const Minified: Story = {
 export const WithChildren: Story = {
   args: {
     ...Default.args,
-    defaultValue:false,
+    defaultValue: false,
     children: (
       <ul style={{ border: '1px solid #999' }}>
         <li>List item</li>
         <li>Another list item</li>
       </ul>
-    )
+    ),
   },
-  play:async ({canvasElement})=>{
+  play: async ({ canvasElement }) => {
     // toggle functionality
-    const canvas = within(canvasElement)
-    const element = await Promise.resolve(canvas.getByTestId("storybook-accordion"));
+    const canvas = within(canvasElement);
+    const element = await Promise.resolve(canvas.getByTestId('storybook-accordion'));
     await Promise.resolve(userEvent.click(element));
-    expect(await Promise.resolve(canvas.getAllByRole("listitem").length)).toBe(2);
+    expect(await Promise.resolve(canvas.getAllByRole('listitem').length)).toBe(2);
 
     // toggle visibility
     await Promise.resolve(userEvent.click(element));
-    expect(await Promise.resolve(canvas.queryByRole("list"))).toBeNull();
-  }
+    expect(await Promise.resolve(canvas.queryByRole('list'))).toBeNull();
+  },
 };
 
 export default meta;

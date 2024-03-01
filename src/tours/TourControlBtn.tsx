@@ -48,12 +48,7 @@ const TourControlBtn = () => {
   const renderButton = (clickHandler: () => void, toolTip: string) => {
     return (
       <StyledRestartTour onClick={clickHandler}>
-        <Image
-          alt="tour"
-          width={35}
-          height={35}
-          src="/static/images/tour.svg"
-        />
+        <Image alt="tour" width={35} height={35} src="/static/images/tour.svg" />
         <span className="tooltip">{toolTip}</span>
       </StyledRestartTour>
     );

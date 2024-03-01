@@ -78,6 +78,7 @@ const DrushRsyncFiles = ({
             />
           </div>
           <Button
+            testId="task-btn"
             action={() =>
               taskDrushRsyncFiles({
                 variables: {
@@ -86,9 +87,9 @@ const DrushRsyncFiles = ({
                 },
               })
             }
-            disabled={!selectedSourceEnv || loading }
+            disabled={!selectedSourceEnv || loading}
           >
-            {loading ? <span className="loader"></span> : "Run task"}
+            {loading ? <span className="loader"></span> : 'Run task'}
           </Button>
         </SelectWrapper>
       );

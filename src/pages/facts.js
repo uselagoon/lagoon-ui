@@ -35,21 +35,17 @@ export const PageFacts = ({ router }) => {
           <title>{`${router.query.openshiftProjectName} | Facts`}</title>
         </Head>
         <MainLayout>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={projectSlug} />
-              <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
-            </Breadcrumbs>
+          <Breadcrumbs>
+            <ProjectBreadcrumb projectSlug={projectSlug} />
+            <EnvironmentBreadcrumb environmentSlug={openshiftProjectName} projectSlug={projectSlug} />
+          </Breadcrumbs>
 
-            <CommonWrapperWNotification>
-              <NavTabsSkeleton
-                activeTab="facts"
-                projectName={projectSlug}
-                openshiftProjectName={openshiftProjectName}
-              />
-              <div className="content">
-                <FactsSkeleton />
-              </div>
-            </CommonWrapperWNotification>
+          <CommonWrapperWNotification>
+            <NavTabsSkeleton activeTab="facts" projectName={projectSlug} openshiftProjectName={openshiftProjectName} />
+            <div className="content">
+              <FactsSkeleton />
+            </div>
+          </CommonWrapperWNotification>
         </MainLayout>
       </>
     );

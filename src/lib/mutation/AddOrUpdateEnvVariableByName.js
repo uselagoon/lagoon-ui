@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation($input: EnvVariableByNameInput!) {
-    addOrUpdateEnvVariableByName(input: $input){
+  mutation addEnvVariable($input: EnvVariableByNameInput!) {
+    addOrUpdateEnvVariableByName(input: $input) {
       id
-      name,
-      scope,
+      name
+      scope
       value
     }
   }

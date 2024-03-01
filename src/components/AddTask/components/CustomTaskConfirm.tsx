@@ -33,7 +33,7 @@ export const CustomTaskConfirm: FC<CustomTaskConfirmProps> = ({
           Confirm Task
         </Button>
       </div>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`}>
+      <Modal variant={null} isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`}>
         <React.Fragment>
           <ReactMarkdown>{taskText}</ReactMarkdown>
           <div className="form-input">

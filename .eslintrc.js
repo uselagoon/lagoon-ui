@@ -3,10 +3,10 @@ module.exports = {
   extends: ['next', 'plugin:storybook/recommended'],
   rules: {
     'import/no-anonymous-default-export': 'off',
-    'react/no-unescaped-entities': 'off',
+    'react/no-unescaped-entities': 0,
     'react/display-name': 'off',
   },
-  ignorePatterns: ['src/**/*.stories.js'],
+  ignorePatterns: ['src/**/*.stories.js', 'src/**/*.stories.tsx', 'src/tours'],
 
   overrides: [
     {

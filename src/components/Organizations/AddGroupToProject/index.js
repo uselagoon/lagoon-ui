@@ -2,6 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
@@ -10,7 +11,6 @@ import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
-import { Tooltip } from 'antd';
 
 const ADD_GROUP_PROJECT_MUTATION = gql`
   mutation addProjectToGroup($groupName: String!, $projectName: String!) {
@@ -44,7 +44,7 @@ export const AddGroupToProject = ({
       <div className="margins">
         <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Link a group to this project">
           <>
-            <Button action={openModal}>
+            <Button action={openModal} testId="addGroupToProject">
               <AddButtonContent>Link Group</AddButtonContent>
             </Button>
           </>
@@ -68,6 +68,7 @@ export const AddGroupToProject = ({
                     <RoleSelect>
                       <ReactSelect
                         className="select"
+                        classNamePrefix="react-select"
                         menuPortalTarget={document.body}
                         styles={{
                           menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
@@ -89,6 +90,7 @@ export const AddGroupToProject = ({
                   <Footer>
                     <Button
                       disabled={called || selectedProject === null}
+                      testId="addGroupToProjectConfirm"
                       action={() => {
                         addGroupProject({
                           variables: {
@@ -103,7 +105,7 @@ export const AddGroupToProject = ({
                       Add
                     </Button>
 
-                    <Button variant="ghost" action={() => closeModal()}>
+                    <Button testId="cancel" variant="ghost" action={() => closeModal()}>
                       Cancel
                     </Button>
                   </Footer>

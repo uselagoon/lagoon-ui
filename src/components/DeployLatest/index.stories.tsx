@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { generateEnvironments,seed } from '../../../.storybook/mocks/mocks';
-import DeployLatest from './index';
 import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
+import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
+import DeployLatest from './index';
+
 const meta: Meta<typeof DeployLatest> = {
   component: DeployLatest,
   title: 'Components/Deploy Latest',
@@ -15,7 +16,6 @@ type Story = StoryObj<typeof DeployLatest>;
 seed();
 
 const environment = generateEnvironments({ name: 'master' });
-
 
 /**
  * Default

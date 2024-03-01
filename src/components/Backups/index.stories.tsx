@@ -1,11 +1,12 @@
 import React from 'react';
+
 import { faker } from '@faker-js/faker';
 import { Meta } from '@storybook/react';
 
 import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 import Backups, { BackupsProps } from './index';
 
-const meta:Meta<typeof Backups> = {
+const meta: Meta<typeof Backups> = {
   component: Backups,
   title: 'Components/Backups',
   decorators: [withButtonOverrides('.download', 'click', 'Backups button click')],
@@ -14,18 +15,18 @@ const meta:Meta<typeof Backups> = {
 faker.seed(123);
 const backupsData = [
   {
-    id:faker.string.uuid(),
+    id: faker.string.uuid(),
     source: 'mariadb',
     created: '2019-11-18T08:00:00',
     backupId: '40',
     restore: {
       status: 'completed',
       restoreLocation: 'https://example.com/backup',
-      restoreSize: 300
+      restoreSize: 300,
     },
   },
   {
-    id:faker.string.uuid(),
+    id: faker.string.uuid(),
     source: 'mariadb',
     created: '2019-11-19T08:00:00',
     backupId: '41',
@@ -34,7 +35,7 @@ const backupsData = [
     },
   },
   {
-    id:faker.string.uuid(),
+    id: faker.string.uuid(),
     source: 'mariadb',
     created: '2019-11-19T09:00:00',
     backupId: '42',
@@ -42,13 +43,10 @@ const backupsData = [
       status: 'pending',
     },
   },
-] satisfies BackupsProps["backups"];
-
-
+] satisfies BackupsProps['backups'];
 
 export const Default = () => <Backups backups={backupsData} />;
 
 export const NoBackups = () => <Backups backups={[]} />;
-
 
 export default meta;

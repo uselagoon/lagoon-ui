@@ -168,7 +168,7 @@ export const FieldWrapper = styled.div`
 
   &.envlimit {
     &:before {
-      background-image: url("/static/images/environments-in-use.svg");
+      background-image: url('/static/images/environments-in-use.svg');
       height: 84px;
     }
   }

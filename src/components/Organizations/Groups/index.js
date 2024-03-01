@@ -86,7 +86,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
       width: '15%',
       key: 'members',
       render: i => {
-        return typeof i.memberCount !== 'undefined' && <span>Members: {i.memberCount} </span>;
+        return typeof i.memberCount !== 'undefined' && <span data-cy="memberCount">Members: {i.memberCount} </span>;
       },
     },
     {
@@ -97,7 +97,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
           <TableActions>
             <>
               <Tooltip overlayClassName="orgTooltip" title="Add a user to the group" placement="bottom">
-                <UserAddOutlined className="add" onClick={() => modalAction('open', 'addUser', i)} />
+                <UserAddOutlined className="add" data-cy="adduser" onClick={() => modalAction('open', 'addUser', i)} />
               </Tooltip>
               <Modal
                 style={{
@@ -133,7 +133,11 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
             {i.type !== 'project-default-group' && (
               <>
                 <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
-                  <DeleteOutlined className="delete" onClick={() => modalAction('open', 'deleteGroup', i)} />
+                  <DeleteOutlined
+                    className="delete"
+                    data-cy="deleteGroup"
+                    onClick={() => modalAction('open', 'deleteGroup', i)}
+                  />
                 </Tooltip>
 
                 <Modal
@@ -146,7 +150,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                   </RemoveModalParagraph>
 
                   <Footer>
-                    <Mutation mutation={DELETE_GROUP}>
+                    <Mutation mutation={DELETE_GROUP} onError={e => console.error(e)}>
                       {(deleteGroup, { called, error, data }) => {
                         if (error) {
                           return <div className="error">{error.message}</div>;
@@ -157,6 +161,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
 
                         return (
                           <Button
+                            testId="confirm"
                             variant="primary"
                             loading={called}
                             disabled={called}

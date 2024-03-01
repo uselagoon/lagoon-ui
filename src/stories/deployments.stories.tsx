@@ -18,7 +18,7 @@ const fakeQueryParams = {
   deploymentName: faker.lorem.slug(),
 };
 
-seed()
+seed();
 export const Default: Story = {
   parameters: {
     msw: {

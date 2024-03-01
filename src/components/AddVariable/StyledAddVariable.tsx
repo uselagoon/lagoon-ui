@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { color } from "lib/variables";
+import { color } from 'lib/variables';
+import styled from 'styled-components';
 
 export const NewVariable = styled.div`
   .var-modal {
@@ -30,7 +30,7 @@ export const NewVariableModal = styled.div`
   .variable-target {
     text-align: center;
     color: #5f6f7a;
-    font-family: "source-code-pro", sans-serif;
+    font-family: 'source-code-pro', sans-serif;
     font-weight: bold;
   }
   input {
@@ -54,8 +54,11 @@ export const NewVariableModal = styled.div`
     margin-right: 10px;
     color: ${color.blue};
   }
-  .react-select__control, .react-select__menu, .react-select__option, .react-select__single-value {
-    background:${(props) => props.theme.backgrounds.primary};
+  .react-select__control,
+  .react-select__menu,
+  .react-select__option,
+  .react-select__single-value {
+    background: ${props => props.theme.backgrounds.primary};
     color: ${props => props.theme.texts.primary};
   }
 `;

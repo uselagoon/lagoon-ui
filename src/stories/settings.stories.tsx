@@ -11,15 +11,15 @@ const meta: Meta<typeof SettingsPage> = {
 type Story = StoryObj<typeof SettingsPage>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-          handlers: [
-            graphql.query('me', (_, res, ctx) => {
-              return res(ctx.delay(),ctx.data({ allProjects: MockSettings(123) }));
-            }),
-          ],
-        },
-      },
-}
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('me', (_, res, ctx) => {
+          return res(ctx.delay(), ctx.data({ allProjects: MockSettings(123) }));
+        }),
+      ],
+    },
+  },
+};
 
 export default meta;

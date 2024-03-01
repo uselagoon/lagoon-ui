@@ -1,29 +1,27 @@
-import React from "react";
-import {StyledAlert, StyledAlertContent} from './StyledAlert';
+import React from 'react';
 
-export const Alert = ({
-      type, header, message, closeAlert
-}) => {
-    const createClassName = () => {
-      let className = `${type ? `${type} alert-element` : 'alert-element'}`;
-      return className;
-    };
+import { StyledAlert, StyledAlertContent } from './StyledAlert';
 
-    const AlertElement = 
-      <StyledAlert className={createClassName()}>
-        <span className="closebtn" onClick={() => closeAlert()}>
-          &times;
+export const Alert = ({ type, header, message, closeAlert }) => {
+  const createClassName = () => {
+    let className = `${type ? `${type} alert-element` : 'alert-element'}`;
+    return className;
+  };
+
+  const AlertElement = (
+    <StyledAlert className={createClassName()}>
+      <span className="closebtn" onClick={() => closeAlert()}>
+        &times;
+      </span>
+      <StyledAlertContent>
+        <span>
+          <b>{header}</b> {message}
         </span>
-        <StyledAlertContent>
-          <span>
-            <b>{header}</b> {message}
-          </span>
-        </StyledAlertContent>
-      </StyledAlert>
+      </StyledAlertContent>
+    </StyledAlert>
+  );
 
-    
-    
-    return <>{AlertElement}</>;
-}
+  return <>{AlertElement}</>;
+};
 
 export default Alert;

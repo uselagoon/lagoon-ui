@@ -57,7 +57,9 @@ const DrushSqlDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
               required
             />
           </div>
-          <Button action={taskDrushSqlDump} disabled={loading}>{loading ? <span className="loader"></span> : "Run task"}</Button>
+          <Button testId="task-btn" action={taskDrushSqlDump} disabled={loading}>
+            {loading ? <span className="loader"></span> : 'Run task'}
+          </Button>
         </SelectWrapper>
       );
     }}

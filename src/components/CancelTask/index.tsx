@@ -60,7 +60,7 @@ export const CancelTaskButton: FC<CancelTaskButtonProps> = ({
   return (
     <>
       {contextHolder}
-      <Button action={action} disabled={loading || success} loading={loading}>
+      <Button testId="cancel-task" action={action} disabled={loading || success} loading={loading}>
         {success ? afterText : beforeText}
       </Button>
 
