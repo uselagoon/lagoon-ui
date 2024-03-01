@@ -16,7 +16,7 @@ export default class VariablesAction {
   }
 
   doAddVariable(name: string, value: string) {
-    environment.getAddButton().click();
+    environment.getAddButton().first().click();
 
     cy.get('.react-select__indicator').click({ force: true });
     cy.get('#react-select-2-option-1').click();
