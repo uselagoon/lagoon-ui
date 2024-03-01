@@ -13,8 +13,7 @@ export const StyledAccordion = styled.div`
     justify-content: space-between;
     padding: 20px 12px;
     border: 1px solid ${color.lightestGrey};
-    background: ${props =>
-    props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.primary}` : "#fff" };
+    background: ${props => (props.theme.colorScheme === 'dark' ? `${props.theme.backgrounds.primary}` : '#fff')};
     cursor: pointer;
     word-break: break-word;
 
@@ -24,7 +23,7 @@ export const StyledAccordion = styled.div`
 
     > div {
       padding: 0 6px;
-      color: ${props => props.theme.texts.primary}
+      color: ${props => props.theme.texts.primary};
     }
 
     &.cols-6 {

@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export default gql`
   query getGroup($name: String!, $organization: Int!) {
-    group: groupByNameAndOrganization(name: $name, organization: $organization){
+    group: groupByNameAndOrganization(name: $name, organization: $organization) {
       id
       name
       type
@@ -10,9 +10,9 @@ export default gql`
         id
         name
       }
-      members{
+      members {
         role
-        user{
+        user {
           firstName
           lastName
           email
@@ -21,7 +21,7 @@ export default gql`
       }
     }
 
-    organization: organizationById (id: $organization){
+    organization: organizationById(id: $organization) {
       id
       name
       description
@@ -29,7 +29,7 @@ export default gql`
       quotaGroup
       quotaNotification
       quotaEnvironment
-      deployTargets{
+      deployTargets {
         id
         name
       }

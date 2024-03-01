@@ -55,11 +55,11 @@ export const Default: Story = {
 };
 
 const duplicateProblemsAcrossServices = [
-  { ...problemData[0], service: "cli" },
-  { ...problemData[0], service: "php-nginx" },
-  { ...problemData[1], service: "cli" },
-  { ...problemData[1], service: "node" },
-  { ...problemData[1], service: "service" },
+  { ...problemData[0], service: 'cli' },
+  { ...problemData[0], service: 'php-nginx' },
+  { ...problemData[1], service: 'cli' },
+  { ...problemData[1], service: 'node' },
+  { ...problemData[1], service: 'service' },
 ];
 
 export const DuplicateData: Story = {
@@ -98,7 +98,5 @@ export const Loading: Story = {
     },
   },
 };
-
-
 
 export default meta;

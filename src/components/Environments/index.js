@@ -5,8 +5,8 @@ import EnvironmentLink from 'components/link/Environment';
 import { makeSafe } from 'lib/util';
 import * as R from 'ramda';
 
+import NewEnvironment from '../NewEnvironment';
 import { StyledEnvironments } from './StyledEnvironments';
-import NewEnvironment from "../NewEnvironment";
 
 const bgImages = {
   branch: {
@@ -61,7 +61,7 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
                   </div>
                 )}
                 <label>Type: {environment.deployType === 'pullrequest' ? 'PR' : environment.deployType}</label>
-                <h4>{environment.name}</h4>
+                <h4 data-cy="environment-name">{environment.name}</h4>
                 {environment.openshift.friendlyName != null && (
                   <label className="clusterLabel">Cluster: {environment.openshift.friendlyName}</label>
                 )}
@@ -71,8 +71,8 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
                 )}
               </EnvironmentLink>
               {environment.routes && environment.routes !== 'undefined' ? (
-                <div className="routeLink field">
-                  <label>
+                <div className="routeLink field" data-cy="route-link">
+                  <label data-cy="route-label">
                     {standbyEnvironment || activeEnvironment ? (
                       <a
                         className="hover-state"
@@ -95,7 +95,12 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
           </div>
         );
       })}
-      <NewEnvironment refresh={refresh} inputProjectName={project.name} productionEnvironment={project.productionEnvironment} environmentCount={environmentCount}/>
+      <NewEnvironment
+        refresh={refresh}
+        inputProjectName={project.name}
+        productionEnvironment={project.productionEnvironment}
+        environmentCount={environmentCount}
+      />
     </StyledEnvironments>
   );
 };

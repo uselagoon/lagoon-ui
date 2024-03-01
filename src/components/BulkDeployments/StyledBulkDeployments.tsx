@@ -87,9 +87,9 @@ export const BulkDeploymentsDataTable = styled.div`
     .priority {
       width: 8%;
     }
-    .buildstep{
-      display:flex;
-      flex-direction:column;
+    .buildstep {
+      display: flex;
+      flex-direction: column;
     }
     .status {
       @media ${bp.xs_smallOnly} {

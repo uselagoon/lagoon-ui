@@ -68,13 +68,13 @@ const Organization = ({ organization, refetch }) => {
     return (
       <div className="quotaField">
         <span>{pluralName.toUpperCase()}</span>
-        <span className="quota">
+        <span className="quota" data-cy={`${quota}`}>
           {capitalize(quota)} quota: {quotaNumber} of {quotaLimit == '-1' ? 'unlimited' : quotaLimit}
         </span>
 
         {showLink && (
           <Link href={link.urlObject} as={link.asPath}>
-            <LinkBtn>
+            <LinkBtn data-cy={`${quota}-link`}>
               <EyeOutlined className="icon" /> {capitalize(pluralName)}
             </LinkBtn>
           </Link>
@@ -88,13 +88,15 @@ const Organization = ({ organization, refetch }) => {
     return modalName === 'name' ? () => setNameModalOpen(modalAction) : () => setDescModalOpen(modalAction);
   };
 
-  const renderEditBtn = type => <EditOutlined style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />;
+  const renderEditBtn = type => (
+    <EditOutlined data-cy={`edit-${type}`} style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />
+  );
 
   return (
     <StyledOrganization>
       <OrgHeader headerText="overview" />
       <StyledOverview>
-        <span className="orgname">
+        <span className="orgname" data-cy="friendlyName">
           {organization.friendlyName || organization.name} {renderEditBtn('name')}
           <Modal
             style={{
@@ -112,6 +114,7 @@ const Organization = ({ organization, refetch }) => {
                   Organization name: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
+                    data-cy="input-orgName"
                     type="text"
                     placeholder="Existing organization name"
                     value={friendlyName}
@@ -134,6 +137,7 @@ const Organization = ({ organization, refetch }) => {
                     }
                     return (
                       <Button
+                        testId="submit-btn"
                         variant="primary"
                         disabled={called}
                         loading={called}
@@ -152,7 +156,7 @@ const Organization = ({ organization, refetch }) => {
                     );
                   }}
                 </Mutation>
-                <Button variant="ghost" action={modalAction('close', 'name')}>
+                <Button testId="cancel" variant="ghost" action={modalAction('close', 'name')}>
                   Cancel
                 </Button>
               </Footer>
@@ -162,7 +166,7 @@ const Organization = ({ organization, refetch }) => {
 
         <div className="description">
           <span className="title">Description</span> {!organization.description && renderEditBtn('description')}
-          <p>
+          <p data-cy="description">
             {organization.description} {organization.description && renderEditBtn('description')}
           </p>
           <Modal
@@ -181,6 +185,7 @@ const Organization = ({ organization, refetch }) => {
                   Organization description: <span style={{ color: '#E30000' }}>*</span>
                   <input
                     className="inputName"
+                    data-cy="input-orgName"
                     type="text"
                     placeholder="Org description"
                     value={description}
@@ -202,6 +207,7 @@ const Organization = ({ organization, refetch }) => {
                     }
                     return (
                       <Button
+                        testId="submit-btn"
                         variant="primary"
                         disabled={called}
                         loading={called}
@@ -220,7 +226,7 @@ const Organization = ({ organization, refetch }) => {
                     );
                   }}
                 </Mutation>
-                <Button variant="ghost" action={modalAction('close', 'description')}>
+                <Button testId="cancel" variant="ghost" action={modalAction('close', 'description')}>
                   Cancel
                 </Button>
               </Footer>
@@ -275,7 +281,7 @@ const Organization = ({ organization, refetch }) => {
                 </div>
               ))}
               <OrgManageLink organizationSlug={organization.name} organizationId={organization.id}>
-                <ManageBtn>
+                <ManageBtn data-cy="manage-link">
                   <EyeOutlined className="icon" /> Manage
                 </ManageBtn>
               </OrgManageLink>

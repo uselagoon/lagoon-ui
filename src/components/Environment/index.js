@@ -33,11 +33,11 @@ const Environment = ({ environment }) => {
     : '';
 
   return (
-    <StyledEnvironmentDetails className="details">
+    <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">
         <div>
           <label>Environment Type</label>
-          <div className="field">
+          <div className="field" data-cy="envType">
             {environment.environmentType}
             {environment.project.productionEnvironment &&
               environment.project.standbyProductionEnvironment &&
@@ -55,7 +55,9 @@ const Environment = ({ environment }) => {
       <div className="field-wrapper deployType">
         <div>
           <label>Deployment Type</label>
-          <div className="field">{environment.deployType}</div>
+          <div className="field" data-cy="deployType">
+            {environment.deployType}
+          </div>
         </div>
       </div>
       <div className="field-wrapper created">
@@ -75,7 +77,7 @@ const Environment = ({ environment }) => {
           <div>
             <label>Source</label>
             <div className="field">
-              <a className="hover-state" target="_blank" href={`https://${gitBranchLink}`}>
+              <a className="hover-state" data-cy="source" target="_blank" href={`https://${gitBranchLink}`}>
                 {gitBranchLink}
               </a>
             </div>
@@ -131,7 +133,7 @@ const Environment = ({ environment }) => {
           )}
         <div>
           <label>Routes</label>
-          <div className="field">
+          <div className="field" data-cy="routes">
             {environment.routes
               ? environment.routes.split(',').map(route => (
                   <div key={route}>
@@ -175,7 +177,7 @@ const Environment = ({ environment }) => {
             }}
           </Mutation>
         )}
-      <Mutation mutation={DeleteEnvironmentMutation}>
+      <Mutation mutation={DeleteEnvironmentMutation} onError={e => console.error(e)}>
         {(deleteEnvironment, { loading, called, error, data }) => {
           if (error) {
             return <div>{error.message}</div>;

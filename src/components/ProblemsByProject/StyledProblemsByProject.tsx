@@ -30,9 +30,9 @@ export const StyledProblemsByProject = styled.div`
     border: none;
     padding: 10px 20px;
     margin: 0;
-    ::placeholder{
-        color:${props => props.theme.colorScheme === "dark" ? "#fff": "#000" };
-      }
+    ::placeholder {
+      color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+    }
   }
 
   .button-sort {
@@ -75,7 +75,7 @@ export const StyledProblemsByProject = styled.div`
     .data-none {
       border: 1px solid ${color.white};
       border-bottom: 1px solid ${color.lightestGrey};
-      background:${props => props.theme.backgrounds.primary} !important;
+      background: ${props => props.theme.backgrounds.primary} !important;
       border-radius: 3px;
       line-height: 1.5rem;
       padding: 8px 0 7px 0;

@@ -4,7 +4,7 @@ import LagoonTheme from './lagoonTheme';
 
 addons.setConfig({
   theme: LagoonTheme,
-  sidebar:{
+  sidebar: {
     showRoots: false,
-  }
+  },
 });

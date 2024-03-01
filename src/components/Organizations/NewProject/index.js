@@ -17,7 +17,7 @@ import { AddButtonContent, Footer, StyledNotificationWrapper } from '../SharedSt
 import { Checkbox, StyledNewProject } from './StyledNewProject';
 
 const ADD_PROJECT_MUTATION = gql`
-  mutation (
+  mutation addProjectToOrganization(
     $organization: Int!
     $name: String!
     $gitUrl: String!
@@ -77,7 +77,7 @@ const OrgNewProject = ({
       <div className="margins">
         <Tooltip overlayClassName="orgTooltip" title="Add a new project" placement="bottom">
           <>
-            <Button action={openModal}>
+            <Button testId="addNewProject" action={openModal}>
               <AddButtonContent>Add project</AddButtonContent>
             </Button>
           </>
@@ -110,7 +110,8 @@ const OrgNewProject = ({
                       <label>
                         Project name: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputEmail"
+                          className="inputName"
+                          data-cy="project-name"
                           type="text"
                           placeholder="Enter name"
                           value={inputProjectName}
@@ -129,7 +130,8 @@ const OrgNewProject = ({
                           <InfoCircleOutlined style={{ fontSize: '1rem' }} />
                         </Tooltip>
                         <input
-                          className="inputEmail"
+                          className="inputGit"
+                          data-cy="input-git"
                           type="text"
                           placeholder="Enter URL"
                           value={inputGitURL}
@@ -141,7 +143,8 @@ const OrgNewProject = ({
                       <label>
                         Production Environment: <span style={{ color: '#E30000' }}>*</span>
                         <input
-                          className="inputEmail"
+                          className="inputEnv"
+                          data-cy="input-env"
                           type="text"
                           placeholder="Enter branch name"
                           value={inputProdEnv}
@@ -207,6 +210,7 @@ const OrgNewProject = ({
                     <div>
                       <Footer>
                         <Button
+                          testId="addProjectConfirm"
                           disabled={
                             called ||
                             inputProjectName === '' ||

@@ -14,7 +14,7 @@ const withMockedAppContext = initialTheme => (Story, context) => {
 
   useEffect(() => {
     if (!isDocsPage) {
-      const initialTheme = (context.globals.theme === '' || context.globals.theme ==="dark") ? 'dark' : "light";
+      const initialTheme = context.globals.theme === '' || context.globals.theme === 'dark' ? 'dark' : 'light';
       const newBg = initialTheme === 'dark' ? '#333333' : '#F8F8F8';
 
       setGlobals({

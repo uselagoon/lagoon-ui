@@ -51,8 +51,8 @@ const logPreprocessor = (logs, status, forceLastSectionOpen = true, logsTarget) 
     // if there are any errors parsing and transforming, we just return the logs as is.
     console.log('Error processing logs for display: ' + e);
     return (
-      <div className="processed-logs">
-        <div key="logerror" className="log-text">
+      <div className="processed-logs" data-cy="processed-logs">
+        <div key="logerror" className="log-text" data-cy="log-text">
           {logs}
         </div>
       </div>
@@ -86,7 +86,7 @@ const logPreprocessorRenderLogNode = (node, visible = false, errorState = false)
         className={classes.join(' ')}
         defaultValue={visible}
       >
-        <div key={node.key + 'section'} className="section-details">
+        <div key={node.key + 'section'} className="section-details" data-cy="section-details">
           {node.nodes.map(element => {
             return logPreprocessorRenderLogNode(element);
           })}
@@ -103,7 +103,7 @@ const logPreprocessorProcessASTToReact = (ast, lastOpen, errorState) => {
   }
   let lastElement = ast.nodes.length - 1;
   return (
-    <div className="processed-logs">
+    <div className="processed-logs" data-cy="processed-logs">
       {ast.nodes.map((element, i) => {
         if (i != lastElement) {
           return logPreprocessorRenderLogNode(element);
@@ -127,7 +127,7 @@ const logPreprocessorProcessParse = (tokens, sectionMetadata) => {
       case 'section-opener':
         let metadataForSection = sectionMetadata.get(tokens[i].details.trim());
         if (metadataForSection == undefined) {
-          metadataForSection = ['', false]
+          metadataForSection = ['', false];
         }
 
         let node = {
@@ -169,11 +169,11 @@ const logPreprocessorExtractSectionEndDetails = logs => {
       let stepDetails = tokens[i].trim();
       if (stepName != '' && stepDetails != '') {
         let durationArray = stepDetails.match(durationRegexp);
-        let hasWarnings = false
+        let hasWarnings = false;
         if (stepDetails.match(/.* WithWarnings$/)) {
-          hasWarnings = true
+          hasWarnings = true;
         }
-        let payload = [`Duration: ${durationArray[1]}`, hasWarnings]
+        let payload = [`Duration: ${durationArray[1]}`, hasWarnings];
         if (durationArray.length == 2) {
           ret.set(stepName, payload);
         }

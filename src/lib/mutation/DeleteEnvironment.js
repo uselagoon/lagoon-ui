@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation ($input: DeleteEnvironmentInput!) {
+  mutation deleteEnvironment($input: DeleteEnvironmentInput!) {
     deleteEnvironment(input: $input)
   }
 `;

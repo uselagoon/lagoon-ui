@@ -12,15 +12,12 @@ export default {
   title: 'Components/BulkDeployments',
   tags: ['autodocs'],
   decorators: [withButtonOverrides('button', 'click', 'Deployment button click')],
-  argTypes:{
+  argTypes: {
     deployments: {
       description: 'Deployments array',
     },
-  }
-
+  },
 };
-
-
 
 const data = [
   {
@@ -44,7 +41,6 @@ const data = [
     status: 'complete',
   },
 ];
-
 
 type Story = StoryObj<typeof BulkDeployments>;
 
