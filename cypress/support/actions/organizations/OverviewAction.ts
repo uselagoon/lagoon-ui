@@ -39,6 +39,8 @@ export default class OverviewAction {
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
 
+    cy.waitForNetworkIdle('@idle', 500);
+
     overviewRepo
       .getfriendlyName()
       .invoke('text')
@@ -70,6 +72,8 @@ export default class OverviewAction {
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
+
+    cy.waitForNetworkIdle('@idle', 500);
 
     overviewRepo
       .getDescription()
