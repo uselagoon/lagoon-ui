@@ -74,8 +74,11 @@ describe('DEVELOPER permission test suites', () => {
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'addEnvVariable');
       });
+      registerIdleHandler('idle');
 
       const { name, value } = testData.variables[0];
+
+      cy.waitForNetworkIdle('@idle', 500);
 
       variable.doAddVariable(name, value);
 
