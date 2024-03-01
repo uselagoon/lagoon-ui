@@ -7,7 +7,7 @@ import { StyledLogAccordion, StyledWarningIcon } from '../StyledLogViewer';
 const LogAccordion = forwardRef(
   ({ children, onToggle, header, className = '', defaultValue = false, metadata = ['', false] }, ref) => {
     const hasWarning = metadata[1] === true;
-    if (hasWarning) defaultValue = true
+    if (hasWarning) defaultValue = true;
 
     const logsTopRef = useRef(null);
     const logsEndRef = useRef(null);
