@@ -88,7 +88,7 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
     setUpdateVarScope(rowScope);
   };
 
-  const permissionCheck = (action) => {
+  const permissionCheck = action => {
     getPrjEnvVarValues();
     setOpenPrjVars(false);
     setAction(action);
@@ -96,21 +96,19 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
 
   const renderValue = (projEnvVar, index) => {
     if (projEnvVar.value.length >= 0 && !valueState[index]) {
-      return hashValue(projEnvVar.value).substring(0, 25)
+      return hashValue(projEnvVar.value).substring(0, 25);
     } else if (projEnvVar.value.length >= 100 && valueState[index]) {
-      return projEnvVar.value.substring(0, 25) + ".."
+      return projEnvVar.value.substring(0, 25) + '..';
     } else if (projEnvVar.value.length === 0 && valueState[index]) {
-      return <Tag color="#4578e6">Empty</Tag>
+      return <Tag color="#4578e6">Empty</Tag>;
     } else {
-      return projEnvVar.value
+      return projEnvVar.value;
     }
   };
 
   const renderValues = (projEnvVar, index) => {
     if (prjLoading) {
-      return (
-        <div className="loader"></div>
-      )
+      return <div className="loader"></div>;
     }
 
     if (projEnvVar.value !== undefined) {
@@ -119,22 +117,23 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
           <div className="varValue" id={index}>
             <div className="showHideContainer">
               {renderValue(projEnvVar, index)}
-              <span onClick={ !valueState[index] ? () => valuesShow(index) : () => valuesHide(index)}>
+              <span onClick={!valueState[index] ? () => valuesShow(index) : () => valuesHide(index)}>
                 <Image
                   src={!valueState[index] ? show : hide}
                   className="showHide"
                   data-cy="showhide-toggle"
-                  style={{ all: "unset" }}
+                  style={{ all: 'unset' }}
                   alt=""
                 />
               </span>
             </div>
-            { projEnvVar.value.length >= 100 && valueState[index] && (
+            {projEnvVar.value.length >= 100 && valueState[index] && (
               <ViewVariableValue variableName={projEnvVar.name} variableValue={projEnvVar.value} />
             )}
           </div>
         </Collapse>
-      )}
+      );
+    }
   };
 
   return (
@@ -145,14 +144,18 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
             type="error"
             closeAlert={closeProjectError}
             header="Unauthorized:"
-            message={`You don't have permission to ${action} project ${action === 'view' ? ' variable values' : 'variables'}. Contact your administrator to obtain the relevant permissions.`}
+            message={`You don't have permission to ${action} project ${
+              action === 'view' ? ' variable values' : 'variables'
+            }. Contact your administrator to obtain the relevant permissions.`}
           />
         )}
         <div className="header">
           <label>Project Variables</label>
           <div className="header-buttons">
             <Button data-cy="addVariable" onClick={() => permissionCheck('add')} style={{ all: 'unset' }}>
-              {projectErrorAlert ? <Button className="add-variable">Add</Button> :
+              {projectErrorAlert ? (
+                <Button className="add-variable">Add</Button>
+              ) : (
                 <AddVariable
                   varProject={project.name}
                   varValues={displayVars}
@@ -160,13 +163,13 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
                   refresh={onVariableAdded}
                   setProjectErrorAlert={setProjectErrorAlert}
                   action="add"
-                  loading={prjLoading && action === "add"}
+                  loading={prjLoading && action === 'add'}
                   prjEnvValues={prjEnvValues}
                 />
-              }
+              )}
             </Button>
 
-            { displayVars.length > 0 && (
+            {displayVars.length > 0 && (
               <Button
                 onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
@@ -178,16 +181,16 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
             )}
           </div>
         </div>
-        { !displayVars.length && (
+        {!displayVars.length && (
           <>
-          <hr style={{ margin: "30px 0" }} />
-          <div style={{ textAlign: "center" }}>
-            <label>No Project variables set</label>
-          </div>
-          <hr style={{ margin: "30px 0" }} />
+            <hr style={{ margin: '30px 0' }} />
+            <div style={{ textAlign: 'center' }}>
+              <label>No Project variables set</label>
+            </div>
+            <hr style={{ margin: '30px 0' }} />
           </>
         )}
-        { displayVars.length > 0 && (
+        {displayVars.length > 0 && (
           <div className="field-wrapper env-vars">
             <StyledProjectVariableTable>
               <div className={openPrjVars ? 'values-present table-header' : 'table-header'}>

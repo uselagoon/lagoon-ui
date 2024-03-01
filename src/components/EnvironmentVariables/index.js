@@ -79,7 +79,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
 
   if (envValues) {
     displayVars = envValues.environmentVars.envVariables;
-  };
+  }
 
   if (envError) console.error(envError);
 
@@ -132,7 +132,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     setUpdateVarScope(rowScope);
   };
 
-  const permissionCheck = (action) => {
+  const permissionCheck = action => {
     getEnvVarValues();
     setOpenEnvVars(false);
     setAction(action);
@@ -140,33 +140,31 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
 
   const renderEnvValue = (envVar, index) => {
     if (envVar.value.length >= 0 && !valueState[index]) {
-      return hashValue(envVar.value).substring(0, 25)
+      return hashValue(envVar.value).substring(0, 25);
     } else if (envVar.value.length >= 100 && valueState[index]) {
-      return envVar.value.substring(0, 25) + ".."
+      return envVar.value.substring(0, 25) + '..';
     } else if (envVar.value.length === 0 && valueState[index]) {
-      return <Tag color="#4578e6">Empty</Tag>
+      return <Tag color="#4578e6">Empty</Tag>;
     } else {
-      return envVar.value
+      return envVar.value;
     }
   };
 
   const renderPrjValue = (projEnvVar, index) => {
     if (projEnvVar.value.length >= 0 && !prjValueState[index]) {
-      return hashValue(projEnvVar.value).substring(0, 25)
+      return hashValue(projEnvVar.value).substring(0, 25);
     } else if (projEnvVar.value.length >= 100 && prjValueState[index]) {
-      return projEnvVar.value.substring(0, 25) + ".."
+      return projEnvVar.value.substring(0, 25) + '..';
     } else if (projEnvVar.value.length === 0 && prjValueState[index]) {
-      return <Tag color="#4578e6">Empty</Tag>
+      return <Tag color="#4578e6">Empty</Tag>;
     } else {
-      return projEnvVar.value
+      return projEnvVar.value;
     }
   };
 
   const renderEnvValues = (envVar, index) => {
     if (envLoading) {
-      return (
-        <div className="loader"></div>
-      )
+      return <div className="loader"></div>;
     }
 
     if (envVar.value !== undefined) {
@@ -175,30 +173,28 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <div className="varValue" id={index}>
             <div className="showHideContainer">
               {renderEnvValue(envVar, index)}
-              <span onClick={ !valueState[index] ? () => valuesShow(index) : () => valuesHide(index)}>
-              <Image
-                src={!valueState[index] ? show : hide}
-                className="showHide"
-                data-cy="showhide-toggle"
-                style={{ all: "unset" }}
-                alt=""
-              />
-            </span>
+              <span onClick={!valueState[index] ? () => valuesShow(index) : () => valuesHide(index)}>
+                <Image
+                  src={!valueState[index] ? show : hide}
+                  className="showHide"
+                  data-cy="showhide-toggle"
+                  style={{ all: 'unset' }}
+                  alt=""
+                />
+              </span>
             </div>
-            { envVar.value.length >= 100 && valueState[index] && (
+            {envVar.value.length >= 100 && valueState[index] && (
               <ViewVariableValue variableName={envVar.name} variableValue={envVar.value} />
             )}
           </div>
         </Collapse>
-      )
+      );
     }
   };
 
   const renderPrjValues = (projEnvVar, index) => {
     if (prjLoading) {
-      return (
-        <div className="loader"></div>
-      )
+      return <div className="loader"></div>;
     }
 
     if (projEnvVar.value !== undefined) {
@@ -207,22 +203,22 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <div className="varValue" id={index}>
             <div className="showHideContainer">
               {renderPrjValue(projEnvVar, index)}
-              <span onClick={ !prjValueState[index] ? () => prjValuesShow(index) : () => prjValuesHide(index)}>
-              <Image
-                src={!prjValueState[index] ? show : hide}
-                className="showHide"
-                data-cy="showhide-toggle"
-                style={{ all: "unset" }}
-                alt=""
-              />
-            </span>
+              <span onClick={!prjValueState[index] ? () => prjValuesShow(index) : () => prjValuesHide(index)}>
+                <Image
+                  src={!prjValueState[index] ? show : hide}
+                  className="showHide"
+                  data-cy="showhide-toggle"
+                  style={{ all: 'unset' }}
+                  alt=""
+                />
+              </span>
             </div>
-            { projEnvVar.value.length >= 100 && prjValueState[index] && (
+            {projEnvVar.value.length >= 100 && prjValueState[index] && (
               <ViewVariableValue variableName={projEnvVar.name} variableValue={projEnvVar.value} />
             )}
           </div>
         </Collapse>
-      )
+      );
     }
   };
 
@@ -234,140 +230,137 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
             type="error"
             closeAlert={closeEnvironmentError}
             header="Unauthorized:"
-            message={`You don't have permission to ${action} environment ${action === 'view' ? ' variable values' : 'variables'}. Contact your administrator to obtain the relevant permissions.`}
+            message={`You don't have permission to ${action} environment ${
+              action === 'view' ? ' variable values' : 'variables'
+            }. Contact your administrator to obtain the relevant permissions.`}
           />
-          )}
+        )}
         <div className="header">
           <label>Project Variables</label>
           <div className="header-buttons">
-          <Button
-            onClick={() => permissionCheck('add')}
-            style={{ all: 'unset' }}
-          >
-            {environmentErrorAlert ? <Button className="add-variable">Add</Button> :
-              <AddVariable
-                varProject={environment.project.name}
-                varEnvironment={environment.name}
-                varValues={displayVars}
-                varTarget="Environment"
-                noVars="Add"
-                refresh={onVariableAdded}
-                setEnvironmentErrorAlert={setEnvironmentErrorAlert}
-                action="add"
-                loading={prjLoading && action === "add"}
-                envValues={envValues}
-              />
-            }
-          </Button>
-            { displayVars.length > 0 && (
+            <Button onClick={() => permissionCheck('add')} style={{ all: 'unset' }}>
+              {environmentErrorAlert ? (
+                <Button className="add-variable">Add</Button>
+              ) : (
+                <AddVariable
+                  varProject={environment.project.name}
+                  varEnvironment={environment.name}
+                  varValues={displayVars}
+                  varTarget="Environment"
+                  noVars="Add"
+                  refresh={onVariableAdded}
+                  setEnvironmentErrorAlert={setEnvironmentErrorAlert}
+                  action="add"
+                  loading={prjLoading && action === 'add'}
+                  envValues={envValues}
+                />
+              )}
+            </Button>
+            {displayVars.length > 0 && (
               <Button
-                  onClick={() => showVarValue()}
-                  aria-controls="example-collapse-text"
-                  data-cy="hideShowValues"
-                  aria-expanded={openPrjVars}
+                onClick={() => showVarValue()}
+                aria-controls="example-collapse-text"
+                data-cy="hideShowValues"
+                aria-expanded={openPrjVars}
               >
                 {!openEnvVars ? 'Show values' : 'Hide values'}
               </Button>
             )}
           </div>
         </div>
-        { !displayVars.length && (
+        {!displayVars.length && (
           <>
-            <hr style={{ margin: "30px 0" }} />
-            <div style={{ textAlign: "center" }}>
+            <hr style={{ margin: '30px 0' }} />
+            <div style={{ textAlign: 'center' }}>
               <label>No Environment variables set</label>
             </div>
-            <hr style={{ margin: "30px 0" }} />
+            <hr style={{ margin: '30px 0' }} />
           </>
         )}
-        { displayVars.length > 0 && (
-        <div className="field-wrapper env-vars">
-          <StyledVariableTable>
-            <div
-              className={
-                openEnvVars ? 'values-present table-header' : 'table-header'
-              }
-            >
-              <div className="name">
-                <label>Name</label>
-              </div>
-              <div className="scope">
-                <label>Scope</label>
-              </div>
-              <Collapse in={openEnvVars}>
-                <div className="value">
-                  <label>Value</label>
+        {displayVars.length > 0 && (
+          <div className="field-wrapper env-vars">
+            <StyledVariableTable>
+              <div className={openEnvVars ? 'values-present table-header' : 'table-header'}>
+                <div className="name">
+                  <label>Name</label>
                 </div>
-              </Collapse>
-            </div>
-            <div className="data-table" data-cy="environment-table">
-              {displayVars.map((envVar, index) => {
-                return (
-                  <Fragment key={index}>
-                    <div className={openEnvVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
-                      <div className="varName">{envVar.name}</div>
-                      <div className="varScope">{envVar.scope}</div>
-                      {renderEnvValues(envVar, index)}
-                      <div className="varActions">
-                        <VariableActions>
-                          <Collapse in={openEnvVars}>
-                            <div className="varUpdate">
-                              <Button
-                                onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
-                                style={{ all: 'unset'}}
-                              >
-                                <AddVariable
-                                  varProject={environment.project.name}
-                                  varEnvironment={environment.name}
-                                  varValues={displayVars}
-                                  varTarget="Environment"
-                                  varName={updateVarName}
-                                  varValue={updateVarValue}
-                                  varScope={updateVarScope}
-                                  refresh={onVariableAdded}
-                                  icon="edit"
-                                  action="edit"
-                                />
+                <div className="scope">
+                  <label>Scope</label>
+                </div>
+                <Collapse in={openEnvVars}>
+                  <div className="value">
+                    <label>Value</label>
+                  </div>
+                </Collapse>
+              </div>
+              <div className="data-table" data-cy="environment-table">
+                {displayVars.map((envVar, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <div className={openEnvVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                        <div className="varName">{envVar.name}</div>
+                        <div className="varScope">{envVar.scope}</div>
+                        {renderEnvValues(envVar, index)}
+                        <div className="varActions">
+                          <VariableActions>
+                            <Collapse in={openEnvVars}>
+                              <div className="varUpdate">
+                                <Button
+                                  onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
+                                  style={{ all: 'unset' }}
+                                >
+                                  <AddVariable
+                                    varProject={environment.project.name}
+                                    varEnvironment={environment.name}
+                                    varValues={displayVars}
+                                    varTarget="Environment"
+                                    varName={updateVarName}
+                                    varValue={updateVarValue}
+                                    varScope={updateVarScope}
+                                    refresh={onVariableAdded}
+                                    icon="edit"
+                                    action="edit"
+                                  />
+                                </Button>
+                              </div>
+                            </Collapse>
+                            <div className="varDelete">
+                              <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
+                                {envLoading && action === 'delete' ? (
+                                  <DeleteVariableButton>
+                                    <Btn
+                                      index={index}
+                                      variant="red"
+                                      icon={!valueState[index] ? 'bin' : ''}
+                                      className="delete-btn"
+                                    >
+                                      {valueState[index] ? <LoadingOutlined /> : 'Delete'}
+                                    </Btn>
+                                  </DeleteVariableButton>
+                                ) : (
+                                  <DeleteVariable
+                                    deleteType="Environment variable"
+                                    deleteName={envVar.name}
+                                    varProject={environment.project.name}
+                                    varEnvironment={environment.name}
+                                    icon="bin"
+                                    refresh={onVariableAdded}
+                                  />
+                                )}
                               </Button>
                             </div>
-                          </Collapse>
-                          <div className="varDelete">
-                            <Button
-                              onClick={() => permissionCheck("delete", index)}
-                              style={{ all: 'unset' }}
-                            >
-                              {envLoading && action === 'delete' ?
-                                <DeleteVariableButton>
-                                  <Btn index={index} variant="red" icon={!valueState[index] ? 'bin': ''} className="delete-btn">
-                                    {valueState[index] ? <LoadingOutlined/> : 'Delete'}
-                                  </Btn>
-                                </DeleteVariableButton>
-                              :
-                                <DeleteVariable
-                                  deleteType="Environment variable"
-                                  deleteName={envVar.name}
-                                  varProject={environment.project.name}
-                                  varEnvironment={environment.name}
-                                  icon="bin"
-                                  refresh={onVariableAdded}
-                                />
-                              }
-                            </Button>
-                          </div>
-                        </VariableActions>
+                          </VariableActions>
+                        </div>
                       </div>
-                    </div>
-                  </Fragment>
-                );
-              })}
-            </div>
-          </StyledVariableTable>
-        </div>
+                    </Fragment>
+                  );
+                })}
+              </div>
+            </StyledVariableTable>
+          </div>
         )}
       </>
-      {
-        displayVars.length !== 0 ? <hr style={{ margin: '30px 0' }} /> : ''
-      }
+      {displayVars.length !== 0 ? <hr style={{ margin: '30px 0' }} /> : ''}
 
       <>
         {projectErrorAlert && (
@@ -382,71 +375,64 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <label>Project Variables</label>
           <div className="header-buttons">
             <Button data-cy="addVariable">
-              <ProjectVariablesLink
-                projectSlug={environment.project.name}
-                className="deployLink hover-state"
-              >
-                { displayProjectVars.length !== 0 ? "Edit" : "Add" }
+              <ProjectVariablesLink projectSlug={environment.project.name} className="deployLink hover-state">
+                {displayProjectVars.length !== 0 ? 'Edit' : 'Add'}
               </ProjectVariablesLink>
             </Button>
 
-            { displayProjectVars.length > 0 && (
-            <Button
-              onClick={() => showPrjVarValue()}
-              aria-controls="example-collapse-text"
-              aria-expanded={openPrjVars}
-            >
-              {!openPrjVars ? 'Show values' : 'Hide values'}
-            </Button>
+            {displayProjectVars.length > 0 && (
+              <Button
+                onClick={() => showPrjVarValue()}
+                aria-controls="example-collapse-text"
+                aria-expanded={openPrjVars}
+              >
+                {!openPrjVars ? 'Show values' : 'Hide values'}
+              </Button>
             )}
           </div>
         </div>
-        { !displayProjectVars.length && (
+        {!displayProjectVars.length && (
           <>
-            <hr style={{ margin: "30px 0" }} />
-            <div style={{ textAlign: "center" }}>
+            <hr style={{ margin: '30px 0' }} />
+            <div style={{ textAlign: 'center' }}>
               <label>No Project variables set</label>
             </div>
-            <hr style={{ margin: "30px 0" }} />
+            <hr style={{ margin: '30px 0' }} />
           </>
         )}
-    { displayProjectVars.length > 0 && (
-      <div className="field-wrapper env-vars">
-        <StyledProjectVariableTable>
-          <div
-            className={
-              openPrjVars ? 'values-present table-header' : 'table-header'
-            }
-          >
-            <div className="name">
-              <label>Name</label>
-            </div>
-            <div className="scope">
-              <label>Scope</label>
-            </div>
-            <Collapse in={openPrjVars}>
-              <div className="value">
-                <label>Value</label>
-              </div>
-            </Collapse>
-          </div>
-          <div className="data-table" data-cy="environment-table">
-            {displayProjectVars.map((projEnvVar, index) => {
-              return (
-                <Fragment key={index}>
-                  <div className={openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
-                    <div className="varName">{projEnvVar.name}</div>
-                    <div className="varScope">{projEnvVar.scope}</div>
-                    {renderPrjValues(projEnvVar, index)}
+        {displayProjectVars.length > 0 && (
+          <div className="field-wrapper env-vars">
+            <StyledProjectVariableTable>
+              <div className={openPrjVars ? 'values-present table-header' : 'table-header'}>
+                <div className="name">
+                  <label>Name</label>
+                </div>
+                <div className="scope">
+                  <label>Scope</label>
+                </div>
+                <Collapse in={openPrjVars}>
+                  <div className="value">
+                    <label>Value</label>
                   </div>
-                </Fragment>
-              );
-            })}
+                </Collapse>
+              </div>
+              <div className="data-table" data-cy="environment-table">
+                {displayProjectVars.map((projEnvVar, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <div className={openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                        <div className="varName">{projEnvVar.name}</div>
+                        <div className="varScope">{projEnvVar.scope}</div>
+                        {renderPrjValues(projEnvVar, index)}
+                      </div>
+                    </Fragment>
+                  );
+                })}
+              </div>
+            </StyledProjectVariableTable>
           </div>
-        </StyledProjectVariableTable>
-      </div>
-    )}
-    </>
+        )}
+      </>
     </StyledEnvironmentVariableDetails>
   );
 };

@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo';
 import ButtonBootstrap from 'react-bootstrap/Button';
 import ReactSelect from 'react-select';
 
+import { LoadingOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
@@ -10,7 +11,6 @@ import Modal from 'components/Modal';
 
 import addOrUpdateEnvVariableMutation from '../../lib/mutation/AddOrUpdateEnvVariableByName';
 import { NewVariable, NewVariableModal } from './StyledAddVariable';
-import {LoadingOutlined} from "@ant-design/icons";
 
 /**
  * Adds a Variable.
@@ -58,7 +58,9 @@ export const AddVariable = ({
   const [updateValue, setUpdateValue] = useState(varValue);
   const [updateScope, setUpdateScope] = useState(varScope);
   const [openPop, setOpenPop] = useState(false);
-  const handleUpdateValue = (event) => {setUpdateValue(event.target.value)};
+  const handleUpdateValue = event => {
+    setUpdateValue(event.target.value);
+  };
   const handlePopCancel = () => {
     setOpenPop(false);
   };
@@ -77,38 +79,33 @@ export const AddVariable = ({
   const handlePermissionCheck = () => {
     let waitForGQL = setTimeout(() => {
       openModal();
-    }, [1000])
+    }, [1000]);
     if (prjEnvValues || envValues) {
       clearTimeout(waitForGQL);
       openModal();
     }
-  }
+  };
 
   return (
     <NewVariable>
-      {
-        icon ?
-          <Button variant="white" icon={icon} action={openModal}>
-            Update
-          </Button>
-          : !loading ?
-            <ButtonBootstrap data-cy="addVariable" onClick={handlePermissionCheck}>
-              Add
-            </ButtonBootstrap>
-            : <ButtonBootstrap className="add-variable"><LoadingOutlined/></ButtonBootstrap>
-      }
-      <Modal
-        isOpen={open}
-        onRequestClose={closeModal}
-        contentLabel={`Confirm`}
-        variant={'large'}
-      >
+      {icon ? (
+        <Button variant="white" icon={icon} action={openModal}>
+          Update
+        </Button>
+      ) : !loading ? (
+        <ButtonBootstrap data-cy="addVariable" onClick={handlePermissionCheck}>
+          Add
+        </ButtonBootstrap>
+      ) : (
+        <ButtonBootstrap className="add-variable">
+          <LoadingOutlined />
+        </ButtonBootstrap>
+      )}
+      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
         <NewVariableModal>
           <div className="variable-target">
             <span className="variable-target">
-              {
-                !updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`
-              }
+              {!updateName ? `Add ${varTarget} Variable` : `Update ${varTarget} Variable`}
             </span>
           </div>
           <div className="var-modal">
