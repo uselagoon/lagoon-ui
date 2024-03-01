@@ -32,10 +32,10 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
       <label>Status</label>
       <label>Duration</label>
     </div>
-    <div className="data-table">
+    <div className="data-table" data-cy="deploy-table">
       {!deployments.length && <div className="data-none">No Deployments</div>}
       {deployments.map(deployment => (
-        <div className="deploymentRow" key={deployment.id}>
+        <div className="deploymentRow" data-cy="deployment-row" key={deployment.id}>
           <DeploymentLink
             deploymentSlug={deployment.name}
             environmentSlug={environmentSlug}
@@ -54,7 +54,7 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
               <div className="started">
                 {moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
               </div>
-              <div className={`status buildstep ${deployment.status}`}>
+              <div className={`status buildstep ${deployment.status}`} data-cy={deployment.status}>
                 {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
 
                 {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
@@ -75,7 +75,7 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
             </div>
           </DeploymentLink>
 
-          <div className="cancel-button">
+          <div className="cancel-button" data-cy="cancel-button">
             {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
               <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
             )}

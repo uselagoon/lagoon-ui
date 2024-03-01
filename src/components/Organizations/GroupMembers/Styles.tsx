@@ -16,7 +16,6 @@ export const StyledGroupMembers = styled.section`
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
   .MAINTAINER-label {
-
     color: ${color.white};
     background-color: ${color.lightBlue};
     margin-left: 10px;

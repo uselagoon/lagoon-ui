@@ -12,10 +12,7 @@ const UsersSkeleton: FC<Props> = ({ title }) => {
   const numberOfFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
   const usersSkeleton = (index: number) => (
-    <SkeletonWrapper
-      key={`usersSkeleton-${index}`}
-      className="data-row"
-    >
+    <SkeletonWrapper key={`usersSkeleton-${index}`} className="data-row">
       <div className="customer">
         <Skeleton height={40} />
       </div>

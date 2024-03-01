@@ -17,7 +17,7 @@ const problemData = Array.from({
     min: 1,
     max: 10,
   }),
-}).map((_,idx) => {
+}).map((_, idx) => {
   return ProblemIdentifier(idx);
 })[0].problems;
 

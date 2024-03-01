@@ -8,7 +8,7 @@ import { StyledTasks, TasksTable } from './StyledTasks';
 
 interface TasksProps {
   tasks: {
-    id:string;
+    id: string;
     taskName: string;
     name: string;
     adminOnlyView: boolean;
@@ -33,10 +33,10 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, environmentId, projectS
       <label className="service">Service</label>
       <label className="status">Status</label>
     </div>
-    <TasksTable className="data-table">
+    <TasksTable className="data-table" data-cy="tasks-table">
       {!tasks.length && <div className="data-none">No Tasks</div>}
       {tasks.map(task => (
-        <div className='taskRow' key={task.id}>
+        <div className="taskRow" key={task.id} data-cy="task-row">
           <TaskLink
             taskSlug={task.taskName}
             environmentSlug={environmentSlug}
@@ -50,7 +50,7 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, environmentId, projectS
               </div>
               <div className="started">{moment.utc(task.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
               <div className="service">{task.service}</div>
-              <div className={`status ${task.status}`}>
+              <div className={`status ${task.status}`} data-cy={task.status}>
                 <span>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
               </div>
             </div>

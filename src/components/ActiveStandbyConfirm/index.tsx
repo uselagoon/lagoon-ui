@@ -32,7 +32,7 @@ export const ActiveStandbyConfirm: FC<ActiveStandbyConfirmProps> = ({
       <div className="margins">
         <Button action={openModal}>Switch Active/Standby environments</Button>
       </div>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel="Confirm">
+      <Modal variant={null} isOpen={open} onRequestClose={closeModal} contentLabel="Confirm">
         <StyledActiveStandbyConfirmModal>
           <p>
             This will replace the current active environment

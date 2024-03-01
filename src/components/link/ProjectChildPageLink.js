@@ -3,18 +3,12 @@ import Link from 'next/link';
 export const getLinkData = (childPage, projectSlug) => ({
   urlObject: {
     pathname: `/${childPage}`,
-    query: { projectName: projectSlug }
+    query: { projectName: projectSlug },
   },
-  asPath: `/projects/${projectSlug}/${projectSlug}-${childPage}`
+  asPath: `/projects/${projectSlug}/${projectSlug}-${childPage}`,
 });
 
-const ProjectChildPageLink = ({
-  childPage,
-  projectSlug,
-  children,
-  className = '',
-  prefetch = false
-}) => {
+const ProjectChildPageLink = ({ childPage, projectSlug, children, className = '', prefetch = false }) => {
   const linkData = getLinkData(childPage, projectSlug);
 
   return (

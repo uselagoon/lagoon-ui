@@ -16,7 +16,12 @@
     "build-storybook": "storybook build",
     "serve-storybook": "storybook-server -s ./src",
     "format": "yarn prettier --write .",
-    "format-check": "yarn prettier --c ."
+    "format-check": "yarn prettier --c .",
+    "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
+    "cypress:runAll": "cypress run --config-file cypress/cypress.config.ts",
+    "cypress:runGeneral": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/general/**/*.cy.ts'",
+    "cypress:runOrganizations": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/organizations/**/*.cy.ts'",
+    "cypress:runRbac": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/rbac/**/*.cy.ts'"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.17.0",
@@ -38,6 +43,7 @@
     "colors": "^1.4.0",
     "core-js": "^3.30.1",
     "crypto-js": "^4.1.1",
+    "cypress-real-events": "^1.10.3",
     "d3": "^7.8.4",
     "date-fns": "^2.9.0",
     "dotenv-extended": "^2.2.0",
@@ -107,6 +113,8 @@
     "babel-loader": "^9.1.2",
     "babel-plugin-macros": "^3.1.0",
     "chromatic": "^6.19.5",
+    "cypress": "13.6.1",
+    "cypress-network-idle": "^1.14.2",
     "eslint-plugin-storybook": "^0.6.12",
     "faker": "^6.6.6",
     "msw": "^1.2.1",

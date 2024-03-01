@@ -23,7 +23,7 @@ const OrgNotificationsLink: FC<ExtendableOrgLinkProps> = ({
   prefetch = false,
 }) => {
   const linkData = getLinkData(organizationSlug, organizationId);
-  
+
   const linkProps = className ? { className } : {};
   return (
     <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>

@@ -41,7 +41,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading }) => {
                 <div className="created chromatic-ignore">
                   {moment.utc(key.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
                 </div>
-                <div className="delete">
+                <div className="delete" data-cy="deleteKey">
                   <Mutation mutation={DeleteSshKeyById} refetchQueries={[{ query: Me }]}>
                     {(deleteSshKeyById, { loading, called, error, data }) => {
                       if (error) {

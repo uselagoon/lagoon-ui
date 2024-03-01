@@ -42,6 +42,53 @@ It runs during the build step but can also be ran during development by `yarn li
 
 Linter and TS configs are both located in the root of the project as `.eslintrc.js` and `tsconfig.json`
 
+## Testing
+
+Lagoon UI uses cypress for e2e tests.
+
+A couple of environment variables are required:
+
+- email - keycloak user
+- password - keycloak password
+- keycloak - Keycloak url (used for cypress sessions)
+- api - GraphQL api endpoint
+- url - running UI instance url
+- user_guest - user with guest role
+- user_reporter - user with reporter role
+- user_developer - user with developer role
+- user_maintainer - user with maintainer role
+- user_owner - user with owner role
+- user_orguser - Organization user
+- user_orgviewer - Organization viewer
+- user_orgowner - Organization owner
+- user_platformowner - Platform owner
+
+These environment variables can either be inlined or saved in `Cypress.config.ts` file:
+
+```ts
+import { defineConfig } from 'cypress'
+
+export default defineConfig({
+  env: {
+    foo: 'bar',
+    CYPRESS_CY_EMAIL: ...
+    ...
+  },
+})
+```
+
+To open cypress in a browser:
+
+```sh
+npx cypress open
+```
+
+To run cypress tests in headless mode:
+
+```sh
+npx cypress run
+```
+
 ## Styling
 
 Lagoon-UI uses styled-components and it's recommended to use separete files for styling for each component.

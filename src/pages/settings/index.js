@@ -30,13 +30,13 @@ const SettingsPage = () => {
         <title>Settings</title>
       </Head>
       <MainLayout>
-          <CommonWrapper>
-            <h2>SSH keys</h2>
-            <div className="content">
-              <SshKeys me={data?.me || {}} loading={loading} />
-              <AddSshKey me={data?.me || {}} />
-            </div>
-          </CommonWrapper>
+        <CommonWrapper>
+          <h2>SSH keys</h2>
+          <div className="content">
+            <SshKeys me={data?.me || {}} loading={loading} />
+            <AddSshKey me={data?.me || {}} />
+          </div>
+        </CommonWrapper>
       </MainLayout>
     </>
   );

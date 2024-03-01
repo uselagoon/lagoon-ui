@@ -162,6 +162,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                         }
                         return (
                           <Button
+                            testId="confirmDeletion"
                             disabled={called}
                             loading={called}
                             variant="primary"
@@ -225,7 +226,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       <div>
         <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Add user">
           <>
-            <Button action={() => setAddUserModalOpen(true)}>
+            <Button testId="addUser" action={() => setAddUserModalOpen(true)}>
               <AddButtonContent>Add user</AddButtonContent>
             </Button>
           </>

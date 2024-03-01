@@ -36,19 +36,19 @@ export const SelectWrapper = styled.div`
     color: white;
     padding: 10px;
   }
-  
+
   .btn--disabled {
     margin-right: 0;
   }
-  
+
   .loader {
     display: inline-block;
     width: 50px;
     height: 15px;
   }
-  
+
   .loader:after {
-    content: " ";
+    content: ' ';
     display: block;
     width: 20px;
     height: 20px;
@@ -58,7 +58,7 @@ export const SelectWrapper = styled.div`
     border-color: ${color.blue} transparent ${color.blue} transparent;
     animation: loader 1.2s linear infinite;
   }
-  
+
   @keyframes loader {
     0% {
       transform: rotate(0deg);
@@ -94,19 +94,19 @@ export const StyledRegisteredTasks = styled.div`
     color: white;
     padding: 10px;
   }
-    
+
   .btn--disabled {
     margin-right: 0;
   }
-  
+
   .loader {
     display: inline-block;
     width: 50px;
     height: 15px;
   }
-  
+
   .loader:after {
-    content: " ";
+    content: ' ';
     display: block;
     width: 20px;
     height: 20px;
@@ -116,7 +116,7 @@ export const StyledRegisteredTasks = styled.div`
     border-color: ${color.blue} transparent ${color.blue} transparent;
     animation: loader 1.2s linear infinite;
   }
-  
+
   @keyframes loader {
     0% {
       transform: rotate(0deg);

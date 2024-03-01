@@ -1,43 +1,43 @@
+import { Collapse } from 'antd';
 import { bp, color, fontSize } from 'lib/variables';
 import styled from 'styled-components';
-import { Collapse } from 'antd';
 
 export const StyledEnvironmentWrapper = styled.div`
-    width: 100%;
-    align-self: center;
-    margin-bottom: 35px;
-    @media ${bp.xs_smallUp} {
-      margin-left: 48px;
-      min-width: calc(50% - 24px);
-      width: calc(50% - 24px);
-    }
-    @media ${bp.xs_small} {
-      &:nth-child(2n + 1) {
-        margin-left: 0;
-      }
-    }
-    @media ${bp.tabletUp} {
+  width: 100%;
+  align-self: center;
+  margin-bottom: 35px;
+  @media ${bp.xs_smallUp} {
+    margin-left: 48px;
+    min-width: calc(50% - 24px);
+    width: calc(50% - 24px);
+  }
+  @media ${bp.xs_small} {
+    &:nth-child(2n + 1) {
       margin-left: 0;
-      min-width: 100%;
-      width: 100%;
     }
-    @media ${bp.desktopUp} {
-      margin-left: 48px;
-      min-width: calc(50% - 24px);
-      width: calc(50% - 24px);
+  }
+  @media ${bp.tabletUp} {
+    margin-left: 0;
+    min-width: 100%;
+    width: 100%;
+  }
+  @media ${bp.desktopUp} {
+    margin-left: 48px;
+    min-width: calc(50% - 24px);
+    width: calc(50% - 24px);
+  }
+  @media ${bp.desktop_extrawide} {
+    &:nth-child(2n + 1) {
+      margin-left: 0;
     }
-    @media ${bp.desktop_extrawide} {
-      &:nth-child(2n + 1) {
-        margin-left: 0;
-      }
+  }
+  @media ${bp.extraWideUp} {
+    min-width: calc((100% / 3) - 32px);
+    width: calc((100% / 3) - 32px);
+    &:nth-child(3n + 1) {
+      margin-left: 0;
     }
-    @media ${bp.extraWideUp} {
-      min-width: calc((100% / 3) - 32px);
-      width: calc((100% / 3) - 32px);
-      &:nth-child(3n + 1) {
-        margin-left: 0;
-      }
-    }
+  }
 `;
 
 export const StyledNewEnvironment = styled.div`

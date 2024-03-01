@@ -1,13 +1,15 @@
-import React, {useEffect, useState} from "react";
-import Modal from "components/Modal";
-import ButtonBootstrap from "react-bootstrap/Button";
-import Button from 'components/Button'
-import ReactSelect from "react-select";
-import { Mutation } from "react-apollo";
-import withLogic from "components/AddVariable/logic";
-import addOrUpdateEnvVariableMutation from "../../lib/mutation/AddOrUpdateEnvVariableByName";
-import { NewVariable, NewVariableModal } from "./StyledAddVariable";
+import React, { useEffect, useState } from 'react';
+import { Mutation } from 'react-apollo';
+import ButtonBootstrap from 'react-bootstrap/Button';
+import ReactSelect from 'react-select';
+
 import { Popconfirm } from 'antd';
+import withLogic from 'components/AddVariable/logic';
+import Button from 'components/Button';
+import Modal from 'components/Modal';
+
+import addOrUpdateEnvVariableMutation from '../../lib/mutation/AddOrUpdateEnvVariableByName';
+import { NewVariable, NewVariableModal } from './StyledAddVariable';
 import {LoadingOutlined} from "@ant-design/icons";
 
 /**
@@ -15,13 +17,13 @@ import {LoadingOutlined} from "@ant-design/icons";
  */
 
 const scopeOptions = [
-  { value: "BUILD", label: "BUILD" },
-  { value: "RUNTIME", label: "RUNTIME" },
-  { value: "GLOBAL", label: "GLOBAL" },
-  { value: "CONTAINER_REGISTRY", label: "CONTAINER_REGISTRY" },
+  { value: 'BUILD', label: 'BUILD' },
+  { value: 'RUNTIME', label: 'RUNTIME' },
+  { value: 'GLOBAL', label: 'GLOBAL' },
+  { value: 'CONTAINER_REGISTRY', label: 'CONTAINER_REGISTRY' },
   {
-    value: "INTERNAL_CONTAINER_REGISTRY",
-    label: "INTERNAL_CONTAINER_REGISTRY",
+    value: 'INTERNAL_CONTAINER_REGISTRY',
+    label: 'INTERNAL_CONTAINER_REGISTRY',
   },
 ];
 
@@ -69,8 +71,8 @@ export const AddVariable = ({
     setUpdateScope(varScope);
   }, [varName, varValue]);
   const handleError = () => {
-    setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true)
-  }
+    setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true);
+  };
 
   const handlePermissionCheck = () => {
     let waitForGQL = setTimeout(() => {
@@ -86,11 +88,11 @@ export const AddVariable = ({
     <NewVariable>
       {
         icon ?
-          <Button variant='white' icon={icon} action={openModal}>
+          <Button variant="white" icon={icon} action={openModal}>
             Update
           </Button>
           : !loading ?
-            <ButtonBootstrap onClick={handlePermissionCheck}>
+            <ButtonBootstrap data-cy="addVariable" onClick={handlePermissionCheck}>
               Add
             </ButtonBootstrap>
             : <ButtonBootstrap className="add-variable"><LoadingOutlined/></ButtonBootstrap>
@@ -99,7 +101,7 @@ export const AddVariable = ({
         isOpen={open}
         onRequestClose={closeModal}
         contentLabel={`Confirm`}
-        variant={"large"}
+        variant={'large'}
       >
         <NewVariableModal>
           <div className="variable-target">
@@ -117,9 +119,15 @@ export const AddVariable = ({
                 aria-label="Scope"
                 placeholder="Select a variable scope"
                 name="results"
-                value={varScope ? scopeOptions.find((o) => o.value === updateScope.toUpperCase()) : scopeOptions.find((o) => o.value === inputScope)}
-                onChange={varScope ? (selectedOption) => setUpdateScope(selectedOption.value)
-                  : (selectedOption) => setInputScope(selectedOption.value)
+                value={
+                  varScope
+                    ? scopeOptions.find(o => o.value === updateScope.toUpperCase())
+                    : scopeOptions.find(o => o.value === inputScope)
+                }
+                onChange={
+                  varScope
+                    ? selectedOption => setUpdateScope(selectedOption.value)
+                    : selectedOption => setInputScope(selectedOption.value)
                 }
                 options={scopeOptions}
                 required
@@ -129,6 +137,7 @@ export const AddVariable = ({
           <div className="var-modal">
             <label htmlFor="varName">Name</label>
             <input
+              data-cy="varName"
               id="varNameId"
               name="varName"
               className="addVarnameInput"
@@ -141,6 +150,7 @@ export const AddVariable = ({
           <div className="var-modal">
             <label htmlFor="varName">Value</label>
             <input
+              data-cy="varValue"
               id="varValueId"
               name="varValue"
               className="addVarValueInput"
@@ -149,13 +159,13 @@ export const AddVariable = ({
               onChange={varValue ? handleUpdateValue : setInputValue}
             />
           </div>
-          <div className="form-input add-var-btn">
+          <div className="form-input add-var-btn" data-cy="add-variable">
             <a href="#" className="hover-state" onClick={closeModal}>
               cancel
             </a>
-            <Mutation mutation={addOrUpdateEnvVariableMutation}>
+            <Mutation mutation={addOrUpdateEnvVariableMutation} onError={e => console.error(e)}>
               {(addOrUpdateEnvVariableByName, { called, error, data, loading }) => {
-                let updateVar = varValues.map((varName) => {
+                let updateVar = varValues.map(varName => {
                   return varName.name;
                 });
                 updateVar = updateVar.includes(inputName);
@@ -168,10 +178,14 @@ export const AddVariable = ({
                   refresh().then(closeModal).then(handleError);
                 }
 
-                if (action === "add" && inputValue !== '' || action === "edit" && updateValue !== '' || action === "edit" && inputValue !== '') {
-                  if (action === "edit" && called ) {
+                if (
+                  (action === 'add' && inputValue !== '') ||
+                  (action === 'edit' && updateValue !== '') ||
+                  (action === 'edit' && inputValue !== '')
+                ) {
+                  if (action === 'edit' && called) {
                     return <div>Updating variable</div>;
-                  } else if (action === "add" && called) {
+                  } else if (action === 'add' && called) {
                     return <div>Adding variable</div>;
                   }
                 }
@@ -193,7 +207,10 @@ export const AddVariable = ({
                   }, 1000);
                 };
 
-                if (action === "add" && inputValue === '' || action === "edit" && updateValue === '' && inputValue === '') {
+                if (
+                  (action === 'add' && inputValue === '') ||
+                  (action === 'edit' && updateValue === '' && inputValue === '')
+                ) {
                   return (
                     <Popconfirm
                       title="No value set for this variable."
@@ -206,44 +223,39 @@ export const AddVariable = ({
                       onCancel={handlePopCancel}
                     >
                       <ButtonBootstrap
-                        disabled={ updateName ?
-                          updateName === "" || updateScope === ""
-                          :
-                          inputName === "" || inputScope === ""
+                        disabled={
+                          updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
                         }
                         onClick={showPopconfirm}
                       >
-                        {varTarget === "Environment"
+                        {varTarget === 'Environment'
                           ? updateVar || varName
-                              ? "Update environment variable"
-                              : "Add environment variable"
+                            ? 'Update environment variable'
+                            : 'Add environment variable'
                           : updateVar || varName
-                              ? "Update project variable"
-                              : "Add project variable"}
+                          ? 'Update project variable'
+                          : 'Add project variable'}
                       </ButtonBootstrap>
                     </Popconfirm>
                   );
                 } else {
                   return (
                     <ButtonBootstrap
-                      disabled={ updateName ?
-                          updateName === "" || updateScope === ""
-                          :
-                          inputName === "" || inputScope === ""
+                      disabled={
+                        updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
                       }
                       onClick={addOrUpdateEnvVariableHandler}
                     >
-                      {varTarget === "Environment"
+                      {varTarget === 'Environment'
                         ? updateVar || varName
-                            ? "Update environment variable"
-                            : "Add environment variable"
+                          ? 'Update environment variable'
+                          : 'Add environment variable'
                         : updateVar || varName
-                            ? "Update project variable"
-                            : "Add project variable"}
+                        ? 'Update project variable'
+                        : 'Add project variable'}
                     </ButtonBootstrap>
-                  )
+                  );
                 }
-
               }}
             </Mutation>
           </div>

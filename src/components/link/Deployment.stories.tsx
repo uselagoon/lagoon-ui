@@ -1,5 +1,6 @@
-import { faker } from '@faker-js/faker';
 import React from 'react';
+
+import { faker } from '@faker-js/faker';
 
 import DeploymentLink from './Deployment';
 
@@ -12,13 +13,13 @@ faker.seed(123);
 
 const deployment = {
   name: faker.lorem.slug(),
-  environment:{
+  environment: {
     openshiftProjectName: faker.lorem.slug(),
-    project:{
+    project: {
       name: faker.lorem.slug(),
-    }
-  }
-}
+    },
+  },
+};
 export const Default = () => (
   <DeploymentLink
     deploymentSlug={deployment.name}

@@ -1,38 +1,41 @@
-import React, { Fragment, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentAndProjectByOpenshiftProjectNameWithEnvVarsValue";
-import EnvironmentByProjectNameWithEnvVarsValueQuery from "../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue";
-import { useLazyQuery } from "@apollo/react-hooks";
-import DeleteVariable from "components/DeleteVariable";
-import AddVariable from "../AddVariable";
-import ViewVariableValue from "../ViewVariableValue";
-import Button from "react-bootstrap/Button";
-import Collapse from "react-bootstrap/Collapse";
+import React, { Fragment, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Collapse from 'react-bootstrap/Collapse';
+
+import Image from 'next/image';
+
+import { LoadingOutlined } from '@ant-design/icons';
+import { useLazyQuery } from '@apollo/react-hooks';
+import { Tag } from 'antd';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Alert from 'components/Alert';
+import Btn from 'components/Button';
 import withLogic from 'components/DeleteConfirm/logic';
+import DeleteVariable from 'components/DeleteVariable';
+import ProjectVariablesLink from 'components/link/ProjectVariables';
+
+import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from '../../lib/query/EnvironmentAndProjectByOpenshiftProjectNameWithEnvVarsValue';
+import EnvironmentByProjectNameWithEnvVarsValueQuery from '../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue';
+import hide from '../../static/images/hide.svg';
+import show from '../../static/images/show.svg';
+import AddVariable from '../AddVariable';
+import { DeleteVariableButton } from '../DeleteVariable/StyledDeleteVariable';
+import ViewVariableValue from '../ViewVariableValue';
 import {
   StyledEnvironmentVariableDetails,
   StyledProjectVariableTable,
   StyledVariableTable,
   VariableActions,
-} from "./StyledEnvironmentVariables";
-import Image from "next/image";
-import show from "../../static/images/show.svg";
-import hide from "../../static/images/hide.svg";
-import ProjectVariablesLink from "components/link/ProjectVariables";
-import Alert from 'components/Alert'
-import {Tag} from "antd";
-import Btn from 'components/Button'
-import {DeleteVariableButton} from "../DeleteVariable/StyledDeleteVariable";
-import {LoadingOutlined} from "@ant-design/icons";
+} from './StyledEnvironmentVariables';
 
 /**
  * Displays the environment variable information.
  */
 
-const hashValue = (value) => {
-  let hashedVal = "●";
+const hashValue = value => {
+  let hashedVal = '●';
   for (let l = 0; l < value.length; l++) {
-    hashedVal += "●";
+    hashedVal += '●';
   }
   return hashedVal;
 };
@@ -47,9 +50,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   const [prjValueState, setPrjValueState] = useState(initProjectValueState);
   const [openEnvVars, setOpenEnvVars] = useState(false);
   const [openPrjVars, setOpenPrjVars] = useState(false);
-  const [updateVarValue, setUpdateVarValue ] = useState('');
-  const [updateVarName, setUpdateVarName ] = useState('');
-  const [updateVarScope, setUpdateVarScope ] = useState('');
+  const [updateVarValue, setUpdateVarValue] = useState('');
+  const [updateVarName, setUpdateVarName] = useState('');
+  const [updateVarScope, setUpdateVarScope] = useState('');
   const [environmentErrorAlert, setEnvironmentErrorAlert] = useState(false);
   const [projectErrorAlert, setProjectErrorAlert] = useState(false);
   const [action, setAction] = useState('');
@@ -62,34 +65,34 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     setProjectErrorAlert(false);
   };
 
-  const [
-    getEnvVarValues,
-    { loading: envLoading, error: envError, data: envValues },
-  ] = useLazyQuery(EnvironmentByProjectNameWithEnvVarsValueQuery, {
-    variables: { openshiftProjectName: environment.openshiftProjectName },
-    onError: () => {
-      setOpenEnvVars(false);
-      setValueState(initValueState);
-      setEnvironmentErrorAlert(true);
+  const [getEnvVarValues, { loading: envLoading, error: envError, data: envValues }] = useLazyQuery(
+    EnvironmentByProjectNameWithEnvVarsValueQuery,
+    {
+      variables: { openshiftProjectName: environment.openshiftProjectName },
+      onError: () => {
+        setOpenEnvVars(false);
+        setValueState(initValueState);
+        setEnvironmentErrorAlert(true);
+      },
     }
-  });
+  );
 
   if (envValues) {
     displayVars = envValues.environmentVars.envVariables;
-  }
+  };
 
   if (envError) console.error(envError);
 
-  const [
-    getPrjEnvVarValues,
-    { loading: prjLoading, error: prjError, data: prjEnvValues },
-  ] = useLazyQuery(EnvironmentProjectByProjectNameWithEnvVarsValueQuery, {
-    variables: { openshiftProjectName: environment.openshiftProjectName },
-    onError: () => {
-      setOpenPrjVars(!openPrjVars);
-      setProjectErrorAlert(true);
+  const [getPrjEnvVarValues, { loading: prjLoading, error: prjError, data: prjEnvValues }] = useLazyQuery(
+    EnvironmentProjectByProjectNameWithEnvVarsValueQuery,
+    {
+      variables: { openshiftProjectName: environment.openshiftProjectName },
+      onError: () => {
+        setOpenPrjVars(!openPrjVars);
+        setProjectErrorAlert(true);
+      },
     }
-  });
+  );
 
   if (prjEnvValues) {
     displayProjectVars = prjEnvValues.environmentVars.project.envVariables;
@@ -97,32 +100,24 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
 
   if (prjError) console.error(prjError);
 
-  const valuesShow = (index) => {
-    setValueState((valueState) =>
-      valueState.map((el, i) => (i === index ? true : el))
-    );
+  const valuesShow = index => {
+    setValueState(valueState => valueState.map((el, i) => (i === index ? true : el)));
   };
-  const valuesHide = (index) => {
-    setValueState((valueState) =>
-      valueState.map((el, i) => (i === index ? false : el))
-    );
+  const valuesHide = index => {
+    setValueState(valueState => valueState.map((el, i) => (i === index ? false : el)));
   };
-  const prjValuesShow = (index) => {
-    setPrjValueState((prjValueState) =>
-      prjValueState.map((el, i) => (i === index ? true : el))
-    );
+  const prjValuesShow = index => {
+    setPrjValueState(prjValueState => prjValueState.map((el, i) => (i === index ? true : el)));
   };
-  const prjValuesHide = (index) => {
-    setPrjValueState((prjValueState) =>
-      prjValueState.map((el, i) => (i === index ? false : el))
-    );
+  const prjValuesHide = index => {
+    setPrjValueState(prjValueState => prjValueState.map((el, i) => (i === index ? false : el)));
   };
 
   const showVarValue = () => {
     getEnvVarValues();
     setOpenEnvVars(!openEnvVars);
     setValueState(initValueState);
-    setAction("view")
+    setAction('view');
   };
 
   const showPrjVarValue = () => {
@@ -135,13 +130,13 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     setUpdateVarValue(rowValue);
     setUpdateVarName(rowName);
     setUpdateVarScope(rowScope);
-  }
+  };
 
   const permissionCheck = (action) => {
     getEnvVarValues();
     setOpenEnvVars(false);
     setAction(action);
-  }
+  };
 
   const renderEnvValue = (envVar, index) => {
     if (envVar.value.length >= 0 && !valueState[index]) {
@@ -153,7 +148,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     } else {
       return envVar.value
     }
-  }
+  };
 
   const renderPrjValue = (projEnvVar, index) => {
     if (projEnvVar.value.length >= 0 && !prjValueState[index]) {
@@ -165,7 +160,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     } else {
       return projEnvVar.value
     }
-  }
+  };
 
   const renderEnvValues = (envVar, index) => {
     if (envLoading) {
@@ -184,6 +179,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               <Image
                 src={!valueState[index] ? show : hide}
                 className="showHide"
+                data-cy="showhide-toggle"
                 style={{ all: "unset" }}
                 alt=""
               />
@@ -196,7 +192,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         </Collapse>
       )
     }
-  }
+  };
 
   const renderPrjValues = (projEnvVar, index) => {
     if (prjLoading) {
@@ -215,6 +211,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               <Image
                 src={!prjValueState[index] ? show : hide}
                 className="showHide"
+                data-cy="showhide-toggle"
                 style={{ all: "unset" }}
                 alt=""
               />
@@ -227,7 +224,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         </Collapse>
       )
     }
-  }
+  };
 
   return (
     <StyledEnvironmentVariableDetails className="details">
@@ -237,15 +234,15 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
             type="error"
             closeAlert={closeEnvironmentError}
             header="Unauthorized:"
-            message={`You don't have permission to ${action} environment ${action === "view" ? " variable values" : "variables"}. Contact your administrator to obtain the relevant permissions.`}
+            message={`You don't have permission to ${action} environment ${action === 'view' ? ' variable values' : 'variables'}. Contact your administrator to obtain the relevant permissions.`}
           />
           )}
         <div className="header">
           <label>Project Variables</label>
           <div className="header-buttons">
           <Button
-            onClick={() => permissionCheck("add")}
-            style={{ all: "unset" }}
+            onClick={() => permissionCheck('add')}
+            style={{ all: 'unset' }}
           >
             {environmentErrorAlert ? <Button className="add-variable">Add</Button> :
               <AddVariable
@@ -266,9 +263,10 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               <Button
                   onClick={() => showVarValue()}
                   aria-controls="example-collapse-text"
+                  data-cy="hideShowValues"
                   aria-expanded={openPrjVars}
               >
-                {!openEnvVars ? "Show values" : "Hide values"}
+                {!openEnvVars ? 'Show values' : 'Hide values'}
               </Button>
             )}
           </div>
@@ -287,7 +285,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           <StyledVariableTable>
             <div
               className={
-                openEnvVars ? "values-present table-header" : "table-header"
+                openEnvVars ? 'values-present table-header' : 'table-header'
               }
             >
               <div className="name">
@@ -302,15 +300,11 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                 </div>
               </Collapse>
             </div>
-            <div className="data-table">
+            <div className="data-table" data-cy="environment-table">
               {displayVars.map((envVar, index) => {
                 return (
                   <Fragment key={index}>
-                    <div
-                      className={
-                        openEnvVars ? "values-present data-row" : "data-row"
-                      }
-                    >
+                    <div className={openEnvVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
                       <div className="varName">{envVar.name}</div>
                       <div className="varScope">{envVar.scope}</div>
                       {renderEnvValues(envVar, index)}
@@ -340,12 +334,12 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                           <div className="varDelete">
                             <Button
                               onClick={() => permissionCheck("delete", index)}
-                              style={{ all: "unset" }}
+                              style={{ all: 'unset' }}
                             >
-                              {envLoading && action === "delete" ?
+                              {envLoading && action === 'delete' ?
                                 <DeleteVariableButton>
-                                  <Btn index={index} variant='red' icon={!valueState[index] ? 'bin': ''} className="delete-btn">
-                                    {valueState[index] ? <LoadingOutlined/> : "Delete"}
+                                  <Btn index={index} variant="red" icon={!valueState[index] ? 'bin': ''} className="delete-btn">
+                                    {valueState[index] ? <LoadingOutlined/> : 'Delete'}
                                   </Btn>
                                 </DeleteVariableButton>
                               :
@@ -372,7 +366,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         )}
       </>
       {
-        displayVars.length !== 0 ? <hr style={{ margin: "30px 0" }} /> : ''
+        displayVars.length !== 0 ? <hr style={{ margin: '30px 0' }} /> : ''
       }
 
       <>
@@ -387,7 +381,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         <div className="header">
           <label>Project Variables</label>
           <div className="header-buttons">
-            <Button>
+            <Button data-cy="addVariable">
               <ProjectVariablesLink
                 projectSlug={environment.project.name}
                 className="deployLink hover-state"
@@ -402,7 +396,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               aria-controls="example-collapse-text"
               aria-expanded={openPrjVars}
             >
-              {!openPrjVars ? "Show values" : "Hide values"}
+              {!openPrjVars ? 'Show values' : 'Hide values'}
             </Button>
             )}
           </div>
@@ -421,7 +415,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         <StyledProjectVariableTable>
           <div
             className={
-              openPrjVars ? "values-present table-header" : "table-header"
+              openPrjVars ? 'values-present table-header' : 'table-header'
             }
           >
             <div className="name">
@@ -436,15 +430,11 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
               </div>
             </Collapse>
           </div>
-          <div className="data-table">
+          <div className="data-table" data-cy="environment-table">
             {displayProjectVars.map((projEnvVar, index) => {
               return (
                 <Fragment key={index}>
-                  <div
-                    className={
-                      openPrjVars ? "values-present data-row" : "data-row"
-                    }
-                  >
+                  <div className={openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
                     <div className="varName">{projEnvVar.name}</div>
                     <div className="varScope">{projEnvVar.scope}</div>
                     {renderPrjValues(projEnvVar, index)}
