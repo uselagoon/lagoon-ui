@@ -4,7 +4,14 @@ import LogAccordion from 'components/LogViewer/LogAccordion';
 
 import { StyledLogs } from './StyledLogViewer';
 
-const LogViewer = ({ logs, status = 'NA', checkedParseState, changeState, forceLastSectionOpen = true, logsTarget = "Deployments" }) => (
+const LogViewer = ({
+  logs,
+  status = 'NA',
+  checkedParseState,
+  changeState,
+  forceLastSectionOpen = true,
+  logsTarget = 'Deployments',
+}) => (
   <React.Fragment>
     <StyledLogs className="logs">
       {logs !== null ? (
@@ -187,7 +194,7 @@ const logPreprocessorTokenize = (logs, logsTarget) => {
   // tokenize
   const regexp =
     /##############################################\n(BEGIN) (.+)\n##############################################/;
-  const beginningSectionDefaultDetails = logsTarget === "Deployments" ? 'Build Setup' : 'Task Setup';
+  const beginningSectionDefaultDetails = logsTarget === 'Deployments' ? 'Build Setup' : 'Task Setup';
   // The regex above will split the logs into three separate token types
   // 1. standard blocks of text
   // 2. markers for section starts containing "SECTION" only
