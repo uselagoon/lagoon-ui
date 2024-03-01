@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
 
 import Accordion from './index';
 
@@ -51,6 +51,9 @@ export const WithChildren: Story = {
     ),
   },
   play: async ({ canvasElement }) => {
+    // wait for sb root to render;
+    await waitFor(() => within(canvasElement).getByTestId('storybook-accordion'));
+
     // toggle functionality
     const canvas = within(canvasElement);
     const element = await Promise.resolve(canvas.getByTestId('storybook-accordion'));
