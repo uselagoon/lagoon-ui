@@ -70,11 +70,15 @@ describe('GUEST permission test suites', () => {
     it('Fails to add a variable - no permission for GUEST', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);
 
+      registerIdleHandler('idle');
+
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'addEnvVariable');
       });
 
       const { name, value } = testData.variables[0];
+
+      cy.waitForNetworkIdle('@idle', 500);
 
       variable.doAddVariable(name, value);
 
