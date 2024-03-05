@@ -52,7 +52,7 @@ export default (App, initialAuth) => {
           provider: 'keycloak',
           providerData: keycloak,
           user: {
-            username: keycloak.tokenParsed ? keycloak.tokenParsed.preferred_username : 'unauthenticated',
+            username: keycloak.tokenParsed ? keycloak.tokenParsed.email : 'unauthenticated',
           },
         },
       });
