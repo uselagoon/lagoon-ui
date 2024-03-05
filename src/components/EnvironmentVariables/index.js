@@ -7,13 +7,14 @@ import Image from 'next/image';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { Tag } from 'antd';
+import { Tooltip } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from 'components/Alert';
 import Btn from 'components/Button';
 import withLogic from 'components/DeleteConfirm/logic';
 import DeleteVariable from 'components/DeleteVariable';
 import ProjectVariablesLink from 'components/link/ProjectVariables';
-import { Tooltip } from 'antd';
+
 import EnvironmentProjectByProjectNameWithEnvVarsValueQuery from '../../lib/query/EnvironmentAndProjectByOpenshiftProjectNameWithEnvVarsValue';
 import EnvironmentByProjectNameWithEnvVarsValueQuery from '../../lib/query/EnvironmentByOpenshiftProjectNameWithEnvVarsValue';
 import hide from '../../static/images/hide.svg';
