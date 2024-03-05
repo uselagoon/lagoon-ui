@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { Tag } from 'antd';
+import { Tooltip } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from 'components/Alert';
 import Btn from 'components/Button';
@@ -218,47 +219,51 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
                           <VariableActions>
                             <Collapse in={openPrjVars}>
                               <div className="varUpdate">
-                                <Button
-                                  onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
-                                  style={{ all: 'unset' }}
-                                >
-                                  <AddVariable
-                                    varProject={project.name}
-                                    varValues={displayVars}
-                                    varTarget="Project"
-                                    varName={updateVarName}
-                                    varValue={updateVarValue}
-                                    varScope={updateVarScope}
-                                    refresh={onVariableAdded}
-                                    icon="edit"
-                                    action="edit"
-                                  />
-                                </Button>
+                                <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
+                                  <Button
+                                    onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
+                                    style={{ all: 'unset' }}
+                                  >
+                                    <AddVariable
+                                      varProject={project.name}
+                                      varValues={displayVars}
+                                      varTarget="Project"
+                                      varName={updateVarName}
+                                      varValue={updateVarValue}
+                                      varScope={updateVarScope}
+                                      refresh={onVariableAdded}
+                                      icon="edit"
+                                      action="edit"
+                                    />
+                                  </Button>
+                                </Tooltip>
                               </div>
                             </Collapse>
                             <div className="varDelete" data-cy="varDelete">
-                              <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
-                                {prjLoading && action === 'delete' ? (
-                                  <DeleteVariableButton>
-                                    <Btn
-                                      index={index}
-                                      variant="red"
-                                      icon={!valueState[index] ? 'bin' : ''}
-                                      className="delete-btn"
-                                    >
-                                      {valueState[index] ? <LoadingOutlined /> : 'Delete'}
-                                    </Btn>
-                                  </DeleteVariableButton>
-                                ) : (
-                                  <DeleteVariable
-                                    deleteType="Project variable"
-                                    deleteName={projEnvVar.name}
-                                    varProject={project.name}
-                                    icon="bin"
-                                    refresh={onVariableAdded}
-                                  />
-                                )}
-                              </Button>
+                              <Tooltip overlayClassName="componentTooltip" title="Delete Variable" placement="bottom">
+                                <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
+                                  {prjLoading && action === 'delete' ? (
+                                    <DeleteVariableButton>
+                                      <Btn
+                                        index={index}
+                                        variant="red"
+                                        icon={!valueState[index] ? 'bin' : ''}
+                                        className="delete-btn"
+                                      >
+                                        {valueState[index] ? <LoadingOutlined /> : 'Delete'}
+                                      </Btn>
+                                    </DeleteVariableButton>
+                                  ) : (
+                                    <DeleteVariable
+                                      deleteType="Project variable"
+                                      deleteName={projEnvVar.name}
+                                      varProject={project.name}
+                                      icon="bin"
+                                      refresh={onVariableAdded}
+                                    />
+                                  )}
+                                </Button>
+                              </Tooltip>
                             </div>
                           </VariableActions>
                         </div>
