@@ -295,7 +295,7 @@ const PaginatedTable: FC<Props> = ({
           </Checkbox>
         ) : null}
         {withSorter ? (
-          <select onChange={handleSortChange} placeholder="Sort by" defaultValue={''}>
+          <select onChange={handleSortChange} defaultValue={''}>
             <option value="" disabled hidden>
               Sort by
             </option>

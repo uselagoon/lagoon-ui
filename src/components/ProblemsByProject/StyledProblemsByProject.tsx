@@ -128,7 +128,9 @@ export const StyledProblemsByProject = styled.div`
     padding: 20px;
     margin: 0;
     color: ${color.white};
-    font: 0.8rem Inconsolata, monospace;
+    font:
+      0.8rem Inconsolata,
+      monospace;
     line-height: 2;
     transition: all 0.6s ease-in-out;
     padding: 20px;

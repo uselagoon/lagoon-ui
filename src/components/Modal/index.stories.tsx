@@ -25,12 +25,12 @@ const SampleContent = () => (
 
 interface ModalArgs {
   isOpen: boolean;
-  onRequestClose: ()=>void;
+  onRequestClose: () => void;
   children: ReactNode;
   contentLabel: string;
   variant: string;
 }
-const ModalWrapper = (args: ModalArgs ) => {
+const ModalWrapper = (args: ModalArgs) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);

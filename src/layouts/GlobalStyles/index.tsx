@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { bp, color, fontSize } from 'lib/variables';
-import { DefaultTheme, GlobalStyleComponent, createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
 /**
  * Applies styles globally to any component nested inside it.
  */
 
-export const GlobalStyles: GlobalStyleComponent<Record<string, never>, DefaultTheme> = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
@@ -313,7 +313,7 @@ main{
 }
 `;
 
-const AppGlobalStyles = React.memo(() => <GlobalStyles />);
+const AppGlobalStyles = React.memo(() => <GlobalStyle />);
 
 AppGlobalStyles.displayName = 'GlobalStyles';
 

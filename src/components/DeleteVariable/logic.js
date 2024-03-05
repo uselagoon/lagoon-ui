@@ -10,8 +10,7 @@ const withInputHandlers = withHandlers({
       setInputValue(event.target.value),
   setClear:
     ({ setInputValue }) =>
-    () =>
-      [setInputValue('')],
+    () => [setInputValue('')],
 });
 
 const withModalState = withState('open', 'setOpen', false);
