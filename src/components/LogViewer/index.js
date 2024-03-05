@@ -4,12 +4,19 @@ import LogAccordion from 'components/LogViewer/LogAccordion';
 
 import { StyledLogs } from './StyledLogViewer';
 
-const LogViewer = ({ logs, status = 'NA', checkedParseState, changeState, forceLastSectionOpen = true }) => (
+const LogViewer = ({
+  logs,
+  status = 'NA',
+  checkedParseState,
+  changeState,
+  forceLastSectionOpen = true,
+  logsTarget = 'Deployments',
+}) => (
   <React.Fragment>
     <StyledLogs className="logs">
       {logs !== null ? (
         checkedParseState ? (
-          <div className="log-viewer">{logPreprocessor(logs, status, forceLastSectionOpen)}</div>
+          <div className="log-viewer">{logPreprocessor(logs, status, forceLastSectionOpen, logsTarget)}</div>
         ) : (
           <div className="log-viewer with-padding">{logs}</div>
         )
@@ -37,13 +44,13 @@ const isLogStateBad = status => {
  * @param {*} status a status for the build - if not complete, we open the very last item
  * @returns
  */
-const logPreprocessor = (logs, status, forceLastSectionOpen = true) => {
+const logPreprocessor = (logs, status, forceLastSectionOpen = true, logsTarget) => {
   let ret = null;
   let statusBad = isLogStateBad(status);
   let openLastSection = forceLastSectionOpen || shouldLastSectionBeOpen(status);
 
   try {
-    let tokens = logPreprocessorTokenize(logs);
+    let tokens = logPreprocessorTokenize(logs, logsTarget);
     let sectionMetadata = logPreprocessorExtractSectionEndDetails(logs);
     let AST = logPreprocessorProcessParse(tokens, sectionMetadata);
     return logPreprocessorProcessASTToReact(AST, openLastSection, statusBad);
@@ -51,8 +58,8 @@ const logPreprocessor = (logs, status, forceLastSectionOpen = true) => {
     // if there are any errors parsing and transforming, we just return the logs as is.
     console.log('Error processing logs for display: ' + e);
     return (
-      <div className="processed-logs">
-        <div key="logerror" className="log-text">
+      <div className="processed-logs" data-cy="processed-logs">
+        <div key="logerror" className="log-text" data-cy="log-text">
           {logs}
         </div>
       </div>
@@ -86,7 +93,7 @@ const logPreprocessorRenderLogNode = (node, visible = false, errorState = false)
         className={classes.join(' ')}
         defaultValue={visible}
       >
-        <div key={node.key + 'section'} className="section-details">
+        <div key={node.key + 'section'} className="section-details" data-cy="section-details">
           {node.nodes.map(element => {
             return logPreprocessorRenderLogNode(element);
           })}
@@ -103,7 +110,7 @@ const logPreprocessorProcessASTToReact = (ast, lastOpen, errorState) => {
   }
   let lastElement = ast.nodes.length - 1;
   return (
-    <div className="processed-logs">
+    <div className="processed-logs" data-cy="processed-logs">
       {ast.nodes.map((element, i) => {
         if (i != lastElement) {
           return logPreprocessorRenderLogNode(element);
@@ -183,12 +190,11 @@ const logPreprocessorExtractSectionEndDetails = logs => {
   return ret;
 };
 
-const logPreprocessorTokenize = logs => {
+const logPreprocessorTokenize = (logs, logsTarget) => {
   // tokenize
   const regexp =
     /##############################################\n(BEGIN) (.+)\n##############################################/;
-  const beginningSectionDefaultDetails = 'Build Setup';
-
+  const beginningSectionDefaultDetails = logsTarget === 'Deployments' ? 'Build Setup' : 'Task Setup';
   // The regex above will split the logs into three separate token types
   // 1. standard blocks of text
   // 2. markers for section starts containing "SECTION" only

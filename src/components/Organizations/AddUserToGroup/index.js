@@ -76,6 +76,7 @@ export const AddUserToGroup = ({
                 User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
                   className="inputEmail"
+                  data-cy="orgUser-email-input"
                   type="text"
                   placeholder="Enter Email"
                   value={inputValueEmail}
@@ -87,6 +88,7 @@ export const AddUserToGroup = ({
               User Role: <span style={{ color: '#E30000' }}>*</span>
               <RoleSelect>
                 <ReactSelect
+                  classNamePrefix="react-select"
                   className="select"
                   menuPortalTarget={document.body}
                   styles={{
@@ -109,6 +111,7 @@ export const AddUserToGroup = ({
             <div>
               <Footer>
                 <Button
+                  testId="addUserToGroup"
                   disabled={called || inputValueEmail === '' || !selectedRole}
                   action={() => {
                     addGroupMember({

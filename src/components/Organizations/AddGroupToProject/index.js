@@ -44,7 +44,7 @@ export const AddGroupToProject = ({
       <div className="margins">
         <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Link a group to this project">
           <>
-            <Button action={openModal}>
+            <Button action={openModal} testId="addGroupToProject">
               <AddButtonContent>Link Group</AddButtonContent>
             </Button>
           </>
@@ -68,6 +68,7 @@ export const AddGroupToProject = ({
                     <RoleSelect>
                       <ReactSelect
                         className="select"
+                        classNamePrefix="react-select"
                         menuPortalTarget={document.body}
                         styles={{
                           menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
@@ -89,6 +90,7 @@ export const AddGroupToProject = ({
                   <Footer>
                     <Button
                       disabled={called || selectedProject === null}
+                      testId="addGroupToProjectConfirm"
                       action={() => {
                         addGroupProject({
                           variables: {
@@ -103,7 +105,7 @@ export const AddGroupToProject = ({
                       Add
                     </Button>
 
-                    <Button variant="ghost" action={() => closeModal()}>
+                    <Button testId="cancel" variant="ghost" action={() => closeModal()}>
                       Cancel
                     </Button>
                   </Footer>

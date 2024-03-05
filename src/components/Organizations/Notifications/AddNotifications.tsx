@@ -253,6 +253,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
             Select service: <span style={{ color: '#E30000' }}>*</span>
             <RoleSelect>
               <ReactSelect
+                classNamePrefix="react-select"
                 className="select"
                 menuPortalTarget={document.body}
                 styles={{
@@ -289,6 +290,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
           {renderFields()}
           <Footer>
             <Button
+              testId="addNotifBtn"
               action={() => {
                 const cb = getAction();
 
@@ -313,7 +315,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
               Add
             </Button>
 
-            <Button variant="ghost" action={() => closeModal()}>
+            <Button testId="cancel" variant="ghost" action={() => closeModal()}>
               Cancel
             </Button>
           </Footer>

@@ -57,7 +57,7 @@ const DrushCacheClear = ({ pageEnvironment, onCompleted, onError, onNewTask }) =
               required
             />
           </div>
-          <Button disabled={loading} action={taskDrushCacheClear}>
+          <Button testId="task-btn" disabled={loading} action={taskDrushCacheClear}>
             {loading ? <span className="loader"></span> : 'Run task'}
           </Button>
         </SelectWrapper>

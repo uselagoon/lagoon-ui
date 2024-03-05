@@ -26,7 +26,7 @@ export const CancelDeploymentButton = ({ action, success, loading, error, before
   return (
     <>
       {contextHolder}
-      <Button action={action} loading={loading} disabled={loading || success}>
+      <Button testId="cancelDeployment" action={action} loading={loading} disabled={loading || success}>
         {success ? afterText || 'Cancellation requested' : beforeText || 'Cancel deployment'}
       </Button>
       {error && openNotificationWithIcon(error.message)}
@@ -36,6 +36,7 @@ export const CancelDeploymentButton = ({ action, success, loading, error, before
 
 const CancelDeployment = ({ deployment, beforeText, afterText }) => (
   <Mutation
+    onError={e => console.error(e)}
     mutation={CANCEL_DEPLOYMENT_MUTATION}
     variables={{
       deploymentId: deployment.id,

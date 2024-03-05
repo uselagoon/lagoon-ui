@@ -21,7 +21,7 @@ export const DeleteConfirm = ({
 }) => {
   return (
     <React.Fragment>
-      <Button variant="red" icon={icon} action={openModal}>
+      <Button variant="red" icon={icon} action={openModal} testId="delete">
         Delete
       </Button>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm delete ${deleteType}`}>
@@ -33,11 +33,11 @@ export const DeleteConfirm = ({
           </p>
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
-            <input type="text" value={inputValue} onChange={setInputValue} />
+            <input type="text" value={inputValue} onChange={setInputValue} data-cy="confirm-input" />
             <button className="hover-state" onClick={closeModal}>
               cancel
             </button>
-            <Button disabled={inputValue !== deleteName} action={onDelete} variant="red">
+            <Button disabled={inputValue !== deleteName} action={onDelete} variant="red" testId="deleteConfirm">
               Delete
             </Button>
           </div>

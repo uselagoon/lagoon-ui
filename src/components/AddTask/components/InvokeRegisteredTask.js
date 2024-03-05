@@ -164,6 +164,7 @@ const InvokeRegisteredTask = ({
               />
             )) || (
               <Button
+                testId="task-btn"
                 disabled={(taskArgumentsExist && !argumentVariablesHaveValues) || loading}
                 action={mutationInvokeRegisteredTask}
               >

@@ -61,7 +61,7 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
                   </div>
                 )}
                 <label>Type: {environment.deployType === 'pullrequest' ? 'PR' : environment.deployType}</label>
-                <h4>{environment.name}</h4>
+                <h4 data-cy="environment-name">{environment.name}</h4>
                 {environment.openshift.friendlyName != null && (
                   <label className="clusterLabel">Cluster: {environment.openshift.friendlyName}</label>
                 )}
@@ -71,8 +71,8 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
                 )}
               </EnvironmentLink>
               {environment.routes && environment.routes !== 'undefined' ? (
-                <div className="routeLink field">
-                  <label>
+                <div className="routeLink field" data-cy="route-link">
+                  <label data-cy="route-label">
                     {standbyEnvironment || activeEnvironment ? (
                       <a
                         className="hover-state"

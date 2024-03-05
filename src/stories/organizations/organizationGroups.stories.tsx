@@ -36,7 +36,14 @@ export const Default: Story = {
         graphql.mutation('addGroup', (req, res, ctx) => {
           const { group } = req.variables;
 
-          const newGroup = { __typename: 'Group', name: group, id: faker.lorem.slug(), members: [], type: 'null' };
+          const newGroup = {
+            __typename: 'Group',
+            name: group,
+            id: faker.lorem.slug(),
+            members: [],
+            type: 'null',
+            memberCount: 0,
+          };
 
           // "add" into the mock group for future refetch
           mockOrganization.groups = [newGroup, ...mockOrganization.groups];

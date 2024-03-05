@@ -42,7 +42,7 @@ const ProjectsPage = () => {
       </Head>
       <MainLayout>
         <CommonWrapper>
-          <h2>Projects</h2>
+          <h2 data-cy="projectsTitle">Projects</h2>
           <div className="content">
             {loading ? (
               <ProjectsSkeleton setSearch={setSearchInput} />

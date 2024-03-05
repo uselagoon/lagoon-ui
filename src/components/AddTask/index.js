@@ -52,7 +52,7 @@ const AddTask = ({
     <React.Fragment>
       <NewTaskWrapper>
         <StyledNewTask>
-          <div className="selectTask">
+          <div className="selectTask" data-cy="select-task">
             <ReactSelect
               aria-label="Task"
               placeholder="Select a task..."
@@ -64,7 +64,7 @@ const AddTask = ({
             />
           </div>
           {selectedTask && (
-            <div className="taskForm">
+            <div className="taskForm" data-cy="task-form">
               <NewTask
                 pageEnvironment={pageEnvironment}
                 projectEnvironments={projectEnvironments}

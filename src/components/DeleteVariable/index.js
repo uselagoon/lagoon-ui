@@ -48,7 +48,7 @@ export const DeleteVariable = ({
           </p>
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
-            <input type="text" value={inputValue} onChange={setInputValue} />
+            <input data-cy="variable-input" type="text" value={inputValue} onChange={setInputValue} />
             <button className="hover-state" onClick={closeModal}>
               cancel
             </button>
@@ -77,6 +77,7 @@ export const DeleteVariable = ({
 
                 return (
                   <ButtonBootstrap
+                    data-cy="delete-button"
                     disabled={inputValue !== deleteName}
                     className="btn-danger"
                     onClick={deleteEnvVariableByNameHandler}

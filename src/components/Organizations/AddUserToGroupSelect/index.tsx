@@ -90,6 +90,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
               <label>
                 User Email: <span style={{ color: '#E30000' }}>*</span>
                 <input
+                  data-cy="addUserEmail"
                   className="inputEmail"
                   type="text"
                   placeholder="Enter Email"
@@ -102,6 +103,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
               Group: <span style={{ color: '#E30000' }}>*</span>
               <RoleSelect>
                 <ReactSelect
+                  classNamePrefix="react-select"
                   className="select"
                   menuPortalTarget={document.body}
                   styles={{
@@ -127,6 +129,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
               User Role: <span style={{ color: '#E30000' }}>*</span>
               <RoleSelect>
                 <ReactSelect
+                  classNamePrefix="react-select"
                   className="select"
                   menuPortalTarget={document.body}
                   styles={{
@@ -151,6 +154,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
             <div>
               <Footer>
                 <Button
+                  testId="addUserConfirm"
                   loading={called}
                   disabled={called || !Object.values(newUserState).every(item => !!item)}
                   action={() => {

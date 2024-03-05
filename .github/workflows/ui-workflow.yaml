@@ -1,0 +1,95 @@
+name: Lagoon UI CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - cypress-test
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install dependencies
+      run: yarn
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Formatting check
+      run: |
+        yarn add prettier@2.8.7 @trivago/prettier-plugin-sort-imports
+        yarn format-check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Linting
+      run: |
+        yarn add typescript
+        yarn lint
+
+  cypress-tests:
+    runs-on: ubuntu-latest
+
+    needs: [format-check, lint]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Build and start Lagoon-minimal
+      run: |
+        cd test
+        make up
+
+    - name: Start ui
+      env:
+        GRAPHQL_API: http://0.0.0.0:33000/graphql
+        KEYCLOAK_API: http://0.0.0.0:38088/auth
+      run: |
+        yarn install
+        yarn build
+        yarn start &
+
+    - name: Run RBAC Cypress Tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: ./cypress/cypress.config.ts
+        auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3000'
+        command: yarn cypress:runRbac
+
+    - name: Run General Cypress Tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: ./cypress/cypress.config.ts
+        auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3000'
+        command: yarn cypress:runGeneral
+
+    - name: Run Organization Cypress Tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: ./cypress/cypress.config.ts
+        auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3000'
+        command: yarn cypress:runOrganizations
+
+    - name: Stop Docker containers
+      run: |
+        cd test
+        make down

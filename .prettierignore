@@ -1,4 +1,5 @@
 build
+public
 *.min.*
 *.yaml
 *.yml

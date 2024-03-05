@@ -78,6 +78,7 @@ const DrushSqlSync = ({
             />
           </div>
           <Button
+            testId="task-btn"
             action={() =>
               taskDrushSqlSync({
                 variables: {

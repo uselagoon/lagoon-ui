@@ -206,7 +206,7 @@ const OrgNotifications = ({
           )}
 
         {filteredSlackNotifications.map(project => (
-          <div className="data-row" project={project.name} key={project.name}>
+          <div className="data-row" data-cy="notification-row" project={project.name} key={project.name}>
             <NameTagCol>
               <div className="name">{project.name}</div>
               <div className="notiftype">
@@ -242,6 +242,7 @@ const OrgNotifications = ({
                       Name: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputName"
+                        data-cy="notification-name"
                         type="text"
                         placeholder="Enter name"
                         value={editState.current.name}
@@ -255,6 +256,7 @@ const OrgNotifications = ({
                       Webhook: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputWebhook"
+                        data-cy="input-webhook"
                         type="text"
                         placeholder="Enter Webhook"
                         value={editState.current.webhook}
@@ -289,6 +291,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           variant="primary"
                           loading={called}
                           disabled={called}
@@ -344,7 +347,7 @@ const OrgNotifications = ({
           </div>
         ))}
         {filteredRocketChatNotifications.map(project => (
-          <div className="data-row" project={project.name} key={project.name}>
+          <div className="data-row" data-cy="notification-row" project={project.name} key={project.name}>
             <NameTagCol>
               <div className="name">{project.name}</div>
               <div className="notiftype">
@@ -378,6 +381,7 @@ const OrgNotifications = ({
                       Name: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputName"
+                        data-cy="notification-name"
                         type="text"
                         placeholder="Enter name"
                         value={editState.current.name}
@@ -391,6 +395,7 @@ const OrgNotifications = ({
                       Webhook: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputWebhook"
+                        data-cy="input-webhook"
                         type="text"
                         placeholder="Enter Webhook"
                         value={editState.current.webhook}
@@ -425,6 +430,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           variant="primary"
                           loading={called}
                           disabled={called}
@@ -480,7 +486,7 @@ const OrgNotifications = ({
           </div>
         ))}
         {filteredEmailNotifications.map(project => (
-          <div className="data-row" project={project.name} key={project.name}>
+          <div className="data-row" data-cy="notification-row" project={project.name} key={project.name}>
             <NameTagCol>
               <div className="name">{project.name}</div>
               <div className="notiftype">
@@ -507,6 +513,7 @@ const OrgNotifications = ({
                       Name: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputName"
+                        data-cy="notification-name"
                         type="text"
                         placeholder="Enter name"
                         value={editState.current.name}
@@ -542,6 +549,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           loading={called}
                           disabled={called || !isValidEmail}
                           variant="primary"
@@ -598,7 +606,7 @@ const OrgNotifications = ({
           </div>
         ))}
         {filteredWebhookNotifications.map(project => (
-          <div className="data-row" project={project.name} key={project.name}>
+          <div className="data-row" data-cy="notification-row" project={project.name} key={project.name}>
             <NameTagCol>
               <div className="name">{project.name}</div>
               <div className="notiftype">
@@ -627,6 +635,7 @@ const OrgNotifications = ({
                       Name: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputName"
+                        data-cy="notification-name"
                         type="text"
                         placeholder="Enter name"
                         value={editState.current.name}
@@ -640,6 +649,7 @@ const OrgNotifications = ({
                       Webhook: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputWebhook"
+                        data-cy="input-webhook"
                         type="text"
                         placeholder="Enter Webhook"
                         value={editState.current.webhook}
@@ -661,6 +671,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           loading={called}
                           disabled={called}
                           variant="primary"
@@ -716,7 +727,7 @@ const OrgNotifications = ({
           </div>
         ))}
         {filteredTeamsNotifications.map(project => (
-          <div className="data-row" project={project.name} key={project.name}>
+          <div className="data-row" data-cy="notification-row" project={project.name} key={project.name}>
             <NameTagCol>
               <div className="name">{project.name}</div>
               <div className="notiftype">
@@ -746,6 +757,7 @@ const OrgNotifications = ({
                       Name: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputName"
+                        data-cy="notification-name"
                         type="text"
                         placeholder="Enter name"
                         value={editState.current.name}
@@ -759,6 +771,7 @@ const OrgNotifications = ({
                       Webhook: <span style={{ color: '#E30000' }}>*</span>
                       <input
                         className="inputWebhook"
+                        data-cy="input-webhook"
                         type="text"
                         placeholder="Enter Webhook"
                         value={editState.current.webhook}
@@ -780,6 +793,7 @@ const OrgNotifications = ({
                       }
                       return (
                         <Button
+                          testId="continueEdit"
                           loading={called}
                           disabled={called}
                           variant="primary"
@@ -861,7 +875,7 @@ const OrgNotifications = ({
         <AddNotifButton>
           <Tooltip overlayClassName="orgTooltip" title="Add a new notification" placement="bottom">
             <>
-              <Button action={() => setModalOpen(true)}>
+              <Button testId="addNotification" action={() => setModalOpen(true)}>
                 <AddButtonContent>Add notification</AddButtonContent>
               </Button>
             </>

@@ -58,7 +58,7 @@ const DrushCron = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
               required
             />
           </div>
-          <Button action={taskDrushCron} disabled={loading}>
+          <Button testId="task-btn" action={taskDrushCron} disabled={loading}>
             {loading ? <span className="loader"></span> : 'Run task'}
           </Button>
         </SelectWrapper>

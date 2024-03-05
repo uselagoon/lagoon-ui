@@ -27,7 +27,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const NavTabs = ({ activeTab, environment }) => (
   <StyledNavigation>
-    <li className={`overview ${activeTab == 'overview' ? 'active' : ''} linkContainer`}>
+    <li className={`overview ${activeTab == 'overview' ? 'active' : ''} linkContainer`} data-cy="overview-tab">
       <EnvironmentLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -38,7 +38,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </EnvironmentLink>
     </li>
 
-    <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} linkContainer`}>
+    <li className={`deployments ${activeTab == 'deployments' ? 'active' : ''} linkContainer`} data-cy="deployments-tab">
       <DeploymentsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -49,7 +49,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </DeploymentsLink>
     </li>
 
-    <li className={`backups ${activeTab == 'backups' ? 'active' : ''} linkContainer`}>
+    <li className={`backups ${activeTab == 'backups' ? 'active' : ''} linkContainer`} data-cy="backups-tab">
       <BackupsLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -60,7 +60,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </BackupsLink>
     </li>
 
-    <li className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${'linkContainer'}`}>
+    <li className={`tasks ${activeTab == 'tasks' ? 'active' : ''} ${'linkContainer'}`} data-cy="tasks-tab">
       <TasksLink
         environmentSlug={environment.openshiftProjectName}
         projectSlug={environment.project.name}
@@ -72,7 +72,10 @@ const NavTabs = ({ activeTab, environment }) => (
     </li>
 
     {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && (
-      <li className={`environmentVariables ${activeTab == 'environmentVariables' ? 'active' : ''} ${'linkContainer'}`}>
+      <li
+        className={`environmentVariables ${activeTab == 'environmentVariables' ? 'active' : ''} ${'linkContainer'}`}
+        data-cy="envvars-tab"
+      >
         <EnvironmentVariablesLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
@@ -84,7 +87,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </li>
     )}
     {environment.project.problemsUi == 1 && (
-      <li className={`problems ${activeTab == 'problems' ? 'active' : ''} linkContainer`}>
+      <li className={`problems ${activeTab == 'problems' ? 'active' : ''} linkContainer`} data-cy="problems-tab">
         <ProblemsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
@@ -96,7 +99,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </li>
     )}
     {environment.project.factsUi == 1 && (
-      <li className={`facts ${activeTab == 'facts' ? 'active' : ''} ${'linkContainer'}`}>
+      <li className={`facts ${activeTab == 'facts' ? 'active' : ''} ${'linkContainer'}`} data-cy="facts-tab">
         <FactsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
@@ -108,7 +111,7 @@ const NavTabs = ({ activeTab, environment }) => (
       </li>
     )}
     {environment.project.factsUi == 1 && (
-      <li className={`insights ${activeTab == 'insights' ? 'active' : ''} linkContainer`}>
+      <li className={`insights ${activeTab == 'insights' ? 'active' : ''} linkContainer`} data-cy="insights-tab">
         <InsightsLink
           environmentSlug={environment.openshiftProjectName}
           projectSlug={environment.project.name}
