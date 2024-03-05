@@ -35,7 +35,7 @@ export default (App, initialAuth) => {
 
       if (!keycloak.authenticated) {
         const urlQuery = queryStringToObject(location.search);
-        const options = urlQuery.idpHint ? { idpHint: urlQuery.idpHint } : {};
+        const options = urlQuery.idpHint ? { idpHint: urlQuery.idpHint } : { idpHint: publicRuntimeConfig.KEYCLOAK_IDPHINT };
 
         await keycloak.login(options);
       }
