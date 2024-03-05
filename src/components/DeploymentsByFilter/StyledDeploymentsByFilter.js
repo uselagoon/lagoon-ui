@@ -156,9 +156,9 @@ export const DeploymentsDataTable = styled.div`
       border-bottom-left-radius: 3px;
       border-bottom-right-radius: 3px;
     }
-    .buildstep{
-      display:flex;
-      flex-direction:column;
+    .buildstep {
+      display: flex;
+      flex-direction: column;
     }
     .status {
       @media ${bp.smallOnly} {

@@ -6,11 +6,11 @@ import {
   AlertOutlined,
   BarChartOutlined,
   CheckSquareOutlined,
-  UnorderedListOutlined,
   ReadOutlined,
   RocketOutlined,
   SaveOutlined,
   TagsOutlined,
+  UnorderedListOutlined,
 } from '@ant-design/icons';
 import BackupsLink from 'components/link/Backups';
 import DeploymentsLink from 'components/link/Deployments';

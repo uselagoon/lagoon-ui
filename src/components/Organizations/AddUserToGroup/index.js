@@ -69,7 +69,6 @@ export const AddUserToGroup = ({
           });
         }
         return (
-        
           <NewMember>
             <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
             <div className="form-box">

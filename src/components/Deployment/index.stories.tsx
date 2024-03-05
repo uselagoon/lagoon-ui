@@ -1,8 +1,8 @@
 import React from 'react';
 
+import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 import { getDeployment } from '../../../.storybook/mocks/mocks';
 import Deployment from './index';
-import withButtonOverrides from '../../../.storybook/decorators/withButtonOverrides';
 
 export default {
   component: Deployment,
@@ -11,9 +11,7 @@ export default {
   decorators: [withButtonOverrides('.btn:not(div.field .btn)', 'click', 'Cancel deployment click')],
 };
 
-
 const data = getDeployment(123);
-
 
 export const Complete = () => (
   <Deployment

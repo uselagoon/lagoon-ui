@@ -280,7 +280,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
                     {(updateSlack, { called, error, data }) => {
                       if (error) {
-                        return <div className='error'>{error.message}</div>;
+                        return <div className="error">{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -416,7 +416,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
                     {(updateRocketChat, { called, error, data }) => {
                       if (error) {
-                        return <div className='error'>{error.message}</div>;
+                        return <div className="error">{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -533,7 +533,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
                     {(updateEmail, { called, error, data }) => {
                       if (error) {
-                        return <div className='error'>{error.message}</div>;
+                        return <div className="error">{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -652,7 +652,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
                     {(updateWebhook, { called, error, data }) => {
                       if (error) {
-                        return <div className='error'>{error.message}</div>;
+                        return <div className="error">{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {
@@ -771,7 +771,7 @@ const OrgNotifications = ({
                   <Mutation mutation={UPDATE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
                     {(updateTeams, { called, error, data }) => {
                       if (error) {
-                        return <div className='error'>{error.message}</div>;
+                        return <div className="error">{error.message}</div>;
                       }
                       if (data) {
                         refresh().then(() => {

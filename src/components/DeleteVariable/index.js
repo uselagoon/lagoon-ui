@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from "react";
-import Modal from "components/Modal";
-import ButtonBootstrap from "react-bootstrap/Button";
-import Button from 'components/Button'
-import { Mutation } from "react-apollo";
-import withLogic from "components/AddVariable/logic";
-import {DeleteVariableModal, DeleteVariableButton} from "./StyledDeleteVariable";
-import DeleteEnvVariableMutation from "../../lib/mutation/deleteEnvVariableByName";
+import React, { useEffect, useState } from 'react';
+import { Mutation } from 'react-apollo';
+import ButtonBootstrap from 'react-bootstrap/Button';
+
+import withLogic from 'components/AddVariable/logic';
+import Button from 'components/Button';
+import Modal from 'components/Modal';
+
+import DeleteEnvVariableMutation from '../../lib/mutation/deleteEnvVariableByName';
+import { DeleteVariableButton, DeleteVariableModal } from './StyledDeleteVariable';
 
 /**
  * Deletes a Variable.
@@ -26,30 +28,23 @@ export const DeleteVariable = ({
   closeModal,
 }) => {
   return (
-      <React.Fragment>
-        <DeleteVariableButton>
-          {
-            icon ?
-              <Button variant='red' icon={icon} action={openModal}>
-                Delete
-              </Button>
-              :
-              <Button variant='red' action={openModal}>
-                Delete
-              </Button>
-          }
-        </DeleteVariableButton>
-      <Modal
-        isOpen={open}
-        onRequestClose={closeModal}
-        contentLabel={`Confirm`}
-        variant={"large"}
-      >
+    <React.Fragment>
+      <DeleteVariableButton>
+        {icon ? (
+          <Button variant="red" icon={icon} action={openModal}>
+            Delete
+          </Button>
+        ) : (
+          <Button variant="red" action={openModal}>
+            Delete
+          </Button>
+        )}
+      </DeleteVariableButton>
+      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
         <DeleteVariableModal>
           <p>
-            This will delete the {deleteType}{' '}
-            <span className="delete-name">{deleteName}</span> and cannot be undone. Make sure this is something you
-            really want to do!
+            This will delete the {deleteType} <span className="delete-name">{deleteName}</span> and cannot be undone.
+            Make sure this is something you really want to do!
           </p>
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
@@ -61,12 +56,7 @@ export const DeleteVariable = ({
               {(deleteEnvVariableByName, { loading, error, data }) => {
                 if (error) {
                   console.error(error);
-                  return (
-                      <div>
-                        Unauthorized: You don't have permission to
-                        delete this variable.
-                      </div>
-                  );
+                  return <div>Unauthorized: You don't have permission to delete this variable.</div>;
                 }
 
                 if (data) {
@@ -86,7 +76,11 @@ export const DeleteVariable = ({
                 };
 
                 return (
-                  <ButtonBootstrap disabled={inputValue !== deleteName} className='btn-danger' onClick={deleteEnvVariableByNameHandler}>
+                  <ButtonBootstrap
+                    disabled={inputValue !== deleteName}
+                    className="btn-danger"
+                    onClick={deleteEnvVariableByNameHandler}
+                  >
                     {loading ? 'Deleting...' : 'Delete'}
                   </ButtonBootstrap>
                 );

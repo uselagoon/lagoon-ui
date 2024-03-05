@@ -1,19 +1,14 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-export const getLinkData = (projectSlug) => ({
+export const getLinkData = projectSlug => ({
   urlObject: {
-    pathname: "/deploy-targets",
+    pathname: '/deploy-targets',
     query: { projectName: projectSlug },
   },
   asPath: `/projects/${projectSlug}/deploy-targets`,
 });
 
-const DeployTargetsLink = ({
-  projectSlug,
-  children,
-  className = '',
-  prefetch = false,
-}) => {
+const DeployTargetsLink = ({ projectSlug, children, className = '', prefetch = false }) => {
   const linkData = getLinkData(projectSlug);
 
   return (

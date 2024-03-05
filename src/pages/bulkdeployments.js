@@ -34,17 +34,17 @@ const BulkDeploymentsPage = ({ router }) => {
       </Head>
 
       <MainLayout>
-          <Breadcrumbs>
-            <BulkDeploymentBreadcrumb
-              title={loading ? <Skeleton /> : data.deploymentsByBulkId[0]?.bulkName || router.query.bulkName}
-              bulkIdSlug={loading ? '' : data.deploymentsByBulkId[0]?.bulkId || router.query.bulkId}
-            />
-          </Breadcrumbs>
-          <CommonWrapper>
-            <div className="content">
-              {loading ? <BulkDeploymentsSkeleton /> : <BulkDeployments deployments={data.deploymentsByBulkId || []} />}
-            </div>
-          </CommonWrapper>
+        <Breadcrumbs>
+          <BulkDeploymentBreadcrumb
+            title={loading ? <Skeleton /> : data.deploymentsByBulkId[0]?.bulkName || router.query.bulkName}
+            bulkIdSlug={loading ? '' : data.deploymentsByBulkId[0]?.bulkId || router.query.bulkId}
+          />
+        </Breadcrumbs>
+        <CommonWrapper>
+          <div className="content">
+            {loading ? <BulkDeploymentsSkeleton /> : <BulkDeployments deployments={data.deploymentsByBulkId || []} />}
+          </div>
+        </CommonWrapper>
       </MainLayout>
     </>
   );

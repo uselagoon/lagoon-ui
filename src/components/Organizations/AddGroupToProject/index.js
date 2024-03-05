@@ -2,6 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 // @TODO: add this once the logic exists
@@ -10,7 +11,6 @@ import gql from 'graphql-tag';
 
 import { RoleSelect } from '../AddUserToGroup/Styles';
 import { AddButtonContent, Footer, StyledNotification, StyledNotificationWrapper } from '../SharedStyles';
-import { Tooltip } from 'antd';
 
 const ADD_GROUP_PROJECT_MUTATION = gql`
   mutation addProjectToGroup($groupName: String!, $projectName: String!) {

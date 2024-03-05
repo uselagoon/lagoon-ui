@@ -1,19 +1,22 @@
-import React from "react";
-import { withRouter } from "next/router";
-import Head from "next/head";
-import MainLayout from "layouts/MainLayout";
-import Breadcrumbs from "components/Breadcrumbs";
-import ProjectBreadcrumb from "components/Breadcrumbs/Project";
-import ProjectNavTabs from "components/ProjectNavTabs";
-import { VariableWrapper, ProjectWrapper } from "../styles/pageStyles";
-import ProjectVariables from "components/ProjectVariables";
-import { useQuery } from "@apollo/react-hooks";
-import ProjectVariablesSkeleton from "components/ProjectVariables/ProjectVariablesSkeleton";
-import ProjectByNameWithEnvVarsQuery from "lib/query/ProjectByNameWithEnvVars";
-import QueryError from "../components/errors/QueryError";
-import ProjectNotFound from "../components/errors/ProjectNotFound";
-import ThemedSkeletonWrapper from "../styles/ThemedSkeletonWrapper";
-import ProjectNavTabsSkeleton from "components/ProjectNavTabs/ProjectNavTabsSkeleton";
+import React from 'react';
+
+import Head from 'next/head';
+import { withRouter } from 'next/router';
+
+import { useQuery } from '@apollo/react-hooks';
+import Breadcrumbs from 'components/Breadcrumbs';
+import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
+import ProjectNavTabs from 'components/ProjectNavTabs';
+import ProjectNavTabsSkeleton from 'components/ProjectNavTabs/ProjectNavTabsSkeleton';
+import ProjectVariables from 'components/ProjectVariables';
+import ProjectVariablesSkeleton from 'components/ProjectVariables/ProjectVariablesSkeleton';
+import MainLayout from 'layouts/MainLayout';
+import ProjectByNameWithEnvVarsQuery from 'lib/query/ProjectByNameWithEnvVars';
+
+import ProjectNotFound from '../components/errors/ProjectNotFound';
+import QueryError from '../components/errors/QueryError';
+import ThemedSkeletonWrapper from '../styles/ThemedSkeletonWrapper';
+import { ProjectWrapper, VariableWrapper } from '../styles/pageStyles';
 
 /**
  * Displays a list of all variables for a project.
@@ -43,15 +46,11 @@ export const PageProjectVariables = ({ router }) => {
           </Breadcrumbs>
           <ProjectWrapper>
             <ThemedSkeletonWrapper>
-              <ProjectNavTabsSkeleton
-                activeTab="variables"
-                projectName={router.query.projectName}
-              />
+              <ProjectNavTabsSkeleton activeTab="variables" projectName={router.query.projectName} />
               <VariableWrapper>
                 <div className="content">
                   <div className="notification">
-                    A deployment is required to apply any changes to Project
-                    variables.
+                    A deployment is required to apply any changes to Project variables.
                   </div>
                   <ProjectVariablesSkeleton />
                 </div>
@@ -80,10 +79,7 @@ export const PageProjectVariables = ({ router }) => {
           <ProjectNavTabs activeTab="variables" project={project} />
           <VariableWrapper>
             <div className="content">
-              <div className="notification">
-                A deployment is required to apply any changes to Project
-                variables.
-              </div>
+              <div className="notification">A deployment is required to apply any changes to Project variables.</div>
               <ProjectVariables project={project} onVariableAdded={handleRefetch} />
             </div>
           </VariableWrapper>

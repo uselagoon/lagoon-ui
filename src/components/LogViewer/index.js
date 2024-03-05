@@ -127,7 +127,7 @@ const logPreprocessorProcessParse = (tokens, sectionMetadata) => {
       case 'section-opener':
         let metadataForSection = sectionMetadata.get(tokens[i].details.trim());
         if (metadataForSection == undefined) {
-          metadataForSection = ['', false]
+          metadataForSection = ['', false];
         }
 
         let node = {
@@ -169,11 +169,11 @@ const logPreprocessorExtractSectionEndDetails = logs => {
       let stepDetails = tokens[i].trim();
       if (stepName != '' && stepDetails != '') {
         let durationArray = stepDetails.match(durationRegexp);
-        let hasWarnings = false
+        let hasWarnings = false;
         if (stepDetails.match(/.* WithWarnings$/)) {
-          hasWarnings = true
+          hasWarnings = true;
         }
-        let payload = [`Duration: ${durationArray[1]}`, hasWarnings]
+        let payload = [`Duration: ${durationArray[1]}`, hasWarnings];
         if (durationArray.length == 2) {
           ret.set(stepName, payload);
         }

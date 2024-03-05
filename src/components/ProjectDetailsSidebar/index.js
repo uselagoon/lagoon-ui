@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import * as R from "ramda";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import moment from "moment";
-import giturlparse from "git-url-parse";
-import ProjectChildPageLink from "components/link/ProjectChildPageLink";
+import React, { useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { FieldWrapper, ProjectDetails } from "./StyledProjectSidebar";
+import ProjectChildPageLink from 'components/link/ProjectChildPageLink';
+import giturlparse from 'git-url-parse';
+import moment from 'moment';
+import * as R from 'ramda';
+
+import { FieldWrapper, ProjectDetails } from './StyledProjectSidebar';
 
 const ProjectDetailsSidebar = ({ project }) => {
   const [copied, setCopied] = useState(false);
@@ -96,7 +97,7 @@ const ProjectDetailsSidebar = ({ project }) => {
             <label>Deploy Targets</label>
             <div>
               <ProjectChildPageLink
-                childPage={"deploy-targets"}
+                childPage={'deploy-targets'}
                 projectSlug={project.name}
                 className="deployLink deployTargets hover-state"
               >
