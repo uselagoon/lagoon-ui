@@ -146,7 +146,9 @@ export const FieldWrapper = styled.div`
       right: 0;
       text-transform: uppercase;
       top: 20px;
-      transition: top 0.5s, opacity 0.75s ease-in;
+      transition:
+        top 0.5s,
+        opacity 0.75s ease-in;
     }
   }
 

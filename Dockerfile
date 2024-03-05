@@ -1,5 +1,5 @@
 # Node builder image
-FROM uselagoon/node-16-builder:latest as builder
+FROM uselagoon/node-20-builder:latest as builder
 
 COPY . /app/
 
@@ -7,7 +7,7 @@ RUN yarn install
 
 
 # Node service image
-FROM uselagoon/node-16:latest
+FROM uselagoon/node-20:latest
 
 ARG LAGOON_VERSION
 ENV LAGOON_VERSION=$LAGOON_VERSION

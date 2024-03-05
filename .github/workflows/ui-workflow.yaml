@@ -22,7 +22,7 @@ jobs:
 
     - name: Formatting check
       run: |
-        yarn add prettier@2.8.7 @trivago/prettier-plugin-sort-imports
+        yarn add prettier@3.1.1 @trivago/prettier-plugin-sort-imports
         yarn format-check
 
   lint:

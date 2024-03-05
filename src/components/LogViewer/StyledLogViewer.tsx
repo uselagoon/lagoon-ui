@@ -99,7 +99,7 @@ export const StyledLogAccordion = styled.div`
     color: ${props => props.theme.texts.accordionHeading};
     border-color: ${props => props.theme.borders.tableRow};
     .log-header {
-      ::before {
+      &::before {
         background-image: url('/static/images/logs-closed.png');
         background-size: 8px 8px;
         background-color: #497ffa;
@@ -110,7 +110,7 @@ export const StyledLogAccordion = styled.div`
         margin: 0 10px 0 0;
       }
       &.visible {
-        ::before {
+        &::before {
           background-image: url('/static/images/logs-opened.png');
         }
       }
@@ -121,7 +121,7 @@ export const StyledLogAccordion = styled.div`
   &.data-row.log-error-state {
     .accordion-heading {
       .log-header {
-        ::before {
+        &::before {
           background-color: #e94a4a;
         }
       }
@@ -131,7 +131,7 @@ export const StyledLogAccordion = styled.div`
     .accordion-heading {
       .log-warning-state {
         margin-top: 1rem;
-        ::before {
+        &::before {
           color: #000000;
           background-color: #ffbe00;
         }

@@ -217,7 +217,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
                     loading={updatePending}
                     action={() => {
                       setUpdatePending(true);
-                      updateUser({
+                      void updateUser({
                         variables: {
                           email: editModalState.current.email,
                           role: editModalState.current.role,

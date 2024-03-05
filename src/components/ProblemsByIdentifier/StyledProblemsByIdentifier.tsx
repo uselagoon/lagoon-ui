@@ -168,7 +168,9 @@ export const StyledProblemsByIdentifier = styled.div`
       margin: 0;
       background: #2d2d2d;
       color: white;
-      font: 0.8rem Inconsolata, monospace;
+      font:
+        0.8rem Inconsolata,
+        monospace;
       line-height: 2;
       transition: all 0.6s ease-in-out;
     }

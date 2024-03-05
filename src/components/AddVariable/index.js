@@ -230,8 +230,8 @@ export const AddVariable = ({
                             ? 'Update environment variable'
                             : 'Add environment variable'
                           : updateVar || varName
-                          ? 'Update project variable'
-                          : 'Add project variable'}
+                            ? 'Update project variable'
+                            : 'Add project variable'}
                       </ButtonBootstrap>
                     </Popconfirm>
                   );
@@ -248,8 +248,8 @@ export const AddVariable = ({
                           ? 'Update environment variable'
                           : 'Add environment variable'
                         : updateVar || varName
-                        ? 'Update project variable'
-                        : 'Add project variable'}
+                          ? 'Update project variable'
+                          : 'Add project variable'}
                     </ButtonBootstrap>
                   );
                 }
