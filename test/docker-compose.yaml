@@ -18,6 +18,16 @@ services:
     depends_on:
       - api-db
       - keycloak
+  api-lagoon-migrations:
+    image: testlagoon/api:main
+    command: sh -c "./node_modules/.bin/tsc && node -r dotenv-extended/config dist/migrations/lagoon/migration.js"
+    environment:
+      - KEYCLOAK_URL=http://172.17.0.1:38088
+    depends_on:
+      api-init:
+        condition: service_completed_successfully # don't start the lagoon migrations until the db migrations is completed
+      keycloak:
+        condition: service_started
   api:
     image: testlagoon/api:main
     ports:
@@ -35,7 +45,7 @@ services:
       - S3_BAAS_SECRET_ACCESS_KEY=minio123
       - CONSOLE_LOGGING_LEVEL=trace
     depends_on:
-      - api-init
+      - api-lagoon-migrations
   api-redis:
     image: testlagoon/api-redis:main
   keycloak:
