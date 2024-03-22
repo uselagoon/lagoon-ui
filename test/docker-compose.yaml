@@ -4,22 +4,22 @@ name: lagoon-minimal
 
 services:
   api-db:
-    image: testlagoon/api-db:main
+    image: testlagoon/api-db:pr-3684
     networks:
       - default
   broker:
-    image: testlagoon/broker-single:main
+    image: testlagoon/broker:pr-3684
     restart: on-failure
     networks:
       - default
   api-init:
-    image: testlagoon/api:main
+    image: testlagoon/api:pr-3684
     command: ./node_modules/.bin/knex migrate:latest --cwd /app/services/api/database
     depends_on:
       - api-db
       - keycloak
   api-lagoon-migrations:
-    image: testlagoon/api:main
+    image: testlagoon/api:pr-3684
     command: sh -c "./node_modules/.bin/tsc && node -r dotenv-extended/config dist/migrations/lagoon/migration.js"
     environment:
       - KEYCLOAK_URL=http://172.17.0.1:38088
@@ -29,7 +29,7 @@ services:
       keycloak:
         condition: service_started
   api:
-    image: testlagoon/api:main
+    image: testlagoon/api:pr-3684
     ports:
       - '33000:3000'
     networks:
@@ -47,9 +47,9 @@ services:
     depends_on:
       - api-lagoon-migrations
   api-redis:
-    image: testlagoon/api-redis:main
+    image: testlagoon/api-redis:pr-3684
   keycloak:
-    image: testlagoon/keycloak:main
+    image: testlagoon/keycloak:pr-3684
     depends_on:
       - keycloak-db
     ports:
@@ -59,7 +59,7 @@ services:
     environment:
      - KEYCLOAK_FRONTEND_URL=http://0.0.0.0:38088/auth
   keycloak-db:
-    image: testlagoon/keycloak-db:main
+    image: testlagoon/keycloak-db:pr-3684
   local-minio:
     image: minio/minio
     entrypoint: sh
@@ -71,7 +71,7 @@ services:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
   local-api-data-watcher-pusher:
-    image: testlagoon/local-api-data-watcher-pusher:main
+    image: testlagoon/local-api-data-watcher-pusher:pr-3684
     depends_on:
       - api
     command: ["bash", "-c", "
