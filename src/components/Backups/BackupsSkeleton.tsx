@@ -6,8 +6,8 @@ import { BackupsHeader, DataTable } from './StyledBackups';
 const Backups = () => {
   const numberOfBackupFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const backupFieldSkeleton = (
-    <div className="data-row">
+  const backupFieldSkeleton = (idx: number) => (
+    <div className="data-row" key={idx}>
       <div className="source">
         <Skeleton />
       </div>
@@ -32,7 +32,7 @@ const Backups = () => {
         <label className="backupid">Backup id</label>
       </BackupsHeader>
 
-      <DataTable>{[...Array<undefined>(numberOfBackupFields)].map(() => backupFieldSkeleton)}</DataTable>
+      <DataTable>{[...Array<undefined>(numberOfBackupFields)].map((_, idx) => backupFieldSkeleton(idx))}</DataTable>
     </div>
   );
 };

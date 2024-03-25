@@ -8,7 +8,7 @@ import { Organization, OrganizationsPage, OrgsHeader, SearchInput } from './Styl
 const OrganizationsSkeleton = () => {
   const RenderSkeletonBox = (index: number) => {
     return (
-      <Box className="box">
+      <Box className="box" key={index}>
         <Organization>
           <h4>
             <Skeleton style={{ width: `${index % 2 ? '50%' : '80%'}` }} />

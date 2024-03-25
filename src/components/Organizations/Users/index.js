@@ -87,7 +87,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         const isDefaultUser = email.startsWith('default-user');
         if (isDefaultUser)
           return (
-            <Tag style={{ display: 'inline' }} background="#262D65">
+            <Tag style={{ display: 'inline' }} $background="#262D65">
               DEFAULT USER
             </Tag>
           );

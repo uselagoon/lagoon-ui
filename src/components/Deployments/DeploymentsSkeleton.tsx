@@ -6,8 +6,8 @@ import { StyledDeployments } from './StyledDeployments';
 const DeploymentsSkeleton = () => {
   const numberOfDeploymentFields = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const skeletonItem = (
-    <div className="deploymentRow">
+  const skeletonItem = (idx: number) => (
+    <div className="deploymentRow" key={idx}>
       <div className="data-row">
         <div className="name">
           <Skeleton />
@@ -36,7 +36,9 @@ const DeploymentsSkeleton = () => {
         <label>Status</label>
         <label>Duration</label>
       </div>
-      <div className="data-table">{[...Array<undefined>(numberOfDeploymentFields)].map(() => skeletonItem)}</div>
+      <div className="data-table">
+        {[...Array<undefined>(numberOfDeploymentFields)].map((_, idx) => skeletonItem(idx))}
+      </div>
     </StyledDeployments>
   );
 };

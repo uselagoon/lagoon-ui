@@ -12,7 +12,7 @@ interface BoxProps {
   activeBgs?: string[]; // if present, they act as hover backgrounds
 }
 const Box: FC<BoxProps> = ({ className = '', activeBgs, children }) => (
-  <StyledBox className={className} activeBgs={activeBgs}>
+  <StyledBox className={className} $activeBgs={activeBgs}>
     <div className="content">{children}</div>
   </StyledBox>
 );

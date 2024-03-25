@@ -72,7 +72,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
             <span>
               {i.name}{' '}
               {i.type === 'project-default-group' && (
-                <Tag style={{ display: 'inline' }} background="#262D65">
+                <Tag style={{ display: 'inline' }} $background="#262D65">
                   SYSTEM GROUP
                 </Tag>
               )}

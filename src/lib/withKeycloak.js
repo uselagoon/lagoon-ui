@@ -18,20 +18,28 @@ export default (App, initialAuth) => {
     }
 
     async componentDidMount() {
-      const keycloak = Keycloak({
+      const keycloak = new Keycloak({
         url: publicRuntimeConfig.KEYCLOAK_API,
         realm: 'lagoon',
         clientId: 'lagoon-ui',
       });
 
       keycloak.onTokenExpired = async () => {
-        await keycloak.updateToken();
-        this.setAuth(keycloak);
+        try {
+          await keycloak.updateToken();
+          this.setAuth(keycloak);
+        } catch (err) {
+          console.error('Error refreshing token', err.message);
+        }
       };
 
-      await keycloak.init({
-        checkLoginIframe: false,
-      });
+      try {
+        await keycloak.init({
+          checkLoginIframe: false,
+        });
+      } catch (err) {
+        console.error('Authentication error', err.message);
+      }
 
       if (!keycloak.authenticated) {
         const urlQuery = queryStringToObject(location.search);

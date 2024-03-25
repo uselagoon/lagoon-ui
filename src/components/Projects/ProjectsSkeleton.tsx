@@ -11,7 +11,7 @@ interface Props {
 const ProjectsSkeleton = ({ setSearch }: Props) => {
   const RenderSkeletonBox = (index: number) => {
     return (
-      <Box className="box">
+      <Box className="box" key={index}>
         <StyledProject>
           <h4>
             <Skeleton style={{ width: `${index % 2 ? '50%' : '80%'}` }} />

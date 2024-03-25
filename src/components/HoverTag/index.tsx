@@ -21,8 +21,8 @@ const textPairs = {
 
 const HoverTag: FC<Props> = ({ tooltipPosition, tagColor, maxWidth, text, textColor, formatToReadableText }) => {
   const toolTipTextProps = {
-    ...(maxWidth ? { maxWidth } : {}),
-    ...(textColor ? { textColor } : {}),
+    ...(maxWidth ? { $maxWidth: maxWidth } : {}),
+    ...(textColor ? { $textColor: textColor } : {}),
   };
 
   const formatText = (textProp: Props['text']) => {

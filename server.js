@@ -125,7 +125,7 @@ app
 
     // organizations start
     server.get('/organizations', (req, res) => {
-      app.render(req, res, '/organizations/organizations');
+      app.render(req, res, '/organizations');
     });
 
     server.get('/organizations/:organizationSlug', (req, res) => {

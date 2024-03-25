@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
-import OrganizationsPage from '../../pages/organizations/organizations';
+import OrganizationsPage from '../../pages/organizations';
 
 const meta: Meta<typeof OrganizationsPage> = {
   title: 'Pages/Organizations/AllOrganizations',

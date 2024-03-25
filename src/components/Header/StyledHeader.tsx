@@ -1,11 +1,11 @@
 import { color } from 'lib/variables';
 import styled from 'styled-components';
 
-export const StyledHeader = styled.header<{ isOrganizationsPath: boolean }>`
+export const StyledHeader = styled.header<{ $isOrganizationsPath: boolean }>`
   background: ${color.brightBlue} ${color.lightBlue};
   background: ${color.lightBlue};
   background: ${props =>
-    props.isOrganizationsPath
+    props.$isOrganizationsPath
       ? props.theme.gradients.organizationsHeaderGradient
       : props.theme.gradients.headerFooterGradient};
 
@@ -42,7 +42,7 @@ export const StyledHeader = styled.header<{ isOrganizationsPath: boolean }>`
     }
     &.navitem {
       align-items: center;
-      border-left: 1px solid ${props => (props.isOrganizationsPath ? 'transparent' : color.blue)};
+      border-left: 1px solid ${props => (props.$isOrganizationsPath ? 'transparent' : color.blue)};
       cursor: pointer;
       display: flex;
       &::before {

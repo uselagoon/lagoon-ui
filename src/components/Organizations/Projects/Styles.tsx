@@ -166,9 +166,9 @@ export const OrgProjectWrapper = styled.div`
   }
 `;
 
-export const ProjectDashboard = styled.div<{ inlineLink?: boolean }>`
+export const ProjectDashboard = styled.div<{ $inlineLink?: boolean }>`
   ${props =>
-    !props.inlineLink
+    !props.$inlineLink
       ? `
   margin-left:1.5rem;
   font-size:13px;

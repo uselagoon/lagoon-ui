@@ -6,8 +6,8 @@ import { StyledTasks, TasksTable } from './StyledTasks';
 const TasksSkeleton = () => {
   const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
 
-  const itemRender = (
-    <div className="taskRow">
+  const itemRender = (idx: number) => (
+    <div className="taskRow" key={idx}>
       <div className="data-row">
         <div className="name">
           <Skeleton />
@@ -36,7 +36,9 @@ const TasksSkeleton = () => {
         <label className="service">Service</label>
         <label className="status">Status</label>
       </div>
-      <TasksTable className="data-table">{[...Array<undefined>(numberOfItems)].map(() => itemRender)}</TasksTable>
+      <TasksTable className="data-table">
+        {[...Array<undefined>(numberOfItems)].map((_, idx) => itemRender(idx))}
+      </TasksTable>
     </StyledTasks>
   );
 };

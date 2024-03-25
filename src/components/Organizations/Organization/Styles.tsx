@@ -173,7 +173,7 @@ export const StyledOverview = styled.div`
   }
 `;
 
-export const LinkBtn = styled.a`
+export const LinkBtn = styled.span`
   margin-top: 25px;
   background: #4b84ff;
   color: #fff;
@@ -197,16 +197,16 @@ export const LinkBtn = styled.a`
   }
 `;
 
-export const ManageBtn = styled.a`
+export const ManageBtn = styled.p`
   margin-top: 25px;
   background: #4b84ff;
   color: #fff;
-  display: inline-block;
+  align-items: center;
   min-width: 115px;
   width: max-content;
   padding: 6px 15px;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   transition: all 0.15s ease;

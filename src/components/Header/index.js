@@ -23,8 +23,8 @@ const Header = ({ logo }) => {
   const isOrganizationsPath = asPath.includes('/organizations');
 
   return (
-    <StyledHeader isOrganizationsPath={isOrganizationsPath}>
-      <Link href="/">
+    <StyledHeader $isOrganizationsPath={isOrganizationsPath}>
+      <Link href="/projects">
         <a className="home">
           <img
             alt="Home"

@@ -42,16 +42,6 @@ const HeaderMenu = ({ auth, isOrganizationsPath }) => {
     setOpen(!open);
   };
 
-  const handleMenuOne = () => {
-    // do something
-    setOpen(false);
-  };
-
-  const handleMenuTwo = () => {
-    // do something
-    setOpen(false);
-  };
-
   return (
     <>
       <Dropdown
@@ -100,7 +90,7 @@ const HeaderMenu = ({ auth, isOrganizationsPath }) => {
 const Dropdown = ({ open, trigger, menu, isOrganizationsPath }) => {
   return (
     <>
-      <StyledDropdown isOrganizationsPath={isOrganizationsPath}>
+      <StyledDropdown $isOrganizationsPath={isOrganizationsPath}>
         {trigger}
         {open ? (
           <DropdownMenu data-cy="menuList">
