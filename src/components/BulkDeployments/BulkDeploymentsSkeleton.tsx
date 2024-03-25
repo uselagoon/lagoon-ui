@@ -5,8 +5,8 @@ import { BulkDeploymentsDataTable, BulkDeploymentsHeader } from './StyledBulkDep
 
 const BulkDeploymentsSkeleton = () => {
   const numberOfItems = typeof window !== 'undefined' ? Math.floor((window.innerHeight * 8) / 10 / 65) : 10;
-  const rowItem = (
-    <div className="data-row">
+  const rowItem = (idx: number) => (
+    <div className="data-row" key={idx}>
       <div className="project">
         <Skeleton width={'100%'} />
       </div>
@@ -46,7 +46,9 @@ const BulkDeploymentsSkeleton = () => {
         <label className="duration">Duration</label>
         <label></label>
       </BulkDeploymentsHeader>
-      <BulkDeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => rowItem)}</BulkDeploymentsDataTable>
+      <BulkDeploymentsDataTable>
+        {[...Array<undefined>(numberOfItems)].map((_, idx) => rowItem(idx))}
+      </BulkDeploymentsDataTable>
     </div>
   );
 };

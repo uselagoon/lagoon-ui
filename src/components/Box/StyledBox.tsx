@@ -1,7 +1,7 @@
 import { color } from 'lib/variables';
 import styled, { css } from 'styled-components';
 
-export const StyledBox = styled.div<{ activeBgs?: string[] }>`
+export const StyledBox = styled.div<{ $activeBgs?: string[] }>`
   border: 2px solid ${props => props.theme.borders.box};
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   transition: all 0.3s ease;
@@ -38,13 +38,13 @@ export const StyledBox = styled.div<{ activeBgs?: string[] }>`
     z-index: 10;
   }
   ${props =>
-    props.activeBgs &&
+    props.$activeBgs &&
     css`
       .content {
-        background-image: ${props.activeBgs[0]};
+        background-image: ${props.$activeBgs[0]};
 
         &:hover {
-          background-image: ${props.activeBgs[1]};
+          background-image: ${props.$activeBgs[1]};
         }
       }
     `}

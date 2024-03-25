@@ -250,9 +250,9 @@ export const sharedTableStyles = css`
   }
 `;
 
-export const Tag = styled.div<{ background: string }>`
+export const Tag = styled.div<{ $background: string }>`
   border-radius: 5px;
-  background: ${props => props.background};
+  background: ${props => props.$background};
   padding: 3px 8px;
   font-weight: 600;
   font-size: 12px;

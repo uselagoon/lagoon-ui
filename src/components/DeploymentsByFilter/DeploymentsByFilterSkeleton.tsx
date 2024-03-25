@@ -4,8 +4,8 @@ import Skeleton from 'react-loading-skeleton';
 import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
 const DeploymentsByFilterSkeleton = () => {
-  const SkeletonRow = (
-    <div className="data-row row-heading skeleton">
+  const SkeletonRow = (idx: number) => (
+    <div className="data-row row-heading skeleton" key={idx}>
       <div className="project">
         <Skeleton />
       </div>
@@ -67,7 +67,9 @@ const DeploymentsByFilterSkeleton = () => {
           <label>Duration</label>
           <label></label>
         </DeploymentsHeader>
-        <DeploymentsDataTable>{[...Array<undefined>(numberOfItems)].map(() => SkeletonRow)}</DeploymentsDataTable>
+        <DeploymentsDataTable>
+          {[...Array<undefined>(numberOfItems)].map((_, idx) => SkeletonRow(idx))}
+        </DeploymentsDataTable>
       </>
     </Deployments>
   );

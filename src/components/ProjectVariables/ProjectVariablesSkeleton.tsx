@@ -7,8 +7,8 @@ import { StyledProjectVariableTable, StyledProjectVariablesDetails } from './Sty
 const ProjectVariablesSkeleton = () => {
   const numberOfVariableFields = 3;
 
-  const skeletonItem = (
-    <div className="data-row">
+  const skeletonItem = (idx: number) => (
+    <div className="data-row" key={idx}>
       <div className="varName">
         <Skeleton width={'90%'} />
       </div>
@@ -36,7 +36,9 @@ const ProjectVariablesSkeleton = () => {
             <label>Scope</label>
           </div>
         </div>
-        <div className="data-table">{[...Array<undefined>(numberOfVariableFields)].map(() => skeletonItem)}</div>
+        <div className="data-table">
+          {[...Array<undefined>(numberOfVariableFields)].map((_, idx) => skeletonItem(idx))}
+        </div>
       </StyledProjectVariableTable>
     </StyledProjectVariablesDetails>
   );

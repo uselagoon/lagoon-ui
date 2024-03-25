@@ -7,8 +7,8 @@ import { StyledEnvironmentVariableDetails, StyledProjectVariableTable } from './
 const EnvironmentVariablesSkeleton = () => {
   const numberOfVariableFields = 3;
 
-  const skeletonItem = (
-    <div className="data-row">
+  const skeletonItem = (idx: number) => (
+    <div className="data-row" key={idx}>
       <div className="varName">
         <Skeleton width={'90%'} />
       </div>
@@ -18,8 +18,8 @@ const EnvironmentVariablesSkeleton = () => {
     </div>
   );
 
-  const projectSkeletonItem = (
-    <div className="data-row">
+  const projectSkeletonItem = (idx: number) => (
+    <div className="data-row" key={`project-${idx}`}>
       <div className="varName">
         <Skeleton width={'90%'} />
       </div>
@@ -47,7 +47,9 @@ const EnvironmentVariablesSkeleton = () => {
             <label>Scope</label>
           </div>
         </div>
-        <div className="data-table">{[...Array<undefined>(numberOfVariableFields)].map(() => skeletonItem)}</div>
+        <div className="data-table">
+          {[...Array<undefined>(numberOfVariableFields)].map((_, idx) => skeletonItem(idx))}
+        </div>
       </StyledProjectVariableTable>
       <hr style={{ margin: '30px 0' }} />
       <div className="header">
@@ -66,7 +68,9 @@ const EnvironmentVariablesSkeleton = () => {
             <label>Scope</label>
           </div>
         </div>
-        <div className="data-table">{[...Array<undefined>(numberOfVariableFields)].map(() => projectSkeletonItem)}</div>
+        <div className="data-table">
+          {[...Array<undefined>(numberOfVariableFields)].map((_, idx) => projectSkeletonItem(idx))}
+        </div>
       </StyledProjectVariableTable>
     </StyledEnvironmentVariableDetails>
   );

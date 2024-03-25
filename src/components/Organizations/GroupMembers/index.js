@@ -127,7 +127,7 @@ const GroupMembers = ({
         const isDefaultUser = email.startsWith('default-user');
         if (isDefaultUser)
           return (
-            <Tag style={{ display: 'inline' }} background="#262D65">
+            <Tag style={{ display: 'inline' }} $background="#262D65">
               DEFAULT USER
             </Tag>
           );
@@ -271,7 +271,7 @@ const GroupMembers = ({
 
             <ProjectLink projectSlug={project.name} key={project.id} openInTab>
               <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
-                <ProjectDashboard inlineLink>
+                <ProjectDashboard $inlineLink>
                   <IconDashboard />
                 </ProjectDashboard>
               </Tooltip>

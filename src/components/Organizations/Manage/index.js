@@ -80,7 +80,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
         const isDefaultUser = email.startsWith('default-user');
         if (isDefaultUser)
           return (
-            <Tag style={{ display: 'inline' }} background="#262D65">
+            <Tag style={{ display: 'inline' }} $background="#262D65">
               DEFAULT USER
             </Tag>
           );
@@ -98,11 +98,11 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
             </div>
 
             {owner ? (
-              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} background="#47D3FF">
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
                 ORG OWNER
               </Tag>
             ) : (
-              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} background="#FF4747">
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#FF4747">
                 ORG VIEWER
               </Tag>
             )}

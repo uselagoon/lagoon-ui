@@ -69,7 +69,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
           <TableActions style={{ marginLeft: 'auto', gap: '1rem' }}>
             <ProjectLink projectSlug={project.name} key={project.id} openInTab>
               <Tooltip overlayClassName="orgTooltip" title="View Dashboard" placement="bottom">
-                <ProjectDashboard inlineLink>
+                <ProjectDashboard $inlineLink>
                   <IconDashboard />
                 </ProjectDashboard>
               </Tooltip>
