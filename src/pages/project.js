@@ -80,7 +80,7 @@ export const PageProject = ({ router }) => {
   }
   // Sort alphabetically by environmentType and then deployType
   const environments = R.sortWith(
-    [R.descend(R.prop('environmentType')), R.ascend(R.prop('deployType'))],
+    [R.descend(R.prop('environmentType')), R.ascend(R.prop('deployType')), R.ascend(R.prop('name'))],
     project.environments
   );
   const environmentCount = environments.length;
