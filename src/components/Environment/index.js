@@ -32,6 +32,19 @@ const Environment = ({ environment }) => {
       }`
     : '';
 
+  const navigateToTasks = () => {
+    const projectName = environment.project.name;
+
+    const taskNavObject = {
+      urlObject: {
+        pathname: '/tasks',
+        query: { openshiftProjectName: environment.openshiftProjectName },
+      },
+      asPath: `/projects/${projectName}/${environment.openshiftProjectName}/tasks`,
+    };
+
+    Router.push(taskNavObject.urlObject, taskNavObject.asPath);
+  };
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">
@@ -150,7 +163,7 @@ const Environment = ({ environment }) => {
         environment.project.standbyProductionEnvironment &&
         environment.environmentType == 'production' &&
         environment.project.standbyProductionEnvironment == environment.name && (
-          <Mutation mutation={SwitchActiveStandbyMutation}>
+          <Mutation mutation={SwitchActiveStandbyMutation} onCompleted={navigateToTasks}>
             {(switchActiveStandby, { loading, called, error, data }) => {
               const switchActiveBranch = () => {
                 const input = {
@@ -160,7 +173,6 @@ const Environment = ({ environment }) => {
                 };
 
                 switchActiveStandby({ variables: { input } });
-                Router.push(`/projects/${environment.project.name}/${environment.openshiftProjectName}/tasks`);
               };
 
               if (!error && called && loading) {
