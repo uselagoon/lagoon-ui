@@ -61,7 +61,7 @@ describe('Environment sidebar navigation', () => {
     cy.waitForNetworkIdle('@idle', 500);
 
     context('From /facts to /overview', () => {
-      cy.getBySel('overview-tab').first().click();
+      cy.getBySel('overview-tab').click();
 
       cy.location('pathname').should('equal', `${suffix}`);
     });

@@ -53,6 +53,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading }) => {
                       }
                       return (
                         <Button
+                          testId="deleteBtn"
                           variant="red"
                           action={() =>
                             deleteSshKeyById({

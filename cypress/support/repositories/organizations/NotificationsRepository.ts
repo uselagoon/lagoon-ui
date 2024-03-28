@@ -1,9 +1,14 @@
 export default class NotificationsRepository {
+  getNotificationRowParents(notification: string) {
+    return cy.getBySel('notification-row').contains(notification).parent().parent();
+  }
   getAddNotification() {
     return cy.getBySel('addNotification');
   }
-
-  getLast(identifier: string) {
-    return cy.getBySel('notification-row').find(`.${identifier}`);
+  getEditBtn(notification: string) {
+    return this.getNotificationRowParents(notification).find('.link');
+  }
+  getNotificationDelete(notification: string) {
+    return this.getNotificationRowParents(notification).find('.btn-red');
   }
 }

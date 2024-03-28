@@ -23,5 +23,7 @@ describe('Settings page', () => {
     cy.visit(`${Cypress.env('url')}/settings`);
 
     settings.deleteSshKey(testData.ssh.name);
+
+    settings.doEmptySshCheck();
   });
 });

@@ -26,4 +26,7 @@ export default class GroupsRepository {
   getAddGroupSubmitBtn() {
     return this.getElement('createGroup');
   }
+  getGroupRowSiblings(groupName: string) {
+    return this.getElement('table-row').contains(groupName).parent().siblings();
+  }
 }

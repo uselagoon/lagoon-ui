@@ -49,10 +49,18 @@ describe('Org Notifications page', () => {
   });
 
   it('Deletes notifications', () => {
-    notifications.doDeleteNotification('webhook');
-    notifications.doDeleteNotification('email');
-    notifications.doDeleteNotification('teams');
-    notifications.doDeleteNotification('rocketChat');
-    notifications.doDeleteNotification('slack');
+    const {
+      webhook: { name: webhooknName },
+      email: { name: emailName },
+      teams: { name: teamsName },
+      rocketChat: { name: rocketChatName },
+      slack: { name: slackName },
+    } = testData.organizations.notifications;
+
+    notifications.doDeleteNotification(webhooknName);
+    notifications.doDeleteNotification(emailName);
+    notifications.doDeleteNotification(teamsName);
+    notifications.doDeleteNotification(rocketChatName);
+    notifications.doDeleteNotification(slackName);
   });
 });
