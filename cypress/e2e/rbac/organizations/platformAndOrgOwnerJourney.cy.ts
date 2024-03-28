@@ -51,12 +51,15 @@ orgownerAndPlatformOwner.forEach(owner => {
     it('Navigates to groups and creates', () => {
       cy.waitForNetworkIdle('@idle', 500);
 
+      const group1 = testData.organizations.groups.newGroupName;
+      const group2 = testData.organizations.groups.newGroupName2;
+
       cy.get('.groups').click();
       cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
-      group.doAddGroup(testData.organizations.groups.newGroupName, testData.organizations.groups.newGroupName2);
+      group.doAddGroup(group1, group2);
       registerIdleHandler('groupQuery');
-      group.doAddMemberToGroup(testData.organizations.users.email);
+      group.doAddMemberToGroup(testData.organizations.users.email, group1);
     });
 
     it('Navigates to projects and creates a new one', () => {
@@ -152,11 +155,17 @@ orgownerAndPlatformOwner.forEach(owner => {
 
       cy.waitForNetworkIdle('@idle', 500);
 
-      notifications.doDeleteNotification('webhook');
+      const {
+        webhook: { name: webhooknName },
+        email: { name: emailName },
+        slack: { name: slackName },
+      } = testData.organizations.notifications;
+
+      notifications.doDeleteNotification(webhooknName);
       cy.wait('@gqlremoveNotificationMutation'); // wait for a delete mutation instead
-      notifications.doDeleteNotification('email');
+      notifications.doDeleteNotification(emailName);
       cy.wait('@gqlremoveNotificationMutation');
-      notifications.doDeleteNotification('slack');
+      notifications.doDeleteNotification(slackName);
     });
   });
 });

@@ -27,7 +27,7 @@ describe('Organization Groups page', () => {
   });
 
   it('Adds a member to a group', () => {
-    group.doAddMemberToGroup(testData.organizations.users.email);
+    group.doAddMemberToGroup(testData.organizations.users.email, testData.organizations.groups.newGroupName);
   });
 
   it('Deletes groups', () => {

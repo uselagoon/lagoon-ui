@@ -114,7 +114,7 @@
     "babel-loader": "^9.1.2",
     "babel-plugin-macros": "^3.1.0",
     "chromatic": "^10.2.0",
-    "cypress": "13.6.1",
+    "cypress": "13.7.1",
     "cypress-network-idle": "^1.14.2",
     "eslint-plugin-storybook": "^0.6.15",
     "faker": "^6.6.6",
