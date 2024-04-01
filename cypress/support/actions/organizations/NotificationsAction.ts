@@ -1,3 +1,4 @@
+import { testData } from 'cypress/fixtures/variables';
 import NotificationsRepository from 'cypress/support/repositories/organizations/NotificationsRepository';
 
 const notificationRepo = new NotificationsRepository();
@@ -97,7 +98,11 @@ export default class NotificationsAction {
   }
 
   doEditNotification() {
-    notificationRepo.getLast('link').first().click();
+    const {
+      slack: { name: slackName },
+    } = testData.organizations.notifications;
+
+    notificationRepo.getEditBtn(slackName).click();
 
     cy.getBySel('notification-name').first().type('-edited', { force: true });
     cy.getBySel('input-webhook').first().type('-edited', { force: true });
@@ -106,10 +111,11 @@ export default class NotificationsAction {
 
     cy.wait(`@gqlUpdateNotificationSlackMutation`);
 
-    cy.getBySel('notification-row').should('include.text', '-edited');
+    cy.getBySel('notification-row').should('include.text', `${slackName}-edited`);
   }
-  doDeleteNotification(notification: keyof typeof notifMap) {
-    notificationRepo.getLast('btn-red').first().click();
+  doDeleteNotification(notification: string) {
+    notificationRepo.getNotificationDelete(notification).click();
+
     cy.getBySel('confirmDelete').click();
 
     cy.getBySel('notification-row').should('not.have.text', notification);
