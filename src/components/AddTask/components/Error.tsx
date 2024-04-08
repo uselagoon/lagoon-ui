@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const Error = () => <div>Error.</div>;
+interface Props {
+  errMessage: string;
+}
+const Error: FC<Props> = ({ errMessage }) => {
+  return <div>{errMessage}</div>;
+};
 export default Error;
