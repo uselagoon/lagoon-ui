@@ -82,7 +82,7 @@ export const DeleteVariable = ({
                     className="btn-danger"
                     onClick={deleteEnvVariableByNameHandler}
                   >
-                    {loading ? 'Deleting...' : 'Delete'}
+                    {loading ? 'Deleting...' : data ? 'Success' : 'Delete'}
                   </ButtonBootstrap>
                 );
               }}
