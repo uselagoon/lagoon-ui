@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import ButtonBootstrap from 'react-bootstrap/Button';
 
+import { LoadingOutlined } from '@ant-design/icons';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 
 import DeleteEnvVariableMutation from '../../lib/mutation/deleteEnvVariableByName';
 import { DeleteVariableButton, DeleteVariableModal } from './StyledDeleteVariable';
-import {LoadingOutlined} from "@ant-design/icons";
 
 /**
  * Deletes a Variable.
@@ -45,16 +45,13 @@ export const DeleteVariable = ({
   return (
     <React.Fragment>
       <DeleteVariableButton>
-        {
-          loading && valueState ? (
-            <Button variant="red" action={openModal}>
-              <LoadingOutlined />
-            </Button>
-          ) : (
-            <Button variant="red" icon={icon} action={handlePermissionCheck}>
-            </Button>
-          )
-        }
+        {loading && valueState ? (
+          <Button variant="red" action={openModal}>
+            <LoadingOutlined />
+          </Button>
+        ) : (
+          <Button variant="red" icon={icon} action={handlePermissionCheck}></Button>
+        )}
       </DeleteVariableButton>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
         <DeleteVariableModal>

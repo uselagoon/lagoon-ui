@@ -93,7 +93,7 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
     getPrjEnvVarValues();
     setOpenPrjVars(false);
     setAction(action);
-    if (action === "delete") {
+    if (action === 'delete') {
       valuesShow(index);
     }
   };
@@ -213,18 +213,27 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
                 {displayVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={!prjLoading && openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                      <div
+                        className={!prjLoading && openPrjVars ? 'values-present data-row' : 'data-row'}
+                        data-cy="environment-row"
+                      >
                         <div className="varName">{projEnvVar.name}</div>
                         <div className="varScope">{projEnvVar.scope}</div>
                         {renderValues(projEnvVar, index)}
                         <div className="varActions">
                           <VariableActions>
-                            { !prjLoading && (
+                            {!prjLoading && (
                               <Collapse in={openPrjVars}>
                                 <div className="varUpdate">
-                                  <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
+                                  <Tooltip
+                                    overlayClassName="componentTooltip"
+                                    title="Update Variable"
+                                    placement="bottom"
+                                  >
                                     <Button
-                                      onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
+                                      onClick={() =>
+                                        setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)
+                                      }
                                       style={{ all: 'unset' }}
                                     >
                                       <AddVariable
@@ -248,13 +257,7 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
                                 <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
                                   {projectErrorAlert ? (
                                     <DeleteVariableButton>
-                                      <Btn
-                                        index={index}
-                                        variant="red"
-                                        icon="bin"
-                                        className="delete-btn"
-                                      >
-                                      </Btn>
+                                      <Btn index={index} variant="red" icon="bin" className="delete-btn"></Btn>
                                     </DeleteVariableButton>
                                   ) : (
                                     <DeleteVariable

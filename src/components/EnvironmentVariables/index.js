@@ -137,7 +137,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     getEnvVarValues();
     setOpenEnvVars(false);
     setAction(action);
-    if (action === "delete") {
+    if (action === 'delete') {
       valuesShow(index);
     }
   };
@@ -284,61 +284,62 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                 <div className="scope">
                   <label>Scope</label>
                 </div>
-                {!envLoading &&(
-                    <Collapse in={openEnvVars}>
-                      <div className="value">
-                        <label>Value</label>
-                      </div>
-                    </Collapse>
+                {!envLoading && (
+                  <Collapse in={openEnvVars}>
+                    <div className="value">
+                      <label>Value</label>
+                    </div>
+                  </Collapse>
                 )}
               </div>
               <div className="data-table" data-cy="environment-table">
                 {displayVars.map((envVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={!envLoading && openEnvVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                      <div
+                        className={!envLoading && openEnvVars ? 'values-present data-row' : 'data-row'}
+                        data-cy="environment-row"
+                      >
                         <div className="varName">{envVar.name}</div>
                         <div className="varScope">{envVar.scope}</div>
                         {renderEnvValues(envVar, index)}
                         <div className="varActions">
                           <VariableActions>
-                            { !envLoading && (
-                            <Collapse in={openEnvVars}>
-                              <div className="varUpdate">
-                                <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
-                                  <Button
-                                    onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
-                                    style={{ all: 'unset' }}
+                            {!envLoading && (
+                              <Collapse in={openEnvVars}>
+                                <div className="varUpdate">
+                                  <Tooltip
+                                    overlayClassName="componentTooltip"
+                                    title="Update Variable"
+                                    placement="bottom"
                                   >
-                                    <AddVariable
-                                      varProject={environment.project.name}
-                                      varEnvironment={environment.name}
-                                      varValues={displayVars}
-                                      varTarget="Environment"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
-                                      action="edit"
-                                    />
-                                  </Button>
-                                </Tooltip>
-                              </div>
-                            </Collapse>
+                                    <Button
+                                      onClick={() => setUpdateValue(envVar.value, envVar.name, envVar.scope)}
+                                      style={{ all: 'unset' }}
+                                    >
+                                      <AddVariable
+                                        varProject={environment.project.name}
+                                        varEnvironment={environment.name}
+                                        varValues={displayVars}
+                                        varTarget="Environment"
+                                        varName={updateVarName}
+                                        varValue={updateVarValue}
+                                        varScope={updateVarScope}
+                                        refresh={onVariableAdded}
+                                        icon="edit"
+                                        action="edit"
+                                      />
+                                    </Button>
+                                  </Tooltip>
+                                </div>
+                              </Collapse>
                             )}
                             <div className="varDelete">
                               <Tooltip overlayClassName="componentTooltip" title="Delete Variable" placement="bottom">
                                 <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
                                   {environmentErrorAlert ? (
                                     <DeleteVariableButton>
-                                      <Btn
-                                        index={index}
-                                        variant="red"
-                                        icon="bin"
-                                        className="delete-btn"
-                                      >
-                                      </Btn>
+                                      <Btn index={index} variant="red" icon="bin" className="delete-btn"></Btn>
                                     </DeleteVariableButton>
                                   ) : (
                                     <DeleteVariable
@@ -430,7 +431,10 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                 {displayProjectVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={!prjLoading && openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                      <div
+                        className={!prjLoading && openPrjVars ? 'values-present data-row' : 'data-row'}
+                        data-cy="environment-row"
+                      >
                         <div className="varName">{projEnvVar.name}</div>
                         <div className="varScope">{projEnvVar.scope}</div>
                         {renderPrjValues(projEnvVar, index)}
