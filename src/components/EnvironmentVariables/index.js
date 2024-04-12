@@ -133,10 +133,13 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
     setUpdateVarScope(rowScope);
   };
 
-  const permissionCheck = action => {
+  const permissionCheck = (action, index = null) => {
     getEnvVarValues();
     setOpenEnvVars(false);
     setAction(action);
+    if (action === "delete") {
+      valuesShow(index);
+    }
   };
 
   const renderEnvValue = (envVar, index) => {
@@ -164,10 +167,6 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   };
 
   const renderEnvValues = (envVar, index) => {
-    if (envLoading) {
-      return <div className="loader"></div>;
-    }
-
     if (envVar.value !== undefined) {
       return (
         <Collapse in={openEnvVars}>
@@ -194,10 +193,6 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
   };
 
   const renderPrjValues = (projEnvVar, index) => {
-    if (prjLoading) {
-      return <div className="loader"></div>;
-    }
-
     if (projEnvVar.value !== undefined) {
       return (
         <Collapse in={openPrjVars}>
@@ -252,7 +247,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                   refresh={onVariableAdded}
                   setEnvironmentErrorAlert={setEnvironmentErrorAlert}
                   action="add"
-                  loading={prjLoading && action === 'add'}
+                  loading={envLoading && action === 'add'}
                   envValues={envValues}
                 />
               )}
@@ -262,9 +257,10 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                 onClick={() => showVarValue()}
                 aria-controls="example-collapse-text"
                 data-cy="hideShowValues"
-                aria-expanded={openPrjVars}
+                aria-expanded={openEnvVars}
+                className="show-value-btn"
               >
-                {!openEnvVars ? 'Show values' : 'Hide values'}
+                {!openEnvVars ? 'Show values' : envLoading ? <LoadingOutlined /> : 'Hide values'}
               </Button>
             )}
           </div>
@@ -281,29 +277,32 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         {displayVars.length > 0 && (
           <div className="field-wrapper env-vars">
             <StyledVariableTable>
-              <div className={openEnvVars ? 'values-present table-header' : 'table-header'}>
+              <div className={!envLoading && openEnvVars ? 'values-present table-header' : 'table-header'}>
                 <div className="name">
                   <label>Name</label>
                 </div>
                 <div className="scope">
                   <label>Scope</label>
                 </div>
-                <Collapse in={openEnvVars}>
-                  <div className="value">
-                    <label>Value</label>
-                  </div>
-                </Collapse>
+                {!envLoading &&(
+                    <Collapse in={openEnvVars}>
+                      <div className="value">
+                        <label>Value</label>
+                      </div>
+                    </Collapse>
+                )}
               </div>
               <div className="data-table" data-cy="environment-table">
                 {displayVars.map((envVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={openEnvVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                      <div className={!envLoading && openEnvVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
                         <div className="varName">{envVar.name}</div>
                         <div className="varScope">{envVar.scope}</div>
                         {renderEnvValues(envVar, index)}
                         <div className="varActions">
                           <VariableActions>
+                            { !envLoading && (
                             <Collapse in={openEnvVars}>
                               <div className="varUpdate">
                                 <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
@@ -327,18 +326,18 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                                 </Tooltip>
                               </div>
                             </Collapse>
+                            )}
                             <div className="varDelete">
                               <Tooltip overlayClassName="componentTooltip" title="Delete Variable" placement="bottom">
                                 <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
-                                  {envLoading && action === 'delete' ? (
+                                  {environmentErrorAlert ? (
                                     <DeleteVariableButton>
                                       <Btn
                                         index={index}
                                         variant="red"
-                                        icon={!valueState[index] ? 'bin' : ''}
+                                        icon="bin"
                                         className="delete-btn"
                                       >
-                                        {valueState[index] ? <LoadingOutlined /> : 'Delete'}
                                       </Btn>
                                     </DeleteVariableButton>
                                   ) : (
@@ -349,6 +348,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                                       varEnvironment={environment.name}
                                       icon="bin"
                                       refresh={onVariableAdded}
+                                      envValues={envValues}
+                                      loading={envLoading && action === 'delete'}
+                                      valueState={valueState[index]}
                                     />
                                   )}
                                 </Button>
@@ -390,8 +392,9 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
                 onClick={() => showPrjVarValue()}
                 aria-controls="example-collapse-text"
                 aria-expanded={openPrjVars}
+                className="show-value-btn"
               >
-                {!openPrjVars ? 'Show values' : 'Hide values'}
+                {!openPrjVars ? 'Show values' : prjLoading ? <LoadingOutlined /> : 'Hide values'}
               </Button>
             )}
           </div>
@@ -408,24 +411,26 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
         {displayProjectVars.length > 0 && (
           <div className="field-wrapper env-vars">
             <StyledProjectVariableTable>
-              <div className={openPrjVars ? 'values-present table-header' : 'table-header'}>
+              <div className={!prjLoading && openPrjVars ? 'values-present table-header' : 'table-header'}>
                 <div className="name">
                   <label>Name</label>
                 </div>
                 <div className="scope">
                   <label>Scope</label>
                 </div>
-                <Collapse in={openPrjVars}>
-                  <div className="value">
-                    <label>Value</label>
-                  </div>
-                </Collapse>
+                {!prjLoading && (
+                  <Collapse in={openPrjVars}>
+                    <div className="value">
+                      <label>Value</label>
+                    </div>
+                  </Collapse>
+                )}
               </div>
               <div className="data-table" data-cy="environment-table">
                 {displayProjectVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                      <div className={!prjLoading && openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
                         <div className="varName">{projEnvVar.name}</div>
                         <div className="varScope">{projEnvVar.scope}</div>
                         {renderPrjValues(projEnvVar, index)}

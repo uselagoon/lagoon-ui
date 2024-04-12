@@ -89,10 +89,13 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
     setUpdateVarScope(rowScope);
   };
 
-  const permissionCheck = action => {
+  const permissionCheck = (action, index = null) => {
     getPrjEnvVarValues();
     setOpenPrjVars(false);
     setAction(action);
+    if (action === "delete") {
+      valuesShow(index);
+    }
   };
 
   const renderValue = (projEnvVar, index) => {
@@ -108,10 +111,6 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
   };
 
   const renderValues = (projEnvVar, index) => {
-    if (prjLoading) {
-      return <div className="loader"></div>;
-    }
-
     if (projEnvVar.value !== undefined) {
       return (
         <Collapse in={openPrjVars}>
@@ -176,8 +175,9 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
                 aria-controls="example-collapse-text"
                 aria-expanded={openPrjVars}
                 data-cy="hideShowValues"
+                className="show-value-btn"
               >
-                {!openPrjVars ? 'Show values' : 'Hide values'}
+                {!openPrjVars ? 'Show values' : prjLoading ? <LoadingOutlined /> : 'Hide values'}
               </Button>
             )}
           </div>
@@ -194,63 +194,66 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
         {displayVars.length > 0 && (
           <div className="field-wrapper env-vars">
             <StyledProjectVariableTable>
-              <div className={openPrjVars ? 'values-present table-header' : 'table-header'}>
+              <div className={!prjLoading && openPrjVars ? 'values-present table-header' : 'table-header'}>
                 <div className="name">
                   <label>Name</label>
                 </div>
                 <div className="scope">
                   <label>Scope</label>
                 </div>
-                <Collapse in={openPrjVars}>
-                  <div className="value">
-                    <label>Value</label>
-                  </div>
-                </Collapse>
+                {!prjLoading && (
+                  <Collapse in={openPrjVars}>
+                    <div className="value">
+                      <label>Value</label>
+                    </div>
+                  </Collapse>
+                )}
               </div>
               <div className="data-table" data-cy="environment-table">
                 {displayVars.map((projEnvVar, index) => {
                   return (
                     <Fragment key={index}>
-                      <div className={openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
+                      <div className={!prjLoading && openPrjVars ? 'values-present data-row' : 'data-row'} data-cy="environment-row">
                         <div className="varName">{projEnvVar.name}</div>
                         <div className="varScope">{projEnvVar.scope}</div>
                         {renderValues(projEnvVar, index)}
                         <div className="varActions">
                           <VariableActions>
-                            <Collapse in={openPrjVars}>
-                              <div className="varUpdate">
-                                <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
-                                  <Button
-                                    onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
-                                    style={{ all: 'unset' }}
-                                  >
-                                    <AddVariable
-                                      varProject={project.name}
-                                      varValues={displayVars}
-                                      varTarget="Project"
-                                      varName={updateVarName}
-                                      varValue={updateVarValue}
-                                      varScope={updateVarScope}
-                                      refresh={onVariableAdded}
-                                      icon="edit"
-                                      action="edit"
-                                    />
-                                  </Button>
-                                </Tooltip>
-                              </div>
-                            </Collapse>
+                            { !prjLoading && (
+                              <Collapse in={openPrjVars}>
+                                <div className="varUpdate">
+                                  <Tooltip overlayClassName="componentTooltip" title="Update Variable" placement="bottom">
+                                    <Button
+                                      onClick={() => setUpdateValue(projEnvVar.value, projEnvVar.name, projEnvVar.scope)}
+                                      style={{ all: 'unset' }}
+                                    >
+                                      <AddVariable
+                                        varProject={project.name}
+                                        varValues={displayVars}
+                                        varTarget="Project"
+                                        varName={updateVarName}
+                                        varValue={updateVarValue}
+                                        varScope={updateVarScope}
+                                        refresh={onVariableAdded}
+                                        icon="edit"
+                                        action="edit"
+                                      />
+                                    </Button>
+                                  </Tooltip>
+                                </div>
+                              </Collapse>
+                            )}
                             <div className="varDelete" data-cy="varDelete">
                               <Tooltip overlayClassName="componentTooltip" title="Delete Variable" placement="bottom">
                                 <Button onClick={() => permissionCheck('delete', index)} style={{ all: 'unset' }}>
-                                  {prjLoading && action === 'delete' ? (
+                                  {projectErrorAlert ? (
                                     <DeleteVariableButton>
                                       <Btn
                                         index={index}
                                         variant="red"
-                                        icon={!valueState[index] ? 'bin' : ''}
+                                        icon="bin"
                                         className="delete-btn"
                                       >
-                                        {valueState[index] ? <LoadingOutlined /> : 'Delete'}
                                       </Btn>
                                     </DeleteVariableButton>
                                   ) : (
@@ -260,6 +263,9 @@ const ProjectVariables = ({ project, onVariableAdded }) => {
                                       varProject={project.name}
                                       icon="bin"
                                       refresh={onVariableAdded}
+                                      envValues={prjEnvValues}
+                                      loading={prjLoading && action === 'delete'}
+                                      valueState={valueState[index]}
                                     />
                                   )}
                                 </Button>

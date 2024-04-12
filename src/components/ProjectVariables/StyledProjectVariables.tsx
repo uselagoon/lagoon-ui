@@ -113,6 +113,12 @@ export const StyledProjectVariablesDetails = styled.div`
       height: 38px;
     }
 
+    @media ${bp.xs_smallUp} {
+      .show-value-btn {
+        min-width: 116px;
+      }
+    }
+
     button {
       margin-right: 4px;
     }
