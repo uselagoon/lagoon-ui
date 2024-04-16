@@ -40,7 +40,7 @@ export const ProjectsHeader = styled.div`
       }
     }
   }
-  .projectCount{
+  .projectCount {
     display: flex;
     gap: 0.5rem;
   }
