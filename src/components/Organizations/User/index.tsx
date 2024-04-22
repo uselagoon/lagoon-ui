@@ -124,8 +124,8 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
         const linkData = groupLinkData(name, organizationName, organizationId);
         return (
           <>
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">{name ? name : <>Group name - </>}</a>
+            <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+              {name ? name : <>Group name - </>}
             </Link>
 
             {type === 'project-default-group' && <label className="default-group-label">SYSTEM GROUP</label>}
@@ -244,10 +244,8 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
 
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View Group">
               <>
-                <Link href={linkData.urlObject} as={linkData.asPath}>
-                  <a className="link">
-                    <EyeOutlined className="view" />
-                  </a>
+                <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+                  <EyeOutlined className="view" />
                 </Link>
               </>
             </Tooltip>

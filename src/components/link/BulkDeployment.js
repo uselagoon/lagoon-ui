@@ -15,8 +15,8 @@ const BulkDeploymentLink = ({ bulkIdSlug, children, className = null, prefetch =
   const linkData = getLinkData(bulkIdSlug);
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a className={className}>{children}</a>
+    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch} className={className}>
+      {children}
     </Link>
   );
 };

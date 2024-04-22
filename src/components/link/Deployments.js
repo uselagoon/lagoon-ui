@@ -15,8 +15,8 @@ const DeploymentsLink = ({ environmentSlug, projectSlug, children, className = '
   const linkData = getLinkData(environmentSlug, projectSlug);
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a className={className}>{children}</a>
+    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch} className={className}>
+      {children}
     </Link>
   );
 };

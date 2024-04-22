@@ -27,10 +27,14 @@ const UsersLink: FC<ExtendableOrgLinkProps> = ({
   const linkProps = className ? { className } : {};
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a style={{ textDecoration: 'underline' }} {...linkProps}>
-        {children}
-      </a>
+    <Link
+      href={linkData.urlObject}
+      as={linkData.asPath}
+      prefetch={prefetch}
+      style={{ textDecoration: 'underline' }}
+      {...linkProps}
+    >
+      {children}
     </Link>
   );
 };

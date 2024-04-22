@@ -24,21 +24,19 @@ const Header = ({ logo }) => {
 
   return (
     <StyledHeader $isOrganizationsPath={isOrganizationsPath}>
-      <Link href="/projects">
-        <a className="home">
-          <img
-            alt="Home"
-            src={
-              logo
-                ? logo
-                : `data:image/svg+xml;utf8,${
-                    publicRuntimeConfig.LAGOON_UI_ICON
-                      ? publicRuntimeConfig.LAGOON_UI_ICON
-                      : encodeURIComponent(lagoonLogo)
-                  }`
-            }
-          />
-        </a>
+      <Link href="/projects" className="home">
+        <img
+          alt="Home"
+          src={
+            logo
+              ? logo
+              : `data:image/svg+xml;utf8,${
+                  publicRuntimeConfig.LAGOON_UI_ICON
+                    ? publicRuntimeConfig.LAGOON_UI_ICON
+                    : encodeURIComponent(lagoonLogo)
+                }`
+          }
+        />
       </Link>
       <ControlButtons>
         <TourControlBtn />
@@ -49,8 +47,8 @@ const Header = ({ logo }) => {
           if (auth.authenticated) {
             return (
               <div className="authContainer">
-                <Link href="/alldeployments" prefetch>
-                  <a className="navitem">Deployments</a>
+                <Link href="/alldeployments" prefetch className="navitem">
+                  Deployments
                 </Link>
                 <HeaderMenu isOrganizationsPath={isOrganizationsPath} auth={auth}></HeaderMenu>
               </div>

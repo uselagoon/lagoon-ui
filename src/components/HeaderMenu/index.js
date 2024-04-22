@@ -53,28 +53,26 @@ const HeaderMenu = ({ auth, isOrganizationsPath }) => {
           </DropdownButton>
         }
         menu={[
-          <Link key="settings" href="/settings" prefetch>
-            <a key="settings" className="settings" data-cy="settings">
-              Settings
-            </a>
+          <Link key="settings" href="/settings" prefetch className="settings" data-cy="settings">
+            Settings
           </Link>,
           <hr key="line" />,
-          <Link key="projects" href="/projects" prefetch>
-            <a key="projects" className="menuitem" data-cy="projects">
-              Your projects
-            </a>
+          <Link key="projects" href="/projects" prefetch className="menuitem" data-cy="projects">
+            Your projects
           </Link>,
-          <Link key="organizations" href="/organizations" prefetch>
-            <a key="organizations" className="menuitem" data-cy="organizations">
-              Your organizations
-            </a>
+          <Link key="organizations" href="/organizations" prefetch className="menuitem" data-cy="organizations">
+            Your organizations
           </Link>,
 
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
-            <Link href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`} passHref>
-              <a key="account" className="menuitem" data-cy="account">
-                Your account
-              </a>
+            <Link
+              href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}
+              passHref
+              key="account"
+              className="menuitem"
+              data-cy="account"
+            >
+              Your account
             </Link>
           ),
           <hr key="lastline" />,
