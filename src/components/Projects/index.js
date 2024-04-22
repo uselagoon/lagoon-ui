@@ -32,16 +32,24 @@ const Projects = ({ projects = [], initialSearch }) => {
     }
   }, []);
 
-  const handleSearch = useCallback(
+  const timerLengthPercentage = useMemo(
+    () => Math.min(1000, Math.max(40, Math.floor(projects.length * 0.0725))),
+    [projects.length]
+  );
+
+  const debouncedSearch = useCallback(
     debounce(searchVal => {
       setSearchInput(searchVal);
-    }, 400),
+    }, timerLengthPercentage),
     []
   );
 
-  useEffect(() => {
+  const handleSearch = searchVal => {
     setIsFiltering(true);
+    debouncedSearch(searchVal);
+  };
 
+  useEffect(() => {
     const filterProjects = async () => {
       return new Promise(resolve => {
         const filtered = projects.filter(key => {
