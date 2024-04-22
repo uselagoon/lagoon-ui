@@ -12,7 +12,7 @@ export default class VariablesAction {
   }
 
   doValueToggle() {
-    environment.getEnvDataRows().getBySel('showhide-toggle').click({ multiple: true });
+    environment.getEnvDataRows().getBySel('showhide-toggle').click({ multiple: true, force: true });
   }
 
   doAddVariable(name: string, value: string) {
