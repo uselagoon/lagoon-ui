@@ -63,8 +63,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          # platforms: linux/amd64,linux/arm64
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64
           build-args: |
             "LAGOON_VERSION=${{ env.LAGOON_VERSION }}"
             "UI_VERSION=${{ env.UI_VERSION }}"
