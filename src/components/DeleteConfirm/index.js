@@ -18,6 +18,8 @@ export const DeleteConfirm = ({
   open,
   openModal,
   closeModal,
+  loading,
+  data,
 }) => {
   return (
     <React.Fragment>
@@ -38,7 +40,7 @@ export const DeleteConfirm = ({
               cancel
             </button>
             <Button disabled={inputValue !== deleteName} action={onDelete} variant="red" testId="deleteConfirm">
-              Delete
+              {loading ? 'Deleting...' : data ? 'Success' : 'Delete'}
             </Button>
           </div>
         </React.Fragment>

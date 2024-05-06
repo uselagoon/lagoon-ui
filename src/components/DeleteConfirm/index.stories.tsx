@@ -51,6 +51,8 @@ export const WithConfirmationBlocked = ({
     open={openBoolean}
     openModal={openModalFunction}
     closeModal={closeModalFunction}
+    loading={false}
+    data={''}
   />
 );
 
