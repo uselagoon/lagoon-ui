@@ -203,7 +203,11 @@ const Environment = ({ environment }) => {
             }}
           </Mutation>
         )}
-      <Mutation mutation={DeleteEnvironmentMutation} onCompleted={handleEnvironmentDelete} onError={e => console.error(e)}>
+      <Mutation
+        mutation={DeleteEnvironmentMutation}
+        onCompleted={handleEnvironmentDelete}
+        onError={e => console.error(e)}
+      >
         {(deleteEnvironment, { loading, called, error, data }) => {
           if (error) {
             return <div>{error.message}</div>;
