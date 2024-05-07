@@ -213,10 +213,6 @@ const Environment = ({ environment }) => {
             return <div>{error.message}</div>;
           }
 
-          if (data) {
-            return <div>Delete queued</div>;
-          }
-
           return (
             <DeleteConfirm
               deleteType="environment"
