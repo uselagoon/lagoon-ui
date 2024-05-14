@@ -8,11 +8,16 @@ export const getLinkData = (
   groupSlug: string,
   organizationSlug: string,
   organizationId: number,
-  orgFriendlyName: string
+  orgFriendlyName?: string
 ) => ({
   urlObject: {
     pathname: '/organizations/group',
-    query: { groupName: groupSlug, organizationSlug, organizationId, orgFriendlyName },
+    query: {
+      groupName: groupSlug,
+      organizationSlug,
+      organizationId,
+      ...(orgFriendlyName && { orgFriendlyName }),
+    },
   },
   asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
 });

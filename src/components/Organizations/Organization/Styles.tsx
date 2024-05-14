@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { bp, color } from 'lib/variables';
 import styled from 'styled-components';
 
@@ -169,6 +171,10 @@ export const StyledOverview = styled.div`
       font-weight: 600;
       font-size: 13px;
       color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
+    }
+    & > span.disabled {
+      pointer-events: none;
+      user-select: none;
     }
   }
 `;

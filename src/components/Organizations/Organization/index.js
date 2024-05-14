@@ -60,7 +60,11 @@ const Organization = ({ organization, refetch }) => {
     const link = {
       urlObject: {
         pathname: `/organizations/${pluralName}`,
-        query: { organizationSlug: organization.name, organizationId: organization.id },
+        query: {
+          organizationSlug: organization.name,
+          organizationId: organization.id,
+          orgFriendlyName: organization.friendlyName,
+        },
       },
       asPath: `/organizations/${organization.name}/${pluralName}`,
     };
@@ -280,7 +284,11 @@ const Organization = ({ organization, refetch }) => {
                   </div>
                 </div>
               ))}
-              <OrgManageLink organizationSlug={organization.name} organizationId={organization.id}>
+              <OrgManageLink
+                orgFriendlyName={organization.friendlyName}
+                organizationSlug={organization.name}
+                organizationId={organization.id}
+              >
                 <ManageBtn data-cy="manage-link">
                   <EyeOutlined className="icon" /> Manage
                 </ManageBtn>
