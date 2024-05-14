@@ -23,7 +23,7 @@ const DELETE_GROUP = gql`
 /**
  * The primary list of groups.
  */
-const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup, refetch }) => {
+const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup, refetch, orgFriendlyName }) => {
   const [modalStates, setModalStates] = useState({
     addUser: {
       open: false,
@@ -67,6 +67,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
             groupSlug={i.name}
             organizationSlug={organizationName}
             organizationId={organizationId}
+            orgFriendlyName={orgFriendlyName}
             key={i.id}
           >
             <span>
@@ -123,6 +124,7 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
                   groupSlug={i.name}
                   organizationSlug={organizationName}
                   organizationId={organizationId}
+                  orgFriendlyName={orgFriendlyName}
                   key={i.id}
                 >
                   <EditOutlined className="edit" />

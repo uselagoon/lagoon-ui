@@ -7,11 +7,14 @@ interface Props {
   organizationSlug: string;
   organizationId: number;
   loading: boolean;
+  orgFriendlyName?: string;
 }
 
-const OrganizationBreadcrumb = ({ organizationSlug, organizationId, loading }: Props) => {
-  const linkData = getLinkData(organizationSlug, organizationId);
-  return <Breadcrumb header="Organization" title={organizationSlug} loading={loading} {...linkData} />;
+const OrganizationBreadcrumb = ({ organizationSlug, organizationId, loading, orgFriendlyName = '' }: Props) => {
+  const linkData = getLinkData(organizationSlug, organizationId, orgFriendlyName);
+  return (
+    <Breadcrumb header="Organization" title={orgFriendlyName || organizationSlug} loading={loading} {...linkData} />
+  );
 };
 
 export default OrganizationBreadcrumb;

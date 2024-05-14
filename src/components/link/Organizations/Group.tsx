@@ -4,10 +4,15 @@ import Link from 'next/link';
 
 import { ExtendableOrgLinkProps } from './commons';
 
-export const getLinkData = (groupSlug: string, organizationSlug: string, organizationId: number) => ({
+export const getLinkData = (
+  groupSlug: string,
+  organizationSlug: string,
+  organizationId: number,
+  orgFriendlyName: string
+) => ({
   urlObject: {
     pathname: '/organizations/group',
-    query: { groupName: groupSlug, organizationSlug, organizationId },
+    query: { groupName: groupSlug, organizationSlug, organizationId, orgFriendlyName },
   },
   asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
 });
@@ -27,8 +32,9 @@ const GroupLink: FC<GroupLinkProps> = ({
   children,
   className = null,
   prefetch = false,
+  orgFriendlyName = '',
 }) => {
-  const linkData = getLinkData(groupSlug, organizationSlug, organizationId);
+  const linkData = getLinkData(groupSlug, organizationSlug, organizationId, orgFriendlyName);
 
   const linkProps = className ? { className } : {};
 

@@ -25,6 +25,7 @@ export default gql`
     organization: organizationByName(name: $name) {
       id
       name
+      friendlyName
       quotaGroup
       quotaNotification
       quotaEnvironment

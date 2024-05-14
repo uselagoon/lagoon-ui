@@ -6,4 +6,5 @@ export interface ExtendableOrgLinkProps {
   children: ReactNode;
   className?: string | null;
   prefetch?: boolean;
+  orgFriendlyName?: string;
 }

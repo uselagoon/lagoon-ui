@@ -24,6 +24,7 @@ export default gql`
     organization: organizationById(id: $organization) {
       id
       name
+      friendlyName
       description
       quotaProject
       quotaGroup
