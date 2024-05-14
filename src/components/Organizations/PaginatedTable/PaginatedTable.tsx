@@ -373,7 +373,7 @@ const PaginatedTable: FC<Props> = ({
         resultsToDisplay.map((i, idx) => {
           return (
             <TableRow
-              data-cy={ rowTestName || "table-row"}
+              data-cy={rowTestName || 'table-row'}
               className="tableRow"
               key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}
             >

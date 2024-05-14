@@ -836,7 +836,7 @@ const OrgNotifications = ({
         labelText="Notifications"
         emptyText="No Notifications"
         disableUrlMutation
-        rowTestName='notification-row'
+        rowTestName="notification-row"
       />
 
       <Modal style={{ content: { width: '50%' } }} isOpen={valueModalOpen} onRequestClose={closeValueModal}>
