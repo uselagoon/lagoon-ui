@@ -1,6 +1,6 @@
 export default class NotificationsRepository {
   getNotificationRowParents(notification: string) {
-    return cy.getBySel('notification-row').contains(notification).parent().parent();
+    return cy.getBySel('notification-row').contains(notification).parent().parent().parent();
   }
   getAddNotification() {
     return cy.getBySel('addNotification');
