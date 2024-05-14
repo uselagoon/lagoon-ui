@@ -98,11 +98,11 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
             </div>
 
             {owner ? (
-              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#FF4747">
                 ORG OWNER
               </Tag>
             ) : (
-              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#FF4747">
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
                 ORG VIEWER
               </Tag>
             )}
