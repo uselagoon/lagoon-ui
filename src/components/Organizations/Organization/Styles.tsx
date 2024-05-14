@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { bp, color } from 'lib/variables';
 import styled from 'styled-components';
 
