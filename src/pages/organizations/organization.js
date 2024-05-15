@@ -46,6 +46,7 @@ export const PageOrganization = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
+              orgFriendlyName={router.query.orgFriendlyName}
               organizationSlug={router.query.organizationSlug}
               organizationId={router.query.organizationId || ''}
             />
@@ -79,7 +80,11 @@ export const PageOrganization = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={data.organization.name} organizationId={data.organization.id} />
+          <OrganizationBreadcrumb
+            organizationSlug={data.organization.name}
+            organizationId={data.organization.id}
+            orgFriendlyName={data.organization.friendlyName}
+          />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="overview" organization={data.organization} />

@@ -20,8 +20,8 @@ const OrganizationSkeleton = () => {
           {capitalize(quota)} quota: <Skeleton width={'25%'} />
         </span>
 
-        <Link href="">
-          <LinkBtn>
+        <Link href="#">
+          <LinkBtn className="disabled">
             <EyeOutlined className="icon" /> {capitalize(pluralName)}
           </LinkBtn>
         </Link>

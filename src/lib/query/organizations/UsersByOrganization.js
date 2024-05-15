@@ -20,6 +20,7 @@ export const getOrganization = gql`
     organization: organizationById(id: $id) {
       id
       name
+      friendlyName
       groups {
         id
         name
@@ -40,6 +41,7 @@ export const getOrganizationByName = gql`
     organization: organizationByName(name: $name) {
       id
       name
+      friendlyName
       groups {
         id
         name

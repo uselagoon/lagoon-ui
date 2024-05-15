@@ -39,6 +39,7 @@ export const PageGroups = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
+              orgFriendlyName={router.query.orgFriendlyName}
               organizationSlug={router.query.organizationSlug}
               organizationId={router.query.organizationId || ''}
             />
@@ -74,7 +75,11 @@ export const PageGroups = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
+          <OrganizationBreadcrumb
+            orgFriendlyName={organization.friendlyName}
+            organizationSlug={organization.name}
+            organizationId={organization.id}
+          />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="groups" organization={organization} />
@@ -83,6 +88,7 @@ export const PageGroups = ({ router }) => {
             groups={organization.groups}
             organizationId={organization.id}
             organizationName={organization.name}
+            orgFriendlyName={organization.friendlyName}
             ableToAddGroup={ableToAddGroup}
             refetch={handleRefetch}
           />

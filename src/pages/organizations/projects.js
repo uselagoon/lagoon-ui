@@ -40,6 +40,7 @@ export const PageOrgProjects = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
+              orgFriendlyName={router.query.orgFriendlyName}
               organizationSlug={router.query.organizationSlug}
               organizationId={router.query.organizationId || ''}
             />
@@ -79,7 +80,11 @@ export const PageOrgProjects = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
+          <OrganizationBreadcrumb
+            orgFriendlyName={organization.friendlyName}
+            organizationSlug={organization.name}
+            organizationId={organization.id}
+          />
         </Breadcrumbs>
 
         <OrganizationsWrapper>
@@ -89,6 +94,7 @@ export const PageOrgProjects = ({ router }) => {
             projects={organization.projects}
             organizationId={organization.id}
             organizationName={organization.name}
+            orgFriendlyName={organization.friendlyName}
             deployTargets={organization.deployTargets}
           />
         </OrganizationsWrapper>

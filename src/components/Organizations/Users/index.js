@@ -16,10 +16,10 @@ import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from './Styles';
 
-export const getLinkData = (userSlug, organizationSlug, organizationName) => ({
+export const getLinkData = (userSlug, organizationSlug, organizationName, orgFriendlyName) => ({
   urlObject: {
     pathname: '/organizations/user',
-    query: { userSlug, organizationSlug, organizationName },
+    query: { userSlug, organizationSlug, organizationName, orgFriendlyName },
   },
   asPath: `/organizations/${organizationName}/users/${userSlug}`,
 });
@@ -35,7 +35,7 @@ const DELETE_USER = gql`
 /**
  * The primary list of users.
  */
-const Users = ({ users = [], organization, organizationId, organizationName, refetch }) => {
+const Users = ({ users = [], organization, organizationId, organizationName, refetch, orgFriendlyName }) => {
   const [userModalOpen, setUserModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
 
@@ -99,7 +99,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       width: '30%',
       key: 'email',
       render: ({ email }) => {
-        const linkData = getLinkData(email, organizationId, organizationName);
+        const linkData = getLinkData(email, organizationId, organizationName, orgFriendlyName);
         return (
           <div className="email">
             <Link href={linkData.urlObject} as={linkData.asPath}>
@@ -120,7 +120,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       width: '25%',
       key: 'actions',
       render: ({ ...user }) => {
-        const linkData = getLinkData(user?.email, organizationId, organizationName);
+        const linkData = getLinkData(user?.email, organizationId, organizationName, orgFriendlyName);
         return (
           <TableActions>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">

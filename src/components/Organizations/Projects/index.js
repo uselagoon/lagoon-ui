@@ -25,7 +25,7 @@ const DELETE_PROJECT = gql`
 /**
  * The primary list of projects.
  */
-const OrgProjects = ({ projects = [], organizationId, organizationName, refresh, deployTargets }) => {
+const OrgProjects = ({ projects = [], organizationId, organizationName, refresh, deployTargets, orgFriendlyName }) => {
   const [modalState, setModalState] = useState({
     open: false,
     current: null,
@@ -42,6 +42,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               projectGroupSlug={project.name}
               organizationSlug={organizationName}
               organizationId={organizationId}
+              orgFriendlyName={orgFriendlyName}
               key={project.id}
             >
               {project.name}
@@ -82,6 +83,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                   projectGroupSlug={project.name}
                   organizationSlug={organizationName}
                   organizationId={organizationId}
+                  orgFriendlyName={orgFriendlyName}
                   key={project.id}
                 >
                   <EditOutlined className="edit" />

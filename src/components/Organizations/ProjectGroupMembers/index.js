@@ -22,7 +22,15 @@ const REMOVE_GROUP_FROM_PROJECT = gql`
 /**
  * The primary list of members.
  */
-const ProjectGroupMembers = ({ groups = [], organizationId, organizationSlug, projectName, orgGroups, refresh }) => {
+const ProjectGroupMembers = ({
+  groups = [],
+  organizationId,
+  organizationSlug,
+  projectName,
+  orgGroups,
+  refresh,
+  orgFriendlyName,
+}) => {
   const [searchInput, setSearchInput] = useState('');
 
   const [showDefaults, setShowDefaults] = useState(false);
@@ -70,7 +78,12 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationSlug, pr
         {filteredMembers.map(group => (
           <div className="data-row" key={group.id}>
             <div className="name">
-              <OrgGroupsLink groupSlug={group.name} organizationId={organizationId} organizationSlug={organizationSlug}>
+              <OrgGroupsLink
+                groupSlug={group.name}
+                orgFriendlyName={orgFriendlyName}
+                organizationId={organizationId}
+                organizationSlug={organizationSlug}
+              >
                 {group.name}
               </OrgGroupsLink>
             </div>
@@ -87,6 +100,7 @@ const ProjectGroupMembers = ({ groups = [], organizationId, organizationSlug, pr
                 <div className="link">
                   <>
                     <OrgGroupsLink
+                      orgFriendlyName={orgFriendlyName}
                       groupSlug={group.name}
                       organizationSlug={organizationSlug}
                       organizationId={organizationId}
