@@ -394,7 +394,7 @@ const GroupMembers = ({
         />
 
         <div className="tableAction">
-          <Tooltip overlayClassName="orgTooltip" title="Add the group to a project" placement="bottom">
+          <Tooltip overlayClassName="orgTooltip" title="Add an existing project to this group" placement="bottom">
             <>
               <Button action={() => setAddProjectModalOpen(true)}>
                 <AddButtonContent>Add project</AddButtonContent>
