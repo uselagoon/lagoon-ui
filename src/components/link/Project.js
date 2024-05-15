@@ -15,10 +15,15 @@ const ProjectLink = ({ projectSlug, children, className = '', prefetch = false, 
   const linkData = getLinkData(projectSlug);
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a data-cy="project" target={openInTab ? '_blank' : '_self'} className={className}>
-        {children}
-      </a>
+    <Link
+      href={linkData.urlObject}
+      as={linkData.asPath}
+      prefetch={prefetch}
+      data-cy="project"
+      target={openInTab ? '_blank' : '_self'}
+      className={className}
+    >
+      {children}
     </Link>
   );
 };

@@ -27,8 +27,8 @@ const OrganizationLink: FC<ExtendableOrgLinkProps> = ({
   const linkProps = className ? { className } : {};
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a {...linkProps}>{children}</a>
+    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch} {...linkProps}>
+      {children}
     </Link>
   );
 };

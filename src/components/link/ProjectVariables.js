@@ -12,8 +12,8 @@ const ProjectVariablesLink = ({ projectSlug, children, className = null, prefetc
   const linkData = getLinkData(projectSlug);
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a className={className}>{children}</a>
+    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch} className={className}>
+      {children}
     </Link>
   );
 };

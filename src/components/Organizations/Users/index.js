@@ -103,7 +103,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         return (
           <div className="email">
             <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a>{email}</a>
+              {email}
             </Link>
           </div>
         );
@@ -125,10 +125,8 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
           <TableActions>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
               <>
-                <Link href={linkData.urlObject} as={linkData.asPath}>
-                  <a className="link">
-                    <EyeOutlined className="edit" />
-                  </a>
+                <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+                  <EyeOutlined className="edit" />
                 </Link>
               </>
             </Tooltip>

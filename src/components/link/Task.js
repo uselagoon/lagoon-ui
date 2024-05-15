@@ -18,8 +18,8 @@ const TaskLink = ({ taskSlug, environmentSlug, projectSlug, children, className 
   const linkData = getLinkData(taskSlug, environmentSlug, projectSlug);
 
   return (
-    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch}>
-      <a className={className}>{children}</a>
+    <Link href={linkData.urlObject} as={linkData.asPath} prefetch={prefetch} className={className}>
+      {children}
     </Link>
   );
 };

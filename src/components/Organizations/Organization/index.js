@@ -77,7 +77,7 @@ const Organization = ({ organization, refetch }) => {
         </span>
 
         {showLink && (
-          <Link href={link.urlObject} as={link.asPath}>
+          <Link href={link.urlObject} as={link.asPath} legacyBehavior>
             <LinkBtn data-cy={`${quota}-link`}>
               <EyeOutlined className="icon" /> {capitalize(pluralName)}
             </LinkBtn>

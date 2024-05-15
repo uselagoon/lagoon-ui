@@ -142,8 +142,8 @@ const GroupMembers = ({
         const linkData = getLinkData(user.email, organizationName, organizationId, orgFriendlyName);
         return (
           <div className="email">
-            <Link href={linkData.urlObject} as={linkData.asPath}>
-              <a className="link">{user.email}</a>
+            <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+              {user.email}
             </Link>
           </div>
         );
@@ -182,10 +182,8 @@ const GroupMembers = ({
             </Tooltip>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View user">
               <>
-                <Link href={linkData.urlObject} as={linkData.asPath}>
-                  <a className="link">
-                    <EyeOutlined className="view" />
-                  </a>
+                <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+                  <EyeOutlined className="view" />
                 </Link>
               </>
             </Tooltip>
