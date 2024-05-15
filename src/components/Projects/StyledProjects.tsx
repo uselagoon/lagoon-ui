@@ -40,6 +40,10 @@ export const ProjectsHeader = styled.div`
       }
     }
   }
+  .projectCount {
+    display: flex;
+    gap: 0.5rem;
+  }
 `;
 
 export const SearchInput = styled.input`
