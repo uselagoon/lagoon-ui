@@ -130,6 +130,26 @@ export const StyledOrgNotifications = styled.div`
     }
     font-weight: normal;
   }
+  .notificationdata {
+    font-family: 'roboto', sans-serif;
+    font-size: 1rem;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    p {
+      margin: unset;
+      line-height: 24px;
+    }
+    word-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    .comment {
+      font-size: 10px;
+    }
+    font-weight: normal;
+  }
+
   .notifdata {
     font-family: 'roboto', sans-serif;
     font-size: 1rem;
@@ -287,6 +307,17 @@ export const StyledOrgNotifications = styled.div`
     line-height: 24px;
   }
 `;
+
+export const NameTagColumn = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+`;
+
 export const NameTagCol = styled.div`
   width: 25%;
   display: flex;

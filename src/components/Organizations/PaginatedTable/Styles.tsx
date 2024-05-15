@@ -63,8 +63,7 @@ export const TableColumn = styled.div<{ width: string }>`
     border-right: 2px solid ${props => props.theme.borders.tableRow};
   }
   transition: all 0.3s ease;
-  padding: 25px 13px;
-  height: 61px;
+  padding: 15px 13px;
   width: ${props => props.width};
   align-items: center;
   display: flex;
