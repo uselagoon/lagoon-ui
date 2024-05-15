@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { EditOutlined } from '@ant-design/icons';
@@ -173,7 +173,7 @@ const OrgNotifications = ({
 
       actions: notification => {
         return (
-          <>
+          <Fragment key={notification.name}>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span
                 className="link"
@@ -295,7 +295,7 @@ const OrgNotifications = ({
                 );
               }}
             </Mutation>
-          </>
+          </Fragment>
         );
       },
     },
@@ -306,7 +306,7 @@ const OrgNotifications = ({
       },
       actions: notification => {
         return (
-          <>
+          <Fragment key={notification.name}>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span
                 className="link"
@@ -428,7 +428,7 @@ const OrgNotifications = ({
                 );
               }}
             </Mutation>
-          </>
+          </Fragment>
         );
       },
     },
@@ -443,7 +443,7 @@ const OrgNotifications = ({
       },
       actions: notification => {
         return (
-          <>
+          <Fragment key={notification.name}>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span className="link" onClick={() => setEditState({ open: true, current: notification, type: 'email' })}>
                 <EditOutlined className="edit" />
@@ -547,7 +547,7 @@ const OrgNotifications = ({
                 );
               }}
             </Mutation>
-          </>
+          </Fragment>
         );
       },
     },
@@ -565,7 +565,7 @@ const OrgNotifications = ({
       },
       actions: notification => {
         return (
-          <>
+          <Fragment key={notification.name}>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span
                 className="link"
@@ -670,7 +670,7 @@ const OrgNotifications = ({
                 );
               }}
             </Mutation>
-          </>
+          </Fragment>
         );
       },
     },
@@ -687,7 +687,7 @@ const OrgNotifications = ({
       },
       actions: notification => {
         return (
-          <>
+          <Fragment key={notification.name}>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
               <span className="link" onClick={() => setEditState({ open: true, current: notification, type: 'teams' })}>
                 <EditOutlined className="edit" />
@@ -788,7 +788,7 @@ const OrgNotifications = ({
                 );
               }}
             </Mutation>
-          </>
+          </Fragment>
         );
       },
     },
