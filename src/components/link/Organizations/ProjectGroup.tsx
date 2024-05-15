@@ -4,16 +4,22 @@ import Link from 'next/link';
 
 import { ExtendableOrgLinkProps } from './commons';
 
-export const getLinkData = (projectGroupSlug: string, organizationSlug: string, organizationId: number) => ({
+export const getLinkData = (
+  projectGroupSlug: string,
+  organizationSlug: string,
+  organizationId: number,
+  orgFriendlyName: string
+) => ({
   urlObject: {
     pathname: '/organizations/project',
-    query: { projectName: projectGroupSlug, organizationSlug, organizationId },
+    query: { projectName: projectGroupSlug, organizationSlug, organizationId, orgFriendlyName },
   },
   asPath: `/organizations/${organizationSlug}/projects/${projectGroupSlug}`,
 });
 
 interface ProjectGroupLinkProps extends ExtendableOrgLinkProps {
   projectGroupSlug: string;
+  orgFriendlyName?: string;
 }
 
 /**
@@ -26,8 +32,9 @@ const ProjectGroupLink: FC<ProjectGroupLinkProps> = ({
   children,
   className = '',
   prefetch = false,
+  orgFriendlyName = '',
 }) => {
-  const linkData = getLinkData(projectGroupSlug, organizationSlug, organizationId);
+  const linkData = getLinkData(projectGroupSlug, organizationSlug, organizationId, orgFriendlyName);
 
   const linkProps = className ? { className } : {};
 

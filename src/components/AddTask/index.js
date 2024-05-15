@@ -25,6 +25,7 @@ const AddTask = ({
   setSelectedTask,
   onCompleted,
   onError,
+  errMessage,
   options,
   onNewTask,
 }) => {
@@ -70,7 +71,8 @@ const AddTask = ({
                 projectEnvironments={projectEnvironments}
                 selectedTask={selectedTask}
                 onCompleted={onCompleted}
-                onError={onError}
+                onError={e => onError(e.message)}
+                errMessage={errMessage}
                 onNewTask={onNewTask}
               />
             </div>

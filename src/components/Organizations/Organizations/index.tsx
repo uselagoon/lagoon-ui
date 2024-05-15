@@ -10,6 +10,7 @@ export interface IOrganization {
   id: number;
   name: string;
   description: string;
+  friendlyName?: string;
   __typename: 'Organization';
 }
 
@@ -55,11 +56,20 @@ const Organizations = ({ organizations = [] }: { organizations: IOrganization[] 
         </Box>
       )}
       {filteredOrganizations.map(organization => (
-        <OrganizationLink organizationSlug={organization.name} organizationId={organization.id} key={organization.id}>
+        <OrganizationLink
+          organizationSlug={organization.name}
+          organizationId={organization.id}
+          key={organization.id}
+          orgFriendlyName={organization.friendlyName}
+        >
           <Box className="box">
             <Organization>
               <h4>
-                <Highlighter searchWords={[searchInput]} autoEscape={true} textToHighlight={organization.name} />
+                <Highlighter
+                  searchWords={[searchInput]}
+                  autoEscape={true}
+                  textToHighlight={organization.friendlyName || organization.name}
+                />
               </h4>
               <div className="description">
                 <Highlighter searchWords={[searchInput]} autoEscape={true} textToHighlight={organization.description} />

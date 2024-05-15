@@ -9,3 +9,14 @@ export const queryStringToObject = R.pipe(
 );
 
 export const makeSafe = string => string.toLocaleLowerCase().replace(/[^0-9a-z-]/g, '-');
+
+export const debounce = (fn, delay) => {
+  let timeoutId;
+
+  return function (val) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      fn.call(null, val);
+    }, delay);
+  };
+};

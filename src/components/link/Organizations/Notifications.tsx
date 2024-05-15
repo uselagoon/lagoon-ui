@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 import { ExtendableOrgLinkProps } from './commons';
 
-export const getLinkData = (organizationSlug: string, organizationId: number) => ({
+export const getLinkData = (organizationSlug: string, organizationId: number, orgFriendlyName: string) => ({
   urlObject: {
     pathname: `/organizations/notifications`,
-    query: { organizationSlug: organizationSlug, organizationId },
+    query: { organizationSlug: organizationSlug, organizationId, orgFriendlyName },
   },
   asPath: `/organizations/${organizationSlug}/notifications`,
 });
@@ -21,8 +21,9 @@ const OrgNotificationsLink: FC<ExtendableOrgLinkProps> = ({
   children,
   className = null,
   prefetch = false,
+  orgFriendlyName = '',
 }) => {
-  const linkData = getLinkData(organizationSlug, organizationId);
+  const linkData = getLinkData(organizationSlug, organizationId, orgFriendlyName);
 
   const linkProps = className ? { className } : {};
   return (

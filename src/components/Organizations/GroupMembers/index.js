@@ -31,10 +31,10 @@ import {
 } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
-export const getLinkData = (userSlug, organizationSlug, organizationId) => ({
+export const getLinkData = (userSlug, organizationSlug, organizationId, orgFriendlyName) => ({
   urlObject: {
     pathname: '/organizations/user',
-    query: { userSlug, organizationSlug, organizationId },
+    query: { userSlug, organizationSlug, organizationId, orgFriendlyName },
   },
   asPath: `/organizations/${organizationSlug}/users/${userSlug}`,
 });
@@ -70,6 +70,7 @@ const GroupMembers = ({
   groupName,
   organizationName,
   organizationId,
+  orgFriendlyName,
   orgProjects,
   projects,
   refetch,
@@ -138,7 +139,7 @@ const GroupMembers = ({
       width: '30%',
       key: 'email',
       render: ({ user }) => {
-        const linkData = getLinkData(user.email, organizationName, organizationId);
+        const linkData = getLinkData(user.email, organizationName, organizationId, orgFriendlyName);
         return (
           <div className="email">
             <Link href={linkData.urlObject} as={linkData.asPath} className="link">
@@ -160,7 +161,7 @@ const GroupMembers = ({
       width: '15%',
       key: 'actions',
       render: ({ user, role }) => {
-        const linkData = getLinkData(user.email, organizationName, organizationId);
+        const linkData = getLinkData(user.email, organizationName, organizationId, orgFriendlyName);
         return (
           <TableActions>
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit role">
@@ -233,6 +234,7 @@ const GroupMembers = ({
             projectGroupSlug={project.name}
             organizationSlug={organizationName}
             organizationId={organizationId}
+            orgFriendlyName={orgFriendlyName}
             key={id}
           >
             {name}
@@ -260,6 +262,7 @@ const GroupMembers = ({
                   projectGroupSlug={project.name}
                   organizationSlug={organizationName}
                   organizationId={organizationId}
+                  orgFriendlyName={orgFriendlyName}
                   key={project.id}
                 >
                   <EyeOutlined className="view" />
@@ -389,7 +392,7 @@ const GroupMembers = ({
         />
 
         <div className="tableAction">
-          <Tooltip overlayClassName="orgTooltip" title="Add the group to a project" placement="bottom">
+          <Tooltip overlayClassName="orgTooltip" title="Add an existing project to this group" placement="bottom">
             <>
               <Button action={() => setAddProjectModalOpen(true)}>
                 <AddButtonContent>Add project</AddButtonContent>

@@ -49,6 +49,7 @@ interface Props {
   labelText?: string;
   limit: number;
   emptyText: string;
+  rowTestName?: string;
 }
 
 // currently possible...
@@ -76,6 +77,7 @@ const PaginatedTable: FC<Props> = ({
   labelText,
   limit = 10,
   disableUrlMutation = false,
+  rowTestName,
 }) => {
   const params = new URLSearchParams(window.location.search);
 
@@ -107,13 +109,57 @@ const PaginatedTable: FC<Props> = ({
   }, [data]);
 
   const sortedFilteredData = useMemo(() => {
-    let filtered = !searchStr
-      ? unfilteredData
-      : unfilteredData.filter(key => {
-          // @ts-ignore
-          const k = !usersTable ? key.name : ((key.user ? key.user?.email : key.email) as string);
-          return k.toLowerCase().includes(searchStr.toLowerCase());
-        });
+    let filtered;
+
+    if (labelText !== 'Notifications') {
+      filtered = !searchStr
+        ? unfilteredData
+        : unfilteredData.filter(key => {
+            // @ts-ignore
+            const k = !usersTable ? key.name : ((key.user ? key.user?.email : key.email) as string);
+            return k.toLowerCase().includes(searchStr.toLowerCase());
+          });
+    } else {
+      filtered = !searchStr
+        ? unfilteredData
+        : unfilteredData.filter(item => {
+            const sortByName = item.name.toLowerCase().includes(searchStr.toLowerCase());
+            const sortByChannel = item.channel && String(item.channel).toLowerCase().includes(searchStr.toLowerCase());
+            const sortByWebhook = item.webhook && String(item.webhook).toLowerCase().includes(searchStr.toLowerCase());
+            const sortByEmail =
+              item.emailAddress && String(item.emailAddress).toLowerCase().includes(searchStr.toLowerCase());
+
+            switch (item.__typename) {
+              case 'NotificationSlack':
+                return ['name', '__typename', 'webhook', 'channel'].includes(item.__typename)
+                  ? false
+                  : (true && sortByName) || (true && sortByChannel) || (true && sortByWebhook);
+
+              case 'NotificationRocketChat':
+                return ['name', '__typename', 'webhook', 'channel'].includes(item.__typename)
+                  ? false
+                  : (true && sortByName) || (true && sortByChannel) || (true && sortByWebhook);
+
+              case 'NotificationMicrosoftTeams':
+                return ['name', '__typename', 'webhook'].includes(item.__typename)
+                  ? false
+                  : (true && sortByName) || (true && sortByWebhook);
+
+              case 'NotificationWebhook':
+                return ['name', '__typename', 'webhook'].includes(item.__typename)
+                  ? false
+                  : (true && sortByName) || (true && sortByWebhook);
+
+              case 'NotificationEmail':
+                return ['name', '__typename', 'emailAddress'].includes(item.__typename)
+                  ? false
+                  : (true && sortByName) || (true && sortByEmail);
+
+              default:
+                return true && sortByName;
+            }
+          });
+    }
 
     if (!defaultsSelected) {
       if (defaultViewOptions?.type === 'group') {
@@ -327,7 +373,7 @@ const PaginatedTable: FC<Props> = ({
         resultsToDisplay.map((i, idx) => {
           return (
             <TableRow
-              data-cy="table-row"
+              data-cy={rowTestName || 'table-row'}
               className="tableRow"
               key={`${i.id ? i.id : idx}-row-${labelText ? labelText : ''}`}
             >

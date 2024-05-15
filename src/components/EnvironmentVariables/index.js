@@ -237,7 +237,7 @@ const EnvironmentVariables = ({ environment, onVariableAdded }) => {
           />
         )}
         <div className="header">
-          <label>Project Variables</label>
+          <label>Environment Variables</label>
           <div className="header-buttons">
             <Button onClick={() => permissionCheck('add')} style={{ all: 'unset' }}>
               {environmentErrorAlert ? (

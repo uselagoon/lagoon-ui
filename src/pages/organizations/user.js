@@ -55,6 +55,7 @@ export const PageUser = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
+              orgFriendlyName={router.query.orgFriendlyName}
               organizationSlug={router.query.organizationSlug}
               organizationId={router.query.organizationId || ''}
             />
@@ -111,6 +112,7 @@ export const PageUser = ({ router }) => {
       <MainLayout>
         <Breadcrumbs>
           <OrganizationBreadcrumb
+            orgFriendlyName={organization.organization.friendlyName}
             organizationSlug={router.query.organizationSlug || organization.name}
             organizationId={organization.organization.id}
           />
@@ -127,6 +129,7 @@ export const PageUser = ({ router }) => {
             <User
               organizationId={organization.organization.id}
               organizationName={organization.organization.name}
+              orgFriendlyName={organization.organization.friendlyName}
               organization={organization.organization || []}
               user={user.userByEmailAndOrganization || []}
               refetch={handleUserRefetch}

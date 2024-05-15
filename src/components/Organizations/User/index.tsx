@@ -50,10 +50,15 @@ type User = {
   }[];
 };
 
-export const getLinkData = (userSlug: string, organizationSlug: string, organizationName: string) => ({
+export const getLinkData = (
+  userSlug: string,
+  organizationSlug: string,
+  organizationName: string,
+  orgFriendlyName: string
+) => ({
   urlObject: {
     pathname: '/organizations/users',
-    query: { user: userSlug, organizationSlug, organizationName },
+    query: { user: userSlug, organizationSlug, organizationName, orgFriendlyName },
   },
   asPath: `/organizations/${organizationName}/users/${userSlug}`,
 });
@@ -72,12 +77,13 @@ interface UserProps {
   organizationName: string;
   organizationId: number;
   refetch: () => void;
+  orgFriendlyName: string;
 }
 
 /**
  * Displays user information.
  */
-const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }) => {
+const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, orgFriendlyName }) => {
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('');
 
@@ -108,10 +114,15 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
     setSelectedGroup('');
     setGroupModalOpen(false);
   };
-  const groupLinkData = (groupSlug: string, organizationSlug: string, organizationId: number) => ({
+  const groupLinkData = (
+    groupSlug: string,
+    organizationSlug: string,
+    organizationId: number,
+    orgFriendlyName: string
+  ) => ({
     urlObject: {
       pathname: '/organizations/group',
-      query: { groupName: groupSlug, organizationSlug, organizationId },
+      query: { groupName: groupSlug, organizationSlug, organizationId, orgFriendlyName },
     },
     asPath: `/organizations/${organizationSlug}/groups/${groupSlug}`,
   });
@@ -121,7 +132,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '50%',
       key: 'group',
       render: ({ name, type }: Group) => {
-        const linkData = groupLinkData(name, organizationName, organizationId);
+        const linkData = groupLinkData(name, organizationName, organizationId, orgFriendlyName);
         return (
           <>
             <Link href={linkData.urlObject} as={linkData.asPath} className="link">
@@ -144,7 +155,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch }
       width: '25%',
       key: 'actions',
       render: (group: Group) => {
-        const linkData = groupLinkData(group.name, organizationName, organizationId);
+        const linkData = groupLinkData(group.name, organizationName, organizationId, orgFriendlyName);
 
         return (
           <TableActions>

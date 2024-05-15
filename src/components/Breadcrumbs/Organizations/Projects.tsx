@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ProjectsBreadcrumb = ({ organizationSlug, organizationId }: Props) => {
-  const linkData = getLinkData(organizationSlug, organizationId);
+  const linkData = getLinkData(organizationSlug, organizationId, '');
 
   return <Breadcrumb header="Projects" title="Projects" {...linkData} />;
 };

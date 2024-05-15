@@ -60,7 +60,11 @@ const Organization = ({ organization, refetch }) => {
     const link = {
       urlObject: {
         pathname: `/organizations/${pluralName}`,
-        query: { organizationSlug: organization.name, organizationId: organization.id },
+        query: {
+          organizationSlug: organization.name,
+          organizationId: organization.id,
+          orgFriendlyName: organization.friendlyName,
+        },
       },
       asPath: `/organizations/${organization.name}/${pluralName}`,
     };
@@ -269,18 +273,22 @@ const Organization = ({ organization, refetch }) => {
                     <div className="email">{owner.email} </div>
 
                     {owner.owner ? (
-                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#47D3FF">
+                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#FF4747">
                         ORG OWNER
                       </Tag>
                     ) : (
-                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#FF4747">
+                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#47D3FF">
                         ORG VIEWER
                       </Tag>
                     )}
                   </div>
                 </div>
               ))}
-              <OrgManageLink organizationSlug={organization.name} organizationId={organization.id}>
+              <OrgManageLink
+                orgFriendlyName={organization.friendlyName}
+                organizationSlug={organization.name}
+                organizationId={organization.id}
+              >
                 <ManageBtn data-cy="manage-link">
                   <EyeOutlined className="icon" /> Manage
                 </ManageBtn>

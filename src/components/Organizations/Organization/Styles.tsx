@@ -170,6 +170,10 @@ export const StyledOverview = styled.div`
       font-size: 13px;
       color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
     }
+    & > span.disabled {
+      pointer-events: none;
+      user-select: none;
+    }
   }
 `;
 

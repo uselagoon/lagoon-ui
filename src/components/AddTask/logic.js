@@ -13,6 +13,8 @@ import withState from 'recompose/withState';
 const { publicRuntimeConfig } = getConfig();
 
 const withSelectedTask = withState('selectedTask', 'setSelectedTask', null);
+const withErrMessage = withState('errMessage', 'setErrMessage', null);
+
 const withOptions = withProps(({ pageEnvironment }) => {
   let options = [
     {
@@ -78,8 +80,9 @@ const withNewTaskHanders = withHandlers({
       setSelectedTask('Completed');
     },
   onError:
-    ({ setSelectedTask }) =>
-    () => {
+    ({ setSelectedTask, setErrMessage }) =>
+    errMsg => {
+      setErrMessage(errMsg);
       setSelectedTask('Error');
     },
 });
@@ -117,4 +120,4 @@ const withProjectEnvironments = BaseComponent =>
     }
   };
 
-export default compose(withSelectedTask, withNewTaskHanders, withOptions, withProjectEnvironments);
+export default compose(withSelectedTask, withErrMessage, withNewTaskHanders, withOptions, withProjectEnvironments);

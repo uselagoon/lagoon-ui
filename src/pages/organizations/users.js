@@ -52,6 +52,7 @@ export const PageUsers = ({ router }) => {
         <MainLayout>
           <Breadcrumbs>
             <OrganizationBreadcrumb
+              orgFriendlyName={router.query.orgFriendlyName}
               organizationSlug={router.query.organizationSlug}
               organizationId={router.query.organizationId || ''}
             />
@@ -81,7 +82,11 @@ export const PageUsers = ({ router }) => {
       </Head>
       <MainLayout>
         <Breadcrumbs>
-          <OrganizationBreadcrumb organizationSlug={organization.name} organizationId={organization.id} />
+          <OrganizationBreadcrumb
+            orgFriendlyName={organization.friendlyName}
+            organizationSlug={organization.name}
+            organizationId={organization.id}
+          />
         </Breadcrumbs>
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="users" organization={organization} />
@@ -90,6 +95,7 @@ export const PageUsers = ({ router }) => {
               refetch={handleRefetch}
               users={allUsers}
               organization={organization}
+              orgFriendlyName={organization.friendlyName}
               organizationId={router.query.organizationSlug}
               organizationName={organization.name}
             />

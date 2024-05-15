@@ -4,7 +4,6 @@ import ReactSelect from 'react-select';
 
 import Button from 'components/Button';
 import gql from 'graphql-tag';
-import { bp, color, fontSize } from 'lib/variables';
 
 import { SelectWrapper } from './Styles';
 
