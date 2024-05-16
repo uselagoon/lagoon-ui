@@ -45,6 +45,20 @@ const Environment = ({ environment }) => {
 
     Router.push(taskNavObject.urlObject, taskNavObject.asPath);
   };
+
+  const handleEnvironmentDelete = () => {
+    const projectName = environment.project.name;
+
+    const navigationObject = {
+      urlObject: {
+        pathname: '/project',
+        query: { projectName: projectName },
+      },
+      asPath: `/projects/${projectName}`,
+    };
+
+    Router.push(navigationObject.urlObject, navigationObject.asPath);
+  };
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">
@@ -189,20 +203,22 @@ const Environment = ({ environment }) => {
             }}
           </Mutation>
         )}
-      <Mutation mutation={DeleteEnvironmentMutation} onError={e => console.error(e)}>
+      <Mutation
+        mutation={DeleteEnvironmentMutation}
+        onCompleted={handleEnvironmentDelete}
+        onError={e => console.error(e)}
+      >
         {(deleteEnvironment, { loading, called, error, data }) => {
           if (error) {
             return <div>{error.message}</div>;
-          }
-
-          if (called) {
-            return <div>Delete queued</div>;
           }
 
           return (
             <DeleteConfirm
               deleteType="environment"
               deleteName={environment.name}
+              loading={loading}
+              data={data}
               onDelete={() =>
                 deleteEnvironment({
                   variables: {

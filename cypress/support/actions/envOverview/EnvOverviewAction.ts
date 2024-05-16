@@ -37,7 +37,7 @@ export default class EnvOverviewAction {
 
     cy.wait('@gqldeleteEnvironmentMutation');
 
-    environment.getDeleteInfo().invoke('text').should('eq', 'Delete queued');
+    cy.url().should('include', '/projects/lagoon-demo');
   }
 
   doDeleteEnvironmentError(branch: string) {
