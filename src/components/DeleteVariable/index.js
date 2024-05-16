@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import ButtonBootstrap from 'react-bootstrap/Button';
 
+import { LoadingOutlined } from '@ant-design/icons';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -26,18 +27,30 @@ export const DeleteVariable = ({
   open,
   openModal,
   closeModal,
+  envValues,
+  prjEnvValues,
+  loading,
+  valueState,
 }) => {
+  const handlePermissionCheck = () => {
+    let waitForGQL = setTimeout(() => {
+      openModal();
+    }, [1000]);
+    if (prjEnvValues || envValues) {
+      clearTimeout(waitForGQL);
+      openModal();
+    }
+  };
+
   return (
     <React.Fragment>
       <DeleteVariableButton>
-        {icon ? (
-          <Button variant="red" icon={icon} action={openModal}>
-            Delete
+        {loading && valueState ? (
+          <Button variant="red" action={openModal}>
+            <LoadingOutlined />
           </Button>
         ) : (
-          <Button variant="red" action={openModal}>
-            Delete
-          </Button>
+          <Button variant="red" icon={icon} action={handlePermissionCheck}></Button>
         )}
       </DeleteVariableButton>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
@@ -82,7 +95,7 @@ export const DeleteVariable = ({
                     className="btn-danger"
                     onClick={deleteEnvVariableByNameHandler}
                   >
-                    {loading ? 'Deleting...' : 'Delete'}
+                    {loading ? 'Deleting...' : data ? 'Success' : 'Delete'}
                   </ButtonBootstrap>
                 );
               }}
