@@ -145,16 +145,15 @@ export const AddVariable = ({
             />
           </div>
           <div className="var-modal">
-            <label htmlFor="varName">Value</label>
-            <input
+            <label htmlFor="varValue">Value</label>
+            <textarea
               data-cy="varValue"
               id="varValueId"
               name="varValue"
               className="addVarValueInput"
-              type="text"
               value={varValue ? updateValue : inputValue}
               onChange={varValue ? handleUpdateValue : setInputValue}
-            />
+            ></textarea>
           </div>
           <div className="form-input add-var-btn" data-cy="add-variable">
             <a href="#" className="hover-state" onClick={closeModal}>
@@ -230,8 +229,8 @@ export const AddVariable = ({
                             ? 'Update environment variable'
                             : 'Add environment variable'
                           : updateVar || varName
-                            ? 'Update project variable'
-                            : 'Add project variable'}
+                          ? 'Update project variable'
+                          : 'Add project variable'}
                       </ButtonBootstrap>
                     </Popconfirm>
                   );
@@ -248,8 +247,8 @@ export const AddVariable = ({
                           ? 'Update environment variable'
                           : 'Add environment variable'
                         : updateVar || varName
-                          ? 'Update project variable'
-                          : 'Add project variable'}
+                        ? 'Update project variable'
+                        : 'Add project variable'}
                     </ButtonBootstrap>
                   );
                 }
