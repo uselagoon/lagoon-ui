@@ -33,7 +33,8 @@ export const NewVariableModal = styled.div`
     font-family: 'source-code-pro', sans-serif;
     font-weight: bold;
   }
-  input, textarea {
+  input,
+  textarea {
     margin-right: 10px;
     width: 100%;
   }

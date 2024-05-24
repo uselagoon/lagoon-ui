@@ -34,6 +34,7 @@ export const StyledViewVariableValueModal = styled.div`
     .col-3 {
       width: fit-content;
       line-break: anywhere;
+      white-space: break-spaces;
     }
     a.external-link {
       color: ${color.brightBlue};

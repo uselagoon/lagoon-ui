@@ -18,8 +18,7 @@ const withInputHandlers = withHandlers({
       setInputName(event.target.value),
   setClear:
     ({ setInputValue, setInputName, setInputScope }) =>
-    () =>
-      [setInputValue(''), setInputName(''), setInputScope('')],
+    () => [setInputValue(''), setInputName(''), setInputScope('')],
 });
 
 const withModalState = withState('open', 'setOpen', false);
@@ -33,7 +32,7 @@ const withModalHandlers = withHandlers({
     () => {
       setOpen(false);
       setClear();
-    }
+    },
 });
 
 export default compose(
