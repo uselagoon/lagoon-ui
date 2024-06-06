@@ -90,7 +90,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
     {
       width: '55%',
       key: 'email',
-      render: ({ email, owner }) => {
+      render: ({ email, owner, admin }) => {
         return (
           <>
             <div className="email" style={{ width: '60%' }}>
@@ -102,9 +102,15 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                 ORG OWNER
               </Tag>
             ) : (
-              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
-                ORG VIEWER
-              </Tag>
+              admin ? (
+                <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#E69138">
+                  ORG ADMIN
+                </Tag>
+              ) : (
+                <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
+                  ORG VIEWER
+                </Tag>
+              )
             )}
           </>
         );

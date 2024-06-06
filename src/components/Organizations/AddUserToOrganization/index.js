@@ -11,8 +11,8 @@ import { Footer } from '../SharedStyles';
 import { NewUser } from './Styles';
 
 export const ADD_USER_MUTATION = gql`
-  mutation AddUserToOrganization($email: String!, $organization: Int!, $owner: Boolean) {
-    addUserToOrganization(input: { user: { email: $email }, organization: $organization, owner: $owner }) {
+  mutation AddUserToOrganization($email: String!, $organization: Int!, $owner: Boolean, $admin: Boolean) {
+    addUserToOrganization(input: { user: { email: $email }, organization: $organization, owner: $owner, admin: $admin }) {
       id
     }
   }
@@ -28,6 +28,8 @@ export const AddUserToOrganization = ({
   setInputValue,
   checkboxValueOwner,
   setCheckboxValueOwner,
+  checkboxValueAdmin,
+  setCheckboxValueAdmin,
   onAddUser,
   users,
 }) => {
@@ -70,6 +72,16 @@ export const AddUserToOrganization = ({
                 onChange={setCheckboxValueOwner}
               />
             </label>
+            <label>
+              Admin: <span style={{ color: '#E30000' }}>*</span>
+              <input
+                data-cy="manageAdmin"
+                className="inputCheckbox"
+                type="checkbox"
+                value={checkboxValueAdmin}
+                onChange={setCheckboxValueAdmin}
+              />
+            </label>
 
             <div>
               <Footer>
@@ -83,6 +95,7 @@ export const AddUserToOrganization = ({
                         email: inputValueEmail,
                         organization: organization.id,
                         owner: checkboxValueOwner,
+                        admin: checkboxValueAdmin,
                       },
                     });
                   }}

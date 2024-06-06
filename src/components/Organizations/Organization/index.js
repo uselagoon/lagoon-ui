@@ -277,9 +277,15 @@ const Organization = ({ organization, refetch }) => {
                         ORG OWNER
                       </Tag>
                     ) : (
-                      <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#47D3FF">
-                        ORG VIEWER
-                      </Tag>
+                      owner.admin ? (
+                        <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#E69138">
+                          ORG ADMIN
+                        </Tag>
+                      ) : (
+                        <Tag style={{ display: 'inline-block', marginLeft: '1.5rem' }} $background="#47D3FF">
+                          ORG VIEWER
+                        </Tag>
+                      )
                     )}
                   </div>
                 </div>
