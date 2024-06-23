@@ -12,7 +12,9 @@ x-environment: &default-environment
   LAGOON_ENVIRONMENT_TYPE: production
   GRAPHQL_API: "${GRAPHQL_API:-http://0.0.0.0:3000/graphql}"
   KEYCLOAK_API: "${KEYCLOAK_API:-http://0.0.0.0:8088/auth}"
-  LAGOON_UI_TOURS_ENABLED: enabled
+  LAGOON_UI_TOURS_ENABLED: ${LAGOON_UI_TOURS_ENABLED:-enabled}
+  NODE_ENV: "${NODE_ENV}"
+  NODE_PORT: "${NODE_PORT:-3003}"
 
 services:
   ui:
