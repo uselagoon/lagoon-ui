@@ -53,13 +53,13 @@ jobs:
 
     - name: Build and start Lagoon-minimal
       run: |
-        cd test
-        make up
+        make development-api
 
     - name: Start ui
       env:
-        GRAPHQL_API: http://0.0.0.0:33000/graphql
-        KEYCLOAK_API: http://0.0.0.0:38088/auth
+        GRAPHQL_API: http://localhost:3000/graphql
+        KEYCLOAK_API: http://localhost:8088/auth
+        NODE_PORT: 3003
       run: |
         yarn install
         yarn build
@@ -70,26 +70,37 @@ jobs:
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
-        wait-on: 'http://localhost:3000'
+        wait-on: 'http://localhost:3003'
         command: yarn cypress:runRbac
-
-    - name: Run General Cypress Tests
-      uses: cypress-io/github-action@v6
-      with:
-        config-file: ./cypress/cypress.config.ts
-        auto-cancel-after-failures: 1
-        wait-on: 'http://localhost:3000'
-        command: yarn cypress:runGeneral
+      env:
+        cypress_api: http://localhost:3000/graphql
+        cypress_keycloak: http://localhost:8088/auth
+        cypress_url: http://localhost:3003
 
     - name: Run Organization Cypress Tests
       uses: cypress-io/github-action@v6
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
-        wait-on: 'http://localhost:3000'
+        wait-on: 'http://localhost:3003'
         command: yarn cypress:runOrganizations
+      env:
+        cypress_api: http://localhost:3000/graphql
+        cypress_keycloak: http://localhost:8088/auth
+        cypress_url: http://localhost:3003
+
+    - name: Run General Cypress Tests
+      uses: cypress-io/github-action@v6
+      with:
+        config-file: ./cypress/cypress.config.ts
+        auto-cancel-after-failures: 1
+        wait-on: 'http://localhost:3003'
+        command: yarn cypress:runGeneral
+      env:
+        cypress_api: http://localhost:3000/graphql
+        cypress_keycloak: http://localhost:8088/auth
+        cypress_url: http://localhost:3003
 
     - name: Stop Docker containers
       run: |
-        cd test
-        make down
+        make development-api-down

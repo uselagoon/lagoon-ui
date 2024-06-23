@@ -15,6 +15,9 @@ build-storybook.log
 .env
 .python-version
 docker-compose.override.yml
+cypress_cache
+lagoon-core.*
+cypress/screenshots
 
 # ts linter
 *.tsbuildinfo
