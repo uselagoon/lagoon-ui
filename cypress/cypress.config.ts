@@ -6,7 +6,7 @@ export default defineConfig({
   e2e: {
     env: {
       api: 'http://0.0.0.0:33000/graphql',
-      keycloak: 'http://0.0.0.0:38088',
+      keycloak: 'http://0.0.0.0:38088/auth',
       url: 'http://0.0.0.0:3000',
       user_guest: 'guest@example.com',
       user_reporter: 'reporter@example.com',
