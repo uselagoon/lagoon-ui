@@ -40,7 +40,7 @@ jobs:
   cypress-tests:
     runs-on: ubuntu-latest
 
-    needs: [format-check, lint]
+    # needs: [format-check, lint]
 
     steps:
     - name: Checkout Repository

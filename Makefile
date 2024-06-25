@@ -54,9 +54,9 @@ run-cypress:
 
 .PHONY: development-api-down
 development-api-down:
-	docker-compose -p core-$(CI_BUILD_TAG) --compatibility down -v --remove-orphans
+	docker compose -p core-$(CI_BUILD_TAG) --compatibility down -v --remove-orphans
 
 .PHONY: down
 down:
 	$(MAKE) development-api-down
-	docker-compose -p $(CI_BUILD_TAG) --compatibility down -v --remove-orphans
+	docker compose -p $(CI_BUILD_TAG) --compatibility down -v --remove-orphans
