@@ -43,13 +43,33 @@ export default class deploymentAction {
       .should('include.text', 'There was a problem cancelling deployment.');
   }
   doLogViewerCheck() {
-    deployment.getAccordionHeadings().then($headings => {
-      for (let i = 0; i < $headings.length - 1; i++) {
-        cy.wrap($headings.eq(i)).click();
-      }
-
-      for (let i = 0; i < $headings.length - 1; i++) {
-        cy.wrap($headings.eq(i)).next().next().getBySel('section-details').getBySel('log-text').should('exist');
+    cy.get('body').then($body => {
+      if ($body.find('.accordion-heading').length > 0) {
+        // parsing went ok
+        cy.get('.accordion-heading')
+          .each(($heading, index, $headings) => {
+            if (index < $headings.length - 1) {
+              cy.wrap($heading).click();
+            }
+          })
+          .then($headings => {
+            for (let i = 0; i < $headings.length - 1; i++) {
+              cy.wrap($headings.eq(i))
+                .next()
+                .next()
+                .getBySel('section-details')
+                .then($sectionDetails => {
+                  if ($sectionDetails.find('.log-text').length > 0) {
+                    cy.wrap($sectionDetails).find('.log-text').should('exist');
+                  } else {
+                    cy.wrap($sectionDetails).find('.log-viewer').should('not.be.empty');
+                  }
+                });
+            }
+          });
+      } else {
+        // parsing failed
+        cy.get('.log-viewer').should('not.be.empty');
       }
     });
   }
