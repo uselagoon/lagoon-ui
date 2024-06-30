@@ -36,7 +36,7 @@ const Accordion: FC<AccordionProps> = ({
         {columns &&
           Object.keys(columns).map((item, i) => (
             <div key={i} className={item}>
-              {columns[item]}
+              {(columns as { [key: string]: string })[item]}
             </div>
           ))}
       </div>

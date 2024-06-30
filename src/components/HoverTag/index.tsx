@@ -15,7 +15,7 @@ interface Props {
 }
 
 // human friendly strings
-const textPairs = {
+const textPairs: Record<string, string> = {
   deployCompletedWithWarnings: 'Completed with warnings',
 };
 

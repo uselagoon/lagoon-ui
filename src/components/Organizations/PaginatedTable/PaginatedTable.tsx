@@ -207,6 +207,7 @@ const PaginatedTable: FC<Props> = ({
             if (list && listKey) {
               const roleToIdx = {};
               list.forEach((role, idx) => {
+                //@ts-ignore
                 roleToIdx[role] = idx;
               });
               //@ts-ignore
