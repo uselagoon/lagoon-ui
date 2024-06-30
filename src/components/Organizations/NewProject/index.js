@@ -72,6 +72,9 @@ const OrgNewProject = ({
   refresh,
 }) => {
   const [addUserToProject, setAddUserToProject] = React.useState(true);
+  const [pullRequests, setPullRequests] = React.useState(true);
+  const [branches, setBranches] = React.useState(true);
+
   return (
     <StyledNotificationWrapper>
       <div className="margins">
@@ -182,6 +185,25 @@ const OrgNewProject = ({
                       />
                       <span>Add my user to this project</span>
                     </Checkbox>
+
+                    <Checkbox>
+                      <input
+                        type="checkbox"
+                        checked={branches}
+                        onChange={({ target: { checked } }) => setBranches(checked)}
+                      />
+                      <span>Branches</span>
+                    </Checkbox>
+
+                    <Checkbox>
+                      <input
+                        type="checkbox"
+                        checked={pullRequests}
+                        onChange={({ target: { checked } }) => setPullRequests(checked)}
+                      />
+                      <span>Pull requests</span>
+                    </Checkbox>
+
                     <div className="docs-link">
                       <div className="info-icon">
                         <Image src={info} alt="" />
@@ -219,7 +241,7 @@ const OrgNewProject = ({
                             inputGitURL.indexOf(' ') > 0 ||
                             inputProdEnv === '' ||
                             inputProdEnv.indexOf(' ') > 0 ||
-                            selectedDeployTarget === undefined
+                            selectedDeployTarget == undefined
                           }
                           action={() => {
                             addGroupProject({
@@ -230,6 +252,8 @@ const OrgNewProject = ({
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
                                 addOrgOwner: addUserToProject,
+                                pullrequests: String(pullRequests),
+                                branches: String(branches),
                               },
                             });
                           }}
