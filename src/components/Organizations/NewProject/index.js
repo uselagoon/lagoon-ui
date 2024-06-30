@@ -72,8 +72,8 @@ const OrgNewProject = ({
   refresh,
 }) => {
   const [addUserToProject, setAddUserToProject] = React.useState(true);
-  const [pullRequests, setPullRequests] = React.useState(true);
-  const [branches, setBranches] = React.useState(true);
+  const [pullRequests, setPullRequests] = React.useState('');
+  const [branches, setBranches] = React.useState('');
 
   return (
     <StyledNotificationWrapper>
@@ -98,6 +98,8 @@ const OrgNewProject = ({
                   setProjectName({ target: { value: '' } });
                   setGitURL({ target: { value: '' } });
                   setProdEnv({ target: { value: '' } });
+                  setPullRequests('');
+                  setBranches('');
                   setSelectedDeployTarget({ target: { value: '' } });
                   closeModal();
                 });
@@ -177,6 +179,31 @@ const OrgNewProject = ({
                         />
                       </RoleSelect>
                     </label>
+
+                    <div className="form-box spacetop">
+                      <label>
+                        Branches
+                        <input
+                          type="text"
+                          placeholder="Branches"
+                          value={branches}
+                          onChange={({ target: { value } }) => setBranches(value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="form-box">
+                      <label>
+                        Pull requests
+                        <input
+                          placeholder="Pull requests"
+                          type="text"
+                          value={pullRequests}
+                          onChange={({ target: { value } }) => setPullRequests(value)}
+                        />
+                      </label>
+                    </div>
+
                     <Checkbox>
                       <input
                         type="checkbox"
@@ -184,24 +211,6 @@ const OrgNewProject = ({
                         onChange={({ target: { checked } }) => setAddUserToProject(checked)}
                       />
                       <span>Add my user to this project</span>
-                    </Checkbox>
-
-                    <Checkbox>
-                      <input
-                        type="checkbox"
-                        checked={branches}
-                        onChange={({ target: { checked } }) => setBranches(checked)}
-                      />
-                      <span>Branches</span>
-                    </Checkbox>
-
-                    <Checkbox>
-                      <input
-                        type="checkbox"
-                        checked={pullRequests}
-                        onChange={({ target: { checked } }) => setPullRequests(checked)}
-                      />
-                      <span>Pull requests</span>
                     </Checkbox>
 
                     <div className="docs-link">
@@ -252,8 +261,8 @@ const OrgNewProject = ({
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
                                 addOrgOwner: addUserToProject,
-                                pullrequests: String(pullRequests),
-                                branches: String(branches),
+                                ...(pullRequests ? { pullRequests } : {}),
+                                ...(branches ? { branches } : {}),
                               },
                             });
                           }}
