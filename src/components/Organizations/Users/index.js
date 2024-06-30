@@ -144,8 +144,8 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                 <Modal isOpen={deleteUserModalOpen && selectedUser === user?.id} onRequestClose={closeUserModal}>
                   <RemoveModalHeader>Remove user?</RemoveModalHeader>
                   <RemoveModalParagraph>
-                    This action will remove user <span className="highlight">{user.email}</span> from all groups, you
-                    might not be able to reverse this.
+                    This action will remove user <span className="highlight">{user.email}</span> from all groups in this
+                    organization, you might not be able to reverse this.
                   </RemoveModalParagraph>
 
                   <Footer>
