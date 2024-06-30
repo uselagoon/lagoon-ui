@@ -1,5 +1,5 @@
 # Node builder image
-FROM uselagoon/node-20-builder:latest as builder
+FROM uselagoon/node-20-builder:latest AS builder
 
 COPY . /app/
 
