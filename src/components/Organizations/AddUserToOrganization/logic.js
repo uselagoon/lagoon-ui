@@ -10,8 +10,8 @@ const withInputHandlers = withHandlers({
       setInputValue(event.target.value),
 });
 
-const withCheckboxValue = withState('checkboxValueOwner', 'setCheckboxValueOwner', false);
-const withCheckboxhandler = withHandlers({
+const withCheckboxValueOwner = withState('checkboxValueOwner', 'setCheckboxValueOwner', false);
+const withCheckboxhandlerOwner = withHandlers({
   setCheckboxValueOwner:
     ({ setCheckboxValueOwner }) =>
     event => {
@@ -19,6 +19,24 @@ const withCheckboxhandler = withHandlers({
     },
 });
 
+const withCheckboxValueAdmin = withState('checkboxValueAdmin', 'setCheckboxValueAdmin', false);
+
+const withCheckboxHandlerAdmin = withHandlers({
+  setCheckboxValueAdmin:
+    ({ setCheckboxValueAdmin }) =>
+    event => {
+      setCheckboxValueAdmin(event.target.checked);
+    },
+});
+
 const withSelectedRole = withState('selectedRole', 'setSelectedRole', null);
 
-export default compose(withInputValue, withInputHandlers, withCheckboxValue, withCheckboxhandler, withSelectedRole);
+export default compose(
+  withInputValue,
+  withInputHandlers,
+  withCheckboxValueOwner,
+  withCheckboxhandlerOwner,
+  withCheckboxValueAdmin,
+  withCheckboxHandlerAdmin,
+  withSelectedRole
+);

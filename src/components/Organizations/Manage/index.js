@@ -35,6 +35,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
   const [dynamicUsers, setDynamicUsers] = useState(users);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUserOwner, setSelectedUserOwner] = useState(false);
+  const [selectedUserAdmin, setSelectedUserAdmin] = useState(false);
 
   const closeUserModal = () => {
     setSelectedUser('');
@@ -101,16 +102,14 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
               <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#FF4747">
                 ORG OWNER
               </Tag>
+            ) : admin ? (
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#E69138">
+                ORG ADMIN
+              </Tag>
             ) : (
-              admin ? (
-                <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#E69138">
-                  ORG ADMIN
-                </Tag>
-              ) : (
-                <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
-                  ORG VIEWER
-                </Tag>
-              )
+              <Tag style={{ display: 'inline-block', marginLeft: '2.5rem' }} $background="#47D3FF">
+                ORG VIEWER
+              </Tag>
             )}
           </>
         );
@@ -129,6 +128,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                   setSelectedUser(user?.id);
                   setEditModalOpen(true);
                   setSelectedUserOwner(user.owner);
+                  setSelectedUserAdmin(user.admin);
                 }}
               >
                 <EditOutlined className="edit" />
@@ -167,6 +167,16 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                           onChange={() => setSelectedUserOwner(!selectedUserOwner)}
                         />
                       </label>
+                      <label>
+                        Admin: <span style={{ color: '#E30000' }}>*</span>
+                        <input
+                          className="inputCheckbox"
+                          data-cy="userIsAdmin"
+                          type="checkbox"
+                          checked={selectedUserAdmin}
+                          onChange={() => setSelectedUserAdmin(!selectedUserAdmin)}
+                        />
+                      </label>
 
                       <div>
                         <Footer>
@@ -180,6 +190,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                                   email: user.email,
                                   organization: organization.id,
                                   owner: selectedUserOwner,
+                                  admin: selectedUserAdmin,
                                 },
                               });
                             }}
