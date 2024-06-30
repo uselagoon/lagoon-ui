@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
+import ReactSelect from 'react-select';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
@@ -14,6 +15,11 @@ import { NewUser } from '../AddUserToOrganization/Styles';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
+
+export const userTypes = ['viewer', 'owner', 'admin'];
+export const userTypeOptions = userTypes.map(u => {
+  return { label: u.toUpperCase(), value: u };
+});
 
 const DELETE_USER = gql`
   mutation removeUserFromOrganization($organization: Int!, $email: String!) {
@@ -34,8 +40,8 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
 
   const [dynamicUsers, setDynamicUsers] = useState(users);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedUserOwner, setSelectedUserOwner] = useState(false);
-  const [selectedUserAdmin, setSelectedUserAdmin] = useState(false);
+
+  const [selectedUserType, setSelectedUserType] = useState('');
 
   const closeUserModal = () => {
     setSelectedUser('');
@@ -127,8 +133,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                 onClick={() => {
                   setSelectedUser(user?.id);
                   setEditModalOpen(true);
-                  setSelectedUserOwner(user.owner);
-                  setSelectedUserAdmin(user.admin);
+                  setSelectedUserType(user.owner ? 'owner' : user.admin ? 'admin' : 'viewer');
                 }}
               >
                 <EditOutlined className="edit" />
@@ -157,31 +162,30 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                           <input className="inputEmail" type="text" value={user.email} disabled />
                         </label>
                       </div>
+
+                      <br />
                       <label>
-                        Owner: <span style={{ color: '#E30000' }}>*</span>
-                        <input
-                          className="inputCheckbox"
-                          data-cy="userIsOwner"
-                          type="checkbox"
-                          checked={selectedUserOwner}
-                          onChange={() => {
-                            setSelectedUserOwner(!selectedUserOwner);
-                            setSelectedUserAdmin(false);
+                        User Type: <span style={{ color: '#E30000' }}>*</span>
+                        <ReactSelect
+                          classNamePrefix="react-select"
+                          className="select"
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                            placeholder: base => ({ ...base, fontSize: '16px' }),
+                            menu: base => ({ ...base, fontSize: '16px' }),
+                            option: base => ({ ...base, fontSize: '16px' }),
+                            singleValue: base => ({ ...base, fontSize: '16px' }),
                           }}
-                        />
-                      </label>
-                      <span> </span>
-                      <label>
-                        Admin: <span style={{ color: '#E30000' }}>*</span>
-                        <input
-                          className="inputCheckbox"
-                          data-cy="userIsAdmin"
-                          type="checkbox"
-                          checked={selectedUserAdmin}
-                          onChange={() => {
-                            setSelectedUserAdmin(!selectedUserAdmin);
-                            setSelectedUserOwner(false);
+                          aria-label="Role"
+                          placeholder="Select role"
+                          name="role"
+                          value={userTypeOptions.find(o => o.value === selectedUserType)}
+                          onChange={selectedOption => {
+                            setSelectedUserType(selectedOption.value);
                           }}
+                          options={userTypeOptions}
+                          required
                         />
                       </label>
 
@@ -196,8 +200,8 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                                 variables: {
                                   email: user.email,
                                   organization: organization.id,
-                                  owner: selectedUserOwner,
-                                  admin: selectedUserAdmin,
+                                  ...(selectedUserType === 'admin' && { admin: true }),
+                                  ...(selectedUserType === 'owner' && { owner: true }),
                                 },
                               });
                             }}

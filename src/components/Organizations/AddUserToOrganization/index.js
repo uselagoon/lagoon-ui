@@ -7,6 +7,7 @@ import Button from 'components/Button';
 import withLogic from 'components/Organizations/AddUserToOrganization/logic';
 import gql from 'graphql-tag';
 
+import { userTypeOptions } from '../Manage';
 import { Footer } from '../SharedStyles';
 import { NewUser } from './Styles';
 
@@ -26,21 +27,7 @@ export const ADD_USER_MUTATION = gql`
 export const AddUserToOrganization = ({ organization, close, inputValueEmail, setInputValue, onAddUser, users }) => {
   const userAlreadyExists = users.find(u => u.email === inputValueEmail);
 
-  const [checkboxValueOwner, setCheckboxValueOwner] = useState(false);
-  const [checkboxValueAdmin, setCheckboxValueAdmin] = useState(false);
-
-  const handleChange = type => {
-    if (type === 'owner') {
-      console.log('ran owner');
-      setCheckboxValueAdmin(false);
-      setCheckboxValueOwner(!checkboxValueOwner);
-    }
-    if (type === 'admin') {
-      console.log('ran admin');
-      setCheckboxValueOwner(false);
-      setCheckboxValueAdmin(!checkboxValueAdmin);
-    }
-  };
+  const [newUserType, setNewUserType] = useState('viewer');
 
   return (
     <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
@@ -70,30 +57,31 @@ export const AddUserToOrganization = ({ organization, close, inputValueEmail, se
                 />
               </label>
             </div>
+            <br />
             <label>
-              Owner: <span style={{ color: '#E30000' }}>*</span>
-              <input
-                data-cy="manageOwner"
-                className="inputCheckbox"
-                type="checkbox"
-                checked={checkboxValueOwner}
-                value={checkboxValueOwner}
-                onChange={() => handleChange('owner')}
+              User Type: <span style={{ color: '#E30000' }}>*</span>
+              <ReactSelect
+                classNamePrefix="react-select"
+                className="select"
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                  placeholder: base => ({ ...base, fontSize: '16px' }),
+                  menu: base => ({ ...base, fontSize: '16px' }),
+                  option: base => ({ ...base, fontSize: '16px' }),
+                  singleValue: base => ({ ...base, fontSize: '16px' }),
+                }}
+                aria-label="Role"
+                placeholder="Select role"
+                name="role"
+                value={userTypeOptions.find(o => o.value === newUserType)}
+                onChange={selectedOption => {
+                  setNewUserType(selectedOption.value);
+                }}
+                options={userTypeOptions}
+                required
               />
             </label>
-            <span> </span>
-            <label>
-              Admin: <span style={{ color: '#E30000' }}>*</span>
-              <input
-                data-cy="manageAdmin"
-                className="inputCheckbox"
-                type="checkbox"
-                checked={checkboxValueAdmin}
-                value={checkboxValueAdmin}
-                onChange={() => handleChange('admin')}
-              />
-            </label>
-
             <div>
               <Footer>
                 <Button
@@ -105,8 +93,8 @@ export const AddUserToOrganization = ({ organization, close, inputValueEmail, se
                       variables: {
                         email: inputValueEmail,
                         organization: organization.id,
-                        owner: checkboxValueOwner,
-                        admin: checkboxValueAdmin,
+                        ...(newUserType === 'admin' && { admin: true }),
+                        ...(newUserType === 'owner' && { owner: true }),
                       },
                     });
                   }}
