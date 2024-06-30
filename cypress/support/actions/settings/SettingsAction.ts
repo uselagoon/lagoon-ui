@@ -17,7 +17,7 @@ export default class SettingAction {
   }
 
   deleteSshKey(name: string) {
-    settings.getDeleteBtn().click();
+    settings.getDeleteBtn().click({ multiple: true });
 
     cy.contains(name).should('not.exist');
   }
