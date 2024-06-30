@@ -531,7 +531,7 @@ export const organizationNotifications = () => {
   };
 
   Object.keys(notifications).forEach((key, idx) => {
-    notifications[key] = generateNotifications(key, idx - 1);
+    notifications[key as keyof Notifications] = generateNotifications(key, idx - 1) as any;
   });
 
   return notifications;
