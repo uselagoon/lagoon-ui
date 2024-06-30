@@ -164,9 +164,13 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                           data-cy="userIsOwner"
                           type="checkbox"
                           checked={selectedUserOwner}
-                          onChange={() => setSelectedUserOwner(!selectedUserOwner)}
+                          onChange={() => {
+                            setSelectedUserOwner(!selectedUserOwner);
+                            setSelectedUserAdmin(false);
+                          }}
                         />
                       </label>
+                      <span> </span>
                       <label>
                         Admin: <span style={{ color: '#E30000' }}>*</span>
                         <input
@@ -174,7 +178,10 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                           data-cy="userIsAdmin"
                           type="checkbox"
                           checked={selectedUserAdmin}
-                          onChange={() => setSelectedUserAdmin(!selectedUserAdmin)}
+                          onChange={() => {
+                            setSelectedUserAdmin(!selectedUserAdmin);
+                            setSelectedUserOwner(false);
+                          }}
                         />
                       </label>
 

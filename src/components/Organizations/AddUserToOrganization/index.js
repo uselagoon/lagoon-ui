@@ -23,19 +23,25 @@ export const ADD_USER_MUTATION = gql`
 /**
  *  Adds/edits user to an organization
  */
-export const AddUserToOrganization = ({
-  organization,
-  close,
-  inputValueEmail,
-  setInputValue,
-  checkboxValueOwner,
-  setCheckboxValueOwner,
-  checkboxValueAdmin,
-  setCheckboxValueAdmin,
-  onAddUser,
-  users,
-}) => {
+export const AddUserToOrganization = ({ organization, close, inputValueEmail, setInputValue, onAddUser, users }) => {
   const userAlreadyExists = users.find(u => u.email === inputValueEmail);
+
+  const [checkboxValueOwner, setCheckboxValueOwner] = useState(false);
+  const [checkboxValueAdmin, setCheckboxValueAdmin] = useState(false);
+
+  const handleChange = type => {
+    if (type === 'owner') {
+      console.log('ran owner');
+      setCheckboxValueAdmin(false);
+      setCheckboxValueOwner(!checkboxValueOwner);
+    }
+    if (type === 'admin') {
+      console.log('ran admin');
+      setCheckboxValueOwner(false);
+      setCheckboxValueAdmin(!checkboxValueAdmin);
+    }
+  };
+
   return (
     <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
       {(addUser, { called, error, data }) => {
@@ -70,18 +76,21 @@ export const AddUserToOrganization = ({
                 data-cy="manageOwner"
                 className="inputCheckbox"
                 type="checkbox"
+                checked={checkboxValueOwner}
                 value={checkboxValueOwner}
-                onChange={setCheckboxValueOwner}
+                onChange={() => handleChange('owner')}
               />
             </label>
+            <span> </span>
             <label>
               Admin: <span style={{ color: '#E30000' }}>*</span>
               <input
                 data-cy="manageAdmin"
                 className="inputCheckbox"
                 type="checkbox"
+                checked={checkboxValueAdmin}
                 value={checkboxValueAdmin}
-                onChange={setCheckboxValueAdmin}
+                onChange={() => handleChange('admin')}
               />
             </label>
 
