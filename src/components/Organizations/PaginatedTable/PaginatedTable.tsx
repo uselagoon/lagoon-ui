@@ -193,8 +193,8 @@ const PaginatedTable: FC<Props> = ({
           const key = numericSortOptions.key;
           if (key) {
             if (Array.isArray(a[key])) {
-              first = a[key].length as number;
-              second = b[key].length as number;
+              first = a[key].length as unknown as number;
+              second = b[key].length as unknown as number;
             } else {
               first = a[key] as unknown as number;
               second = b[key] as unknown as number;
