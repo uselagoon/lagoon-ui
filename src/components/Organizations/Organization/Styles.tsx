@@ -18,6 +18,14 @@ export const StyledOrganization = styled.div`
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
+  .admin-label {
+    color: ${color.black};
+    background-color: ${color.lightBlue};
+    margin-left: 10px;
+    padding: 0px 5px 0px 5px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+  }
   .viewer-label {
     color: ${color.black};
     background-color: ${color.lightestBlue};

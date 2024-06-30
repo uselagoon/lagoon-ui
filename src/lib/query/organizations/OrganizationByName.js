@@ -29,6 +29,7 @@ export default gql`
         lastName
         email
         owner
+        admin
       }
       projects {
         id

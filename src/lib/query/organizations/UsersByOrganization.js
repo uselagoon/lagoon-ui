@@ -31,6 +31,7 @@ export const getOrganization = gql`
         lastName
         email
         owner
+        admin
       }
     }
   }
@@ -52,6 +53,7 @@ export const getOrganizationByName = gql`
         lastName
         email
         owner
+        admin
       }
     }
   }

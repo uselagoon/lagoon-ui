@@ -15,6 +15,7 @@ export default defineConfig({
       // orgs
       user_orguser: 'orguser@example.com',
       user_orgviewer: 'orgviewer@example.com',
+      user_orgadmin: 'orgadmin@example.com',
       user_orgowner: 'orgowner@example.com',
       // top level user for all default tests
       user_platformowner: 'platformowner@example.com',
