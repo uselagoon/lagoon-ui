@@ -28,6 +28,7 @@ const task = new TaskAction();
 describe('MAINTAINER permission test suites', () => {
   beforeEach(() => {
     cy.login(Cypress.env('user_maintainer'), Cypress.env('user_maintainer'));
+    registerIdleHandler('idle');
   });
 
   context('Settings', () => {
@@ -39,6 +40,7 @@ describe('MAINTAINER permission test suites', () => {
 
     it('Deletes SSH key', () => {
       cy.visit(`${Cypress.env('url')}/settings`);
+      cy.waitForNetworkIdle('@idle', 500);
 
       settings.deleteSshKey(testData.ssh.name);
     });
