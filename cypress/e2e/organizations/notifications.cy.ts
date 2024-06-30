@@ -57,10 +57,15 @@ describe('Org Notifications page', () => {
       slack: { name: slackName },
     } = testData.organizations.notifications;
 
+    cy.waitForNetworkIdle('@idle', 500);
     notifications.doDeleteNotification(webhooknName);
+    cy.waitForNetworkIdle('@idle', 500);
     notifications.doDeleteNotification(emailName);
+    cy.waitForNetworkIdle('@idle', 500);
     notifications.doDeleteNotification(teamsName);
+    cy.waitForNetworkIdle('@idle', 500);
     notifications.doDeleteNotification(rocketChatName);
+    cy.waitForNetworkIdle('@idle', 500);
     notifications.doDeleteNotification(slackName);
   });
 });
