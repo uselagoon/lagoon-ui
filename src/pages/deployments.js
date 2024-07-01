@@ -28,6 +28,8 @@ const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT, 10);
 const customMessage = publicRuntimeConfig.LAGOON_UI_DEPLOYMENTS_LIMIT_MESSAGE;
 
+const disableSubscriptions = publicRuntimeConfig.DISABLE_SUBSCRIPTIONS?.toLowerCase() === 'true';
+
 /**
  * Displays the deployments page, given the openshift project name.
  */
@@ -44,7 +46,10 @@ export const PageDeployments = ({ router }) => {
   });
 
   const handleRefetch = async () =>
-    await refetch({ openshiftProjectName: router.query.openshiftProjectName, limit: resultLimit });
+    await refetch({
+      openshiftProjectName: router.query.openshiftProjectName,
+      limit: resultLimit,
+    });
 
   useEffect(() => {
     let urlResultLimit = envLimit;
@@ -118,39 +123,40 @@ export const PageDeployments = ({ router }) => {
       />
     );
   }
+  if (!disableSubscriptions) {
+    subscribeToMore({
+      document: DeploymentsSubscription,
+      variables: { environment: environment.id },
+      updateQuery: (prevStore, { subscriptionData }) => {
+        if (!subscriptionData.data) return prevStore;
+        const prevDeployments = prevStore.environment.deployments;
+        const incomingDeployment = subscriptionData.data.deploymentChanged;
+        const existingIndex = prevDeployments.findIndex(prevDeployment => prevDeployment.id === incomingDeployment.id);
+        let newDeployments;
 
-  subscribeToMore({
-    document: DeploymentsSubscription,
-    variables: { environment: environment.id },
-    updateQuery: (prevStore, { subscriptionData }) => {
-      if (!subscriptionData.data) return prevStore;
-      const prevDeployments = prevStore.environment.deployments;
-      const incomingDeployment = subscriptionData.data.deploymentChanged;
-      const existingIndex = prevDeployments.findIndex(prevDeployment => prevDeployment.id === incomingDeployment.id);
-      let newDeployments;
+        // New deployment.
+        if (existingIndex === -1) {
+          newDeployments = [incomingDeployment, ...prevDeployments];
+        }
+        // Updated deployment
+        else {
+          newDeployments = Object.assign([...prevDeployments], {
+            [existingIndex]: incomingDeployment,
+          });
+        }
 
-      // New deployment.
-      if (existingIndex === -1) {
-        newDeployments = [incomingDeployment, ...prevDeployments];
-      }
-      // Updated deployment
-      else {
-        newDeployments = Object.assign([...prevDeployments], {
-          [existingIndex]: incomingDeployment,
-        });
-      }
+        const newStore = {
+          ...prevStore,
+          environment: {
+            ...prevStore.environment,
+            deployments: newDeployments,
+          },
+        };
 
-      const newStore = {
-        ...prevStore,
-        environment: {
-          ...prevStore.environment,
-          deployments: newDeployments,
-        },
-      };
-
-      return newStore;
-    },
-  });
+        return newStore;
+      },
+    });
+  }
 
   return (
     <>
