@@ -100,6 +100,7 @@ const OrgNotifications = ({
     open: false,
     type: '',
     current: {},
+    updated: {},
   };
 
   const [editState, setEditState] = useState(initialEditState);
@@ -130,8 +131,8 @@ const OrgNotifications = ({
     const newValue = e.target.value;
     setEditState(prevState => ({
       ...prevState,
-      current: {
-        ...prevState.current,
+      updated: {
+        ...prevState.updated,
         [property]: newValue,
       },
     }));
@@ -185,94 +186,95 @@ const OrgNotifications = ({
               </span>
             </Tooltip>
 
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open && editState.type === 'slack'}
-              onRequestClose={closeEditModal}
-            >
-              <ModalChildren>
-                <div className="form-box">
-                  <label>
-                    Name: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputName"
-                      data-cy="notification-name"
-                      type="text"
-                      placeholder="Enter name"
-                      value={editState.current.name}
-                      onChange={e => handleInputChange(e, 'name')}
-                    />
-                  </label>
-                </div>
+            {editState.current && editState.current.name === notification.name && (
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'slack'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        data-cy="notification-name"
+                        type="text"
+                        placeholder="Enter name"
+                        value={editState.updated?.name || editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
+                      />
+                    </label>
+                  </div>
 
-                <div className="form-box">
-                  <label>
-                    Webhook: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputWebhook"
-                      data-cy="input-webhook"
-                      type="text"
-                      placeholder="Enter Webhook"
-                      value={editState.current.webhook}
-                      onChange={e => handleInputChange(e, 'webhook')}
-                    />
-                  </label>
-                </div>
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        data-cy="input-webhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={editState.updated?.webhook || editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
+                      />
+                    </label>
+                  </div>
 
-                <div className="form-box">
-                  <label>
-                    Channel: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputChannel"
-                      type="text"
-                      placeholder="Enter channel"
-                      value={editState.current.channel}
-                      onChange={e => handleInputChange(e, 'channel')}
-                    />
-                  </label>
-                </div>
-              </ModalChildren>
-              <Footer>
-                <Mutation mutation={UPDATE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
-                  {(updateSlack, { called, error, data }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refresh().then(() => {
-                        closeEditModal();
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="continueEdit"
-                        variant="primary"
-                        loading={called}
-                        disabled={called}
-                        action={() => {
-                          updateSlack({
-                            variables: {
-                              name: notification.name,
-                              patch: {
-                                ...(editState.current.name ? { name: editState.current.name } : {}),
-                                ...(editState.current.channel ? { channel: editState.current.channel } : {}),
-                                ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
+                  <div className="form-box">
+                    <label>
+                      Channel: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputChannel"
+                        type="text"
+                        placeholder="Enter channel"
+                        value={editState.updated?.channel || editState.current.channel}
+                        onChange={e => handleInputChange(e, 'channel')}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
+                    {(updateSlack, { called, error, data }) => {
+                      if (error) {
+                        return <div className="error">{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          testId="continueEdit"
+                          variant="primary"
+                          loading={called}
+                          disabled={called}
+                          action={() => {
+                            updateSlack({
+                              variables: {
+                                name: notification.name,
+                                patch: {
+                                  ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                                  ...(editState.updated.channel ? { channel: editState.updated.channel } : {}),
+                                  ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                                },
                               },
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeEditModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
-
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+            )}
             <Mutation mutation={REMOVE_NOTIFICATION_SLACK} onError={e => console.error(e)}>
               {(removeNotification, { called, error, data }) => {
                 if (data) {
@@ -316,93 +318,95 @@ const OrgNotifications = ({
               </span>
             </Tooltip>
 
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open && editState.type === 'rocketchat'}
-              onRequestClose={closeEditModal}
-            >
-              <ModalChildren>
-                <div className="form-box">
-                  <label>
-                    Name: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputName"
-                      data-cy="notification-name"
-                      type="text"
-                      placeholder="Enter name"
-                      value={editState.current.name}
-                      onChange={e => handleInputChange(e, 'name')}
-                    />
-                  </label>
-                </div>
+            {editState.current && editState.current.name === notification.name && (
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'rocketchat'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        data-cy="notification-name"
+                        type="text"
+                        placeholder="Enter name"
+                        value={editState.updated?.name || editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
+                      />
+                    </label>
+                  </div>
 
-                <div className="form-box">
-                  <label>
-                    Webhook: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputWebhook"
-                      data-cy="input-webhook"
-                      type="text"
-                      placeholder="Enter Webhook"
-                      value={editState.current.webhook}
-                      onChange={e => handleInputChange(e, 'webhook')}
-                    />
-                  </label>
-                </div>
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        data-cy="input-webhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={editState.updated?.webhook || editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
+                      />
+                    </label>
+                  </div>
 
-                <div className="form-box">
-                  <label>
-                    Channel: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputChannel"
-                      type="text"
-                      placeholder="Enter channel"
-                      value={editState.current.channel}
-                      onChange={e => handleInputChange(e, 'channel')}
-                    />
-                  </label>
-                </div>
-              </ModalChildren>
-              <Footer>
-                <Mutation mutation={UPDATE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
-                  {(updateRocketChat, { called, error, data }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refresh().then(() => {
-                        closeEditModal();
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="continueEdit"
-                        variant="primary"
-                        loading={called}
-                        disabled={called}
-                        action={() => {
-                          updateRocketChat({
-                            variables: {
-                              name: notification.name,
-                              patch: {
-                                ...(editState.current.name ? { name: editState.current.name } : {}),
-                                ...(editState.current.channel ? { channel: editState.current.channel } : {}),
-                                ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
+                  <div className="form-box">
+                    <label>
+                      Channel: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputChannel"
+                        type="text"
+                        placeholder="Enter channel"
+                        value={editState.updated?.channel || editState.current.channel}
+                        onChange={e => handleInputChange(e, 'channel')}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
+                    {(updateRocketChat, { called, error, data }) => {
+                      if (error) {
+                        return <div className="error">{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          testId="continueEdit"
+                          variant="primary"
+                          loading={called}
+                          disabled={called}
+                          action={() => {
+                            updateRocketChat({
+                              variables: {
+                                name: notification.name,
+                                patch: {
+                                  ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                                  ...(editState.updated.channel ? { channel: editState.updated.channel } : {}),
+                                  ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                                },
                               },
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeEditModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+            )}
             <Mutation mutation={REMOVE_NOTIFICATION_ROCKETCHAT} onError={e => console.error(e)}>
               {(removeNotification, { called, error, data }) => {
                 if (error) {
@@ -449,82 +453,84 @@ const OrgNotifications = ({
                 <EditOutlined className="edit" />
               </span>
             </Tooltip>
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open && editState.type === 'email'}
-              onRequestClose={closeEditModal}
-            >
-              <ModalChildren>
-                <div className="form-box">
-                  <label>
-                    Name: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputName"
-                      data-cy="notification-name"
-                      type="text"
-                      placeholder="Enter name"
-                      value={editState.current.name}
-                      onChange={e => handleInputChange(e, 'name')}
-                    />
-                  </label>
-                </div>
 
-                <div className="form-box">
-                  <label>
-                    Email Address: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputEmail"
-                      type="text"
-                      placeholder="Enter Email"
-                      value={editState.current.emailAddress}
-                      onChange={e => handleInputChange(e, 'emailAddress')}
-                    />
-                  </label>
-                  {!isValidEmail && <p style={{ color: '#E30000' }}>Invalid email address</p>}
-                </div>
-              </ModalChildren>
-              <Footer>
-                <Mutation mutation={UPDATE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
-                  {(updateEmail, { called, error, data }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refresh().then(() => {
-                        closeEditModal();
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="continueEdit"
-                        loading={called}
-                        disabled={called || !isValidEmail}
-                        variant="primary"
-                        action={() => {
-                          updateEmail({
-                            variables: {
-                              name: notification.name,
-                              patch: {
-                                ...(editState.current.name ? { name: editState.current.name } : {}),
-                                ...(editState.current.emailAddress
-                                  ? { emailAddress: editState.current.emailAddress }
-                                  : {}),
+            {editState.current && editState.current.name === notification.name && (
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'email'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        data-cy="notification-name"
+                        type="text"
+                        placeholder="Enter name"
+                        value={editState.updated?.name || editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Email Address: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputEmail"
+                        type="text"
+                        placeholder="Enter Email"
+                        value={editState.updated?.emailAddress || editState.current.emailAddress}
+                        onChange={e => handleInputChange(e, 'emailAddress')}
+                      />
+                    </label>
+                    {!isValidEmail && <p style={{ color: '#E30000' }}>Invalid email address</p>}
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
+                    {(updateEmail, { called, error, data }) => {
+                      if (error) {
+                        return <div className="error">{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          testId="continueEdit"
+                          loading={called}
+                          disabled={called || !isValidEmail}
+                          variant="primary"
+                          action={() => {
+                            updateEmail({
+                              variables: {
+                                name: notification.name,
+                                patch: {
+                                  ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                                  ...(editState.updated.emailAddress
+                                    ? { emailAddress: editState.updated.emailAddress }
+                                    : {}),
+                                },
                               },
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeEditModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
-
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+            )}
             <Mutation mutation={REMOVE_NOTIFICATION_EMAIL} onError={e => console.error(e)}>
               {(removeNotification, { called, error, data }) => {
                 if (data) {
@@ -574,80 +580,81 @@ const OrgNotifications = ({
                 <EditOutlined className="edit" />
               </span>
             </Tooltip>
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open && editState.type === 'webhook'}
-              onRequestClose={closeEditModal}
-            >
-              <ModalChildren>
-                <div className="form-box">
-                  <label>
-                    Name: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputName"
-                      data-cy="notification-name"
-                      type="text"
-                      placeholder="Enter name"
-                      value={editState.current.name}
-                      onChange={e => handleInputChange(e, 'name')}
-                    />
-                  </label>
-                </div>
+            {editState.current && editState.current.name === notification.name && (
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'webhook'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        data-cy="notification-name"
+                        type="text"
+                        placeholder="Enter name"
+                        value={editState.updated?.name || editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
+                      />
+                    </label>
+                  </div>
 
-                <div className="form-box">
-                  <label>
-                    Webhook: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputWebhook"
-                      data-cy="input-webhook"
-                      type="text"
-                      placeholder="Enter Webhook"
-                      value={editState.current.webhook}
-                      onChange={e => handleInputChange(e, 'webhook')}
-                    />
-                  </label>
-                </div>
-              </ModalChildren>
-              <Footer>
-                <Mutation mutation={UPDATE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
-                  {(updateWebhook, { called, error, data }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refresh().then(() => {
-                        closeEditModal();
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="continueEdit"
-                        loading={called}
-                        disabled={called}
-                        variant="primary"
-                        action={() => {
-                          updateWebhook({
-                            variables: {
-                              name: notification.name,
-                              patch: {
-                                ...(editState.current.name ? { name: editState.current.name } : {}),
-                                ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        data-cy="input-webhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={editState.updated?.webhook || editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
+                    {(updateWebhook, { called, error, data }) => {
+                      if (error) {
+                        return <div className="error">{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          testId="continueEdit"
+                          loading={called}
+                          disabled={called}
+                          variant="primary"
+                          action={() => {
+                            updateWebhook({
+                              variables: {
+                                name: notification.name,
+                                patch: {
+                                  ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                                  ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                                },
                               },
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeEditModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
-
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+            )}
             <Mutation mutation={REMOVE_NOTIFICATION_WEBHOOK} onError={e => console.error(e)}>
               {(removeNotification, { called, error, data }) => {
                 if (data) {
@@ -693,79 +700,82 @@ const OrgNotifications = ({
                 <EditOutlined className="edit" />
               </span>
             </Tooltip>
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open && editState.type === 'teams'}
-              onRequestClose={closeEditModal}
-            >
-              <ModalChildren>
-                <div className="form-box">
-                  <label>
-                    Name: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputName"
-                      data-cy="notification-name"
-                      type="text"
-                      placeholder="Enter name"
-                      value={editState.current.name}
-                      onChange={e => handleInputChange(e, 'name')}
-                    />
-                  </label>
-                </div>
 
-                <div className="form-box">
-                  <label>
-                    Webhook: <span style={{ color: '#E30000' }}>*</span>
-                    <input
-                      className="inputWebhook"
-                      data-cy="input-webhook"
-                      type="text"
-                      placeholder="Enter Webhook"
-                      value={editState.current.webhook}
-                      onChange={e => handleInputChange(e, 'webhook')}
-                    />
-                  </label>
-                </div>
-              </ModalChildren>
-              <Footer>
-                <Mutation mutation={UPDATE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
-                  {(updateTeams, { called, error, data }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refresh().then(() => {
-                        closeEditModal();
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="continueEdit"
-                        loading={called}
-                        disabled={called}
-                        variant="primary"
-                        action={() => {
-                          updateTeams({
-                            variables: {
-                              name: notification.name,
-                              patch: {
-                                ...(editState.current.name ? { name: editState.current.name } : {}),
-                                ...(editState.current.webhook ? { webhook: editState.current.webhook } : {}),
+            {editState.current && editState.current.name === notification.name && (
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'teams'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        data-cy="notification-name"
+                        type="text"
+                        placeholder="Enter name"
+                        value={editState.updated?.name || editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        data-cy="input-webhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={editState.updated?.webhook || editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
+                    {(updateTeams, { called, error, data }) => {
+                      if (error) {
+                        return <div className="error">{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          testId="continueEdit"
+                          loading={called}
+                          disabled={called}
+                          variant="primary"
+                          action={() => {
+                            updateTeams({
+                              variables: {
+                                name: notification.name,
+                                patch: {
+                                  ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                                  ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                                },
                               },
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeEditModal}>
-                  Cancel
-                </Button>
-              </Footer>
-            </Modal>
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+            )}
             <Mutation mutation={REMOVE_NOTIFICATION_TEAMS} onError={e => console.error(e)}>
               {(removeNotification, { called, error, data }) => {
                 if (data) {
