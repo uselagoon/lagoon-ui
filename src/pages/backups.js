@@ -15,9 +15,7 @@ import NavTabsSkeleton from 'components/NavTabs/NavTabsSkeleton';
 import ResultsLimited from 'components/ResultsLimited';
 import MainLayout from 'layouts/MainLayout';
 import EnvironmentWithBackupsQuery from 'lib/query/EnvironmentWithBackups';
-import BackupsSubscription from 'lib/subscription/Backups';
 import * as R from 'ramda';
-
 import EnvironmentNotFound from '../components/errors/EnvironmentNotFound';
 import QueryError from '../components/errors/QueryError';
 import { CommonWrapperWNotification } from '../styles/commonPageStyles';
@@ -34,7 +32,7 @@ export const PageBackups = ({ router }) => {
   const [resultLimit, setResultLimit] = useState(null);
 
   const { continueTour } = useTourContext();
-  const { data, error, loading, subscribeToMore } = useQuery(EnvironmentWithBackupsQuery, {
+  const { data, error, loading } = useQuery(EnvironmentWithBackupsQuery, {
     variables: {
       openshiftProjectName: router.query.openshiftProjectName,
       limit: resultLimit,
@@ -116,51 +114,6 @@ export const PageBackups = ({ router }) => {
       />
     );
   }
-
-  subscribeToMore({
-    document: BackupsSubscription,
-    variables: { environment: environment.id },
-    updateQuery: (prevStore, { subscriptionData }) => {
-      if (!subscriptionData.data) return prevStore;
-      const prevBackups = prevStore.environment.backups;
-      const incomingBackup = subscriptionData.data.backupChanged;
-      const existingIndex = prevBackups.findIndex(prevBackup => prevBackup.id === incomingBackup.id);
-      let newBackups;
-
-      // New backup.
-      if (existingIndex === -1) {
-        // Don't add new deleted backups.
-        if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
-          return prevStore;
-        }
-
-        newBackups = [incomingBackup, ...prevBackups];
-      }
-      // Existing backup.
-      else {
-        // Updated backup
-        if (incomingBackup.deleted === '0000-00-00 00:00:00') {
-          newBackups = Object.assign([...prevBackups], {
-            [existingIndex]: incomingBackup,
-          });
-        }
-        // Deleted backup
-        else {
-          newBackups = R.remove(existingIndex, 1, prevBackups);
-        }
-      }
-
-      const newStore = {
-        ...prevStore,
-        environment: {
-          ...prevStore.environment,
-          backups: newBackups,
-        },
-      };
-
-      return newStore;
-    },
-  });
 
   return (
     <>
