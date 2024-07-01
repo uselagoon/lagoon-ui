@@ -27,6 +27,8 @@ const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT, 10);
 const customMessage = publicRuntimeConfig.LAGOON_UI_BACKUPS_LIMIT_MESSAGE;
 
+const disableSubscriptions = publicRuntimeConfig.DISABLE_SUBSCRIPTIONS?.toLowerCase() === 'true';
+
 /**
  * Displays the backups page, given the name of an openshift project.
  */
@@ -117,50 +119,52 @@ export const PageBackups = ({ router }) => {
     );
   }
 
-  subscribeToMore({
-    document: BackupsSubscription,
-    variables: { environment: environment.id },
-    updateQuery: (prevStore, { subscriptionData }) => {
-      if (!subscriptionData.data) return prevStore;
-      const prevBackups = prevStore.environment.backups;
-      const incomingBackup = subscriptionData.data.backupChanged;
-      const existingIndex = prevBackups.findIndex(prevBackup => prevBackup.id === incomingBackup.id);
-      let newBackups;
+  if (!disableSubscriptions) {
+    subscribeToMore({
+      document: BackupsSubscription,
+      variables: { environment: environment.id },
+      updateQuery: (prevStore, { subscriptionData }) => {
+        if (!subscriptionData.data) return prevStore;
+        const prevBackups = prevStore.environment.backups;
+        const incomingBackup = subscriptionData.data.backupChanged;
+        const existingIndex = prevBackups.findIndex(prevBackup => prevBackup.id === incomingBackup.id);
+        let newBackups;
 
-      // New backup.
-      if (existingIndex === -1) {
-        // Don't add new deleted backups.
-        if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
-          return prevStore;
-        }
+        // New backup.
+        if (existingIndex === -1) {
+          // Don't add new deleted backups.
+          if (incomingBackup.deleted !== '0000-00-00 00:00:00') {
+            return prevStore;
+          }
 
-        newBackups = [incomingBackup, ...prevBackups];
-      }
-      // Existing backup.
-      else {
-        // Updated backup
-        if (incomingBackup.deleted === '0000-00-00 00:00:00') {
-          newBackups = Object.assign([...prevBackups], {
-            [existingIndex]: incomingBackup,
-          });
+          newBackups = [incomingBackup, ...prevBackups];
         }
-        // Deleted backup
+        // Existing backup.
         else {
-          newBackups = R.remove(existingIndex, 1, prevBackups);
+          // Updated backup
+          if (incomingBackup.deleted === '0000-00-00 00:00:00') {
+            newBackups = Object.assign([...prevBackups], {
+              [existingIndex]: incomingBackup,
+            });
+          }
+          // Deleted backup
+          else {
+            newBackups = R.remove(existingIndex, 1, prevBackups);
+          }
         }
-      }
 
-      const newStore = {
-        ...prevStore,
-        environment: {
-          ...prevStore.environment,
-          backups: newBackups,
-        },
-      };
+        const newStore = {
+          ...prevStore,
+          environment: {
+            ...prevStore.environment,
+            backups: newBackups,
+          },
+        };
 
-      return newStore;
-    },
-  });
+        return newStore;
+      },
+    });
+  }
 
   return (
     <>

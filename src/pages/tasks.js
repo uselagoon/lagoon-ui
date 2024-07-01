@@ -28,6 +28,8 @@ const { publicRuntimeConfig } = getConfig();
 const envLimit = parseInt(publicRuntimeConfig.LAGOON_UI_TASKS_LIMIT, 10);
 const customMessage = publicRuntimeConfig.AGOON_UI_TASKS_LIMIT_MESSAGE;
 
+const disableSubscriptions = publicRuntimeConfig.DISABLE_SUBSCRIPTIONS?.toLowerCase() === 'true';
+
 /**
  * Displays the tasks page, given the openshift project name.
  */
@@ -43,7 +45,10 @@ export const PageTasks = ({ router, renderAddTasks }) => {
   });
 
   const handleRefetch = async () =>
-    await refetch({ openshiftProjectName: router.query.openshiftProjectName, limit: resultLimit });
+    await refetch({
+      openshiftProjectName: router.query.openshiftProjectName,
+      limit: resultLimit,
+    });
 
   useEffect(() => {
     let urlResultLimit = envLimit;
@@ -120,38 +125,40 @@ export const PageTasks = ({ router, renderAddTasks }) => {
     );
   }
 
-  subscribeToMore({
-    document: TasksSubscription,
-    variables: { environment: environment.id },
-    updateQuery: (prevStore, { subscriptionData }) => {
-      if (!subscriptionData.data) return prevStore;
-      const prevTasks = prevStore.environment.tasks;
-      const incomingTask = subscriptionData.data.taskChanged;
-      const existingIndex = prevTasks.findIndex(prevTask => prevTask.id === incomingTask.id);
-      let newTasks;
+  if (!disableSubscriptions) {
+    subscribeToMore({
+      document: TasksSubscription,
+      variables: { environment: environment.id },
+      updateQuery: (prevStore, { subscriptionData }) => {
+        if (!subscriptionData.data) return prevStore;
+        const prevTasks = prevStore.environment.tasks;
+        const incomingTask = subscriptionData.data.taskChanged;
+        const existingIndex = prevTasks.findIndex(prevTask => prevTask.id === incomingTask.id);
+        let newTasks;
 
-      // New task.
-      if (existingIndex === -1) {
-        newTasks = [incomingTask, ...prevTasks];
-      }
-      // Updated task
-      else {
-        newTasks = Object.assign([...prevTasks], {
-          [existingIndex]: incomingTask,
-        });
-      }
+        // New task.
+        if (existingIndex === -1) {
+          newTasks = [incomingTask, ...prevTasks];
+        }
+        // Updated task
+        else {
+          newTasks = Object.assign([...prevTasks], {
+            [existingIndex]: incomingTask,
+          });
+        }
 
-      const newStore = {
-        ...prevStore,
-        environment: {
-          ...prevStore.environment,
-          tasks: newTasks,
-        },
-      };
+        const newStore = {
+          ...prevStore,
+          environment: {
+            ...prevStore.environment,
+            tasks: newTasks,
+          },
+        };
 
-      return newStore;
-    },
-  });
+        return newStore;
+      },
+    });
+  }
 
   return (
     <>
