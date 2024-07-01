@@ -5,7 +5,11 @@ import Box from 'components/Box';
 
 import { Organization, OrganizationsPage, OrgsHeader, SearchInput } from './StyledOrganizations';
 
-const OrganizationsSkeleton = () => {
+interface Props {
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const OrganizationsSkeleton = ({ setSearch }: Props) => {
   const RenderSkeletonBox = (index: number) => {
     return (
       <Box className="box" key={index}>
@@ -27,7 +31,13 @@ const OrganizationsSkeleton = () => {
           <Skeleton width={'20%'} />
         </label>
         <label></label>
-        <SearchInput aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" />
+        <SearchInput
+          onChange={e => setSearch(e.target.value)}
+          aria-labelledby="search"
+          className="searchInput"
+          type="text"
+          placeholder="Type to search"
+        />
       </OrgsHeader>
       <>{[...Array<undefined>(numberOfItems)].map((_, idx) => RenderSkeletonBox(idx))}</>
     </OrganizationsPage>

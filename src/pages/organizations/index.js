@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Head from 'next/head';
 
@@ -18,6 +18,7 @@ const OrganizationsPage = () => {
   const { data, error, loading } = useQuery(AllOrganizationsQuery, {
     displayName: 'AllOrganizationsQuery',
   });
+  const [searchInput, setSearchInput] = useState('');
 
   if (error) {
     return <QueryError error={error} />;
@@ -31,7 +32,11 @@ const OrganizationsPage = () => {
         <CommonWrapper>
           <h2>Organizations</h2>
           <div className="content">
-            {loading ? <OrganizationsSkeleton /> : <Organizations organizations={data.allOrganizations || []} />}
+            {loading ? (
+              <OrganizationsSkeleton setSearch={setSearchInput} />
+            ) : (
+              <Organizations organizations={data.allOrganizations || []} initialSearch={searchInput} />
+            )}
           </div>
         </CommonWrapper>
       </MainLayout>
