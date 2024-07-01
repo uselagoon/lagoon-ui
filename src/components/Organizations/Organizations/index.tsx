@@ -76,7 +76,7 @@ const Organizations: FC<OrganizationProps> = ({ organizations = [], initialSearc
       });
     };
 
-    filterOrgs()
+    void filterOrgs()
       .then(filtered => setFilteredOrgs(filtered))
       .finally(() => setIsFiltering(false));
   }, [searchInput, organizations]);
