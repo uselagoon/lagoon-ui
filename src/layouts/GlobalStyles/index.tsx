@@ -42,6 +42,12 @@ body {
   color: ${props => (props.theme.colorScheme === 'dark' ? '#000' : '#fff')};
   background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
   }
+  &.lg{
+      .ant-tooltip-content{
+        width:max-content;
+      }
+
+  }
 }
 .componentTooltip {
   .ant-tooltip-arrow:before{

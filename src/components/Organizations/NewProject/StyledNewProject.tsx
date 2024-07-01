@@ -20,6 +20,9 @@ export const StyledNewProject = styled.div`
 
   .form-box {
     margin-bottom: 1rem;
+    &.spacetop {
+      margin-top: 1rem;
+    }
   }
 
   .docs-link {
