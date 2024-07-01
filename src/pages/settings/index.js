@@ -15,10 +15,13 @@ import { CommonWrapper } from '../../styles/commonPageStyles';
  * Displays the user settings page.
  */
 const SettingsPage = () => {
-  const { data, loading, error } = useQuery(Me, {
+  const queryVars = {
     displayName: 'Me',
     fetchPolicy: 'cache-and-network',
-  });
+  };
+  const { data, loading, error, refetch } = useQuery(Me, queryVars);
+
+  const handleRefetch = async () => await refetch(queryVars);
 
   if (error) {
     return <QueryError error={error} />;
@@ -33,7 +36,7 @@ const SettingsPage = () => {
         <CommonWrapper>
           <h2>SSH keys</h2>
           <div className="content">
-            <SshKeys me={data?.me || {}} loading={loading} />
+            <SshKeys me={data?.me || {}} loading={loading} handleRefetch={handleRefetch} />
             <AddSshKey me={data?.me || {}} />
           </div>
         </CommonWrapper>

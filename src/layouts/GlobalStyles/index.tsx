@@ -52,6 +52,24 @@ body {
   background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
   }
 }
+.ant-modal .ant-modal-content{
+  background: ${props => (props.theme.colorScheme === 'dark' ? '#eaeaea' : '#fff')};
+  .ant-modal-header{
+    border-radius: 0;
+    background-color: transparent;
+  }
+  .ant-modal-body {
+    margin-block: 1rem;
+    > * {
+      margin-bottom: 0.5rem;
+    }
+  } 
+
+  input.fullSize{
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+  }
+}
 
 #__next {
   display: flex;
