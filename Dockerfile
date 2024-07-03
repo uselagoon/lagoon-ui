@@ -3,7 +3,7 @@ FROM uselagoon/node-20-builder:latest AS builder
 
 COPY . /app/
 
-RUN yarn install
+RUN yarn install --network-timeout 300000
 
 
 # Node service image
@@ -25,7 +25,7 @@ ARG GRAPHQL_API
 ENV GRAPHQL_API=$GRAPHQL_API
 
 # Build app
-RUN yarn --network-timeout 300000 run build
+RUN yarn run build
 
 EXPOSE 3000
 CMD ["yarn", "start"]
