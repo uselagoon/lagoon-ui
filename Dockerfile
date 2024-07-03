@@ -1,9 +1,9 @@
 # Node builder image
-FROM uselagoon/node-20-builder:latest as builder
+FROM uselagoon/node-20-builder:latest AS builder
 
 COPY . /app/
 
-RUN yarn install
+RUN yarn install --network-timeout 300000
 
 
 # Node service image
