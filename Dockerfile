@@ -1,5 +1,5 @@
 # Node builder image
-FROM uselagoon/node-20-builder:latest as builder
+FROM uselagoon/node-20-builder:latest AS builder
 
 COPY . /app/
 
@@ -25,7 +25,7 @@ ARG GRAPHQL_API
 ENV GRAPHQL_API=$GRAPHQL_API
 
 # Build app
-RUN yarn run build
+RUN yarn --network-timeout 300000 run build
 
 EXPOSE 3000
 CMD ["yarn", "start"]
