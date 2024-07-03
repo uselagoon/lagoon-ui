@@ -450,6 +450,9 @@ export const RemoveModalParagraph = styled.p`
   line-height: 24px;
   span {
     font-weight: bold;
+    &.highlight {
+      color: #4b84ff;
+    }
   }
 `;
 
