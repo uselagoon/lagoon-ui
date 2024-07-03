@@ -28,6 +28,12 @@ services:
         condition: service_completed_successfully # don't start the lagoon migrations until the db migrations is completed
       keycloak:
         condition: service_started
+  api-sidecar-handler:
+    # this is neded for the internal dns references
+    container_name: apisidecarhandler
+    image: testlagoon/api-sidecar-handler:main
+    ports:
+      - '3333:3333'
   api:
     image: testlagoon/api:main
     ports:
@@ -44,8 +50,14 @@ services:
       - S3_BAAS_ACCESS_KEY_ID=minio
       - S3_BAAS_SECRET_ACCESS_KEY=minio123
       - CONSOLE_LOGGING_LEVEL=trace
+      - SIDECAR_HANDLER_HOST=apisidecarhandler
     depends_on:
-      - api-lagoon-migrations
+      api-lagoon-migrations:
+        condition: service_started
+      keycloak:
+        condition: service_started
+      api-sidecar-handler:
+        condition: service_started
   api-redis:
     image: testlagoon/api-redis:main
   keycloak:
