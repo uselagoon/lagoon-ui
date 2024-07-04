@@ -60,6 +60,7 @@ A couple of environment variables are required:
 - user_owner - user with owner role
 - user_orguser - Organization user
 - user_orgviewer - Organization viewer
+- user_orgadmin - Organization admin
 - user_orgowner - Organization owner
 - user_platformowner - Platform owner
 

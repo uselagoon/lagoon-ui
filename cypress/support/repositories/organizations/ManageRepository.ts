@@ -6,9 +6,17 @@ export default class ManageRepository {
   getUserEmailField() {
     return cy.getBySel('manageEmail');
   }
-  getUserIsOwnerCheckbox() {
-    return cy.getBySel('userIsOwner');
+  getUserRoleDropdown() {
+    return cy.get('.react-select__indicator');
   }
+
+  getUserAdminRoleOption() {
+    return cy.get('#react-select-2-option-1');
+  }
+  getUserOwnerRoleOption() {
+    return cy.get('#react-select-2-option-2');
+  }
+
   getSubmitBtn() {
     return cy.getBySel('addUserConfirm');
   }
