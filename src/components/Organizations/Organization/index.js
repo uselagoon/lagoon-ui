@@ -48,10 +48,10 @@ const Organization = ({ organization, refetch }) => {
   }
 
   const [nameModalOpen, setNameModalOpen] = useState(false);
-  const [friendlyName, setFriendlyName] = useState('');
+  const [friendlyName, setFriendlyName] = useState(organization.friendlyName);
 
   const [descModalOpen, setDescModalOpen] = useState(false);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(organization.description);
 
   const quotaDisplay = (quota, quotaNumber, quotaLimit, showLink = true) => {
     const pluralName = quota + 's';
@@ -93,9 +93,29 @@ const Organization = ({ organization, refetch }) => {
   };
 
   const renderEditBtn = type => (
-    <EditOutlined data-cy={`edit-${type}`} style={{ color: '#4578E6' }} onClick={modalAction('open', type)} />
+    <EditOutlined
+      data-cy={`edit-${type}`}
+      style={{ color: '#4578E6' }}
+      onClick={() => {
+        if (type === 'name') {
+          setFriendlyName(organization.friendlyName);
+        }
+        if (type === 'description') {
+          setDescription(organization.description);
+        }
+
+        modalAction('open', type)();
+      }}
+    />
   );
 
+  const handleFriendlyNameChange = e => {
+    setFriendlyName(e.target.value);
+  };
+
+  const handleDescriptionChange = e => {
+    setDescription(e.target.value);
+  };
   return (
     <StyledOrganization>
       <OrgHeader headerText="overview" />
@@ -117,12 +137,12 @@ const Organization = ({ organization, refetch }) => {
                 <label>
                   Organization name: <span style={{ color: '#E30000' }}>*</span>
                   <input
+                    autoFocus
                     className="inputName"
                     data-cy="input-orgName"
                     type="text"
-                    placeholder="Existing organization name"
                     value={friendlyName}
-                    onChange={e => setFriendlyName(e.target.value)}
+                    onChange={handleFriendlyNameChange}
                   />
                 </label>
               </div>
@@ -188,12 +208,12 @@ const Organization = ({ organization, refetch }) => {
                 <label>
                   Organization description: <span style={{ color: '#E30000' }}>*</span>
                   <input
+                    autoFocus
                     className="inputName"
                     data-cy="input-orgName"
                     type="text"
-                    placeholder="Org description"
                     value={description}
-                    onChange={e => setDescription(e.target.value)}
+                    onChange={handleDescriptionChange}
                   />
                 </label>
               </div>
