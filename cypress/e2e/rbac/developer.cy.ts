@@ -114,7 +114,7 @@ describe('DEVELOPER permission test suites', () => {
       environmentOverview.doDeleteEnvironmentError('main');
     });
 
-    it('Deletes stating environment', () => {
+    it('Deletes staging environment', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-staging`);
 
       cy.intercept('POST', Cypress.env('api'), req => {
@@ -147,7 +147,7 @@ describe('DEVELOPER permission test suites', () => {
     });
 
     it('Fails to cancel any deployment - no permission to CANCEL for DEVELOPER', () => {
-      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-staging/deployments`);
+      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
 
       registerIdleHandler('idle');
 

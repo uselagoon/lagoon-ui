@@ -2,6 +2,7 @@ import { defineConfig } from 'cypress';
 
 export default defineConfig({
   requestTimeout: 15000,
+  defaultCommandTimeout: 8000,
   e2e: {
     env: {
       api: 'http://0.0.0.0:33000/graphql',
