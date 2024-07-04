@@ -118,10 +118,12 @@ const DeploymentsByFilter = ({ deployments }) => {
     });
   };
 
+  const sortedFilteredItems = sortedItems.filter(deployment => filterResults(deployment));
+
   return (
     <Deployments>
       <div className="filters">
-        <label>{sortedItems.length == 1 ? `1 deployment` : `${sortedItems.length} deployments`}</label>
+        <label>{sortedItems.length == 1 ? `1 deployment` : `${sortedFilteredItems.length} deployments`}</label>
         <label></label>
         <input
           type="text"
@@ -162,58 +164,54 @@ const DeploymentsByFilter = ({ deployments }) => {
           <label>Duration</label>
           <label></label>
         </DeploymentsHeader>
-        {!sortedItems.filter(deployment => filterResults(deployment)).length && (
-          <div className="data-none">No deployments</div>
-        )}
-        {sortedItems
-          .filter(deployment => filterResults(deployment))
-          .map(deployment => {
-            return (
-              <div className="data-row row-heading" key={deployment.id}>
-                <div className="project">
-                  <ProjectLink projectSlug={deployment.environment.project.name}>
-                    {formatString(deployment.environment.project.name, 'project')}
-                  </ProjectLink>
-                </div>
-                <div className="environment">
-                  <DeploymentsLink
-                    environmentSlug={deployment.environment.openshiftProjectName}
-                    projectSlug={deployment.environment.project.name}
-                  >
-                    {formatString(deployment.environment.name, 'environment')}
-                  </DeploymentsLink>
-                </div>
-                <div className="cluster">{formatString(deployment.environment.openshift.name, 'cluster')}</div>
-                <div className="name">
-                  <DeploymentLink
-                    deploymentSlug={deployment.name}
-                    environmentSlug={deployment.environment.openshiftProjectName}
-                    projectSlug={deployment.environment.project.name}
-                    key={deployment.id}
-                  >
-                    {deployment.name}
-                  </DeploymentLink>
-                </div>
-                <div className="priority">{deployment.priority}</div>
-                <div className="started">
-                  {moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
-                </div>
-                <div className={`status buildstep ${deployment.status}`}>
-                  {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
-
-                  {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
-                    <HoverTag text={deployment.buildStep} maxWidth="160px" tooltipPosition="bottom" />
-                  )}
-                </div>
-                <div className="duration">{getDeploymentDuration(deployment)}</div>
-                <div>
-                  {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
-                    <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
-                  )}
-                </div>
+        {!sortedFilteredItems.length && <div className="data-none">No deployments</div>}
+        {sortedFilteredItems.map(deployment => {
+          return (
+            <div className="data-row row-heading" key={deployment.id}>
+              <div className="project">
+                <ProjectLink projectSlug={deployment.environment.project.name}>
+                  {formatString(deployment.environment.project.name, 'project')}
+                </ProjectLink>
               </div>
-            );
-          })}
+              <div className="environment">
+                <DeploymentsLink
+                  environmentSlug={deployment.environment.openshiftProjectName}
+                  projectSlug={deployment.environment.project.name}
+                >
+                  {formatString(deployment.environment.name, 'environment')}
+                </DeploymentsLink>
+              </div>
+              <div className="cluster">{formatString(deployment.environment.openshift.name, 'cluster')}</div>
+              <div className="name">
+                <DeploymentLink
+                  deploymentSlug={deployment.name}
+                  environmentSlug={deployment.environment.openshiftProjectName}
+                  projectSlug={deployment.environment.project.name}
+                  key={deployment.id}
+                >
+                  {deployment.name}
+                </DeploymentLink>
+              </div>
+              <div className="priority">{deployment.priority}</div>
+              <div className="started">
+                {moment.utc(deployment.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
+              </div>
+              <div className={`status buildstep ${deployment.status}`}>
+                {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
+
+                {!['complete', 'cancelled', 'failed'].includes(deployment.status) && deployment.buildStep && (
+                  <HoverTag text={deployment.buildStep} maxWidth="160px" tooltipPosition="bottom" />
+                )}
+              </div>
+              <div className="duration">{getDeploymentDuration(deployment)}</div>
+              <div>
+                {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
+                  <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />
+                )}
+              </div>
+            </div>
+          );
+        })}
       </DeploymentsDataTable>
     </Deployments>
   );
