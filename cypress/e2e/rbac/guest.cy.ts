@@ -146,7 +146,7 @@ describe('GUEST permission test suites', () => {
     });
 
     it('Fails to do cancel a deployment - no permission for GUEST', () => {
-      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-staging/deployments`);
+      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
       registerIdleHandler('idle');
 
       cy.intercept('POST', Cypress.env('api'), req => {
