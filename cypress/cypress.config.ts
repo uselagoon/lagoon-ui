@@ -2,6 +2,7 @@ import { defineConfig } from 'cypress';
 
 export default defineConfig({
   requestTimeout: 15000,
+  defaultCommandTimeout: 8000,
   e2e: {
     env: {
       api: 'http://0.0.0.0:33000/graphql',
@@ -15,6 +16,7 @@ export default defineConfig({
       // orgs
       user_orguser: 'orguser@example.com',
       user_orgviewer: 'orgviewer@example.com',
+      user_orgadmin: 'orgadmin@example.com',
       user_orgowner: 'orgowner@example.com',
       // top level user for all default tests
       user_platformowner: 'platformowner@example.com',

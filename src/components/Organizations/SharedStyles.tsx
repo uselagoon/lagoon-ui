@@ -450,7 +450,15 @@ export const RemoveModalParagraph = styled.p`
   line-height: 24px;
   span {
     font-weight: bold;
+    &.highlight {
+      color: #4b84ff;
+    }
   }
+`;
+export const RemoveModalConfirmInput = styled.input`
+  padding: 0.25rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
 `;
 
 export const AddButtonContent = styled.span`

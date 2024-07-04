@@ -7,12 +7,15 @@ import Button from 'components/Button';
 import withLogic from 'components/Organizations/AddUserToOrganization/logic';
 import gql from 'graphql-tag';
 
+import { userTypeOptions } from '../Manage';
 import { Footer } from '../SharedStyles';
 import { NewUser } from './Styles';
 
 export const ADD_USER_MUTATION = gql`
-  mutation AddUserToOrganization($email: String!, $organization: Int!, $owner: Boolean) {
-    addUserToOrganization(input: { user: { email: $email }, organization: $organization, owner: $owner }) {
+  mutation AddUserToOrganization($email: String!, $organization: Int!, $owner: Boolean, $admin: Boolean) {
+    addUserToOrganization(
+      input: { user: { email: $email }, organization: $organization, owner: $owner, admin: $admin }
+    ) {
       id
     }
   }
@@ -21,17 +24,11 @@ export const ADD_USER_MUTATION = gql`
 /**
  *  Adds/edits user to an organization
  */
-export const AddUserToOrganization = ({
-  organization,
-  close,
-  inputValueEmail,
-  setInputValue,
-  checkboxValueOwner,
-  setCheckboxValueOwner,
-  onAddUser,
-  users,
-}) => {
+export const AddUserToOrganization = ({ organization, close, inputValueEmail, setInputValue, onAddUser, users }) => {
   const userAlreadyExists = users.find(u => u.email === inputValueEmail);
+
+  const [newUserType, setNewUserType] = useState('viewer');
+
   return (
     <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
       {(addUser, { called, error, data }) => {
@@ -60,17 +57,31 @@ export const AddUserToOrganization = ({
                 />
               </label>
             </div>
+            <br />
             <label>
-              Owner: <span style={{ color: '#E30000' }}>*</span>
-              <input
-                data-cy="manageOwner"
-                className="inputCheckbox"
-                type="checkbox"
-                value={checkboxValueOwner}
-                onChange={setCheckboxValueOwner}
+              User Type: <span style={{ color: '#E30000' }}>*</span>
+              <ReactSelect
+                classNamePrefix="react-select"
+                className="select"
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                  placeholder: base => ({ ...base, fontSize: '16px' }),
+                  menu: base => ({ ...base, fontSize: '16px' }),
+                  option: base => ({ ...base, fontSize: '16px' }),
+                  singleValue: base => ({ ...base, fontSize: '16px' }),
+                }}
+                aria-label="Role"
+                placeholder="Select role"
+                name="role"
+                value={userTypeOptions.find(o => o.value === newUserType)}
+                onChange={selectedOption => {
+                  setNewUserType(selectedOption.value);
+                }}
+                options={userTypeOptions}
+                required
               />
             </label>
-
             <div>
               <Footer>
                 <Button
@@ -82,7 +93,8 @@ export const AddUserToOrganization = ({
                       variables: {
                         email: inputValueEmail,
                         organization: organization.id,
-                        owner: checkboxValueOwner,
+                        ...(newUserType === 'admin' && { admin: true }),
+                        ...(newUserType === 'owner' && { owner: true }),
                       },
                     });
                   }}

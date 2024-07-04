@@ -28,9 +28,11 @@ const withModalHandlers = withHandlers({
     () =>
       setOpen(true),
   closeModal:
-    ({ setOpen }) =>
-    () =>
-      setOpen(false),
+    ({ setOpen, setClear }) =>
+    () => {
+      setOpen(false);
+      setClear();
+    },
 });
 
 export default compose(

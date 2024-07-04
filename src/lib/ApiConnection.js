@@ -16,6 +16,8 @@ import ErrorPage from 'pages/_error.js';
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
+const disableSubscriptions = publicRuntimeConfig.DISABLE_SUBSCRIPTIONS?.toLowerCase() === 'true';
+
 const ApiConnection = ({ children }) => (
   <AuthContext.Consumer>
     {auth => {
@@ -34,13 +36,13 @@ const ApiConnection = ({ children }) => (
         const wsLink = new WebSocketLink({
           uri: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(/http/, 'ws'),
           options: {
+            lazy: disableSubscriptions,
             reconnect: true,
             connectionParams: {
               authToken: auth.apiToken,
             },
           },
         });
-
         return ApolloLink.split(
           ({ query }) => {
             const { kind, operation } = getMainDefinition(query);

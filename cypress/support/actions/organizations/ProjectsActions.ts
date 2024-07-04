@@ -17,7 +17,7 @@ export default class ProjectsActions {
 
     projects.selectTarget();
 
-    projects.getAddConfirm().click();
+    projects.getAddConfirm().click({ force: true });
 
     cy.wait('@gqladdProjectToOrganizationMutation');
 
@@ -32,7 +32,7 @@ export default class ProjectsActions {
 
     projects.selectTarget();
 
-    projects.getAddConfirm().click();
+    projects.getAddConfirm().click({ force: true });
 
     cy.wait('@gqladdProjectToOrganizationMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
@@ -44,7 +44,13 @@ export default class ProjectsActions {
     });
   }
   doDeleteProject(projectName: string) {
-    projects.getDeleteBtn().eq(1).click();
+    projects.getDeleteBtn(projectName).click();
+
+    cy.get('.highlight')
+      .invoke('text')
+      .then(highlightText => {
+        projects.getDeleteConfirmInput().focus().type(highlightText);
+      });
 
     projects.getDeleteConfirm().click();
 

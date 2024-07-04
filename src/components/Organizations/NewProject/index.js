@@ -72,6 +72,9 @@ const OrgNewProject = ({
   refresh,
 }) => {
   const [addUserToProject, setAddUserToProject] = React.useState(true);
+  const [pullRequests, setPullRequests] = React.useState('');
+  const [branches, setBranches] = React.useState('');
+
   return (
     <StyledNotificationWrapper>
       <div className="margins">
@@ -95,6 +98,8 @@ const OrgNewProject = ({
                   setProjectName({ target: { value: '' } });
                   setGitURL({ target: { value: '' } });
                   setProdEnv({ target: { value: '' } });
+                  setPullRequests('');
+                  setBranches('');
                   setSelectedDeployTarget({ target: { value: '' } });
                   closeModal();
                 });
@@ -174,6 +179,74 @@ const OrgNewProject = ({
                         />
                       </RoleSelect>
                     </label>
+
+                    <div className="form-box spacetop">
+                      <label>
+                        Branches{' '}
+                        <Tooltip
+                          overlayClassName="orgTooltip lg"
+                          title={
+                            <>
+                              <b>[Default: true]</b>
+                              <br />
+                              <span> Which branches should be deployed, can be one of:</span>
+                              <ul className="tooltiplist">
+                                <li>true - all branches are deployed </li>
+
+                                <li>false - no branches are deployed</li>
+
+                                <li>
+                                  regex of all branches that can be deployed (including production), example:
+                                  '^(main|staging)$'
+                                </li>
+                              </ul>
+                            </>
+                          }
+                          placement="right"
+                        >
+                          <InfoCircleOutlined style={{ fontSize: '1rem' }} />
+                        </Tooltip>
+                        <input
+                          type="text"
+                          placeholder="Branches"
+                          value={branches}
+                          onChange={({ target: { value } }) => setBranches(value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="form-box">
+                      <label>
+                        Pull requests{' '}
+                        <Tooltip
+                          overlayClassName="orgTooltip lg"
+                          title={
+                            <>
+                              <b>[Default: true]</b>
+                              <br />
+                              <span> Which pull requests should be deployed, can be one of:</span>
+                              <ul className="tooltiplist">
+                                <li>true - all pull requests are deployed </li>
+
+                                <li>false - no pull requests are deployed</li>
+
+                                <li>regex of all Pull Request titles that can be deployed, example: '[BUILD]'</li>
+                              </ul>
+                            </>
+                          }
+                          placement="right"
+                        >
+                          <InfoCircleOutlined style={{ fontSize: '1rem' }} />
+                        </Tooltip>
+                        <input
+                          placeholder="Pull requests"
+                          type="text"
+                          value={pullRequests}
+                          onChange={({ target: { value } }) => setPullRequests(value)}
+                        />
+                      </label>
+                    </div>
+
                     <Checkbox>
                       <input
                         type="checkbox"
@@ -182,6 +255,7 @@ const OrgNewProject = ({
                       />
                       <span>Add my user to this project</span>
                     </Checkbox>
+
                     <div className="docs-link">
                       <div className="info-icon">
                         <Image src={info} alt="" />
@@ -219,7 +293,7 @@ const OrgNewProject = ({
                             inputGitURL.indexOf(' ') > 0 ||
                             inputProdEnv === '' ||
                             inputProdEnv.indexOf(' ') > 0 ||
-                            selectedDeployTarget === undefined
+                            selectedDeployTarget == undefined
                           }
                           action={() => {
                             addGroupProject({
@@ -230,6 +304,8 @@ const OrgNewProject = ({
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
                                 addOrgOwner: addUserToProject,
+                                ...(pullRequests ? { pullRequests } : {}),
+                                ...(branches ? { branches } : {}),
                               },
                             });
                           }}

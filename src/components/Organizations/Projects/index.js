@@ -13,7 +13,14 @@ import { IconDashboard } from '../CustomIcons/OrganizationIcons';
 import { DeleteButton } from '../Groups/Styles';
 import NewProject from '../NewProject';
 import PaginatedTable from '../PaginatedTable/PaginatedTable';
-import { Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
+import {
+  Footer,
+  RemoveModalConfirmInput,
+  RemoveModalHeader,
+  RemoveModalParagraph,
+  TableActions,
+  Tag,
+} from '../SharedStyles';
 import { ProjectDashboard, StyledOrgProjects } from './Styles';
 
 const DELETE_PROJECT = gql`
@@ -29,6 +36,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
   const [modalState, setModalState] = useState({
     open: false,
     current: null,
+    confirmValue: '',
   });
 
   const Columns = [
@@ -94,6 +102,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
                 <DeleteOutlined
                   className="delete"
+                  data-cy="deleteProject"
                   onClick={() => {
                     setModalState({ open: true, current: project.name });
                   }}
@@ -106,8 +115,19 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               >
                 <RemoveModalHeader>Are you sure?</RemoveModalHeader>
                 <RemoveModalParagraph>
-                  This action will delete project <span>{project.name}</span> from Lagoon and the organization.
+                  This action will delete project <span className="highlight">{project.name}</span> from Lagoon and the
+                  organization.
                 </RemoveModalParagraph>
+
+                <RemoveModalParagraph>Type the name of the project to confirm.</RemoveModalParagraph>
+
+                <RemoveModalConfirmInput
+                  type="text"
+                  data-cy="deleteProjectConfirm"
+                  onChange={e => {
+                    setModalState({ ...modalState, confirmValue: e.target.value });
+                  }}
+                />
 
                 <Footer>
                   <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
@@ -124,7 +144,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
                         <Button
                           testId="deleteConfirm"
                           variant="primary"
-                          disabled={called}
+                          disabled={modalState.confirmValue !== modalState.current || called}
                           loading={called}
                           action={() => {
                             deleteProject({
