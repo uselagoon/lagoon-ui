@@ -41,6 +41,21 @@ body {
   .ant-tooltip-content .ant-tooltip-inner{
   color: ${props => (props.theme.colorScheme === 'dark' ? '#000' : '#fff')};
   background: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
+
+  .tooltiplist{
+    margin-left: 0.812rem;
+    li{
+      margin-bottom: initial;
+      padding-left: 0;
+      list-style: disc;
+    }
+  }
+  }
+  &.lg{
+      .ant-tooltip-content{
+        width:max-content;
+      }
+
   }
 }
 .componentTooltip {
