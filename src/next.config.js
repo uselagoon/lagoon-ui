@@ -32,6 +32,7 @@ module.exports = {
     LAGOON_UI_VIEW_ENV_VARIABLES: process.env.LAGOON_UI_VIEW_ENV_VARIABLES,
     PLUGIN_SCRIPTS: pluginRegistry,
     WEBHOOK_URL: process.env.WEBHOOK_URL,
+    DISABLE_SUBSCRIPTIONS: process.env.DISABLE_SUBSCRIPTIONS,
   },
   distDir: '../build',
   webpack(config, options) {
