@@ -5,7 +5,7 @@ export default gql`
     addUserSSHPublicKey(input: $input) {
       id
       name
-      publicKey
+      keyValue
       created
     }
   }

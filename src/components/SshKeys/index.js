@@ -5,7 +5,7 @@ import Skeleton from 'react-loading-skeleton';
 import { Col, Modal, Row, Space } from 'antd';
 import Button from 'components/Button';
 import DeleteUserSSHPublicKey from 'lib/mutation/DeleteUserSSHPublicKey';
-import UpdateUserSSHPublicKey from 'lib/mutation/UpdateUserSshPublicKey';
+import UpdateUserSSHPublicKey from 'lib/mutation/UpdateUserSSHPublicKey';
 import Me from 'lib/query/Me';
 import moment from 'moment';
 
