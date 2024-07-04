@@ -23,8 +23,11 @@ export default class ProjectsRepository {
   getProjectRows() {
     return cy.getBySel('table-row');
   }
-  getDeleteBtn() {
-    return cy.get("[aria-label='delete']");
+  getDeleteBtn(projectName: string) {
+    return cy.getBySel('table-row').filter(`:contains(${projectName})`).find('[data-cy=deleteProject]');
+  }
+  getDeleteConfirmInput() {
+    return cy.getBySel('deleteProjectConfirm');
   }
   getDeleteConfirm() {
     return cy.getBySel('deleteConfirm');

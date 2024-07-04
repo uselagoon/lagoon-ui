@@ -44,7 +44,13 @@ export default class ProjectsActions {
     });
   }
   doDeleteProject(projectName: string) {
-    projects.getDeleteBtn().eq(1).click();
+    projects.getDeleteBtn(projectName).click();
+
+    cy.get('.highlight')
+      .invoke('text')
+      .then(highlightText => {
+        projects.getDeleteConfirmInput().focus().type(highlightText);
+      });
 
     projects.getDeleteConfirm().click();
 

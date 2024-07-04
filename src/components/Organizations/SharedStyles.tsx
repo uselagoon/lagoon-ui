@@ -455,6 +455,11 @@ export const RemoveModalParagraph = styled.p`
     }
   }
 `;
+export const RemoveModalConfirmInput = styled.input`
+  padding: 0.25rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+`;
 
 export const AddButtonContent = styled.span`
   display: inline-flex;
