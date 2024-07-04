@@ -33,6 +33,7 @@ export default class deploymentAction {
   }
 
   doFailedCancelDeployment() {
+    
     deployment.getCancelDeploymentBtn().click();
 
     cy.wait('@gqlcancelDeploymentMutation');
