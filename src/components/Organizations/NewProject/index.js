@@ -187,13 +187,18 @@ const OrgNewProject = ({
                           overlayClassName="orgTooltip lg"
                           title={
                             <>
-                              <p> Which Pull Requests should be deployed, can be one of::</p>
-                              <p> - true - all branches are deployed </p>
-                              <p>- false - no branches are deployed</p>
-                              <p>
+                              <b>[Default: true]</b>
+                              <br />
+                              <span> Which Pull Requests should be deployed, can be one of:</span>
+                              <br />
+                              <span> - true - all branches are deployed </span>
+                              <br />
+                              <span>- false - no branches are deployed</span>
+                              <br />
+                              <span>
                                 - regex of all branches that can be deployed (including production), example:
                                 '^(main|staging)$'
-                              </p>
+                              </span>
                             </>
                           }
                           placement="right"
@@ -216,10 +221,15 @@ const OrgNewProject = ({
                           overlayClassName="orgTooltip lg"
                           title={
                             <>
-                              <p> Which branches should be deployed, can be one of:</p>
-                              <p> - true - all pull requests are deployed </p>
-                              <p> - false - no pull requests are deployed</p>
-                              <p>- regex of all Pull Request titles that can be deployed, example: '[BUILD]'</p>
+                              <b>[Default: true]</b>
+                              <br />
+                              <span> Which branches should be deployed, can be one of:</span>
+                              <br />
+                              <span> - true - all pull requests are deployed </span>
+                              <br />
+                              <span> - false - no pull requests are deployed</span>
+                              <br />
+                              <span>- regex of all Pull Request titles that can be deployed, example: '[BUILD]'</span>
                             </>
                           }
                           placement="right"
