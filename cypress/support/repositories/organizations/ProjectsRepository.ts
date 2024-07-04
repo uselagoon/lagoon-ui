@@ -24,7 +24,10 @@ export default class ProjectsRepository {
     return cy.getBySel('table-row');
   }
   getDeleteBtn() {
-    return cy.get("[aria-label='delete']");
+    return cy.getBySel('deleteProject');
+  }
+  getDeleteConfirmInput() {
+    return cy.getBySel('deleteProjectConfirm');
   }
   getDeleteConfirm() {
     return cy.getBySel('deleteConfirm');

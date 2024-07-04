@@ -102,6 +102,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
               <Tooltip overlayClassName="orgTooltip" title="Delete" placement="bottom">
                 <DeleteOutlined
                   className="delete"
+                  data-cy="deleteProject"
                   onClick={() => {
                     setModalState({ open: true, current: project.name });
                   }}
@@ -122,6 +123,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
 
                 <RemoveModalConfirmInput
                   type="text"
+                  data-cy="deleteProjectConfirm"
                   onChange={e => {
                     setModalState({ ...modalState, confirmValue: e.target.value });
                   }}
