@@ -189,7 +189,7 @@ const OrgNewProject = ({
                             <>
                               <b>[Default: true]</b>
                               <br />
-                              <span> Which Pull Requests should be deployed, can be one of:</span>
+                              <span> Which branches should be deployed, can be one of:</span>
                               <br />
                               <span> - true - all branches are deployed </span>
                               <br />
@@ -223,7 +223,7 @@ const OrgNewProject = ({
                             <>
                               <b>[Default: true]</b>
                               <br />
-                              <span> Which branches should be deployed, can be one of:</span>
+                              <span> Which pull requests should be deployed, can be one of:</span>
                               <br />
                               <span> - true - all pull requests are deployed </span>
                               <br />
