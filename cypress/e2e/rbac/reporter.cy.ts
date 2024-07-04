@@ -143,7 +143,7 @@ describe('REPORTER permission test suites', () => {
     });
 
     it('Fails to do cancel a deployment - no permission for REPORTER', () => {
-      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-staging/deployments`);
+      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
 
       registerIdleHandler('idle');
 
@@ -168,6 +168,8 @@ describe('REPORTER permission test suites', () => {
       cy.waitForNetworkIdle('@idle', 500);
 
       deployment.navigateToRunningDeployment();
+
+      cy.waitForNetworkIdle('@idle', 500);
       deployment.doFailedCancelDeployment();
     });
   });
