@@ -23,7 +23,7 @@ describe('Organization overview page', () => {
     overview.doQuotaFieldCheck();
   });
 
-  it.only('Changes org friendly name/description', () => {
+  it('Changes org friendly name/description', () => {
     registerIdleHandler('idle');
 
     overview.changeOrgFriendlyname(testData.organizations.overview.friendlyName);

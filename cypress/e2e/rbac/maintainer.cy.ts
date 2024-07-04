@@ -136,7 +136,7 @@ describe('MAINTAINER permission test suites', () => {
       environmentOverview.doDeleteEnvironmentError('main');
     });
 
-    it('Deletes stating environment', () => {
+    it('Deletes staging environment', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-staging`);
 
       cy.intercept('POST', Cypress.env('api'), req => {
@@ -169,7 +169,7 @@ describe('MAINTAINER permission test suites', () => {
     });
 
     it('Cancels a staging deployment', () => {
-      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-staging/deployments`);
+      cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
 
       registerIdleHandler('idle');
 

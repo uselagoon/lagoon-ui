@@ -34,7 +34,8 @@ export default class OverviewAction {
 
   changeOrgFriendlyname(friendlyName: string) {
     overviewRepo.getNameEditButton('edit-name').click();
-    overviewRepo.getEditField().type(friendlyName);
+
+    overviewRepo.getEditField().clear().type(friendlyName);
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
@@ -53,7 +54,7 @@ export default class OverviewAction {
   }
   doFailedChangeOrgFriendlyname(friendlyName: string) {
     overviewRepo.getNameEditButton('edit-name').click();
-    overviewRepo.getEditField().type(friendlyName);
+    overviewRepo.getEditField().clear().type(friendlyName);
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation').then(interception => {
@@ -68,7 +69,7 @@ export default class OverviewAction {
 
   changeOrgDescription(description: string) {
     overviewRepo.getDescEditButton('edit-description').click();
-    overviewRepo.getEditField().type(description);
+    overviewRepo.getEditField().clear().type(description);
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation');
@@ -85,7 +86,7 @@ export default class OverviewAction {
   }
   doFailedChangeOrgDescription(description: string) {
     overviewRepo.getDescEditButton('edit-description').click();
-    overviewRepo.getEditField().type(description);
+    overviewRepo.getEditField().clear().type(description);
     overviewRepo.getSubmitButton().click();
 
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation').then(interception => {
