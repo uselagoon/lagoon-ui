@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
@@ -11,8 +11,8 @@ import { Footer } from '../SharedStyles';
 import { NewMember, RoleSelect } from './Styles';
 
 export const ADD_GROUP_MEMBER_MUTATION = gql`
-  mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!) {
-    addUserToGroup(input: { user: { email: $email }, group: { name: $group }, role: $role }) {
+  mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!, $inviteUser: Boolean) {
+    addUserToGroup(input: { user: { email: $email }, group: { name: $group }, role: $role, inviteUser: $inviteUser }) {
       name
     }
   }
@@ -42,7 +42,7 @@ export const options = [
 ];
 
 /**
- * Confirms the deletion of the specified name and type.
+ * Adds user to group.
  */
 export const AddUserToGroup = ({
   group,
@@ -56,6 +56,13 @@ export const AddUserToGroup = ({
 }) => {
   const userAlreadyExists = users && users.find(u => u.user.email === inputValueEmail);
 
+  const [inviteUser, setInviteUser] = useState(true);
+
+  const closeModal = () => {
+    close();
+    setInviteUser(true);
+  };
+
   return (
     <Mutation mutation={ADD_GROUP_MEMBER_MUTATION} onError={err => console.error(err)}>
       {(addGroupMember, { called, error, data }) => {
@@ -65,7 +72,7 @@ export const AddUserToGroup = ({
         if (data) {
           onAddUser().then(() => {
             setInputValue({ target: { value: '' } });
-            close();
+            closeModal();
           });
         }
         return (
@@ -108,6 +115,16 @@ export const AddUserToGroup = ({
                 />
               </RoleSelect>
             </label>
+            <label className="add-user">
+              Add user to Lagoon if required
+              <input
+                data-cy="inviteUser"
+                className="inputCheckbox"
+                type="checkbox"
+                checked={inviteUser}
+                onChange={() => setInviteUser(!inviteUser)}
+              />
+            </label>
             <div>
               <Footer>
                 <Button
@@ -119,6 +136,7 @@ export const AddUserToGroup = ({
                         email: inputValueEmail,
                         role: selectedRole.value,
                         group: group.name,
+                        inviteUser,
                       },
                     });
                   }}
@@ -127,7 +145,7 @@ export const AddUserToGroup = ({
                 >
                   {userAlreadyExists ? 'Update' : 'Add'}
                 </Button>
-                <Button variant="ghost" action={() => close()}>
+                <Button variant="ghost" action={() => closeModal()}>
                   Cancel
                 </Button>
               </Footer>

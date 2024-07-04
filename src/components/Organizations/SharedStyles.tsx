@@ -408,6 +408,11 @@ export const ModalChildren = styled.div`
       }
     }
   }
+  label.add-user {
+    display: flex;
+    margin-block: 0.5rem;
+    gap: 0.5rem;
+  }
 `;
 export const ViewMore = styled.span`
   color: #4578e6 !important;
