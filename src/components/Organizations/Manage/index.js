@@ -16,7 +16,7 @@ import PaginatedTable from '../PaginatedTable/PaginatedTable';
 import { AddButtonContent, Footer, RemoveModalHeader, RemoveModalParagraph, TableActions, Tag } from '../SharedStyles';
 import { StyledUsers } from '../Users/Styles';
 
-export const userTypes = ['viewer', 'owner', 'admin'];
+export const userTypes = ['viewer', 'admin', 'owner'];
 export const userTypeOptions = userTypes.map(u => {
   return { label: u.toUpperCase(), value: u };
 });
