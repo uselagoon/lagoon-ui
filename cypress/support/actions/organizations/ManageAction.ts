@@ -16,10 +16,26 @@ export default class ManageAction {
     });
   }
 
-  doEditOrgViewer(user: string) {
+  doEditOrgViewerToAdmin(user: string) {
     manageRepo.getUserRows().contains(user).parents('.tableRow').find('.link').click();
 
-    manageRepo.getUserIsOwnerCheckbox().check();
+    // admin
+    manageRepo.getUserRoleDropdown().click({ force: true });
+    manageRepo.getUserAdminRoleOption().click();
+
+    manageRepo.getUpdateBtn().click();
+
+    cy.wait('@gqlAddUserToOrganizationMutation');
+
+    manageRepo.getUserRows().contains(user).parents('.tableRow').find(':contains("ORG ADMIN")').should('exist');
+  }
+
+  doEditOrgViewerToOwner(user: string) {
+    manageRepo.getUserRows().contains(user).parents('.tableRow').find('.link').click();
+
+    // owner
+    manageRepo.getUserRoleDropdown().click({ force: true });
+    manageRepo.getUserOwnerRoleOption().click();
 
     manageRepo.getUpdateBtn().click();
 
