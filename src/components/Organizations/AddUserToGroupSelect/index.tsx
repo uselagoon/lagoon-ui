@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
@@ -8,9 +8,9 @@ import gql from 'graphql-tag';
 import { NewMember, RoleSelect } from '../AddUserToGroup/Styles';
 import { Footer } from '../SharedStyles';
 
-const ADD_GROUP_MEMBER_MUTATION = gql`
-  mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!) {
-    addUserToGroup(input: { user: { email: $email }, group: { name: $group }, role: $role }) {
+export const ADD_GROUP_MEMBER_MUTATION = gql`
+  mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!, $inviteUser: Boolean) {
+    addUserToGroup(input: { user: { email: $email }, group: { name: $group }, role: $role, inviteUser: $inviteUser }) {
       name
     }
   }
@@ -56,11 +56,16 @@ interface Props {
 }
 
 const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState, close, onAddUser }) => {
+  const [inviteUser, setInviteUser] = useState(true);
+
   const groupOptions = groups.map(g => {
     return { label: g.name, value: g.name };
   });
 
-  const resetState = () => setNewUserState({ group: '', role: '', email: '' });
+  const resetState = () => {
+    setNewUserState({ group: '', role: '', email: '' });
+    setInviteUser(false);
+  };
 
   return (
     <Mutation<{
@@ -68,6 +73,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
         email: string;
         role: string;
         group: string;
+        inviteUser?: boolean;
       };
     }>
       mutation={ADD_GROUP_MEMBER_MUTATION}
@@ -151,6 +157,16 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
                 />
               </RoleSelect>
             </label>
+            <label className="add-user">
+              Add user to Lagoon if required
+              <input
+                data-cy="inviteUser"
+                className="inputCheckbox"
+                type="checkbox"
+                checked={inviteUser}
+                onChange={() => setInviteUser(!inviteUser)}
+              />
+            </label>
             <div>
               <Footer>
                 <Button
@@ -163,6 +179,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
                         email: newUserState.email,
                         role: newUserState.role,
                         group: newUserState.group,
+                        inviteUser,
                       },
                     });
                   }}

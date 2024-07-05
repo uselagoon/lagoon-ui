@@ -50,6 +50,11 @@ export const NewMember = styled.div`
     display: flex;
     align-items: center;
   }
+  label.add-user {
+    display: flex;
+    margin-block: 0.5rem;
+    gap: 0.5rem;
+  }
 `;
 
 export const RoleSelect = styled.div`
