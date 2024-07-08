@@ -21,6 +21,24 @@ services:
       dockerfile: Dockerfile
     labels:
       lagoon.type: node
+    command: yarn run start
+    ports:
+      - '3000:3000'
+    networks:
+      - default
+    environment:
+      LAGOON_ROUTE: &default-url http://lagoon-ui.docker.amazee.io
+      LAGOON_UI_TOURS_ENABLED: false
+      LAGOON_ENVIRONMENT_TYPE: production
+      <<: *default-environment
+
+  dev:
+    build:
+      context: .
+      target: dev
+      dockerfile: Dockerfile
+    labels:
+      lagoon.type: none
     command: yarn run dev
     volumes:
       - ./src:/app/src
@@ -32,4 +50,8 @@ services:
     networks:
       - default
     environment:
+      LAGOON_ROUTE: http://lagoon-dev.docker.amazee.io
+      LAGOON_UI_TOURS_ENABLED: true
+      LAGOON_ENVIRONMENT_TYPE: development
       <<: *default-environment
+
