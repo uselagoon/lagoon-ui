@@ -17,12 +17,12 @@ import {
   TableRow,
 } from './Styles';
 
+interface NestedData {
+  [key: string]: string | Record<string, string> | string[];
+}
+
 type DataType = {
-  [key: string]:
-    | string
-    | Record<string, string>
-    | Record<string, Pick<Props, 'data'> | string[]>
-    | Array<Record<string, string>>;
+  [key: string]: string | NestedData | Record<string, string> | Array<Record<string, string>>;
   name: string;
   id: string;
 };
@@ -321,6 +321,31 @@ const PaginatedTable: FC<Props> = ({
   const startPage = Math.max(currentPage - Math.floor(maxPagination / 2), 1);
   const endPage = Math.min(startPage + maxPagination - 1, totalPages);
 
+  const systemDefaultCount = useMemo(() => {
+    let count = 0;
+
+    if (defaultViewOptions) {
+      if (defaultViewOptions?.type === 'group') {
+        count = unfilteredData.filter(dataItem => dataItem.type === 'project-default-group').length;
+      }
+      if (defaultViewOptions?.type === 'user') {
+        count = unfilteredData.filter(dataItem => {
+          let filterItem = '';
+
+          if (dataItem.email) {
+            filterItem = dataItem.email as string;
+          }
+          if (dataItem.user && typeof dataItem.user === 'object' && 'email' in dataItem.user) {
+            filterItem = dataItem.user.email as string;
+          }
+
+          return filterItem.startsWith('default-user');
+        }).length;
+      }
+    }
+    return count;
+  }, [defaultViewOptions, unfilteredData]);
+
   return (
     <StyledTable className="paginatedTable">
       <Filters className="filters">
@@ -333,7 +358,7 @@ const PaginatedTable: FC<Props> = ({
         )}
         {defaultViewOptions ? (
           <Checkbox>
-            {defaultViewOptions.type === 'group' ? 'Show system groups' : 'Show default users'}
+            {defaultViewOptions.type === 'group' ? 'Show system groups' : 'Show default users'} ({systemDefaultCount})
             <input
               type="checkbox"
               checked={defaultsSelected}

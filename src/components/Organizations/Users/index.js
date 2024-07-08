@@ -36,7 +36,6 @@ const DELETE_USER = gql`
  * The primary list of users.
  */
 const Users = ({ users = [], organization, organizationId, organizationName, refetch, orgFriendlyName }) => {
-  const [userModalOpen, setUserModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
 
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
@@ -52,7 +51,6 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
 
   const closeUserModal = () => {
     setSelectedUser('');
-    setUserModalOpen(false);
   };
 
   useEffect(() => {
@@ -201,7 +199,7 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         usersTable={true}
         defaultViewOptions={{
           type: 'user',
-          selected: false,
+          selected: true,
         }}
         labelText="Users"
         emptyText="No Users"
