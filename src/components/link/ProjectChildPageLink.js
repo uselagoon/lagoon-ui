@@ -5,7 +5,7 @@ export const getLinkData = (childPage, projectSlug) => ({
     pathname: `/${childPage}`,
     query: { projectName: projectSlug },
   },
-  asPath: `/projects/${projectSlug}/${projectSlug}-${childPage}`,
+  asPath: `/projects/${projectSlug}/${childPage}`,
 });
 
 const ProjectChildPageLink = ({ childPage, projectSlug, children, className = '', prefetch = false }) => {
