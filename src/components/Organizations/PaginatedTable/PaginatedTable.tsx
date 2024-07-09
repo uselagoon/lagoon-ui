@@ -38,8 +38,13 @@ interface Props {
   disableUrlMutation?: boolean;
   defaultViewOptions?: {
     type: 'group' | 'user';
-    selected: boolean;
-  };
+  } & (
+    | { selected: true }
+    | {
+        selected: false;
+        selectedOnZeroCount?: boolean;
+      }
+  );
   numericSortOptions?: {
     key?: string;
     displayName: string;
@@ -100,9 +105,34 @@ const PaginatedTable: FC<Props> = ({
 
   const [unfilteredData, setUnfilteredData] = useState(data);
 
-  const [defaultsSelected, setDefaultsSelected] = useState(
-    (defaultViewOptions && defaultViewOptions.selected) || false
-  );
+  const filteredDataWithoutDefaults = useMemo(() => {
+    let filtered = unfilteredData;
+
+    if (defaultViewOptions) {
+      if (defaultViewOptions.type === 'group') {
+        filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+      }
+      if (defaultViewOptions.type === 'user') {
+        filtered = filtered.filter(dataItem => {
+          //@ts-ignore
+          const filterItem = dataItem.email ? dataItem.email : (dataItem.user.email as string);
+          return !(filterItem as string).startsWith('default-user');
+        });
+      }
+    }
+
+    return filtered;
+  }, [defaultViewOptions, unfilteredData]);
+
+  const [defaultsSelected, setDefaultsSelected] = useState(() => {
+    if (defaultViewOptions?.selected) {
+      return true;
+    }
+    if (defaultViewOptions?.selectedOnZeroCount && filteredDataWithoutDefaults.length === 0) {
+      return true;
+    }
+    return false;
+  });
 
   useEffect(() => {
     setUnfilteredData(data);

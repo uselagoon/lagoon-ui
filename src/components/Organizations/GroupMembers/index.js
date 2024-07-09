@@ -356,6 +356,7 @@ const GroupMembers = ({
           defaultViewOptions={{
             type: 'user',
             selected: false,
+            selectedOnZeroCount: true,
           }}
         />
         <div className="tableAction">
@@ -388,6 +389,11 @@ const GroupMembers = ({
           columns={ProjectsColumns}
           labelText="Projects"
           emptyText="No Projects"
+          defaultViewOptions={{
+            selected: false,
+            selectedOnZeroCount: true,
+            type: 'group',
+          }}
           disableUrlMutation
         />
 

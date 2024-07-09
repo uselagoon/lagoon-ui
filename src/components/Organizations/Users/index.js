@@ -199,7 +199,8 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
         usersTable={true}
         defaultViewOptions={{
           type: 'user',
-          selected: true,
+          selected: false,
+          selectedOnZeroCount: true,
         }}
         labelText="Users"
         emptyText="No Users"

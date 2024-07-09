@@ -157,7 +157,29 @@ export const OrgProjectWrapper = styled.div`
   padding-inline: 12px;
   display: flex;
   flex-direction: column;
-
+  .tableheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    label {
+      font-weight: 600;
+    }
+    .icon {
+      transform: translateY(6px);
+    }
+    input {
+      height: 40px;
+      min-width: 290px;
+      font-size: 0.95rem;
+      &::placeholder {
+        color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#5f6f7a')};
+        line-height: 20px;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+    }
+  }
   .rightside-button {
     display: flex;
     justify-content: flex-end;
