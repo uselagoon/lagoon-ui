@@ -1,5 +1,5 @@
 # Node builder image
-FROM uselagoon/node-20-builder:latest AS dev
+FROM uselagoon/node-20-builder:latest AS local-dev
 
 # Copy only what we need into the image
 COPY ./src/ /app/src
@@ -27,7 +27,7 @@ ENV KEYCLOAK_API=$KEYCLOAK_API
 FROM uselagoon/node-20:latest AS prod-builder
 
 # Copy the whole /app folder from dev
-COPY --from=dev /app/ /app/
+COPY --from=local-dev /app/ /app/
 
 # Build app
 RUN --mount=type=cache,target=/home/.yarn YARN_CACHE_FOLDER=/home/.yarn yarn run build
@@ -35,7 +35,7 @@ RUN --mount=type=cache,target=/home/.yarn YARN_CACHE_FOLDER=/home/.yarn yarn run
 RUN --mount=type=cache,target=/home/.yarn YARN_CACHE_FOLDER=/home/.yarn yarn workspaces focus -A --production
 
 # Build the final production image
-FROM uselagoon/node-20:latest
+FROM uselagoon/node-20:latest AS prod
 
 # Copy the whole /app folder from prod-builder
 COPY --from=prod-builder /app/ /app/

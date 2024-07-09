@@ -1,18 +1,10 @@
 version: '3.2'
 
-x-lagoon-project:
-  # Lagoon project name (leave `&lagoon-project` when you edit this)
-  &lagoon-project lagoon-ui
-
-x-environment: &default-environment
-  LAGOON_PROJECT: *lagoon-project
-  GRAPHQL_API: "${GRAPHQL_API:-http://0.0.0.0:3000/graphql}"
-  KEYCLOAK_API: "${KEYCLOAK_API:-http://0.0.0.0:8088/auth}"
-
 services:
   ui:
     build:
       context: .
+      target: prod
       dockerfile: Dockerfile
     labels:
       lagoon.type: node
@@ -22,31 +14,8 @@ services:
     networks:
       - default
     environment:
-      LAGOON_ROUTE: &default-url http://lagoon-ui.docker.amazee.io
+      LAGOON_ROUTE: http://lagoon-ui.docker.amazee.io
       LAGOON_UI_TOURS_ENABLED: false
-      LAGOON_ENVIRONMENT_TYPE: production
-      <<: *default-environment
-
-  dev:
-    build:
-      context: .
-      target: dev
-      dockerfile: Dockerfile
-    labels:
-      lagoon.type: none
-    command: yarn run dev
-    volumes:
-      - ./src:/app/src
-      - ./.env.defaults:/app/.env.defaults
-      - ./.env.schema:/app/.env.schema
-      - ./package.json:/app/package.json
-    ports:
-      - '3003:3003'
-    networks:
-      - default
-    environment:
-      LAGOON_ROUTE: http://lagoon-dev.docker.amazee.io
-      LAGOON_UI_TOURS_ENABLED: true
-      LAGOON_ENVIRONMENT_TYPE: development
-      <<: *default-environment
-
+      NODE_ENV: production
+      GRAPHQL_API: "${GRAPHQL_API:-https://api.lagoon.amazeeio.cloud/graphql}"
+      KEYCLOAK_API: "${KEYCLOAK_API:-https://keycloak.amazeeio.cloud/auth}"
