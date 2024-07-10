@@ -75,7 +75,6 @@ const GroupMembers = ({
   projects,
   refetch,
 }) => {
-
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('');
 
