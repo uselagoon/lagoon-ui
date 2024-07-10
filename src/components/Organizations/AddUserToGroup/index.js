@@ -116,7 +116,7 @@ export const AddUserToGroup = ({
               </RoleSelect>
             </label>
             <label className="add-user">
-            Invite user to Lagoon
+              Invite user to Lagoon
               <input
                 data-cy="inviteUser"
                 className="inputCheckbox"
