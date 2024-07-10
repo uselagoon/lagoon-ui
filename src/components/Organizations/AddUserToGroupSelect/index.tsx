@@ -158,7 +158,7 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
               </RoleSelect>
             </label>
             <label className="add-user">
-              Add user to Lagoon if required
+            Invite user to Lagoon
               <input
                 data-cy="inviteUser"
                 className="inputCheckbox"
