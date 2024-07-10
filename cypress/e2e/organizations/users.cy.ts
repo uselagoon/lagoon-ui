@@ -17,6 +17,7 @@ describe('Org Users page', () => {
       aliasMutation(req, 'removeUserFromGroup');
       aliasMutation(req, 'addGroupToOrganization');
     });
+    registerIdleHandler('idle');
   });
 
   it('Creates a group', () => {
@@ -29,6 +30,7 @@ describe('Org Users page', () => {
   });
 
   it('Deletes user', () => {
+    cy.waitForNetworkIdle('@idle', 500);
     users.doDeleteUser(testData.organizations.users.email);
   });
 
