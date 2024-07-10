@@ -75,7 +75,6 @@ const GroupMembers = ({
   projects,
   refetch,
 }) => {
-  const duRegex = new RegExp('^default-user@' + groupName.replace('project-', '') + '$', 'g');
 
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('');
@@ -389,11 +388,6 @@ const GroupMembers = ({
           columns={ProjectsColumns}
           labelText="Projects"
           emptyText="No Projects"
-          defaultViewOptions={{
-            selected: false,
-            selectedOnZeroCount: true,
-            type: 'group',
-          }}
           disableUrlMutation
         />
 
