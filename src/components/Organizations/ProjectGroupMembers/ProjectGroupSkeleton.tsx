@@ -1,6 +1,9 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+import { SearchOutlined } from '@ant-design/icons';
+
+import { SearchBar } from '../Orgheader/Styles';
 import { StyledGroupMembers } from './Styles';
 
 const ProjectGroupSkeleton = () => {
@@ -24,10 +27,15 @@ const ProjectGroupSkeleton = () => {
   );
   return (
     <StyledGroupMembers>
-      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Groups</label>
-        <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
+      <div className="tableheader skeleton">
+        <label>Groups</label>
+
+        <SearchBar className="search">
+          <SearchOutlined className="icon" />
+          <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
+        </SearchBar>
       </div>
+
       <div className="data-table">{[...Array<undefined>(numberOfFields)].map((_, idx) => groupsSkeleton(idx))}</div>
     </StyledGroupMembers>
   );

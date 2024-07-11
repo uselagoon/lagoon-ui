@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 
 import { EyeOutlined } from '@ant-design/icons';
@@ -8,7 +8,8 @@ import OrgGroupsLink from 'components/link/Organizations/Group';
 import gql from 'graphql-tag';
 
 import AddGroupToProject from '../AddGroupToProject';
-import { Checkbox } from '../PaginatedTable/Styles';
+import PaginatedTable from '../PaginatedTable/PaginatedTable';
+import { TableActions, Tag } from '../SharedStyles';
 import { StyledGroupMembers } from './Styles';
 
 const REMOVE_GROUP_FROM_PROJECT = gql`
@@ -31,87 +32,62 @@ const ProjectGroupMembers = ({
   refresh,
   orgFriendlyName,
 }) => {
-  const [searchInput, setSearchInput] = useState('');
-
-  const [showDefaults, setShowDefaults] = useState(false);
-
-  const filteredGroups = showDefaults ? groups : groups.filter(group => group.type !== 'project-default-group');
-
-  const filteredMembers = filteredGroups.filter(key => {
-    const sortByName = key.name.toLowerCase().includes(searchInput.toLowerCase());
-    return ['name', 'role', '__typename'].includes(key) ? false : true && sortByName;
-  });
-
-  useEffect(() => {
-    // tick the "show system groups" box if all groups are of that type.
-    const allDefaults = filteredMembers.every(group => group.type === 'project-default-group');
-    if (allDefaults) setShowDefaults(true);
-  }, []);
-
-  return (
-    <StyledGroupMembers>
-      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Groups ({filteredMembers.length})</label>
-        <Checkbox>
-          Show system groups
-          <input
-            type="checkbox"
-            checked={showDefaults}
-            onChange={({ target: { checked } }) => setShowDefaults(checked)}
-          />
-        </Checkbox>
-
-        <input
-          aria-labelledby="search"
-          className="searchInput"
-          type="text"
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          placeholder="Type to search"
-          disabled={groups.length === 0}
-        />
-      </div>
-
-      <div className="data-table">
-        {!filteredMembers.length && <div className="data-none">No groups</div>}
-        {searchInput && !filteredMembers.length && <div className="data-none">No groups matching "{searchInput}"</div>}
-        {filteredMembers.map(group => (
-          <div className="data-row" key={group.id}>
-            <div className="name">
-              <OrgGroupsLink
-                groupSlug={group.name}
-                orgFriendlyName={orgFriendlyName}
-                organizationId={organizationId}
-                organizationSlug={organizationSlug}
-              >
-                {group.name}
-              </OrgGroupsLink>
-            </div>
-            <div className="members">Members: {group.memberCount}</div>
-
-            <div className="labels">
-              {group.type.includes('project-default-group') && (
-                <label className="default-group-label">SYSTEM GROUP</label>
+  const Columns = [
+    {
+      width: '50%',
+      key: 'name',
+      render: g => {
+        return (
+          <OrgGroupsLink
+            groupSlug={g.name}
+            organizationSlug={organizationSlug}
+            organizationId={organizationId}
+            orgFriendlyName={orgFriendlyName}
+            key={g.id}
+          >
+            <span>
+              {g.name}{' '}
+              {g.type === 'project-default-group' && (
+                <Tag style={{ display: 'inline' }} className="default-group-label" $background="#262D65">
+                  SYSTEM GROUP
+                </Tag>
               )}
-            </div>
+            </span>
+          </OrgGroupsLink>
+        );
+      },
+    },
 
-            <div className="actions">
-              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View group">
-                <div className="link">
-                  <>
-                    <OrgGroupsLink
-                      orgFriendlyName={orgFriendlyName}
-                      groupSlug={group.name}
-                      organizationSlug={organizationSlug}
-                      organizationId={organizationId}
-                    >
-                      <EyeOutlined />
-                    </OrgGroupsLink>
-                  </>
-                </div>
-              </Tooltip>
-              {/* even though we can't prevent users from removing the project default group from the api, we can make it harder to do from the ui */}
-              {!group.name.includes('project-' + projectName.toLowerCase()) ? (
+    {
+      width: '15%',
+      key: 'members',
+      render: g => {
+        return typeof g.memberCount !== 'undefined' && <span data-cy="memberCount">Members: {g.memberCount} </span>;
+      },
+    },
+    {
+      width: '35%',
+      key: 'actions',
+      render: function (g) {
+        return (
+          <TableActions>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View group">
+              <div className="link">
+                <>
+                  <OrgGroupsLink
+                    orgFriendlyName={orgFriendlyName}
+                    groupSlug={g.name}
+                    organizationSlug={organizationSlug}
+                    organizationId={organizationId}
+                  >
+                    <EyeOutlined />
+                  </OrgGroupsLink>
+                </>
+              </div>
+            </Tooltip>
+
+            {g.type !== 'project-default-group' && (
+              <>
                 <div className="remove">
                   <Mutation mutation={REMOVE_GROUP_FROM_PROJECT}>
                     {(removeGroupFromProject, { _, called, error }) => {
@@ -123,13 +99,13 @@ const ProjectGroupMembers = ({
                           loading={called}
                           info={{
                             type: 'group',
-                            deleteName: group.name,
+                            deleteName: g.name,
                             projectName: projectName,
                           }}
                           onRemove={() => {
                             removeGroupFromProject({
                               variables: {
-                                groupName: group.name,
+                                groupName: g.name,
                                 projectName: projectName,
                               },
                             }).then(refresh);
@@ -139,13 +115,31 @@ const ProjectGroupMembers = ({
                     }}
                   </Mutation>
                 </div>
-              ) : (
-                <div className="remove"></div>
-              )}
-            </div>
-          </div>
-        ))}
+              </>
+            )}
+          </TableActions>
+        );
+      },
+    },
+  ];
+
+  return (
+    <StyledGroupMembers>
+      <div className="project-wrapper">
+        <PaginatedTable
+          limit={10}
+          data={groups}
+          columns={Columns}
+          defaultViewOptions={{
+            selected: false,
+            selectedOnZeroCount: true,
+            type: 'group',
+          }}
+          emptyText="No groups found"
+          labelText="Groups"
+        />
       </div>
+
       <AddGroupToProject
         projectName={projectName}
         organizationId={organizationId}

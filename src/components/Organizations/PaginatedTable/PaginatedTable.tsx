@@ -17,12 +17,12 @@ import {
   TableRow,
 } from './Styles';
 
+interface NestedData {
+  [key: string]: string | Record<string, string> | string[];
+}
+
 type DataType = {
-  [key: string]:
-    | string
-    | Record<string, string>
-    | Record<string, Pick<Props, 'data'> | string[]>
-    | Array<Record<string, string>>;
+  [key: string]: string | NestedData | Record<string, string> | Array<Record<string, string>>;
   name: string;
   id: string;
 };
@@ -38,8 +38,13 @@ interface Props {
   disableUrlMutation?: boolean;
   defaultViewOptions?: {
     type: 'group' | 'user';
-    selected: boolean;
-  };
+  } & (
+    | { selected: true }
+    | {
+        selected: false;
+        selectedOnZeroCount?: boolean;
+      }
+  );
   numericSortOptions?: {
     key?: string;
     displayName: string;
@@ -100,9 +105,34 @@ const PaginatedTable: FC<Props> = ({
 
   const [unfilteredData, setUnfilteredData] = useState(data);
 
-  const [defaultsSelected, setDefaultsSelected] = useState(
-    (defaultViewOptions && defaultViewOptions.selected) || false
-  );
+  const filteredDataWithoutDefaults = useMemo(() => {
+    let filtered = unfilteredData;
+
+    if (defaultViewOptions) {
+      if (defaultViewOptions.type === 'group') {
+        filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+      }
+      if (defaultViewOptions.type === 'user') {
+        filtered = filtered.filter(dataItem => {
+          //@ts-ignore
+          const filterItem = dataItem.email ? dataItem.email : (dataItem.user.email as string);
+          return !(filterItem as string).startsWith('default-user');
+        });
+      }
+    }
+
+    return filtered;
+  }, [defaultViewOptions, unfilteredData]);
+
+  const [defaultsSelected, setDefaultsSelected] = useState(() => {
+    if (defaultViewOptions?.selected) {
+      return true;
+    }
+    if (defaultViewOptions?.selectedOnZeroCount && filteredDataWithoutDefaults.length === 0) {
+      return true;
+    }
+    return false;
+  });
 
   useEffect(() => {
     setUnfilteredData(data);
@@ -321,6 +351,31 @@ const PaginatedTable: FC<Props> = ({
   const startPage = Math.max(currentPage - Math.floor(maxPagination / 2), 1);
   const endPage = Math.min(startPage + maxPagination - 1, totalPages);
 
+  const systemDefaultCount = useMemo(() => {
+    let count = 0;
+
+    if (defaultViewOptions) {
+      if (defaultViewOptions?.type === 'group') {
+        count = unfilteredData.filter(dataItem => dataItem.type === 'project-default-group').length;
+      }
+      if (defaultViewOptions?.type === 'user') {
+        count = unfilteredData.filter(dataItem => {
+          let filterItem = '';
+
+          if (dataItem.email) {
+            filterItem = dataItem.email as string;
+          }
+          if (dataItem.user && typeof dataItem.user === 'object' && 'email' in dataItem.user) {
+            filterItem = dataItem.user.email as string;
+          }
+
+          return filterItem.startsWith('default-user');
+        }).length;
+      }
+    }
+    return count;
+  }, [defaultViewOptions, unfilteredData]);
+
   return (
     <StyledTable className="paginatedTable">
       <Filters className="filters">
@@ -333,7 +388,7 @@ const PaginatedTable: FC<Props> = ({
         )}
         {defaultViewOptions ? (
           <Checkbox>
-            {defaultViewOptions.type === 'group' ? 'Show system groups' : 'Show default users'}
+            {defaultViewOptions.type === 'group' ? 'Show system groups' : 'Show default users'} ({systemDefaultCount})
             <input
               type="checkbox"
               checked={defaultsSelected}

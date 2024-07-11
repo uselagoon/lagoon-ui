@@ -13,9 +13,15 @@ export const StyledProjectNotifications = styled.div`
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
+  .skeleton {
+    margin-top: 40px;
+    input {
+      padding-left: 30px;
+    }
+  }
   .name {
     font-family: 'roboto', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     height: 100%;
     display: flex;
     align-items: center;

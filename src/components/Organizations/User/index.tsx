@@ -339,6 +339,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
             emptyText="No groups"
             defaultViewOptions={{
               selected: false,
+              selectedOnZeroCount: true,
               type: 'group',
             }}
           />
