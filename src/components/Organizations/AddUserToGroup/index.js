@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import Button from 'components/Button';
-// @TODO: add this once the logic exists
 import withLogic from 'components/Organizations/AddUserToGroup/logic';
 import gql from 'graphql-tag';
 
@@ -117,6 +118,13 @@ export const AddUserToGroup = ({
             </label>
             <label className="add-user">
               Invite user to Lagoon
+              <Tooltip
+                overlayClassName="orgTooltip"
+                title="This will invite the user to Lagoon if the user doesn't exist. If the user already exists, it will just skip the invite."
+                placement="bottom"
+              >
+                <InfoCircleOutlined style={{ fontSize: '1rem' }} />
+              </Tooltip>
               <input
                 data-cy="inviteUser"
                 className="inputCheckbox"
