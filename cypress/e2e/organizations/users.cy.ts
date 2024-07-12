@@ -17,7 +17,6 @@ describe('Org Users page', () => {
       aliasMutation(req, 'removeUserFromGroup');
       aliasMutation(req, 'addGroupToOrganization');
     });
-
     registerIdleHandler('idle');
   });
 
