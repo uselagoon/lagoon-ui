@@ -75,8 +75,6 @@ const GroupMembers = ({
   projects,
   refetch,
 }) => {
-  const duRegex = new RegExp('^default-user@' + groupName.replace('project-', '') + '$', 'g');
-
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('');
 
@@ -356,6 +354,7 @@ const GroupMembers = ({
           defaultViewOptions={{
             type: 'user',
             selected: false,
+            selectedOnZeroCount: true,
           }}
         />
         <div className="tableAction">

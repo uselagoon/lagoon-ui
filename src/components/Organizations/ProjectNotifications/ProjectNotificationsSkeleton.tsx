@@ -1,6 +1,9 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+import { SearchOutlined } from '@ant-design/icons';
+
+import { SearchBar } from '../Orgheader/Styles';
 import { StyledProjectNotifications } from './Styles';
 
 const ProjectNotificationsSkeleton = () => {
@@ -21,10 +24,15 @@ const ProjectNotificationsSkeleton = () => {
   );
   return (
     <StyledProjectNotifications>
-      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Notifications</label>
-        <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
+      <div className="tableheader skeleton">
+        <label>Notifications </label>
+
+        <SearchBar className="search">
+          <SearchOutlined className="icon" />
+          <input aria-labelledby="search" className="searchInput" type="text" placeholder="Type to search" disabled />
+        </SearchBar>
       </div>
+
       <div className="data-table">
         {[...Array<undefined>(numberOfFields)].map((_, idx) => notificationsSkeleton(idx))}
       </div>

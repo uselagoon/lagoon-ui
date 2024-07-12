@@ -4,6 +4,15 @@ import styled from 'styled-components';
 import { sharedTableStyles } from '../SharedStyles';
 
 export const StyledGroupMembers = styled.div`
+  .project-wrapper {
+    margin-top: 20px;
+  }
+  .skeleton {
+    margin-top: 40px;
+    input {
+      padding-left: 30px;
+    }
+  }
   .default-group-label {
     color: ${color.white};
     display: inline-block;

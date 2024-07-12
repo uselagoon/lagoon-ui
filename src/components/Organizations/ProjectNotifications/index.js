@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
 import OrgNotificationsLink from 'components/link/Organizations/Notifications';
 import gql from 'graphql-tag';
 
 import AddNotificationToProject from '../AddNotificationToProject';
+import { SearchBar } from '../Orgheader/Styles';
 import { TableActions } from '../SharedStyles';
 import { StyledProjectNotifications } from './Styles';
 
@@ -45,17 +46,21 @@ const ProjectNotifications = ({
 
   return (
     <StyledProjectNotifications>
-      <div className="header" style={{ marginTop: '20px', paddingRight: '0' }}>
-        <label style={{ paddingLeft: '0' }}>Notifications ({notifications.length})</label>
-        <input
-          aria-labelledby="search"
-          className="searchInput"
-          type="text"
-          value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
-          placeholder="Type to search"
-          disabled={notifications.length === 0}
-        />
+      <div className="tableheader">
+        <label>Notifications ({notifications.length})</label>
+
+        <SearchBar className="search">
+          <SearchOutlined className="icon" />
+          <input
+            aria-labelledby="search"
+            className="searchBar"
+            type="text"
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
+            placeholder="Type to search"
+            disabled={notifications.length === 0}
+          />
+        </SearchBar>
       </div>
 
       <div className="data-table">
