@@ -27,7 +27,7 @@ import Tour from '../tours/Tour';
 import { TourContextProvider } from '../tours/TourContext';
 
 const { LAGOON_UI_TOURS_ENABLED } = getConfig().publicRuntimeConfig;
-const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'enabled';
+const tourEnabled = LAGOON_UI_TOURS_ENABLED === 'true';
 
 // lazy load animation features
 const loadFeatures = () => import('components/common/features').then(res => res.default);

@@ -90,16 +90,34 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - 
+        name: Cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            yarn-cache
+          key: cache-${{ hashFiles('**/yarn.lock') }}
+      - 
+        name: inject cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v3.1.0
+        with:
+          cache-map: |
+            {
+              "yarn-cache": "/home/.yarn"
+            }
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
       -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          # platforms: linux/amd64
           build-args: |
             "LAGOON_VERSION=${{ env.VERSION }}"
             "BUILD=${{ env.BUILD }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
