@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
-import { Col, Modal, Row, Space } from 'antd';
+import { Col, Modal, Row, Space, notification } from 'antd';
 import Button from 'components/Button';
 import DeleteUserSSHPublicKey from 'lib/mutation/DeleteUserSSHPublicKey';
 import UpdateUserSSHPublicKey from 'lib/mutation/UpdateUserSSHPublicKey';
@@ -19,17 +19,29 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
   const [editState, setEditState] = useState({
     id: '',
     name: '',
-    publicKey: '',
+    keyValue: '',
   });
 
   const closeModal = () => {
-    setEditState({ name: '', publicKey: '' });
+    setEditState({ name: '', keyValue: '' });
     setModalOpen(false);
   };
 
   const openModal = keyObject => {
     setEditState(keyObject);
     setModalOpen(true);
+  };
+
+  const [api, contextHolder] = notification.useNotification({ maxCount: 1 });
+
+  const openNotificationWithIcon = errorMessage => {
+    api['error']({
+      message: 'There was a problem updating the SSH key.',
+      description: errorMessage,
+      placement: 'top',
+      duration: 0,
+      style: { width: '500px' },
+    });
   };
 
   useEffect(() => {
@@ -78,35 +90,35 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                           <Space>
                             <Mutation mutation={UpdateUserSSHPublicKey} onError={e => console.error(e)}>
                               {(updateUserSSHPublicKey, { loading, called, error, data }) => {
-                                if (error) {
-                                  return <div>{error.message}</div>;
-                                }
-
                                 if (data) {
                                   handleRefetch();
                                   closeModal();
                                 }
 
                                 return (
-                                  <Button
-                                    loading={called || loading}
-                                    testId="updateKey"
-                                    action={() =>
-                                      updateUserSSHPublicKey({
-                                        variables: {
-                                          input: {
-                                            id: key.id,
-                                            patch: {
-                                              name: editState.name,
-                                              publicKey: editState.publicKey,
+                                  <>
+                                    {contextHolder}
+                                    <Button
+                                      loading={called || loading}
+                                      testId="updateKey"
+                                      action={() =>
+                                        updateUserSSHPublicKey({
+                                          variables: {
+                                            input: {
+                                              id: key.id,
+                                              patch: {
+                                                name: editState.name,
+                                                publicKey: editState.keyValue,
+                                              },
                                             },
                                           },
-                                        },
-                                      })
-                                    }
-                                  >
-                                    Update
-                                  </Button>
+                                        })
+                                      }
+                                    >
+                                      Update
+                                    </Button>
+                                    {error && openNotificationWithIcon(error.message)}
+                                  </>
                                 );
                               }}
                             </Mutation>
@@ -139,9 +151,9 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                           <input
                             className="inputKey fullSize"
                             type="text"
-                            value={editState.publicKey}
+                            value={editState.keyValue}
                             onChange={e => {
-                              setEditState({ ...editState, publicKey: e.target.value });
+                              setEditState({ ...editState, keyValue: e.target.value });
                             }}
                           />
                         </Col>
