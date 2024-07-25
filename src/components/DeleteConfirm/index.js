@@ -11,6 +11,7 @@ import { color } from 'lib/variables';
 export const DeleteConfirm = ({
   deleteType,
   deleteName,
+  deleteMessage,
   icon,
   onDelete,
   inputValue,
@@ -28,11 +29,15 @@ export const DeleteConfirm = ({
       </Button>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm delete ${deleteType}`}>
         <React.Fragment>
-          <p>
-            This will delete all resources associated with the {deleteType}{' '}
-            <span className="delete-name">{deleteName}</span> and cannot be undone. Make sure this is something you
-            really want to do!
-          </p>
+          {deleteMessage ? (
+            <p>{deleteMessage}</p>
+          ) : (
+            <p>
+              This will delete all resources associated with the {deleteType}{' '}
+              <span className="delete-name">{deleteName}</span> and cannot be undone. Make sure this is something you
+              really want to do!
+            </p>
+          )}
           <p>Type the name of the {deleteType} to confirm.</p>
           <div className="form-input">
             <input type="text" value={inputValue} onChange={setInputValue} data-cy="confirm-input" />
