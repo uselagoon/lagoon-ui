@@ -69,7 +69,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
 
           {keys &&
             keys.map(key => (
-              <div className="data-row" key={key.id}>
+              <div className="data-row" key={key.id} data-cy="data-row">
                 <div className="name">
                   {key.id} - {key.name}
                 </div>

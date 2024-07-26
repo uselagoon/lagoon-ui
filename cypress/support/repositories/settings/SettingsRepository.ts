@@ -10,7 +10,16 @@ export default class SettingsRepository {
   getSubmitBtn() {
     return cy.getBySel('sshKey').parent().next();
   }
-  getDeleteBtn() {
-    return cy.getBySel('deleteKey').getBySel('delete');
+
+  getKeyToDelete() {
+    return cy.getBySel('data-row');
+  }
+  getDeleteBtn(name: string) {
+    this.getKeyToDelete()
+      .contains(name)
+      .parent()
+      .within(() => {
+        cy.getBySel('deleteKey').getBySel('delete').click();
+      });
   }
 }
