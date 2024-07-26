@@ -11,6 +11,6 @@ export default class SettingsRepository {
     return cy.getBySel('sshKey').parent().next();
   }
   getDeleteBtn() {
-    return cy.getBySel('deleteKey').getBySel('deleteBtn');
+    return cy.getBySel('deleteKey').getBySel('delete');
   }
 }

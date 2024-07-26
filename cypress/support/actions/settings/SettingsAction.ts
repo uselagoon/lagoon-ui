@@ -17,7 +17,10 @@ export default class SettingAction {
   }
 
   deleteSshKey(name: string) {
-    settings.getDeleteBtn().should('be.visible').click({ force: true, multiple: true });
+    settings.getDeleteBtn().click();
+    cy.log('enter the  name and confirm');
+    cy.getBySel('confirm-input').type(name);
+    cy.getBySel('deleteConfirm').click();
     cy.contains(name).should('not.exist');
   }
 }

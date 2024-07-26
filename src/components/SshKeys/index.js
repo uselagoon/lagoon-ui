@@ -190,7 +190,6 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                             deleteType="SSH Key"
                             deleteMessage={deleteMessage}
                             deleteName={key.name}
-                            testId="deleteBtn"
                             loading={called}
                             variant="red"
                             onDelete={() =>
