@@ -28,7 +28,8 @@ const ResultsLimited = ({ limit, changeLimit, message, disableHandler }) => {
   const handleChange = values => {
     const limitValueParsed = parseInt(values.value);
     if (!Number.isNaN(limitValueParsed) && changeLimit) {
-      history.pushState(null, '', window.location.href.split('?')[0] + '?limit=' + values.value);
+      const newUrl = `${window.location.pathname}?limit=${limitValueParsed}${window.location.hash}`;
+      history.replaceState({ ...history.state, as: newUrl, url: newUrl }, '', newUrl);
       changeLimit(limitValueParsed === -1 ? null : limitValueParsed);
     }
   };
