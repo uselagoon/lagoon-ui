@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import CancelDeployment from 'components/CancelDeployment';
 import { getDeploymentDuration } from 'components/Deployment';
+import { formatString } from 'components/DeploymentsByFilter';
 import HoverTag from 'components/HoverTag';
 import DeploymentLink from 'components/link/Deployment';
 import DeploymentsLink from 'components/link/Deployments';
@@ -49,7 +50,7 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
         <div className="data-row" key={idx} data-deployment={deployment.id}>
           <div className="project">
             <ProjectLink projectSlug={deployment.environment.project.name}>
-              {deployment.environment.project.name}
+              {formatString(deployment.environment.project.name, 'project')}
             </ProjectLink>
           </div>
           <div className="environment">
@@ -57,7 +58,7 @@ const BulkDeployments: FC<BulkDeploymentsProps> = ({ deployments }) => (
               environmentSlug={deployment.environment.openshiftProjectName}
               projectSlug={deployment.environment.project.name}
             >
-              {deployment.environment.name}
+              {formatString(deployment.environment.name, 'environment')}
             </DeploymentsLink>
           </div>
           <div className="name">
