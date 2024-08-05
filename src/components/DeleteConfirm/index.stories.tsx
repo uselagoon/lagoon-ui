@@ -45,6 +45,7 @@ export const WithConfirmationBlocked = ({
     icon={<DeleteOutlined />}
     deleteType="environment"
     deleteName="Forty-two"
+    deleteMessage
     onDelete={onDeleteFunction}
     inputValue=""
     setInputValue={setInputValueFunction}

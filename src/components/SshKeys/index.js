@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
-import { Col, Modal, Row, Space } from 'antd';
+import { Col, Modal, Row, Space, notification } from 'antd';
 import Button from 'components/Button';
+import DeleteConfirm from 'components/DeleteConfirm';
 import DeleteUserSSHPublicKey from 'lib/mutation/DeleteUserSSHPublicKey';
 import UpdateUserSSHPublicKey from 'lib/mutation/UpdateUserSSHPublicKey';
 import Me from 'lib/query/Me';
+import { color } from 'lib/variables';
 import moment from 'moment';
 
 import { StyledKeys } from './StyledKeys';
@@ -28,8 +30,23 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
   };
 
   const openModal = keyObject => {
-    setEditState(keyObject);
+    setEditState({ ...keyObject, publicKey: getPK(keyObject) });
     setModalOpen(true);
+  };
+
+  const [api, contextHolder] = notification.useNotification({ maxCount: 1 });
+
+  const getPK = key => {
+    return key.keyType + ' ' + key.keyValue;
+  };
+  const openNotificationWithIcon = errorMessage => {
+    api['error']({
+      message: 'There was a problem updating the SSH key.',
+      description: errorMessage,
+      placement: 'top',
+      duration: 0,
+      style: { width: '500px' },
+    });
   };
 
   useEffect(() => {
@@ -52,7 +69,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
 
           {keys &&
             keys.map(key => (
-              <div className="data-row" key={key.id}>
+              <div className="data-row" key={key.id} data-cy="data-row">
                 <div className="name">
                   {key.id} - {key.name}
                 </div>
@@ -78,35 +95,35 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                           <Space>
                             <Mutation mutation={UpdateUserSSHPublicKey} onError={e => console.error(e)}>
                               {(updateUserSSHPublicKey, { loading, called, error, data }) => {
-                                if (error) {
-                                  return <div>{error.message}</div>;
-                                }
-
                                 if (data) {
                                   handleRefetch();
                                   closeModal();
                                 }
 
                                 return (
-                                  <Button
-                                    loading={called || loading}
-                                    testId="updateKey"
-                                    action={() =>
-                                      updateUserSSHPublicKey({
-                                        variables: {
-                                          input: {
-                                            id: key.id,
-                                            patch: {
-                                              name: editState.name,
-                                              publicKey: editState.publicKey,
+                                  <>
+                                    {contextHolder}
+                                    <Button
+                                      loading={called || loading}
+                                      testId="updateKey"
+                                      action={() =>
+                                        updateUserSSHPublicKey({
+                                          variables: {
+                                            input: {
+                                              id: key.id,
+                                              patch: {
+                                                name: editState.name,
+                                                publicKey: editState.publicKey,
+                                              },
                                             },
                                           },
-                                        },
-                                      })
-                                    }
-                                  >
-                                    Update
-                                  </Button>
+                                        })
+                                      }
+                                    >
+                                      Update
+                                    </Button>
+                                    {error && openNotificationWithIcon(error.message)}
+                                  </>
                                 );
                               }}
                             </Mutation>
@@ -160,12 +177,22 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                           return <div>{error.message}</div>;
                         }
 
+                        const deleteMessage = (
+                          <>
+                            This action will delete the SSH key{' '}
+                            <span style={{ color: color.blue, fontWeight: 'bold' }}>{key.name}</span> and cannot be
+                            undone.
+                          </>
+                        );
+
                         return (
-                          <Button
-                            testId="deleteBtn"
+                          <DeleteConfirm
+                            deleteType="SSH Key"
+                            deleteMessage={deleteMessage}
+                            deleteName={key.name}
                             loading={called}
                             variant="red"
-                            action={() =>
+                            onDelete={() =>
                               deleteUserSSHPublicKey({
                                 variables: {
                                   input: {
@@ -174,9 +201,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                                 },
                               })
                             }
-                          >
-                            Delete
-                          </Button>
+                          />
                         );
                       }}
                     </Mutation>

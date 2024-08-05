@@ -68,13 +68,18 @@ body {
   }
 }
 .ant-modal .ant-modal-content{
-  background: ${props => (props.theme.colorScheme === 'dark' ? '#eaeaea' : '#fff')};
+  background:${props => props.theme.backgrounds.primary};;
   .ant-modal-header{
     border-radius: 0;
     background-color: transparent;
+    
+    .ant-modal-title{
+      color: ${props => props.theme.texts.primary};
+    }
   }
   .ant-modal-body {
     margin-block: 1rem;
+    color: ${props => props.theme.texts.primary};
     > * {
       margin-bottom: 0.5rem;
     }
