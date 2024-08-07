@@ -304,7 +304,7 @@ const OrgNewProject = ({
                                 productionEnvironment: inputProdEnv,
                                 organization: parseInt(organizationId, 10),
                                 addOrgOwner: addUserToProject,
-                                ...(pullRequests ? { pullRequests } : {}),
+                                ...(pullRequests ? { pullrequests: pullRequests } : {}),
                                 ...(branches ? { branches } : {}),
                               },
                             });
