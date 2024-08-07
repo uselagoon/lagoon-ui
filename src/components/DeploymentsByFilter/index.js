@@ -11,6 +11,55 @@ import moment from 'moment';
 import useSortableData from '../../lib/withSortedItems';
 import { Deployments, DeploymentsDataTable, DeploymentsHeader } from './StyledDeploymentsByFilter';
 
+export const formatString = (textToEdit, labelClassToQuery) => {
+  // if the string is bigger than the data-row container, then add new lines.
+  const getTextWidth = string => {
+    // gets the width of a string that *will* be rendered
+    const canvas = new OffscreenCanvas(500, 200);
+    const context = canvas.getContext('2d');
+    context.font = getComputedStyle(document.body).font;
+    return context.measureText(string).width;
+  };
+
+  const labelWidth = document.querySelector(`.data-row > .${labelClassToQuery}`)?.getBoundingClientRect().width;
+
+  const editString = string => {
+    // find all "-" or "/" and replace with line breaks prefixed by the symbol found.
+    const regex = /[-\/]/g;
+    return string.replace(regex, match => match + '\n');
+  };
+
+  const combine = strings => {
+    let combined = '';
+    let line = '';
+
+    if (strings.length === 1) return strings[0];
+
+    for (let i = 0; i < strings.length; i++) {
+      const newLine = line + strings[i];
+      const width = getTextWidth(newLine);
+
+      if (width <= labelWidth + 30) {
+        line = newLine;
+      } else {
+        combined += line + '\n';
+        line = strings[i];
+      }
+      if (i === strings.length - 1 && getTextWidth(line) <= labelWidth + 30) {
+        combined += line;
+      } else if (i === strings.length - 1) {
+        combined += '\n' + line;
+      }
+    }
+    return combined;
+  };
+
+  if (labelWidth < getTextWidth(textToEdit)) {
+    return combine(editString(textToEdit).split('\n'));
+  }
+  return textToEdit;
+};
+
 /**
  * The primary list of running deployments.
  */
@@ -21,55 +70,6 @@ const DeploymentsByFilter = ({ deployments }) => {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [hasFilter, setHasFilter] = useState(false);
-
-  const formatString = (textToEdit, labelClassToQuery) => {
-    // if the string is bigger than the data-row container, then add new lines.
-    const getTextWidth = string => {
-      // gets the width of a string that *will* be rendered
-      const canvas = new OffscreenCanvas(500, 200);
-      const context = canvas.getContext('2d');
-      context.font = getComputedStyle(document.body).font;
-      return context.measureText(string).width;
-    };
-
-    const labelWidth = document.querySelector(`.data-row > .${labelClassToQuery}`)?.getBoundingClientRect().width;
-
-    const editString = string => {
-      // find all "-" or "/" and replace with line breaks prefixed by the symbol found.
-      const regex = /[-\/]/g;
-      return string.replace(regex, match => match + '\n');
-    };
-
-    const combine = strings => {
-      let combined = '';
-      let line = '';
-
-      if (strings.length === 1) return strings[0];
-
-      for (let i = 0; i < strings.length; i++) {
-        const newLine = line + strings[i];
-        const width = getTextWidth(newLine);
-
-        if (width <= labelWidth + 30) {
-          line = newLine;
-        } else {
-          combined += line + '\n';
-          line = strings[i];
-        }
-        if (i === strings.length - 1 && getTextWidth(line) <= labelWidth + 30) {
-          combined += line;
-        } else if (i === strings.length - 1) {
-          combined += '\n' + line;
-        }
-      }
-      return combined;
-    };
-
-    if (labelWidth < getTextWidth(textToEdit)) {
-      return combine(editString(textToEdit).split('\n'));
-    }
-    return textToEdit;
-  };
 
   const handleSearchFilterChange = event => {
     setHasFilter(false);
