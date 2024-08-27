@@ -27,5 +27,11 @@ ENV GRAPHQL_API=$GRAPHQL_API
 # Build app
 RUN yarn run build
 
+COPY plugins/images/* /app/src/static/images/
+COPY plugins/javascript/* /app/src/static/
+COPY plugins/css/* /app/src/static/
+
+COPY plugins/plugins.json /app/plugins.json
+
 EXPOSE 3000
 CMD ["yarn", "start"]
