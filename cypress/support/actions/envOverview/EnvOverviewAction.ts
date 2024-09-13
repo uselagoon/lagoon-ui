@@ -47,7 +47,7 @@ export default class EnvOverviewAction {
 
     const errorMessage = `Unauthorized: You don\'t have permission to "delete:${
       branch === 'main' ? 'production' : 'development'
-    }" on "environment": {"project":18}`;
+    }" on "environment"`;
 
     cy.wait('@gqldeleteEnvironmentMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);

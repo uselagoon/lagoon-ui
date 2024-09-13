@@ -89,7 +89,7 @@ export default class NotificationsAction {
     cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`).then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = `Unauthorized: You don't have permission to "addNotification" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addNotification" on "organization"`;
 
       expect(interception.response?.body).to.have.property('errors');
 

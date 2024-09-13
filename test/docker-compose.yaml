@@ -1,5 +1,3 @@
-version: '3.2'
-
 name: lagoon-minimal
 
 services:
@@ -41,12 +39,12 @@ services:
     networks:
       - default
     environment:
-      - KEYCLOAK_URL=http://172.17.0.1:38088
+      - KEYCLOAK_FRONTEND_URL=http://172.17.0.1:38088
       - NODE_ENV=development
       - OPENSEARCH_INTEGRATION_ENABLED=false
       - DISABLE_CORE_HARBOR=true
       - CI=${CI:-true}
-      - S3_FILES_HOST=http://0.0.0.0:39000
+      - S3_FILES_HOST=http://172.17.0.1:39000
       - S3_BAAS_ACCESS_KEY_ID=minio
       - S3_BAAS_SECRET_ACCESS_KEY=minio123
       - CONSOLE_LOGGING_LEVEL=trace

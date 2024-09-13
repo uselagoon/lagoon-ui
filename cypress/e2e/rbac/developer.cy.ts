@@ -85,7 +85,7 @@ describe('DEVELOPER permission test suites', () => {
       cy.wait('@gqladdEnvVariableMutation').then(interception => {
         expect(interception.response?.statusCode).to.eq(200);
 
-        const errorMessage = 'Unauthorized: You don\'t have permission to "project:add" on "env_var": {"project":18}';
+        const errorMessage = 'Unauthorized: You don\'t have permission to "project:add" on "env_var"';
         expect(interception.response?.body).to.have.property('errors');
 
         cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
