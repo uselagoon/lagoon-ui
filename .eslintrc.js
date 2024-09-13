@@ -1,13 +1,12 @@
-const path = require('path');
-module.exports = {
-  extends: ['next', 'plugin:storybook/recommended'],
+import path from "path";
+
+export default {
+  extends: ['next/core-web-vitals', 'next/typescript', 'plugin:storybook/recommended'],
   rules: {
     'import/no-anonymous-default-export': 'off',
-    'react/no-unescaped-entities': 0,
     'react/display-name': 'off',
   },
   ignorePatterns: ['src/**/*.stories.js', 'src/**/*.stories.tsx', 'src/tours'],
-
   overrides: [
     {
       files: ['src/**/*.ts', 'src/**/*.tsx'],
@@ -37,6 +36,7 @@ module.exports = {
         '@typescript-eslint/ban-ts-comment': 'off',
         'no-unused-vars': 'off',
         'require-await': 'off',
+        "react/no-unescaped-entities": "off",
       },
     },
   ],
