@@ -58,7 +58,7 @@ export default class ProjectAction {
       .should('exist')
       .should(
         'include.text',
-        'GraphQL error: Unauthorized: You don\'t have permission to "deploy:development" on "environment": {"project":18}'
+        'GraphQL error: Unauthorized: You don\'t have permission to "deploy:development" on "environment"'
       );
   }
 }

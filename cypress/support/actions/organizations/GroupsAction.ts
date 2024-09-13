@@ -31,7 +31,7 @@ export default class GroupAction {
     cy.wait('@gqladdGroupToOrganizationMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization"`;
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
