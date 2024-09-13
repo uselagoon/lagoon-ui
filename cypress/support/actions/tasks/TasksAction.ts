@@ -35,8 +35,7 @@ export default class TasksAction {
     cy.wait('@gqltaskDrushSqlDumpMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushSqlDump:production" on "task"';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "drushSqlDump:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -56,8 +55,7 @@ export default class TasksAction {
     cy.wait('@gqltaskDrushArchiveDumpMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushArchiveDump:production" on "task"';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "drushArchiveDump:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -77,8 +75,7 @@ export default class TasksAction {
     cy.wait('@gqltaskDrushUserLoginMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushUserLogin:production" on "task"';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "drushUserLogin:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });

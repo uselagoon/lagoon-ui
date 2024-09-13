@@ -181,8 +181,7 @@ describe('REPORTER permission test suites', () => {
 
       cy.waitForNetworkIdle('@idle', 500);
 
-      const errMessage =
-        'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup"';
+      const errMessage = 'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup"';
 
       cy.get('main').should('exist').find('p').should('exist').and('have.text', errMessage);
     });
