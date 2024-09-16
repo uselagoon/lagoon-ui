@@ -39,7 +39,17 @@ jobs:
 
   cypress-tests:
     runs-on: ubuntu-latest
-
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        lagoon_image_tag: ["main"]
+        lagoon_image_repo: ["testlagoon"]
+        experimental: [false]
+        # include:
+        #   - lagoon_image_tag: "v2.20.1"
+        #     lagoon_image_repo: "uselagoon"
+        #     experimental: true
     # needs: [format-check, lint]
 
     steps:
@@ -53,7 +63,7 @@ jobs:
 
     - name: Build and start Lagoon-minimal
       run: |
-        make development-api
+        make development-api LAGOON_CORE_IMAGE_REPO=${{matrix.lagoon_image_repo}} LAGOON_CORE_IMAGE_TAG=${{matrix.lagoon_image_tag}}
 
     - name: Start ui
       env:
