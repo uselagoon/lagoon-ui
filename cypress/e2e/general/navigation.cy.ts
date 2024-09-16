@@ -46,7 +46,7 @@ describe('Navigation tests', () => {
 
       navigation.getLinkElement('account').click();
 
-      const redirect = `${Cypress.env('keycloak')}/auth/realms/lagoon/account/`;
+      const redirect = `${Cypress.env('keycloak')}/realms/lagoon/account/`;
       cy.origin(redirect, { args: { redirect } }, ({ redirect }) => {
         cy.location().should(loc => {
           expect(loc.toString()).to.eq(redirect);
