@@ -21,7 +21,14 @@ These values can also be updated in `docker-compose.yml`.
 
 ### Docker
 
-Note: Within `docker-compose.yml` `GRAPHQL_API` & `KEYCLOAK_API` will need to be set to
+Docker Compose is configured to deploy two services locally:
+
+- dev (0.0.0.0:3003): A live updating development build, using volumes to mount from /src and rebuild-on the fly
+- ui (0.0.0.0:3000): A built, production ready implementation of the code in the repo
+
+Lagoon will only deploy the "ui" version into a cluster.
+
+Note: Within `docker-compose.yml` `GRAPHQL_API` & `KEYCLOAK_API` will need to be set to:
 
 ```
   GRAPHQL_API: "${GRAPHQL_API:-https://api.lagoon.amazeeio.cloud/graphql}"
