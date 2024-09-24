@@ -25,6 +25,6 @@
       "@/components/*": ["./src/components/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "styled.d.ts", "server.tjs", "src/lib/apolloClient.js", "src/app/api/auth/[...nextauth]/route.ts", "src/lib/auth.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "styled.d.ts", "server.tjs", "src/lib/apolloClient.js", "src/app/api/auth/[...nextauth]/route.ts", "src/auth.ts"],
   "exclude": ["node_modules", "**/cypress/**"]
 }

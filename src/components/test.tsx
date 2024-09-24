@@ -1,11 +1,18 @@
-"use client";
+'use client';
 
-import { useSession,signIn, signOut } from "next-auth/react";
+import { signIn, useSession } from 'next-auth/react';
 
-export default function Test(){
+import { SignOutBtn } from './auth/SignOut';
 
-    const {data} = useSession()
-    console.log( data )
+export default function Test() {
+  const { status } = useSession();
 
-    return <button onClick={() => signIn("keycloak")}>SIGN IN</button>
+  return (
+    <>
+      {status === 'loading' || status === 'authenticated' ? null : (
+        <button onClick={() => signIn('keycloak')}>SIGN IN</button>
+      )}
+      <SignOutBtn />
+    </>
+  );
 }

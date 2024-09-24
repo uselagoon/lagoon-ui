@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import {SessionProvider} from "next-auth/react"
+import { ReactNode } from 'react';
 
-const ProviderWrapper = ({children})=>{
-    return <SessionProvider>
-        {children}
-    </SessionProvider>
-}
-export default ProviderWrapper
+import { SessionProvider } from 'next-auth/react';
+
+const AuthProvider = ({ children }: { children: ReactNode }) => {
+  return <SessionProvider refetchInterval={240}>{children}</SessionProvider>;
+};
+export default AuthProvider;

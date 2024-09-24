@@ -1,43 +1,28 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 
-import './globals.css';
-import ProviderWrapper from '../contexts/SessionWrapper';
+import SessionRedirect from '../components/auth/SessionRedirect';
 import AppProvider from '../contexts/AppContext';
-
-
-
-// const geistSans = localFont({
-//   src: './fonts/GeistVF.woff',
-//   variable: '--font-geist-sans',
-//   weight: '100 900',
-// });
-// const geistMono = localFont({
-//   src: './fonts/GeistMonoVF.woff',
-//   variable: '--font-geist-mono',
-//   weight: '100 900',
-// });
+import AuthProvider from '../contexts/SessionWrapper';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Lagoon UI',
   description: '',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
     <html lang="en">
       <body>
-      <ProviderWrapper>
-        <AppProvider>
-        {children}
-      </AppProvider>
-      </ProviderWrapper>
+        <AuthProvider>
+          <SessionRedirect>
+            <AppProvider>{children}</AppProvider>
+          </SessionRedirect>
+        </AuthProvider>
       </body>
     </html>
   );

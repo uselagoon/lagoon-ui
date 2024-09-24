@@ -1,11 +1,13 @@
+'use client';
 
-"use client";
+import React, { ReactNode } from 'react';
 
-import React, { ReactNode } from "react";
-import { GlobalStyles, PageContainer, UIThemeProvider } from "@uselagoon/ui-library";
-import AntdRegistry from "../lib/AntdRegistry";
-import StyledComponentsRegistry from "../lib/StyledComponentsRegistry";
-import Link from "next/link";
+import Link from 'next/link';
+
+import { GlobalStyles, PageContainer, UIThemeProvider } from '@uselagoon/ui-library';
+
+import AntdRegistry from '../lib/AntdRegistry';
+import StyledComponentsRegistry from '../lib/StyledComponentsRegistry';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
   return (
@@ -13,7 +15,14 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
       <StyledComponentsRegistry>
         <UIThemeProvider>
           <GlobalStyles />
-          <PageContainer showHeader headerProps={{userInfo:{email: ""}, toggleTheme:()=>{}, navLinks:[<a>Home</a>, <a>Organizations</a>]}}> 
+          <PageContainer
+            showHeader
+            headerProps={{
+              userInfo: { email: '' },
+              toggleTheme: () => {},
+              navLinks: [<a>Home</a>, <a>Organizations</a>],
+            }}
+          >
             {children}
           </PageContainer>
         </UIThemeProvider>
