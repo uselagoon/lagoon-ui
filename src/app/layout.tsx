@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
-import PageSessionWrapper from '../components/auth/PageSessionWrapper';
+import ClientSessionWrapper from '../components/auth/ClientSessionWrapper';
+import ServerSessionWrapper from '../components/auth/ServerSessionWrapper';
 import AppProvider from '../contexts/AppContext';
 import AuthProvider from '../contexts/AuthProvider';
 import './globals.css';
@@ -19,9 +20,11 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          <PageSessionWrapper>
-            <AppProvider>{children}</AppProvider>
-          </PageSessionWrapper>
+          <ServerSessionWrapper>
+            <ClientSessionWrapper>
+              <AppProvider>{children}</AppProvider>
+            </ClientSessionWrapper>
+          </ServerSessionWrapper>
         </AuthProvider>
       </body>
     </html>

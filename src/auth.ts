@@ -88,6 +88,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: '/api/login',
     signOut: '/api/logout',
+    error: '/api/errRedirect',
   },
   trustHost: true,
 });
