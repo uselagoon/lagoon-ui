@@ -4,6 +4,7 @@ import ClientSessionWrapper from '../components/auth/ClientSessionWrapper';
 import ServerSessionWrapper from '../components/auth/ServerSessionWrapper';
 import AppProvider from '../contexts/AppContext';
 import AuthProvider from '../contexts/AuthProvider';
+import StyleProvider from '../contexts/StyleProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default async function RootLayout({
         <AuthProvider>
           <ServerSessionWrapper>
             <ClientSessionWrapper>
-              <AppProvider>{children}</AppProvider>
+              <StyleProvider>
+                <AppProvider>{children}</AppProvider>
+              </StyleProvider>
             </ClientSessionWrapper>
           </ServerSessionWrapper>
         </AuthProvider>

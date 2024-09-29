@@ -2,32 +2,31 @@
 
 import React, { ReactNode } from 'react';
 
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-import { GlobalStyles, PageContainer, UIThemeProvider } from '@uselagoon/ui-library';
-
-import AntdRegistry from '../lib/AntdRegistry';
-import StyledComponentsRegistry from '../lib/StyledComponentsRegistry';
+import { HeaderProps, PageContainer, useTheme } from '@uselagoon/ui-library';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
+  const { status, data } = useSession();
+
+  const { toggleTheme } = useTheme();
+
+  const userData = status === 'authenticated' ? data.user : {};
+
+  const navLinks = [<Link href="/">Home</Link>, <Link href="/organizations">Organizations</Link>];
   return (
-    <AntdRegistry>
-      <StyledComponentsRegistry>
-        <UIThemeProvider>
-          <GlobalStyles />
-          <PageContainer
-            showHeader
-            headerProps={{
-              userInfo: { email: '' },
-              toggleTheme: () => {},
-              navLinks: [<a>Home</a>, <a>Organizations</a>],
-            }}
-          >
-            {children}
-          </PageContainer>
-        </UIThemeProvider>
-      </StyledComponentsRegistry>
-    </AntdRegistry>
+    <PageContainer
+    className='testing'
+      showHeader
+      headerProps={{
+        userInfo: userData as HeaderProps['userInfo'],
+        toggleTheme,
+        navLinks,
+      }}
+    >
+      {children}
+    </PageContainer>
   );
 };
 export default AppProvider;
