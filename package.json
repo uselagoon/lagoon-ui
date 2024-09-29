@@ -1,6 +1,6 @@
 {
   "name": "ui",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "Lagoon UI",
   "author": "amazee.io <hello@amazee.io> (http://www.amazee.io)",
   "main": "src/index.js",
@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev -p 3003",
     "build": "next build src",
-    "start": "NEXTAUTH_SECRET=test next start src -p 3000",
+    "start": "next start src -p 3000",
     "lint": "tsc && eslint -- src/",
     "generateTourHash": "node tourHash.js",
     "storybook": "storybook dev -p 6006",
