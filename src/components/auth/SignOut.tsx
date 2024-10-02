@@ -4,12 +4,12 @@ import manualSignOut from '../../../utils/manualSignOut';
 
 export function SignOutBtn() {
   return (
-    <button
+    <span
       onClick={() => {
         manualSignOut();
       }}
     >
       Sign Out
-    </button>
+    </span>
   );
 }

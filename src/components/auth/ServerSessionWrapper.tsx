@@ -12,7 +12,7 @@ interface WrapperProps {
 }
 export default async function ServerSessionWrapper({ children }: WrapperProps) {
   const session = await auth();
-  const tokenRefreshError = session.error === 'RefreshTokenError';
+  const tokenRefreshError = session?.error === 'RefreshTokenError';
   if (tokenRefreshError) {
     await SignInAction();
     return null;

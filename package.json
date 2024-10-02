@@ -5,11 +5,10 @@
   "author": "amazee.io <hello@amazee.io> (http://www.amazee.io)",
   "main": "src/index.js",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "dev": "next dev -p 3003",
-    "build": "next build src",
-    "start": "next start src -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
     "lint": "tsc && eslint -- src/",
     "generateTourHash": "node tourHash.js",
     "storybook": "storybook dev -p 6006",
@@ -36,6 +35,7 @@
     "jwt-decode": "^4.0.0",
     "next": "14.2.11",
     "next-auth": "^5.0.0-beta.22",
+    "next-nprogress-bar": "^2.3.13",
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.13"

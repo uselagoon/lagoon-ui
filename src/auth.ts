@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { Account } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import 'next-auth/jwt';
 import Keycloak from 'next-auth/providers/keycloak';
@@ -48,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account }: { token: JWT; account: Account | null }): Promise<JWT> {
       if (account) {
         // account is only available the first time this callback is called on a new session (after the user signs in)
         return {
@@ -56,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           access_token: account.access_token as string,
           expires_at: account.expires_at as number,
           refresh_token: account.refresh_token,
-          id_token: account.id_token,
+          id_token: account.id_token as string,
         };
       } else if (Date.now() < token.expires_at * 1000) {
         // access token still valid
