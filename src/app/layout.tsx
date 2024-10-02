@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
+import RefreshTokenHandler from '@/components/auth/RefreshTokenHandler';
+
 import ClientSessionWrapper from '../components/auth/ClientSessionWrapper';
-import ServerSessionWrapper from '../components/auth/ServerSessionWrapper';
 import AppProvider from '../contexts/AppContext';
 import AuthProvider from '../contexts/AuthProvider';
 import StyleProvider from '../contexts/StyleProvider';
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
     apple: [{ url: '/favicons/apple-touch-icon.png' }],
   },
 };
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -26,15 +28,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <ServerSessionWrapper>
+        <StyleProvider>
+          <AuthProvider>
+            <RefreshTokenHandler />
             <ClientSessionWrapper>
-              <StyleProvider>
-                <AppProvider kcUrl={process.env.AUTH_KEYCLOAK_ISSUER}>{children}</AppProvider>
-              </StyleProvider>
+              <AppProvider kcUrl={process.env.AUTH_KEYCLOAK_ISSUER}>{children}</AppProvider>
             </ClientSessionWrapper>
-          </ServerSessionWrapper>
-        </AuthProvider>
+          </AuthProvider>
+        </StyleProvider>
       </body>
     </html>
   );

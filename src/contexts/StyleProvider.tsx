@@ -2,8 +2,6 @@
 
 import { ReactNode } from 'react';
 
-import { useSession } from 'next-auth/react';
-
 import { GlobalStyles, UIThemeProvider } from '@uselagoon/ui-library';
 
 import AntdRegistry from '../lib/AntdRegistry';

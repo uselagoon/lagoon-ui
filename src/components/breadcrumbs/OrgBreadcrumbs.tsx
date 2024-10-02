@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 
 import { BreadCrumb } from '@uselagoon/ui-library';
 
@@ -9,6 +9,8 @@ export const OrgBreadcrumbs = () => {
   const pathname = usePathname();
 
   const params = useParams();
+  console.log(pathname);
+  console.warn(params);
 
   return (
     <BreadCrumb
