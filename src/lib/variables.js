@@ -5,6 +5,7 @@ const BP_TABLET = 768;
 const BP_DESKTOP = 960;
 const BP_WIDE = 1200;
 const BP_EXTRAWIDE = 1400;
+const BP_ULTRAWIDE = 1900;
 
 export const color = {
   black: '#1a1a1a',
@@ -51,6 +52,7 @@ export const bp = {
   xs_small_extrawide: `all and (min-width: ${BP_XS / 16}em) and (max-width: ${(BP_EXTRAWIDE - 1) / 16}em)`,
   desktop_extrawide: `all and (min-width: ${BP_DESKTOP / 16}em) and (max-width: ${(BP_EXTRAWIDE - 1) / 16}em)`,
   wide_extraWide: `all and (min-width: ${BP_WIDE / 16}em) and (max-width: ${(BP_EXTRAWIDE - 1) / 16}em)`,
+  wide_ultraWide: `all and (min-width: ${BP_WIDE / 16}em) and (max-width: ${(BP_ULTRAWIDE - 1) / 16}em)`,
 };
 
 export const pxToRem = pxValue => `${pxValue / 16}rem`;

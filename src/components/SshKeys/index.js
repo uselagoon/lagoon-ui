@@ -49,6 +49,37 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
     });
   };
 
+  const lastUsedTimeframe = dateTime => {
+    if (!dateTime) {
+      return 'Never';
+    }
+
+    const lastUsed = moment.utc(dateTime).local().format('DD MMM YYYY, HH:mm:ss (Z)');
+    const now = moment();
+    const dayDiff = now.diff(lastUsed, 'days');
+
+    if (dayDiff === 0) {
+      return 'Today';
+    } else if (dayDiff === 1) {
+      return 'Yesterday';
+    } else if (dayDiff < 7) {
+      return `${dayDiff} days ago`;
+    }
+
+    const weekDiff = now.diff(lastUsed, 'weeks');
+    if (weekDiff < 4) {
+      return `${weekDiff} week${weekDiff > 1 ? 's' : ''} ago`;
+    }
+
+    const monthDiff = now.diff(lastUsed, 'months');
+    if (monthDiff < 12) {
+      return `${monthDiff} month${monthDiff > 1 ? 's' : ''} ago`;
+    }
+
+    const yearDiff = now.diff(lastUsed, 'years');
+    return `${yearDiff} year${yearDiff > 1 ? 's' : ''}  ago`;
+  };
+
   useEffect(() => {
     setIsLoading(loading);
   }, [loading]);
@@ -60,13 +91,13 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
         <label className="type">Type</label>
         <label className="fingerprint">Fingerprint</label>
         <label className="created">Created</label>
+        <label className="last-used">Last Used</label>
       </div>
       {isLoading ? (
         <Skeleton count={5} height={25} />
       ) : (
         <div className="data-table">
           {!keys?.length && <div className="data-none">No SSH keys</div>}
-
           {keys &&
             keys.map(key => (
               <div className="data-row" key={key.id} data-cy="data-row">
@@ -78,6 +109,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                 <div className="created chromatic-ignore">
                   {moment.utc(key.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
                 </div>
+                <div className="last-used chromatic-ignore">{lastUsedTimeframe(key.lastUsed)}</div>
 
                 <Space>
                   <div className="edit" data-cy="editKey">
