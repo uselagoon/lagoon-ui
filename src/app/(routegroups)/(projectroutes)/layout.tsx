@@ -1,5 +1,4 @@
 /**
- *
  * Layout wrapping project related routes
  */
 import { ProjectBreadcrumbs } from '@/components/breadcrumbs/ProjectBreadcrumbs';
@@ -11,8 +10,8 @@ export default async function ProjectRoutesLayout({
 }>) {
   return (
     <>
-      {children}
       <ProjectBreadcrumbs />
+      {children}
     </>
   );
 }

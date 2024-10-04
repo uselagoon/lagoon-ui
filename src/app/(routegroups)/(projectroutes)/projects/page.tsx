@@ -1,3 +1,4 @@
+import { default as ProjectsList } from '@/components/projects/Projects';
 import { gql } from '@apollo/client';
 
 import { getClient } from '../../../../lib/apolloClient';
@@ -19,15 +20,5 @@ const query = gql`
 export default async function Projects() {
   const { data } = await (await getClient()).query({ query });
 
-  return (
-    <div>
-      {data.allProjects.map((project: any) => {
-        return (
-          <div key={project.id} style={{ color: '#fff' }}>
-            {project.name}
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <ProjectsList data={data} />;
 }

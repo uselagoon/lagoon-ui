@@ -1,6 +1,6 @@
 :root {
-  --background: #ffffff;
-  --foreground: #09080f;
+  --background: #f2f2f2;
+  --foreground: #0c0c0c;
 }
 
 html,
@@ -18,8 +18,4 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
-
-a {
-  text-decoration: none !important;
 }

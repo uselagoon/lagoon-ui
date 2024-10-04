@@ -4,11 +4,10 @@ import React, { ReactNode } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-import { BreadCrumb, Colors, HeaderProps, PageContainer, useTheme } from '@uselagoon/ui-library';
+import { Colors, HeaderProps, PageContainer, useTheme } from '@uselagoon/ui-library';
 import { ItemType } from 'antd/es/menu/interface';
 
 import { getUserMenuItems, navLinks } from '../components/links';
