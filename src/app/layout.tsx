@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
+import { unstable_noStore as noStore } from 'next/cache';
 
 import RefreshTokenHandler from '@/components/auth/RefreshTokenHandler';
+import Plugins from '@/components/plugins/plugins';
+import PublicRuntimeEnvProvider from '@/contexts/PublicRuntimeEnvProvider';
 
 import ClientSessionWrapper from '../components/auth/ClientSessionWrapper';
 import AppProvider from '../contexts/AppContext';
@@ -25,18 +28,26 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // ref for exposing custom variables at runtime: https://github.com/expatfile/next-runtime-env/blob/development/docs/EXPOSING_CUSTOM_ENV.md
+  noStore();
   return (
     <html lang="en">
-      <body>
-        <StyleProvider>
-          <AuthProvider>
-            <RefreshTokenHandler />
-            <ClientSessionWrapper>
-              <AppProvider kcUrl={process.env.AUTH_KEYCLOAK_ISSUER}>{children}</AppProvider>
-            </ClientSessionWrapper>
-          </AuthProvider>
-        </StyleProvider>
-      </body>
+      <PublicRuntimeEnvProvider>
+        <head>
+          <Plugins hook="head" />
+        </head>
+        <body>
+          <StyleProvider>
+            <AuthProvider>
+              <RefreshTokenHandler />
+              <ClientSessionWrapper>
+                <AppProvider kcUrl={process.env.AUTH_KEYCLOAK_ISSUER}>{children}</AppProvider>
+              </ClientSessionWrapper>
+            </AuthProvider>
+          </StyleProvider>
+          <Plugins hook="body" />
+        </body>
+      </PublicRuntimeEnvProvider>
     </html>
   );
 }
