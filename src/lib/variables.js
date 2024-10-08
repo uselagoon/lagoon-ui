@@ -5,7 +5,7 @@ const BP_TABLET = 768;
 const BP_DESKTOP = 960;
 const BP_WIDE = 1200;
 const BP_EXTRAWIDE = 1400;
-const BP_ULTRAWIDE = 1900;
+const BP_ULTRAWIDE = 1800;
 
 export const color = {
   black: '#1a1a1a',

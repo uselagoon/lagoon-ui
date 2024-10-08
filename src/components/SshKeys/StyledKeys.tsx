@@ -21,6 +21,11 @@ export const StyledKeys = styled.div`
   div.name {
     flex: 1.8;
   }
+  div.created-lastused {
+    @media ${bp.wideUp} {
+      text-align: center;
+    }
+  }
   label.created,
   div.created {
     flex: 2;
@@ -33,6 +38,9 @@ export const StyledKeys = styled.div`
     @media ${bp.wide_ultraWide} {
       flex-grow: 3;
       padding-left: 0px !important;
+    }
+    @media screen and (min-width: 1400px) and (max-width: 1600px) {
+      flex-grow: 3.5;
     }
   }
 
@@ -163,6 +171,11 @@ export const StyledKeys = styled.div`
       &:last-child {
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
+      }
+
+      .anticon.anticon-info-circle {
+        vertical-align: top;
+        margin-left: 4px;
       }
     }
   }

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
-import { Col, Modal, Row, Space, notification } from 'antd';
+import InfoCircleTwoTone from '@ant-design/icons/InfoCircleTwoTone';
+import { Col, Modal, Row, Space, Tooltip, notification } from 'antd';
 import Button from 'components/Button';
 import DeleteConfirm from 'components/DeleteConfirm';
 import DeleteUserSSHPublicKey from 'lib/mutation/DeleteUserSSHPublicKey';
@@ -49,6 +50,20 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
     });
   };
 
+  const tooltipDateTime = (created, lastUsed) => {
+    return (
+      <>
+        <span>
+          <b>Created:</b> {moment.utc(created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
+        </span>
+        <br />
+        <span>
+          <b>Last Used:</b> {moment.utc(lastUsed).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
+        </span>
+      </>
+    );
+  };
+
   const lastUsedTimeframe = dateTime => {
     if (!dateTime) {
       return 'Never';
@@ -90,8 +105,8 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
         <label className="name">Name</label>
         <label className="type">Type</label>
         <label className="fingerprint">Fingerprint</label>
-        <label className="created">Created</label>
-        <label className="last-used">Last Used</label>
+        {/*<label className="created">Created</label>*/}
+        <label className="last-used">Created/Last Used</label>
       </div>
       {isLoading ? (
         <Skeleton count={5} height={25} />
@@ -106,10 +121,21 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                 </div>
                 <div className="type">{key.keyType}</div>
                 <div className="fingerprint">{key.keyFingerprint}</div>
-                <div className="created chromatic-ignore">
-                  {moment.utc(key.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
+                <div className="created-lastused">
+                  <div className="created chromatic-ignore">
+                    <b>Created:</b> {lastUsedTimeframe(key.created)}
+                    <Tooltip
+                      overlayClassName="componentTooltip"
+                      title={tooltipDateTime(key.created, key.lastUsed)}
+                      placement="right"
+                    >
+                      <InfoCircleTwoTone twoToneColor="#4578E6" />
+                    </Tooltip>
+                  </div>
+                  <div className="last-used chromatic-ignore">
+                    <b>Last used:</b> {lastUsedTimeframe(key.lastUsed)}
+                  </div>
                 </div>
-                <div className="last-used chromatic-ignore">{lastUsedTimeframe(key.lastUsed)}</div>
 
                 <Space>
                   <div className="edit" data-cy="editKey">
