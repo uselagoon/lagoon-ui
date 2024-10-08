@@ -21,11 +21,6 @@ export const StyledKeys = styled.div`
   div.name {
     flex: 1.8;
   }
-  div.created-lastused {
-    @media ${bp.wideUp} {
-      text-align: center;
-    }
-  }
   label.created,
   div.created {
     flex: 2;
