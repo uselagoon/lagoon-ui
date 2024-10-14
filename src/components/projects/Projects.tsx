@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 
 import Link from 'next/link';
 
 import { EyeOutlined, SmileOutlined } from '@ant-design/icons';
 import { LagoonFilter, ProjectsTable } from '@uselagoon/ui-library';
+import { useQueryState } from 'nuqs';
 
 export default function Projects({ data }: { data: any }) {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useQueryState('search');
+
   const [numberOfitems, setNumberOfItems] = useState(0);
 
   const cols = [
@@ -77,10 +79,8 @@ export default function Projects({ data }: { data: any }) {
     <>
       <LagoonFilter
         searchOptions={{
-          state: {
-            searchText: search,
-            setSearchText: setSearch,
-          },
+          searchText: search || '',
+          setSearchText: setSearch as React.Dispatch<SetStateAction<string>>,
         }}
         selectOptions={{
           options: [
@@ -97,13 +97,16 @@ export default function Projects({ data }: { data: any }) {
               label: '50 Results per page',
             },
           ],
-          state: {
-            selectedState: numberOfitems,
-            setSelectedState: setNumberOfItems as any,
-          },
+          selectedState: numberOfitems,
+          setSelectedState: setNumberOfItems as any,
         }}
       />
-      <ProjectsTable filterString={search} dataSource={dataSource} columns={cols} resultsPerPage={numberOfitems} />
+      <ProjectsTable
+        filterString={search || ''}
+        dataSource={dataSource}
+        columns={cols}
+        resultsPerPage={numberOfitems}
+      />
     </>
   );
 }

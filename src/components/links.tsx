@@ -4,7 +4,7 @@ import { SignOutBtn } from './auth/SignOut';
 
 export const navLinks = [
   <Link href="/projects">Projects</Link>,
-  <Link href="/organizations">Organizations</Link>,
+  <Link href="/organizations">Organization</Link>,
   <Link href="/knowledge">Knowledge</Link>,
 ];
 

@@ -1,28 +1,31 @@
-import { env } from 'next-runtime-env';
+'use client';
 
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import { useEnvContext } from 'next-runtime-env';
+
+import { ApolloLink, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support';
-// subscsriptions
+import { ApolloClient, ApolloNextAppProvider, InMemoryCache } from '@apollo/experimental-nextjs-app-support';
 import { createClient } from 'graphql-ws';
 
-import { auth } from '../auth';
+/*
+ * reference: https://www.npmjs.com/package/@apollo/experimental-nextjs-app-support
+ */
 
-export const { getClient, PreloadQuery, query } = registerApolloClient(async () => {
-  const session = await auth();
-
-  const GRAPHQL_API = env('GRAPHQL_API');
-  const WEBSOCKET_URI = env('GRAPHQL_API')!.replace(/https/, 'wss').replace(/http/, 'ws');
-
-  const disableSubscriptions = env('DISABLE_SUBSCRIPTIONS')?.toLowerCase() === 'true';
-
+function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscriptions: boolean, session: Session) {
   const httpLink = new HttpLink({
     uri: GRAPHQL_API,
+    fetchOptions: { cache: 'no-store' },
     headers: {
       authorization: `Bearer ${session?.access_token}`,
     },
+    // you can override the default `fetchOptions` on a per query basis
+    // via the `context` property on the options passed as a second argument
+    // to an Apollo Client data fetching hook, e.g.:
+    // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
   });
 
   const HttpWebsocketLink = () => {
@@ -70,4 +73,23 @@ export const { getClient, PreloadQuery, query } = registerApolloClient(async () 
       typeof window === 'undefined' ? httpLink : HttpWebsocketLink(),
     ]),
   });
-});
+}
+
+export function ApolloClientComponentWrapper({ children }: React.PropsWithChildren) {
+  const { data: session, status } = useSession();
+
+  const { GRAPHQL_API, disableSubscriptions } = useEnvContext();
+
+  const ws_uri = GRAPHQL_API!.replace(/https/, 'wss').replace(/http/, 'ws');
+  const disableSubs = disableSubscriptions?.toLowerCase() === 'true';
+
+  if (status === 'loading' || !session) {
+    return null;
+  }
+
+  return (
+    <ApolloNextAppProvider makeClient={() => makeClient(GRAPHQL_API!, ws_uri, disableSubs, session)}>
+      {children}
+    </ApolloNextAppProvider>
+  );
+}

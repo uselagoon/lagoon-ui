@@ -1,3 +1,3 @@
 export default async function org() {
-  return <>hello</>;
+  return <>Organization slug</>;
 }

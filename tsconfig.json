@@ -36,6 +36,6 @@
     "src/lib/apolloClient.js",
     "src/app/api/auth/[...nextauth]/route.ts",
     "src/auth.ts"
-  ],
+, "src/lib/query/projectByNameQuery.js"  ],
   "exclude": ["node_modules", "**/cypress/**"]
 }

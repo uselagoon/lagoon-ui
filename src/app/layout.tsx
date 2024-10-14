@@ -4,6 +4,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import RefreshTokenHandler from '@/components/auth/RefreshTokenHandler';
 import Plugins from '@/components/plugins/plugins';
 import PublicRuntimeEnvProvider from '@/contexts/PublicRuntimeEnvProvider';
+import { ApolloClientComponentWrapper } from '@/lib/apollo-client-components';
 
 import ClientSessionWrapper from '../components/auth/ClientSessionWrapper';
 import AppProvider from '../contexts/AppContext';
@@ -41,7 +42,9 @@ export default async function RootLayout({
             <AuthProvider>
               <RefreshTokenHandler />
               <ClientSessionWrapper>
-                <AppProvider kcUrl={process.env.AUTH_KEYCLOAK_ISSUER}>{children}</AppProvider>
+                <ApolloClientComponentWrapper>
+                  <AppProvider kcUrl={process.env.AUTH_KEYCLOAK_ISSUER}>{children}</AppProvider>
+                </ApolloClientComponentWrapper>
               </ClientSessionWrapper>
             </AuthProvider>
           </StyleProvider>

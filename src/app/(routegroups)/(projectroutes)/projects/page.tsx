@@ -1,3 +1,5 @@
+import { Metadata } from 'next';
+
 import { default as ProjectsList } from '@/components/projects/Projects';
 import { gql } from '@apollo/client';
 
@@ -17,8 +19,14 @@ const query = gql`
   }
 `;
 
+export const metadata: Metadata = {
+  title: 'Projects',
+};
+
 export default async function Projects() {
-  const { data } = await (await getClient()).query({ query });
+  const client = await getClient();
+
+  const { data } = await client.query({ query });
 
   return <ProjectsList data={data} />;
 }
