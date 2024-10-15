@@ -34,7 +34,7 @@ jobs:
 
     - name: Linting
       run: |
-        yarn add typescript
+        yarn add typescript@5.6.2
         yarn lint
 
   cypress-tests:
