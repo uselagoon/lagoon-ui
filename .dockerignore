@@ -7,7 +7,17 @@ README.md
 **/yarn-error.log
 **/.gitignore
 node_modules
+cypress_cache
+cypress
+.vscode
+.github
+.storybook
+
 build
 
 # Envs
 **/.env.local
+
+lagoon-core.*
+Makefile
+cypress/screenshots
