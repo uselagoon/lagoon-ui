@@ -1,9 +1,8 @@
-import { Metadata } from 'next';
-
 import { default as ProjectsList } from '@/components/projects/Projects';
 import { gql } from '@apollo/client';
 
 import { getClient } from '../../../../lib/apolloClient';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,5 +27,12 @@ export default async function Projects() {
 
   const { data } = await client.query({ query });
 
+  // await new Promise((res)=>{
+  //   setTimeout(() => {
+  //       res("")
+  //   }, 5000);
+  // })
+
+ 
   return <ProjectsList data={data} />;
 }

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
-
 import RefreshTokenHandler from '@/components/auth/RefreshTokenHandler';
 import Plugins from '@/components/plugins/plugins';
 import PublicRuntimeEnvProvider from '@/contexts/PublicRuntimeEnvProvider';
@@ -23,6 +22,8 @@ export const metadata: Metadata = {
     apple: [{ url: '/favicons/apple-touch-icon.png' }],
   },
 };
+
+export const dynamic = 'force-dynamic';
 
 export default async function RootLayout({
   children,

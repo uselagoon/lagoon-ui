@@ -1,45 +1,59 @@
 'use client';
 
-import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEnvContext } from 'next-runtime-env';
 
-import { ApolloLink, HttpLink } from '@apollo/client';
+import { ApolloLink, HttpLink, useApolloClient } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloClient, ApolloNextAppProvider, InMemoryCache } from '@apollo/experimental-nextjs-app-support';
 import { createClient } from 'graphql-ws';
 
+/* reference: https://github.com/apollographql/apollo-client-nextjs/issues/103#issuecomment-1790941212
+   dynamically updating token with auth.js
+*/
+function UpdateAuth({ children }: { children: React.ReactNode }) {
+  const { data: session } = useSession();
+  const apolloClient = useApolloClient();
+  // just synchronously update the `apolloClient.defaultContext` before any child component can be rendered
+  // so the value is available for any query started in a child
+  apolloClient.defaultContext.token = session?.access_token;
+  return <>{children}</>;
+}
+
 /*
  * reference: https://www.npmjs.com/package/@apollo/experimental-nextjs-app-support
  */
 
-function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscriptions: boolean, session: Session) {
+function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscriptions: boolean) {
   const httpLink = new HttpLink({
     uri: GRAPHQL_API,
     fetchOptions: { cache: 'no-store' },
-    headers: {
-      authorization: `Bearer ${session?.access_token}`,
-    },
     // you can override the default `fetchOptions` on a per query basis
     // via the `context` property on the options passed as a second argument
     // to an Apollo Client data fetching hook, e.g.:
     // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
   });
 
+  /*
+    makeclient runs once and persists throughout the entire lifecycle of ApolloNextAppProvider, making it impossible to use updated access_token here.
+    with authLink and UpdateAuth the bearer token always gets properly updated
+  */
+  const authLink = setContext(async (_, { headers, token }) => {
+    return {
+      headers: {
+        ...headers,
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
+      },
+    };
+  });
+
   const HttpWebsocketLink = () => {
     const wsLink = new GraphQLWsLink(
       createClient({
         url: WEBSOCKET_URI,
-        connectionParams: () => {
-          if (!session) {
-            return {};
-          }
-          return {
-            Authorization: `Bearer ${session?.access_token}`,
-          };
-        },
         lazy: disableSubscriptions,
         shouldRetry: () => true,
       })
@@ -67,11 +81,13 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
 
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: ApolloLink.from([
-      errorLink,
-      // Disable websockets when rendering server side.
-      typeof window === 'undefined' ? httpLink : HttpWebsocketLink(),
-    ]),
+    link: authLink.concat(
+      ApolloLink.from([
+        errorLink,
+        // disable websockets when rendering server side.
+        typeof window === 'undefined' ? httpLink : HttpWebsocketLink(),
+      ])
+    ),
   });
 }
 
@@ -88,8 +104,8 @@ export function ApolloClientComponentWrapper({ children }: React.PropsWithChildr
   }
 
   return (
-    <ApolloNextAppProvider makeClient={() => makeClient(GRAPHQL_API!, ws_uri, disableSubs, session)}>
-      {children}
+    <ApolloNextAppProvider makeClient={() => makeClient(GRAPHQL_API!, ws_uri, disableSubs)}>
+      <UpdateAuth>{children}</UpdateAuth>
     </ApolloNextAppProvider>
   );
 }

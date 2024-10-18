@@ -1,0 +1,40 @@
+'use client';
+
+import Link from 'next/link';
+
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Head2, Text } from '@uselagoon/ui-library';
+import styled from 'styled-components';
+
+export default function KeyCloakPage({ kcUrl }: { kcUrl: string }) {
+  return (
+    <>
+      <Head2>KeyCloak</Head2>
+      <StyledText>
+        Your security identity is managed by KeyCloak, click on the button below to manage your password, two factor
+        authentication and single sign on settings.
+      </StyledText>
+
+      <div></div>
+
+      <Link target="_blank" href={`${kcUrl}/account`} key="account" data-cy="account">
+        <StyledBtn>
+          <PlusOutlined />
+          Access KeyCloak
+        </StyledBtn>
+      </Link>
+    </>
+  );
+}
+
+const StyledText = styled(Text)`
+  font-size: 14px !important;
+`;
+
+const StyledBtn = styled(Button)`
+  background-color: transparent !important;
+  padding: 30px !important;
+  border-radius: 0 !important;
+  border: 1px solid #fff;
+  margin-top: 2.5rem;
+`;
