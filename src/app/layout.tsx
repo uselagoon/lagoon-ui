@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
+
 import RefreshTokenHandler from '@/components/auth/RefreshTokenHandler';
 import Plugins from '@/components/plugins/plugins';
 import PublicRuntimeEnvProvider from '@/contexts/PublicRuntimeEnvProvider';

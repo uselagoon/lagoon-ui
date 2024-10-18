@@ -1,8 +1,9 @@
+import { Metadata } from 'next';
+
 import { default as ProjectsList } from '@/components/projects/Projects';
 import { gql } from '@apollo/client';
 
 import { getClient } from '../../../../lib/apolloClient';
-import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +34,5 @@ export default async function Projects() {
   //   }, 5000);
   // })
 
- 
   return <ProjectsList data={data} />;
 }

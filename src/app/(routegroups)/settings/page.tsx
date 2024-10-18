@@ -19,9 +19,7 @@ export default async function Settings() {
         fetchPolicy: 'cache-and-network',
       }}
     >
-      {queryRef => (
-          <SettingsPage queryRef={queryRef as any} />
-      )}
+      {queryRef => <SettingsPage queryRef={queryRef as any} />}
     </PreloadQuery>
   );
 }

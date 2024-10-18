@@ -6,7 +6,6 @@ import updateUserSSHPublicKey from '@/lib/mutation/updateUserSSHPublicKey';
 import Me from '@/lib/query/me';
 import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head2, Table } from '@uselagoon/ui-library';
-import { useSession } from 'next-auth/react';
 
 type SshKey = {
   id: number;
@@ -36,8 +35,6 @@ const SettingsPage = ({ queryRef }: { queryRef: QueryRef<QueryData> }) => {
     data: { me },
   } = useReadQuery(queryRef);
 
-  const {data} = useSession()
-
   const [deleteUserSSHPublicKeyMutation, { data: deleteData, loading: deleteLoading, error: deleteErr }] = useMutation(
     deleteUserSSHPublicKey,
     {
@@ -62,7 +59,7 @@ const SettingsPage = ({ queryRef }: { queryRef: QueryRef<QueryData> }) => {
         input: {
           id,
         },
-      }
+      },
     });
   };
 

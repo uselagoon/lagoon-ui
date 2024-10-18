@@ -10,7 +10,7 @@ import { Tabs } from '@uselagoon/ui-library';
 export const SettingsNavTabs = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   return (
-    <section style={{marginTop:"26px"}}>
+    <section style={{ marginTop: '26px' }}>
       <Tabs
         type="navigation"
         pathname={pathname}

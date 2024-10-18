@@ -2,10 +2,12 @@
 
 import { ReactNode } from 'react';
 
+import Link from 'next/link';
+
 import { GlobalStyles, NextLinkProvider, UIThemeProvider } from '@uselagoon/ui-library';
+
 import AntdRegistry from '../lib/AntdRegistry';
 import StyledComponentsRegistry from '../lib/StyledComponentsRegistry';
-import Link from 'next/link';
 
 const StyleProvider = ({ children }: { children: ReactNode }) => {
   return (
@@ -13,9 +15,7 @@ const StyleProvider = ({ children }: { children: ReactNode }) => {
       <StyledComponentsRegistry>
         <UIThemeProvider>
           <GlobalStyles />
-          <NextLinkProvider linkComponent={Link}>
-          {children}
-          </NextLinkProvider>
+          <NextLinkProvider linkComponent={Link}>{children}</NextLinkProvider>
         </UIThemeProvider>
       </StyledComponentsRegistry>
     </AntdRegistry>
