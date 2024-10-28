@@ -28,6 +28,8 @@ export default async function Projects() {
 
   const { data } = await client.query({ query });
 
+  // client.refetchQueries
+
   // await new Promise((res)=>{
   //   setTimeout(() => {
   //       res("")

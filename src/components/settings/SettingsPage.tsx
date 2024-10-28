@@ -1,5 +1,6 @@
 'use client';
 
+import { SettingsData } from '@/app/(routegroups)/settings/page';
 import addUserSSHPublicKey from '@/lib/mutation/addUserSSHPublicKey';
 import deleteUserSSHPublicKey from '@/lib/mutation/deleteUserSSHPublicKey';
 import updateUserSSHPublicKey from '@/lib/mutation/updateUserSSHPublicKey';
@@ -7,28 +8,9 @@ import Me from '@/lib/query/me';
 import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head2, Table } from '@uselagoon/ui-library';
 
-type SshKey = {
-  id: number;
-  name: string;
-  created: string;
-  keyType: string;
-  keyValue: string;
-  keyFingerprint: string;
-};
-
-type Me = {
-  id: number;
-  email: string;
-  sshKeys: SshKey[];
-};
-
-interface QueryData {
-  me: Me;
-}
-
 const { SshTable } = Table;
 
-const SettingsPage = ({ queryRef }: { queryRef: QueryRef<QueryData> }) => {
+const SettingsPage = ({ queryRef }: { queryRef: QueryRef<SettingsData> }) => {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {

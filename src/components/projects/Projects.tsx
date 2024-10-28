@@ -59,6 +59,7 @@ export default function Projects({ data }: { data: any }) {
       render: (item: string) => <div style={{ textAlign: 'center', fontSize: '1.25rem' }}>{item}</div>,
     },
   ];
+
   const dataSource = data.allProjects.map((item: any) => {
     return {
       health: <SmileOutlined />,
