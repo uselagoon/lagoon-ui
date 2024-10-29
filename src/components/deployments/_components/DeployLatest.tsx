@@ -5,6 +5,7 @@ import deployEnvironmentLatest from '@/lib/mutation/deployEnvironmentLatest';
 import { useMutation } from '@apollo/client';
 import { RefetchFunction } from '@apollo/client/react/hooks/useSuspenseQuery';
 import { Button, LoadingSkeleton, useNotification } from '@uselagoon/ui-library';
+
 import { StyledNewDeployment } from './styles';
 
 interface Props {

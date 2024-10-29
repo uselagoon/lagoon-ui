@@ -1,7 +1,6 @@
 import { DatePicker } from 'antd';
 import styled from 'styled-components';
 
-
 const { RangePicker } = DatePicker;
 
 export const StyledNewDeployment = styled.section`
@@ -38,14 +37,11 @@ export const StyledRangePicker = styled(RangePicker)`
     border-color: #d9d9d9;
     box-shadow: none;
   }
-
 `;
 
-export const StyledPickerWrapper = styled.section`
-
-`;
+export const StyledPickerWrapper = styled.section``;
 export const DeploymentsFilters = styled.div`
   margin-bottom: 2.75rem;
   display: flex;
   gap: 0.875rem;
-`
+`;

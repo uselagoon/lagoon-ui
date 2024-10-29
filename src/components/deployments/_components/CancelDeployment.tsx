@@ -1,9 +1,10 @@
+import { Fragment } from 'react';
+
 import { Deployment } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/page';
 import { default as cancelDeploy } from '@/lib/mutation/cancelDeployment';
 import { StopOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { useNotification } from '@uselagoon/ui-library';
-import { Fragment } from 'react';
 
 interface CancelButtonProps {
   action: () => Promise<any>;

@@ -1,69 +1,96 @@
 'use client';
 
-import { Collapse, CopyToClipboard, Details, Head2, Head3, Head4, Text } from '@uselagoon/ui-library';
+import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/page';
+import { Collapse, Details, Head2, Head3, Head4 } from '@uselagoon/ui-library';
 
-export default function Environment({ environment }: { environment: any }) {
+import { EditButton, EditName, EnvironmentName, EnvironmentNameLabel, RoutesSection, RoutesWrapper } from './styles';
+
+export default function Environment({ environment }: { environment: EnvironmentData['environment'] }) {
+  const environmentDetailItems = [
+    {
+      children: environment.environmentType,
+      key: 'env_type',
+      label: 'Environment type',
+    },
+    {
+      children: environment.deployType,
+      key: 'deployment_type',
+      label: 'Deployment Type',
+    },
+    {
+      children: environment.created,
+      key: 'created',
+      label: 'Created',
+    },
+    {
+      children: environment.updated,
+      key: 'updated',
+      label: 'Updated',
+    },
+  ];
+  // push multiple routes into the collapse items
+  environment.routes.split(',').forEach((route: string, idx: number) => {
+    environmentDetailItems.push({
+      children: route,
+      key: 'routes',
+      label: `Routes ${idx + 1}`,
+    });
+  });
+
+  // active/standby routes
+  const createLinks = (routes: string | null) =>
+    routes?.split(',').map(route => (
+      <a href={route} target="_blank" key={route}>
+        {route}
+      </a>
+    ));
+
   return (
     <>
-      <Text>ENVIRONMENT NAME</Text>
-      <Head3 style={{ marginBottom: '2.5rem' }}>{environment.name}</Head3>
+      <EnvironmentNameLabel>ENVIRONMENT NAME</EnvironmentNameLabel>
+      <EditName>
+        <EnvironmentName>{environment.name}</EnvironmentName> <EditButton />
+      </EditName>
 
       <Collapse
         type="default"
+        defaultActiveKey={1}
         items={[
           {
-            children: (
-              <Details
-                bordered
-                type="topToBottom"
-                items={[
-                  {
-                    children: environment.environmentType,
-                    key: 'env_type',
-                    label: 'Environment type',
-                  },
-                  {
-                    children: environment.deployType,
-                    key: 'deployment_type',
-                    label: 'Deployment Type',
-                  },
-                  {
-                    children: environment.created,
-                    key: 'created',
-                    label: 'Created',
-                  },
-                  {
-                    children: environment.updated,
-                    key: 'updated',
-                    label: 'Updated',
-                  },
-
-                  {
-                    children: 'https://lagoondemo.example.org,https://nginx.main.lagoon-demo.ui-kubernetes.lagoon.sh',
-                    key: 'routes',
-                    label: 'Routes 1',
-                  },
-                ]}
-              />
-            ),
+            children: <Details bordered type="topToBottom" items={environmentDetailItems} />,
             key: 1,
             label: <Head3>Environment details</Head3>,
           },
         ]}
       />
 
-      <Head2 style={{ marginTop: '2.5rem' }}>Routes</Head2>
+      <RoutesSection>
+        <Head2>Routes</Head2>
 
-      <Collapse
-        type="default"
-        items={[
-          {
-            children: <Text></Text>,
-            key: 'active_routes',
-            label: <Head4>Active routes</Head4>,
-          },
-        ]}
-      />
+        <Collapse
+          type="default"
+          size="small"
+          items={[
+            {
+              children: <RoutesWrapper>{createLinks(environment.project.productionRoutes)}</RoutesWrapper>,
+              key: 'active_routes',
+              label: <Head4>Active routes</Head4>,
+            },
+          ]}
+        />
+
+        <Collapse
+          type="default"
+          size="small"
+          items={[
+            {
+              children: <RoutesWrapper>{createLinks(environment.project.standbyRoutes)}</RoutesWrapper>,
+              key: 'standby_routes',
+              label: <Head4>Standby routes</Head4>,
+            },
+          ]}
+        />
+      </RoutesSection>
     </>
   );
 }

@@ -23,7 +23,7 @@ export default function Loading() {
     range: {
       defaultValue: undefined,
       parse: (value: string | undefined) => {
-        return value !== undefined ? JSON.parse(value).split(",") : undefined;
+        return value !== undefined ? JSON.parse(value).split(',') : undefined;
       },
     },
     status: {
@@ -31,7 +31,6 @@ export default function Loading() {
       parse: (value: string | undefined) => value as Deployment['status'],
     },
   });
-
 
   const handleRangeChange = (_: unknown, dateRange: [string, string]) => {
     setQuery({ range: dateRange });

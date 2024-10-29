@@ -9,16 +9,16 @@ type Props = {
 };
 
 export type Backup = {
-	id: number;
-	source: string;
-	backupId: string;
-	created: string;
-	restore: {
-		id: number;
-		status: 'pending' | 'failed' | 'complete';
-		restoreLocation?: string | null;
-		restoreSize?: string | null;
-	} | null;
+  id: number;
+  source: string;
+  backupId: string;
+  created: string;
+  restore: {
+    id: number;
+    status: 'pending' | 'failed' | 'complete';
+    restoreLocation?: string | null;
+    restoreSize?: string | null;
+  } | null;
 };
 
 type Environment = {
