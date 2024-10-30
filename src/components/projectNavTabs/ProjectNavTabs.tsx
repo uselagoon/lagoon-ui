@@ -7,6 +7,8 @@ import { useParams, usePathname } from 'next/navigation';
 
 import { Tabs } from '@uselagoon/ui-library';
 
+import { LinkContentWrapper } from '../shared/styles';
+
 export const ProjectNavTabs = ({ children }: { children: ReactNode }) => {
   const { projectSlug, environmentSlug } = useParams<{ projectSlug: string; environmentSlug: string }>();
 
@@ -24,15 +26,27 @@ export const ProjectNavTabs = ({ children }: { children: ReactNode }) => {
         items={[
           {
             key: 'environments',
-            label: <Link href={`/projects/${projectSlug}`}>Environments</Link>,
+            label: (
+              <Link href={`/projects/${projectSlug}`}>
+                <LinkContentWrapper>Environments</LinkContentWrapper>
+              </Link>
+            ),
           },
           {
             key: 'project-details',
-            label: <Link href={`/projects/${projectSlug}/project-details`}>Details</Link>,
+            label: (
+              <Link href={`/projects/${projectSlug}/project-details`}>
+                <LinkContentWrapper>Details</LinkContentWrapper>
+              </Link>
+            ),
           },
           {
             key: 'project-variables',
-            label: <Link href={`/projects/${projectSlug}/project-variables`}>Variables</Link>,
+            label: (
+              <Link href={`/projects/${projectSlug}/project-variables`}>
+                <LinkContentWrapper>Variables</LinkContentWrapper>
+              </Link>
+            ),
           },
         ]}
       >

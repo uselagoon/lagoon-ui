@@ -4,7 +4,7 @@ import dayjs from '@/lib/dayjs';
 import { CopyToClipboard, Details } from '@uselagoon/ui-library';
 import giturlparse from 'git-url-parse';
 
-export default function DetailsPage(props: any) {
+export default function ProjectDetails(props: any) {
   const { project } = props;
   let gitUrlParsed;
   try {

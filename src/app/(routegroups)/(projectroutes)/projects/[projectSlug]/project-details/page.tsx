@@ -1,7 +1,8 @@
+
+import ProjectDetails from '@/components/projectDetails/projectDetails';
 import { getClient } from '@/lib/apolloClient';
 import projectDetailsQuery from '@/lib/query/projectDetailsQuery';
 
-import DetailsPage from './details';
 
 export default async function projectDetails({ params: { projectSlug } }: { params: { projectSlug: string } }) {
   const client = await getClient();
@@ -15,7 +16,7 @@ export default async function projectDetails({ params: { projectSlug } }: { para
 
   return (
     <div>
-      <DetailsPage project={data.project} />
+      <ProjectDetails project={data.project} />
     </div>
   );
 }

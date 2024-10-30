@@ -1,6 +1,6 @@
 'use client';
 
-import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/page';
+import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/(environment-overview)/page';
 import { Collapse, Details, Head2, Head3, Head4 } from '@uselagoon/ui-library';
 
 import { EditButton, EditName, EnvironmentName, EnvironmentNameLabel, RoutesSection, RoutesWrapper } from './styles';
