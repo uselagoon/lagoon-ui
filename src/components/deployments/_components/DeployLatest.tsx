@@ -95,11 +95,10 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
       ) : (
         <>
           <div className="description">
-            {environment.deployType === 'branch' && `Start a new deployment of branch ${environment.deployBaseRef}.`}
-            {environment.deployType === 'pullrequest' &&
-              `Start a new deployment of pull request ${environment.deployTitle}.`}
-            {environment.deployType === 'promote' &&
-              `Start a new deployment from environment ${environment.project.name}-${environment.deployBaseRef}.`}
+            {deployType === 'branch' && `Start a new deployment of branch ${deployBaseRef}.`}
+            {deployType === 'pullrequest' && `Start a new deployment of pull request ${deployTitle}.`}
+            {deployType === 'promote' &&
+              `Start a new deployment from environment ${environment.project.name}-${deployBaseRef}.`}
           </div>
           <Button size="middle" loading={loading} onClick={() => deployEnvironmentLatestMutation()}>
             Deploy

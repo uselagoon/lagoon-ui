@@ -5,6 +5,9 @@ export default gql`
     environment: environmentByOpenshiftProjectName(openshiftProjectName: $openshiftProjectName) {
       id
       openshiftProjectName
+      deployType
+      deployBaseRef
+      deployTitle
       project {
         id
         name

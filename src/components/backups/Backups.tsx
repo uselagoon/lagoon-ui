@@ -2,10 +2,12 @@
 
 import { BackupsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/backups/page';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { Select, Table } from '@uselagoon/ui-library';
+import { CopyToClipboard, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import { DeploymentsFilters, StyledPickerWrapper, StyledRangePicker } from '../deployments/_components/styles';
+import AddRestore from './_components/AddRestore';
+import TriggerBackup from './_components/TriggerBackup';
 import { backupResultOptions, statusOptions } from './_components/filterValues';
 
 const { BackupsTable } = Table;
@@ -24,7 +26,7 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
     },
     status: {
       defaultValue: undefined,
-      parse: (value: string | undefined) => value as 'pending' | 'failed' | 'complete',
+      parse: (value: string | undefined) => value as 'pending' | 'failed' | 'successful',
     },
   });
 
@@ -40,6 +42,7 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
 
   return (
     <>
+      <TriggerBackup environment={environment as any} refetch={{} as any} />
       <DeploymentsFilters>
         <Select
           options={backupResultOptions}
@@ -82,6 +85,7 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
         filterStatus={status ?? undefined}
         backups={environment.backups}
         resultsPerPage={results ?? undefined}
+        retrieveBackup={(backup, type) => <AddRestore backup={backup} type={type} />}
       />
     </>
   );

@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
 import ProblemsFragment from '@/lib/fragment/problem';
+import { gql } from '@apollo/client';
 
 export default gql`
   query getEnvironment($openshiftProjectName: String!) {

@@ -30,12 +30,16 @@ export const statusOptions = [
     value: null,
   },
   {
-    label: 'Complete',
-    value: 'complete',
+    label: 'Successful',
+    value: 'successful',
   },
   {
     label: 'Pending',
-    value: 'running',
+    value: 'pending',
+  },
+  {
+    label: 'Unavailable',
+    value: 'unavailable',
   },
 
   {

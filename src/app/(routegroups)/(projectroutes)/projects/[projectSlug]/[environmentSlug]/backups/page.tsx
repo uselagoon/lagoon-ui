@@ -1,6 +1,5 @@
 import Backups from '@/components/backups/Backups';
-import Deployments from '@/components/deployments/Deployments';
-import { PreloadQuery, getClient } from '@/lib/apolloClient';
+import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWithBackups from '@/lib/query/environmentWithBackups';
 import { QueryRef } from '@apollo/client';
 
@@ -15,9 +14,9 @@ export type Backup = {
   created: string;
   restore: {
     id: number;
-    status: 'pending' | 'failed' | 'complete';
+    status: 'pending' | 'failed' | 'successful';
     restoreLocation?: string | null;
-    restoreSize?: string | null;
+    restoreSize?: number | null;
   } | null;
 };
 

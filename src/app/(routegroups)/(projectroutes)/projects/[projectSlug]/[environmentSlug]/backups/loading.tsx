@@ -1,5 +1,6 @@
 'use client';
 
+import TriggerBackup from '@/components/backups/_components/TriggerBackup';
 import { deploymentResultOptions, statusOptions } from '@/components/deployments/_components/filterValues';
 import {
   DeploymentsFilters,
@@ -35,6 +36,7 @@ export default function Loading() {
 
   return (
     <>
+      <TriggerBackup skeleton />
       <DeploymentsFilters>
         <Select
           options={deploymentResultOptions}
