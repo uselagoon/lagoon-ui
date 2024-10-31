@@ -4,7 +4,7 @@ import { SetStateAction, useState } from 'react';
 
 import Link from 'next/link';
 
-import { EyeOutlined, SmileOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 import { LagoonFilter, ProjectsTable } from '@uselagoon/ui-library';
 import { useQueryState } from 'nuqs';
 
@@ -14,12 +14,6 @@ export default function Projects({ data }: { data: any }) {
   const [numberOfitems, setNumberOfItems] = useState(0);
 
   const cols = [
-    {
-      title: 'Health',
-      dataIndex: 'health',
-      key: 'health',
-      render: (item: string) => <div style={{ textAlign: 'center', color: 'green', fontSize: '1.25rem' }}>{item}</div>,
-    },
     {
       title: 'Project',
       dataIndex: 'project_name',
@@ -62,7 +56,6 @@ export default function Projects({ data }: { data: any }) {
 
   const dataSource = data.allProjects.map((item: any) => {
     return {
-      health: <SmileOutlined />,
       project_name: item.name,
       envs: item.environments.length,
       last_deployment: '12/12/24 23:05 UTC',

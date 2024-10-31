@@ -55,6 +55,7 @@ export default function Environment({ environment }: { environment: EnvironmentD
       <Collapse
         type="default"
         defaultActiveKey={1}
+        borderless
         items={[
           {
             children: <Details bordered type="topToBottom" items={environmentDetailItems} />,
@@ -70,6 +71,7 @@ export default function Environment({ environment }: { environment: EnvironmentD
         <Collapse
           type="default"
           size="small"
+          useArrowIcons
           items={[
             {
               children: <RoutesWrapper>{createLinks(environment.project.productionRoutes)}</RoutesWrapper>,
@@ -82,6 +84,7 @@ export default function Environment({ environment }: { environment: EnvironmentD
         <Collapse
           type="default"
           size="small"
+          useArrowIcons
           items={[
             {
               children: <RoutesWrapper>{createLinks(environment.project.standbyRoutes)}</RoutesWrapper>,
