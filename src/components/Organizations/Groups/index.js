@@ -23,7 +23,7 @@ const DELETE_GROUP = gql`
 /**
  * The primary list of groups.
  */
-const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup, refetch, orgFriendlyName }) => {
+const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFriendlyName }) => {
   const [modalStates, setModalStates] = useState({
     addUser: {
       open: false,
@@ -210,7 +210,6 @@ const Groups = ({ groups = [], organizationId, organizationName, ableToAddGroup,
           labelText="Groups"
         />
         <NewGroup
-          disabled={!ableToAddGroup}
           organizationId={organizationId}
           onGroupAdded={refetch}
           existingGroupNames={groups.map(g => g.name)}
