@@ -209,11 +209,7 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
           emptyText="No groups found"
           labelText="Groups"
         />
-        <NewGroup
-          organizationId={organizationId}
-          onGroupAdded={refetch}
-          existingGroupNames={groups.map(g => g.name)}
-        />
+        <NewGroup organizationId={organizationId} onGroupAdded={refetch} existingGroupNames={groups.map(g => g.name)} />
       </StyledGroups>
     </GroupsWrapper>
   );
