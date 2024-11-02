@@ -2,73 +2,37 @@
 
 import { SetStateAction, useState } from 'react';
 
-import Link from 'next/link';
-
-import { EyeOutlined } from '@ant-design/icons';
-import { LagoonFilter, ProjectsTable } from '@uselagoon/ui-library';
+import { ProjectType, ProjectsData } from '@/app/(routegroups)/(projectroutes)/projects/(projects-page)/page';
+import { LagoonFilter, Table } from '@uselagoon/ui-library';
+import gitUrlParse from 'git-url-parse';
 import { useQueryState } from 'nuqs';
 
-export default function Projects({ data }: { data: any }) {
+const { ProjectsTable } = Table;
+
+const safeParseGitUrl = (gitUrl: string) => {
+  let parsed;
+
+  try {
+    parsed = gitUrlParse(gitUrl);
+  } catch {
+    parsed = '';
+  }
+  return parsed;
+};
+export default function ProjectsPage({ data }: { data: ProjectsData }) {
   const [search, setSearch] = useQueryState('search');
 
   const [numberOfitems, setNumberOfItems] = useState(0);
 
-  const cols = [
-    {
-      title: 'Project',
-      dataIndex: 'project_name',
-      key: 'project_name',
-      render: (text: string) => (
-        <div>
-          <span>{text}</span>
-        </div>
-      ),
-    },
-    {
-      title: 'No. Envs',
-      dataIndex: 'envs',
-      key: 'envs',
-      render: (text: string) => <div style={{ textAlign: 'center' }}>{text}</div>,
-    },
-    {
-      title: 'Cluster',
-      dataIndex: 'cluster',
-      key: 'cluster',
-      render: (text: string) => <div style={{ textAlign: 'center' }}>{text}</div>,
-    },
-    {
-      title: 'Last Deployment',
-      dataIndex: 'last_deployment',
-      key: 'last_deployment',
-    },
-    {
-      title: 'Origin',
-      dataIndex: 'origin',
-      key: 'origin',
-    },
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      render: (item: string) => <div style={{ textAlign: 'center', fontSize: '1.25rem' }}>{item}</div>,
-    },
-  ];
-
-  const dataSource = data.allProjects.map((item: any) => {
+  const projectsWithOrigin = data.allProjects.map((project: ProjectType) => {
+    const gitUrlParsed = safeParseGitUrl(project.gitUrl);
+    const gitLink = typeof gitUrlParsed === 'object' ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}` : '';
     return {
-      project_name: item.name,
-      envs: item.environments.length,
-      last_deployment: '12/12/24 23:05 UTC',
-      actions: (
-        <Link href={`/projects/${item.name}`}>
-          <EyeOutlined />
-        </Link>
-      ),
-
-      cluster: 'US3',
-      origin: 'https://github.com/amazeeio-demos/as-demo',
+      ...project,
+      origin: gitLink,
     };
   });
+
   return (
     <>
       <LagoonFilter
@@ -96,10 +60,10 @@ export default function Projects({ data }: { data: any }) {
         }}
       />
       <ProjectsTable
+        projects={projectsWithOrigin}
         filterString={search || ''}
-        dataSource={dataSource}
-        columns={cols}
         resultsPerPage={numberOfitems}
+        basePath="/projects"
       />
     </>
   );

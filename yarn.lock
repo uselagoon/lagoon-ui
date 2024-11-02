@@ -3430,9 +3430,9 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@uselagoon/ui-library@github:uselagoon/ui-library#main":
-  version "1.0.0"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/7e6adc4e13c30596086240edccb920c7d8d5e21f"
+"@uselagoon/ui-library@github:uselagoon/ui-library":
+  version "1.1.1"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/fd76346185ca0661c27eaee5e58783b91b0c12f5"
   dependencies:
     dayjs "^1.11.13"
     react-highlight-words "^0.20.0"

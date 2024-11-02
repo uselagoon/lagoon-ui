@@ -28,7 +28,7 @@
     "@apollo/client": "^3.11.0-rc.2",
     "@apollo/experimental-nextjs-app-support": "^0.11.5",
     "@types/git-url-parse": "^9.0.3",
-    "@uselagoon/ui-library": "github:uselagoon/ui-library#main",
+    "@uselagoon/ui-library": "github:uselagoon/ui-library",
     "antd": "^5.20.6",
     "cryptr": "^6.3.0",
     "dayjs": "^1.11.13",
