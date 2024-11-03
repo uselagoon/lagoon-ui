@@ -1723,9 +1723,9 @@
     "@types/mdx" "^2.0.0"
 
 "@mswjs/interceptors@^0.36.5":
-  version "0.36.7"
-  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.36.7.tgz#b77a15298e49395ef75dc2f3dff4002f61f06f77"
-  integrity sha512-sdx02Wlus5hv6Bx7uUDb25gb0WGjCuSgnJB2LVERemoSGuqkZMe3QI6nEXhieFGtYwPrZbYrT2vPbsFN2XfbUw==
+  version "0.36.8"
+  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.36.8.tgz#6d8636e204a0109e92cbdcdc2dee2a6bb8e0815f"
+  integrity sha512-/SKHnCpFdVoEZT4gYNWDJL42y+wK6z1V6HdEoyCb13O6Hkle/wVZ9wQfGwUdYgZj4iY4E74t0hoQ+8C7Yyy87g==
   dependencies:
     "@open-draft/deferred-promise" "^2.2.0"
     "@open-draft/logger" "^0.3.0"
@@ -3172,23 +3172,23 @@
     form-data "^4.0.0"
 
 "@types/node@*", "@types/node@^22.0.0":
-  version "22.8.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.8.6.tgz#e8a0c0871623283d8b3ef7d7b9b1bfdfd3028e22"
-  integrity sha512-tosuJYKrIqjQIlVCM4PEGxOmyg3FCPa/fViuJChnGeEIhjA46oy8FMVoF9su1/v8PNs2a8Q0iFNyOx0uOF91nw==
+  version "22.8.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.8.7.tgz#04ab7a073d95b4a6ee899f235d43f3c320a976f4"
+  integrity sha512-LidcG+2UeYIWcMuMUpBKOnryBWG/rnmOHQR5apjn8myTQcx3rinFRn7DcIFhMnS0PPFSC6OafdIKEad0lj6U0Q==
   dependencies:
     undici-types "~6.19.8"
 
 "@types/node@^18.0.0":
-  version "18.19.63"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.63.tgz#2b2cdb8b3bd2b739ae38c5676cd012c80568022f"
-  integrity sha512-hcUB7THvrGmaEcPcvUZCZtQ2Z3C+UR/aOcraBLCvTsFMh916Gc1kCCYcfcMuB76HM2pSerxl1PoP3KnmHzd9Lw==
+  version "18.19.64"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.64.tgz#122897fb79f2a9ec9c979bded01c11461b2b1478"
+  integrity sha512-955mDqvO2vFf/oL7V3WiUtiz+BugyX8uVbaT2H8oj3+8dRyH2FLiNdowe7eNqRM7IOIZvzDH76EoAT+gwm6aIQ==
   dependencies:
     undici-types "~5.26.4"
 
 "@types/node@^20":
-  version "20.17.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.17.5.tgz#b7a1d8619ced7ce1da901b07a47c61107272449a"
-  integrity sha512-n8FYY/pRxu496441gIcAQFZPKXbhsd6VZygcq+PTSZ75eMh/Ke0hCAROdUa21qiFqKNsPPYic46yXDO1JGiPBQ==
+  version "20.17.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.17.6.tgz#6e4073230c180d3579e8c60141f99efdf5df0081"
+  integrity sha512-VEI7OdvK2wP7XHnsuXbAJnEpEkF6NjSN45QJlL4VGqZSXsnicpesdTWsg9RISeSdYd3yeRj/y3k5KGjUXYnFwQ==
   dependencies:
     undici-types "~6.19.2"
 
@@ -3432,7 +3432,7 @@
 
 "@uselagoon/ui-library@github:uselagoon/ui-library":
   version "1.1.1"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/053aa8682c34164958f51c9fb7bd8b03b07543b9"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/d5f349241237000bed7cd5fe339564ee758c30fe"
   dependencies:
     dayjs "^1.11.13"
     react-highlight-words "^0.20.0"

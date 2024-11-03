@@ -29,7 +29,7 @@ export default function Environment({ environment }: { environment: EnvironmentD
     },
   ];
   // push multiple routes into the collapse items array
-  environment.routes.split(',').forEach((route: string, idx: number) => {
+  environment?.routes?.split(',').forEach((route: string, idx: number) => {
     environmentDetailItems.push({
       children: route,
       key: 'routes',

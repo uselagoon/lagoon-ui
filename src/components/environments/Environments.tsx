@@ -4,24 +4,33 @@ import { SetStateAction, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Problem } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/problems/page';
+import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
 import { CarryOutOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonCard, LagoonFilter } from '@uselagoon/ui-library';
 import { useQueryState } from 'nuqs';
 
 import DeployLatest from '../deployments/_components/DeployLatest';
+import { NewEnvironment } from '../newEnvironment/NewEnvironment';
 import { getHighestSeverityProblem } from '../utils';
 import { LinkContainer, StyledEnvironmentsWrapper } from './styles';
 
 export default function ProjectEnvironments({
-  environments,
+  queryRef,
   projectName,
-  productionEnvironment,
 }: {
-  environments: any;
+  queryRef: QueryRef<ProjectData>;
   projectName: string;
-  productionEnvironment?: string;
 }) {
+  const { refetch } = useQueryRefHandlers(queryRef);
+
+  const {
+    data: { project },
+  } = useReadQuery(queryRef);
+
+  const environments = project.environments;
+  const productionEnvironment = project.productionEnvironment;
+
   const [search, setSearch] = useQueryState('search');
   const [numberOfitems, setNumberOfItems] = useState(0);
 
@@ -42,8 +51,6 @@ export default function ProjectEnvironments({
   ));
 
   const getEnvironmentQuickActions = (environment: any) => {
-    console.warn(environment);
-
     return [
       {
         sectionTitle: 'Jump to an Environment',
@@ -110,7 +117,7 @@ export default function ProjectEnvironments({
             />
           );
         })}
-        <LagoonCard type="new" />
+        <NewEnvironment projectName={projectName} refetch={refetch} />
       </StyledEnvironmentsWrapper>
     </>
   );
