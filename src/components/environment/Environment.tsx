@@ -1,9 +1,9 @@
 'use client';
 
 import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/(environment-overview)/page';
-import { Collapse, Details, Head2, Head3, Head4 } from '@uselagoon/ui-library';
+import { Collapse, Details, Head2, Head3, Head4, Text } from '@uselagoon/ui-library';
 
-import { EditButton, EditName, EnvironmentName, EnvironmentNameLabel, RoutesSection, RoutesWrapper } from './styles';
+import { RoutesSection, RoutesWrapper } from './styles';
 
 export default function Environment({ environment }: { environment: EnvironmentData['environment'] }) {
   const environmentDetailItems = [
@@ -28,7 +28,7 @@ export default function Environment({ environment }: { environment: EnvironmentD
       label: 'Updated',
     },
   ];
-  // push multiple routes into the collapse items
+  // push multiple routes into the collapse items array
   environment.routes.split(',').forEach((route: string, idx: number) => {
     environmentDetailItems.push({
       children: route,
@@ -45,21 +45,18 @@ export default function Environment({ environment }: { environment: EnvironmentD
       </a>
     ));
 
+  const activeRoutes = createLinks(environment.project.productionRoutes);
+  const standbyRoutes = createLinks(environment.project.standbyRoutes);
+  const envHasNoRoutes = !activeRoutes && !standbyRoutes;
   return (
     <>
-      <EnvironmentNameLabel>ENVIRONMENT NAME</EnvironmentNameLabel>
-      <EditName>
-        <EnvironmentName>{environment.name}</EnvironmentName> <EditButton />
-      </EditName>
-
       <Collapse
         type="default"
-        defaultActiveKey={1}
         borderless
         items={[
           {
-            children: <Details bordered type="topToBottom" items={environmentDetailItems} />,
-            key: 1,
+            children: <Details bordered layout="vertical" type="default" items={environmentDetailItems} />,
+            key: 'environment_details',
             label: <Head3>Environment details</Head3>,
           },
         ]}
@@ -68,31 +65,36 @@ export default function Environment({ environment }: { environment: EnvironmentD
       <RoutesSection>
         <Head2>Routes</Head2>
 
-        <Collapse
-          type="default"
-          size="small"
-          useArrowIcons
-          items={[
-            {
-              children: <RoutesWrapper>{createLinks(environment.project.productionRoutes)}</RoutesWrapper>,
-              key: 'active_routes',
-              label: <Head4>Active routes</Head4>,
-            },
-          ]}
-        />
+        {activeRoutes ? (
+          <Collapse
+            type="default"
+            size="small"
+            useArrowIcons
+            items={[
+              {
+                children: <RoutesWrapper>{activeRoutes}</RoutesWrapper>,
+                key: 'active_routes',
+                label: <Head4>Active routes</Head4>,
+              },
+            ]}
+          />
+        ) : null}
 
-        <Collapse
-          type="default"
-          size="small"
-          useArrowIcons
-          items={[
-            {
-              children: <RoutesWrapper>{createLinks(environment.project.standbyRoutes)}</RoutesWrapper>,
-              key: 'standby_routes',
-              label: <Head4>Standby routes</Head4>,
-            },
-          ]}
-        />
+        {standbyRoutes ? (
+          <Collapse
+            type="default"
+            size="small"
+            useArrowIcons
+            items={[
+              {
+                children: <RoutesWrapper>{standbyRoutes}</RoutesWrapper>,
+                key: 'standby_routes',
+                label: <Head4>Standby routes</Head4>,
+              },
+            ]}
+          />
+        ) : null}
+        {envHasNoRoutes && <Text>No routes found for {environment.name}</Text>}
       </RoutesSection>
     </>
   );

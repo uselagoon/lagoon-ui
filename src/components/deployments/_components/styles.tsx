@@ -45,3 +45,9 @@ export const DeploymentsFilters = styled.div`
   display: flex;
   gap: 0.875rem;
 `;
+
+export const StyledQuickAction = styled.div`
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+`;

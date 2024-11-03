@@ -2,15 +2,18 @@ import { Fragment } from 'react';
 
 import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/page';
 import deployEnvironmentLatest from '@/lib/mutation/deployEnvironmentLatest';
+import { CarryOutOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { RefetchFunction } from '@apollo/client/react/hooks/useSuspenseQuery';
 import { Button, LoadingSkeleton, useNotification } from '@uselagoon/ui-library';
+import { message } from 'antd';
 
-import { StyledNewDeployment } from './styles';
+import { StyledNewDeployment, StyledQuickAction } from './styles';
 
 interface Props {
   environment: DeploymentsData['environment'];
-  refetch: RefetchFunction<
+  renderAsQuickAction?: boolean;
+  refetch?: RefetchFunction<
     DeploymentsData,
     {
       openshiftProjectName: string;
@@ -34,22 +37,29 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
       </StyledNewDeployment>
     );
   }
-  const { environment } = props;
+  const { environment, renderAsQuickAction = false } = props;
   const { id, deployType, deployBaseRef, deployHeadRef, deployTitle } = environment;
 
   const [deployEnvironmentLatestMutation, { loading, error }] = useMutation(deployEnvironmentLatest, {
     onError: err => {
       console.error(err);
-
-      errorNotification.trigger();
+      if (renderAsQuickAction) {
+        message.error('Deployment failed');
+      } else {
+        errorNotification.trigger();
+      }
     },
     variables: {
       environmentId: id,
     },
     onCompleted: () => {
-      successNotification.trigger();
+      if (renderAsQuickAction) {
+        message.success('Deployment successful');
+      } else {
+        successNotification.trigger();
+      }
     },
-    refetchQueries: ['getEnvironment'],
+    refetchQueries: renderAsQuickAction ? [] : ['getEnvironment'],
   });
 
   // error and success notifications
@@ -79,6 +89,16 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
     }
   } else {
     deploymentsEnabled = false;
+  }
+
+  // used as a quick action on /projects/[projectName] route
+  if (renderAsQuickAction) {
+    return (
+      <StyledQuickAction onClick={() => !deploymentsEnabled && deployEnvironmentLatestMutation()}>
+        {loading ? <LoadingOutlined /> : <CarryOutOutlined />}
+        <span>Trigger a deployment from {environment.name}</span>
+      </StyledQuickAction>
+    );
   }
 
   return (

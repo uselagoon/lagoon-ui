@@ -1,6 +1,6 @@
 'use client';
 
-import { EditName, EnvironmentName, EnvironmentNameLabel, RoutesSection } from '@/components/environment/styles';
+import { RoutesSection } from '@/components/environment/styles';
 import { Collapse, Details, Head2, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
 
 export default function Loading() {
@@ -35,19 +35,11 @@ export default function Loading() {
   const routeSkeletons = Array.from({ length: 4 }).map(() => <LoadingSkeleton width={'60%'} />);
   return (
     <>
-      <EnvironmentNameLabel>ENVIRONMENT NAME</EnvironmentNameLabel>
-      <EditName>
-        <EnvironmentName>
-          <LoadingSkeleton width={50} />
-        </EnvironmentName>
-      </EditName>
-
       <Collapse
         type="default"
-        defaultActiveKey={1}
         items={[
           {
-            children: <Details bordered type="topToBottom" items={environmentDetailSkeletonItems} />,
+            children: <Details bordered type="default" items={environmentDetailSkeletonItems} />,
             key: 1,
             label: <Head3>Environment details</Head3>,
           },

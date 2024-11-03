@@ -1,3 +1,4 @@
+import ProblemsFragment from '@/lib/fragment/problem';
 import { gql } from '@apollo/client';
 
 export default gql`
@@ -20,7 +21,11 @@ export default gql`
           friendlyName
           cloudRegion
         }
+        problems {
+          ...problemFields
+        }
       }
     }
   }
+  ${ProblemsFragment}
 `;

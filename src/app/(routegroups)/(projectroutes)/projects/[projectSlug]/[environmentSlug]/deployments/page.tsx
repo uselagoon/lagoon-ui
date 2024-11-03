@@ -25,6 +25,7 @@ export type Deployment = {
 
 type Environment = {
   id: number;
+  name: string;
   openshiftProjectName: string;
   deployType: string;
   deployBaseRef: string;

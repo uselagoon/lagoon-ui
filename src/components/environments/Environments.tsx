@@ -4,10 +4,14 @@ import { SetStateAction, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { Problem } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/problems/page';
+import { CarryOutOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { LagoonCard, LagoonFilter } from '@uselagoon/ui-library';
 import { useQueryState } from 'nuqs';
 
-import { StyledEnvironmentsWrapper } from './styles';
+import DeployLatest from '../deployments/_components/DeployLatest';
+import { getHighestSeverityProblem } from '../utils';
+import { LinkContainer, StyledEnvironmentsWrapper } from './styles';
 
 export default function ProjectEnvironments({
   environments,
@@ -23,10 +27,43 @@ export default function ProjectEnvironments({
 
   const { push } = useRouter();
 
-  const prodEnvironment = environments.find((env: any) => env.name === productionEnvironment);
-  const otherEnvironments = environments.filter((env: any) => env.name !== productionEnvironment);
+  // always show prod environment first
+  const sortedEnvironments = [
+    environments.find((env: any) => env.name === productionEnvironment),
+    ...environments.filter((env: any) => env.name !== productionEnvironment),
+  ].filter(Boolean);
 
-  const sortedEnvironments = prodEnvironment ? [prodEnvironment, ...otherEnvironments] : otherEnvironments;
+  // all the env links - same for every card
+  const quickLinks = environments.map((env: any) => (
+    <LinkContainer href={`/projects/${projectName}/${env.openshiftProjectName}`}>
+      <PlayCircleOutlined />
+      <span>{env.openshiftProjectName}</span>
+    </LinkContainer>
+  ));
+
+  const getEnvironmentQuickActions = (environment: any) => {
+    console.warn(environment);
+
+    return [
+      {
+        sectionTitle: 'Jump to an Environment',
+        sectionChildren: quickLinks,
+      },
+      {
+        sectionTitle: 'Variables',
+        sectionChildren: [
+          <LinkContainer href={`/projects/${projectName}/${environment.openshiftProjectName}/variables`}>
+            <CarryOutOutlined />
+            <span>View and create project variables</span>
+          </LinkContainer>,
+        ],
+      },
+      {
+        sectionTitle: 'Deploy',
+        sectionChildren: [<DeployLatest environment={environment} renderAsQuickAction />],
+      },
+    ];
+  };
 
   return (
     <>
@@ -62,13 +99,14 @@ export default function ProjectEnvironments({
               type="environment"
               title={environment.name}
               envType={environment.environmentType}
-              status="low"
+              status={getHighestSeverityProblem(environment.problems)}
               projectName={projectName}
+              environmentName={environment.openshiftProjectName}
               deployType={environment.deployType}
+              quickActions={getEnvironmentQuickActions(environment)}
               navigateTo={() => {
                 push(`/projects/${projectName}/${environment.openshiftProjectName}`);
               }}
-              isProd={productionEnvironment === environment.name}
             />
           );
         })}
