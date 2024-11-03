@@ -1723,9 +1723,9 @@
     "@types/mdx" "^2.0.0"
 
 "@mswjs/interceptors@^0.36.5":
-  version "0.36.8"
-  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.36.8.tgz#6d8636e204a0109e92cbdcdc2dee2a6bb8e0815f"
-  integrity sha512-/SKHnCpFdVoEZT4gYNWDJL42y+wK6z1V6HdEoyCb13O6Hkle/wVZ9wQfGwUdYgZj4iY4E74t0hoQ+8C7Yyy87g==
+  version "0.36.9"
+  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.36.9.tgz#48958805e9b6f2937553ce47bd39969559e1db2e"
+  integrity sha512-mMRDUBwSNeCgjSMEWfjoh4Rm9fbyZ7xQ9SBq8eGHiiyRn1ieTip3pNEt0wxWVPPxR4i1Rv9bTkeEbkX7M4c15A==
   dependencies:
     "@open-draft/deferred-promise" "^2.2.0"
     "@open-draft/logger" "^0.3.0"
@@ -3432,7 +3432,7 @@
 
 "@uselagoon/ui-library@github:uselagoon/ui-library":
   version "1.1.1"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/d5f349241237000bed7cd5fe339564ee758c30fe"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/4dbebc591d380e568531313c5c41541f09d45e22"
   dependencies:
     dayjs "^1.11.13"
     react-highlight-words "^0.20.0"
