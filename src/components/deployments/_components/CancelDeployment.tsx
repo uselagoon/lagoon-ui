@@ -5,6 +5,7 @@ import { default as cancelDeploy } from '@/lib/mutation/cancelDeployment';
 import { StopOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { useNotification } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 
 interface CancelButtonProps {
   action: () => Promise<any>;
@@ -36,7 +37,13 @@ export const CancelDeploymentButton = ({
   return (
     <>
       <Fragment>{contextHolder}</Fragment>
-      <StopOutlined onClick={action} disabled={loading || success} />
+
+      {!success && (
+        <Tooltip title="Cancel Deployment" placement="right">
+          <StopOutlined onClick={action} disabled={loading || success} />
+        </Tooltip>
+      )}
+
       {success ? afterText || 'Cancelled' : beforeText || ''}
       {error && trigger()}
     </>

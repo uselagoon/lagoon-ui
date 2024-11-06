@@ -39,6 +39,10 @@ export const statusOptions = [
     value: 'complete',
   },
   {
+    label: 'Cancelled',
+    value: 'cancelled',
+  },
+  {
     label: 'Failed',
     value: 'failed',
   },

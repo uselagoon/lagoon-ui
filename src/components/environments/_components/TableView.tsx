@@ -55,6 +55,7 @@ export const TableView: FC<Props> = ({ project, projectName, filterString, resul
       : environment.environmentType;
 
     return {
+      name: environment.openshiftProjectName,
       title: environment.name,
       deployType: environment.deployType,
       status: getHighestSeverityProblem(environment.problems),

@@ -10,7 +10,7 @@ type Props = {
 export type Deployment = {
   id: number;
   name: string;
-  status: 'running' | 'complete' | 'failed' | 'error' | 'queued' | 'new';
+  status: 'running' | 'complete' | 'failed' | 'error' | 'queued' | 'new' | 'cancelled';
   created: string;
   started: string;
   completed: string;
