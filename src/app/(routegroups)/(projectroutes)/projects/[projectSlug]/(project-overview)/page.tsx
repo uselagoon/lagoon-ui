@@ -3,18 +3,30 @@ import { PreloadQuery } from '@/lib/apolloClient';
 import projectEnvironmentsQuery from '@/lib/query/projectEnvironmentsQuery';
 import { QueryRef } from '@apollo/client';
 
+import { Deployment } from '../[environmentSlug]/deployments/page';
 import { Problem } from '../[environmentSlug]/problems/page';
 
-type ProjectEnvironment = {
+export type ProjectEnvironment = {
   id: number;
   name: string;
   deployType: string;
   environmentType: string;
+  deployBaseRef: string;
+  deployHeadRef: string;
+  deployTitle: string;
+  updated: string | null;
   routes: null | string;
   openshiftProjectName: string;
   openshift: { friendlyName: null | string; cloudRegion: null | string };
+  project: {
+    name: string;
+    problemsUi: boolean;
+    factsUi: boolean;
+  };
   problems: Problem[];
+  deployments: Deployment[];
 };
+
 type Project = {
   id: number;
   name: string;

@@ -16,6 +16,7 @@ export default gql`
         deployType
         environmentType
         routes
+        updated
         openshiftProjectName
         openshift {
           friendlyName

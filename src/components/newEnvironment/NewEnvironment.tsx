@@ -11,9 +11,10 @@ import { ContentWrapper, StepWrapper } from './_components/styles';
 
 type Props = {
   projectName: string;
+  renderType?: 'card' | 'listItem';
   refetch: () => void;
 };
-export const NewEnvironment: FC<Props> = ({ projectName, refetch }) => {
+export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', refetch }) => {
   const { error, data: deployKeyValue } = useQuery(projectByNameWithDeployKeyQuery, {
     variables: { name: projectName },
   });
@@ -131,6 +132,7 @@ export const NewEnvironment: FC<Props> = ({ projectName, refetch }) => {
   return (
     <LagoonCard
       type="new"
+      renderType={renderType}
       loading={loading}
       requiredFormItems={['branch_name']}
       onCreateEnvironment={createEnvironment}

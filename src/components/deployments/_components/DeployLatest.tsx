@@ -59,7 +59,7 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
         successNotification.trigger();
       }
     },
-    refetchQueries: renderAsQuickAction ? [] : ['getEnvironment'],
+    refetchQueries: renderAsQuickAction ? ['getProject'] : ['getEnvironment'],
   });
 
   // error and success notifications

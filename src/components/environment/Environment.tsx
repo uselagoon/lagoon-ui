@@ -5,6 +5,14 @@ import { Collapse, Details, Head2, Head3, Head4, Text } from '@uselagoon/ui-libr
 
 import { RoutesSection, RoutesWrapper } from './styles';
 
+// active/standby routes
+export const createLinks = (routes: string | null) =>
+  routes?.split(',').map(route => (
+    <a href={route} target="_blank" key={route}>
+      {route}
+    </a>
+  ));
+
 export default function Environment({ environment }: { environment: EnvironmentData['environment'] }) {
   const environmentDetailItems = [
     {
@@ -36,14 +44,6 @@ export default function Environment({ environment }: { environment: EnvironmentD
       label: `Routes ${idx + 1}`,
     });
   });
-
-  // active/standby routes
-  const createLinks = (routes: string | null) =>
-    routes?.split(',').map(route => (
-      <a href={route} target="_blank" key={route}>
-        {route}
-      </a>
-    ));
 
   const activeRoutes = createLinks(environment.project.productionRoutes);
   const standbyRoutes = createLinks(environment.project.standbyRoutes);

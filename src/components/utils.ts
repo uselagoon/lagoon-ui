@@ -15,3 +15,16 @@ export const getHighestSeverityProblem = (problems: Problem[]) => {
   }
   return 'low';
 };
+
+export const makeSafe = (string: string) => string.toLocaleLowerCase().replace(/[^0-9a-z-]/g, '-');
+
+export const debounce = (fn: (params: any) => void, delay: number) => {
+  let timeoutId: NodeJS.Timeout;
+
+  return function (val: any) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      fn.call(null, val);
+    }, delay);
+  };
+};

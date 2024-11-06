@@ -1,19 +1,15 @@
 'use client';
 
-import { SetStateAction, useState } from 'react';
-
-import { useRouter } from 'next/navigation';
+import { SetStateAction, memo, useState } from 'react';
 
 import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
-import { CarryOutOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { LagoonCard, LagoonFilter } from '@uselagoon/ui-library';
+import { IconGrid, IconList, LagoonFilter } from '@uselagoon/ui-library';
 import { useQueryState } from 'nuqs';
 
-import DeployLatest from '../deployments/_components/DeployLatest';
-import { NewEnvironment } from '../newEnvironment/NewEnvironment';
-import { getHighestSeverityProblem } from '../utils';
-import { LinkContainer, StyledEnvironmentsWrapper } from './styles';
+import { CardView } from './_components/CardView';
+import { TableView } from './_components/TableView';
+import { StyledGridIcon, StyledListIcon, StyledToggle } from './styles';
 
 export default function ProjectEnvironments({
   queryRef,
@@ -28,48 +24,16 @@ export default function ProjectEnvironments({
     data: { project },
   } = useReadQuery(queryRef);
 
-  const environments = project.environments;
-  const productionEnvironment = project.productionEnvironment;
-
   const [search, setSearch] = useQueryState('search');
-  const [numberOfitems, setNumberOfItems] = useState(0);
+  const [numberOfitems, setNumberOfItems] = useState(5);
+  const [listView, setListView] = useState(false);
 
-  const { push } = useRouter();
-
-  // always show prod environment first
-  const sortedEnvironments = [
-    environments.find((env: any) => env.name === productionEnvironment),
-    ...environments.filter((env: any) => env.name !== productionEnvironment),
-  ].filter(Boolean);
-
-  // all the env links - same for every card
-  const quickLinks = environments.map((env: any) => (
-    <LinkContainer href={`/projects/${projectName}/${env.openshiftProjectName}`}>
-      <PlayCircleOutlined />
-      <span>{env.openshiftProjectName}</span>
-    </LinkContainer>
-  ));
-
-  const getEnvironmentQuickActions = (environment: any) => {
-    return [
-      {
-        sectionTitle: 'Jump to an Environment',
-        sectionChildren: quickLinks,
-      },
-      {
-        sectionTitle: 'Variables',
-        sectionChildren: [
-          <LinkContainer href={`/projects/${projectName}/${environment.openshiftProjectName}/variables`}>
-            <CarryOutOutlined />
-            <span>View and create project variables</span>
-          </LinkContainer>,
-        ],
-      },
-      {
-        sectionTitle: 'Deploy',
-        sectionChildren: [<DeployLatest environment={environment} renderAsQuickAction />],
-      },
-    ];
+  const commonProps = {
+    project,
+    projectName,
+    refetch,
+    resultsPerPage: numberOfitems,
+    filterString: search || '',
   };
 
   return (
@@ -82,12 +46,12 @@ export default function ProjectEnvironments({
         selectOptions={{
           options: [
             {
-              value: 10,
-              label: '10 Results per page',
+              value: 5,
+              label: '5 Results per page',
             },
             {
-              value: 20,
-              label: '20 Results per page',
+              value: 10,
+              label: '10 Results per page',
             },
             {
               value: 50,
@@ -97,28 +61,19 @@ export default function ProjectEnvironments({
           selectedState: numberOfitems,
           setSelectedState: setNumberOfItems as any,
         }}
-      />
-      <StyledEnvironmentsWrapper>
-        {sortedEnvironments.map((environment: any) => {
-          return (
-            <LagoonCard
-              key={environment.openshiftProjectName}
-              type="environment"
-              title={environment.name}
-              envType={environment.environmentType}
-              status={getHighestSeverityProblem(environment.problems)}
-              projectName={projectName}
-              environmentName={environment.openshiftProjectName}
-              deployType={environment.deployType}
-              quickActions={getEnvironmentQuickActions(environment)}
-              navigateTo={() => {
-                push(`/projects/${projectName}/${environment.openshiftProjectName}`);
-              }}
-            />
-          );
-        })}
-        <NewEnvironment projectName={projectName} refetch={refetch} />
-      </StyledEnvironmentsWrapper>
+      >
+        <StyledToggle onClick={() => setListView(false)}>
+          <StyledGridIcon className={listView ? '' : 'active'} />
+          Card View
+        </StyledToggle>
+
+        <StyledToggle onClick={() => setListView(true)}>
+          <StyledListIcon className={listView ? 'active' : ''} />
+          List View
+        </StyledToggle>
+      </LagoonFilter>
+
+      {listView ? <TableView {...commonProps} /> : <CardView {...commonProps} />}
     </>
   );
 }
