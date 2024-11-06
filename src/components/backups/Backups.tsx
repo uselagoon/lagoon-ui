@@ -1,13 +1,14 @@
 'use client';
 
 import { BackupsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/backups/page';
-import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { CopyToClipboard, Select, Table } from '@uselagoon/ui-library';
+import { QueryRef, useReadQuery } from '@apollo/client';
+import { Select, Table } from '@uselagoon/ui-library';
+import dayjs from 'dayjs';
 import { useQueryStates } from 'nuqs';
 
-import { DeploymentsFilters, StyledPickerWrapper, StyledRangePicker } from '../deployments/_components/styles';
+import CustomRangePicker from '../datepicker/DatePicker';
+import { DeploymentsFilters } from '../deployments/_components/styles';
 import AddRestore from './_components/AddRestore';
-import TriggerBackup from './_components/TriggerBackup';
 import { backupResultOptions, statusOptions } from './_components/filterValues';
 
 const { BackupsTable } = Table;
@@ -21,7 +22,11 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
     range: {
       defaultValue: undefined,
       parse: (value: string | undefined) => {
-        return value !== undefined ? JSON.parse(value).split(',') : undefined;
+        if (value !== undefined) {
+          const parsedRange = value.split(',').map(dateStr => dayjs(dateStr.trim()).format('YYYY-MM-DD'));
+          return parsedRange.length === 2 ? parsedRange : undefined;
+        }
+        return undefined;
       },
     },
     status: {
@@ -30,19 +35,22 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
     },
   });
 
-  const { refetch } = useQueryRefHandlers(queryRef);
-
   const {
     data: { environment },
   } = useReadQuery(queryRef);
 
-  const handleRangeChange = (_: unknown, dateRange: [string, string]) => {
-    setQuery({ range: dateRange });
+  const handleRangeChange = (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
+    if (dates) {
+      const formattedRange = dates
+        .filter(Boolean) // remove falsy values
+        .map(date => date!.format('YYYY-MM-DD'));
+      setQuery({ range: formattedRange });
+    } else {
+      setQuery({ range: null });
+    }
   };
-
   return (
     <>
-      <TriggerBackup environment={environment as any} refetch={{} as any} />
       <DeploymentsFilters>
         <Select
           options={backupResultOptions}
@@ -62,22 +70,7 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
             setQuery({ status: val });
           }}
         />
-
-        <Select
-          defaultOpen={false}
-          value={range?.every(Boolean) ? `${range[0]} - ${range[1]}` : 'Select date range'}
-          dropdownStyle={{ width: 300 }}
-          dropdownRender={() => (
-            <StyledPickerWrapper
-              onMouseDown={e => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            >
-              <StyledRangePicker onChange={handleRangeChange} />
-            </StyledPickerWrapper>
-          )}
-        />
+        <CustomRangePicker range={range} handleRangeChange={handleRangeChange} />
       </DeploymentsFilters>
 
       <BackupsTable
