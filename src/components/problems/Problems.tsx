@@ -49,7 +49,6 @@ export default function Problems({ queryRef }: { queryRef: QueryRef<ProblemsData
       <ProblemsWrapper>
         <Collapse
           type="default"
-          defaultActiveKey="critical"
           customBorder={Colors.pink}
           borderless
           items={[

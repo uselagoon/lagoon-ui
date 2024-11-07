@@ -19,7 +19,6 @@ export default function Insights({ queryRef }: { queryRef: QueryRef<InsightsData
     <InsightsPageWrapper>
       <Collapse
         type="default"
-        defaultActiveKey="facts"
         borderless
         items={[
           {

@@ -15,6 +15,10 @@ export const getUserMenuItems = (kcUrl: string) => {
       key: 'settings',
     },
     {
+      label: <Link href="/alldeployments">Deployments</Link>,
+      key: 'allDeployments',
+    },
+    {
       label: (
         <Link target="_blank" href={`${kcUrl}/account`} key="account" data-cy="account">
           Your account
