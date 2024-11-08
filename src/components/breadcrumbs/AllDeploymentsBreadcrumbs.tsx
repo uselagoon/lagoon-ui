@@ -12,5 +12,5 @@ export const AllDeploymentsBreadcrumbs = () => {
     },
   ];
 
-  return <BreadCrumb activeKey={'alldeployments'} items={breadcrumbItems} type="orgs" />;
+  return <BreadCrumb activeKey="alldeployments" items={breadcrumbItems} type="orgs" />;
 };

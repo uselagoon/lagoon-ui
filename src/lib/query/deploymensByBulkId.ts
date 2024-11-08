@@ -1,25 +1,23 @@
 import { gql } from '@apollo/client';
 
 export default gql`
-  query deploymentsByFilter {
-    deploymentsByFilter {
+  query deploymentsByBulkId($bulkId: String!) {
+    deploymentsByBulkId(bulkId: $bulkId) {
       id
       name
       status
       created
       buildStep
-      priority
       started
       completed
+      buildLog
+      bulkId
+      bulkName
+      priority
       environment {
         name
         openshiftProjectName
-        openshift {
-          id
-          name
-        }
         project {
-          id
           name
         }
       }
