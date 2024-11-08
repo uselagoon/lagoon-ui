@@ -65,9 +65,6 @@ export const PageGroups = ({ router }) => {
     return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
   }
 
-  // disable adding new groups if non-default groups count is 10
-  const ableToAddGroup = organization.groups.filter(group => group.type !== 'project-default-group').length < 10;
-
   return (
     <>
       <Head>
@@ -89,7 +86,6 @@ export const PageGroups = ({ router }) => {
             organizationId={organization.id}
             organizationName={organization.name}
             orgFriendlyName={organization.friendlyName}
-            ableToAddGroup={ableToAddGroup}
             refetch={handleRefetch}
           />
         </OrganizationsWrapper>
