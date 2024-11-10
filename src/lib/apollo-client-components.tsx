@@ -30,15 +30,10 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
     // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
   });
   const asyncAuthLink = setContext(async (_, { headers }) => {
-    let authHeader = `Bearer ${clientReference?.defaultContext?.token}`;
+    const response = await fetch('/api/auth/session'); // same as useSession() in components
+    const data = await response.json();
 
-    // not initialized - fallback to session
-    if (!clientReference) {
-      const response = await fetch('/api/auth/session');
-      const data = await response.json();
-
-      authHeader = `Bearer ${data!.access_token}`;
-    }
+    const authHeader = `Bearer ${data!.access_token}`;
 
     return {
       headers: {
@@ -90,7 +85,7 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
     ),
   });
 
-  // save reference for global use. (authLink)
+  // save reference for global use. (authLink, unused - unstable)
   clientReference = client;
 
   return client;

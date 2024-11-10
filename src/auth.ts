@@ -58,7 +58,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           refresh_token: account.refresh_token,
           id_token: account.id_token as string,
         };
-      } else if (Date.now() < token.expires_at * 1000 - 10000) {
+      } else if (Date.now() < token.expires_at * 1000 - 30000) {
         // access token still valid
         return token;
       } else {

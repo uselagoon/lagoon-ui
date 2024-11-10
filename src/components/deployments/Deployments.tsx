@@ -54,7 +54,7 @@ export default function Deployments({ queryRef }: { queryRef: QueryRef<Deploymen
 
   // POLLING testing
   useEffect(() => {
-   let intId =  setInterval(() => {
+    let intId = setInterval(() => {
       startTransition(async () => {
         await refetch();
       });
