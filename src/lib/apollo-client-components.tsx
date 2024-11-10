@@ -10,6 +10,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloClient, ApolloNextAppProvider, InMemoryCache } from '@apollo/experimental-nextjs-app-support';
 import { createClient } from 'graphql-ws';
+import manualSignOut from 'utils/manualSignOut';
 
 /*
  * reference: https://www.npmjs.com/package/@apollo/experimental-nextjs-app-support
@@ -32,6 +33,11 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
   const asyncAuthLink = setContext(async (_, { headers }) => {
     const response = await fetch('/api/auth/session'); // same as useSession() in components
     const data = await response.json();
+    // unauthed, or unable to refresh token
+    if (data === null) {
+      await manualSignOut();
+      return;
+    }
 
     const authHeader = `Bearer ${data!.access_token}`;
 
