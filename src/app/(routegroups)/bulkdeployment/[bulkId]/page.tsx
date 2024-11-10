@@ -28,6 +28,7 @@ export type BulkDeploymentsData = {
 
 export default async function BulkDeployments() {
   const client = await getClient();
+
   const { data } = await client.query<BulkDeploymentsData>({ query: deploymensByBulkId });
 
   return <BulkDeploymentsPage bulkDeployments={data.deploymentsByBulkId} />;

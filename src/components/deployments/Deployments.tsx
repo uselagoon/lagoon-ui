@@ -1,5 +1,7 @@
 'use client';
 
+import { startTransition, useEffect } from 'react';
+
 import { usePathname } from 'next/navigation';
 
 import {
@@ -49,6 +51,16 @@ export default function Deployments({ queryRef }: { queryRef: QueryRef<Deploymen
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  // POLLING testing
+  useEffect(() => {
+   let intId =  setInterval(() => {
+      startTransition(async () => {
+        await refetch();
+      });
+    }, 20000);
+    return () => clearInterval(intId);
+  }, []);
 
   const handleRangeChange = (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
     if (dates) {
