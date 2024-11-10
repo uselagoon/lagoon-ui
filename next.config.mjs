@@ -31,6 +31,11 @@ const nextConfig = {
         destination: '/alldeployments',
         permanent: true,
       },
+      {
+        source: '/projects/:projectSlug/:environmentSlug/facts',
+        destination: '/projects/:projectSlug/:environmentSlug/insights',
+        permanent: true,
+      },
     ];
   },
   compiler: {
