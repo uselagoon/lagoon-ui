@@ -61,6 +61,5 @@ export const ContentWrapper = styled.section`
     color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : 'initial')};
   }
   > div {
-    border: 1px solid hotpink !important;
   }
 `;

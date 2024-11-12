@@ -21,9 +21,9 @@ interface Props {
   projectName: string;
   refetch: () => void;
 }
+
 export const CardView: FC<Props> = ({ project, projectName, filterString, resultsPerPage, refetch }) => {
   const { environments } = project;
-
   const { push } = useRouter();
 
   const productionEnvironment = project.productionEnvironment;
@@ -33,8 +33,23 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
     ...environments.filter((env: ProjectEnvironment) => env.name !== productionEnvironment),
   ].filter(env => !!env);
 
+  const filteredEnvironments = sortedEnvironments.filter(environment => {
+    const filterLower = filterString.toLowerCase();
+
+    return (
+      environment.name.toLowerCase().includes(filterLower) ||
+      environment.openshiftProjectName.toLowerCase().includes(filterLower) ||
+      environment.environmentType.toLowerCase().includes(filterLower) ||
+      environment.deployType.toLowerCase().includes(filterLower) ||
+      (environment.openshift?.cloudRegion?.toLowerCase().includes(filterLower) ?? false)
+    );
+  });
+
+  // slice filteredEnvironments based on resultsPerPage
+  const slicedEnvsByCount = filteredEnvironments.slice(0, resultsPerPage);
+
   const quickLinks = environments.map((env: ProjectEnvironment) => (
-    <LinkContainer href={`/projects/${projectName}/${env.openshiftProjectName}`}>
+    <LinkContainer href={`/projects/${projectName}/${env.openshiftProjectName}`} key={env.openshiftProjectName}>
       <PlayCircleOutlined />
       <span>{env.openshiftProjectName}</span>
     </LinkContainer>
@@ -42,7 +57,7 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
 
   return (
     <StyledEnvironmentsWrapper>
-      {sortedEnvironments.map((environment: ProjectEnvironment) => {
+      {slicedEnvsByCount.map((environment: ProjectEnvironment) => {
         const activeEnvironment =
           project.productionEnvironment &&
           project.standbyProductionEnvironment &&

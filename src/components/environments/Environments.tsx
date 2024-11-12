@@ -1,14 +1,15 @@
 'use client';
 
-import { SetStateAction, memo, useState } from 'react';
+import { SetStateAction, useState } from 'react';
 
 import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { IconGrid, IconList, LagoonFilter } from '@uselagoon/ui-library';
-import { useQueryState } from 'nuqs';
+import { LagoonFilter } from '@uselagoon/ui-library';
+import { useQueryStates } from 'nuqs';
 
 import { CardView } from './_components/CardView';
 import { TableView } from './_components/TableView';
+import { envFilterValues } from './_components/filterValues';
 import { StyledGridIcon, StyledListIcon, StyledToggle } from './styles';
 
 export default function ProjectEnvironments({
@@ -24,15 +25,33 @@ export default function ProjectEnvironments({
     data: { project },
   } = useReadQuery(queryRef);
 
-  const [search, setSearch] = useQueryState('search');
-  const [numberOfitems, setNumberOfItems] = useState(5);
+  const [{ search, env_count }, setQuery] = useQueryStates({
+    search: {
+      defaultValue: '',
+      parse: (value: string | undefined) => (value !== undefined ? String(value) : ''),
+    },
+
+    env_count: {
+      defaultValue: 5,
+      parse: (value: string | undefined) => (value !== undefined ? Number(value) : 5),
+    },
+  });
+
+  const setSearch = (str: string) => {
+    setQuery({ search: str });
+  };
+
+  const setEnvCount = (val: string) => {
+    setQuery({ env_count: Number(val) });
+  };
+
   const [listView, setListView] = useState(false);
 
   const commonProps = {
     project,
     projectName,
     refetch,
-    resultsPerPage: numberOfitems,
+    resultsPerPage: env_count,
     filterString: search || '',
   };
 
@@ -44,22 +63,9 @@ export default function ProjectEnvironments({
           setSearchText: setSearch as React.Dispatch<SetStateAction<string>>,
         }}
         selectOptions={{
-          options: [
-            {
-              value: 5,
-              label: '5 Results per page',
-            },
-            {
-              value: 10,
-              label: '10 Results per page',
-            },
-            {
-              value: 50,
-              label: '50 Results per page',
-            },
-          ],
-          selectedState: numberOfitems,
-          setSelectedState: setNumberOfItems as any,
+          options: envFilterValues,
+          selectedState: env_count,
+          setSelectedState: setEnvCount as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
         <StyledToggle onClick={() => setListView(false)}>

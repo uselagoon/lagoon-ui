@@ -31,6 +31,7 @@ const nextConfig = {
         destination: '/alldeployments',
         permanent: true,
       },
+      // facts and insights are combined under /insights route
       {
         source: '/projects/:projectSlug/:environmentSlug/facts',
         destination: '/projects/:projectSlug/:environmentSlug/insights',
