@@ -14,6 +14,7 @@ export default gql`
         keyValue
         created
         keyFingerprint
+        lastUsed
       }
     }
   }

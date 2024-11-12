@@ -7,6 +7,11 @@ export const StyledKeys = styled.div`
     flex: 4;
     align-self: center;
   }
+  label.fingerprint {
+    @media ${bp.wide_ultraWide} {
+      flex-grow: 3;
+    }
+  }
   label.type,
   div.type {
     flex: 2;
@@ -16,10 +21,22 @@ export const StyledKeys = styled.div`
   div.name {
     flex: 1.8;
   }
-
   label.created,
   div.created {
     flex: 2;
+  }
+  label.last-used,
+  div.last-used {
+    flex: 2;
+  }
+  label.last-used {
+    @media ${bp.wide_ultraWide} {
+      flex-grow: 3;
+      padding-left: 0px !important;
+    }
+    @media screen and (min-width: 1400px) and (max-width: 1600px) {
+      flex-grow: 3.5;
+    }
   }
 
   .header {
@@ -93,6 +110,9 @@ export const StyledKeys = styled.div`
           &.created {
             align-self: center;
           }
+          &.last-used {
+            align-self: center;
+          }
           &.name {
             overflow-wrap: break-word;
           }
@@ -120,6 +140,18 @@ export const StyledKeys = styled.div`
             width: 50%;
           }
         }
+
+        &.last-used {
+          word-break: break-word;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          @media ${bp.wideUp} {
+            width: 45%;
+          }
+          @media ${bp.extraWideUp} {
+            width: 50%;
+          }
+        }
       }
 
       &:hover {
@@ -134,6 +166,11 @@ export const StyledKeys = styled.div`
       &:last-child {
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
+      }
+
+      .anticon.anticon-info-circle {
+        vertical-align: top;
+        margin-left: 4px;
       }
     }
   }
