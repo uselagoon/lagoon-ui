@@ -31,22 +31,25 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
     // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
   });
   const asyncAuthLink = setContext(async (_, { headers }) => {
-    const response = await fetch('/api/auth/session'); // same as useSession() in components
-    const data = await response.json();
-    // unauthed, or unable to refresh token
-    if (data === null) {
+    try {
+      const response = await fetch('/api/auth/session'); // same as useSession() in components
+      const data = response.ok ? await response.json() : null;
+
+      if (!data) {
+        await manualSignOut();
+        return;
+      }
+
+      return {
+        headers: {
+          ...headers,
+          authorization: `Bearer ${data.access_token}`,
+        },
+      };
+    } catch (error) {
+      // catch all signout
       await manualSignOut();
-      return;
     }
-
-    const authHeader = `Bearer ${data!.access_token}`;
-
-    return {
-      headers: {
-        ...headers,
-        authorization: authHeader,
-      },
-    };
   });
 
   const HttpWebsocketLink = () => {
