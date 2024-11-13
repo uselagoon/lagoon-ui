@@ -1,16 +1,15 @@
 'use client';
 
 import { ProjectEnvironmentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/project-variables/page';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head2, Table } from '@uselagoon/ui-library';
-import { Variable } from '@uselagoon/ui-library/dist/components/Table/ProjectVariablesTable/ProjectVariablesTable';
+import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
 
-import { AddNewVariable } from './_components/AddNewVariable';
-import { DeleteVariableModal } from './_components/DeleteVariableModal';
+import { AddNewVariable } from '../addNewVariable/AddNewVariable';
+import { DeleteVariableModal } from '../deleteVariable/DeleteVariableModal';
 import { EditVariable } from './_components/EditVariable';
 
-const { ProjectVariablesTable } = Table;
+const { VariablesTable } = Table;
 export default function ProjectVariablesPage({
   queryRef,
   projectName,
@@ -29,14 +28,20 @@ export default function ProjectVariablesPage({
   return (
     <>
       <Head2>Project variables</Head2>
-      <ProjectVariablesTable
+      <VariablesTable
+        type="project"
         editVariableModal={currentVariable => (
-          <EditVariable currentEnv={currentVariable} projectName={projectName} refetch={refetch} />
+          <EditVariable type="project" currentEnv={currentVariable} projectName={projectName} refetch={refetch} />
         )}
         deleteVariableModal={currentVariable => (
-          <DeleteVariableModal currentEnv={currentVariable} projectName={projectName} refetch={refetch} />
+          <DeleteVariableModal
+            type="project"
+            currentEnv={currentVariable}
+            projectName={projectName}
+            refetch={refetch}
+          />
         )}
-        newVariableModal={<AddNewVariable projectName={projectName} refetch={refetch} />}
+        newVariableModal={<AddNewVariable type="project" projectName={projectName} refetch={refetch} />}
         variables={variables as Variable[]}
       />
     </>

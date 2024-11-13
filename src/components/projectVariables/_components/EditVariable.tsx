@@ -1,10 +1,10 @@
 import { FC, startTransition, useState } from 'react';
 
 import addOrUpdateEnvVariable from '@/lib/mutation/addOrUpdateEnvVariable';
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { useMutation, useQuery } from '@apollo/client';
+import { EditOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { FormItem, Input, Modal, Select } from '@uselagoon/ui-library';
-import { Variable } from '@uselagoon/ui-library/dist/components/Table/ProjectVariablesTable/ProjectVariablesTable';
+import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
@@ -20,9 +20,17 @@ import {
 
 type Props = {
   currentEnv: Variable;
-  projectName: string;
   refetch: () => void;
-};
+  projectName: string;
+} & (
+  | {
+      type: 'project';
+    }
+  | {
+      type: 'environment';
+      environmentName: string;
+    }
+);
 
 const scopeOptions = [
   {
@@ -47,10 +55,16 @@ const scopeOptions = [
   },
 ];
 
-export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch }) => {
+export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch, type, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [addVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
+
+  let envName = '';
+
+  if (type === 'environment') {
+    envName = (rest as { environmentName: string }).environmentName;
+  }
 
   const getRequiredFieldsValues = () => {
     const values = addVariableForm.getFieldsValue(true);
@@ -69,12 +83,9 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch }) =>
     return requiredValues;
   };
 
-  const [addProjectVariable, { loading }] = useMutation(addOrUpdateEnvVariable, {
+  const [editVariable, { loading }] = useMutation(addOrUpdateEnvVariable, {
     onError: err => {
       console.error(err);
-    },
-    variables: {
-      project: projectName,
     },
   });
 
@@ -98,7 +109,7 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch }) =>
                 label="Variable name"
                 name="variable_name"
               >
-                <Input placeholder="Variable Name" disabled />
+                <Input placeholder="Variable Name" />
               </FormItem>
             </div>
 
@@ -145,11 +156,13 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch }) =>
     </ContentWrapper>
   );
 
-  const createProjectVariable = (name: string, scope: string, value: string) => {
-    return addProjectVariable({
+  const editVariablefn = (name: string, scope: string, value: string) => {
+    return editVariable({
       variables: {
         input: {
+          // conditionally include environment
           project: projectName,
+          ...(envName ? { environment: envName } : {}),
           name,
           scope: scope.toUpperCase(),
           value,
@@ -166,7 +179,7 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch }) =>
   const handleCreateVariable = () => {
     const { variable_name, variable_scope, variable_value } = addVariableForm.getFieldsValue();
 
-    createProjectVariable(variable_name, variable_scope, variable_value).then(() => {
+    editVariablefn(variable_name, variable_scope, variable_value).then(() => {
       startTransition(async () => {
         await refetch();
         handleCancel();

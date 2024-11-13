@@ -4,7 +4,7 @@ import deleteEnvVariableByName from '@/lib/mutation/deleteEnvVariableByName';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { FormItem, Input, Modal, Text } from '@uselagoon/ui-library';
-import { Variable } from '@uselagoon/ui-library/dist/components/Table/ProjectVariablesTable/ProjectVariablesTable';
+import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
@@ -15,27 +15,38 @@ import {
   Highlighted,
   ModalWrapper,
   NewVariableTitle,
-} from './styles';
+} from '../projectVariables/_components/styles';
 
 type Props = {
   currentEnv: Variable;
-  projectName: string;
   refetch: () => void;
-};
+  projectName: string;
+} & (
+  | {
+      type: 'project';
+    }
+  | {
+      type: 'environment';
+      environmentName: string;
+    }
+);
 
-export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetch }) => {
+export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetch, type, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
 
-  const [deleteProjectVariableMutation, { loading }] = useMutation(deleteEnvVariableByName, {
+  const [deleteVariableMutation, { loading }] = useMutation(deleteEnvVariableByName, {
     onError: err => {
       console.error(err);
     },
-    variables: {
-      project: projectName,
-    },
   });
+
+  let envName = '';
+
+  if (type === 'environment') {
+    envName = (rest as { environmentName: string }).environmentName;
+  }
 
   const modalContent = (
     <ContentWrapper>
@@ -68,11 +79,13 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
     </ContentWrapper>
   );
 
-  const deleteProjectVariable = (name: string) => {
-    return deleteProjectVariableMutation({
+  const deleteVariable = (name: string) => {
+    return deleteVariableMutation({
       variables: {
         input: {
+          // conditionally include environment
           project: projectName,
+          ...(envName ? { environment: envName } : {}),
           name,
         },
       },
@@ -87,7 +100,7 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
   const handleCreateVariable = () => {
     const { variable_name } = deleteVariableForm.getFieldsValue();
 
-    deleteProjectVariable(variable_name).then(() => {
+    deleteVariable(variable_name).then(() => {
       startTransition(async () => {
         await refetch();
         handleCancel();
