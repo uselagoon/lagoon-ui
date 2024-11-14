@@ -9,7 +9,6 @@ export default function Loading() {
     <InsightsPageWrapper>
       <Collapse
         type="default"
-        defaultActiveKey="facts"
         borderless
         items={[
           {

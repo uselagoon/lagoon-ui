@@ -3,7 +3,7 @@ import { PreloadQuery } from '@/lib/apolloClient';
 import projectEnvironmentsQuery from '@/lib/query/projectEnvironmentsQuery';
 import { QueryRef } from '@apollo/client';
 
-import { Deployment } from '../[environmentSlug]/deployments/page';
+import { Deployment } from '../[environmentSlug]/deployments/(deployments-page)/page';
 import { Problem } from '../[environmentSlug]/problems/page';
 
 export type ProjectEnvironment = {

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { Deployment } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/page';
+import { Deployment } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import { default as cancelDeploy } from '@/lib/mutation/cancelDeployment';
 import { StopOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';

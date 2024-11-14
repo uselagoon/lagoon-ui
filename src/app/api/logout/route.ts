@@ -10,12 +10,14 @@ export async function GET() {
 
     const baseUrl = `${process.env.AUTH_KEYCLOAK_ISSUER}/protocol/openid-connect/logout`;
 
-    const url = `${baseUrl}?id_token_hint=${idToken}`;
+    const clientId = process.env.AUTH_KEYCLOAK_ID;
 
+    const url = `${baseUrl}?id_token_hint=${idToken}&client_id=${clientId}`;
     try {
       const resp = await fetch(url, { method: 'GET' });
 
       if (!resp.ok) {
+        console.error(resp);
         throw new Error(`Logout request failed with status: ${resp.status}`);
       }
     } catch (err) {

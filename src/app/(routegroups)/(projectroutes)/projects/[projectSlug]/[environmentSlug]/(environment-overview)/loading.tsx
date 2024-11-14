@@ -52,6 +52,7 @@ export default function Loading() {
         <Collapse
           type="default"
           size="small"
+          useArrowIcons
           items={[
             {
               children: routeSkeletons,
@@ -64,6 +65,7 @@ export default function Loading() {
         <Collapse
           type="default"
           size="small"
+          useArrowIcons
           items={[
             {
               children: routeSkeletons,

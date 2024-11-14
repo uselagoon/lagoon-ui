@@ -11,7 +11,6 @@ export default function Loading() {
       <ProblemsWrapper>
         <Collapse
           type="default"
-          defaultActiveKey="critical"
           customBorder={Colors.pink}
           borderless
           items={[

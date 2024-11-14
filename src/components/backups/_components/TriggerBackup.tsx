@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 
-import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/page';
+import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import taskDrushActiveDump from '@/lib/mutation/taskDrushActiveDump';
 import taskDrushSqlDump from '@/lib/mutation/taskDrushSqlDump';
 import { ApolloError, useMutation } from '@apollo/client';

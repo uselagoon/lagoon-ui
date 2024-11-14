@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/page';
+import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import deployEnvironmentLatest from '@/lib/mutation/deployEnvironmentLatest';
 import { CarryOutOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';

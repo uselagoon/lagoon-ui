@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import {
   Deployment,
   DeploymentsData,
-} from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/page';
+} from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Select, Table } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';

@@ -25,11 +25,19 @@ export type BulkDeployment = {
 export type BulkDeploymentsData = {
   deploymentsByBulkId: BulkDeployment[];
 };
+type Props = {
+  params: { bulkId: string };
+};
 
-export default async function BulkDeployments() {
+export default async function BulkDeployments({ params }: Props) {
   const client = await getClient();
 
-  const { data } = await client.query<BulkDeploymentsData>({ query: deploymensByBulkId });
+  const { data } = await client.query<BulkDeploymentsData>({
+    query: deploymensByBulkId,
+    variables: {
+      bulkId: params.bulkId,
+    },
+  });
 
   return <BulkDeploymentsPage bulkDeployments={data.deploymentsByBulkId} />;
 }
