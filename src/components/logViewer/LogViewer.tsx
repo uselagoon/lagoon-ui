@@ -3,6 +3,7 @@ import React, { FC, useRef } from 'react';
 import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Collapse, Colors } from '@uselagoon/ui-library';
 
+import ScrollableLog from './_components/ScrollableLog';
 import { AccordionTitle, StyledLogs } from './styles';
 
 interface SectionMetadata {
@@ -34,22 +35,28 @@ interface RootNode {
 interface LogViewerProps {
   logs: string;
   status: string;
-  parsed: boolean;
+  showParsed: boolean;
+  highlightWarnings: boolean;
+  showSuccessSteps: boolean;
   forceLastSectionOpen: boolean;
   logsTarget?: string;
 }
 const LogViewer: FC<LogViewerProps> = ({
   logs,
   status = 'NA',
-  parsed,
+  showParsed,
+  highlightWarnings,
+  showSuccessSteps,
   forceLastSectionOpen = true,
   logsTarget = 'Deployments',
 }) => (
   <React.Fragment>
     <StyledLogs className="logs">
       {logs !== null ? (
-        parsed ? (
-          <div className="log-viewer">{logPreprocessor(logs, status, forceLastSectionOpen, logsTarget)}</div>
+        showParsed ? (
+          <div className="log-viewer">
+            {logPreprocessor(logs, status, forceLastSectionOpen, logsTarget, showSuccessSteps, highlightWarnings)}
+          </div>
         ) : (
           <div className="log-viewer with-padding">{logs}</div>
         )
@@ -77,7 +84,14 @@ const isLogStateBad = (status: string) => {
  * @param {*} status a status for the build - if not complete, we open the very last item
  * @returns
  */
-const logPreprocessor = (logs: string, status: string, forceLastSectionOpen = true, logsTarget: string) => {
+const logPreprocessor = (
+  logs: string,
+  status: string,
+  forceLastSectionOpen = true,
+  logsTarget: string,
+  showSuccessSteps: boolean,
+  highlightWarnings: boolean
+) => {
   let ret = null;
 
   let statusBad = isLogStateBad(status);
@@ -87,7 +101,7 @@ const logPreprocessor = (logs: string, status: string, forceLastSectionOpen = tr
     let tokens = logPreprocessorTokenize(logs, logsTarget);
     let sectionMetadata = logPreprocessorExtractSectionEndDetails(logs);
     let AST = logPreprocessorProcessParse(tokens, sectionMetadata);
-    return logPreprocessorProcessASTToReact(AST, openLastSection, statusBad);
+    return logPreprocessorProcessASTToReact(AST, openLastSection, statusBad, showSuccessSteps, highlightWarnings);
   } catch (e) {
     // if there are any errors parsing and transforming, we just return the logs as is.
     console.log('Error processing logs for display: ' + e);
@@ -101,7 +115,13 @@ const logPreprocessor = (logs: string, status: string, forceLastSectionOpen = tr
   }
 };
 
-const logPreprocessorRenderLogNode = (node: LogNode, visible = false, errorState = false) => {
+const logPreprocessorRenderLogNode = (
+  node: LogNode,
+  visible = false,
+  errorState = false,
+  showSuccessSteps: boolean,
+  highlightWarnings: boolean
+) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const logsContentRef = useRef(null);
 
@@ -121,46 +141,71 @@ const logPreprocessorRenderLogNode = (node: LogNode, visible = false, errorState
     const hasWarning = !!node.metadata[1];
     if (hasWarning) {
       classes.push('log-warning-state');
+      // also add a classname if we don't want warning highlighting
+      if (!highlightWarnings) {
+        classes.push('log-highlight-disabled');
+      }
     }
 
     const nodeChildren = node.nodes.map(element => {
-      return logPreprocessorRenderLogNode(element);
+      return logPreprocessorRenderLogNode(element, visible, errorState, showSuccessSteps, highlightWarnings);
     });
 
-    return (
-      <>
-        <Collapse
-          bordered={false}
-          className="log-accordion"
-          useArrowIcons
-          size="small"
-          type="default"
-          defaultActiveKey={visible ? [node.key] : []}
-          icon={
-            errorState ? (
-              <CloseCircleOutlined style={{ color: Colors.pink }} />
-            ) : hasWarning ? (
-              <ExclamationCircleOutlined style={{ color: Colors.orange }} />
-            ) : (
-              <CheckCircleOutlined style={{ color: Colors.green }} />
-            )
-          }
-          ref={logsContentRef}
-          items={[
-            {
-              children: <div className={classes.join(' ')}> {nodeChildren}</div>,
-              key: node.key,
-              label: <AccordionTitle>{node.details}</AccordionTitle>,
-            },
-          ]}
-        />
-      </>
+    const isSuccessfulStep = !(classes.includes('log-warning-state') || classes.includes('log-error-state'));
+
+    const accordion = (
+      <Collapse
+        bordered={false}
+        className="log-accordion"
+        useArrowIcons
+        size="small"
+        type="default"
+        defaultActiveKey={visible || hasWarning ? [node.key] : []}
+        icon={
+          errorState ? (
+            <CloseCircleOutlined style={{ color: Colors.pink }} />
+          ) : hasWarning ? (
+            <ExclamationCircleOutlined style={{ color: Colors.orange }} />
+          ) : (
+            <CheckCircleOutlined style={{ color: Colors.green }} />
+          )
+        }
+        ref={logsContentRef}
+        items={[
+          {
+            children: (
+              <ScrollableLog>
+                <div className={classes.join(' ')}>{nodeChildren}</div>
+              </ScrollableLog>
+            ),
+
+            key: node.key,
+            label: <AccordionTitle>{node.details}</AccordionTitle>,
+          },
+        ]}
+      />
     );
+
+    if (showSuccessSteps) {
+      return accordion;
+    } else {
+      if (!isSuccessfulStep) {
+        return accordion;
+      } else {
+        return null;
+      }
+    }
   }
   return <div></div>;
 };
 
-const logPreprocessorProcessASTToReact = (ast: RootNode, lastOpen: boolean, errorState: boolean) => {
+const logPreprocessorProcessASTToReact = (
+  ast: RootNode,
+  lastOpen: boolean,
+  errorState: boolean,
+  showSuccessSteps: boolean,
+  highlightWarnings: boolean
+) => {
   if (ast.type != 'root') {
     throw "Expecting root node to be of type 'root'";
   }
@@ -169,9 +214,9 @@ const logPreprocessorProcessASTToReact = (ast: RootNode, lastOpen: boolean, erro
     <div className="processed-logs" data-cy="processed-logs">
       {ast.nodes.map((element, i) => {
         if (i != lastElement) {
-          return logPreprocessorRenderLogNode(element);
+          return logPreprocessorRenderLogNode(element, undefined, undefined, showSuccessSteps, highlightWarnings);
         } else {
-          return logPreprocessorRenderLogNode(element, lastOpen, errorState);
+          return logPreprocessorRenderLogNode(element, lastOpen, errorState, showSuccessSteps, highlightWarnings);
         }
       })}
     </div>

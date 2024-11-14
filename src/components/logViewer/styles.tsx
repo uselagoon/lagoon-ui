@@ -1,4 +1,3 @@
-import { Colors } from '@uselagoon/ui-library';
 import styled, { css } from 'styled-components';
 
 const SharedTextStyles = css`
@@ -29,6 +28,9 @@ export const StyledLogs = styled.div`
     }
     .log-warning-state {
       background-color: rgba(253, 151, 31, 0.1);
+      &.log-highlight-disabled {
+        background-color: unset;
+      }
     }
   }
   .log-viewer {
@@ -46,7 +48,6 @@ export const StyledLogs = styled.div`
   }
 
   .log-text {
-    margin-top: -20px !important;
     ${SharedTextStyles}
   }
 `;

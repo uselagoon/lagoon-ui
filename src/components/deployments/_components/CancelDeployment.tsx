@@ -55,7 +55,7 @@ const CancelDeployment = ({
   beforeText,
   afterText,
 }: {
-  deployment: Deployment;
+  deployment: Partial<Deployment>;
   beforeText?: string;
   afterText?: string;
 }) => {

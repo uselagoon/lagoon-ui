@@ -13,6 +13,7 @@ export default gql`
         id
         name
         status
+        sourceType
         created
         buildStep
         started
