@@ -35,8 +35,9 @@ export default function Problems({ queryRef }: { queryRef: QueryRef<ProblemsData
   const mediumProblems = filterBySeverity(problems, 'MEDIUM');
   const lowProblems = filterBySeverity(problems, 'LOW');
 
-  const dismissedProblems = problems.filter(problem => problem.deleted === '0000-00-00 00:00:00');
+  // const dismissedProblems = problems.filter(problem => problem.deleted === '0000-00-00 00:00:00');
 
+  const dismissedProblems = [] as Problem[];
   return (
     <>
       <LagoonProblemsOverview
