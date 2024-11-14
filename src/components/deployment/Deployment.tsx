@@ -24,8 +24,6 @@ export default function Deployment({ queryRef }: { queryRef: QueryRef<Deployment
 
   const deployment = environment && environment.deployments[0];
 
-  console.warn(deployment);
-
   const [showParsed, setShowParsed] = useState(true);
   const [showSuccessSteps, setShowSuccessSteps] = useState(true);
   const [highlightWarnings, setHighlightWarnings] = useState(true);
