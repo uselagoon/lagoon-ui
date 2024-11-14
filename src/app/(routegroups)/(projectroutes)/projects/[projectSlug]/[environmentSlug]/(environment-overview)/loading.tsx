@@ -56,6 +56,19 @@ export default function Loading() {
           items={[
             {
               children: routeSkeletons,
+              key: 'routes',
+              label: <Head4>Environment routes</Head4>,
+            },
+          ]}
+        />
+
+        <Collapse
+          type="default"
+          size="small"
+          useArrowIcons
+          items={[
+            {
+              children: routeSkeletons,
               key: 'active_routes',
               label: <Head4>Active routes</Head4>,
             },
