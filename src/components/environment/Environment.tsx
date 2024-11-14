@@ -36,6 +36,9 @@ export default function Environment({ environment }: { environment: EnvironmentD
       label: 'Updated',
     },
   ];
+
+  console.warn(environment);
+
   // push multiple routes into the collapse items array
   environment?.routes?.split(',').forEach((route: string, idx: number) => {
     environmentDetailItems.push({
@@ -45,9 +48,10 @@ export default function Environment({ environment }: { environment: EnvironmentD
     });
   });
 
+  const routes = createLinks(environment.routes);
   const activeRoutes = createLinks(environment.project.productionRoutes);
   const standbyRoutes = createLinks(environment.project.standbyRoutes);
-  const envHasNoRoutes = !activeRoutes && !standbyRoutes;
+  const envHasNoRoutes = !routes && !activeRoutes && !standbyRoutes;
   return (
     <>
       <Collapse
@@ -64,6 +68,21 @@ export default function Environment({ environment }: { environment: EnvironmentD
 
       <RoutesSection>
         <Head2>Routes</Head2>
+
+        {routes ? (
+          <Collapse
+            type="default"
+            size="small"
+            useArrowIcons
+            items={[
+              {
+                children: <RoutesWrapper>{routes}</RoutesWrapper>,
+                key: 'routes',
+                label: <Head4>Environment routes</Head4>,
+              },
+            ]}
+          />
+        ) : null}
 
         {activeRoutes ? (
           <Collapse

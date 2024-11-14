@@ -1,10 +1,15 @@
 'use client';
 
+import { ProjectDetailsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/project-details/page';
 import dayjs from '@/lib/dayjs';
 import { CopyToClipboard, Details } from '@uselagoon/ui-library';
 import giturlparse from 'git-url-parse';
 
-export default function ProjectDetails(props: any) {
+interface ProjectDetailsProps {
+  project: ProjectDetailsData['project'];
+}
+
+export default function ProjectDetails(props: ProjectDetailsProps) {
   const { project } = props;
   let gitUrlParsed;
   try {
@@ -15,6 +20,7 @@ export default function ProjectDetails(props: any) {
 
   const gitLink = gitUrlParsed ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}` : '';
   const formattedDate = dayjs.utc(project.created).local().format('DD MMM YYYY, HH:mm:ss (Z)');
+  const developEnvironmentCount = project.environments.filter(env => env.environmentType === 'development').length;
 
   const detailItems = [
     {
@@ -51,7 +57,7 @@ export default function ProjectDetails(props: any) {
       label: 'DEVELOPMENT ENVIRONMENTS IN USE',
       children: (
         <>
-          {project.developEnvironmentCount} of {project.developmentEnvironmentsLimit}{' '}
+          {developEnvironmentCount} of {project.developmentEnvironmentsLimit}{' '}
         </>
       ),
     },

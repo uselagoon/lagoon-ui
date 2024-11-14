@@ -14,6 +14,9 @@ export default gql`
       productionRoutes
       standbyRoutes
       developmentEnvironmentsLimit
+      environments {
+        environmentType
+      }
     }
   }
 `;
