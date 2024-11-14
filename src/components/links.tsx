@@ -5,7 +5,7 @@ import { SignOutBtn } from './auth/SignOut';
 export const navLinks = [
   <Link href="/projects">Projects</Link>,
   <Link href="/organizations">Organization</Link>,
-  <Link href="/knowledge">Knowledge</Link>,
+  <Link href="/alldeployments">All Deployments</Link>,
 ];
 
 export const getUserMenuItems = (kcUrl: string) => {
@@ -13,10 +13,6 @@ export const getUserMenuItems = (kcUrl: string) => {
     {
       label: <Link href="/settings">Settings</Link>,
       key: 'settings',
-    },
-    {
-      label: <Link href="/alldeployments">Deployments</Link>,
-      key: 'allDeployments',
     },
     {
       label: (
