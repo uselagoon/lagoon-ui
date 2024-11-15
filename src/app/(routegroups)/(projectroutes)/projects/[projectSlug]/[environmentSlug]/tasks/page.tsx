@@ -10,6 +10,8 @@ type Props = {
 export type Task = {
   adminOnlyView: boolean;
   created: string;
+  started: string | null;
+  completed: string | null;
   id: number;
   name: string;
   service: string;

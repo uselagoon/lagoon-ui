@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 import { CarryOutOutlined } from '@ant-design/icons';
 import { QueryRef, useReadQuery } from '@apollo/client';
-import { Collapse, Head2, Head3, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
+import { Head3, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 
 import { TasksData } from '../../app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
 import { TasksPageWrapper } from './_components/styles';
