@@ -8,7 +8,8 @@ type AdvancedTaskOptions = {
   arguments: AdvancedTaskDefinitionArgument[];
   confirmationText: string;
 };
-export const getDefaultTaskOptions = (advancedTasks?: AdvancedTaskOptions[]) => {
+
+export const getDefaultTaskOptions = (advancedTasks: AdvancedTaskOptions[] | undefined, blocklist: string[]) => {
   // default task icon used everywhere
   const icon = <CarryOutOutlined />;
 
@@ -18,7 +19,8 @@ export const getDefaultTaskOptions = (advancedTasks?: AdvancedTaskOptions[]) => 
     value: 'advancedTasks',
     children: [] as any,
   };
-  const options = [
+
+  let options = [
     {
       selectable: false,
       title: 'Run a task',
@@ -28,50 +30,52 @@ export const getDefaultTaskOptions = (advancedTasks?: AdvancedTaskOptions[]) => 
           icon,
           label: 'Clear Drupal caches [drush cache-clear]',
           value: 'DrushCacheClear',
- 
         },
         {
           icon,
           label: 'Run Drupal cron [drush cron]',
           value: 'DrushCron',
-
         },
         {
           icon,
           title: 'Copy database between environments [drush sql-sync]',
           value: 'DrushSqlSync',
-
         },
         {
           icon,
           label: 'Copy files between environments [drush rsync]',
           value: 'DrushRsyncFiles',
- 
         },
         {
           icon,
           label: 'Generate database backup [drush sql-dump]',
           value: 'DrushSqlDump',
-
         },
         {
           icon,
           label: 'Generate database and files backup (Drush 8 only) [drush archive-dump]',
           value: 'DrushArchiveDump',
-
         },
         {
           icon,
           label: 'Generate login link [drush uli]',
           value: 'DrushUserLogin',
-
         },
       ],
     },
   ];
+  // filter default tasks
+  options = [
+    {
+      ...options[0],
+      children: options[0].children.filter(option => !blocklist.includes(option.value)),
+    },
+  ];
 
   if (advancedTasks && advancedTasks.length) {
-    advancedTasks.forEach((advancedTask, idx) => {
+    const filteredAdvancedTasks = advancedTasks.filter(task => !blocklist.includes(task.value));
+
+    filteredAdvancedTasks.forEach((advancedTask, idx) => {
       baseAdvancedTaskOptions.children.push({
         icon,
         ...advancedTask,
@@ -81,7 +85,7 @@ export const getDefaultTaskOptions = (advancedTasks?: AdvancedTaskOptions[]) => 
       });
     });
 
-    options.push(baseAdvancedTaskOptions);
+    filteredAdvancedTasks.length && options.push(baseAdvancedTaskOptions);
   }
   return options;
 };

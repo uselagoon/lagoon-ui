@@ -9,6 +9,7 @@ import { Head3, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 import { TasksData } from '../../app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
 import { getDefaultTaskOptions } from './_components/defaultTaskOptions';
 import { TasksPageWrapper } from './_components/styles';
+import { useEnvContext } from 'next-runtime-env';
 
 const { TasksTable } = Table;
 export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
@@ -16,6 +17,10 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
     data: { environment },
   } = useReadQuery(queryRef);
   const pathname = usePathname();
+
+  const { LAGOON_UI_TASK_BLOCKLIST } = useEnvContext();
+  const blockedTasks = JSON.parse(LAGOON_UI_TASK_BLOCKLIST as string) as string[];
+
 
   const advancedTasks = environment?.advancedTasks?.map(task => {
     const commandstring = task.command ? `[${task.command}]` : '';
@@ -29,10 +34,11 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
     };
   });
 
-  // returns default task options treeData + advancedTasks(if any)
-  const taskoptions = getDefaultTaskOptions(advancedTasks);
 
-  console.log(environment);
+  // returns default task options treeData + advancedTasks(if any)
+  const taskoptions = getDefaultTaskOptions(advancedTasks, []);
+
+  console.log(blockedTasks);
   console.warn(taskoptions);
 
   return (
