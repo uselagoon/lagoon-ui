@@ -19,6 +19,36 @@ export type Task = {
   taskName: string;
 };
 
+export type AdvancedTaskDefinitionArgument = {
+  id: number;
+  name: string;
+  displayName: string;
+  type: 'ENVIRONMENT_SOURCE_NAME' | 'ENVIRONMENT_SOURCE_NAME_EXCLUDE_SELF' | 'STRING' | 'NUMERIC';
+  range?: string | null;
+  defaultValue?: string | null;
+  optional: boolean;
+};
+
+export type AdvancedTask = {
+  id: number;
+  name: string;
+  description: string;
+  confirmationText: string;
+  type: 'COMMAND' | 'IMAGE';
+  environment: number;
+  project: number;
+  service: string;
+  created: string;
+  deleted: string;
+  adminOnlyView: boolean;
+  deployTokenInjection: boolean;
+  projectKeyInjection: boolean;
+  advancedTaskDefinitionArguments: AdvancedTaskDefinitionArgument[];
+  command: string;
+  groupName: string;
+};
+
+
 type Environment = {
   id: number;
   openshiftProjectName: string;
@@ -28,6 +58,7 @@ type Environment = {
     factsUi: boolean;
   };
   tasks: Task[];
+  advancedTasks?: AdvancedTask[];
 };
 
 export interface TasksData {
