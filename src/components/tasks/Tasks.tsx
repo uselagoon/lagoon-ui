@@ -69,7 +69,7 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
   });
 
   // returns default task options treeData + advancedTasks(if any)
-  const taskoptions = getDefaultTaskOptions(advancedTasks, []);
+  const taskoptions = getDefaultTaskOptions(advancedTasks, blockedTasks);
 
   console.log(blockedTasks);
   console.warn(taskoptions);
