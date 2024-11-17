@@ -45,7 +45,7 @@ export const CancelDeploymentButton = ({
       )}
 
       {success ? afterText || 'Cancelled' : beforeText || ''}
-      {error && trigger()}
+      {error && trigger({ content: error.message })}
     </>
   );
 };

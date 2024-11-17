@@ -11,6 +11,10 @@ export default gql`
         name
         problemsUi
         factsUi
+        environments {
+          id
+          name
+        }
       }
       services {
         name

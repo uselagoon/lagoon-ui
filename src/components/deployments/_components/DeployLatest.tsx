@@ -46,7 +46,7 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
       if (renderAsQuickAction) {
         message.error('Deployment failed');
       } else {
-        errorNotification.trigger();
+        errorNotification.trigger({ content: err.message });
       }
     },
     variables: {

@@ -48,21 +48,25 @@ export type AdvancedTask = {
   groupName: string;
 };
 
-
-type Environment = {
+export type EnvironmentWithTasks = {
   id: number;
+  name: string;
   openshiftProjectName: string;
   project: {
     name: string;
     problemsUi: boolean;
     factsUi: boolean;
+    environments: {
+      id: number;
+      name: string;
+    }[];
   };
   tasks: Task[];
   advancedTasks?: AdvancedTask[];
 };
 
 export interface TasksData {
-  environment: Environment;
+  environment: EnvironmentWithTasks;
 }
 
 export async function generateMetadata({ params }: Props) {
