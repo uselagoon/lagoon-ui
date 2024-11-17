@@ -6,7 +6,7 @@ import { AllDeploymentsData } from '@/app/(routegroups)/alldeployments/page';
 import { LagoonFilter, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
-import CancelDeployment from '../deployments/_components/CancelDeployment';
+import CancelDeployment from '../cancelDeployment/CancelDeployment';
 
 const { AllDeploymentsTable } = Table;
 

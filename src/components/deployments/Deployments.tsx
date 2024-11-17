@@ -13,8 +13,8 @@ import { Select, Table } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';
 import { useQueryStates } from 'nuqs';
 
+import CancelDeployment from '../cancelDeployment/CancelDeployment';
 import CustomRangePicker from '../datepicker/DatePicker';
-import CancelDeployment from './_components/CancelDeployment';
 import DeployLatest from './_components/DeployLatest';
 import { deploymentResultOptions, statusOptions } from './_components/filterValues';
 import { DeploymentsFilters } from './_components/styles';

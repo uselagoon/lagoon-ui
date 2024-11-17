@@ -8,7 +8,7 @@ import { DeploymentData } from '@/app/(routegroups)/(projectroutes)/projects/[pr
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Switch, Table, Text } from '@uselagoon/ui-library';
 
-import CancelDeployment from '../deployments/_components/CancelDeployment';
+import CancelDeployment from '../cancelDeployment/CancelDeployment';
 import LogViewer from '../logViewer/LogViewer';
 import BackButton from './_components/BackButton';
 import { Switchers } from './_components/styles';

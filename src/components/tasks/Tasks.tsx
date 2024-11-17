@@ -9,7 +9,11 @@ import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head3, Select, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
-import { TasksData } from '../../app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+import {
+  Task,
+  TasksData,
+} from '../../app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+import CancelTask from '../cancelTask/CancelTask';
 import { getDefaultTaskOptions } from './_components/defaultTaskOptions';
 import { tasksFilterOptions } from './_components/filterValues';
 import { TasksPageWrapper } from './_components/styles';
@@ -138,6 +142,9 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
         basePath={pathname}
         tasks={environment.tasks}
         resultsPerPage={tasks_count}
+        cancelTask={(task: Task) => (
+          <CancelTask task={task} projectId={environment.project.id} environmentId={environment.id} />
+        )}
         resultDropdown={
           <Select
             options={tasksFilterOptions}

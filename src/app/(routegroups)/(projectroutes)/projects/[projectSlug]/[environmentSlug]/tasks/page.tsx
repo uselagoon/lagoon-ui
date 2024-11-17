@@ -53,6 +53,7 @@ export type EnvironmentWithTasks = {
   name: string;
   openshiftProjectName: string;
   project: {
+    id: number;
     name: string;
     problemsUi: boolean;
     factsUi: boolean;

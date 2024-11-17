@@ -3,7 +3,7 @@
 import { BulkDeployment } from '@/app/(routegroups)/bulkdeployment/[bulkId]/page';
 import { Head2, Table } from '@uselagoon/ui-library';
 
-import CancelDeployment from '../deployments/_components/CancelDeployment';
+import CancelDeployment from '../cancelDeployment/CancelDeployment';
 
 const { BulkDeploymentsTable } = Table;
 
