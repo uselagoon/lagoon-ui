@@ -1,6 +1,6 @@
 'use client';
 
-import { startTransition, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 import { TaskData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/[taskSlug]/page';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
@@ -32,6 +32,22 @@ export default function Task({ queryRef }: { queryRef: QueryRef<TaskData> }) {
     setShowSuccessSteps(checked);
     setHighlightWarnings(checked);
   };
+
+  // polling every 20s if status needs to be checked
+  useEffect(() => {
+    const shouldPoll = ['new', 'pending', 'queued', 'running'].includes(currentTask.status);
+
+    if (shouldPoll) {
+      const intId = setInterval(() => {
+        startTransition(async () => {
+          await refetch();
+        });
+      }, 20000);
+
+      return () => clearInterval(intId);
+    }
+  }, [currentTask, refetch]);
+
   return (
     <>
       <BackButton />

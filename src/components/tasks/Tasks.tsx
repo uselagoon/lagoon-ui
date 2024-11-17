@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 import { useEnvContext } from 'next-runtime-env';
 import { usePathname } from 'next/navigation';
@@ -122,6 +122,21 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
 
     return <NewTask {...sharedTaskProps} />;
   };
+
+  // polling every 20s if status needs to be checked
+  useEffect(() => {
+    const shouldPoll = environment.tasks.some(({ status }) => ['new', 'pending', 'queued', 'running'].includes(status));
+    if (shouldPoll) {
+      const intId = setInterval(() => {
+        startTransition(async () => {
+          await refetch();
+        });
+      }, 20000);
+
+      return () => clearInterval(intId);
+    }
+  }, [environment.tasks, refetch]);
+
   return (
     <TasksPageWrapper>
       <Text>Run a task on this environment</Text>

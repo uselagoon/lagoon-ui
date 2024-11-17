@@ -52,15 +52,21 @@ export default function Deployments({ queryRef }: { queryRef: QueryRef<Deploymen
     data: { environment },
   } = useReadQuery(queryRef);
 
-  // POLLING testing
+  // polling every 20s if status needs to be checked
   useEffect(() => {
-    let intId = setInterval(() => {
-      startTransition(async () => {
-        await refetch();
-      });
-    }, 20000);
-    return () => clearInterval(intId);
-  }, []);
+    const shouldPoll = environment.deployments.some(({ status }) =>
+      ['new', 'pending', 'queued', 'running'].includes(status)
+    );
+    if (shouldPoll) {
+      const intId = setInterval(() => {
+        startTransition(async () => {
+          await refetch();
+        });
+      }, 20000);
+
+      return () => clearInterval(intId);
+    }
+  }, [environment.deployments, refetch]);
 
   const handleRangeChange = (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
     if (dates) {

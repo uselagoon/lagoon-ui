@@ -1,7 +1,9 @@
 'use client';
 
+import { startTransition, useEffect } from 'react';
+
 import { BackupsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/backups/page';
-import { QueryRef, useReadQuery } from '@apollo/client';
+import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Select, Table } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';
 import { useQueryStates } from 'nuqs';
@@ -34,6 +36,7 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
       parse: (value: string | undefined) => value as 'pending' | 'failed' | 'successful',
     },
   });
+  const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
     data: { environment },
@@ -49,6 +52,22 @@ export default function Backups({ queryRef }: { queryRef: QueryRef<BackupsData> 
       setQuery({ range: null });
     }
   };
+
+  // polling every 20s if status needs to be checked
+  useEffect(() => {
+    // only poll if any backup has a 'restore.status' of 'pending'
+    const shouldPoll = environment.backups.some(({ restore }) => restore?.status === 'pending');
+
+    if (shouldPoll) {
+      const intId = setInterval(() => {
+        startTransition(async () => {
+          await refetch();
+        });
+      }, 20000);
+      return () => clearInterval(intId);
+    }
+  }, [environment.backups, refetch]);
+
   return (
     <>
       <DeploymentsFilters>

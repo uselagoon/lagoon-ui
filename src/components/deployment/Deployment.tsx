@@ -1,6 +1,6 @@
 'use client';
 
-import { startTransition, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
@@ -34,6 +34,22 @@ export default function Deployment({ queryRef }: { queryRef: QueryRef<Deployment
     setShowSuccessSteps(checked);
     setHighlightWarnings(checked);
   };
+
+  // polling every 20s if status needs to be checked
+  useEffect(() => {
+    const shouldPoll = ['new', 'pending', 'queued', 'running'].includes(deployment.status);
+
+    if (shouldPoll) {
+      const intId = setInterval(() => {
+        startTransition(async () => {
+          await refetch();
+        });
+      }, 20000);
+
+      return () => clearInterval(intId);
+    }
+  }, [deployment, refetch]);
+
   return (
     <>
       <BackButton />
