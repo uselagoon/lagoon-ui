@@ -77,6 +77,7 @@ const DrushRsyncFiles: FC<Props> = ({ environment, refetch, allButCurrentEnviron
           value={options.find(o => o.value === selectedSourceEnv)}
           onSelect={envId => setSelectedSourceEnv(envId)}
           options={options}
+          defaultOpen={false}
         />
 
         <label id="dest-env">Destination:</label>

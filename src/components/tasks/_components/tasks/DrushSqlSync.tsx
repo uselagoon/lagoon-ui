@@ -77,6 +77,7 @@ const DrushSqlSync: FC<Props> = ({ environment, refetch, allButCurrentEnvironmen
           value={options.find(o => o.value === selectedSourceEnv)}
           onSelect={envId => setSelectedSourceEnv(envId)}
           options={options}
+          defaultOpen={false}
         />
 
         <label id="dest-env">Destination:</label>
