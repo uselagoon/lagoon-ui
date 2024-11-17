@@ -21,6 +21,9 @@ const EnvironmentNavTabs = ({ children }: { children: ReactNode }) => {
     variables: { openshiftProjectName: environmentSlug },
   });
 
+  const showFactsTab = data?.environment?.project?.factsUi === 1;
+  const showProblemsTab = data?.environment?.project?.problemsUi === 1;
+
   return (
     <>
       <Tabs
@@ -60,29 +63,39 @@ const EnvironmentNavTabs = ({ children }: { children: ReactNode }) => {
               </Link>
             ),
           },
-          {
-            key: 'problems',
-            label: (
-              <Link href={`/projects/${projectSlug}/${environmentSlug}/problems`}>
-                <LinkContentWrapper>
-                  Problems
-                  {loading ? (
-                    <ProblemCountSkeleton width={23.5} height={20} />
-                  ) : (
-                    <ProblemCount color={Colors.lagoonBlue}>{data?.environment?.problems?.length}</ProblemCount>
-                  )}
-                </LinkContentWrapper>
-              </Link>
-            ),
-          },
-          {
-            key: 'insights',
-            label: (
-              <Link href={`/projects/${projectSlug}/${environmentSlug}/insights`}>
-                <LinkContentWrapper>Insights</LinkContentWrapper>
-              </Link>
-            ),
-          },
+
+          ...(showProblemsTab
+            ? [
+                {
+                  key: 'problems',
+                  label: (
+                    <Link href={`/projects/${projectSlug}/${environmentSlug}/problems`}>
+                      <LinkContentWrapper>
+                        Problems
+                        {loading ? (
+                          <ProblemCountSkeleton width={23.5} height={20} />
+                        ) : (
+                          <ProblemCount color={Colors.lagoonBlue}>{data?.environment?.problems?.length}</ProblemCount>
+                        )}
+                      </LinkContentWrapper>
+                    </Link>
+                  ),
+                },
+              ]
+            : []),
+
+          ...(showFactsTab
+            ? [
+                {
+                  key: 'insights',
+                  label: (
+                    <Link href={`/projects/${projectSlug}/${environmentSlug}/insights`}>
+                      <LinkContentWrapper>Insights</LinkContentWrapper>
+                    </Link>
+                  ),
+                },
+              ]
+            : []),
 
           {
             key: 'variables',
