@@ -3,7 +3,7 @@ import React, { FC, Fragment, startTransition, useEffect, useState } from 'react
 import {
   AdvancedTaskDefinitionArgument,
   EnvironmentWithTasks,
-} from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+} from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/(tasks-page)/page';
 import invokeRegisteredTask from '@/lib/mutation/tasks/invokeRegisteredTask';
 import { useMutation } from '@apollo/client';
 import { Button, Confirm, Input, Select, useNotification } from '@uselagoon/ui-library';

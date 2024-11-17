@@ -13,8 +13,6 @@ export default function Organizations({ organizations }: { organizations: any })
   const [search, setSearch] = useState('');
   const [numberOfitems, setNumberOfItems] = useState(0);
 
-  console.warn(organizations);
-
   const cols = [
     {
       title: 'Organization Name',

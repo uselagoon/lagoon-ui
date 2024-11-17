@@ -1,4 +1,4 @@
-import { AdvancedTaskDefinitionArgument } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+import { AdvancedTaskDefinitionArgument } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/(tasks-page)/page';
 import { CarryOutOutlined } from '@ant-design/icons';
 
 type AdvancedTaskOptions = {

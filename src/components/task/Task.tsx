@@ -2,27 +2,25 @@
 
 import { startTransition, useState } from 'react';
 
-import Link from 'next/link';
-
-import { DeploymentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/[deploymentSlug]/page';
+import { TaskData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/[taskSlug]/page';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Switch, Table, Text } from '@uselagoon/ui-library';
 
 import BackButton from '../backButton/BackButton';
-import CancelDeployment from '../cancelDeployment/CancelDeployment';
+import CancelTask from '../cancelTask/CancelTask';
+import { Switchers } from '../deployment/_components/styles';
 import LogViewer from '../logViewer/LogViewer';
-import { Switchers } from './_components/styles';
 
-const { DeploymentTable } = Table;
+const { TaskTable } = Table;
 
-export default function Deployment({ queryRef }: { queryRef: QueryRef<DeploymentData> }) {
+export default function Task({ queryRef }: { queryRef: QueryRef<TaskData> }) {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
     data: { environment },
   } = useReadQuery(queryRef);
 
-  const deployment = environment && environment.deployments[0];
+  const currentTask = environment && environment.tasks[0];
 
   const [showParsed, setShowParsed] = useState(true);
   const [showSuccessSteps, setShowSuccessSteps] = useState(true);
@@ -37,9 +35,12 @@ export default function Deployment({ queryRef }: { queryRef: QueryRef<Deployment
   return (
     <>
       <BackButton />
-      <DeploymentTable
-        deployment={deployment as any}
-        cancelDeployment={() => <CancelDeployment deployment={deployment} />}
+
+      <TaskTable
+        task={currentTask}
+        cancelTask={() => (
+          <CancelTask task={currentTask} projectId={environment.project.id} environmentId={environment.id} />
+        )}
       >
         <Switchers>
           <div>
@@ -64,19 +65,17 @@ export default function Deployment({ queryRef }: { queryRef: QueryRef<Deployment
             <Text>View parsed</Text>
             <Switch checked={showParsed} onChange={checked => handleShowParsed(checked)} showLabel={false} />
           </div>
-
-          {deployment.bulkId ? <Link href={`/bulkdeployment/${deployment.bulkId}`}>View bulk deployment</Link> : null}
         </Switchers>
 
         <LogViewer
-          logs={deployment.buildLog}
-          status={deployment.status}
+          logs={currentTask.logs || null}
+          status={currentTask.status}
           showParsed={showParsed}
           highlightWarnings={highlightWarnings}
           showSuccessSteps={showSuccessSteps}
           forceLastSectionOpen={true}
         />
-      </DeploymentTable>
+      </TaskTable>
     </>
   );
 }

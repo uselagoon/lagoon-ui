@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { Task } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+import { Task } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/(tasks-page)/page';
 import cancelTask from '@/lib/mutation/cancelTask';
 import { StopOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';

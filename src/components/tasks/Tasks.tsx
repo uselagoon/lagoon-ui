@@ -12,7 +12,7 @@ import { useQueryStates } from 'nuqs';
 import {
   Task,
   TasksData,
-} from '../../app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+} from '../../app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/(tasks-page)/page';
 import CancelTask from '../cancelTask/CancelTask';
 import { getDefaultTaskOptions } from './_components/defaultTaskOptions';
 import { tasksFilterOptions } from './_components/filterValues';

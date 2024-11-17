@@ -1,6 +1,6 @@
 import React, { FC, Fragment, startTransition, useState } from 'react';
 
-import { EnvironmentWithTasks } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/page';
+import { EnvironmentWithTasks } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/(tasks-page)/page';
 import taskDrushRsyncFiles from '@/lib/mutation/tasks/taskDrushRsyncFiles';
 import { useMutation } from '@apollo/client';
 import { Button, Select, useNotification } from '@uselagoon/ui-library';

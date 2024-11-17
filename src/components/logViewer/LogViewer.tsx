@@ -33,7 +33,7 @@ interface RootNode {
 }
 
 interface LogViewerProps {
-  logs: string;
+  logs: string | null;
   status: string;
   showParsed: boolean;
   highlightWarnings: boolean;

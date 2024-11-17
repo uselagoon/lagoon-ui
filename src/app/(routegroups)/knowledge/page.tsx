@@ -17,6 +17,5 @@ const query = gql`
 export default function Knowledge() {
   const q = useQuery(query);
 
-  console.warn(q);
   return <>Knowledge base</>;
 }
