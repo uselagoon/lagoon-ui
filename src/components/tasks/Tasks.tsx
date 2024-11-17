@@ -20,6 +20,7 @@ import DrushRsyncFiles from './_components/tasks/DrushRsyncFiles';
 import DrushSqlDump from './_components/tasks/DrushSqlDump';
 import DrushSqlSync from './_components/tasks/DrushSqlSync';
 import DrushUserLogin from './_components/tasks/DrushUserLogin';
+import InvokeRegisteredTask, { AdvancedTaskType } from './_components/tasks/InvokeRegisteredTask';
 
 type TaskType =
   | 'DrushCacheClear'
@@ -68,21 +69,7 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
     };
   });
 
-  // returns default task options treeData + advancedTasks(if any)
-  const taskoptions = getDefaultTaskOptions(advancedTasks, blockedTasks);
-
-  console.log(blockedTasks);
-  console.warn(taskoptions);
-
-  const allButCurrentEnvironments = environment.project.environments.filter(env => env.id !== environment.id);
-
-  const sharedTaskProps = {
-    environment,
-    allButCurrentEnvironments,
-    refetch,
-  };
-
-  const tasksMap = {
+  const defaultTasksMap = {
     DrushCacheClear,
     DrushCron,
     DrushSqlSync,
@@ -92,8 +79,45 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
     DrushUserLogin,
   };
 
-  const NewTask = tasksMap[selectedTask as keyof typeof tasksMap];
+  // returns default task options treeData + advancedTasks(if any)
+  const taskoptions = getDefaultTaskOptions(advancedTasks, blockedTasks);
+  const advancedTasksWithOptions = taskoptions[1].children;
 
+  // options stores advanced task with options
+  const selectedAdvancedTaskWithArgs = advancedTasksWithOptions?.find(advTask => advTask.value === selectedTask);
+
+  const allButCurrentEnvironments = environment.project.environments.filter(env => env.id !== environment.id);
+
+  const sharedTaskProps = {
+    environment,
+    allButCurrentEnvironments,
+    refetch,
+  };
+
+  const NewTask = defaultTasksMap[selectedTask as keyof typeof defaultTasksMap];
+
+  let isAdvancedTask = false;
+
+  // nothing found, find out if its an advanced task and use <InvokeRegisteredTask/>
+  if (!NewTask && selectedTask?.startsWith('InvokeRegisteredTask') && selectedAdvancedTaskWithArgs) {
+    isAdvancedTask = true;
+  }
+
+  // returns the computed task to run -> default task or advanced
+  const renderTask = () => {
+    if (!selectedTask) return;
+
+    if (isAdvancedTask) {
+      return (
+        <InvokeRegisteredTask
+          {...sharedTaskProps}
+          advancedTask={selectedAdvancedTaskWithArgs as unknown as AdvancedTaskType}
+        />
+      );
+    }
+
+    return <NewTask {...sharedTaskProps} />;
+  };
   return (
     <TasksPageWrapper>
       <Text>Run a task on this environment</Text>
@@ -107,7 +131,7 @@ export default function Tasks({ queryRef }: { queryRef: QueryRef<TasksData> }) {
         />
       </div>
 
-      <div className="selected-task">{selectedTask && NewTask ? <NewTask {...sharedTaskProps} /> : null}</div>
+      <div className="selected-task">{renderTask()}</div>
 
       <Head3>Recent Task Activity</Head3>
       <TasksTable

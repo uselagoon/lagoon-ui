@@ -18,10 +18,16 @@ export const SelectEnv = styled.div`
   max-width: 40%;
   gap: 0.75rem;
   label {
+    line-height: 1.5rem;
     font-family: 'ArabicPro-Regular', sans-serif;
   }
   .task-btn {
     width: max-content;
+  }
+  input[type='text'] {
+    margin-bottom: 0.75rem;
+    font-family: 'ArabicPro-Regular', sans-serif !important;
+    font-size: 0.85rem;
   }
   .warning {
     padding: 0.75rem 1rem;

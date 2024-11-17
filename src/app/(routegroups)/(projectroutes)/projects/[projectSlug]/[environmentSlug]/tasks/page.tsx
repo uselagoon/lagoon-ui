@@ -24,8 +24,8 @@ export type AdvancedTaskDefinitionArgument = {
   name: string;
   displayName: string;
   type: 'ENVIRONMENT_SOURCE_NAME' | 'ENVIRONMENT_SOURCE_NAME_EXCLUDE_SELF' | 'STRING' | 'NUMERIC';
-  range?: string | null;
-  defaultValue?: string | null;
+  range?: any[] | null;
+  defaultValue?: string | number | null;
   optional: boolean;
 };
 
@@ -33,7 +33,7 @@ export type AdvancedTask = {
   id: number;
   name: string;
   description: string;
-  confirmationText: string;
+  confirmationText?: string;
   type: 'COMMAND' | 'IMAGE';
   environment: number;
   project: number;

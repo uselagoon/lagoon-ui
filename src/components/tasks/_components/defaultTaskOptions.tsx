@@ -6,7 +6,7 @@ type AdvancedTaskOptions = {
   label: string;
   value: string;
   arguments: AdvancedTaskDefinitionArgument[];
-  confirmationText: string;
+  confirmationText?: string;
 };
 
 export const getDefaultTaskOptions = (advancedTasks: AdvancedTaskOptions[] | undefined, blocklist: string[]) => {
