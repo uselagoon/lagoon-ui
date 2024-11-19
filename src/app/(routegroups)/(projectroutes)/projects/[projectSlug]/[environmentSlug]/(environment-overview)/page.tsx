@@ -1,6 +1,7 @@
 import Environment from '@/components/environment/Environment';
-import { getClient } from '@/lib/apolloClient';
+import { PreloadQuery } from '@/lib/apolloClient';
 import environmentByOpenShiftProjectName from '@/lib/query/environmentByOpenShiftProjectName';
+import { QueryRef } from '@apollo/client';
 
 type Props = {
   params: { environmentSlug: string };
@@ -39,14 +40,15 @@ export default async function EnvironmentPage({
 }: {
   params: { environmentSlug: string };
 }) {
-  const client = await getClient();
-
-  const { data } = await client.query<EnvironmentData>({
-    query: environmentByOpenShiftProjectName,
-    variables: {
-      openshiftProjectName: environmentSlug,
-    },
-  });
-
-  return <Environment environment={data.environment} />;
+  return (
+    <PreloadQuery
+      query={environmentByOpenShiftProjectName}
+      variables={{
+        displayName: 'Environment',
+        openshiftProjectName: environmentSlug,
+      }}
+    >
+      {queryRef => <Environment queryRef={queryRef as QueryRef<EnvironmentData>} />}
+    </PreloadQuery>
+  );
 }

@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import { FC, startTransition, useReducer } from 'react';
 
 import { env } from 'next-runtime-env';
 
 import deployEnvironmentBranch from '@/lib/mutation/deployEnvironmentBranch';
 import projectByNameWithDeployKeyQuery from '@/lib/query/projectByNameWithDeployKeyQuery';
-import { useMutation, useQuery } from '@apollo/client';
-import { CopyToClipboard, FormItem, Input, LagoonCard, Text, Tip } from '@uselagoon/ui-library';
+import { ApolloError, useMutation, useQuery } from '@apollo/client';
+import { CopyToClipboard, FormItem, Input, LagoonCard, Text, Tip, useNotification } from '@uselagoon/ui-library';
 
 import { ContentWrapper, StepWrapper } from './_components/styles';
 
@@ -19,10 +19,17 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
     variables: { name: projectName },
   });
 
-  const [deployEnvironmentBranchMutation, { loading }] = useMutation(deployEnvironmentBranch, {
-    onError: err => {
-      console.error(err);
-    },
+  const [key, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const { contextHolder, trigger } = useNotification({
+    type: 'error',
+    title: 'There was a problem creating environment.',
+    placement: 'top',
+    duration: 0,
+    content: null,
+  });
+
+  const [deployEnvironmentBranchMutation, { data, loading }] = useMutation(deployEnvironmentBranch, {
     variables: {
       project: projectName,
     },
@@ -118,25 +125,35 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
 
   const newEnvSteps = [createModalStep1, createModalStep2, createModalStep3];
 
-  const createEnvironment = (fields: Record<string, unknown>) => {
-    return deployEnvironmentBranchMutation({
-      variables: {
-        branch: fields.branch_name,
-      },
-    }).then(() => {
-      setTimeout(() => {
-        refetch;
+  const createEnvironment = async (fields: Record<string, unknown>) => {
+    try {
+      await deployEnvironmentBranchMutation({
+        variables: {
+          branch: fields.branch_name,
+        },
       });
-    });
+
+      startTransition(() => {
+        refetch();
+      });
+    } catch (err) {
+      console.error(err);
+      trigger({ content: (err as ApolloError).message });
+    }
+    forceUpdate();
   };
   return (
-    <LagoonCard
-      type="new"
-      renderType={renderType}
-      loading={loading}
-      requiredFormItems={['branch_name']}
-      onCreateEnvironment={createEnvironment}
-      steps={newEnvSteps}
-    />
+    <>
+      {contextHolder}
+      <LagoonCard
+        type="new"
+        key={key}
+        renderType={renderType}
+        loading={loading}
+        requiredFormItems={['branch_name']}
+        onCreateEnvironment={createEnvironment}
+        steps={newEnvSteps}
+      />
+    </>
   );
 };

@@ -1,9 +1,16 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/(environment-overview)/page';
+import deleteEnvironment from '@/lib/mutation/deleteEnvironment';
+import switchActiveStandby from '@/lib/mutation/switchActiveStandby';
+import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Collapse, Details, Head2, Head3, Head4, Text } from '@uselagoon/ui-library';
 
-import { RoutesSection, RoutesWrapper } from './styles';
+import ActiveStandbyConfirm from '../activestandbyconfirm/ActiveStandbyConfirm';
+import DeleteConfirm from '../deleteConfirm/DeleteConfirm';
+import { EnvironmentActions, RoutesSection, RoutesWrapper } from './styles';
 
 // active/standby routes
 export const createLinks = (routes: string | null) =>
@@ -13,7 +20,19 @@ export const createLinks = (routes: string | null) =>
     </a>
   ));
 
-export default function Environment({ environment }: { environment: EnvironmentData['environment'] }) {
+export default function Environment({ queryRef }: { queryRef: QueryRef<EnvironmentData> }) {
+  const { refetch } = useQueryRefHandlers(queryRef);
+
+  const {
+    data: { environment },
+  } = useReadQuery(queryRef);
+
+  const router = useRouter();
+
+  const [deleteEnvironmentMutation, { data, loading: deleteLoading }] = useMutation(deleteEnvironment);
+
+  const [switchActiveStandbyMutation, { loading: switchLoading }] = useMutation(switchActiveStandby);
+
   const environmentDetailItems = [
     {
       children: environment.environmentType,
@@ -37,8 +56,6 @@ export default function Environment({ environment }: { environment: EnvironmentD
     },
   ];
 
-  console.warn(environment);
-
   // push multiple routes into the collapse items array
   environment?.routes?.split(',').forEach((route: string, idx: number) => {
     environmentDetailItems.push({
@@ -52,6 +69,65 @@ export default function Environment({ environment }: { environment: EnvironmentD
   const activeRoutes = createLinks(environment.project.productionRoutes);
   const standbyRoutes = createLinks(environment.project.standbyRoutes);
   const envHasNoRoutes = !routes && !activeRoutes && !standbyRoutes;
+
+  const shouldRenderSwitchActiveStandby =
+    environment.project.productionEnvironment &&
+    environment.project.standbyProductionEnvironment &&
+    environment.environmentType === 'production' &&
+    environment.project.standbyProductionEnvironment === environment.name;
+
+  const environmentDetails = (
+    <>
+      <Details bordered layout="vertical" type="default" items={environmentDetailItems} />
+
+      <EnvironmentActions>
+        <Head4>Actions</Head4>
+
+        <section>
+          {shouldRenderSwitchActiveStandby ? (
+            <ActiveStandbyConfirm
+              activeEnvironment={environment.project.productionEnvironment}
+              standbyEnvironment={environment.project.standbyProductionEnvironment}
+              action={() =>
+                switchActiveStandbyMutation({
+                  variables: {
+                    input: {
+                      project: {
+                        name: environment.project.name,
+                      },
+                    },
+                  },
+                })
+              }
+              loading={switchLoading}
+            />
+          ) : null}
+
+          <DeleteConfirm
+            deleteType="environment"
+            deleteName={environment.name}
+            loading={deleteLoading}
+            data={data}
+            action={() =>
+              deleteEnvironmentMutation({
+                variables: {
+                  input: {
+                    name: environment.name,
+                    project: environment.project.name,
+                  },
+                },
+              })
+                // go back to the refreshed project page
+                .then(() => {
+                  router.push(`/projects/${environment.project.name}`);
+                })
+                .then(() => router.refresh())
+            }
+          />
+        </section>
+      </EnvironmentActions>
+    </>
+  );
   return (
     <>
       <Collapse
@@ -59,7 +135,7 @@ export default function Environment({ environment }: { environment: EnvironmentD
         borderless
         items={[
           {
-            children: <Details bordered layout="vertical" type="default" items={environmentDetailItems} />,
+            children: environmentDetails,
             key: 'environment_details',
             label: <Head3>Environment details</Head3>,
           },

@@ -41,3 +41,11 @@ export const RoutesWrapper = styled.div`
     }
   }
 `;
+
+export const EnvironmentActions = styled.div`
+  margin-top: 1.5rem;
+  section {
+    display: flex;
+    gap: 1rem;
+  }
+`;
