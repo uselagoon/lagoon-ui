@@ -14,7 +14,7 @@ export default gql`
         name
         cloudRegion
       }
-      environments(type: PRODUCTION) {
+      environments {
         route
         updated
       }

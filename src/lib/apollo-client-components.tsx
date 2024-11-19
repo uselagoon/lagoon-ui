@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useEnvContext } from 'next-runtime-env';
 
-import { ApolloLink, HttpLink } from '@apollo/client';
+import { ApolloLink, HttpLink, ServerError } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
@@ -71,7 +71,6 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
       httpLink
     );
   };
-
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) =>
@@ -80,6 +79,9 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
     }
     if (networkError) {
       console.log('[Network error]', networkError);
+      if ((networkError as ServerError)?.statusCode === 401) {
+        manualSignOut();
+      }
     }
   });
 
