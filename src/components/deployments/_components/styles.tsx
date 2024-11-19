@@ -10,7 +10,7 @@ export const StyledNewDeployment = styled.section`
   margin-block-end: 1.5rem;
   border-width: 1px 0px 1px 0px;
   border-style: solid;
-  border-color: #ffffff;
+  border-color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : 'gray')};
   width: max-content;
   padding-inline: 2rem;
   padding-block: 0.375rem;
