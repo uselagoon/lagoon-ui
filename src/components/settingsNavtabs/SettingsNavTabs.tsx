@@ -9,6 +9,9 @@ import { Tabs } from '@uselagoon/ui-library';
 
 export const SettingsNavTabs = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
+
+  console.warn(pathname);
+
   return (
     <section style={{ marginTop: '26px' }}>
       <Tabs
@@ -16,12 +19,12 @@ export const SettingsNavTabs = ({ children }: { children: ReactNode }) => {
         pathname={pathname}
         items={[
           {
-            key: 'settings',
-            label: <Link href={`/settings/`}>SSH KEYS</Link>,
+            key: 'setting',
+            label: <Link href={`/settings`}>SSH KEYS</Link>,
           },
           {
             key: '2fa',
-            label: <Link href={`/settings/2fa`}>2FA & Passwords</Link>,
+            label: <Link href={`/settings/2fa/`}>2FA & Passwords</Link>,
           },
         ]}
       >
