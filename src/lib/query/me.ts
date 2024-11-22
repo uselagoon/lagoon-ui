@@ -13,6 +13,7 @@ export default gql`
         keyType
         keyValue
         created
+        lastUsed
         keyFingerprint
       }
     }

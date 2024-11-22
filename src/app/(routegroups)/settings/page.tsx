@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Settings',
 };
 
-type SshKey = {
+export type SshKey = {
   id: number;
   name: string;
   created: string;

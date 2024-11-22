@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Head2, Text } from '@uselagoon/ui-library';
+import { Button, Colors, Head2, Text } from '@uselagoon/ui-library';
 import styled from 'styled-components';
 
 export default function KeyCloakPage({ kcUrl }: { kcUrl: string }) {
@@ -33,8 +33,12 @@ const StyledText = styled(Text)`
 
 const StyledBtn = styled(Button)`
   background-color: transparent !important;
-  padding: 30px !important;
+  padding: 25px 15px !important;
   border-radius: 0 !important;
-  border: 1px solid #fff;
+  border: 1px solid ${props => props.theme.UI.borders.box};
+  color: ${props => props.theme.UI.texts.primary} !important;
   margin-top: 2.5rem;
+  &:hover {
+    color: ${Colors.lagoonBlue} !important;
+  }
 `;
