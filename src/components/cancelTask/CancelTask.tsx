@@ -27,6 +27,8 @@ export const CancelTaskButton = ({ action, success, loading, error, beforeText, 
     duration: 0,
   });
 
+  if (error) trigger({ content: error.message });
+
   return (
     <>
       <Fragment>{contextHolder}</Fragment>
@@ -38,7 +40,6 @@ export const CancelTaskButton = ({ action, success, loading, error, beforeText, 
       )}
 
       {success ? afterText || 'Cancelled' : beforeText || ''}
-      {error && trigger({ content: error.message })}
     </>
   );
 };

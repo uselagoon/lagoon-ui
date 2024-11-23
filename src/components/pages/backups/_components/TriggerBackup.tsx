@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 
+import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import taskDrushActiveDump from '@/lib/mutation/taskDrushActiveDump';
 import taskDrushSqlDump from '@/lib/mutation/taskDrushSqlDump';
 import { ApolloError, useMutation } from '@apollo/client';
@@ -9,7 +10,6 @@ import { Form, Radio } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
 import { RadioGroup, StyledBackupTrigger } from './styles';
-import { DeploymentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 
 interface Props {
   environment: DeploymentsData['environment'];

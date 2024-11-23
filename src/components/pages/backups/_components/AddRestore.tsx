@@ -24,17 +24,20 @@ export const AddRestoreButton: FC<AddRestoreButtonProps> = ({ action, success, l
     duration: 0,
   });
 
-  return (<>
-      <Fragment>{contextHolder}</Fragment>
+  if (error) {
+    trigger();
+  }
 
+  return (
+    <>
+      {contextHolder}
       {type === 'failed' ? (
         <RedoOutlined onClick={action} disabled={loading || success} />
       ) : (
         <CloudDownloadOutlined onClick={action} disabled={loading || success} />
       )}
-
-      {error && trigger()}
-    </>);
+    </>
+  );
 };
 
 const AddRestore = ({ backup, type }: { backup: Backup; type: 'failed' | 'unavailable' }) => {

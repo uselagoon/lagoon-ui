@@ -34,6 +34,8 @@ export const CancelDeploymentButton = ({
     duration: 0,
   });
 
+  if (error) trigger({ content: error.message });
+
   return (
     <>
       <Fragment>{contextHolder}</Fragment>
@@ -45,7 +47,6 @@ export const CancelDeploymentButton = ({
       )}
 
       {success ? afterText || 'Cancelled' : beforeText || ''}
-      {error && trigger({ content: error.message })}
     </>
   );
 };
