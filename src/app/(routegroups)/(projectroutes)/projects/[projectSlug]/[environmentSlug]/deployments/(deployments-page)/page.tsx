@@ -1,4 +1,4 @@
-import Deployments from '@/components/deployments/Deployments';
+import DeploymentsPage from '@/components/pages/deployments/DeploymentsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWithDeployments from '@/lib/query/environmentWithDeployments';
 import { QueryRef } from '@apollo/client';
@@ -59,11 +59,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function EnvironmentPage({
-  params: { environmentSlug },
-}: {
-  params: { environmentSlug: string };
-}) {
+export default async function Deployments({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
   return (
     <PreloadQuery
       query={environmentWithDeployments}
@@ -73,7 +69,7 @@ export default async function EnvironmentPage({
         limit: null,
       }}
     >
-      {queryRef => <Deployments queryRef={queryRef as QueryRef<DeploymentsData>} />}
+      {queryRef => <DeploymentsPage queryRef={queryRef as QueryRef<DeploymentsData>} />}
     </PreloadQuery>
   );
 }

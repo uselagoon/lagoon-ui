@@ -1,4 +1,4 @@
-import Problems from '@/components/problems/Problems';
+import ProblemsPage from '@/components/pages/problems/ProblemsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWithProblems from '@/lib/query/environmentWithProblems';
 import { QueryRef } from '@apollo/client';
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function ProblemsPage({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
+export default async function Problems({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
   return (
     <PreloadQuery
       query={environmentWithProblems}
@@ -69,7 +69,7 @@ export default async function ProblemsPage({ params: { environmentSlug } }: { pa
         limit: null,
       }}
     >
-      {queryRef => <Problems queryRef={queryRef as QueryRef<ProblemsData>} />}
+      {queryRef => <ProblemsPage queryRef={queryRef as QueryRef<ProblemsData>} />}
     </PreloadQuery>
   );
 }

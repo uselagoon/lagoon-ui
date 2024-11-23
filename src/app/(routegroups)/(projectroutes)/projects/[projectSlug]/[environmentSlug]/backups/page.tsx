@@ -1,4 +1,4 @@
-import Backups from '@/components/backups/Backups';
+import BackupsPage from '@/components/pages/backups/BackupsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWithBackups from '@/lib/query/environmentWithBackups';
 import { QueryRef } from '@apollo/client';
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function BackupsPage({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
+export default async function Backups({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
   return (
     <PreloadQuery
       query={environmentWithBackups}
@@ -55,7 +55,7 @@ export default async function BackupsPage({ params: { environmentSlug } }: { par
         limit: null,
       }}
     >
-      {queryRef => <Backups queryRef={queryRef as QueryRef<BackupsData>} />}
+      {queryRef => <BackupsPage queryRef={queryRef as QueryRef<BackupsData>} />}
     </PreloadQuery>
   );
 }

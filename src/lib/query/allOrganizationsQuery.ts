@@ -7,6 +7,8 @@ export default gql`
       name
       description
       friendlyName
+      quotaProject
+      quotaGroup
       groups {
         id
       }

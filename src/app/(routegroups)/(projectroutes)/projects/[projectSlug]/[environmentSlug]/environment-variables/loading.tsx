@@ -2,7 +2,7 @@
 
 import { SetStateAction } from 'react';
 
-import { scopeOptions, sortOptions } from '@/components/environmentVariables/_components/filterValues';
+import { scopeOptions, sortOptions } from '@/components/pages/environmentVariables/_components/filterValues';
 import { Head2, LagoonFilter, Table } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
 import { useQueryStates } from 'nuqs';

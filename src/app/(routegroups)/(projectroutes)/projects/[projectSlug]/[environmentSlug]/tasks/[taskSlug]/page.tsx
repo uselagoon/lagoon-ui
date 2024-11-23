@@ -1,4 +1,4 @@
-import Task from '@/components/task/Task';
+import TaskPage from '@/components/pages/task/TaskPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWithTask from '@/lib/query/environmentWithTask';
 import { QueryRef } from '@apollo/client';
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function TaskPage({
+export default async function Task({
   params: { environmentSlug, projectSlug, taskSlug },
 }: {
   params: { environmentSlug: string; projectSlug: string; taskSlug: string };
@@ -61,7 +61,7 @@ export default async function TaskPage({
         taskName: taskSlug,
       }}
     >
-      {queryRef => <Task queryRef={queryRef as QueryRef<TaskData>} />}
+      {queryRef => <TaskPage queryRef={queryRef as QueryRef<TaskData>} />}
     </PreloadQuery>
   );
 }

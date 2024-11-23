@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import KeyCloakPage from '@/components/2fa/Keycloak';
+import KeyCloakPage from '@/components/pages/2fa/Keycloak';
 
 export const metadata: Metadata = {
   title: '2FA & Passwords',

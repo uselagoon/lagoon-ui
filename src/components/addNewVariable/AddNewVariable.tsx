@@ -7,7 +7,7 @@ import { FormItem, Input, Modal, Select } from '@uselagoon/ui-library';
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
-import ModalTip from '../projectVariables/_components/ModalTip';
+import ModalTip from '../pages/projectVariables/_components/ModalTip';
 import {
   ContentWrapper,
   FormItemWrapper,
@@ -15,7 +15,7 @@ import {
   NewVariableTitle,
   ProjectVariablebutton,
   VariableSteps,
-} from '../projectVariables/_components/styles';
+} from '../pages/projectVariables/_components/styles';
 
 type Props = { refetch: () => void; projectName: string } & (
   | {

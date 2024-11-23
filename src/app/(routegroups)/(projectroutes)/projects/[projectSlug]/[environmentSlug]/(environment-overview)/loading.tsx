@@ -1,6 +1,6 @@
 'use client';
 
-import { RoutesSection } from '@/components/environment/styles';
+import { RoutesSection } from '@/components/pages/environment/styles';
 import { Collapse, Details, Head2, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
 
 export default function Loading() {

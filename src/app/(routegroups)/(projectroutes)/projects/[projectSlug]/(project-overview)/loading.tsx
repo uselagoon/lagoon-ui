@@ -2,7 +2,7 @@
 
 import { SetStateAction } from 'react';
 
-import { StyledEnvironmentsWrapper } from '@/components/environments/styles';
+import { StyledEnvironmentsWrapper } from '@/components/pages/environments/styles';
 import { LagoonCard, LagoonFilter } from '@uselagoon/ui-library';
 import { useQueryState } from 'nuqs';
 

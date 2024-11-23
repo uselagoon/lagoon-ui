@@ -1,4 +1,4 @@
-import Insights from '@/components/insights/Insights';
+import InsightsPage from '@/components/pages/insights/InsightsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWIthInsightsAndFacts from '@/lib/query/environmentWIthInsightsAndFacts';
 import { QueryRef } from '@apollo/client';
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function InsightsPage({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
+export default async function Insights({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
   return (
     <PreloadQuery
       query={environmentWIthInsightsAndFacts}
@@ -58,7 +58,7 @@ export default async function InsightsPage({ params: { environmentSlug } }: { pa
         limit: null,
       }}
     >
-      {queryRef => <Insights queryRef={queryRef as QueryRef<InsightsData>} />}
+      {queryRef => <InsightsPage queryRef={queryRef as QueryRef<InsightsData>} />}
     </PreloadQuery>
   );
 }

@@ -1,4 +1,4 @@
-import Environment from '@/components/environment/Environment';
+import EnvironmentPage from '@/components/pages/environment/EnvironmentPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentByOpenShiftProjectName from '@/lib/query/environmentByOpenShiftProjectName';
 import { QueryRef } from '@apollo/client';
@@ -35,11 +35,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function EnvironmentPage({
-  params: { environmentSlug },
-}: {
-  params: { environmentSlug: string };
-}) {
+export default async function Environment({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
   return (
     <PreloadQuery
       query={environmentByOpenShiftProjectName}
@@ -48,7 +44,7 @@ export default async function EnvironmentPage({
         openshiftProjectName: environmentSlug,
       }}
     >
-      {queryRef => <Environment queryRef={queryRef as QueryRef<EnvironmentData>} />}
+      {queryRef => <EnvironmentPage queryRef={queryRef as QueryRef<EnvironmentData>} />}
     </PreloadQuery>
   );
 }

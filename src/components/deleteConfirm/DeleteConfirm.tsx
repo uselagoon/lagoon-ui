@@ -5,7 +5,7 @@ import { Button, FormItem, Input, Modal, Text, useNotification } from '@uselagoo
 import { Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
-import { FormItemWrapper, Highlighted } from '../projectVariables/_components/styles';
+import { FormItemWrapper, Highlighted } from '../pages/projectVariables/_components/styles';
 import { ConfirmModalWrapper, ModalContent } from './styles';
 
 interface DeleteProps {

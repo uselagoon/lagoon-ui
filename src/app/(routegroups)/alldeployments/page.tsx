@@ -1,4 +1,4 @@
-import AllDeploymentsPage from '@/components/allDeployments/AllDeployments';
+import AllDeploymentsPage from '@/components/pages/allDeployments/AllDeploymentsPage';
 import { getClient } from '@/lib/apolloClient';
 import deploymentsByFilter from '@/lib/query/deploymentsByFilter';
 

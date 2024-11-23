@@ -1,6 +1,6 @@
 'use client';
 
-import { InsightsPageWrapper } from '@/components/insights/_components/styles';
+import { InsightsPageWrapper } from '@/components/pages/insights/_components/styles';
 import { Collapse, Head3, Table } from '@uselagoon/ui-library';
 
 const { FactsTable, InsightsTable } = Table;

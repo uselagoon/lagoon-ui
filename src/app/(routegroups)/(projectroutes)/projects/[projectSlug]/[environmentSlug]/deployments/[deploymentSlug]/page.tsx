@@ -1,4 +1,4 @@
-import Deployment from '@/components/deployment/Deployment';
+import DeploymentPage from '@/components/pages/deployment/DeploymentPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentWithDeployment from '@/lib/query/environmentWithDeployment';
 import { QueryRef } from '@apollo/client';
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function DeploymentPage({
+export default async function Deployment({
   params: { environmentSlug, projectSlug, deploymentSlug },
 }: {
   params: { environmentSlug: string; projectSlug: string; deploymentSlug: string };
@@ -55,7 +55,7 @@ export default async function DeploymentPage({
         deploymentName: deploymentSlug,
       }}
     >
-      {queryRef => <Deployment queryRef={queryRef as QueryRef<DeploymentData>} />}
+      {queryRef => <DeploymentPage queryRef={queryRef as QueryRef<DeploymentData>} />}
     </PreloadQuery>
   );
 }

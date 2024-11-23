@@ -1,6 +1,6 @@
 'use client';
 
-import { ProblemsWrapper } from '@/components/problems/_components/styles';
+import { ProblemsWrapper } from '@/components/pages/problems/_components/styles';
 import { Collapse, Colors, Head3, LagoonProblemsOverview, LoadingSkeleton, Table } from '@uselagoon/ui-library';
 
 const { ProblemsTable } = Table;

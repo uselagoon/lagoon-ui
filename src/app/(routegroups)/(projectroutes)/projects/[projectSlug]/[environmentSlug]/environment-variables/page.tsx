@@ -1,4 +1,4 @@
-import EnvironmentVariablesPage from '@/components/environmentVariables/EnvironmentVariables';
+import EnvironmentVariablesPage from '@/components/pages/environmentVariables/EnvironmentVariablesPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentByOpenShiftProjectNameWithEnvVars from '@/lib/query/environmentByOpenShiftProjectNameWithEnvVars';
 import { QueryRef } from '@apollo/client';

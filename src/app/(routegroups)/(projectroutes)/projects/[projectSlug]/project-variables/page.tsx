@@ -1,4 +1,4 @@
-import ProjectVariablesPage from '@/components/projectVariables/ProjectVariables';
+import ProjectVariablesPage from '@/components/pages/projectVariables/ProjectVariablesPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import projectVariablesQuery from '@/lib/query/projectVariablesQuery';
 import { QueryRef } from '@apollo/client';

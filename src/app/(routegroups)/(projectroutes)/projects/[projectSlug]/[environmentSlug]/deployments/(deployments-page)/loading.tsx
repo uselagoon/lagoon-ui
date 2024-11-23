@@ -1,12 +1,12 @@
 'use client';
 
-import DeployLatest from '@/components/deployments/_components/DeployLatest';
-import { deploymentResultOptions, statusOptions } from '@/components/deployments/_components/filterValues';
+import DeployLatest from '@/components/pages/deployments/_components/DeployLatest';
+import { deploymentResultOptions, statusOptions } from '@/components/pages/deployments/_components/filterValues';
 import {
   DeploymentsFilters,
   StyledPickerWrapper,
   StyledRangePicker,
-} from '@/components/deployments/_components/styles';
+} from '@/components/pages/deployments/_components/styles';
 import { Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 

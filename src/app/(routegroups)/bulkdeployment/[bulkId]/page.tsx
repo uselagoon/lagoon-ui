@@ -1,4 +1,4 @@
-import BulkDeploymentsPage from '@/components/bulkDeployments/BulkDeployments';
+import BulkDeploymentsPage from '@/components/pages/bulkDeployments/BulkDeploymentsPage';
 import { getClient } from '@/lib/apolloClient';
 import deploymensByBulkId from '@/lib/query/deploymensByBulkId';
 

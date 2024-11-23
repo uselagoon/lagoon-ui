@@ -1,6 +1,6 @@
 'use client';
 
-import { TasksPageWrapper } from '@/components/tasks/_components/styles';
+import { TasksPageWrapper } from '@/components/pages/tasks/_components/styles';
 import { Head3, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 
 const { TasksTable } = Table;

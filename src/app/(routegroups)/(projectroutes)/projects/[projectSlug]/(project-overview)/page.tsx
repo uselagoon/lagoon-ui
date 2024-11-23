@@ -1,4 +1,4 @@
-import ProjectEnvironments from '@/components/environments/Environments';
+import ProjectEnvironmentsPage from '@/components/pages/environments/ProjectEnvironmentsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import projectEnvironmentsQuery from '@/lib/query/projectEnvironmentsQuery';
 import { QueryRef } from '@apollo/client';
@@ -59,7 +59,7 @@ export default async function projectEnvironments({ params: { projectSlug } }: {
         name: projectSlug,
       }}
     >
-      {queryRef => <ProjectEnvironments projectName={projectSlug} queryRef={queryRef as QueryRef<ProjectData>} />}
+      {queryRef => <ProjectEnvironmentsPage projectName={projectSlug} queryRef={queryRef as QueryRef<ProjectData>} />}
     </PreloadQuery>
   );
 }

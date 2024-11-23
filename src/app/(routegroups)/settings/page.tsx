@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import SettingsPage from '@/components/settings/SettingsPage';
+import SettingsPage from '@/components/pages/settings/SettingsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
 import me from '@/lib/query/me';
 import { QueryRef } from '@apollo/client';

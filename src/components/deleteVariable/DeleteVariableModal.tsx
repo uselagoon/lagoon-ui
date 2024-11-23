@@ -15,7 +15,7 @@ import {
   Highlighted,
   ModalWrapper,
   NewVariableTitle,
-} from '../projectVariables/_components/styles';
+} from '../pages/projectVariables/_components/styles';
 
 type Props = {
   currentEnv: Variable;

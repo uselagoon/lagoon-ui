@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import ProjectsPage from '@/components/projects/Projects';
+import ProjectsPage from '@/components/pages/projects/ProjectsPage';
 import { getClient } from '@/lib/apolloClient';
 import allProjectsQuery from '@/lib/query/allProjectsQuery';
 

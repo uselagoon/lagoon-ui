@@ -4,7 +4,7 @@ import { Select } from '@uselagoon/ui-library';
 import { DatePicker, TimeRangePickerProps } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 
-import { StyledPickerWrapper, StyledRangePicker } from '../deployments/_components/styles';
+import { StyledPickerWrapper, StyledRangePicker } from '../pages/deployments/_components/styles';
 
 interface Props {
   range: any;
