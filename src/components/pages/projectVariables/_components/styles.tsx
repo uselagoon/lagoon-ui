@@ -100,3 +100,10 @@ export const FormItemWrapper = styled.div`
     }
   }
 `;
+
+export const ModalSubtitle = styled.span`
+  font-size: 10px;
+  line-height: 22px;
+  font-weight: 400;
+  margin-top: -10px;
+`;

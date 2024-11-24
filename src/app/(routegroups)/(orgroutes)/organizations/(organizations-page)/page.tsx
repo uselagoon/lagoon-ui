@@ -1,6 +1,6 @@
 import OrganizationsPage from '@/components/pages/organizations/OrganizationsPage';
 import { getClient } from '@/lib/apolloClient';
-import allOrganizationsQuery from '@/lib/query/allOrganizationsQuery';
+import allOrganizationsQuery from '@/lib/query/organizations/allOrganizationsQuery';
 
 export type OrgType = {
   id: number;
