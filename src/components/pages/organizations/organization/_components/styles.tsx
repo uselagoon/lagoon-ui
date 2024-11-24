@@ -79,12 +79,17 @@ export const EditModalWrapper = styled.div`
       margin-top: 2rem;
     }
   }
-  .addprojectfields {
+  .addprojectfields, .addFields {
     flex: 1;
     width: 55%;
 
     .ant-form-item input {
       width: 100%;
+    }
+  }
+  .addFields{
+    > .wrap {
+      margin-bottom: 1.25rem;
     }
   }
 `;

@@ -47,19 +47,6 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
     const { projectName, gitUrl, prodEnv, deployTarget, addUserToProject, pullRequests, branches } =
       addProjectForm.getFieldsValue();
 
-    const mutationVariables = {
-      organization: organizationId,
-      name: projectName,
-      gitUrl: gitUrl,
-      kubernetes: parseInt(deployTarget, 10),
-      productionEnvironment: prodEnv,
-      addOrgOwner: addUserToProject,
-      ...(pullRequests ? { pullrequests: pullRequests } : {}),
-      ...(branches ? { branches } : {}),
-    };
-
-    console.warn(mutationVariables);
-
     try {
       await addProjectMutation({
         variables: {
@@ -112,16 +99,6 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
     return requiredValues;
   };
 
-  // const handleCreateProject = () => {
-  //   const { variable_name, variable_scope, variable_value } = addProjectForm.getFieldsValue();
-
-  //   createVariable(variable_name, variable_scope, variable_value).then(() => {
-  //     startTransition(async () => {
-  //       await refetch();
-  //       handleCancel();
-  //     });
-  //   });
-  // };
 
   return (
     <>
@@ -160,7 +137,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
               <section className="addprojectfields">
                 <div className="wrap">
                   <FormItem name="projectName" label="Project name" rules={[{ required: true, message: '' }]}>
-                    <Input placeholder="Enter a project name" required />
+                    <Input size='large' placeholder="Enter a project name" required />
                   </FormItem>
                 </div>
 
@@ -181,13 +158,13 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                     }
                     rules={[{ required: true, message: '' }]}
                   >
-                    <Input placeholder="Enter the URL" required />
+                    <Input size='large' placeholder="Enter the URL" required />
                   </FormItem>
                 </div>
 
                 <div className="wrap">
                   <FormItem name="prodEnv" label="Production environment" rules={[{ required: true, message: '' }]}>
-                    <Input placeholder="Enter prod environment" required />
+                    <Input size='large' placeholder="Enter prod environment" required />
                   </FormItem>
                 </div>
 
@@ -200,7 +177,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                       onChange={val => {
                         addProjectForm.setFieldValue('deployTarget', val);
                       }}
-                      size="small"
+                      size="middle"
                     />
                   </FormItem>
                 </div>
@@ -238,7 +215,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                       </LabelTooltip>
                     }
                   >
-                    <Input placeholder="Branches" />
+                    <Input size='large' placeholder="Branches" />
                   </FormItem>
                 </div>
 
@@ -272,7 +249,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                       </LabelTooltip>
                     }
                   >
-                    <Input placeholder="Pull requests" />
+                    <Input size='large' placeholder="Pull requests" />
                   </FormItem>
                 </div>
 

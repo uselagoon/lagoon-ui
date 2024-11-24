@@ -86,6 +86,15 @@ export default function OrganizationPage({
     },
   ];
 
+  const deployTargetOptions = organization.deployTargets.map(deploytarget => {
+    return { label: deploytarget.name, value: deploytarget.id };
+  });
+  const existingGroupNames = organization.groups.map(g => g.name);
+
+  const groupSelectOptions = organization.groups.map(group => {
+    return { value: group.name, label: group.name };
+  });
+
   return (
     <>
       <Head2>Organization Details</Head2>
@@ -96,15 +105,11 @@ export default function OrganizationPage({
       />
 
       <Head2>Create</Head2>
+
       <OrgActionsWrapper>
-        <CreateProject
-          organizationId={organization.id}
-          options={organization.deployTargets.map(deploytarget => {
-            return { label: deploytarget.name, value: deploytarget.id };
-          })}
-        />
-        <CreateGroup organizationId={organization.id} existingGroupNames={organization.groups.map(g => g.name)} />
-        <AddUser />
+        <CreateProject organizationId={organization.id} options={deployTargetOptions} />
+        <CreateGroup organizationId={organization.id} existingGroupNames={existingGroupNames} />
+        <AddUser groupOptions={groupSelectOptions} type="multiple" />
       </OrgActionsWrapper>
 
       <Details type="topToBottom" bordered items={orgDetailedItems} />
