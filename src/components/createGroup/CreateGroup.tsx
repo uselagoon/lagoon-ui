@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, startTransition, useState } from 'react';
 
 import addGroupToOrganization from '@/lib/mutation/organizations/addGroupToOrganization';
 import { PlusOutlined } from '@ant-design/icons';
@@ -16,8 +16,10 @@ import { ModalSubtitle } from '../pages/projectVariables/_components/styles';
 interface Props {
   organizationId: number;
   existingGroupNames: string[];
+  variant?: 'default' | 'small';
+  refetch?: () => void;
 }
-export const CreateGroup: FC<Props> = ({ organizationId, existingGroupNames }) => {
+export const CreateGroup: FC<Props> = ({ organizationId, existingGroupNames, variant = 'default', refetch }) => {
   const [addGroupMutation, { error, loading }] = useMutation(addGroupToOrganization, {
     refetchQueries: ['getOrganization'],
   });
@@ -51,6 +53,9 @@ export const CreateGroup: FC<Props> = ({ organizationId, existingGroupNames }) =
           organization: organizationId,
         },
       });
+      startTransition(() => {
+        (refetch ?? (() => {}))();
+      });
       closeModal();
     } catch (err) {
       console.error(err);
@@ -69,8 +74,9 @@ export const CreateGroup: FC<Props> = ({ organizationId, existingGroupNames }) =
 
   return (
     <>
-      <CreateButton onClick={openModal}>
-        <PlusOutlined className="icon" /> <span className="text">Create a new group</span>
+      <CreateButton $variant={variant} onClick={openModal}>
+        <PlusOutlined className="icon" />
+        <span className="text">{variant === 'default' ? 'Create a new group' : 'Add new group'}</span>
       </CreateButton>
       <Modal
         title={<EditModalTitle>Add a group</EditModalTitle>}

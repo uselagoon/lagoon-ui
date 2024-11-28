@@ -17,7 +17,6 @@ import { scopeOptions, sortOptions } from './_components/filterValues';
 const { VariablesTable } = Table;
 export default function EnvironmentVariablesPage({
   queryRef,
-  environmentName,
   projectName,
 }: {
   queryRef: QueryRef<EnvVariablesData>;
@@ -67,6 +66,7 @@ export default function EnvironmentVariablesPage({
   };
 
   const variables = environmentVars.envVariables;
+  const envName = environmentVars.name;
 
   return (
     <>
@@ -109,7 +109,7 @@ export default function EnvironmentVariablesPage({
         editVariableModal={currentVariable => (
           <EditVariable
             type="environment"
-            environmentName={environmentName}
+            environmentName={envName}
             currentEnv={currentVariable}
             projectName={projectName}
             refetch={refetch}
@@ -118,19 +118,14 @@ export default function EnvironmentVariablesPage({
         deleteVariableModal={currentVariable => (
           <DeleteVariableModal
             type="environment"
-            environmentName={environmentName}
+            environmentName={envName}
             currentEnv={currentVariable}
             projectName={projectName}
             refetch={refetch}
           />
         )}
         newVariableModal={
-          <AddNewVariable
-            type="environment"
-            projectName={projectName}
-            environmentName={environmentName}
-            refetch={refetch}
-          />
+          <AddNewVariable type="environment" projectName={projectName} environmentName={envName} refetch={refetch} />
         }
         variables={variables as unknown as Variable[]}
       />

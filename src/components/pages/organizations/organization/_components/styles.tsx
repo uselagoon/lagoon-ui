@@ -1,5 +1,5 @@
 import { Colors, Head2 } from '@uselagoon/ui-library';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const OrgField = styled.section`
   display: flex;
@@ -79,7 +79,8 @@ export const EditModalWrapper = styled.div`
       margin-top: 2rem;
     }
   }
-  .addprojectfields, .addFields {
+  .addprojectfields,
+  .addFields {
     flex: 1;
     width: 55%;
 
@@ -87,7 +88,7 @@ export const EditModalWrapper = styled.div`
       width: 100%;
     }
   }
-  .addFields{
+  .addFields {
     > .wrap {
       margin-bottom: 1.25rem;
     }
@@ -121,7 +122,7 @@ export const OrgActionsWrapper = styled.section`
   gap: 24px;
 `;
 
-export const CreateButton = styled.button`
+export const CreateButton = styled.button<{ $variant?: 'default' | 'small' }>`
   all: unset;
   cursor: pointer;
   border: 1px solid ${props => props.theme.UI.borders.box};
@@ -133,6 +134,14 @@ export const CreateButton = styled.button`
   align-items: center;
   gap: 8px;
   height: 62px;
+
+  ${props =>
+    props.$variant === 'small' &&
+    css`
+      height: unset;
+      color: ${props => props.theme.UI.texts.primary};
+      padding-block: 0.5rem;
+    `}
   transition: all 0.3s ease;
   > * {
     transition: all 0.3s ease;

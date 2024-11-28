@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, startTransition, useState } from 'react';
 
 import addGroupMember from '@/lib/mutation/organizations/addGroupMember';
 import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -29,12 +29,17 @@ type WithGroupName = {
   groupName: string;
 };
 
+type Props = {
+  variant?: 'default' | 'small';
+  // if refetchQuery of "getOrganization" doesn't do enough.
+  refetch?: () => void;
+} & (WithGroupName | WithOptions);
 /**
  * Add user modal for organizations;
  * Accepts either a single groupName option or an array of options
  */
 
-export const AddUser: FC<WithGroupName | WithOptions> = props => {
+export const AddUser: FC<Props> = props => {
   const [addGroupMemberMutation, { error, loading }] = useMutation(addGroupMember, {
     refetchQueries: ['getOrganization'],
   });
@@ -64,7 +69,9 @@ export const AddUser: FC<WithGroupName | WithOptions> = props => {
           inviteUser,
         },
       });
-
+      startTransition(() => {
+        (props.refetch ?? (() => {}))();
+      });
       closeModal();
     } catch (err) {
       console.error(err);
@@ -117,7 +124,7 @@ export const AddUser: FC<WithGroupName | WithOptions> = props => {
 
   return (
     <>
-      <CreateButton onClick={openModal}>
+      <CreateButton $variant={props.variant} onClick={openModal}>
         <PlusOutlined className="icon" /> <span className="text">Add user</span>
       </CreateButton>
       <Modal

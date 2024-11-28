@@ -19,4 +19,4 @@ export const orgUserRoleOptions = [
     label: 'Owner',
     value: 'OWNER',
   },
-]
+];

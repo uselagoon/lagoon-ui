@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, startTransition, useState } from 'react';
 
 import Link from 'next/link';
 
@@ -24,8 +24,10 @@ interface Props {
     label: string;
     value: number;
   }[];
+  variant?: 'default' | 'small';
+  refetch?: () => void;
 }
-export const CreateProject: FC<Props> = ({ organizationId, options }) => {
+export const CreateProject: FC<Props> = ({ organizationId, options, refetch, variant = 'default' }) => {
   const [addProjectMutation, { error, loading }] = useMutation(addProjectToOrganization, {
     refetchQueries: ['getOrganization'],
   });
@@ -59,6 +61,10 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
           ...(pullRequests ? { pullrequests: pullRequests } : {}),
           ...(branches ? { branches } : {}),
         },
+      });
+
+      startTransition(() => {
+        (refetch ?? (() => {}))();
       });
 
       closeModal();
@@ -99,10 +105,9 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
     return requiredValues;
   };
 
-
   return (
     <>
-      <CreateButton onClick={openModal}>
+      <CreateButton $variant={variant} onClick={openModal}>
         <PlusOutlined className="icon" /> <span className="text">Create a new project</span>
       </CreateButton>
       <Modal
@@ -137,7 +142,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
               <section className="addprojectfields">
                 <div className="wrap">
                   <FormItem name="projectName" label="Project name" rules={[{ required: true, message: '' }]}>
-                    <Input size='large' placeholder="Enter a project name" required />
+                    <Input size="large" placeholder="Enter a project name" required />
                   </FormItem>
                 </div>
 
@@ -158,13 +163,13 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                     }
                     rules={[{ required: true, message: '' }]}
                   >
-                    <Input size='large' placeholder="Enter the URL" required />
+                    <Input size="large" placeholder="Enter the URL" required />
                   </FormItem>
                 </div>
 
                 <div className="wrap">
                   <FormItem name="prodEnv" label="Production environment" rules={[{ required: true, message: '' }]}>
-                    <Input size='large' placeholder="Enter prod environment" required />
+                    <Input size="large" placeholder="Enter prod environment" required />
                   </FormItem>
                 </div>
 
@@ -215,7 +220,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                       </LabelTooltip>
                     }
                   >
-                    <Input size='large' placeholder="Branches" />
+                    <Input size="large" placeholder="Branches" />
                   </FormItem>
                 </div>
 
@@ -249,7 +254,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options }) => {
                       </LabelTooltip>
                     }
                   >
-                    <Input size='large' placeholder="Pull requests" />
+                    <Input size="large" placeholder="Pull requests" />
                   </FormItem>
                 </div>
 

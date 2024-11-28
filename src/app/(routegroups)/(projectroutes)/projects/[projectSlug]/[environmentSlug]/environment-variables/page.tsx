@@ -20,6 +20,7 @@ export type EnvVariable = {
 
 type Environment = {
   id: number;
+  name: string;
   openshiftProjectName: string;
   project: {
     name: string;

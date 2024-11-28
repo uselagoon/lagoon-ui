@@ -6,46 +6,32 @@ import WebhookFragment from '@/lib/fragment/webhook';
 import { gql } from '@apollo/client';
 
 export default gql`
-  query getOrganization($name: String!) {
-    organization: organizationByName(name: $name) {
+  query getOrganization($project: String!, $id: Int!) {
+    project: orgProjectByName(name: $project) {
       id
       name
-      description
-      quotaProject
+      groups {
+        type
+        id
+        name
+        memberCount
+      }
+      notifications {
+        name
+        type
+      }
+    }
+
+    organization: organizationById(id: $id) {
+      id
+      name
       friendlyName
       quotaGroup
       quotaNotification
       quotaEnvironment
-      deployTargets {
-        id
-        name
-        friendlyName
-        cloudProvider
-        cloudRegion
-      }
-      owners {
-        id
-        firstName
-        lastName
-        email
-        owner
-        admin
-        groupRoles {
-          id
-        }
-      }
-      projects {
-        id
-        name
-        groupCount
-      }
-      environments {
-        id
-      }
       groups {
-        id
-        name
         type
+        name
         memberCount
       }
       slacks: notifications(type: SLACK) {
