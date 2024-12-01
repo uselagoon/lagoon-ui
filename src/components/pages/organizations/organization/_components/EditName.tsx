@@ -60,6 +60,7 @@ export const EditName: FC<Props> = ({ orgId, orgName, modalOpen, closeModal }) =
       onOk={handleUpdate}
       confirmLoading={loading}
       styles={{ body: { minHeight: '120px' } }}
+      width={600}
     >
       <EditModalWrapper>
         <Form form={editNameForm}>

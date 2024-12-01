@@ -93,6 +93,14 @@ export const EditModalWrapper = styled.div`
       margin-bottom: 1.25rem;
     }
   }
+  .notificationFields{
+    .ant-form-item input {
+      width: 100%;
+    }
+    > .wrap {
+      margin-bottom: 1.25rem;
+    }
+  }
 `;
 
 export const TipWrapper = styled.div`

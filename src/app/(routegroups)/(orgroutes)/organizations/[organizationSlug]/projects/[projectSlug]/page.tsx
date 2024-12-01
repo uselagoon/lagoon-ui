@@ -34,6 +34,12 @@ type Organization = {
 
 export interface OrganizationProjectData {
   organization: Organization;
+  project: {
+    id: number;
+    name: string;
+    groups: OrgGroup[];
+    notifications: { name: string; type: string }[];
+  };
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -56,7 +62,9 @@ export default async function Project({
         project: projectSlug,
       }}
     >
-      {queryRef => <OrgProjectPage queryRef={queryRef as QueryRef<OrganizationProjectData>} />}
+      {queryRef => (
+        <OrgProjectPage queryRef={queryRef as QueryRef<OrganizationProjectData>} />
+      )}
     </PreloadQuery>
   );
 }

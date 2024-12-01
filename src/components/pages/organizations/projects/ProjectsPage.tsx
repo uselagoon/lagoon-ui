@@ -12,6 +12,7 @@ import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import { projectFilterOptions } from '../group/_components/filterValues';
+import { RemoveProject } from './_components/RemoveProject';
 import { resultsFilterValues } from './_components/filterOptions';
 
 const { OrgProjectsTable } = Table;
@@ -98,9 +99,7 @@ export default function OrgProjectsPage({ queryRef }: { queryRef: QueryRef<Organ
             refetch={refetch}
           />
         }
-        deleteProjectModal={current => {
-          return <DeleteOutlined />;
-        }}
+        deleteProjectModal={project => <RemoveProject project={project} refetch={refetch} />}
       />
     </>
   );

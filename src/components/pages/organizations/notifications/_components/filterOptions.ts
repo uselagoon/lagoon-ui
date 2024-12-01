@@ -24,3 +24,26 @@ export const notificationTypeOptions = [
     value: 'teams',
   },
 ];
+
+export const newNotificationOptions = [
+  {
+    label: 'SLACK',
+    value: 'slack',
+  },
+  {
+    label: 'ROCKETCHAT',
+    value: 'rocketchat',
+  },
+  {
+    label: 'EMAIL',
+    value: 'email',
+  },
+  {
+    label: 'MICROSOFT TEAMS',
+    value: 'teams',
+  },
+  {
+    label: 'WEBHOOK',
+    value: 'webhook',
+  },
+];

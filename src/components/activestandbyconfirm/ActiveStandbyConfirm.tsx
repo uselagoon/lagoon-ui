@@ -7,7 +7,7 @@ import { ConfirmModalWrapper, ModalContent } from '../deleteConfirm/styles';
 import { Highlighted } from '../pages/projectVariables/_components/styles';
 
 /**
- * Confirms the deletion of the specified name and type.
+ * Confirms active standby switch
  */
 interface ActiveStandbyConfirmProps {
   activeEnvironment: string;

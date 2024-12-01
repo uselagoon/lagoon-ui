@@ -1,8 +1,9 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode, startTransition, useState } from 'react';
 
+import { DeleteOutlined } from '@ant-design/icons';
 import { ApolloError } from '@apollo/client';
 import { Button, FormItem, Input, Modal, Text, useNotification } from '@uselagoon/ui-library';
-import { Form } from 'antd';
+import { Form, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
 import { FormItemWrapper, Highlighted } from '../pages/projectVariables/_components/styles';
@@ -13,7 +14,9 @@ interface DeleteProps {
   deleteName: string;
   deleteMessage?: string;
   icon?: ReactNode;
+  renderAsButton?: boolean;
   action: () => void | any | Promise<any>;
+  refetch?: () => void;
   loading: boolean;
   data?: Record<string, any> | null;
 }
@@ -29,7 +32,9 @@ export const DeleteConfirm: FC<DeleteProps> = ({
   icon,
   loading,
   action,
+  refetch,
   data,
+  renderAsButton = true,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmForm] = useForm();
@@ -37,7 +42,7 @@ export const DeleteConfirm: FC<DeleteProps> = ({
 
   const { contextHolder, trigger } = useNotification({
     type: 'error',
-    title: 'There was a problem deleting environment.',
+    title: `There was a problem deleting ${deleteType}.`,
     placement: 'top',
     duration: 0,
     content: null,
@@ -55,6 +60,9 @@ export const DeleteConfirm: FC<DeleteProps> = ({
   const confirmAction = async () => {
     try {
       await action();
+      startTransition(() => {
+        (refetch ?? (() => {}))();
+      });
     } catch (err) {
       console.error(err);
       trigger({ content: (err as ApolloError).message });
@@ -101,9 +109,15 @@ export const DeleteConfirm: FC<DeleteProps> = ({
   return (
     <React.Fragment>
       {contextHolder}
-      <Button size="middle" danger iconBefore={icon} onClick={openModal} test-id="delete">
-        Delete
-      </Button>
+      {!renderAsButton ? (
+        <Tooltip placement="bottom" title={`Delete ${deleteType}`}>
+          <DeleteOutlined onClick={openModal} />
+        </Tooltip>
+      ) : (
+        <Button size="middle" danger iconBefore={icon} onClick={openModal} test-id="delete">
+          Delete
+        </Button>
+      )}
 
       <Modal
         title={<Text>Confirm deletion</Text>}

@@ -6,20 +6,22 @@ import { usePathname } from 'next/navigation';
 
 import { OrganizationUsersData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/users/(users-page)/page';
 import { AddUser } from '@/components/addUserToOrg/Adduser';
-import { DeleteOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import { CheckboxContainer } from '../groups/_components/styles';
+import { RemoveUser } from './_components/RemoveUser';
 import { resultsFilterValues, userFilterOptions } from './_components/filterOptions';
 
 const { OrgUsersTable } = Table;
 
 export default function UsersPage({
+  orgId,
   queryRef,
   groups,
 }: {
+  orgId: number;
   queryRef: QueryRef<OrganizationUsersData>;
   groups: {
     name: string;
@@ -137,9 +139,7 @@ export default function UsersPage({
           />
         }
         newUserModal={<AddUser refetch={refetch} variant="small" groupOptions={groupSelectOptions} type="multiple" />}
-        deleteUserModal={current => {
-          return <DeleteOutlined />;
-        }}
+        deleteUserModal={user => <RemoveUser user={user} refetch={refetch} orgId={orgId} />}
       />
     </>
   );

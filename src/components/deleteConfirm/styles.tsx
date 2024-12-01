@@ -1,3 +1,4 @@
+import { Colors } from '@uselagoon/ui-library';
 import styled from 'styled-components';
 
 export const ConfirmModalWrapper = styled.div`
@@ -15,4 +16,8 @@ export const ConfirmModalWrapper = styled.div`
 export const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
+  *.highlight{
+    color: ${Colors.lagoonBlue};
+    font-weight: 500;
+  }
 `;

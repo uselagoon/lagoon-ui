@@ -5,12 +5,14 @@ import { SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
 
 import { OrganizationGroupsData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/groups/(groups-page)/page';
+import { AddUserToGroup } from '@/components/addUserToGroup/AddUserToGroup';
 import { CreateGroup } from '@/components/createGroup/CreateGroup';
-import { DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import { UserAddOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
+import { DeleteGroup } from './_components/DeleteGroup';
 import { groupFilterValues, resultsFilterValues } from './_components/groupFilterValues';
 import { CheckboxContainer } from './_components/styles';
 
@@ -106,12 +108,8 @@ export default function GroupsPage({ queryRef }: { queryRef: QueryRef<Organizati
         newGroupModal={
           <CreateGroup variant="small" organizationId={organization.id} existingGroupNames={existingGroupNames} />
         }
-        deleteUserModal={current => {
-          return <DeleteOutlined />;
-        }}
-        addUserModal={current => {
-          return <UserAddOutlined />;
-        }}
+        deleteUserModal={group => <DeleteGroup group={group} refetch={refetch} />}
+        addUserModal={group => <AddUserToGroup variant="icon" groupName={group.name} refetch={refetch} />}
       />
     </>
   );

@@ -37,27 +37,32 @@ export type SlackNotification = {
   webhook: string;
   name: string;
   channel: string;
+  __typename: string;
 };
 
 export type OrgWebhook = {
   webhook: string;
   name: string;
+  __typename: string;
 };
 
 export type OrgEmail = {
   name: string;
   emailAddress: string;
+  __typename: string;
 };
 export type OrgRocketChat = {
   name: string;
   webhook: string;
   channel: string;
+  __typename: string;
 };
 
 export type OrgTeams = {
   name: string;
   webhook: string;
   channel: string;
+  __typename: string;
 };
 type Organization = {
   id: number;

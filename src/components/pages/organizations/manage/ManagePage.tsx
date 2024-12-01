@@ -3,13 +3,16 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationManageData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/manage/page';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import { resultsFilterValues } from '../groups/_components/groupFilterValues';
+import { AddUser } from './_components/AddUser';
+import { DeleteUser } from './_components/DeleteUser';
 import { typeOptions } from './_components/filterOptions';
+import { EditUser } from './_components/EditUser';
 
 const { OrgAdminsTable } = Table;
 export default function ManagePage({ queryRef }: { queryRef: QueryRef<OrganizationManageData> }) {
@@ -80,16 +83,10 @@ export default function ManagePage({ queryRef }: { queryRef: QueryRef<Organizati
             }}
           />
         }
-        addNewOwnerModal={<>+ Add Admin</>}
-        editOwnerModal={current => (
-          <>
-            <EditOutlined />
-          </>
-        )}
-        deleteOwnerModal={current => (
-          <>
-            <DeleteOutlined />
-          </>
+        addNewOwnerModal={<AddUser orgId={organization.id} refetch={refetch} owners={organization.owners} />}
+        editOwnerModal={user => <EditUser user={user} orgId={organization.id} refetch={refetch}/>}
+        deleteOwnerModal={user => (
+          <DeleteUser user={user} orgId={organization.id} orgName={organization.name} refetch={refetch} />
         )}
       />
     </>

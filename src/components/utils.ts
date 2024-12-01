@@ -28,3 +28,5 @@ export const debounce = (fn: (params: any) => void, delay: number) => {
     }, delay);
   };
 };
+
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

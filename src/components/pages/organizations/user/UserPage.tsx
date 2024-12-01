@@ -9,7 +9,9 @@ import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-libr
 import { useQueryStates } from 'nuqs';
 
 import { CheckboxContainer } from '../groups/_components/styles';
+import { UnlinkGroup } from './_components/UnlinkGroup';
 import { resultsFilterValues, userFilterOptions } from './_components/filterValues';
+import { EditUserRole } from '@/components/editUserRole/EditUserRole';
 
 const { OrgUserGroupsTable } = Table;
 
@@ -60,7 +62,6 @@ export default function UserPage({ queryRef, orgName }: { queryRef: QueryRef<Org
   } = useReadQuery(queryRef);
 
   const orgBasePath = `/organizations/${orgName}`;
-
   return (
     <>
       <LagoonFilter
@@ -84,7 +85,7 @@ export default function UserPage({ queryRef, orgName }: { queryRef: QueryRef<Org
       <Head3>User Groups</Head3>
 
       <OrgUserGroupsTable
-        userGroups={userByEmailAndOrganization.groupRoles}
+        userGroups={userByEmailAndOrganization?.groupRoles ?? []}
         filterString={user_query}
         showDefaults={showDefaults}
         sortBy={user_sort as 'name_asc' | 'name_desc'}
@@ -101,15 +102,11 @@ export default function UserPage({ queryRef, orgName }: { queryRef: QueryRef<Org
             }}
           />
         }
-        unlinkGroupModal={current => (
-          <>
-            <DisconnectOutlined />
-          </>
+        unlinkGroupModal={userGroup => (
+          <UnlinkGroup refetch={refetch} userEmail={userByEmailAndOrganization.email} userGroup={userGroup} />
         )}
         editUserRoleModal={current => (
-          <>
-            <EditOutlined />
-          </>
+          <EditUserRole groupName={current.name} currentRole={current.role} email={userByEmailAndOrganization.email} refetch={refetch} />
         )}
       />
     </>

@@ -3,14 +3,19 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationNotificationData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/notifications/page';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
+import { AddNotification } from './_components/AddNotification';
+import { DeleteNotification } from './_components/DeleteNotification';
+import { EditNotification, Notification } from './_components/EditNotification';
 import { notificationTypeOptions } from './_components/filterOptions';
 
 const { OrgNotificationsTable } = Table;
+
+type NotificationType = 'slack' | 'rocketchat' | 'email' | 'webhook' | 'teams';
 
 export default function NotificationsPage({ queryRef }: { queryRef: QueryRef<OrganizationNotificationData> }) {
   const { refetch } = useQueryRefHandlers(queryRef);
@@ -69,16 +74,15 @@ export default function NotificationsPage({ queryRef }: { queryRef: QueryRef<Org
           teams: organization.teams,
         }}
         filterNotificationType={type as 'slack' | 'rocketChat' | 'email' | 'webhook' | 'teams'}
-        newNotificationModal={<>+ Add Notification</>}
-        editNotificationModal={current => (
-          <>
-            <EditOutlined />
-          </>
+        newNotificationModal={<AddNotification orgId={organization.id} refetch={refetch} />}
+        editNotificationModal={notification => (
+          <EditNotification notification={notification as Notification} refetch={refetch} />
         )}
-        deleteNotificationModal={current => (
-          <>
-            <DeleteOutlined />
-          </>
+        deleteNotificationModal={notification => (
+          <DeleteNotification
+            refetch={refetch}
+            notification={notification as { name: string; type: NotificationType }}
+          />
         )}
       />
     </>

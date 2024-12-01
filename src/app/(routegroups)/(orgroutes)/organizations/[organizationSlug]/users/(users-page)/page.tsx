@@ -51,6 +51,7 @@ export default async function Users({ params: { organizationSlug } }: { params: 
     >
       {queryRef => (
         <UsersPage
+          orgId={organizationData.organization.id}
           groups={organizationData.organization.groups}
           queryRef={queryRef as QueryRef<OrganizationUsersData>}
         />

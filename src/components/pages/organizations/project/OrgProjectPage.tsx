@@ -3,7 +3,7 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationProjectData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/projects/[projectSlug]/page';
-import { DisconnectOutlined } from '@ant-design/icons';
+import { AddGroupToProject } from '@/components/addGroupToProject/AddGroupToProject';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
@@ -11,8 +11,12 @@ import { useQueryStates } from 'nuqs';
 import { resultsFilterValues } from '../groups/_components/groupFilterValues';
 import { CheckboxContainer } from '../groups/_components/styles';
 import { notificationTypeOptions } from '../notifications/_components/filterOptions';
+import { AddNotificationToProject } from './_components/AddNotificationToProject';
+import { UnlinkGroup } from './_components/UnlinkGroup';
+import { UnlinkNotification } from './_components/UnlinkNotification';
 import { groupFilterOptions } from './_components/filterOptions';
 import { Separator } from './_components/styles';
+import { transformNotifications } from './_components/transformNotifications';
 
 const { OrgGroupsTable, OrgNotificationsTable } = Table;
 
@@ -74,11 +78,32 @@ export default function OrgProjectPage({ queryRef }: { queryRef: QueryRef<Organi
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
-    data: { organization },
+    data: { organization, project },
   } = useReadQuery(queryRef);
 
   const orgBasePath = `/organizations/${organization.name}`;
 
+  const projectNotificationsByType = transformNotifications(project.notifications);
+
+  const filteredGroups = organization.groups.filter(group => {
+    return project.groups.every(p => p.name !== group.name);
+  });
+
+  const linkedNotifications = {
+    slacks: projectNotificationsByType.slacks || [],
+    webhooks: projectNotificationsByType.webhooks || [],
+    rocketChats: projectNotificationsByType.rocketChats || [],
+    emails: projectNotificationsByType.emails || [],
+    teams: projectNotificationsByType.teams || [],
+  };
+
+  const allNotifications = [
+    ...organization.slacks,
+    ...organization.webhook,
+    ...organization.rocketchats,
+    ...organization.emails,
+    ...organization.teams,
+  ];
   return (
     <>
       <LagoonFilter
@@ -103,7 +128,7 @@ export default function OrgProjectPage({ queryRef }: { queryRef: QueryRef<Organi
 
       <OrgGroupsTable
         basePath={`${orgBasePath}/groups`}
-        groups={organization.groups}
+        groups={project.groups}
         sortBy={group_sort as 'name_asc' | 'name_desc' | 'memberCount_asc' | 'memberCount_desc'}
         filterString={group_query}
         showDefaults={showDefaults}
@@ -119,7 +144,8 @@ export default function OrgProjectPage({ queryRef }: { queryRef: QueryRef<Organi
             }}
           />
         }
-        newGroupModal={<> Link Group </>}
+        deleteUserModal={group => <UnlinkGroup projectName={project.name} group={group} refetch={refetch} />}
+        newGroupModal={<AddGroupToProject projectName={project.name} groups={filteredGroups} refetch={refetch} />}
       />
 
       <Separator />
@@ -150,20 +176,22 @@ export default function OrgProjectPage({ queryRef }: { queryRef: QueryRef<Organi
         type="subTable"
         orgName={organization.name}
         filterString={notification_query}
-        notifications={{
-          slacks: organization.slacks,
-          webhooks: organization.webhook,
-          rocketChats: organization.rocketchats,
-          emails: organization.emails,
-          teams: organization.teams,
-        }}
+        notifications={linkedNotifications}
         filterNotificationType={notification_type as 'slack' | 'rocketChat' | 'email' | 'webhook' | 'teams'}
-        newNotificationModal={<>Link Notification</>}
-        unlinkNotificationModal={current => (
-          <>
-            <DisconnectOutlined />
-          </>
+        unlinkNotificationModal={notification => (
+          <UnlinkNotification
+            notification={notification as { name: string; type: string }}
+            projectName={project.name}
+            refetch={refetch}
+          />
         )}
+        newNotificationModal={
+          <AddNotificationToProject
+            projectName={project.name}
+            linkedNotifications={linkedNotifications}
+            allNotifications={allNotifications}
+          />
+        }
       />
     </>
   );

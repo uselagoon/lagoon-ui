@@ -3,7 +3,7 @@ import { FC, startTransition, useState } from 'react';
 import Link from 'next/link';
 
 import addProjectToOrganization from '@/lib/mutation/organizations/addProjectToOrganization';
-import { InfoCircleFilled, InfoCircleOutlined, InfoOutlined, PlusOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ApolloError, useMutation } from '@apollo/client';
 import { Checkbox, FormItem, Input, Modal, Select, Tip, useNotification } from '@uselagoon/ui-library';
 import { Tooltip } from 'antd';
@@ -142,7 +142,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
               <section className="addprojectfields">
                 <div className="wrap">
                   <FormItem name="projectName" label="Project name" rules={[{ required: true, message: '' }]}>
-                    <Input size="large" placeholder="Enter a project name" required />
+                    <Input placeholder="Enter a project name" required />
                   </FormItem>
                 </div>
 
@@ -163,13 +163,13 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                     }
                     rules={[{ required: true, message: '' }]}
                   >
-                    <Input size="large" placeholder="Enter the URL" required />
+                    <Input placeholder="Enter the URL" required />
                   </FormItem>
                 </div>
 
                 <div className="wrap">
                   <FormItem name="prodEnv" label="Production environment" rules={[{ required: true, message: '' }]}>
-                    <Input size="large" placeholder="Enter prod environment" required />
+                    <Input placeholder="Enter prod environment" required />
                   </FormItem>
                 </div>
 
@@ -182,7 +182,6 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                       onChange={val => {
                         addProjectForm.setFieldValue('deployTarget', val);
                       }}
-                      size="middle"
                     />
                   </FormItem>
                 </div>
@@ -220,7 +219,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                       </LabelTooltip>
                     }
                   >
-                    <Input size="large" placeholder="Branches" />
+                    <Input placeholder="Branches" />
                   </FormItem>
                 </div>
 
@@ -254,7 +253,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                       </LabelTooltip>
                     }
                   >
-                    <Input size="large" placeholder="Pull requests" />
+                    <Input placeholder="Pull requests" />
                   </FormItem>
                 </div>
 

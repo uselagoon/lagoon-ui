@@ -3,13 +3,18 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationGroupData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/groups/[groupSlug]/page';
-import { DeleteOutlined, DisconnectOutlined, EditOutlined } from '@ant-design/icons';
+import { AddProjectToGroup } from '@/components/addProjectToGroup/AddProjectToGroup';
+import { AddUserToGroup } from '@/components/addUserToGroup/AddUserToGroup';
+import { EditUserRole } from '@/components/editUserRole/EditUserRole';
+import { DisconnectOutlined, EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import { resultsFilterValues } from '../groups/_components/groupFilterValues';
 import { CheckboxContainer } from '../groups/_components/styles';
+import { UnlinkGroupMember } from './_components/UnlinkGroupMember';
+import { UnlinkGroupProject } from './_components/UnlinkGroupProject';
 import { projectFilterOptions, userFilterOptions } from './_components/filterValues';
 import { Separator } from './styles';
 
@@ -102,6 +107,10 @@ export default function GroupPage({ queryRef }: { queryRef: QueryRef<Organizatio
 
   const orgBasePath = `/organizations/${organization.name}`;
 
+  const filteredProjects = organization.projects.filter(project => {
+    return group.projects.every(p => p.name !== project.name);
+  });
+
   return (
     <>
       <LagoonFilter
@@ -150,13 +159,11 @@ export default function GroupPage({ queryRef }: { queryRef: QueryRef<Organizatio
             }}
           />
         }
-        newUserModal={<>+ Add user</>}
-        unlinkUserModal={current => (
-          <>
-            <DeleteOutlined />
-          </>
+        newUserModal={<AddUserToGroup variant="button" groupName={group.name} refetch={refetch} />}
+        unlinkUserModal={user => <UnlinkGroupMember groupName={group.name} user={user} refetch={refetch} />}
+        editUserGroupRoleModal={user => (
+          <EditUserRole groupName={group.name} currentRole={user.role} email={user.email} refetch={refetch} />
         )}
-        editUserGroupRoleModal={current => <EditOutlined />}
       />
 
       <Separator />
@@ -191,12 +198,10 @@ export default function GroupPage({ queryRef }: { queryRef: QueryRef<Organizatio
         sortBy={project_sort as 'name_asc' | 'name_desc'}
         filterString={project_query}
         basePath={`${orgBasePath}/projects`}
-        projects={organization.projects}
-        newProjectModal={<>+ Add Project</>}
-        unlinkProjectModal={current => (
-          <>
-            <DisconnectOutlined />
-          </>
+        projects={group.projects}
+        newProjectModal={<AddProjectToGroup projects={filteredProjects} groupName={group.name} refetch={refetch} />}
+        unlinkProjectModal={project => (
+          <UnlinkGroupProject project={project} groupName={group.name} refetch={refetch} />
         )}
       />
     </>

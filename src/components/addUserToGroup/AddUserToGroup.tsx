@@ -1,7 +1,7 @@
 import { FC, startTransition, useState } from 'react';
 
 import addGroupMember from '@/lib/mutation/organizations/addGroupMember';
-import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, PlusOutlined, UserAddOutlined } from '@ant-design/icons';
 import { ApolloError, useMutation } from '@apollo/client';
 import { Checkbox, FormItem, Input, Modal, Select, useNotification } from '@uselagoon/ui-library';
 import { Tooltip } from 'antd';
@@ -13,40 +13,26 @@ import {
   EditModalWrapper,
   LabelTooltip,
 } from '../pages/organizations/organization/_components/styles';
-import { ModalSubtitle } from '../pages/projectVariables/_components/styles';
 import { orgUserRoleOptions } from '../shared/selectOptions';
 
-type WithOptions = {
-  type: 'multiple';
-  groupOptions: {
-    label: string;
-    value: string;
-  }[];
-};
-
-type WithGroupName = {
-  type: 'single';
-  groupName: string;
-};
-
 type Props = {
-  variant?: 'default' | 'small';
-  // if refetchQuery of "getOrganization" doesn't do enough.
+  groupName: string;
+  variant: 'button' | 'icon';
   refetch?: () => void;
-} & (WithGroupName | WithOptions);
+};
+
 /**
- * Add user modal for organizations;
- * Accepts either a single groupName option or an array of options
+ * Add user modal for organization groups/group;
  */
 
-export const AddUser: FC<Props> = props => {
+export const AddUserToGroup: FC<Props> = ({ groupName, variant, refetch }) => {
   const [addGroupMemberMutation, { error, loading }] = useMutation(addGroupMember, {
     refetchQueries: ['getOrganization'],
   });
 
   const { contextHolder, trigger } = useNotification({
     type: 'error',
-    title: 'There was a problem adding a user.',
+    title: `There was a problem adding a user to group ${groupName}.`,
     placement: 'top',
     duration: 0,
     content: error?.message,
@@ -58,19 +44,19 @@ export const AddUser: FC<Props> = props => {
   const [addUserForm] = useForm();
 
   const handleAddUser = async () => {
-    const { email, group, role, inviteUser } = addUserForm.getFieldsValue();
+    const { email, role, inviteUser } = addUserForm.getFieldsValue();
 
     try {
       await addGroupMemberMutation({
         variables: {
           email,
           role,
-          group,
+          group: groupName,
           inviteUser,
         },
       });
       startTransition(() => {
-        (props.refetch ?? (() => {}))();
+        (refetch ?? (() => {}))();
       });
       closeModal();
     } catch (err) {
@@ -94,16 +80,15 @@ export const AddUser: FC<Props> = props => {
 
     const requiredValues: {
       email: string;
-      group: string;
       role: string;
       inviteUser: boolean;
     } = {} as any;
 
-    const requiredItems = ['email', 'group', 'role', 'inviteUser'] as const;
+    const requiredItems = ['email', 'role', 'inviteUser'] as const;
 
     for (const key of requiredItems) {
       if (values[key] == undefined) {
-        return false; // return false if any required field is undefined or null
+        return false;
       }
       //@ts-ignore
       requiredValues[key] = values[key];
@@ -112,24 +97,22 @@ export const AddUser: FC<Props> = props => {
     return requiredValues;
   };
 
-  const groupSelectOptions =
-    props.type === 'multiple'
-      ? props.groupOptions
-      : [
-          {
-            name: props.groupName,
-            value: props.groupName,
-          },
-        ];
-
   return (
     <>
-      <CreateButton $variant={props.variant} onClick={openModal}>
-        <PlusOutlined className="icon" /> <span className="text">Add user</span>
-      </CreateButton>
+      {variant === 'icon' ? (
+        <Tooltip placement="bottom" title="Add a user to the group">
+          <UserAddOutlined onClick={openModal} />
+        </Tooltip>
+      ) : (
+        <Tooltip placement="bottom" title="Add a user to the group">
+          <CreateButton $variant="small" onClick={openModal}>
+            <PlusOutlined className="icon" /> <span className="text">Add user</span>
+          </CreateButton>
+        </Tooltip>
+      )}
+
       <Modal
-        title={<EditModalTitle>Add users</EditModalTitle>}
-        subTitle={<ModalSubtitle>Step 1 of 1</ModalSubtitle>}
+        title={<EditModalTitle>Add user</EditModalTitle>}
         open={modalOpen}
         destroyOnClose
         cancelText="Cancel"
@@ -138,6 +121,7 @@ export const AddUser: FC<Props> = props => {
         onOk={handleAddUser}
         confirmLoading={loading}
         confirmDisabled={confirmDisabled}
+        width={800}
       >
         <EditModalWrapper>
           <Form
@@ -151,20 +135,6 @@ export const AddUser: FC<Props> = props => {
               <div className="wrap">
                 <FormItem name="email" label="New user email" rules={[{ required: true, message: '' }]}>
                   <Input placeholder="Enter email" required />
-                </FormItem>
-              </div>
-
-              <div className="wrap">
-                <FormItem name="group" label="Add to a Group" rules={[{ required: true, message: '' }]}>
-                  <Select
-                    options={groupSelectOptions}
-                    placeholder="Select a group"
-                    defaultOpen={false}
-                    onChange={val => {
-                      addUserForm.setFieldValue('group', val);
-                    }}
-                    size="middle"
-                  />
                 </FormItem>
               </div>
 
@@ -195,7 +165,7 @@ export const AddUser: FC<Props> = props => {
                         title="This will invite the user to Lagoon if the user doesn't exist. If the user already exists, it will just skip the invite."
                       >
                         <InfoCircleOutlined />
-                      </Tooltip>{' '}
+                      </Tooltip>
                     </LabelTooltip>
                   }
                   initialValue={true}
