@@ -24,7 +24,6 @@ export const ModalWrapper = styled.div`
 export const ProjectVariablebutton = styled.div`
   font-size: 0.875rem;
   line-height: 1.375rem;
-  transform: translateX(-12px);
   max-width: 170px;
   color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '000')};
   font-family: 'ArabicPro-Regular', sans-serif;
