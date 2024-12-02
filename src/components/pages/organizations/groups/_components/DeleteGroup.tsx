@@ -26,7 +26,7 @@ export const DeleteGroup: React.FC<DeleteGroupModalProps> = ({ group, refetch })
     <DeleteNoConfirm
       deleteType="delete"
       deleteItemType="group"
-      title='Delete group ?'
+      title="Delete group ?"
       loading={loading}
       deleteMessage={
         <>

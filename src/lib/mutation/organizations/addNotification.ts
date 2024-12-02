@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const ADD_SLACK_NOTIFICATION = gql`
   mutation addNotificationSlack($organization: Int!, $name: String!, $channel: String!, $webhook: String!) {

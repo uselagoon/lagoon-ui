@@ -62,9 +62,7 @@ export default async function Project({
         project: projectSlug,
       }}
     >
-      {queryRef => (
-        <OrgProjectPage queryRef={queryRef as QueryRef<OrganizationProjectData>} />
-      )}
+      {queryRef => <OrgProjectPage queryRef={queryRef as QueryRef<OrganizationProjectData>} />}
     </PreloadQuery>
   );
 }

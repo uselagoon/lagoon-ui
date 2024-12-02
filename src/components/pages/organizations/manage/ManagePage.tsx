@@ -11,8 +11,8 @@ import { useQueryStates } from 'nuqs';
 import { resultsFilterValues } from '../groups/_components/groupFilterValues';
 import { AddUser } from './_components/AddUser';
 import { DeleteUser } from './_components/DeleteUser';
-import { typeOptions } from './_components/filterOptions';
 import { EditUser } from './_components/EditUser';
+import { typeOptions } from './_components/filterOptions';
 
 const { OrgAdminsTable } = Table;
 export default function ManagePage({ queryRef }: { queryRef: QueryRef<OrganizationManageData> }) {
@@ -84,7 +84,7 @@ export default function ManagePage({ queryRef }: { queryRef: QueryRef<Organizati
           />
         }
         addNewOwnerModal={<AddUser orgId={organization.id} refetch={refetch} owners={organization.owners} />}
-        editOwnerModal={user => <EditUser user={user} orgId={organization.id} refetch={refetch}/>}
+        editOwnerModal={user => <EditUser user={user} orgId={organization.id} refetch={refetch} />}
         deleteOwnerModal={user => (
           <DeleteUser user={user} orgId={organization.id} orgName={organization.name} refetch={refetch} />
         )}

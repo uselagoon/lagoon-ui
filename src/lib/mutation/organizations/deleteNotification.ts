@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const REMOVE_NOTIFICATION_SLACK = gql`
   mutation removeNotification($name: String!) {

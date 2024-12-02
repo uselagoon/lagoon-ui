@@ -1,15 +1,15 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default gql`
-mutation removeNotificationFromProject(
-  $notificationType: NotificationType!
-  $notificationName: String!
-  $projectName: String!
-) {
-  removeNotificationFromProject(
-    input: { notificationType: $notificationType, notificationName: $notificationName, project: $projectName }
+  mutation removeNotificationFromProject(
+    $notificationType: NotificationType!
+    $notificationName: String!
+    $projectName: String!
   ) {
-    name
+    removeNotificationFromProject(
+      input: { notificationType: $notificationType, notificationName: $notificationName, project: $projectName }
+    ) {
+      name
+    }
   }
-}
 `;

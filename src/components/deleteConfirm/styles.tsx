@@ -16,7 +16,7 @@ export const ConfirmModalWrapper = styled.div`
 export const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  *.highlight{
+  *.highlight {
     color: ${Colors.lagoonBlue};
     font-weight: 500;
   }

@@ -3,6 +3,7 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationUserData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/users/[userSlug]/page';
+import { EditUserRole } from '@/components/editUserRole/EditUserRole';
 import { DisconnectOutlined, EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
@@ -11,7 +12,6 @@ import { useQueryStates } from 'nuqs';
 import { CheckboxContainer } from '../groups/_components/styles';
 import { UnlinkGroup } from './_components/UnlinkGroup';
 import { resultsFilterValues, userFilterOptions } from './_components/filterValues';
-import { EditUserRole } from '@/components/editUserRole/EditUserRole';
 
 const { OrgUserGroupsTable } = Table;
 
@@ -106,7 +106,12 @@ export default function UserPage({ queryRef, orgName }: { queryRef: QueryRef<Org
           <UnlinkGroup refetch={refetch} userEmail={userByEmailAndOrganization.email} userGroup={userGroup} />
         )}
         editUserRoleModal={current => (
-          <EditUserRole groupName={current.name} currentRole={current.role} email={userByEmailAndOrganization.email} refetch={refetch} />
+          <EditUserRole
+            groupName={current.name}
+            currentRole={current.role}
+            email={userByEmailAndOrganization.email}
+            refetch={refetch}
+          />
         )}
       />
     </>
