@@ -1,5 +1,3 @@
-version: '3.2'
-
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
   &lagoon-project lagoon-ui
@@ -11,7 +9,10 @@ x-environment: &default-environment
   # Uncomment if you like to have the system behave like in production
   LAGOON_ENVIRONMENT_TYPE: production
   GRAPHQL_API: "${GRAPHQL_API:-http://0.0.0.0:3000/graphql}"
-  KEYCLOAK_API: "${KEYCLOAK_API:-http://0.0.0.0:8088/auth}"
+  AUTH_SECRET: "${AUTH_SECRET:-test}"
+  AUTH_KEYCLOAK_ID: "${AUTH_KEYCLOAK_ID:-lagoon-ui-oidc}"
+  AUTH_KEYCLOAK_SECRET: "${AUTH_KEYCLOAK_SECRET:-20580a56-6fbc-11ef-9a5b-3b4da292aa54}"
+  AUTH_KEYCLOAK_ISSUER: "${AUTH_KEYCLOAK_ISSUER:-http://0.0.0.0:8088/auth/realms/lagoon}"
   LAGOON_UI_TOURS_ENABLED: enabled
 
 services:
