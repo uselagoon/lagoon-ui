@@ -40,12 +40,15 @@ const nextConfig = {
     ];
   },
   compiler: {
-      styledComponents: true,
+    styledComponents: true,
   },
   experimental: {
-      // Available only with canary version of next
-      // ppr: true,
-  }
-}
+    // Available only with canary version of next
+    // ppr: true,
+  },
+  env: {
+    AUTH_URL: process.env.LAGOON_ROUTE
+  },
+};
 
-export default nextConfig
+export default nextConfig;
