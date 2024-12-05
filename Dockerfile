@@ -32,6 +32,8 @@ ENV AUTH_SECRET=$AUTH_SECRET
 ARG AUTH_KEYCLOAK_ISSUER
 ENV AUTH_KEYCLOAK_ISSUER=$AUTH_KEYCLOAK_ISSUER
 
+ENV AUTH_URL=https://ui.ui-v2.lagoon-ui.test6.amazee.io/
+
 # Build app
 RUN yarn run build
 
