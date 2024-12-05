@@ -45,10 +45,7 @@ const nextConfig = {
   experimental: {
     // Available only with canary version of next
     // ppr: true,
-  },
-  env: {
-    AUTH_URL: process.env.LAGOON_ROUTE
-  },
+  }
 };
 
 export default nextConfig;
