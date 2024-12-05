@@ -1,13 +1,12 @@
 # Node builder image
-FROM uselagoon/node-20-builder:latest AS builder
+FROM uselagoon/node-22-builder:latest AS builder
 
 COPY . /app/
 
 RUN yarn install --network-timeout 300000
 
-
 # Node service image
-FROM uselagoon/node-20:latest
+FROM uselagoon/node-22:latest
 
 ARG LAGOON_VERSION
 ENV LAGOON_VERSION=$LAGOON_VERSION
@@ -18,11 +17,20 @@ COPY --from=builder /app/node_modules /app/node_modules
 # Copying files from ui service
 COPY . /app/
 
-ARG KEYCLOAK_API
-ENV KEYCLOAK_API=$KEYCLOAK_API
-
 ARG GRAPHQL_API
 ENV GRAPHQL_API=$GRAPHQL_API
+
+ARG AUTH_KEYCLOAK_ID
+ENV AUTH_KEYCLOAK_ID=$AUTH_KEYCLOAK_ID
+
+ARG AUTH_KEYCLOAK_SECRET
+ENV AUTH_KEYCLOAK_SECRET=$AUTH_KEYCLOAK_SECRET
+
+ARG AUTH_SECRET
+ENV AUTH_SECRET=$AUTH_SECRET
+
+ARG AUTH_KEYCLOAK_ISSUER
+ENV AUTH_KEYCLOAK_ISSUER=$AUTH_KEYCLOAK_ISSUER
 
 # Build app
 RUN yarn run build
