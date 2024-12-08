@@ -17,7 +17,7 @@ COPY --from=builder /app/node_modules /app/node_modules
 # Copying files from ui service
 COPY . /app/
 
-# copy the auth-entrypoint.sh script
+# Copy the auth-entrypoint.sh script
 COPY auth-entrypoint.sh /lagoon/entrypoints/99-auth-entrypoint.sh
 
 ARG GRAPHQL_API
