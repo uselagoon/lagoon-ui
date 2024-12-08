@@ -17,6 +17,9 @@ COPY --from=builder /app/node_modules /app/node_modules
 # Copying files from ui service
 COPY . /app/
 
+# copy the auth-entrypoint.sh script
+COPY auth-entrypoint.sh /lagoon/entrypoints/99-auth-entrypoint.sh
+
 ARG GRAPHQL_API
 ENV GRAPHQL_API=$GRAPHQL_API
 
@@ -32,7 +35,6 @@ ENV AUTH_SECRET=$AUTH_SECRET
 ARG AUTH_KEYCLOAK_ISSUER
 ENV AUTH_KEYCLOAK_ISSUER=$AUTH_KEYCLOAK_ISSUER
 
-ENV AUTH_URL=https://ui.ui-v2.lagoon-ui.test6.amazee.io/
 
 # Build app
 RUN yarn run build
