@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/(environment-overview)/page';
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import deleteEnvironment from '@/lib/mutation/deleteEnvironment';
 import switchActiveStandby from '@/lib/mutation/switchActiveStandby';
 import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
@@ -20,7 +21,13 @@ export const createLinks = (routes: string | null) =>
     </a>
   ));
 
-export default function EnvironmentPage({ queryRef }: { queryRef: QueryRef<EnvironmentData> }) {
+export default function EnvironmentPage({
+  queryRef,
+  environmentSlug,
+}: {
+  queryRef: QueryRef<EnvironmentData>;
+  environmentSlug: string;
+}) {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
@@ -32,6 +39,10 @@ export default function EnvironmentPage({ queryRef }: { queryRef: QueryRef<Envir
   const [deleteEnvironmentMutation, { data, loading: deleteLoading }] = useMutation(deleteEnvironment);
 
   const [switchActiveStandbyMutation, { loading: switchLoading }] = useMutation(switchActiveStandby);
+
+  if (!environment) {
+    return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
+  }
 
   const environmentDetailItems = [
     {

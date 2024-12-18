@@ -43,7 +43,9 @@ export default async function OrgManage({ params: { organizationSlug } }: { para
         name: organizationSlug,
       }}
     >
-      {queryRef => <ManagePage queryRef={queryRef as QueryRef<OrganizationManageData>} />}
+      {queryRef => (
+        <ManagePage organizationSlug={organizationSlug} queryRef={queryRef as QueryRef<OrganizationManageData>} />
+      )}
     </PreloadQuery>
   );
 }

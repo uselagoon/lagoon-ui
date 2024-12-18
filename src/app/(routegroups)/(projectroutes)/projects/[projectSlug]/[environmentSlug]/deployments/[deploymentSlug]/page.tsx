@@ -55,7 +55,7 @@ export default async function Deployment({
         deploymentName: deploymentSlug,
       }}
     >
-      {queryRef => <DeploymentPage queryRef={queryRef as QueryRef<DeploymentData>} />}
+      {queryRef => <DeploymentPage deploymentName={deploymentSlug} queryRef={queryRef as QueryRef<DeploymentData>} />}
     </PreloadQuery>
   );
 }

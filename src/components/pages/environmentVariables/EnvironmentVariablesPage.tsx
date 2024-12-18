@@ -3,6 +3,7 @@
 import { SetStateAction } from 'react';
 
 import { EnvVariablesData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/environment-variables/page';
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head2, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
@@ -18,6 +19,7 @@ const { VariablesTable } = Table;
 export default function EnvironmentVariablesPage({
   queryRef,
   projectName,
+  environmentName,
 }: {
   queryRef: QueryRef<EnvVariablesData>;
   environmentName: string;
@@ -28,6 +30,10 @@ export default function EnvironmentVariablesPage({
   const {
     data: { environmentVars },
   } = useReadQuery(queryRef);
+
+  if (!environmentVars) {
+    return <EnvironmentNotFound openshiftProjectName={environmentName} />;
+  }
 
   const [{ results, search, sort, scope }, setQuery] = useQueryStates({
     results: {

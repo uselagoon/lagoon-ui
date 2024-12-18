@@ -1,21 +1,9 @@
-'use client';
+import { Metadata } from 'next';
 
-import { gql, useQuery } from '@apollo/client';
-
-const query = gql`
-  query AllProjectsQuery {
-    allProjects {
-      id
-      name
-      environments(type: PRODUCTION) {
-        route
-      }
-    }
-  }
-`;
+export const metadata: Metadata = {
+  title: 'Knowledge Base',
+};
 
 export default function Knowledge() {
-  const q = useQuery(query);
-
   return <>Knowledge base</>;
 }

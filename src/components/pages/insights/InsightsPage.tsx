@@ -4,6 +4,7 @@ import { SetStateAction } from 'react';
 
 import { InsightsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/insights/page';
 import CustomRangePicker from '@/components/datepicker/DatePicker';
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useReadQuery } from '@apollo/client';
 import { Collapse, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';
@@ -14,10 +15,20 @@ import { InsightsPageWrapper } from './_components/styles';
 
 const { InsightsTable, FactsTable } = Table;
 
-export default function InsightsPage({ queryRef }: { queryRef: QueryRef<InsightsData> }) {
+export default function InsightsPage({
+  queryRef,
+  environmentSlug,
+}: {
+  queryRef: QueryRef<InsightsData>;
+  environmentSlug: string;
+}) {
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  if (!environment) {
+    return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
+  }
 
   const [
     { fact_results, fact_query, fact_sort, insights_query, insights_sort, insights_results, insights_dates },

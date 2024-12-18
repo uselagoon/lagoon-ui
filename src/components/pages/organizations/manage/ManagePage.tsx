@@ -3,6 +3,7 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationManageData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/manage/page';
+import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
@@ -15,13 +16,22 @@ import { EditUser } from './_components/EditUser';
 import { typeOptions } from './_components/filterOptions';
 
 const { OrgAdminsTable } = Table;
-export default function ManagePage({ queryRef }: { queryRef: QueryRef<OrganizationManageData> }) {
+export default function ManagePage({
+  queryRef,
+  organizationSlug,
+}: {
+  queryRef: QueryRef<OrganizationManageData>;
+  organizationSlug: string;
+}) {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
     data: { organization },
   } = useReadQuery(queryRef);
 
+  if (!organization) {
+    return <OrganizationNotFound orgName={organizationSlug} />;
+  }
   const [{ results, search, type }, setQuery] = useQueryStates({
     results: {
       defaultValue: 10,

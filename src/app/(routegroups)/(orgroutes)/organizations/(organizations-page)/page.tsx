@@ -1,6 +1,12 @@
+import { Metadata } from 'next';
+
 import OrganizationsPage from '@/components/pages/organizations/OrganizationsPage';
 import { getClient } from '@/lib/apolloClient';
 import allOrganizationsQuery from '@/lib/query/organizations/allOrganizationsQuery';
+
+export const metadata: Metadata = {
+  title: 'Organizations',
+};
 
 export type OrgType = {
   id: number;

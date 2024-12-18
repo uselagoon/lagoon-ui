@@ -3,6 +3,7 @@
 import { startTransition, useEffect, useState } from 'react';
 
 import { TaskData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/[taskSlug]/page';
+import TaskNotFound from '@/components/errors/TaskNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Switch, Table, Text } from '@uselagoon/ui-library';
 
@@ -13,12 +14,16 @@ import { Switchers } from '../deployment/_components/styles';
 
 const { TaskTable } = Table;
 
-export default function TaskPage({ queryRef }: { queryRef: QueryRef<TaskData> }) {
+export default function TaskPage({ queryRef, taskName }: { queryRef: QueryRef<TaskData>; taskName: string }) {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  if (!environment?.tasks.length) {
+    return <TaskNotFound taskName={taskName} />;
+  }
 
   const currentTask = environment && environment.tasks[0];
 

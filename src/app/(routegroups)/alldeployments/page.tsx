@@ -1,6 +1,12 @@
+import { Metadata } from 'next';
+
 import AllDeploymentsPage from '@/components/pages/allDeployments/AllDeploymentsPage';
 import { getClient } from '@/lib/apolloClient';
 import deploymentsByFilter from '@/lib/query/deploymentsByFilter';
+
+export const metadata: Metadata = {
+  title: 'All Deployments',
+};
 
 export type Deployment = {
   id: number;

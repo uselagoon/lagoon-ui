@@ -4,6 +4,7 @@ import {
   Problem,
   ProblemsData,
 } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/problems/page';
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useReadQuery } from '@apollo/client';
 import { Collapse, Colors, Head3, LagoonProblemsOverview, Table } from '@uselagoon/ui-library';
 
@@ -20,10 +21,20 @@ enum ProblemSeverityRating {
   HIGH,
   CRITICAL,
 }
-export default function ProblemsPage({ queryRef }: { queryRef: QueryRef<ProblemsData> }) {
+export default function ProblemsPage({
+  queryRef,
+  environmentSlug,
+}: {
+  queryRef: QueryRef<ProblemsData>;
+  environmentSlug: string;
+}) {
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  if (!environment) {
+    return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
+  }
 
   const { problems } = environment;
 

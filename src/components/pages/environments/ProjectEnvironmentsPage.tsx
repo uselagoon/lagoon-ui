@@ -3,6 +3,7 @@
 import { SetStateAction, useState } from 'react';
 
 import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
+import ProjectNotFound from '@/components/errors/ProjectNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
@@ -24,6 +25,10 @@ export default function ProjectEnvironmentsPage({
   const {
     data: { project },
   } = useReadQuery(queryRef);
+
+  if (!project) {
+    return <ProjectNotFound projectName={projectName} />;
+  }
 
   const [{ search, env_count }, setQuery] = useQueryStates({
     search: {

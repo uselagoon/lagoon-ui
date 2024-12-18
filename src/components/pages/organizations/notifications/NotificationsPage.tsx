@@ -3,7 +3,7 @@
 import { SetStateAction } from 'react';
 
 import { OrganizationNotificationData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/notifications/page';
-import { EditOutlined } from '@ant-design/icons';
+import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
@@ -17,12 +17,22 @@ const { OrgNotificationsTable } = Table;
 
 type NotificationType = 'slack' | 'rocketchat' | 'email' | 'webhook' | 'teams';
 
-export default function NotificationsPage({ queryRef }: { queryRef: QueryRef<OrganizationNotificationData> }) {
+export default function NotificationsPage({
+  queryRef,
+  organizationSlug,
+}: {
+  queryRef: QueryRef<OrganizationNotificationData>;
+  organizationSlug: string;
+}) {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
     data: { organization },
   } = useReadQuery(queryRef);
+
+  if (!organization) {
+    return <OrganizationNotFound orgName={organizationSlug} />;
+  }
 
   const [{ search, type }, setQuery] = useQueryStates({
     search: {

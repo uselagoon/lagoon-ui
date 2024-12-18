@@ -3,6 +3,12 @@ import { PreloadQuery } from '@/lib/apolloClient';
 import projectVariablesQuery from '@/lib/query/projectVariablesQuery';
 import { QueryRef } from '@apollo/client';
 
+export async function generateMetadata({ params }: { params: { projectSlug: string } }) {
+  return {
+    title: `${params.projectSlug} | Project`,
+  };
+}
+
 export type EnvVariable = {
   id: number;
   name: string;

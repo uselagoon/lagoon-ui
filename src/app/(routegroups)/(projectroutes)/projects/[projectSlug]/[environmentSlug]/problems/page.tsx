@@ -69,7 +69,7 @@ export default async function Problems({ params: { environmentSlug } }: { params
         limit: null,
       }}
     >
-      {queryRef => <ProblemsPage queryRef={queryRef as QueryRef<ProblemsData>} />}
+      {queryRef => <ProblemsPage environmentSlug={environmentSlug} queryRef={queryRef as QueryRef<ProblemsData>} />}
     </PreloadQuery>
   );
 }

@@ -69,7 +69,9 @@ export default async function Deployments({ params: { environmentSlug } }: { par
         limit: null,
       }}
     >
-      {queryRef => <DeploymentsPage queryRef={queryRef as QueryRef<DeploymentsData>} />}
+      {queryRef => (
+        <DeploymentsPage environmentSlug={environmentSlug} queryRef={queryRef as QueryRef<DeploymentsData>} />
+      )}
     </PreloadQuery>
   );
 }

@@ -78,7 +78,12 @@ export default async function OrgNotifications({
         name: organizationSlug,
       }}
     >
-      {queryRef => <NotificationsPage queryRef={queryRef as QueryRef<OrganizationNotificationData>} />}
+      {queryRef => (
+        <NotificationsPage
+          organizationSlug={organizationSlug}
+          queryRef={queryRef as QueryRef<OrganizationNotificationData>}
+        />
+      )}
     </PreloadQuery>
   );
 }

@@ -86,7 +86,7 @@ export default async function Tasks({ params: { environmentSlug } }: { params: {
         limit: null,
       }}
     >
-      {queryRef => <TasksPage queryRef={queryRef as QueryRef<TasksData>} />}
+      {queryRef => <TasksPage environmentSlug={environmentSlug} queryRef={queryRef as QueryRef<TasksData>} />}
     </PreloadQuery>
   );
 }

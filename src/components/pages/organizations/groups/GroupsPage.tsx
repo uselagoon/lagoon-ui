@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { OrganizationGroupsData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/groups/(groups-page)/page';
 import { AddUserToGroup } from '@/components/addUserToGroup/AddUserToGroup';
 import { CreateGroup } from '@/components/createGroup/CreateGroup';
+import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { UserAddOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
@@ -18,7 +19,13 @@ import { CheckboxContainer } from './_components/styles';
 
 const { OrgGroupsTable } = Table;
 
-export default function GroupsPage({ queryRef }: { queryRef: QueryRef<OrganizationGroupsData> }) {
+export default function GroupsPage({
+  queryRef,
+  organizationSlug,
+}: {
+  queryRef: QueryRef<OrganizationGroupsData>;
+  organizationSlug: string;
+}) {
   const [{ results, group_query, group_sort, showDefaults }, setQuery] = useQueryStates({
     results: {
       defaultValue: undefined,
@@ -63,6 +70,10 @@ export default function GroupsPage({ queryRef }: { queryRef: QueryRef<Organizati
   const {
     data: { organization },
   } = useReadQuery(queryRef);
+
+  if (!organization) {
+    return <OrganizationNotFound orgName={organizationSlug} />;
+  }
 
   const pathname = usePathname();
 

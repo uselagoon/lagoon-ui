@@ -5,6 +5,7 @@ import { startTransition, useEffect, useState } from 'react';
 import { useEnvContext } from 'next-runtime-env';
 import { usePathname } from 'next/navigation';
 
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head3, Select, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
@@ -37,12 +38,23 @@ type TaskType =
   | 'InvokeRegisteredTask';
 
 const { TasksTable } = Table;
-export default function TasksPage({ queryRef }: { queryRef: QueryRef<TasksData> }) {
+export default function TasksPage({
+  queryRef,
+  environmentSlug,
+}: {
+  queryRef: QueryRef<TasksData>;
+  environmentSlug: string;
+}) {
   const { refetch } = useQueryRefHandlers(queryRef);
 
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  if (!environment) {
+    return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
+  }
+
   const pathname = usePathname();
 
   const [{ tasks_count }, setQuery] = useQueryStates({

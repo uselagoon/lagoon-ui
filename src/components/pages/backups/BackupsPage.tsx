@@ -3,6 +3,7 @@
 import { startTransition, useEffect } from 'react';
 
 import { BackupsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/backups/page';
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Select, Table } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';
@@ -15,7 +16,13 @@ import { backupResultOptions, statusOptions } from './_components/filterValues';
 
 const { BackupsTable } = Table;
 
-export default function BackupsPage({ queryRef }: { queryRef: QueryRef<BackupsData> }) {
+export default function BackupsPage({
+  queryRef,
+  environmentSlug,
+}: {
+  queryRef: QueryRef<BackupsData>;
+  environmentSlug: string;
+}) {
   const [{ results, range, status }, setQuery] = useQueryStates({
     results: {
       defaultValue: undefined,
@@ -41,6 +48,10 @@ export default function BackupsPage({ queryRef }: { queryRef: QueryRef<BackupsDa
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  if (!environment) {
+    return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
+  }
 
   const handleRangeChange = (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
     if (dates) {

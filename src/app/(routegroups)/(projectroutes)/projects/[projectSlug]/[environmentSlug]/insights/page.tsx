@@ -58,7 +58,7 @@ export default async function Insights({ params: { environmentSlug } }: { params
         limit: null,
       }}
     >
-      {queryRef => <InsightsPage queryRef={queryRef as QueryRef<InsightsData>} />}
+      {queryRef => <InsightsPage environmentSlug={environmentSlug} queryRef={queryRef as QueryRef<InsightsData>} />}
     </PreloadQuery>
   );
 }

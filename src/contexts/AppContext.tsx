@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { useEnvContext } from 'next-runtime-env';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
@@ -12,7 +13,7 @@ import { ItemType } from 'antd/es/menu/interface';
 
 import { getUserMenuItems, navLinks } from '../components/links';
 
-const AppProvider = ({ children, kcUrl }: { children: ReactNode; kcUrl?: string }) => {
+const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: string; logo?: ReactNode }) => {
   const { status, data } = useSession();
   const { toggleTheme } = useTheme();
 
@@ -20,6 +21,18 @@ const AppProvider = ({ children, kcUrl }: { children: ReactNode; kcUrl?: string 
   const pathname = usePathname();
 
   const userData = status === 'authenticated' ? data.user : { name: '', email: '', image: '' };
+
+  const { LAGOON_UI_ICON } = useEnvContext();
+
+  const getLogo = () => {
+    // either uses a logo from a prop, runtime env var; if undefined - ui library will default to LagoonLogo;
+    if (logo) return logo;
+
+    if (LAGOON_UI_ICON) {
+      return <img alt="Home" className="icon" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
+    }
+    return undefined;
+  };
 
   return (
     <PageContainer
@@ -31,6 +44,7 @@ const AppProvider = ({ children, kcUrl }: { children: ReactNode; kcUrl?: string 
         currentPath: pathname,
         logoNav: () => push('/projects'),
         toggleTheme,
+        logo: getLogo(),
       }}
     >
       <ProgressBar

@@ -4,6 +4,7 @@ import { OrganizationData } from '@/app/(routegroups)/(orgroutes)/organizations/
 import { AddUser } from '@/components/addUserToOrg/Adduser';
 import { CreateGroup } from '@/components/createGroup/CreateGroup';
 import { CreateProject } from '@/components/createProject/CreateProject';
+import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Details, Head2 } from '@uselagoon/ui-library';
 
@@ -22,6 +23,10 @@ export default function OrganizationPage({
   const {
     data: { organization },
   } = useReadQuery(queryRef);
+
+  if (!organization) {
+    return <OrganizationNotFound orgName={orgSlug} />;
+  }
 
   const deployTargets = organization.deployTargets.map(target => <div>{target.name}</div>);
 

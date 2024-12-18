@@ -13,5 +13,5 @@ export async function GET(req: Request) {
   if (errorType === 'Configuration') {
     redirect('/');
   }
-  redirect('/autherror');
+  redirect(`/autherror?error=${errorType}`);
 }

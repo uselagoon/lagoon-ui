@@ -61,7 +61,7 @@ export default async function Task({
         taskName: taskSlug,
       }}
     >
-      {queryRef => <TaskPage queryRef={queryRef as QueryRef<TaskData>} />}
+      {queryRef => <TaskPage taskName={taskSlug} queryRef={queryRef as QueryRef<TaskData>} />}
     </PreloadQuery>
   );
 }

@@ -35,7 +35,12 @@ export default async function Projects({ params: { organizationSlug } }: { param
         name: organizationSlug,
       }}
     >
-      {queryRef => <OrgProjectsPage queryRef={queryRef as QueryRef<OrganizationProjectsData>} />}
+      {queryRef => (
+        <OrgProjectsPage
+          organizationSlug={organizationSlug}
+          queryRef={queryRef as QueryRef<OrganizationProjectsData>}
+        />
+      )}
     </PreloadQuery>
   );
 }

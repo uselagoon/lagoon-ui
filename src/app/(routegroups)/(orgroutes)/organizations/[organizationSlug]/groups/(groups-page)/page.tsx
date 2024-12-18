@@ -45,7 +45,9 @@ export default async function Groups({ params: { organizationSlug } }: { params:
         limit: null,
       }}
     >
-      {queryRef => <GroupsPage queryRef={queryRef as QueryRef<OrganizationGroupsData>} />}
+      {queryRef => (
+        <GroupsPage organizationSlug={organizationSlug} queryRef={queryRef as QueryRef<OrganizationGroupsData>} />
+      )}
     </PreloadQuery>
   );
 }

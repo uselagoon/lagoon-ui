@@ -4,6 +4,7 @@ import { SetStateAction } from 'react';
 
 import { OrganizationProjectData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/projects/[projectSlug]/page';
 import { AddGroupToProject } from '@/components/addGroupToProject/AddGroupToProject';
+import OrgProjectNotFound from '@/components/errors/OrgProjectNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
@@ -20,7 +21,13 @@ import { transformNotifications } from './_components/transformNotifications';
 
 const { OrgGroupsTable, OrgNotificationsTable } = Table;
 
-export default function OrgProjectPage({ queryRef }: { queryRef: QueryRef<OrganizationProjectData> }) {
+export default function OrgProjectPage({
+  queryRef,
+  projectSlug,
+}: {
+  queryRef: QueryRef<OrganizationProjectData>;
+  projectSlug: string;
+}) {
   const [{ group_results, group_query, group_sort, showDefaults, notification_query, notification_type }, setQuery] =
     useQueryStates({
       group_results: {
@@ -80,6 +87,10 @@ export default function OrgProjectPage({ queryRef }: { queryRef: QueryRef<Organi
   const {
     data: { organization, project },
   } = useReadQuery(queryRef);
+
+  if (!project) {
+    return <OrgProjectNotFound projectName={projectSlug} />;
+  }
 
   const orgBasePath = `/organizations/${organization.name}`;
 

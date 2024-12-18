@@ -35,7 +35,11 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function Environment({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
+export default async function Environment({
+  params: { environmentSlug, projectSlug },
+}: {
+  params: { environmentSlug: string; projectSlug: string };
+}) {
   return (
     <PreloadQuery
       query={environmentByOpenShiftProjectName}
@@ -44,7 +48,9 @@ export default async function Environment({ params: { environmentSlug } }: { par
         openshiftProjectName: environmentSlug,
       }}
     >
-      {queryRef => <EnvironmentPage queryRef={queryRef as QueryRef<EnvironmentData>} />}
+      {queryRef => (
+        <EnvironmentPage environmentSlug={environmentSlug} queryRef={queryRef as QueryRef<EnvironmentData>} />
+      )}
     </PreloadQuery>
   );
 }

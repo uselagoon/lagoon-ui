@@ -2,6 +2,12 @@ import BulkDeploymentsPage from '@/components/pages/bulkDeployments/BulkDeployme
 import { getClient } from '@/lib/apolloClient';
 import deploymensByBulkId from '@/lib/query/deploymensByBulkId';
 
+export async function generateMetadata({ params }: { params: { bulkId: string } }) {
+  return {
+    title: `Bulk Deployment - ${params.bulkId}`,
+  };
+}
+
 export type BulkDeployment = {
   id: number;
   name: string;

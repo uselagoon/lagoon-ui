@@ -1,6 +1,7 @@
 'use client';
 
 import { ProjectEnvironmentsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/project-variables/page';
+import ProjectNotFound from '@/components/errors/ProjectNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head2, Table } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
@@ -22,6 +23,10 @@ export default function ProjectVariablesPage({
   const {
     data: { project },
   } = useReadQuery(queryRef);
+
+  if (!project) {
+    return <ProjectNotFound projectName={projectName} />;
+  }
 
   const variables = project.envVariables;
 

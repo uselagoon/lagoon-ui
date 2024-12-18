@@ -8,6 +8,7 @@ import {
   Deployment,
   DeploymentsData,
 } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
+import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Select, Table } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';
@@ -21,7 +22,13 @@ import { DeploymentsFilters } from './_components/styles';
 
 const { DeploymentsTable } = Table;
 
-export default function DeploymentsPage({ queryRef }: { queryRef: QueryRef<DeploymentsData> }) {
+export default function DeploymentsPage({
+  queryRef,
+  environmentSlug,
+}: {
+  queryRef: QueryRef<DeploymentsData>;
+  environmentSlug: string;
+}) {
   const pathname = usePathname();
 
   const [{ results, range, status }, setQuery] = useQueryStates({
@@ -51,6 +58,10 @@ export default function DeploymentsPage({ queryRef }: { queryRef: QueryRef<Deplo
   const {
     data: { environment },
   } = useReadQuery(queryRef);
+
+  if (!environment) {
+    return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
+  }
 
   // polling every 20s if status needs to be checked
   useEffect(() => {

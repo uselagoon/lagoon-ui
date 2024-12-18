@@ -55,7 +55,7 @@ export default async function Backups({ params: { environmentSlug } }: { params:
         limit: null,
       }}
     >
-      {queryRef => <BackupsPage queryRef={queryRef as QueryRef<BackupsData>} />}
+      {queryRef => <BackupsPage environmentSlug={environmentSlug} queryRef={queryRef as QueryRef<BackupsData>} />}
     </PreloadQuery>
   );
 }

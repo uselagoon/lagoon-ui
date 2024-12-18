@@ -1,3 +1,4 @@
+import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import UsersPage from '@/components/pages/organizations/users/UsersPage';
 import { PreloadQuery, getClient } from '@/lib/apolloClient';
 import organizationIdByName from '@/lib/query/organizations/organizationIdByName';
@@ -40,6 +41,10 @@ export default async function Users({ params: { organizationSlug } }: { params: 
     query: organizationIdByName,
     variables: { name: organizationSlug },
   });
+
+  if (!organizationData.organization) {
+    return <OrganizationNotFound orgName={organizationSlug} />;
+  }
 
   return (
     <PreloadQuery

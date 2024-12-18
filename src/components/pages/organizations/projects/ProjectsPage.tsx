@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import { OrganizationProjectsData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/projects/(projects-page)/page';
 import { CreateProject } from '@/components/createProject/CreateProject';
+import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { DeleteOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
@@ -17,7 +18,13 @@ import { resultsFilterValues } from './_components/filterOptions';
 
 const { OrgProjectsTable } = Table;
 
-export default function OrgProjectsPage({ queryRef }: { queryRef: QueryRef<OrganizationProjectsData> }) {
+export default function OrgProjectsPage({
+  queryRef,
+  organizationSlug,
+}: {
+  queryRef: QueryRef<OrganizationProjectsData>;
+  organizationSlug: string;
+}) {
   const [{ results, project_query, project_sort }, setQuery] = useQueryStates({
     results: {
       defaultValue: undefined,
@@ -53,6 +60,10 @@ export default function OrgProjectsPage({ queryRef }: { queryRef: QueryRef<Organ
   const {
     data: { organization },
   } = useReadQuery(queryRef);
+
+  if (!organization) {
+    return <OrganizationNotFound orgName={organizationSlug} />;
+  }
 
   const pathname = usePathname();
 

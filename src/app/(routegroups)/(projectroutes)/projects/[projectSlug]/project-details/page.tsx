@@ -1,6 +1,13 @@
+import ProjectNotFound from '@/components/errors/ProjectNotFound';
 import ProjectDetailsPage from '@/components/pages/projectDetails/projectDetailsPage';
 import { getClient } from '@/lib/apolloClient';
 import projectDetailsQuery from '@/lib/query/projectDetailsQuery';
+
+export async function generateMetadata({ params }: { params: { projectSlug: string } }) {
+  return {
+    title: `${params.projectSlug} | Project`,
+  };
+}
 
 type ProjectWithDetails = {
   id: number;
@@ -32,6 +39,10 @@ export default async function projectDetails({ params: { projectSlug } }: { para
       name: projectSlug,
     },
   });
+
+  if (!data.project) {
+    return <ProjectNotFound projectName={projectSlug} />;
+  }
 
   return (
     <div>
