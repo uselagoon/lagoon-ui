@@ -2,8 +2,11 @@
 
 import { SetStateAction } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { EnvVariablesData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/environment-variables/page';
 import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
+import { EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Head2, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
@@ -14,6 +17,7 @@ import { DeleteVariableModal } from '../../deleteVariable/DeleteVariableModal';
 import { resultsFilterValues } from '../insights/_components/filterValues';
 import { EditVariable } from '../projectVariables/_components/EditVariable';
 import { scopeOptions, sortOptions } from './_components/filterValues';
+import { EditProjectVariablesButton, Space } from './_components/styles';
 
 const { VariablesTable } = Table;
 export default function EnvironmentVariablesPage({
@@ -26,6 +30,7 @@ export default function EnvironmentVariablesPage({
   projectName: string;
 }) {
   const { refetch } = useQueryRefHandlers(queryRef);
+  const router = useRouter();
 
   const {
     data: { environmentVars },
@@ -73,6 +78,12 @@ export default function EnvironmentVariablesPage({
 
   const variables = environmentVars.envVariables;
   const envName = environmentVars.name;
+
+  const projectVariables = environmentVars.project.envVariables;
+
+  const navToProjectVars = () => {
+    router.push(`/projects/${projectName}/project-variables`);
+  };
 
   return (
     <>
@@ -134,6 +145,22 @@ export default function EnvironmentVariablesPage({
           <AddNewVariable type="environment" projectName={projectName} environmentName={envName} refetch={refetch} />
         }
         variables={variables as unknown as Variable[]}
+      />
+
+      <Space />
+
+      <Head2>Project variables</Head2>
+
+      <VariablesTable
+        type="project"
+        newVariableModal={
+          <EditProjectVariablesButton onClick={() => navToProjectVars()}>
+            <EditOutlined /> Edit Variables
+          </EditProjectVariablesButton>
+        }
+        variables={projectVariables as unknown as Variable[]}
+        editVariableModal={() => null}
+        deleteVariableModal={() => null}
       />
     </>
   );

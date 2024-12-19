@@ -26,6 +26,7 @@ type Environment = {
     name: string;
     problemsUi: boolean;
     factsUi: boolean;
+    envVariables: EnvVariable[];
   };
   envVariables: EnvVariable[];
 };
