@@ -61,7 +61,7 @@ export default function NotificationsPage({
           options={notificationTypeOptions}
           defaultOpen={false}
           value={type}
-          placeholder="Badge"
+          placeholder="Service"
           allowClear
           onClear={() => {
             setQuery({ type: null });

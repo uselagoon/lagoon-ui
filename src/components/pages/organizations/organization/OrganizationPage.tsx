@@ -30,6 +30,8 @@ export default function OrganizationPage({
 
   const deployTargets = organization.deployTargets.map(target => <div>{target.name}</div>);
 
+  const groupCount = Object.values(organization.groups).filter(group => group.type !== 'project-default-group').length;
+
   const orgDetailedItems = [
     {
       key: 'org_id',
@@ -46,8 +48,7 @@ export default function OrganizationPage({
       label: 'GROUPS',
       children: (
         <>
-          Group quota: {organization.groups.length} of{' '}
-          {organization.quotaGroup === -1 ? 'unlimited' : organization.quotaGroup}
+          Group quota: {groupCount} of {organization.quotaGroup === -1 ? 'unlimited' : organization.quotaGroup}
         </>
       ),
     },

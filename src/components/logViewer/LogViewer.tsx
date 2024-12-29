@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, Fragment, useRef } from 'react';
 
 import { CheckCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Collapse, Colors } from '@uselagoon/ui-library';
@@ -122,6 +122,24 @@ const logPreprocessorRenderLogNode = (
   showSuccessSteps: boolean,
   highlightWarnings: boolean
 ) => {
+  return (
+    <LogNodeRenderer
+      node={node}
+      visible={visible}
+      errorState={errorState}
+      showSuccessSteps={showSuccessSteps}
+      highlightWarnings={highlightWarnings}
+    />
+  );
+};
+
+const LogNodeRenderer: React.FC<{
+  node: LogNode;
+  visible: boolean;
+  errorState: boolean;
+  showSuccessSteps: boolean;
+  highlightWarnings: boolean;
+}> = ({ node, visible, errorState, showSuccessSteps, highlightWarnings }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const logsContentRef = useRef(null);
 
@@ -148,7 +166,16 @@ const logPreprocessorRenderLogNode = (
     }
 
     const nodeChildren = node.nodes.map(element => {
-      return logPreprocessorRenderLogNode(element, visible, errorState, showSuccessSteps, highlightWarnings);
+      return (
+        <LogNodeRenderer
+          key={element.key}
+          node={element}
+          visible={visible}
+          errorState={errorState}
+          showSuccessSteps={showSuccessSteps}
+          highlightWarnings={highlightWarnings}
+        />
+      );
     });
 
     const isSuccessfulStep = !(classes.includes('log-warning-state') || classes.includes('log-error-state'));
@@ -212,13 +239,17 @@ const logPreprocessorProcessASTToReact = (
   let lastElement = ast.nodes.length - 1;
   return (
     <div className="processed-logs" data-cy="processed-logs">
-      {ast.nodes.map((element, i) => {
-        if (i != lastElement) {
-          return logPreprocessorRenderLogNode(element, undefined, undefined, showSuccessSteps, highlightWarnings);
-        } else {
-          return logPreprocessorRenderLogNode(element, lastOpen, errorState, showSuccessSteps, highlightWarnings);
-        }
-      })}
+      {ast.nodes.map((element, i) => (
+        <Fragment key={`logNode-${element.key}`}>
+          {logPreprocessorRenderLogNode(
+            element,
+            i === lastElement ? lastOpen : undefined,
+            i === lastElement ? errorState : undefined,
+            showSuccessSteps,
+            highlightWarnings
+          )}
+        </Fragment>
+      ))}
     </div>
   );
 };

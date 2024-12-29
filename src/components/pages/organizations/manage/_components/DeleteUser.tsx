@@ -24,9 +24,9 @@ export const DeleteUser: React.FC<DeleteUserModalProps> = ({ user, orgId, orgNam
 
   return (
     <DeleteNoConfirm
-      deleteType="delete"
+      deleteType="remove"
       deleteItemType="user"
-      title="Delete user ?"
+      title="Remove user?"
       loading={loading}
       deleteMessage={
         <>

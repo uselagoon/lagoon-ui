@@ -24,9 +24,9 @@ export const RemoveUser: React.FC<RemoveUserProps> = ({ orgId, user, refetch }) 
 
   return (
     <DeleteNoConfirm
-      deleteType="delete"
+      deleteType="remove"
       deleteItemType="user"
-      title="Remove user ?"
+      title="Remove user?"
       loading={loading}
       deleteMessage={
         <>

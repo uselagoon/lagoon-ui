@@ -21,10 +21,10 @@ export const OrgField = styled.section`
   }
   .name,
   .description {
+    font-family: 'ArabicPro-Regular', sans-serif;
     color: ${props => (props.theme.colorScheme === 'dark' ? '#F8F8F2' : '#000')};
   }
   .name {
-    font-family: 'ArabicPro-Regular', sans-serif;
     font-size: 1.5rem;
     line-height: 1.75rem;
   }
@@ -142,6 +142,7 @@ export const CreateButton = styled.button<{ $variant?: 'default' | 'small' }>`
   align-items: center;
   gap: 8px;
   height: 62px;
+  background-color: ${props => (props.theme.colorScheme === 'dark' ? '#222222' : '#fafafa')};
 
   ${props =>
     props.$variant === 'small' &&

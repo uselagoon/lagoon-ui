@@ -13,6 +13,7 @@ export const EditProjectVariablesButton = styled.div`
   border-radius: 2px;
   cursor: pointer;
   transition: color 0.3s ease, border 0.3s ease;
+  background-color: ${props => (props.theme.colorScheme === 'dark' ? '#222222' : '#fafafa')};
   &:hover {
     color: ${Colors.lagoonBlue};
     border: 1px solid ${Colors.lagoonBlue};

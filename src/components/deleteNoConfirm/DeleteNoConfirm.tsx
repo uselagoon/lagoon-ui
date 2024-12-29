@@ -12,7 +12,7 @@ import { capitalize } from '../utils';
  * Alternative to DeleteConfirm, but users do not need to enter the name of what they're deleting.
  */
 interface DeleteProps {
-  deleteType: 'delete' | 'unlink';
+  deleteType: 'delete' | 'unlink' | 'remove';
   deleteItemType: string;
   deleteConfirmText?: string;
   title: ReactNode;
@@ -36,7 +36,7 @@ const DeleteNoConfirm: FC<DeleteProps> = ({
 
   const { contextHolder, trigger } = useNotification({
     type: 'error',
-    title: `There was a problem ${deleteType}ing ${deleteItemType}.`,
+    title: `There was a problem performing ${deleteType} on ${deleteItemType}.`,
     placement: 'top',
     duration: 0,
     content: null,
@@ -69,7 +69,11 @@ const DeleteNoConfirm: FC<DeleteProps> = ({
       {contextHolder}
 
       <Tooltip placement="bottom" title={`${capitalize(deleteType)} ${deleteItemType}`}>
-        {deleteType === 'delete' ? <DeleteOutlined onClick={openModal} /> : <DisconnectOutlined onClick={openModal} />}
+        {deleteType === 'delete' || deleteType === 'remove' ? (
+          <DeleteOutlined onClick={openModal} />
+        ) : (
+          <DisconnectOutlined onClick={openModal} />
+        )}
       </Tooltip>
 
       <Modal

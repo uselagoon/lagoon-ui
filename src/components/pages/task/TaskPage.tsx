@@ -65,24 +65,6 @@ export default function TaskPage({ queryRef, taskName }: { queryRef: QueryRef<Ta
       >
         <Switchers>
           <div>
-            <Text>Show successful steps</Text>
-            <Switch
-              disabled={!showParsed}
-              checked={showSuccessSteps}
-              onChange={checked => setShowSuccessSteps(checked)}
-              showLabel={false}
-            />
-          </div>
-          <div>
-            <Text>Highlight warnings</Text>
-            <Switch
-              disabled={!showParsed}
-              checked={highlightWarnings}
-              onChange={checked => setHighlightWarnings(checked)}
-              showLabel={false}
-            />
-          </div>
-          <div>
             <Text>View parsed</Text>
             <Switch checked={showParsed} onChange={checked => handleShowParsed(checked)} showLabel={false} />
           </div>

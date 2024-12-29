@@ -18,7 +18,7 @@ export const SettingsNavTabs = ({ children }: { children: ReactNode }) => {
         items={[
           {
             key: 'setting',
-            label: <Link href={`/settings`}>SSH KEYS</Link>,
+            label: <Link href={`/settings`}>SSH Keys</Link>,
           },
           {
             key: '2fa',

@@ -3,9 +3,9 @@ import { Fragment } from 'react';
 import { Deployment } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import { default as cancelDeploy } from '@/lib/mutation/cancelDeployment';
 import { StopOutlined } from '@ant-design/icons';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '@uselagoon/ui-library';
-import { Tooltip } from 'antd';
+import { Popconfirm, Tooltip } from 'antd';
 
 interface CancelButtonProps {
   action: () => Promise<any>;
@@ -41,9 +41,18 @@ export const CancelDeploymentButton = ({
       <Fragment>{contextHolder}</Fragment>
 
       {!success && (
-        <Tooltip title="Cancel Deployment" placement="right">
-          <StopOutlined onClick={action} disabled={loading || success} />
-        </Tooltip>
+        <Popconfirm
+          title="Cancel Deployment"
+          description="Are you sure you want to cancel this deployment?"
+          onConfirm={action}
+          okText="Yes"
+          cancelText="No"
+          disabled={loading || success}
+        >
+          <Tooltip title="Cancel Deployment" placement="right">
+            <StopOutlined />
+          </Tooltip>
+        </Popconfirm>
       )}
 
       {success ? afterText || 'Cancelled' : beforeText || ''}

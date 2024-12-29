@@ -11,6 +11,7 @@ export default gql`
       quotaGroup
       groups {
         id
+        type
       }
       projects {
         id
