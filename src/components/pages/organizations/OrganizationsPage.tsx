@@ -27,8 +27,6 @@ export default function OrganizationsPage({ organizations }: { organizations: Or
     setQuery({ results: Number(val) });
   };
 
-  console.warn(organizations);
-
   return (
     <>
       <LagoonFilter
