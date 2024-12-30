@@ -2,7 +2,7 @@
 
 import { Description } from '@/components/pages/organizations/organization/_components/Description';
 import { OrgActionsWrapper } from '@/components/pages/organizations/organization/_components/styles';
-import { Details, Head2, LoadingSkeleton } from '@uselagoon/ui-library';
+import { DetailedStats, Details, Head2, LoadingSkeleton } from '@uselagoon/ui-library';
 
 export default function Loading() {
   const orgSkeletonItems = [
@@ -55,12 +55,12 @@ export default function Loading() {
         <Head2>Create</Head2>
 
         <OrgActionsWrapper>
-          <LoadingSkeleton width={60} />
-          <LoadingSkeleton width={60} />
-          <LoadingSkeleton width={60} />
+          <LoadingSkeleton width={120} height={60} />
+          <LoadingSkeleton width={120} height={60} />
+          <LoadingSkeleton width={120} height={60} />
         </OrgActionsWrapper>
 
-        <Details type="topToBottom" bordered items={orgSkeletonItems} />
+        <DetailedStats items={orgSkeletonItems} />
       </>
     </>
   );

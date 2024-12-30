@@ -5,7 +5,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { FormItem, Input, Modal, Text } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
-import { Form } from 'antd';
+import { Form, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
 import {
@@ -111,7 +111,9 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
   return (
     <>
       <DeleteVariableButton onClick={() => setModalOpen(true)}>
-        <DeleteOutlined />
+        <Tooltip placement="bottom" title="Delete variable">
+          <DeleteOutlined />
+        </Tooltip>
       </DeleteVariableButton>
       <Modal
         title={<NewVariableTitle>Delete a variable</NewVariableTitle>}

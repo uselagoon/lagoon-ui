@@ -45,3 +45,8 @@ export const StyledToggle = styled.div`
   letter-spacing: -1px;
   cursor: pointer;
 `;
+
+export const StyledEnvCount = styled.div`
+	font-family: 'ArabicPro-Regular', sans-serif;
+	margin-top: 1rem;
+`

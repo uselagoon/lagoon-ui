@@ -2,7 +2,7 @@
 
 import { ProjectDetailsData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/project-details/page';
 import dayjs from '@/lib/dayjs';
-import { CopyToClipboard, Details } from '@uselagoon/ui-library';
+import { CopyToClipboard, DetailedStats } from '@uselagoon/ui-library';
 import giturlparse from 'git-url-parse';
 
 interface ProjectDetailsProps {
@@ -62,5 +62,5 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
       ),
     },
   ];
-  return <Details type="topToBottom" bordered items={detailItems} />;
+  return <DetailedStats items={detailItems} />;
 }

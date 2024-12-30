@@ -5,7 +5,7 @@ import { EditOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { FormItem, Input, Modal, Select } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
-import { Form } from 'antd';
+import { Form, Tooltip } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
 import ModalTip from './ModalTip';
@@ -190,7 +190,9 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch, type
   return (
     <>
       <EditVariableButton onClick={() => setModalOpen(true)}>
-        <EditOutlined />
+        <Tooltip placement="bottom" title="Edit variable">
+          <EditOutlined />
+        </Tooltip>
       </EditVariableButton>
       <Modal
         title={<NewVariableTitle>Edit a variable</NewVariableTitle>}

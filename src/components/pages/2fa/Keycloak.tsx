@@ -32,11 +32,11 @@ const StyledText = styled(Text)`
 `;
 
 const StyledBtn = styled(Button)`
-  background-color: transparent !important;
   padding: 25px 15px !important;
   border-radius: 0 !important;
   border: 1px solid ${props => props.theme.UI.borders.box};
   color: ${props => props.theme.UI.texts.primary} !important;
+  background-color: ${props => (props.theme.colorScheme === 'dark' ? '#222222' : '#fafafa')} !important;
   margin-top: 2.5rem;
   &:hover {
     color: ${Colors.lagoonBlue} !important;

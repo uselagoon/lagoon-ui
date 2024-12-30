@@ -1,10 +1,11 @@
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
 
 import { Backup } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/backups/page';
 import addRestore from '@/lib/mutation/addRestore';
 import { CloudDownloadOutlined, RedoOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { useNotification } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 
 interface AddRestoreButtonProps {
   action: () => Promise<any>;
@@ -32,9 +33,13 @@ export const AddRestoreButton: FC<AddRestoreButtonProps> = ({ action, success, l
     <>
       {contextHolder}
       {type === 'failed' ? (
-        <RedoOutlined onClick={action} disabled={loading || success} />
+        <Tooltip placement="bottom" title="Retry">
+          <RedoOutlined onClick={action} disabled={loading || success} />
+        </Tooltip>
       ) : (
-        <CloudDownloadOutlined onClick={action} disabled={loading || success} />
+        <Tooltip placement="bottom" title="Retrieve backup">
+          <CloudDownloadOutlined onClick={action} disabled={loading || success} />
+        </Tooltip>
       )}
     </>
   );

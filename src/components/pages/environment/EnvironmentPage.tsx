@@ -7,7 +7,7 @@ import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import deleteEnvironment from '@/lib/mutation/deleteEnvironment';
 import switchActiveStandby from '@/lib/mutation/switchActiveStandby';
 import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { Collapse, Details, Head2, Head3, Head4, Text } from '@uselagoon/ui-library';
+import { Collapse, DetailedStats, Head2, Head3, Head4, Text } from '@uselagoon/ui-library';
 
 import ActiveStandbyConfirm from '../../activestandbyconfirm/ActiveStandbyConfirm';
 import DeleteConfirm from '../../deleteConfirm/DeleteConfirm';
@@ -89,8 +89,7 @@ export default function EnvironmentPage({
 
   const environmentDetails = (
     <>
-      <Details bordered layout="vertical" type="default" items={environmentDetailItems} />
-
+      <DetailedStats items={environmentDetailItems} />
       <EnvironmentActions>
         <Head4>Actions</Head4>
 

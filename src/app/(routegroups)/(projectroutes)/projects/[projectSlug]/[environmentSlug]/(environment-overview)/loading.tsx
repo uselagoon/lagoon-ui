@@ -1,7 +1,7 @@
 'use client';
 
 import { RoutesSection } from '@/components/pages/environment/styles';
-import { Collapse, Details, Head2, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
+import { Collapse, DetailedStats, Head2, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
 
 export default function Loading() {
   const environmentDetailSkeletonItems = [
@@ -39,7 +39,7 @@ export default function Loading() {
         type="default"
         items={[
           {
-            children: <Details bordered type="default" items={environmentDetailSkeletonItems} />,
+            children: <DetailedStats items={environmentDetailSkeletonItems} />,
             key: 1,
             label: <Head3>Environment details</Head3>,
           },

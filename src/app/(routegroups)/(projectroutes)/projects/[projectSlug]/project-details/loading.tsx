@@ -1,6 +1,6 @@
 'use client';
 
-import { Details, LoadingSkeleton } from '@uselagoon/ui-library';
+import { DetailedStats, LoadingSkeleton } from '@uselagoon/ui-library';
 
 export default function Loading() {
   const detailItems = [
@@ -35,5 +35,5 @@ export default function Loading() {
       children: <LoadingSkeleton width={50} />,
     },
   ];
-  return <Details type="topToBottom" bordered items={detailItems} />;
+  return <DetailedStats items={detailItems} />;
 }

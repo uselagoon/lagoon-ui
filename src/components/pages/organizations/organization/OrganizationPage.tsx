@@ -6,7 +6,7 @@ import { CreateGroup } from '@/components/createGroup/CreateGroup';
 import { CreateProject } from '@/components/createProject/CreateProject';
 import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { Details, Head2 } from '@uselagoon/ui-library';
+import { DetailedStats, Details, Head2 } from '@uselagoon/ui-library';
 
 import { Description } from './_components/Description';
 import { OrgActionsWrapper, OrgDeployTargets } from './_components/styles';
@@ -82,14 +82,9 @@ export default function OrganizationPage({
         </>
       ),
     },
-    {
-      key: 'dev_envs',
-      label: 'AVAILABLE DEPLOY TARGETS',
-      contentStyle: {
-        padding: 0,
-      },
-      children: <OrgDeployTargets>{deployTargets}</OrgDeployTargets>,
-    },
+    ...organization.deployTargets?.map(target => {
+      return { key: `target_${String(target.id)}`, label: 'AVAILABLE DEPLOY TARGET', children: target.name };
+    }),
   ];
 
   const deployTargetOptions = organization.deployTargets.map(deploytarget => {
@@ -118,7 +113,7 @@ export default function OrganizationPage({
         <AddUser groupOptions={groupSelectOptions} type="multiple" />
       </OrgActionsWrapper>
 
-      <Details type="topToBottom" bordered items={orgDetailedItems} />
+      <DetailedStats items={orgDetailedItems} />
     </>
   );
 }
