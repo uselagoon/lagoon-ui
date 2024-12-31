@@ -2,7 +2,7 @@
 
 import { SetStateAction } from 'react';
 
-import { ProjectType, ProjectsData } from '@/app/(routegroups)/(projectroutes)/projects/(projects-page)/page';
+import { ProjectsData } from '@/app/(routegroups)/(projectroutes)/projects/(projects-page)/page';
 import { LagoonFilter, Table } from '@uselagoon/ui-library';
 import gitUrlParse from 'git-url-parse';
 import { useQueryStates } from 'nuqs';
@@ -38,15 +38,6 @@ export default function ProjectsPage({ data }: { data: ProjectsData }) {
     setQuery({ results: Number(val) });
   };
 
-  const projectsWithOrigin = data.allProjects.map((project: ProjectType) => {
-    const gitUrlParsed = safeParseGitUrl(project.gitUrl);
-    const gitLink = typeof gitUrlParsed === 'object' ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}` : '';
-    return {
-      ...project,
-      origin: gitLink,
-    };
-  });
-
   return (
     <>
       <LagoonFilter
@@ -73,12 +64,7 @@ export default function ProjectsPage({ data }: { data: ProjectsData }) {
           setSelectedState: setResults as React.Dispatch<SetStateAction<unknown>>,
         }}
       />
-      <ProjectsTable
-        projects={projectsWithOrigin}
-        filterString={search}
-        resultsPerPage={results}
-        basePath="/projects"
-      />
+      <ProjectsTable projects={data.allProjects} filterString={search} resultsPerPage={results} basePath="/projects" />
     </>
   );
 }

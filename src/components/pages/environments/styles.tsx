@@ -47,6 +47,6 @@ export const StyledToggle = styled.div`
 `;
 
 export const StyledEnvCount = styled.div`
-	font-family: 'ArabicPro-Regular', sans-serif;
-	margin-top: 1rem;
-`
+  font-family: 'ArabicPro-Regular', sans-serif;
+  margin-top: 1rem;
+`;

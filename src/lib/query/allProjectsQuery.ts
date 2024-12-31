@@ -9,12 +9,14 @@ export default gql`
       factsUi
       created
       gitUrl
+      productionEnvironment
       kubernetes {
         id
         name
         cloudRegion
       }
       environments {
+        name
         route
         updated
       }
