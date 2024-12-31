@@ -40,7 +40,7 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
     {
       key: 'giturl',
       label: 'GIT URL',
-      children: <CopyToClipboard type="visible" text={project.gitUrl} />,
+      children: <CopyToClipboard type="visible" withToolTip text={project.gitUrl} />,
     },
     {
       key: 'branches',
