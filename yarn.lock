@@ -3417,7 +3417,7 @@
 
 "@uselagoon/ui-library@github:uselagoon/ui-library":
   version "1.1.2"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/1bfdf3cdf6bb15cbc4a9f3528fe3816883ea3ce5"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/8e8815e1da5e2fe935f46bfd7fe8e96b7aa805a3"
   dependencies:
     dayjs "^1.11.13"
     react-highlight-words "^0.20.0"
@@ -10293,6 +10293,7 @@ wordwrap@^1.0.0:
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

@@ -10,15 +10,15 @@ export default gql`
       created
       gitUrl
       productionEnvironment
-      kubernetes {
-        id
-        name
-        cloudRegion
-      }
-      environments {
+      environments(type: PRODUCTION) {
         name
         route
         updated
+        kubernetes {
+          id
+          name
+          cloudRegion
+        }
       }
     }
   }

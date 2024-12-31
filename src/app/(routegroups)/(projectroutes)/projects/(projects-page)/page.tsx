@@ -18,16 +18,16 @@ export type ProjectType = {
   created: string;
   gitUrl: string;
   productionEnvironment: string | null;
-  kubernetes: {
-    id: number;
-    name: string;
-    cloudRegion: string | null;
-  };
   environments: [
     {
       name: string;
       route: string;
       updated: string;
+      kubernetes: {
+        id: number;
+        name: string;
+        cloudRegion: string | null;
+      };
     }
   ];
 };
