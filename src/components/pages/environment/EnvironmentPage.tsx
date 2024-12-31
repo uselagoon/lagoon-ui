@@ -7,10 +7,11 @@ import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import deleteEnvironment from '@/lib/mutation/deleteEnvironment';
 import switchActiveStandby from '@/lib/mutation/switchActiveStandby';
 import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { Collapse, DetailedStats, Head2, Head3, Head4, Text } from '@uselagoon/ui-library';
+import { DetailedStats, Head3, Head4, Text } from '@uselagoon/ui-library';
 
 import ActiveStandbyConfirm from '../../activestandbyconfirm/ActiveStandbyConfirm';
 import DeleteConfirm from '../../deleteConfirm/DeleteConfirm';
+import LimitedRoutes from './_components/LimitedRoutes';
 import { EnvironmentActions, RoutesSection, RoutesWrapper } from './styles';
 
 // active/standby routes
@@ -66,15 +67,6 @@ export default function EnvironmentPage({
       label: 'Updated',
     },
   ];
-
-  // push multiple routes into the collapse items array
-  environment?.routes?.split(',').forEach((route: string, idx: number) => {
-    environmentDetailItems.push({
-      children: route,
-      key: 'routes',
-      label: `Routes ${idx + 1}`,
-    });
-  });
 
   const routes = createLinks(environment.routes);
   const activeRoutes = createLinks(environment.project.productionRoutes);
@@ -140,65 +132,27 @@ export default function EnvironmentPage({
   );
   return (
     <>
-      <Collapse
-        type="default"
-        borderless
-        items={[
-          {
-            children: environmentDetails,
-            key: 'environment_details',
-            label: <Head3>Environment details</Head3>,
-          },
-        ]}
-      />
+      <Head3>Environment details</Head3>
+      <section>{environmentDetails}</section>
 
       <RoutesSection>
-        <Head2>Routes</Head2>
+        <Head3>Routes</Head3>
 
         {routes ? (
-          <Collapse
-            type="default"
-            size="small"
-            useArrowIcons
-            items={[
-              {
-                children: <RoutesWrapper>{routes}</RoutesWrapper>,
-                key: 'routes',
-                label: <Head4>Environment routes</Head4>,
-              },
-            ]}
-          />
+          <>
+            <Head4>Active routes</Head4>
+            <LimitedRoutes routes={routes} />
+          </>
         ) : null}
 
-        {activeRoutes ? (
-          <Collapse
-            type="default"
-            size="small"
-            useArrowIcons
-            items={[
-              {
-                children: <RoutesWrapper>{activeRoutes}</RoutesWrapper>,
-                key: 'active_routes',
-                label: <Head4>Active routes</Head4>,
-              },
-            ]}
-          />
-        ) : null}
-
+        <br />
         {standbyRoutes ? (
-          <Collapse
-            type="default"
-            size="small"
-            useArrowIcons
-            items={[
-              {
-                children: <RoutesWrapper>{standbyRoutes}</RoutesWrapper>,
-                key: 'standby_routes',
-                label: <Head4>Standby routes</Head4>,
-              },
-            ]}
-          />
+          <>
+            <Head4>Standby routes</Head4>
+            <LimitedRoutes routes={standbyRoutes} />
+          </>
         ) : null}
+
         {envHasNoRoutes && <Text>No routes found for {environment.name}</Text>}
       </RoutesSection>
     </>

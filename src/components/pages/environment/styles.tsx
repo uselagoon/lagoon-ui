@@ -34,7 +34,11 @@ export const RoutesSection = styled.section`
 export const RoutesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.45rem;
+  font-size: 14px;
+  font-family: 'ArabicPro-Regular', sans-serif;
   a {
+    text-decoration: none;
     color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
     &:hover {
       text-decoration: underline;
@@ -48,4 +52,12 @@ export const EnvironmentActions = styled.div`
     display: flex;
     gap: 1rem;
   }
+`;
+
+export const ShowMore = styled.span`
+  font-family: 'ArabicPro-Regular', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  cursor: pointer;
 `;

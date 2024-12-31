@@ -1,7 +1,7 @@
 'use client';
 
-import { RoutesSection } from '@/components/pages/environment/styles';
-import { Collapse, DetailedStats, Head2, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
+import { EnvironmentActions, RoutesSection } from '@/components/pages/environment/styles';
+import { DetailedStats, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
 
 export default function Loading() {
   const environmentDetailSkeletonItems = [
@@ -25,68 +25,30 @@ export default function Loading() {
       key: 'updated',
       label: 'Updated',
     },
-    {
-      children: <LoadingSkeleton width={100} />,
-      key: 'routes',
-      label: 'Routes 1',
-    },
   ];
 
   const routeSkeletons = Array.from({ length: 4 }).map(() => <LoadingSkeleton width={'60%'} />);
   return (
     <>
-      <Collapse
-        type="default"
-        items={[
-          {
-            children: <DetailedStats items={environmentDetailSkeletonItems} />,
-            key: 1,
-            label: <Head3>Environment details</Head3>,
-          },
-        ]}
-      />
+      <Head3>Environment details</Head3>
+      <DetailedStats items={environmentDetailSkeletonItems} />
 
+      <EnvironmentActions>
+        <Head4>Actions</Head4>
+        <LoadingSkeleton width={60} />
+      </EnvironmentActions>
       <RoutesSection>
-        <Head2>Routes</Head2>
+        <Head3>Routes</Head3>
+        <>
+          <Head4>Active routes</Head4>
 
-        <Collapse
-          type="default"
-          size="small"
-          useArrowIcons
-          items={[
-            {
-              children: routeSkeletons,
-              key: 'routes',
-              label: <Head4>Environment routes</Head4>,
-            },
-          ]}
-        />
-
-        <Collapse
-          type="default"
-          size="small"
-          useArrowIcons
-          items={[
-            {
-              children: routeSkeletons,
-              key: 'active_routes',
-              label: <Head4>Active routes</Head4>,
-            },
-          ]}
-        />
-
-        <Collapse
-          type="default"
-          size="small"
-          useArrowIcons
-          items={[
-            {
-              children: routeSkeletons,
-              key: 'standby_routes',
-              label: <Head4>Standby routes</Head4>,
-            },
-          ]}
-        />
+          {routeSkeletons}
+        </>
+        <br />
+        <>
+          <Head4>Standby routes</Head4>
+          {routeSkeletons}
+        </>
       </RoutesSection>
     </>
   );
