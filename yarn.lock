@@ -3417,7 +3417,7 @@
 
 "@uselagoon/ui-library@github:uselagoon/ui-library":
   version "1.1.2"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/8e8815e1da5e2fe935f46bfd7fe8e96b7aa805a3"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/ebba1971fae878160a7d75946205b62410803eb5"
   dependencies:
     dayjs "^1.11.13"
     react-highlight-words "^0.20.0"
