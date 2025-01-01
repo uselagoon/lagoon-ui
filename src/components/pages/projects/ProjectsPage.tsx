@@ -4,21 +4,11 @@ import { SetStateAction } from 'react';
 
 import { ProjectsData } from '@/app/(routegroups)/(projectroutes)/projects/(projects-page)/page';
 import { LagoonFilter, Table } from '@uselagoon/ui-library';
-import gitUrlParse from 'git-url-parse';
 import { useQueryStates } from 'nuqs';
 
 const { ProjectsTable } = Table;
 
-const safeParseGitUrl = (gitUrl: string) => {
-  let parsed;
 
-  try {
-    parsed = gitUrlParse(gitUrl);
-  } catch {
-    parsed = '';
-  }
-  return parsed;
-};
 export default function ProjectsPage({ data }: { data: ProjectsData }) {
   const [{ results, search }, setQuery] = useQueryStates({
     results: {
