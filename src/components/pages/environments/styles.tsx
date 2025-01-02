@@ -4,7 +4,6 @@ import { IconGrid, IconList } from '@uselagoon/ui-library';
 import styled, { css } from 'styled-components';
 
 export const StyledEnvironmentsWrapper = styled.section`
-  max-width: 1920px;
   margin: 0 auto;
   display: flex;
   gap: 10px;

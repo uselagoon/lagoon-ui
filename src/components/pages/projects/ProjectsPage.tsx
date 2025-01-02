@@ -8,7 +8,6 @@ import { useQueryStates } from 'nuqs';
 
 const { ProjectsTable } = Table;
 
-
 export default function ProjectsPage({ data }: { data: ProjectsData }) {
   const [{ results, search }, setQuery] = useQueryStates({
     results: {
