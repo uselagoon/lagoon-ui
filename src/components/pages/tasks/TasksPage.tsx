@@ -97,7 +97,8 @@ export default function TasksPage({
 
   // returns default task options treeData + advancedTasks(if any)
   const taskoptions = getDefaultTaskOptions(advancedTasks, blockedTasks);
-  const advancedTasksWithOptions = taskoptions[1].children;
+
+  const advancedTasksWithOptions = taskoptions[1]?.children;
 
   // options stores advanced task with options
   const selectedAdvancedTaskWithArgs = advancedTasksWithOptions?.find(advTask => advTask.value === selectedTask);

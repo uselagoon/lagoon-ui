@@ -98,7 +98,7 @@ const EnvironmentNavTabs = ({ children }: { children: ReactNode }) => {
             : []),
 
           {
-            key: 'variables',
+            key: 'environment-variables',
             label: (
               <Link href={`/projects/${projectSlug}/${environmentSlug}/environment-variables`}>
                 <LinkContentWrapper>Variables</LinkContentWrapper>
