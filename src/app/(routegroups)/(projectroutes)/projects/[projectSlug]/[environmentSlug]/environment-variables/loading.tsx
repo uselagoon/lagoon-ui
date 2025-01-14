@@ -3,7 +3,7 @@
 import { SetStateAction } from 'react';
 
 import { scopeOptions, sortOptions } from '@/components/pages/environmentVariables/_components/filterValues';
-import { Head2, LagoonFilter, Table } from '@uselagoon/ui-library';
+import { Head2, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { Variable } from '@uselagoon/ui-library/dist/components/Table/VariablesTable/VariablesTable';
 import { useQueryStates } from 'nuqs';
 
@@ -20,7 +20,11 @@ export default function Loading() {
     },
     sort: {
       defaultValue: null,
-      parse: (value: string | undefined) => (value !== undefined ? String(value) : ''),
+      parse: (value: string) => {
+        if (['name_asc', 'name_desc', 'scope_asc', 'scope_desc'].includes(value)) return String(value);
+
+        return null;
+      },
     },
 
     scope: {
@@ -49,19 +53,29 @@ export default function Loading() {
           searchText: search || '',
           setSearchText: setSearch as React.Dispatch<SetStateAction<string>>,
         }}
-        selectOptions={{
-          options: sortOptions,
-          selectedState: sort,
-          setSelectedState: setSort as React.Dispatch<SetStateAction<unknown>>,
-        }}
-        sortOptions={{
-          options: scopeOptions,
-          selectedState: scope,
-          setSelectedState: setScope as React.Dispatch<SetStateAction<unknown>>,
-        }}
-      ></LagoonFilter>
+      >
+        <Select
+          options={sortOptions}
+          value={sort}
+          defaultOpen={false}
+          placeholder="Sort by"
+          onSelect={val => {
+            setSort(val);
+          }}
+        />
 
-      <VariablesTable skeleton />
+        <Select
+          options={scopeOptions}
+          defaultOpen={false}
+          value={scope}
+          placeholder="Scope"
+          onSelect={val => {
+            setScope(val);
+          }}
+        />
+      </LagoonFilter>
+
+      <VariablesTable skeleton withValues={false} />
     </>
   );
 }

@@ -15,6 +15,7 @@ export default gql`
         id
         name
         scope
+        value
       }
       project {
         name
@@ -29,6 +30,7 @@ export default gql`
           id
           name
           scope
+          value
         }
       }
     }

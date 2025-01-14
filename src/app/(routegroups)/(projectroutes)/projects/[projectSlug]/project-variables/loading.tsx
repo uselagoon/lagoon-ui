@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <>
       <Head2>Project variables</Head2>
-      <VariablesTable skeleton />
+      <VariablesTable skeleton withValues={false} />
     </>
   );
 }

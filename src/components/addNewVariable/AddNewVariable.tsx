@@ -17,7 +17,7 @@ import {
   VariableSteps,
 } from '../pages/projectVariables/_components/styles';
 
-type Props = { refetch: () => void; projectName: string } & (
+type Props = { onClick?: () => any; refetch: () => void; projectName: string } & (
   | {
       type: 'project';
     }
@@ -50,7 +50,7 @@ const scopeOptions = [
   },
 ];
 
-export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, ...rest }) => {
+export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [addVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
@@ -181,7 +181,15 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, ...rest 
 
   return (
     <>
-      <ProjectVariablebutton onClick={() => setModalOpen(true)}>
+      <ProjectVariablebutton
+        onClick={async () => {
+          let hasError;
+          if (onClick) {
+            hasError = await onClick();
+          }
+          !hasError?.error && setModalOpen(true);
+        }}
+      >
         <PlusOutlined /> Add new variable
       </ProjectVariablebutton>
       <Modal

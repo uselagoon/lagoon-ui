@@ -15,21 +15,7 @@ export default gql`
         id
         name
         scope
-      }
-      project {
-        name
-        gitUrl
-        productionRoutes
-        standbyRoutes
-        productionEnvironment
-        standbyProductionEnvironment
-        problemsUi
-        factsUi
-        envVariables {
-          id
-          name
-          scope
-        }
+        value
       }
     }
   }

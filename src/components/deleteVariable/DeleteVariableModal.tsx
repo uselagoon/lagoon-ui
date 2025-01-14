@@ -20,6 +20,7 @@ import {
 type Props = {
   currentEnv: Variable;
   refetch: () => void;
+  onClick?: () => any;
   projectName: string;
 } & (
   | {
@@ -31,7 +32,7 @@ type Props = {
     }
 );
 
-export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetch, type, ...rest }) => {
+export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetch, type, onClick, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
@@ -110,7 +111,15 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
 
   return (
     <>
-      <DeleteVariableButton onClick={() => setModalOpen(true)}>
+      <DeleteVariableButton
+        onClick={async () => {
+          let hasError;
+          if (onClick) {
+            hasError = await onClick();
+          }
+          !hasError?.error && setModalOpen(true);
+        }}
+      >
         <Tooltip placement="bottom" title="Delete variable">
           <DeleteOutlined />
         </Tooltip>

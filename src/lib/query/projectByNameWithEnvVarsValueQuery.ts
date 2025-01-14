@@ -14,32 +14,11 @@ export default gql`
       productionRoutes
       standbyRoutes
       developmentEnvironmentsLimit
-      deployTargetConfigs {
-        id
-        branches
-        pullrequests
-        deployTarget {
-          id
-          name
-          friendlyName
-        }
-      }
       envVariables {
         id
         name
         scope
-      }
-      environments {
-        id
-        name
-        deployType
-        environmentType
-        routes
-        openshiftProjectName
-        openshift {
-          friendlyName
-          cloudRegion
-        }
+        value
       }
     }
   }
