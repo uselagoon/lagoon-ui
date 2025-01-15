@@ -10,7 +10,7 @@ import { NewEnvironment } from '@/components/newEnvironment/NewEnvironment';
 import { getHighestSeverityProblem, makeSafe } from '@/components/utils';
 import { LagoonCard } from '@uselagoon/ui-library';
 
-import { StyledEnvCount, StyledEnvironmentsWrapper } from '../styles';
+import { StyledEnvText, StyledEnvironmentsWrapper } from '../styles';
 import { getEnvironmentQuickActions } from './helpers';
 
 interface Props {
@@ -18,10 +18,18 @@ interface Props {
   resultsPerPage: number;
   filterString: string;
   projectName: string;
+  setResultsPerPage: (val: string) => void;
   refetch: () => void;
 }
 
-export const CardView: FC<Props> = ({ project, projectName, filterString, resultsPerPage, refetch }) => {
+export const CardView: FC<Props> = ({
+  project,
+  projectName,
+  filterString,
+  resultsPerPage,
+  refetch,
+  setResultsPerPage,
+}) => {
   const { environments } = project;
   const { push } = useRouter();
 
@@ -46,6 +54,15 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
   // slice filteredEnvironments based on resultsPerPage
   const slicedEnvsByCount = filteredEnvironments.slice(0, resultsPerPage);
 
+  const handleShowMore = () => {
+    if (environments.length - slicedEnvsByCount.length > 5) {
+      setResultsPerPage(String(resultsPerPage + 5));
+      return;
+    }
+
+    // use the "maximum" selectable value
+    setResultsPerPage(String(50));
+  };
   return (
     <>
       <StyledEnvironmentsWrapper>
@@ -90,9 +107,10 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
         <NewEnvironment projectName={projectName} refetch={refetch} />
       </StyledEnvironmentsWrapper>
 
-      <StyledEnvCount>
+      {environments.length > slicedEnvsByCount.length ? <StyledEnvText $button onClick={handleShowMore}>Show more...</StyledEnvText> : null}
+      <StyledEnvText>
         Showing {slicedEnvsByCount.length} of {environments.length} Environments
-      </StyledEnvCount>
+      </StyledEnvText>
     </>
   );
 };

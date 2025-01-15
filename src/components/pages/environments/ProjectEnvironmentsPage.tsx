@@ -57,6 +57,7 @@ export default function ProjectEnvironmentsPage({
     projectName,
     refetch,
     resultsPerPage: env_count,
+    setResultsPerPage: setEnvCount,
     filterString: search || '',
   };
 
