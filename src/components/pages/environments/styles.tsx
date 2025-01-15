@@ -45,14 +45,16 @@ export const StyledToggle = styled.div`
   cursor: pointer;
 `;
 
-export const StyledEnvText = styled.div<{$button?: boolean}>`
+export const StyledEnvText = styled.div<{ $button?: boolean }>`
   font-family: 'ArabicPro-Regular', sans-serif;
   margin-top: 1rem;
 
-  ${props => props.$button && css`
-    cursor: pointer;
-    &:hover{
-      text-decoration: underline;
-    }
-  `}
+  ${props =>
+    props.$button &&
+    css`
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    `}
 `;

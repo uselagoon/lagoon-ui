@@ -107,7 +107,11 @@ export const CardView: FC<Props> = ({
         <NewEnvironment projectName={projectName} refetch={refetch} />
       </StyledEnvironmentsWrapper>
 
-      {environments.length > slicedEnvsByCount.length ? <StyledEnvText $button onClick={handleShowMore}>Show more...</StyledEnvText> : null}
+      {environments.length > slicedEnvsByCount.length ? (
+        <StyledEnvText $button onClick={handleShowMore}>
+          Show more...
+        </StyledEnvText>
+      ) : null}
       <StyledEnvText>
         Showing {slicedEnvsByCount.length} of {environments.length} Environments
       </StyledEnvText>

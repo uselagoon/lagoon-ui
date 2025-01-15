@@ -11,6 +11,7 @@ import { DetailedStats, Details, Head2 } from '@uselagoon/ui-library';
 import { Description } from './_components/Description';
 import { OrgActionsWrapper, OrgDeployTargets } from './_components/styles';
 
+type Notification = 'slacks' | 'rocketchats' | 'webhook' | 'teams' | 'emails';
 export default function OrganizationPage({
   queryRef,
   orgSlug,
@@ -31,6 +32,11 @@ export default function OrganizationPage({
   const deployTargets = organization.deployTargets.map(target => <div>{target.name}</div>);
 
   const groupCount = Object.values(organization.groups).filter(group => group.type !== 'project-default-group').length;
+
+  const totalNotificationCount = ['slacks', 'rocketchats', 'webhook', 'teams', 'emails'].reduce(
+    (acc, key) => acc + (organization[key as Notification] ? organization[key as Notification].length : 0),
+    0
+  );
 
   const orgDetailedItems = [
     {
@@ -67,7 +73,7 @@ export default function OrganizationPage({
       label: 'NOTIFICATIONS',
       children: (
         <>
-          Notification quota: {organization.quotaNotification} of{' '}
+          Notification quota: {totalNotificationCount} of{' '}
           {organization.quotaNotification === -1 ? 'unlimited' : organization.quotaNotification}
         </>
       ),
