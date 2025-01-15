@@ -29,7 +29,7 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
     if (logo) return logo;
 
     if (LAGOON_UI_ICON) {
-      return <img alt="Home" className="icon" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
+      return <img alt="Home" className="icon logo" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
     }
     return undefined;
   };
