@@ -5,6 +5,7 @@ import { SetStateAction } from 'react';
 import { CheckboxContainer } from '@/components/pages/organizations/groups/_components/styles';
 import { userFilterOptions } from '@/components/pages/organizations/users/_components/filterOptions';
 import { Checkbox, LagoonFilter, Table } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
 
 const { OrgUsersTable } = Table;
@@ -68,11 +69,13 @@ export default function Loading() {
           setSelectedState: setUserSort as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <CheckboxContainer>
-          <Checkbox checked={showDefaults} onChange={setShowDefaults}>
-            Show Default Users
-          </Checkbox>
-        </CheckboxContainer>
+        <Tooltip title="Select this to show all system and default organizastion users" placement="right">
+          <CheckboxContainer>
+            <Checkbox checked={showDefaults} onChange={setShowDefaults}>
+              Show Default Users
+            </Checkbox>
+          </CheckboxContainer>
+        </Tooltip>
       </LagoonFilter>
 
       <OrgUsersTable type="standalone" skeleton />

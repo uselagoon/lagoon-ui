@@ -11,7 +11,7 @@ export const getEnvironmentQuickActions = (environment: ProjectEnvironment, proj
       sectionChildren: [
         <LinkContainer href={`/projects/${projectName}/${environment.openshiftProjectName}/environment-variables`}>
           <CarryOutOutlined />
-          <span>View and create environment variables</span>
+          <span>View and create environment and project variables</span>
         </LinkContainer>,
       ],
     },

@@ -15,7 +15,7 @@ export const OrgField = styled.section`
     font-size: 11px;
     font-weight: 400;
     line-height: 10px;
-    letter-spacing: -0.08em;
+    letter-spacing: 1px;
     color: ${props => (props.theme.colorScheme === 'dark' ? '#f2f2f280' : '#000')};
     text-transform: uppercase;
   }

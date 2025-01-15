@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 
 import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { Head3, Select, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
+import { Head2, Head3, Select, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import {
@@ -152,8 +152,8 @@ export default function TasksPage({
 
   return (
     <TasksPageWrapper>
+      <Head3>Available Tasks</Head3>
       <Text>Run a task on this environment</Text>
-      <br />
       <div className="selector">
         <TaskTreeSelector
           allowClear

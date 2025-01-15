@@ -54,7 +54,7 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
     },
     onCompleted: () => {
       if (renderAsQuickAction) {
-        message.success('Deployment successful');
+        message.success('Deployment successfully triggered');
       } else {
         successNotification.trigger();
       }
@@ -72,7 +72,7 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
 
   const successNotification = useNotification({
     type: 'success',
-    title: 'Deployment successful',
+    title: 'Deployment successfully triggered',
     content: null,
     requiresManualClose: false,
   });

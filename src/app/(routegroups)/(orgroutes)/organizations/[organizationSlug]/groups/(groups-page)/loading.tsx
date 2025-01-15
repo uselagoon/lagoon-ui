@@ -5,6 +5,7 @@ import { SetStateAction } from 'react';
 import { groupFilterValues } from '@/components/pages/organizations/groups/_components/groupFilterValues';
 import { CheckboxContainer } from '@/components/pages/organizations/groups/_components/styles';
 import { Checkbox, LagoonFilter, Table } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
 
 const { OrgGroupsTable } = Table;
@@ -53,11 +54,13 @@ export default function Loading() {
           setSelectedState: setGroupSort as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <CheckboxContainer>
-          <Checkbox checked={showDefaults} onChange={setShowDefaults}>
-            Show System Groups
-          </Checkbox>
-        </CheckboxContainer>
+        <Tooltip title="Select this to show all system and default organization groups" placement="right">
+          <CheckboxContainer>
+            <Checkbox checked={showDefaults} onChange={setShowDefaults}>
+              Show System Groups
+            </Checkbox>
+          </CheckboxContainer>
+        </Tooltip>
       </LagoonFilter>
       <OrgGroupsTable skeleton />
     </>

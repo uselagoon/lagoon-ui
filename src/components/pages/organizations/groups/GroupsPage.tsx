@@ -11,6 +11,7 @@ import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { UserAddOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
 
 import { DeleteGroup } from './_components/DeleteGroup';
@@ -91,11 +92,13 @@ export default function GroupsPage({
           setSelectedState: setGroupSort as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <CheckboxContainer>
-          <Checkbox checked={showDefaults} onChange={setShowDefaults}>
-            Show System Groups
-          </Checkbox>
-        </CheckboxContainer>
+        <Tooltip title="Select this to show all system and default organization groups" placement="right">
+          <CheckboxContainer>
+            <Checkbox checked={showDefaults} onChange={setShowDefaults}>
+              Show System Groups
+            </Checkbox>
+          </CheckboxContainer>
+        </Tooltip>
       </LagoonFilter>
 
       <OrgGroupsTable

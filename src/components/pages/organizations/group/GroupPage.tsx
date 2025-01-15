@@ -9,6 +9,7 @@ import { EditUserRole } from '@/components/editUserRole/EditUserRole';
 import { DisconnectOutlined, EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
 
 import { resultsFilterValues } from '../groups/_components/groupFilterValues';
@@ -124,11 +125,13 @@ export default function GroupPage({ queryRef }: { queryRef: QueryRef<Organizatio
           setSelectedState: setGroupSort as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <CheckboxContainer>
-          <Checkbox checked={showDefaults} onChange={setShowDefaults}>
-            Show Default Users
-          </Checkbox>
-        </CheckboxContainer>
+        <Tooltip title="Select this to show all system and default organizastion users" placement="right">
+          <CheckboxContainer>
+            <Checkbox checked={showDefaults} onChange={setShowDefaults}>
+              Show Default Users
+            </Checkbox>
+          </CheckboxContainer>
+        </Tooltip>
       </LagoonFilter>
 
       <Head3>Users</Head3>

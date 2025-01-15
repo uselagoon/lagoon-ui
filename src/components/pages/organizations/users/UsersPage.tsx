@@ -8,6 +8,7 @@ import { OrganizationUsersData } from '@/app/(routegroups)/(orgroutes)/organizat
 import { AddUser } from '@/components/addUserToOrg/Adduser';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
 
 import { CheckboxContainer } from '../groups/_components/styles';
@@ -102,11 +103,13 @@ export default function UsersPage({
           setSelectedState: setUserSort as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <CheckboxContainer>
-          <Checkbox checked={showDefaults} onChange={setShowDefaults}>
-            Show Default Users
-          </Checkbox>
-        </CheckboxContainer>
+        <Tooltip title="Select this to show all system and default organizastion users" placement="right">
+          <CheckboxContainer>
+            <Checkbox checked={showDefaults} onChange={setShowDefaults}>
+              Show Default Users
+            </Checkbox>
+          </CheckboxContainer>
+        </Tooltip>
       </LagoonFilter>
 
       <OrgUsersTable

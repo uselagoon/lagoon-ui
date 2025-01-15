@@ -7,6 +7,7 @@ import { notificationTypeOptions } from '@/components/pages/organizations/notifi
 import { groupFilterOptions } from '@/components/pages/organizations/project/_components/filterOptions';
 import { Separator } from '@/components/pages/organizations/project/_components/styles';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
+import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
 
 const { OrgGroupsTable, OrgNotificationsTable } = Table;
@@ -78,11 +79,13 @@ export default function Loading() {
           setSelectedState: setGroupSort as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <CheckboxContainer>
-          <Checkbox checked={showDefaults} onChange={setShowDefaults}>
-            Show System Groups
-          </Checkbox>
-        </CheckboxContainer>
+        <Tooltip title="Select this to show all system and default organization groups" placement="right">
+          <CheckboxContainer>
+            <Checkbox checked={showDefaults} onChange={setShowDefaults}>
+              Show System Groups
+            </Checkbox>
+          </CheckboxContainer>
+        </Tooltip>
       </LagoonFilter>
 
       <Head3>Groups</Head3>
