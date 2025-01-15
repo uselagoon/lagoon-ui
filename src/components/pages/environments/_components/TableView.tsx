@@ -6,11 +6,9 @@ import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[proje
 import { NewEnvironment } from '@/components/newEnvironment/NewEnvironment';
 import { RoutesWrapper } from '@/components/pages/environment/styles';
 import { getHighestSeverityProblem, makeSafe } from '@/components/utils';
-import { PlayCircleOutlined } from '@ant-design/icons';
 import { Table } from '@uselagoon/ui-library';
 
 import { createLinks } from '../../environment/EnvironmentPage';
-import { LinkContainer } from '../styles';
 import { getEnvironmentQuickActions } from './helpers';
 
 interface Props {
@@ -25,13 +23,6 @@ export const TableView: FC<Props> = ({ project, projectName, filterString, resul
   const pathname = usePathname();
   const { environments } = project;
   const productionEnvironment = project.productionEnvironment;
-
-  const quickLinks = environments.map(env => (
-    <LinkContainer href={`/projects/${projectName}/${env.openshiftProjectName}`}>
-      <PlayCircleOutlined />
-      <span>{env.openshiftProjectName}</span>
-    </LinkContainer>
-  ));
 
   const sortedEnvironments = [
     environments.find(env => env.name === productionEnvironment),
@@ -54,12 +45,19 @@ export const TableView: FC<Props> = ({ project, projectName, filterString, resul
       ? 'standby production'
       : environment.environmentType;
 
+    const routesToUse =
+      standbyEnvironment || activeEnvironment
+        ? standbyEnvironment
+          ? project.standbyRoutes
+          : project.productionRoutes
+        : environment.routes;
+
     return {
       name: environment.openshiftProjectName,
       title: environment.name,
       deployType: environment.deployType,
       status: getHighestSeverityProblem(environment.problems),
-      activeRoutes: <RoutesWrapper>{createLinks(project.productionRoutes)}</RoutesWrapper>,
+      activeRoutes: <RoutesWrapper>{createLinks(routesToUse)}</RoutesWrapper>,
       envType: envType as any,
       last_deployment: environment.updated ?? '',
       quickActions: getEnvironmentQuickActions(environment, projectName),

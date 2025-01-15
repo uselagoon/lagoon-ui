@@ -22,11 +22,15 @@ dayjs.extend(utc);
 
 // active/standby routes
 export const createLinks = (routes: string | null) =>
-  routes?.split(',').map(route => (
-    <a href={route} target="_blank" key={route}>
-      {route}
-    </a>
-  ));
+  // just the first two routes
+  routes
+    ?.split(',')
+    .slice(0, 2)
+    .map(route => (
+      <a href={route} target="_blank" key={route}>
+        {route}
+      </a>
+    ));
 
 export default function EnvironmentPage({
   queryRef,

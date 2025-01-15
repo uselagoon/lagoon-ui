@@ -3,9 +3,11 @@ import { Fragment } from 'react';
 import { Deployment } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/deployments/(deployments-page)/page';
 import { default as cancelDeploy } from '@/lib/mutation/cancelDeployment';
 import { StopOutlined } from '@ant-design/icons';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNotification } from '@uselagoon/ui-library';
 import { Popconfirm, Tooltip } from 'antd';
+
+import { HighLightedDeployment } from './styles';
 
 interface CancelButtonProps {
   action: () => Promise<any>;
@@ -16,6 +18,7 @@ interface CancelButtonProps {
   };
   beforeText?: string;
   afterText?: string;
+  deployName?: string;
 }
 
 export const CancelDeploymentButton = ({
@@ -25,6 +28,7 @@ export const CancelDeploymentButton = ({
   error,
   beforeText,
   afterText,
+  deployName,
 }: CancelButtonProps) => {
   const { contextHolder, trigger } = useNotification({
     type: 'error',
@@ -36,6 +40,14 @@ export const CancelDeploymentButton = ({
 
   if (error) trigger({ content: error.message });
 
+  const cancelDeployText = deployName ? (
+    <>
+      Are you sure you want to cancel deployment <HighLightedDeployment>{deployName}</HighLightedDeployment>?
+    </>
+  ) : (
+    'Are you sure you want to cancel this deployment?'
+  );
+
   return (
     <>
       <Fragment>{contextHolder}</Fragment>
@@ -43,10 +55,15 @@ export const CancelDeploymentButton = ({
       {!success && (
         <Popconfirm
           title="Cancel Deployment"
-          description="Are you sure you want to cancel this deployment?"
+          description={cancelDeployText}
           onConfirm={action}
           okText="Yes"
           cancelText="No"
+          styles={{ root: { width: 350 } }}
+          okButtonProps={{
+            type: 'primary',
+            danger: true,
+          }}
           disabled={loading || success}
         >
           <Tooltip title="Cancel Deployment" placement="right">
@@ -85,6 +102,7 @@ const CancelDeployment = ({
       success={data && data.cancelDeployment === 'success'}
       loading={loading}
       error={error}
+      deployName={deployment.name}
       beforeText={beforeText}
       afterText={afterText}
     />

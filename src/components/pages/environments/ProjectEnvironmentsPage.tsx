@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useState } from 'react';
+import { SetStateAction } from 'react';
 
 import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
 import ProjectNotFound from '@/components/errors/ProjectNotFound';
@@ -30,7 +30,7 @@ export default function ProjectEnvironmentsPage({
     return <ProjectNotFound projectName={projectName} />;
   }
 
-  const [{ search, env_count }, setQuery] = useQueryStates({
+  const [{ search, env_count, view }, setQuery] = useQueryStates({
     search: {
       defaultValue: '',
       parse: (value: string | undefined) => (value !== undefined ? String(value) : ''),
@@ -39,6 +39,15 @@ export default function ProjectEnvironmentsPage({
     env_count: {
       defaultValue: 5,
       parse: (value: string | undefined) => (value !== undefined ? Number(value) : 5),
+    },
+    view: {
+      defaultValue: 'card',
+      parse: (value: string | undefined) => {
+        if (value === 'list') {
+          return 'list';
+        }
+        return 'card'; // default to 'card' for undefined or any value other than 'list'
+      },
     },
   });
 
@@ -50,7 +59,9 @@ export default function ProjectEnvironmentsPage({
     setQuery({ env_count: Number(val) });
   };
 
-  const [listView, setListView] = useState(false);
+  const setView = (val: 'card' | 'list') => {
+    setQuery({ view: val });
+  };
 
   const commonProps = {
     project,
@@ -74,18 +85,18 @@ export default function ProjectEnvironmentsPage({
           setSelectedState: setEnvCount as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <StyledToggle onClick={() => setListView(false)}>
-          <StyledGridIcon className={listView ? '' : 'active'} />
+        <StyledToggle onClick={() => setView('card')}>
+          <StyledGridIcon className={view === 'card' ? 'active' : ''} />
           Card View
         </StyledToggle>
 
-        <StyledToggle onClick={() => setListView(true)}>
-          <StyledListIcon className={listView ? 'active' : ''} />
+        <StyledToggle onClick={() => setView('list')}>
+          <StyledListIcon className={view === 'list' ? 'active' : ''} />
           List View
         </StyledToggle>
       </LagoonFilter>
 
-      {listView ? <TableView {...commonProps} /> : <CardView {...commonProps} />}
+      {view === 'list' ? <TableView {...commonProps} /> : <CardView {...commonProps} />}
     </>
   );
 }

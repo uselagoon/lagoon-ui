@@ -2,17 +2,53 @@
 
 import { SetStateAction } from 'react';
 
+import { envFilterValues } from '@/components/pages/environments/_components/filterValues';
 import { StyledEnvironmentsWrapper } from '@/components/pages/environments/styles';
-import { LagoonCard, LagoonFilter } from '@uselagoon/ui-library';
-import { useQueryState } from 'nuqs';
+import { LagoonCard, LagoonFilter, Table } from '@uselagoon/ui-library';
+import { useQueryStates } from 'nuqs';
 
+const { EnvironmentsTable } = Table;
 export default function Loading() {
-  const [search, setSearch] = useQueryState('search');
-
   const numberOfLoaders = Math.floor((window.innerHeight * 8) / 10 / 80);
 
   const renderCard = (key: number) => <LagoonCard type="loaderOnly" key={`loader-card-${key}`} />;
 
+  const [{ search, env_count, view }, setQuery] = useQueryStates({
+    search: {
+      defaultValue: '',
+      parse: (value: string | undefined) => (value !== undefined ? String(value) : ''),
+    },
+
+    env_count: {
+      defaultValue: 5,
+      parse: (value: string | undefined) => (value !== undefined ? Number(value) : 5),
+    },
+    view: {
+      defaultValue: 'card',
+      parse: (value: string | undefined) => {
+        if (value === 'list') {
+          return 'list';
+        }
+        return 'card'; // default to 'card' for undefined or any value other than 'list'
+      },
+    },
+  });
+
+  const setSearch = (str: string) => {
+    setQuery({ search: str });
+  };
+  const setEnvCount = (val: string) => {
+    setQuery({ env_count: Number(val) });
+  };
+
+  const loaderToRender =
+    view === 'card' ? (
+      <StyledEnvironmentsWrapper>
+        {[...Array<undefined>(numberOfLoaders)].map((_, idx) => renderCard(idx))}
+      </StyledEnvironmentsWrapper>
+    ) : (
+      <EnvironmentsTable skeleton />
+    );
   return (
     <>
       <LagoonFilter
@@ -21,27 +57,13 @@ export default function Loading() {
           setSearchText: setSearch as React.Dispatch<SetStateAction<string>>,
         }}
         selectOptions={{
-          options: [
-            {
-              value: 10,
-              label: '10 Results per page',
-            },
-            {
-              value: 20,
-              label: '20 Results per page',
-            },
-            {
-              value: 50,
-              label: '50 Results per page',
-            },
-          ],
-          selectedState: null,
-          setSelectedState: () => {},
+          options: envFilterValues,
+          selectedState: env_count,
+          setSelectedState: setEnvCount as React.Dispatch<SetStateAction<unknown>>,
         }}
       />
-      <StyledEnvironmentsWrapper>
-        {[...Array<undefined>(numberOfLoaders)].map((_, idx) => renderCard(idx))}
-      </StyledEnvironmentsWrapper>
+
+      {loaderToRender}
     </>
   );
 }
