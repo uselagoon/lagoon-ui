@@ -53,7 +53,7 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
           <Input placeholder="Enter a branch name" />
         </FormItem>
       </StepWrapper>
-      <Tip content="Add the branch you wish to build this environment from. This branch must already exist in your git repository. Please note, that only lowercase alpha characters and “-” are available for group names." />
+      <Tip content="Add the branch you wish to build this environment from. This branch must already exist in your git repository." />
     </>
   );
 

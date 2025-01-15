@@ -8,11 +8,17 @@ import deleteEnvironment from '@/lib/mutation/deleteEnvironment';
 import switchActiveStandby from '@/lib/mutation/switchActiveStandby';
 import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { DetailedStats, Head3, Head4, Text } from '@uselagoon/ui-library';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import gitUrlParse from 'git-url-parse';
 
 import ActiveStandbyConfirm from '../../activestandbyconfirm/ActiveStandbyConfirm';
 import DeleteConfirm from '../../deleteConfirm/DeleteConfirm';
+import { StyledGitLink } from '../projectDetails/styles';
 import LimitedRoutes from './_components/LimitedRoutes';
-import { EnvironmentActions, RoutesSection, RoutesWrapper } from './styles';
+import { EnvironmentActions, RoutesSection } from './styles';
+
+dayjs.extend(utc);
 
 // active/standby routes
 export const createLinks = (routes: string | null) =>
@@ -45,6 +51,22 @@ export default function EnvironmentPage({
     return <EnvironmentNotFound openshiftProjectName={environmentSlug} />;
   }
 
+  let gitUrlParsed;
+
+  try {
+    gitUrlParsed = gitUrlParse(environment.project.gitUrl);
+  } catch {
+    gitUrlParsed = null;
+  }
+
+  const gitBranchLink = gitUrlParsed
+    ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}/${
+        environment.deployType === 'branch'
+          ? `tree/${environment.name}`
+          : `pull/${environment.name.replace(/pr-/i, '')}`
+      }`
+    : '';
+
   const environmentDetailItems = [
     {
       children: environment.environmentType,
@@ -57,15 +79,28 @@ export default function EnvironmentPage({
       label: 'Deployment Type',
     },
     {
-      children: environment.created,
+      children: dayjs.utc(environment.created).local().format('YYYY-MM-DD HH:mm:ss Z'),
       key: 'created',
       label: 'Created',
     },
     {
-      children: environment.updated,
+      children: dayjs.utc(environment.updated).local().format('YYYY-MM-DD HH:mm:ss Z'),
       key: 'updated',
       label: 'Updated',
     },
+    ...(gitBranchLink
+      ? [
+          {
+            children: (
+              <StyledGitLink className="hover-state" data-cy="source" target="_blank" href={`https://${gitBranchLink}`}>
+                {gitBranchLink}
+              </StyledGitLink>
+            ),
+            key: 'source',
+            label: 'Source',
+          },
+        ]
+      : []),
   ];
 
   const routes = createLinks(environment.routes);
