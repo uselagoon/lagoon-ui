@@ -207,7 +207,11 @@ const LogNodeRenderer: React.FC<{
             ),
 
             key: node.key,
-            label: <AccordionTitle>{node.details}</AccordionTitle>,
+            label: (
+              <AccordionTitle>
+                {node.details} {node.metadata && node.metadata[0] ? node.metadata[0] : ''}
+              </AccordionTitle>
+            ),
           },
         ]}
       />
@@ -265,7 +269,7 @@ const logPreprocessorProcessParse = (tokens: Token[], sectionMetadata: SectionMe
         break;
       case 'section-opener':
         let metadataForSection = sectionMetadata.get((tokens[i].details ?? '').trim());
-        if (metadataForSection == undefined) {
+        if (metadataForSection === undefined) {
           metadataForSection = ['', false];
         }
 

@@ -4,22 +4,14 @@ import { CarryOutOutlined } from '@ant-design/icons';
 
 import { LinkContainer } from '../styles';
 
-export const getEnvironmentQuickActions = (
-  environment: ProjectEnvironment,
-  quickLinks: JSX.Element[],
-  projectName: string
-) => {
+export const getEnvironmentQuickActions = (environment: ProjectEnvironment, projectName: string) => {
   return [
-    {
-      sectionTitle: 'Jump to an Environment',
-      sectionChildren: quickLinks,
-    },
     {
       sectionTitle: 'Variables',
       sectionChildren: [
         <LinkContainer href={`/projects/${projectName}/${environment.openshiftProjectName}/environment-variables`}>
           <CarryOutOutlined />
-          <span>View and create project variables</span>
+          <span>View and create environment variables</span>
         </LinkContainer>,
       ],
     },

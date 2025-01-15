@@ -62,7 +62,7 @@ export const TableView: FC<Props> = ({ project, projectName, filterString, resul
       activeRoutes: <RoutesWrapper>{createLinks(project.productionRoutes)}</RoutesWrapper>,
       envType: envType as any,
       last_deployment: environment.updated ?? '',
-      quickActions: getEnvironmentQuickActions(environment, quickLinks, projectName),
+      quickActions: getEnvironmentQuickActions(environment, projectName),
       region: environment.openshift?.cloudRegion ?? '',
     };
   });

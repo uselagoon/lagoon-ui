@@ -18,6 +18,10 @@ export default gql`
         routes
         updated
         openshiftProjectName
+        project {
+          problemsUi
+          factsUi
+        }
         openshift {
           friendlyName
           cloudRegion

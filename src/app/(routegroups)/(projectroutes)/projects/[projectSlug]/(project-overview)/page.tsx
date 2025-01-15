@@ -20,8 +20,8 @@ export type ProjectEnvironment = {
   openshift: { friendlyName: null | string; cloudRegion: null | string };
   project: {
     name: string;
-    problemsUi: boolean;
-    factsUi: boolean;
+    problemsUi: number;
+    factsUi: number;
   };
   problems: Problem[];
   deployments: Deployment[];

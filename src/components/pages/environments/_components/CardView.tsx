@@ -8,10 +8,9 @@ import {
 } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
 import { NewEnvironment } from '@/components/newEnvironment/NewEnvironment';
 import { getHighestSeverityProblem, makeSafe } from '@/components/utils';
-import { PlayCircleOutlined } from '@ant-design/icons';
 import { LagoonCard } from '@uselagoon/ui-library';
 
-import { LinkContainer, StyledEnvCount, StyledEnvironmentsWrapper } from '../styles';
+import { StyledEnvCount, StyledEnvironmentsWrapper } from '../styles';
 import { getEnvironmentQuickActions } from './helpers';
 
 interface Props {
@@ -39,7 +38,6 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
     return (
       environment.name.toLowerCase().includes(filterLower) ||
       environment.openshiftProjectName.toLowerCase().includes(filterLower) ||
-      environment.environmentType.toLowerCase().includes(filterLower) ||
       environment.deployType.toLowerCase().includes(filterLower) ||
       (environment.openshift?.cloudRegion?.toLowerCase().includes(filterLower) ?? false)
     );
@@ -48,17 +46,12 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
   // slice filteredEnvironments based on resultsPerPage
   const slicedEnvsByCount = filteredEnvironments.slice(0, resultsPerPage);
 
-  const quickLinks = environments.map((env: ProjectEnvironment) => (
-    <LinkContainer href={`/projects/${projectName}/${env.openshiftProjectName}`} key={env.openshiftProjectName}>
-      <PlayCircleOutlined />
-      <span>{env.openshiftProjectName}</span>
-    </LinkContainer>
-  ));
-
   return (
     <>
       <StyledEnvironmentsWrapper>
         {slicedEnvsByCount.map((environment: ProjectEnvironment) => {
+          const showProblemIndicator = environment.project.problemsUi === 1;
+
           const activeEnvironment =
             project.productionEnvironment &&
             project.standbyProductionEnvironment &&
@@ -76,6 +69,7 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
 
           return (
             <LagoonCard
+              showProblemIndicator={showProblemIndicator}
               key={environment.openshiftProjectName}
               type="environment"
               title={environment.name}
@@ -84,8 +78,9 @@ export const CardView: FC<Props> = ({ project, projectName, filterString, result
               projectName={projectName}
               environmentName={environment.openshiftProjectName}
               deployType={environment.deployType}
-              quickActions={getEnvironmentQuickActions(environment, quickLinks, projectName)}
+              quickActions={getEnvironmentQuickActions(environment, projectName)}
               region={environment.openshift?.cloudRegion ?? ''}
+              navPath={`/projects/${projectName}/${environment.openshiftProjectName}`}
               navigateTo={() => {
                 push(`/projects/${projectName}/${environment.openshiftProjectName}`);
               }}

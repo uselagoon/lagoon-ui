@@ -288,7 +288,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                         Webhook{' '}
                       </a>{' '}
                       to your Git service, these will be generated in the 'create environment' wizard available from the
-                      project overview page."
+                      project overview page.
                     </>
                   }
                 />

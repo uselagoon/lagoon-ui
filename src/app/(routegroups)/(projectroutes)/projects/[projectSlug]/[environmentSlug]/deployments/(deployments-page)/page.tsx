@@ -43,8 +43,8 @@ type Environment = {
   deployTitle: string;
   project: {
     name: string;
-    problemsUi: boolean;
-    factsUi: boolean;
+    problemsUi: number;
+    factsUi: number;
   };
   deployments: Deployment[];
 };
