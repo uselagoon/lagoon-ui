@@ -5,6 +5,8 @@ import dayjs from '@/lib/dayjs';
 import { CopyToClipboard, DetailedStats } from '@uselagoon/ui-library';
 import giturlparse from 'git-url-parse';
 
+import { StyledGitLink } from './styles';
+
 interface ProjectDetailsProps {
   project: ProjectDetailsData['project'];
 }
@@ -32,15 +34,15 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
       key: 'origin',
       label: 'ORIGIN',
       children: (
-        <a className="hover-state" data-cy="gitLink" target="_blank" href={`https://${gitLink}`}>
+        <StyledGitLink className="hover-state" data-cy="gitLink" target="_blank" href={`https://${gitLink}`}>
           {gitLink}
-        </a>
+        </StyledGitLink>
       ),
     },
     {
       key: 'giturl',
       label: 'GIT URL',
-      children: <CopyToClipboard type="visible" withToolTip text={project.gitUrl} />,
+      children: <CopyToClipboard fontSize="1.5rem" type="visible" withToolTip text={project.gitUrl} />,
     },
     {
       key: 'branches',
