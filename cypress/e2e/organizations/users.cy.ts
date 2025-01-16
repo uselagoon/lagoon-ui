@@ -35,8 +35,8 @@ describe('Org Users page', () => {
   });
 
   after(() => {
-    registerIdleHandler('groupQuery');
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/groups`);
+    registerIdleHandler('groupQuery');
     group.doDeleteGroup(testData.organizations.groups.newGroupName);
     group.doDeleteGroup(testData.organizations.groups.newGroupName2);
   });
