@@ -42,7 +42,6 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
         userDropdownMenu: getUserMenuItems(kcUrl!) as ItemType[],
         navLinks,
         currentPath: pathname,
-        logoNav: () => push('/projects'),
         toggleTheme,
         logo: getLogo(),
       }}
