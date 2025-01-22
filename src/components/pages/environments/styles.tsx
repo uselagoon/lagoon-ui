@@ -39,14 +39,14 @@ export const StyledToggle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'AmericaMono-Regular', sans-serif;
+  /* font-family: 'AmericaMono-Regular', sans-serif; */
   font-size: 10px;
   letter-spacing: -1px;
   cursor: pointer;
 `;
 
 export const StyledEnvText = styled.div<{ $button?: boolean }>`
-  font-family: 'ArabicPro-Regular', sans-serif;
+  /* font-family: 'ArabicPro-Regular', sans-serif; */
   margin-top: 1rem;
 
   ${props =>

@@ -26,7 +26,7 @@ export const ProjectVariablebutton = styled.div`
   line-height: 1.375rem;
   max-width: 170px;
   color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '000')};
-  font-family: 'ArabicPro-Regular', sans-serif;
+  /* font-family: 'ArabicPro-Regular', sans-serif; */
   border: 1px solid ${props => props.theme.UI.borders.box};
   padding: 4px 15px;
   box-shadow: 0px 2px 0px 0px #00000004;

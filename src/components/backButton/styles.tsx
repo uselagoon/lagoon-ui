@@ -7,7 +7,7 @@ export const StyledBackButton = styled.div`
   gap: 4px;
   align-items: center;
   .text {
-    font-family: 'ArabicPro-Regular', sans-serif;
+    /* font-family: 'ArabicPro-Regular', sans-serif; */
     font-size: 1rem;
     line-height: 18px;
     text-decoration-line: underline;

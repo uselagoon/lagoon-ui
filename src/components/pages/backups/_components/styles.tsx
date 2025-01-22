@@ -15,7 +15,7 @@ export const StyledBackupTrigger = styled.section`
   padding-inline: 2rem;
   padding-block: 0.375rem;
   .description {
-    font-family: 'ArabicPro-Regular', sans-serif;
+    /* font-family: 'ArabicPro-Regular', sans-serif; */
     font-size: 0.875rem;
     line-height: 1.375rem;
   }

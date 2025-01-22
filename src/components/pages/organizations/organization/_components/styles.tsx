@@ -11,7 +11,7 @@ export const OrgField = styled.section`
     margin-top: 1.5rem;
   }
   .desc {
-    font-family: 'AmericaMono-Regular', sans-serif;
+    /* font-family: 'AmericaMono-Regular', sans-serif; */
     font-size: 11px;
     font-weight: 400;
     line-height: 10px;
@@ -21,7 +21,7 @@ export const OrgField = styled.section`
   }
   .name,
   .description {
-    font-family: 'ArabicPro-Regular', sans-serif;
+    /* font-family: 'ArabicPro-Regular', sans-serif; */
     color: ${props => (props.theme.colorScheme === 'dark' ? '#F8F8F2' : '#000')};
   }
   .name {
@@ -162,7 +162,7 @@ export const CreateButton = styled.button<{ $variant?: 'default' | 'small' }>`
     }
   }
   .text {
-    font-family: 'ArabicPro-Regular', sans-serif;
+    /* font-family: 'ArabicPro-Regular', sans-serif; */
     font-size: 14px;
     line-height: 22px;
   }

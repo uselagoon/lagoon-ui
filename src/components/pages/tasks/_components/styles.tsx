@@ -14,21 +14,21 @@ export const SelectEnv = styled.div`
   gap: 0.75rem;
   label {
     line-height: 1.5rem;
-    font-family: 'ArabicPro-Regular', sans-serif;
+    /* font-family: 'ArabicPro-Regular', sans-serif; */
   }
   .task-btn {
     width: max-content;
   }
   input[type='text'] {
     margin-bottom: 0.75rem;
-    font-family: 'ArabicPro-Regular', sans-serif !important;
+    /* font-family: 'ArabicPro-Regular', sans-serif !important; */
     font-size: 0.85rem;
   }
   .warning {
     padding: 0.75rem 1rem;
     background-color: ${Colors.pink};
     border-radius: 0.25rem;
-    font-family: 'ArabicPro-Regular', sans-serif;
+    /* font-family: 'ArabicPro-Regular', sans-serif; */
     font-size: 0.95rem;
   }
 `;

@@ -3,12 +3,12 @@ import { Head3, Text } from '@uselagoon/ui-library';
 import styled from 'styled-components';
 
 export const EnvironmentNameLabel = styled(Text)`
-  font-family: 'AmericaMono-Regular', sans-serif;
-  font-size: 10px !important;
+  /* font-family: 'AmericaMono-Regular', sans-serif; */
+  /* font-size: 10px !important;
   font-weight: 400;
   line-height: 10px;
   letter-spacing: -0.08em;
-  text-align: left;
+  text-align: left; */
 `;
 
 export const EnvironmentName = styled(Head3)`
@@ -36,7 +36,7 @@ export const RoutesWrapper = styled.div`
   flex-direction: column;
   gap: 0.45rem;
   font-size: 14px;
-  font-family: 'ArabicPro-Regular', sans-serif;
+  /* font-family: 'ArabicPro-Regular', sans-serif; */
   a {
     text-decoration: none;
     color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
@@ -55,7 +55,7 @@ export const EnvironmentActions = styled.div`
 `;
 
 export const ShowMore = styled.span`
-  font-family: 'ArabicPro-Regular', sans-serif;
+  /* font-family: 'ArabicPro-Regular', sans-serif; */
   font-size: 14px;
   font-weight: 400;
   line-height: 14px;

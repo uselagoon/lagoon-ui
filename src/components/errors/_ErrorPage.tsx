@@ -41,7 +41,7 @@ const ErrorPage = ({ statusCode, errorMessage, title }: Props) => {
 export default ErrorPage;
 
 const StyledErrorPage = styled.section`
-  font-family: 'Source-sans-pro', sans-serif;
+  /* font-family: 'Source-sans-pro', sans-serif; */
   position: fixed;
   top: 76px;
   left: 0;

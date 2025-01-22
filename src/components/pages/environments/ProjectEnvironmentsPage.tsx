@@ -85,18 +85,19 @@ export default function ProjectEnvironmentsPage({
           setSelectedState: setEnvCount as React.Dispatch<SetStateAction<unknown>>,
         }}
       >
-        <StyledToggle onClick={() => setView('card')}>
+        {/* <StyledToggle onClick={() => setView('card')}>
           <StyledGridIcon className={view === 'card' ? 'active' : ''} />
           Card View
-        </StyledToggle>
-
+        </StyledToggle> */}
+        {/* 
         <StyledToggle onClick={() => setView('list')}>
           <StyledListIcon className={view === 'list' ? 'active' : ''} />
           List View
-        </StyledToggle>
+        </StyledToggle> */}
       </LagoonFilter>
 
-      {view === 'list' ? <TableView {...commonProps} /> : <CardView {...commonProps} />}
+      {/* {view === 'list' ? <TableView {...commonProps} /> : <CardView {...commonProps} />} */}
+      <TableView {...commonProps} />
     </>
   );
 }

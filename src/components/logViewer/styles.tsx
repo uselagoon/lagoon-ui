@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 const SharedTextStyles = css`
   color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
-  font-family: 'AmericaMono-Regular', sans-serif;
+  /* font-family: 'AmericaMono-Regular', sans-serif; */
   font-size: 14px;
   line-height: 18px;
   letter-spacing: -2px;

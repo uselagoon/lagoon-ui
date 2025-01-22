@@ -9,7 +9,7 @@ export const ConfirmModalWrapper = styled.div`
     margin-bottom: 1rem;
     font-size: 0.9rem;
     font-weight: 500;
-    font-family: 'Open Sans', sans-serif !important;
+    /* font-family: 'Open Sans', sans-serif !important; */
   }
 `;
 
