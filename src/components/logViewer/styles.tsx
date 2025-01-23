@@ -5,7 +5,6 @@ const SharedTextStyles = css`
   /* font-family: 'AmericaMono-Regular', sans-serif; */
   font-size: 14px;
   line-height: 18px;
-  letter-spacing: -2px;
   font-weight: 400;
   margin: 0;
   overflow-wrap: break-word;
