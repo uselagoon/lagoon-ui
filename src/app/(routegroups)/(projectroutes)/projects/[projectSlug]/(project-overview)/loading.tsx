@@ -63,7 +63,7 @@ export default function Loading() {
         }}
       />
 
-      {loaderToRender}
+      <EnvironmentsTable skeleton />
     </>
   );
 }
