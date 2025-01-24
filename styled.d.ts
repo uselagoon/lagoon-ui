@@ -42,7 +42,7 @@ export interface LagoonTheme {
     base: string;
     highlight: string;
   };
-  placeholder:string;
+  placeholder: string;
 }
 
 declare module 'styled-components' {
