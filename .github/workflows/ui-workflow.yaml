@@ -111,6 +111,28 @@ jobs:
         cypress_keycloak: http://localhost:8088/auth
         cypress_url: http://localhost:3003
 
+
+    - name: Export API logs on failure
+      if: failure()
+      run: |
+        docker compose -p core-lagoon-ui logs api
+
+    - name: Save screenshots on failure
+      uses: actions/upload-artifact@v4
+      # add the line below to store screenshots only on failures
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: cypress/screenshots
+        if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+    - name: Save videos on failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: cypress-videos
+        path: cypress/videos
+        if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+
     - name: Stop Docker containers
       run: |
         make development-api-down

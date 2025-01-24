@@ -31,9 +31,7 @@ describe('Project variables page', () => {
     cy.waitForNetworkIdle('@idle', 500);
     environment.doAddVariable(name, value);
 
-    cy.intercept('POST', Cypress.env('api')).as('addRequest');
-
-    cy.wait('@addRequest');
+    cy.waitForNetworkIdle('@idle', 1000);
 
     cy.log('check if variable was created');
     cy.get('.data-table > .data-row').should('contain', name);
@@ -56,9 +54,7 @@ describe('Project variables page', () => {
 
     environment.doDeleteVariable(name);
 
-    cy.intercept('POST', Cypress.env('api')).as('deleteRequest');
-
-    cy.wait('@deleteRequest');
+    cy.waitForNetworkIdle('@idle', 1000);
 
     cy.contains('No Project variables set').should('exist');
   });
