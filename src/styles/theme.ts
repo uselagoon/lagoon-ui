@@ -43,6 +43,7 @@ export const darkTheme: DefaultTheme = {
     base: '#353535',
     highlight: '#444',
   },
+  placeholder: '#ebecf0',
 };
 
 export const lightTheme: DefaultTheme = {
@@ -87,4 +88,5 @@ export const lightTheme: DefaultTheme = {
     base: '#ebebeb',
     highlight: '#f5f5f5',
   },
+  placeholder: '#6b728c',
 };
