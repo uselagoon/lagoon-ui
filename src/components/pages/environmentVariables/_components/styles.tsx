@@ -5,7 +5,7 @@ export const EditProjectVariablesButton = styled.div`
   font-size: 0.875rem;
   line-height: 1.375rem;
   max-width: max-content;
-  color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '000')};
+  color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};
   /* font-family: 'ArabicPro-Regular', sans-serif; */
   border: 1px solid ${props => props.theme.UI.borders.box};
   padding: 4px 15px;
