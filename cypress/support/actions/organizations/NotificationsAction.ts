@@ -56,6 +56,7 @@ export default class NotificationsAction {
     cy.getBySel('addNotifBtn').click();
 
     cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`);
+    cy.waitForNetworkIdle('@idle', 1000);
 
     // notification name
     cy.getBySel('notification-row').should('include.text', notificationData.name);

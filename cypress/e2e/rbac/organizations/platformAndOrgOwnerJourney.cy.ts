@@ -107,6 +107,7 @@ orgownerAndPlatformOwner.forEach(owner => {
           testData.organizations.project.projectName
         }`
       );
+      cy.waitForNetworkIdle('@idle', 1000);
 
       cy.getBySel('addGroupToProject').click();
 
@@ -140,6 +141,8 @@ orgownerAndPlatformOwner.forEach(owner => {
 
       group.doDeleteGroup(testData.organizations.groups.newGroupName);
       cy.wait('@gqldeleteGroupMutation');
+
+      cy.waitForNetworkIdle('@idle', 500);
 
       group.doDeleteGroup(testData.organizations.groups.newGroupName2);
       cy.wait('@gqldeleteGroupMutation');

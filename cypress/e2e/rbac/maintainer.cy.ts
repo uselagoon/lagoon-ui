@@ -108,9 +108,7 @@ describe('MAINTAINER permission test suites', () => {
 
       variable.doDeleteVariable(name);
 
-      cy.intercept('POST', Cypress.env('api')).as('deleteRequest');
-
-      cy.wait('@deleteRequest');
+      cy.waitForNetworkIdle('@idle', 500);
 
       cy.contains('No Project variables set').should('exist');
     });
