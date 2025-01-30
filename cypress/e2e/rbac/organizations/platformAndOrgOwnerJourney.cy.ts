@@ -102,12 +102,12 @@ orgownerAndPlatformOwner.forEach(owner => {
     });
 
     it('Navigates to a project, adds a group and notifications', () => {
+      cy.waitForNetworkIdle('@idle', 1000);
       cy.visit(
         `${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/${
           testData.organizations.project.projectName
         }`
       );
-      cy.waitForNetworkIdle('@idle', 1000);
 
       cy.getBySel('addGroupToProject').click();
 

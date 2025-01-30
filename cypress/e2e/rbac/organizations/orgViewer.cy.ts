@@ -62,7 +62,7 @@ describe(`Organizations ORGVIEWER journey`, () => {
     project.doFailedaddProject(testData.organizations.project);
   });
 
-  it('Navigates to notifications and fails to create any - no permission for ORVIEWER', () => {
+  it('Navigates to notifications and fails to create any - no permission for ORGVIEWER', () => {
     cy.intercept('POST', Cypress.env('api'), req => {
       aliasMutation(req, 'addNotificationSlack');
       aliasMutation(req, 'UpdateNotificationSlack');
@@ -91,8 +91,8 @@ describe(`Organizations ORGVIEWER journey`, () => {
   });
 
   it('Navigates to a project, fails to add a group or notifications - no permission for ORGVIEWER', () => {
-    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/lagoon-demo-org`);
     cy.waitForNetworkIdle('@idle', 1000);
+    cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/lagoon-demo-org`);
 
     cy.getBySel('addGroupToProject').click();
 

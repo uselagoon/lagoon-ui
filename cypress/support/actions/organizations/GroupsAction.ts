@@ -6,6 +6,7 @@ export default class GroupAction {
   doAddGroup(newGroup1: string, newGroup2: string) {
     groupRepo.getAddGroupBtn('addNewGroup').click();
     groupRepo.getGroupNameInput().type(newGroup1);
+    cy.waitForNetworkIdle('@idle', 1000);
     groupRepo.getAddGroupSubmitBtn().click();
 
     cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
