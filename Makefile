@@ -15,6 +15,15 @@ yarn-start-ui:
     && yarn build \
     && yarn start \
 
+.PHONY: start
+start:
+	export GRAPHQL_API=http://localhost:3000/graphql \
+	&& export KEYCLOAK_API=http://localhost:8088/auth \
+	&& export NODE_ENV=production \
+	&& export NODE_PORT=3003 \
+	&& export LAGOON_UI_TOURS_ENABLED=disabled \
+	&& docker compose -p $(CI_BUILD_TAG) --compatibility up --build -d ui
+
 # run-cypress:
 .PHONY: start-ui
 start-ui: development-api
@@ -60,3 +69,17 @@ development-api-down:
 down:
 	$(MAKE) development-api-down
 	docker compose -p $(CI_BUILD_TAG) --compatibility down -v --remove-orphans
+
+.PHONY: local-dev-yarn
+local-dev-yarn:
+	$(MAKE) local-dev-yarn-stop
+	docker run --name local-dev-yarn -d -v ${PWD}:/app uselagoon/node-20-builder
+	docker exec local-dev-yarn bash -c "yarn install --frozen-lockfile"
+	docker exec local-dev-yarn bash -c "yarn build"
+	docker exec -it local-dev-yarn bash
+	$(MAKE) local-dev-yarn-stop
+
+.PHONY: local-dev-yarn-stop
+local-dev-yarn-stop:
+	docker stop local-dev-yarn || true
+	docker rm local-dev-yarn || true

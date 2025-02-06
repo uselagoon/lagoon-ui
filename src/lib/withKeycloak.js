@@ -2,6 +2,7 @@ import React from 'react';
 
 import getConfig from 'next/config';
 
+import Keycloak from 'keycloak-js';
 import { queryStringToObject } from 'lib/util';
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();

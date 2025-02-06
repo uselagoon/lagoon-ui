@@ -6,9 +6,11 @@ export default class GroupAction {
   doAddGroup(newGroup1: string, newGroup2: string) {
     groupRepo.getAddGroupBtn('addNewGroup').click();
     groupRepo.getGroupNameInput().type(newGroup1);
+    cy.waitForNetworkIdle('@idle', 1000);
     groupRepo.getAddGroupSubmitBtn().click();
 
     cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
+    cy.waitForNetworkIdle('@idle', 1000);
     cy.getBySel('table-row').should('contain', newGroup1);
 
     cy.log('Add another');
@@ -19,6 +21,7 @@ export default class GroupAction {
     groupRepo.getAddGroupSubmitBtn().click();
 
     cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
+    cy.waitForNetworkIdle('@idle', 1000);
 
     cy.getBySel('table-row').should('contain', newGroup2);
   }
@@ -76,9 +79,7 @@ export default class GroupAction {
     groupRepo.getDeleteGroupBtn('deleteGroup').first().click();
     cy.getBySel('confirm').click();
 
-    cy.intercept('POST', Cypress.env('api')).as('deleteGroup');
-    cy.wait('@deleteGroup');
-    cy.waitForNetworkIdle('@groupQuery', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
 
     cy.getBySel('label-text').each($span => {
       const text = $span.text();

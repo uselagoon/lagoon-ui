@@ -22,29 +22,34 @@ describe('Org Notifications page', () => {
   });
 
   it('Adds Slack notification', () => {
+    cy.waitForNetworkIdle('@idle', 1000);
     const slackData = testData.organizations.notifications.slack;
 
     notifications.doAddNotification('slack', slackData);
   });
   it('Adds Rocketchat notification', () => {
+    cy.waitForNetworkIdle('@idle', 1000);
     const rocketData = testData.organizations.notifications.rocketChat;
     notifications.doAddNotification('rocketChat', rocketData);
   });
   it('Adds Teams notification', () => {
+    cy.waitForNetworkIdle('@idle', 1000);
     const teamsData = testData.organizations.notifications.teams;
     notifications.doAddNotification('teams', teamsData);
   });
   it('Adds Email notification', () => {
+    cy.waitForNetworkIdle('@idle', 1000);
     const emailData = testData.organizations.notifications.email;
     notifications.doAddNotification('email', emailData);
   });
   it('Adds Webhook notification', () => {
+    cy.waitForNetworkIdle('@idle', 1000);
     const webhookData = testData.organizations.notifications.webhook;
     notifications.doAddNotification('webhook', webhookData);
   });
 
   it('Edits notification', () => {
-    cy.waitForNetworkIdle('@idle', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
     notifications.doEditNotification();
   });
 
@@ -57,15 +62,16 @@ describe('Org Notifications page', () => {
       slack: { name: slackName },
     } = testData.organizations.notifications;
 
-    cy.waitForNetworkIdle('@idle', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
     notifications.doDeleteNotification(webhooknName);
-    cy.waitForNetworkIdle('@idle', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
     notifications.doDeleteNotification(emailName);
-    cy.waitForNetworkIdle('@idle', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
     notifications.doDeleteNotification(teamsName);
-    cy.waitForNetworkIdle('@idle', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
     notifications.doDeleteNotification(rocketChatName);
-    cy.waitForNetworkIdle('@idle', 500);
+    cy.waitForNetworkIdle('@idle', 1000);
     notifications.doDeleteNotification(slackName);
+    cy.waitForNetworkIdle('@idle', 1000);
   });
 });

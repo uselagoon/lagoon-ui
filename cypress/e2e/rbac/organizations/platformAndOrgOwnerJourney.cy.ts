@@ -102,6 +102,7 @@ orgownerAndPlatformOwner.forEach(owner => {
     });
 
     it('Navigates to a project, adds a group and notifications', () => {
+      cy.waitForNetworkIdle('@idle', 1000);
       cy.visit(
         `${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/${
           testData.organizations.project.projectName
@@ -140,6 +141,8 @@ orgownerAndPlatformOwner.forEach(owner => {
 
       group.doDeleteGroup(testData.organizations.groups.newGroupName);
       cy.wait('@gqldeleteGroupMutation');
+
+      cy.waitForNetworkIdle('@idle', 500);
 
       group.doDeleteGroup(testData.organizations.groups.newGroupName2);
       cy.wait('@gqldeleteGroupMutation');

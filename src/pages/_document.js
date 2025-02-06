@@ -50,7 +50,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <Script src={`${publicRuntimeConfig.KEYCLOAK_API}/js/keycloak.js`} strategy="beforeInteractive" />
           <Plugins hook="head" />
         </Head>
         <body>

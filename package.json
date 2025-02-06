@@ -56,6 +56,7 @@
     "graphql": "^16.8.1",
     "graphql-tag": "^2.10.0",
     "isomorphic-unfetch": "^4.0.2",
+    "keycloak-js": "^26.0.7",
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
     "next": "^14.2.2",
