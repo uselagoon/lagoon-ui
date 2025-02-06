@@ -1,7 +1,7 @@
 # upstream
 CI_BUILD_TAG ?= lagoon-ui
 CORE_REPO=https://github.com/uselagoon/lagoon.git
-CORE_TREEISH=keycloak-26
+CORE_TREEISH=main
 CYPRESS_BASE=cypress/base:20.13.1
 
 LAGOON_CORE_IMAGE_REPO=testlagoon
