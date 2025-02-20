@@ -43,7 +43,7 @@ const Breadcrumb: FC<BreadcrumbProps> = ({ header, title, urlObject, asPath, loa
             Copied
           </span>
           <CopyToClipboard
-            data-cy="copyButton"
+            data-cy="copyButtonBreadcrumb"
             text={title}
             onCopy={() => {
               setCopied(true);
