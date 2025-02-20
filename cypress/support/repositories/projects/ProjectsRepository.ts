@@ -1,26 +1,28 @@
 export default class ProjectRepository {
   getPageTitle() {
-    return cy.getBySel('projectsTitle');
+    return cy.getBySel('page-title');
   }
+
   getSearchBar() {
-    return cy.getBySel('searchBar');
+    return cy.getBySel('search-bar');
   }
 
   getLengthCounter() {
-    return cy.getBySel('projectsLength');
+    return cy.getBySel('projects-total');
   }
 
   getProjects() {
-    return cy.getBySel('projects');
+    return cy.getBySel('project-row');
   }
 
   getNotMatched() {
-    return cy.getBySel('noMatch');
+    return cy.getBySel('empty');
   }
-  getNoProjectsLabel() {
-    return cy.getBySel('noProjects');
+  getResultSelector() {
+    return cy.getBySel('select-results');
   }
-  getProject() {
-    return cy.getBySel('project');
+
+  getResultMenu() {
+    return cy.getBySel('select-menu');
   }
 }

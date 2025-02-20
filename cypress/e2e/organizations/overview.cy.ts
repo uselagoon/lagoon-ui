@@ -1,6 +1,7 @@
 import { testData } from 'cypress/fixtures/variables';
 import OverviewAction from 'cypress/support/actions/organizations/OverviewAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const overview = new OverviewAction();
 

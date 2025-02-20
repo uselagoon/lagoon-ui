@@ -6,19 +6,21 @@ export default class DeploymentsAction {
   doCancelDeployment() {
     deployments.getCancelBtn().first().click();
 
+    deployments.getConfirmCancelBtn().click();
+
     cy.wait('@gqlcancelDeploymentMutation');
 
-    deployments.getCancelBtn().first().should('have.text', 'Cancelled');
+    deployments.getDeployments().first().contains('Cancelled');
   }
+
   doFailedCancelDeployment() {
     deployments.getCancelBtn().first().click();
 
+    deployments.getConfirmCancelBtn().click();
+
     cy.wait('@gqlcancelDeploymentMutation');
 
-    deployments
-      .getErrorNotification()
-      .should('exist')
-      .should('include.text', 'There was a problem cancelling deployment.');
+    deployments.getNotification().should('exist').should('include.text', 'There was a problem cancelling deployment.');
   }
 
   doDeployment() {
@@ -26,7 +28,7 @@ export default class DeploymentsAction {
 
     cy.wait('@gqldeployEnvironmentLatestMutation');
 
-    deployments.getDeployQueued().should('exist');
+    deployments.getDeploymentTriggered().should('exist');
   }
 
   doFailedDeployment() {
@@ -34,30 +36,18 @@ export default class DeploymentsAction {
 
     cy.wait('@gqldeployEnvironmentLatestMutation');
 
-    deployments.getErrorNotification().should('exist').should('include.text', 'There was a problem deploying.');
+    deployments.getNotification().should('exist').should('include.text', 'There was a problem deploying.');
   }
 
-  doResultsLimitedchangeCheck(val: string | number) {
-    const vals = {
-      10: 0,
-      25: 1,
-      50: 2,
-      100: 3,
-      all: 4,
-    };
-    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
+  doChangeNumberOfResults(val: string | number) {
+    deployments.getResultSelector().click();
 
-    cy.get(`[id^="react-select-"][id$=-option-${vals[val]}]`).click();
+    deployments.getResultMenu().find('div').get('.ant-select-item-option-content').contains(val).click({ force: true });
 
-    if (val !== 'all') {
-      deployments
-        .getResultsLimited()
-        .invoke('text')
-        .should('be.eq', `Number of results displayed is limited to ${val}`);
-    } else {
-      cy.location().should(loc => {
-        expect(loc.search).to.eq('?limit=-1');
-      });
-    }
+    const expectedLimit = val !== 'All' ? `?results=${val}` : '?results=-1';
+
+    cy.location().should(loc => {
+      expect(loc.search).to.eq(expectedLimit);
+    });
   }
 }

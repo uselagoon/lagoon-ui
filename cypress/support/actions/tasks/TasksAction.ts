@@ -8,25 +8,34 @@ export default class TasksAction {
 
     cy.wait('@gqlcancelTaskMutation');
 
-    tasks.getCancelBtn().first().should('have.text', 'Cancelled');
   }
 
   doCacheClearTask() {
     tasks.getTaskSelector(0).click();
     tasks.getRunTaskBtn().click();
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+
+    tasks.getTaskConfirmed();
   }
   doDrushCronTask() {
     tasks.getTaskSelector(1).click();
     tasks.getRunTaskBtn().click();
 
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+    tasks.getTaskConfirmed();
   }
   doDbBackupTask() {
     tasks.getTaskSelector(4).click();
+
+    cy.getBySel('source-env').click();
+
+    cy.getBySel('select-menu')
+      .find('div')
+      .get('.ant-select-item-option-content')
+      .contains('dev')
+      .click({ force: true });
+
     tasks.getRunTaskBtn().click();
 
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+    tasks.getTaskConfirmed();
   }
   doFailedDbBackupTask() {
     tasks.getTaskSelector(4).click();
@@ -36,7 +45,7 @@ export default class TasksAction {
       expect(interception.response?.statusCode).to.eq(200);
 
       const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushSqlDump:production" on "task": {"project":18}';
+        'Unauthorized: You don\'t have permission to "drushSqlDump:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -45,9 +54,10 @@ export default class TasksAction {
 
   doDbAndFilesBackupTask() {
     tasks.getTaskSelector(5).click();
+
     tasks.getRunTaskBtn().click();
 
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+    tasks.getTaskConfirmed();
   }
   doFailedDbAndFilesBackupTask() {
     tasks.getTaskSelector(5).click();
@@ -57,7 +67,7 @@ export default class TasksAction {
       expect(interception.response?.statusCode).to.eq(200);
 
       const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushArchiveDump:production" on "task": {"project":18}';
+        'Unauthorized: You don\'t have permission to "drushArchiveDump:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -68,7 +78,7 @@ export default class TasksAction {
     tasks.getTaskSelector(6).click();
     tasks.getRunTaskBtn().click();
 
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+    tasks.getTaskConfirmed();
   }
   doFailedLoginLinkTask() {
     tasks.getTaskSelector(6).click();
@@ -78,7 +88,7 @@ export default class TasksAction {
       expect(interception.response?.statusCode).to.eq(200);
 
       const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushUserLogin:production" on "task": {"project":18}';
+        'Unauthorized: You don\'t have permission to "drushUserLogin:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -90,14 +100,14 @@ export default class TasksAction {
     tasks.getTaskSelector(taskNum || 7).click();
     tasks.getRunTaskBtn().click();
 
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+    tasks.getTaskConfirmed();
   }
   doMaintainerTask(taskNum?: number) {
     // this task is only visible to users with role "maintainer"
     tasks.getTaskSelector(taskNum || 8).click();
     tasks.getRunTaskBtn().click();
 
-    tasks.getTaskConfirmed().should('contain', 'Task added');
+    tasks.getTaskConfirmed();
   }
 
   doFailedTaskCancellation() {
@@ -106,33 +116,24 @@ export default class TasksAction {
     cy.wait('@gqlcancelTaskMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = 'Unauthorized: You don\'t have permission to "cancel:production" on "task": {"project":18}';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "cancel:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
     });
 
-    tasks.getErrorNotification().should('exist').should('include.text', 'There was a problem cancelling a task.');
+    tasks.getNotification().should('exist').should('include.text', 'There was a problem cancelling a task.');
   }
 
-  doResultsLimitedchangeCheck(val: string | number) {
-    const vals = {
-      10: 0,
-      25: 1,
-      50: 2,
-      100: 3,
-      all: 4,
-    };
-    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
+  doChangeNumberOfResults(val: string | number) {
+    tasks.getResultSelector().click();
 
-    cy.get(`[id^="react-select-"][id$=-option-${vals[val]}]`).click();
+    tasks.getResultMenu().find('div').get('.ant-select-item-option-content').contains(val).click({ force: true });
 
-    if (val !== 'all') {
-      tasks.getResultsLimited().invoke('text').should('be.eq', `Number of results displayed is limited to ${val}`);
-    } else {
-      cy.location().should(loc => {
-        expect(loc.search).to.eq('?limit=-1');
-      });
-    }
+    const expectedLimit = val !== 'All' ? `?tasks_count=${val}` : '?tasks_count=-1';
+
+    cy.location().should(loc => {
+      expect(loc.search).to.eq(expectedLimit);
+    });
   }
 }

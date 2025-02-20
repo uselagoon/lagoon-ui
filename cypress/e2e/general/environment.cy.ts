@@ -12,12 +12,14 @@ describe('Environment page', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main`);
 
     environmentOverview.doEnvTypeCheck();
+
     environmentOverview.doDeployTypeCheck();
 
     environmentOverview.doSourceCheck();
 
     environmentOverview.doRoutesCheck();
   });
+
   it('Deletes the environment', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main`);
 

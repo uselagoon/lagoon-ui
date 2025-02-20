@@ -1,7 +1,6 @@
 import { testData } from 'cypress/fixtures/variables';
 import ProjectAction from 'cypress/support/actions/project/ProjectAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
-import { registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const project = new ProjectAction();
 
@@ -11,8 +10,6 @@ describe('Project variables page', () => {
   beforeEach(() => {
     cy.login(Cypress.env('user_owner'), Cypress.env('user_owner'));
 
-    cy.wait(500);
-    registerIdleHandler('idle');
     cy.log('Full user navigation from /projects page');
 
     cy.visit(Cypress.env('url'));
@@ -23,12 +20,12 @@ describe('Project variables page', () => {
   });
 
   it('Checks for no variables set', () => {
-    cy.contains('No Project variables set').should('exist');
+    cy.getBySel('empty').should('exist');
   });
+
   it('Adds or updates a variable', () => {
     const { name, value } = testData.variables[0];
 
-    cy.waitForNetworkIdle('@idle', 500);
     environment.doAddVariable(name, value);
 
     cy.intercept('POST', Cypress.env('api')).as('addRequest');
@@ -36,7 +33,8 @@ describe('Project variables page', () => {
     cy.wait('@addRequest');
 
     cy.log('check if variable was created');
-    cy.get('.data-table > .data-row').should('contain', name);
+
+    cy.getBySel('variable-row').should('contain', name);
   });
 
   it('Toggles Hide/Show values', () => {
@@ -60,6 +58,6 @@ describe('Project variables page', () => {
 
     cy.wait('@deleteRequest');
 
-    cy.contains('No Project variables set').should('exist');
+    cy.getBySel('empty').should('exist');
   });
 });

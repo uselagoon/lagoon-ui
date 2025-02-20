@@ -31,9 +31,13 @@ describe('Projects page', () => {
     projects.doSearch();
   });
 
-  it('Displays no projects (stubbed)', () => {
+  it('Changes number of projects to display and URL', () => {
     cy.visit(Cypress.env('url'));
 
-    projects.doEmptyProjectCheck();
+    projects.doChangeNumberOfResults(20);
+
+    projects.doChangeNumberOfResults(10);
+
+    projects.doChangeNumberOfResults(50);
   });
 });

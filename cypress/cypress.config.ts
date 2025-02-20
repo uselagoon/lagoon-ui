@@ -4,10 +4,14 @@ export default defineConfig({
   requestTimeout: 15000,
   defaultCommandTimeout: 8000,
   e2e: {
+    // baseUrl: 'http://0.0.0.0:3000',
+    baseUrl: 'http://localhost:3000',
     env: {
       api: 'http://0.0.0.0:33000/graphql',
       keycloak: 'http://0.0.0.0:38088',
-      url: 'http://0.0.0.0:3000',
+      // url: 'http://0.0.0.0:3000',
+
+      url: 'http://localhost:3000',
       user_guest: 'guest@example.com',
       user_reporter: 'reporter@example.com',
       user_developer: 'developer@example.com',
@@ -22,4 +26,5 @@ export default defineConfig({
       user_platformowner: 'platformowner@example.com',
     },
   },
+  chromeWebSecurity: false,
 });

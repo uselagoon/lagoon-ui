@@ -34,11 +34,11 @@ export const AddRestoreButton: FC<AddRestoreButtonProps> = ({ action, success, l
       {contextHolder}
       {type === 'failed' ? (
         <Tooltip placement="bottom" title="Retry">
-          <RedoOutlined onClick={action} disabled={loading || success} />
+          <RedoOutlined data-cy='retry' onClick={action} disabled={loading || success} />
         </Tooltip>
       ) : (
         <Tooltip placement="bottom" title="Retrieve backup">
-          <CloudDownloadOutlined onClick={action} disabled={loading || success} />
+          <CloudDownloadOutlined data-cy='retrieve' onClick={action} disabled={loading || success} />
         </Tooltip>
       )}
     </>

@@ -108,7 +108,7 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
       {!deploymentsEnabled ? (
         <>
           <div className="description">Manual deployments are not available for this environment.</div>
-          <Button size="middle" disabled>
+          <Button testId="deploy-button" size="middle" disabled>
             Deploy
           </Button>
         </>
@@ -120,7 +120,12 @@ const DeployLatest = (props: Props | PropsWithSkeleton) => {
             {deployType === 'promote' &&
               `Start a new deployment from environment ${environment.project.name}-${deployBaseRef}.`}
           </div>
-          <Button size="middle" loading={loading} onClick={() => deployEnvironmentLatestMutation()}>
+          <Button
+            testId="deploy-button"
+            size="middle"
+            loading={loading}
+            onClick={() => deployEnvironmentLatestMutation()}
+          >
             Deploy
           </Button>
         </>

@@ -1,5 +1,6 @@
 import TasksAction from 'cypress/support/actions/tasks/TasksAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const tasks = new TasksAction();
 
@@ -35,7 +36,8 @@ describe('Tasks page', () => {
 
     tasks.doDrushCronTask();
   });
-  it('Generates db backup', () => {
+  // env has no service CLI error from the api
+  it.skip('Generates db backup', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/tasks`);
 
     cy.waitForNetworkIdle('@idle', 500);
@@ -76,16 +78,14 @@ describe('Tasks page', () => {
   it('Changes shown tasks results', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/tasks`);
 
-    cy.waitForNetworkIdle('@idle', 500);
+    tasks.doChangeNumberOfResults(10);
 
-    tasks.doResultsLimitedchangeCheck(10);
-    cy.waitForNetworkIdle('@idle', 500);
-    tasks.doResultsLimitedchangeCheck(25);
-    cy.waitForNetworkIdle('@idle', 500);
-    tasks.doResultsLimitedchangeCheck(50);
-    cy.waitForNetworkIdle('@idle', 500);
-    tasks.doResultsLimitedchangeCheck(100);
-    cy.waitForNetworkIdle('@idle', 500);
-    tasks.doResultsLimitedchangeCheck('all');
+    tasks.doChangeNumberOfResults(25);
+
+    tasks.doChangeNumberOfResults(50);
+
+    tasks.doChangeNumberOfResults(100);
+
+    tasks.doChangeNumberOfResults('All');
   });
 });

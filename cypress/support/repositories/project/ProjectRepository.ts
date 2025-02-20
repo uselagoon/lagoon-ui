@@ -1,43 +1,40 @@
 export default class ProjectRepository {
   getGitUrl() {
-    return cy.getBySel('gitLink');
+    return cy.getBySel('git-url');
   }
   getCopyButton() {
-    return cy.getBySel('copyButton');
+    return cy.getBySel('copy-button');
   }
   getCreatedField() {
     return cy.getBySel('created');
   }
   getBranchesField() {
-    return cy.getBySel('branches');
+    return cy.getBySel('branches-enabled');
   }
   getPullRequestsField() {
-    return cy.getBySel('pullRequests');
+    return cy.getBySel('pull-requests-enabled');
   }
   getDevEnvsField() {
-    return cy.getBySel('devEnvs');
+    return cy.getBySel('development-environments-in-use');
   }
+
   getEnvBtn() {
-    return cy.getBySel('createEnvironment');
+    return cy.getBySel('create-environment');
   }
+
   getBranchNameInput() {
-    return cy.getBySel('branchName');
+    return cy.getBySel('branch-name');
   }
-  getSubmitBtn() {
-    return cy.getBySel('create-env');
+
+  getNextStepButton() {
+    return cy.getBySel('modal-confirm');
   }
-  getErrorNotification() {
+
+  getNotification() {
     return cy.get('.ant-notification-notice');
   }
 
-  getErrorModal() {
-    return cy.get('.ReactModal__Content');
-  }
-
-  getEnvRoutes() {
-    return cy.getBySel('route-label');
-  }
   getEnvNames() {
-    return cy.getBySel('environment-name');
+    return cy.getBySel('environment-row');
   }
 }

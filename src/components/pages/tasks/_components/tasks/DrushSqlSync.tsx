@@ -68,6 +68,7 @@ const DrushSqlSync: FC<Props> = ({ environment, refetch, allButCurrentEnvironmen
         <label id="source-env">Source:</label>
 
         <Select
+          data-cy='source-env'
           allowClear
           onClear={() => setSelectedSourceEnv(undefined)}
           placeholder="Select source environment..."
@@ -100,7 +101,7 @@ const DrushSqlSync: FC<Props> = ({ environment, refetch, allButCurrentEnvironmen
         <Button
           className="task-btn"
           size="middle"
-          test-id="task-btn"
+          testId="task-btn"
           loading={loading}
           onClick={handleTask}
           disabled={!selectedSourceEnv || loading}

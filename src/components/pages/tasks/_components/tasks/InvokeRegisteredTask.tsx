@@ -166,16 +166,22 @@ const InvokeRegisteredTask: FC<Props> = ({ environment, advancedTask, refetch })
             placement="right"
             title="Confirm action"
           >
-            <Button loading={loading} className="task-btn" size="middle" disabled={!argumentVariablesHaveValues}>
+            <Button
+              testId="run-task"
+              loading={loading}
+              className="task-btn"
+              size="middle"
+              disabled={!argumentVariablesHaveValues}
+            >
               Run task
             </Button>
           </Confirm>
         </>
       )) || (
         <Button
+          testId="run-task"
           className="task-btn"
           size="middle"
-          test-id="task-btn"
           disabled={(taskArgumentsExist && !argumentVariablesHaveValues) || loading}
           loading={loading}
           onClick={handleAdvancedTask}

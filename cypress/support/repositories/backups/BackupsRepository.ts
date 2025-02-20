@@ -1,11 +1,18 @@
 export default class BackupsRepository {
+  
   getRetrieveButton() {
     return cy.getBySel('retrieve');
   }
+
   getBackups() {
-    return cy.getBySel('backups');
+    return cy.getBySel('backup-row');
   }
-  getResultsLimited() {
-    return cy.getBySel('resultsLimited');
+
+  getResultSelector() {
+    return cy.getBySel('select-results');
+  }
+
+  getResultMenu() {
+    return cy.getBySel('select-menu');
   }
 }

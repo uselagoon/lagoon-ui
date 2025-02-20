@@ -1,5 +1,6 @@
 import DeploymentsAction from 'cypress/support/actions/deployments/DeploymentsAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const deployments = new DeploymentsAction();
 
@@ -18,6 +19,7 @@ describe('Deployments page', () => {
 
     deployments.doDeployment();
   });
+
   it('Cancels a deployment', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
 
@@ -32,16 +34,14 @@ describe('Deployments page', () => {
   it('Changes shown results', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
 
-    cy.waitForNetworkIdle('@idle', 500);
+    deployments.doChangeNumberOfResults(10);
 
-    deployments.doResultsLimitedchangeCheck(10);
-    cy.waitForNetworkIdle('@idle', 500);
-    deployments.doResultsLimitedchangeCheck(25);
-    cy.waitForNetworkIdle('@idle', 500);
-    deployments.doResultsLimitedchangeCheck(50);
-    cy.waitForNetworkIdle('@idle', 500);
-    deployments.doResultsLimitedchangeCheck(100);
-    cy.waitForNetworkIdle('@idle', 500);
-    deployments.doResultsLimitedchangeCheck('all');
+    deployments.doChangeNumberOfResults(25);
+
+    deployments.doChangeNumberOfResults(50);
+
+    deployments.doChangeNumberOfResults(100);
+
+    deployments.doChangeNumberOfResults('All');
   });
 });

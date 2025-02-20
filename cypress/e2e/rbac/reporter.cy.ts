@@ -7,7 +7,8 @@ import SettingAction from 'cypress/support/actions/settings/SettingsAction';
 import TaskAction from 'cypress/support/actions/task/TaskAction';
 import TasksAction from 'cypress/support/actions/tasks/TasksAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const project = new ProjectAction();
 
@@ -61,7 +62,7 @@ describe('REPORTER permission test suites', () => {
     it('Checks for no variables set', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);
 
-      cy.contains('No Project variables set').should('exist');
+      cy.getBySel('empty').should('exist');
     });
 
     it('Fails to add a variable - no permission for REPORTER', () => {
@@ -82,7 +83,7 @@ describe('REPORTER permission test suites', () => {
       cy.wait('@gqladdEnvVariableMutation').then(interception => {
         expect(interception.response?.statusCode).to.eq(200);
 
-        const errorMessage = 'Unauthorized: You don\'t have permission to "project:add" on "env_var": {"project":18}';
+        const errorMessage = 'Unauthorized: You don\'t have permission to "project:add" on "env_var"';
         expect(interception.response?.body).to.have.property('errors');
 
         cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -182,7 +183,7 @@ describe('REPORTER permission test suites', () => {
       cy.waitForNetworkIdle('@idle', 500);
 
       const errMessage =
-        'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup": {"project":18}';
+        'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup"';
 
       cy.get('main').should('exist').find('p').should('exist').and('have.text', errMessage);
     });

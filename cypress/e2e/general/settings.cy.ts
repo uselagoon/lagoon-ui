@@ -10,6 +10,7 @@ describe('Settings page', () => {
 
   it('Checks initial SSH keys', () => {
     cy.visit(`${Cypress.env('url')}/settings`);
+
     settings.doEmptySshCheck();
   });
 

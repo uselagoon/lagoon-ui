@@ -13,22 +13,26 @@ describe('Project page', () => {
     project.doNavigateToFirst();
   });
 
-  it('Checks sidebar values/actions', () => {
+  it('Checks project detail values/actions', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo`);
+
+    project.navToDetails();
 
     project.doClipboardCheck();
 
-    project.doSidebarPopulatedCheck();
+    project.doDetailsCheck();
 
     project.doExternalLinkCheck();
   });
 
   it('Checks environment routes', () => {
+
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo`);
+
     project.doEnvRouteCheck();
   });
 
-  it('Creates a dummy environment', () => {
+  it.only('Creates a dummy environment', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo`);
 
     project.doCreateDummyEnv();

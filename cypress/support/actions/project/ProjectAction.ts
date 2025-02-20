@@ -1,26 +1,27 @@
 import { default as Project } from '../../repositories/project/ProjectRepository';
-import ProjectRepository from '../../repositories/projects/ProjectsRepository';
-
-const projectRepo = new ProjectRepository();
 
 const project = new Project();
 
 export default class ProjectAction {
   doNavigateToFirst() {
-    projectRepo.getProject().first().click();
+    cy.getBySel('project-row').first().closest('[data-cy="project-row"]').find('a').first().click();
+  }
+
+  navToDetails() {
+    cy.getBySel('nav-details').click();
   }
 
   doClipboardCheck() {
-    project.getCopyButton().realClick();
+    project.getCopyButton().click();
 
     cy.window().then(win => {
       win.navigator.clipboard.readText().then(() => {
-        project.getGitUrl().invoke('text').should('eq', '//git@example.com/lagoon-demo');
+        project.getGitUrl().should('contain', 'ssh://git@example.com/lagoon-demo.git');
       });
     });
   }
 
-  doSidebarPopulatedCheck() {
+  doDetailsCheck() {
     project.getGitUrl().should('not.be.empty');
     project.getBranchesField().should('not.be.empty');
     project.getCreatedField().should('not.be.empty');
@@ -29,12 +30,12 @@ export default class ProjectAction {
   }
 
   doExternalLinkCheck() {
-    cy.getBySel('gitLink').contains('lagoon-demo');
+    cy.getBySel('git-url').contains('lagoon-demo');
   }
 
   doEnvRouteCheck() {
-    project.getEnvRoutes().each($element => {
-      cy.wrap($element).find('a').should('have.attr', 'href').and('not.be.empty');
+    cy.getBySel('environment-row').each($row => {
+      cy.wrap($row).find('a').should('have.attr', 'href').and('not.be.empty');
     });
   }
 
@@ -43,22 +44,24 @@ export default class ProjectAction {
 
     project.getBranchNameInput().focus().type('123123');
 
-    project.getSubmitBtn().click();
+    // 3 step process
+    project.getNextStepButton().click();
+    project.getNextStepButton().click();
+    project.getNextStepButton().click();
 
     project.getEnvNames().contains('123123').should('exist');
   }
 
   doCreateEnvWithPermissionError() {
     project.getEnvBtn().click();
-    project.getBranchNameInput().focus().type('123123');
-    project.getSubmitBtn().click();
 
-    project
-      .getErrorModal()
-      .should('exist')
-      .should(
-        'include.text',
-        'GraphQL error: Unauthorized: You don\'t have permission to "deploy:development" on "environment": {"project":18}'
-      );
+    project.getBranchNameInput().focus().type('123123');
+
+    // 3 step process
+    project.getNextStepButton().click();
+    project.getNextStepButton().click();
+    project.getNextStepButton().click();
+
+    project.getNotification().should('exist').should('include.text', 'There was a problem creating environment.');
   }
 }

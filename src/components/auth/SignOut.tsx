@@ -5,6 +5,7 @@ import manualSignOut from '../../../utils/manualSignOut';
 export function SignOutBtn() {
   return (
     <span
+      data-cy="sign-out"
       onClick={() => {
         manualSignOut();
       }}

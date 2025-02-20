@@ -63,11 +63,12 @@ export const CancelDeploymentButton = ({
           okButtonProps={{
             type: 'primary',
             danger: true,
+            'data-cy': 'confirm-cancellation',
           }}
           disabled={loading || success}
         >
           <Tooltip title="Cancel Deployment" placement="right">
-            <StopOutlined />
+            <StopOutlined data-cy="cancel-deployment" />
           </Tooltip>
         </Popconfirm>
       )}

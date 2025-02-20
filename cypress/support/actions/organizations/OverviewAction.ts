@@ -4,32 +4,32 @@ const overviewRepo = new OverviewRepository();
 
 export default class OverviewAction {
   doNavLinkCheck() {
-    overviewRepo.getLinkElement('group-link').click();
+    overviewRepo.getLinkElement('nav-groups').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
 
-    overviewRepo.getLinkElement('project-link').click();
+    overviewRepo.getLinkElement('nav-org-projects').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/projects');
 
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
 
-    overviewRepo.getLinkElement('notification-link').click();
+    overviewRepo.getLinkElement('nav-notifications').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/notifications');
 
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization`);
-    overviewRepo.getLinkElement('manage-link').click();
+    overviewRepo.getLinkElement('nav-manage').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/manage');
   }
 
   doQuotaFieldCheck() {
-    overviewRepo.getFieldElement('group').should('exist').should('not.be.empty');
+    overviewRepo.getFieldElement('groups').should('exist').should('not.be.empty');
 
-    overviewRepo.getFieldElement('project').should('exist').should('not.be.empty');
+    overviewRepo.getFieldElement('projects').should('exist').should('not.be.empty');
 
-    overviewRepo.getFieldElement('notification').should('exist').should('not.be.empty');
+    overviewRepo.getFieldElement('notifications').should('exist').should('not.be.empty');
 
-    overviewRepo.getFieldElement('environment').should('exist').should('not.be.empty');
+    overviewRepo.getFieldElement('environments').should('exist').should('not.be.empty');
   }
 
   changeOrgFriendlyname(friendlyName: string) {
@@ -68,7 +68,7 @@ export default class OverviewAction {
   }
 
   changeOrgDescription(description: string) {
-    overviewRepo.getDescEditButton('edit-description').click();
+    overviewRepo.getDescEditButton('edit-desc').click();
     overviewRepo.getEditField().clear().type(description);
     overviewRepo.getSubmitButton().click();
 
@@ -85,7 +85,7 @@ export default class OverviewAction {
       });
   }
   doFailedChangeOrgDescription(description: string) {
-    overviewRepo.getDescEditButton('edit-description').click();
+    overviewRepo.getDescEditButton('edit-desc').click();
     overviewRepo.getEditField().clear().type(description);
     overviewRepo.getSubmitButton().click();
 

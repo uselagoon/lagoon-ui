@@ -35,7 +35,7 @@ export const ProjectNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'environments',
             label: (
-              <Link href={`/projects/${projectSlug}`}>
+              <Link data-cy="nav-environments" href={`/projects/${projectSlug}`}>
                 <LinkContentWrapper>Environments</LinkContentWrapper>
               </Link>
             ),
@@ -43,7 +43,7 @@ export const ProjectNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'project-details',
             label: (
-              <Link href={`/projects/${projectSlug}/project-details`}>
+              <Link data-cy="nav-details" href={`/projects/${projectSlug}/project-details`}>
                 <LinkContentWrapper>Details</LinkContentWrapper>
               </Link>
             ),
@@ -51,7 +51,7 @@ export const ProjectNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'project-variables',
             label: (
-              <Link href={`/projects/${projectSlug}/project-variables`}>
+              <Link data-cy="nav-variables" href={`/projects/${projectSlug}/project-variables`}>
                 <LinkContentWrapper>Variables</LinkContentWrapper>
               </Link>
             ),
@@ -62,7 +62,7 @@ export const ProjectNavTabs = ({ children }: { children: ReactNode }) => {
                 {
                   key: 'deploy-targets',
                   label: (
-                    <Link href={`/projects/${projectSlug}/deploy-targets`}>
+                    <Link data-cy="nav-targets" href={`/projects/${projectSlug}/deploy-targets`}>
                       <LinkContentWrapper>Deploy Targets</LinkContentWrapper>
                     </Link>
                   ),

@@ -63,7 +63,7 @@ const DrushArchiveDump: FC<Props> = ({ environment, refetch }) => {
         <Button
           className="task-btn"
           size="middle"
-          test-id="task-btn"
+          testId="task-btn"
           disabled={loading}
           loading={loading}
           onClick={handleTask}

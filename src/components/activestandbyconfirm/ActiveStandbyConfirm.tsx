@@ -64,7 +64,7 @@ export const ActiveStandbyConfirm: FC<ActiveStandbyConfirmProps> = ({
   return (
     <React.Fragment>
       {contextHolder}
-      <Button size="middle" type="primary" onClick={openModal} test-id="switch">
+      <Button size="middle" type="primary" onClick={openModal} testId="switch">
         Switch Active/Standby environments
       </Button>
 

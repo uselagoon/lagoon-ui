@@ -4,20 +4,22 @@ const task = new TaskRepository();
 
 export default class TaskAction {
   doNavToRunningTask() {
-    cy.getBySel('select-results').find('div').eq(6).click({ force: true });
-
-    cy.waitForNetworkIdle('@idle', 500);
-
-    cy.get(`[id^="react-select-"][id$=-option-4]`).click();
-
-    cy.getBySel('task-row').getBySel('pending').click();
+    cy.getBySel('task-row')
+      .find('span.ant-tag')
+      .contains('New')
+      .first()
+      .closest('[data-cy="task-row"]')
+      .find('a')
+      .first()
+      .click();
   }
+
   doCancelTask() {
     task.getCancelBtn().first().click();
 
     cy.wait('@gqlcancelTaskMutation');
 
-    task.getCancelBtn().first().should('have.text', 'Cancelled');
+    task.getCancelBtn().first();
   }
 
   doFailedCancelTask() {

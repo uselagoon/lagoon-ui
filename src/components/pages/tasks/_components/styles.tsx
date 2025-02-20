@@ -32,3 +32,9 @@ export const SelectEnv = styled.div`
     font-size: 0.95rem;
   }
 `;
+
+export const TasksFilters = styled.div`
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 0.875rem;
+`;

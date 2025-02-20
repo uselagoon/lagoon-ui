@@ -1,25 +1,34 @@
 export default class SettingsRepository {
+  getAddNewKeyButton() {
+    return cy.getBySel('add-key');
+  }
+
   getNameInput() {
-    return cy.getBySel('sshKeyName');
+    return cy.getBySel('key-name');
   }
 
   getValueInput() {
-    return cy.getBySel('sshKey');
+    return cy.getBySel('key-value');
   }
 
   getSubmitBtn() {
-    return cy.getBySel('sshKey').parent().next();
+    return cy.getBySel('modal-confirm');
   }
 
   getKeyToDelete() {
-    return cy.getBySel('data-row');
+    return cy.getBySel('ssh-row');
   }
+
+  getDeleteConfirmInput() {
+    return cy.getBySel('delete-confirm');
+  }
+
   getDeleteBtn(name: string) {
-    this.getKeyToDelete()
+    return this.getKeyToDelete()
       .contains(name)
       .parent()
       .within(() => {
-        cy.getBySel('deleteKey').getBySel('delete').click();
+        cy.getBySel('delete-button').click();
       });
   }
 }

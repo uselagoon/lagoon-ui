@@ -1,5 +1,6 @@
 import deploymentAction from 'cypress/support/actions/deployment/DeploymentAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const deployment = new deploymentAction();
 
@@ -18,6 +19,9 @@ describe('Deployment page', () => {
     cy.waitForNetworkIdle('@idle', 500);
 
     deployment.navigateToRunningDeployment();
+
+    cy.waitForNetworkIdle('@idle', 500);
+
     deployment.doCancelDeployment();
   });
 

@@ -1,10 +1,20 @@
 export default class DeploymentRepository {
   getCancelDeploymentBtn() {
-    return cy.getBySel('cancelDeployment');
+    return cy.getBySel('cancel-deployment');
   }
+
+  getConfirmCancelBtn() {
+    return cy.getBySel('confirm-cancellation');
+  }
+
+  getDeploymentRow() {
+    return cy.getBySel('deployment-row');
+  }
+
   getToggler() {
-    return cy.getBySel('logviewer_toggle');
+    return cy.getBySel('logviewer-toggle');
   }
+
   getLogViewer() {
     return cy.get('.log-viewer');
   }
@@ -12,14 +22,7 @@ export default class DeploymentRepository {
     return cy.get('.accordion-heading');
   }
 
-  getRunningDeployment() {
-    return cy.getBySel('deploy');
-  }
-  getCompletedDeployment() {
-    return cy.getBySel('deploy_result');
-  }
-
-  getErrorNotification() {
+  getNotification() {
     return cy.get('.ant-notification-notice');
   }
 }

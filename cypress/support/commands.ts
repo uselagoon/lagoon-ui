@@ -28,78 +28,95 @@
 
 // stubbing clipboard for localhost on http.
 Cypress.on('window:before:load', win => {
+  let copyText = '';
+
   if (!win.navigator.clipboard) {
     // @ts-ignore
     win.navigator.clipboard = {
-      copyText: null,
+      writeText: (text: string) => {
+        copyText = text;
+      },
+      readText: () => Promise.resolve(copyText),
     };
+  } else {
+    // @ts-ignore
+    win.navigator.clipboard.writeText = text => {
+      copyText = text;
+    };
+    // @ts-ignore
+    win.navigator.clipboard.readText = () => Promise.resolve(copyText);
   }
-
-  // @ts-ignore
-  win.navigator.clipboard.writeText = text => (this.copyText = text);
-  // @ts-ignore
-  win.navigator.clipboard.readText = () => Promise.resolve(this.copyText);
 });
 
-Cypress.Commands.add('getBySel', (selector: string) => {
-  return cy.get(`[data-cy=${selector}]`);
-});
+export function registerCommands() {
+  Cypress.Commands.add('getBySel', (selector: string, ...args) => {
+    return cy.get(`[data-cy=${selector}]`, ...args);
+  });
 
-Cypress.Commands.add('login', (username: string, password: string) => {
-  cy.session([username, password], () => {
-    cy.visit(Cypress.env('url'));
-    cy.origin(Cypress.env('keycloak'), { args: { username, password } }, ({ username, password }) => {
-      cy.get('#username').type(username);
-      cy.get('#password').type(password);
-      cy.get('#kc-login').click();
+  Cypress.Commands.add('login', (username: string, password: string) => {
+    cy.session(
+      [username, password],
+      () => {
+        cy.visit(Cypress.env('url'));
+
+        cy.get('#username').type(username);
+        cy.get('#password').type(password);
+        cy.get('#kc-login').click();
+      },
+      {
+        cacheAcrossSpecs: true,
+        validate() {
+          cy.request('/api/auth/session').its('body').should('not.have.property', 'error');
+        },
+      }
+    );
+  });
+
+  Cypress.Commands.add('gqlQuery', (operationName, query, variables) => {
+    const gqlEndpoint = Cypress.env('graphqlEndpoint');
+
+    if (!gqlEndpoint) {
+      throw new Error('GraphQL endpoint is not defined');
+    }
+
+    const requestBody = {
+      operationName,
+      query,
+      ...(variables ? { variables } : {}),
+    };
+
+    // Send a POST request to the gql endpoint
+    return cy.request({
+      method: 'POST',
+      url: gqlEndpoint,
+      body: requestBody,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
   });
-});
 
-Cypress.Commands.add('gqlQuery', (operationName, query, variables) => {
-  const gqlEndpoint = Cypress.env('graphqlEndpoint');
+  Cypress.Commands.add('gqlMutation', (operationName, mutation, variables) => {
+    const gqlEndpoint = Cypress.env('graphqlEndpoint');
 
-  if (!gqlEndpoint) {
-    throw new Error('GraphQL endpoint is not defined');
-  }
+    if (!gqlEndpoint) {
+      throw new Error('GraphQL endpoint is not defined');
+    }
 
-  const requestBody = {
-    operationName,
-    query,
-    ...(variables ? { variables } : {}),
-  };
+    const requestBody = {
+      operationName,
+      query: mutation,
+      ...(variables ? { variables } : {}),
+    };
 
-  // Send a POST request to the gql endpoint
-  return cy.request({
-    method: 'POST',
-    url: gqlEndpoint,
-    body: requestBody,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    // Send a POST request to the gql endpoint
+    return cy.request({
+      method: 'POST',
+      url: gqlEndpoint,
+      body: requestBody,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   });
-});
-
-Cypress.Commands.add('gqlMutation', (operationName, mutation, variables) => {
-  const gqlEndpoint = Cypress.env('graphqlEndpoint');
-
-  if (!gqlEndpoint) {
-    throw new Error('GraphQL endpoint is not defined');
-  }
-
-  const requestBody = {
-    operationName,
-    query: mutation,
-    ...(variables ? { variables } : {}),
-  };
-
-  // Send a POST request to the gql endpoint
-  return cy.request({
-    method: 'POST',
-    url: gqlEndpoint,
-    body: requestBody,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-});
+}

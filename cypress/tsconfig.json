@@ -4,7 +4,7 @@
   "exclude": [],
   "compilerOptions": {
     "types": ["cypress", "node", "cypress-real-events"],
-    "lib": ["es2015", "dom"],
+    "lib": ["esnext", "dom"],
     "isolatedModules": false,
     "allowJs": true,
     "noEmit": true

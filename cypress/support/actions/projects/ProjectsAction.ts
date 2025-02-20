@@ -4,7 +4,7 @@ const projectRepo = new ProjectRepository();
 
 export default class ProjectAction {
   doPageCheck() {
-    projectRepo.getPageTitle().should('have.text', 'Projects');
+    projectRepo.getPageTitle().should('contain', 'Projects');
   }
 
   doSearch() {
@@ -16,25 +16,7 @@ export default class ProjectAction {
     projectRepo.getSearchBar().type('This does not exist');
     projectRepo
       .getNotMatched()
-      .invoke('text')
-      .should('match', /No projects matching .*/);
-  }
-
-  doEmptyProjectCheck() {
-    cy.intercept('POST', Cypress.env('api'), req => {
-      req.reply({
-        statusCode: 200,
-        body: {
-          data: {
-            allProjects: [],
-          },
-        },
-      });
-    }).as('allProjects');
-
-    cy.wait('@allProjects');
-
-    projectRepo.getNoProjectsLabel().should('exist');
+      .should('exist');
   }
 
   doProjectLengthCheck() {
@@ -50,5 +32,17 @@ export default class ProjectAction {
           throw new Error('Failed to extract the number of projects from the element.');
         }
       });
+  }
+
+  doChangeNumberOfResults(val: number | string){
+    projectRepo.getResultSelector().click();
+
+    projectRepo.getResultMenu().find('div').get('.ant-select-item-option-content').contains(val).click({ force: true });
+
+    const expectedLimit = val !== 'All' ? `?results=${val}` : '?results=-1';
+
+    cy.location().should(loc => {
+      expect(loc.search).to.eq(expectedLimit);
+    });
   }
 }

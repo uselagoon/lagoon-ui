@@ -1,24 +1,29 @@
 export default class EnvOverviewRepository {
   getEnvType() {
-    return cy.getBySel('envType');
+    return cy.getBySel('environment-type');
   }
   getDeployType() {
-    return cy.getBySel('deployType');
+    return cy.getBySel('deployment-type');
   }
   getSource() {
-    return cy.getBySel('source');
+    return cy.get('a[data-cy="source"]');
   }
   getRoutes() {
     return cy.getBySel('routes');
   }
+
   getDeleteButton() {
     return cy.getBySel('delete');
   }
 
-  getDeleteButtonConfirm() {
-    return cy.getBySel('deleteConfirm');
+  getConfirmInput() {
+    return cy.getBySel('input-confirm').find('input').focus();
   }
-  getDeleteInfo() {
-    return cy.getBySel('env-details').get('div').last();
+
+  getDeleteButtonConfirm() {
+    return cy.get('.ant-modal-footer').find('button[type="button"]').contains('span', 'Delete');
+  }
+  getNotification() {
+    return cy.get('.ant-notification-notice');
   }
 }

@@ -7,7 +7,8 @@ import SettingAction from 'cypress/support/actions/settings/SettingsAction';
 import TaskAction from 'cypress/support/actions/task/TaskAction';
 import TasksAction from 'cypress/support/actions/tasks/TasksAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const project = new ProjectAction();
 
@@ -63,7 +64,7 @@ describe('MAINTAINER permission test suites', () => {
     it('Checks for no variables set', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);
 
-      cy.contains('No Project variables set').should('exist');
+      cy.getBySel('empty').should('exist');
     });
     it('Adds or updates a variable', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);

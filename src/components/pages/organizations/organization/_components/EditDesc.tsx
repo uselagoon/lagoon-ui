@@ -66,7 +66,7 @@ export const EditDesc: FC<Props> = ({ orgId, orgDesc, modalOpen, closeModal }) =
         <Form form={editDescForm}>
           <div className="wrap">
             <FormItem name="description" initialValue={orgDesc} label="ORGANIZATION DESCRIPTION" required>
-              <Input />
+              <Input data-cy='edit-input'/>
             </FormItem>
           </div>
         </Form>

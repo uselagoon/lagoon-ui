@@ -103,7 +103,7 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick,
                 label="Variable name"
                 name="variable_name"
               >
-                <Input placeholder="Variable Name" />
+                <Input data-cy='var-name' placeholder="Variable Name" />
               </FormItem>
             </div>
 
@@ -116,6 +116,7 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick,
                 name="variable_scope"
               >
                 <Select
+                  data-cy='select-scope'
                   options={scopeOptions}
                   value={scopeOptions[0].value}
                   placeholder="Select variable scope"
@@ -135,7 +136,7 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick,
                 label="Variable value"
                 name="variable_value"
               >
-                <Input placeholder="Variable value" />
+                <Input data-cy='var-value' placeholder="Variable value" />
               </FormItem>
             </div>
           </FormItemWrapper>
@@ -182,6 +183,7 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick,
   return (
     <>
       <ProjectVariablebutton
+        data-cy="add-variable"
         onClick={async () => {
           let hasError;
           if (onClick) {

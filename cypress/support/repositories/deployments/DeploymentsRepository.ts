@@ -1,23 +1,33 @@
 export default class DeploymentsRepository {
   getDeployBtn() {
-    return cy.getBySel('deploy');
+    return cy.getBySel('deploy-button');
   }
-  getDeployQueued() {
-    return cy.getBySel('deploy_result');
-  }
+
   getDeployments() {
-    return cy.getBySel('deploy-table');
+    return cy.getBySel('deployment-row');
   }
-  getCancelBtn() {
-    return this.getDeployments().getBySel('deployment-row').first().getBySel('cancel-button');
-  }
-  getResultsLimited() {
-    return cy.getBySel('resultsLimited');
-  }
-  getResultsSelector() {
-    return cy.getBySel('result_selector');
-  }
-  getErrorNotification() {
+
+  getNotification() {
     return cy.get('.ant-notification-notice');
+  }
+
+  getCancelBtn() {
+    return this.getDeployments().first().getBySel('cancel-deployment');
+  }
+
+  getConfirmCancelBtn(){
+    return cy.getBySel('confirm-cancellation');
+  }
+
+  getDeploymentTriggered() {
+    return this.getNotification().should('contain.text', 'Deployment successfully triggered');
+  }
+
+  getResultSelector() {
+    return cy.getBySel('select-results');
+  }
+
+  getResultMenu() {
+    return cy.getBySel('select-menu');
   }
 }

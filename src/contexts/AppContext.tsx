@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { useEnvContext } from 'next-runtime-env';
 import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 
 import { Colors, HeaderProps, PageContainer, useTheme } from '@uselagoon/ui-library';
 import { ItemType } from 'antd/es/menu/interface';
@@ -17,7 +16,6 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
   const { status, data } = useSession();
   const { toggleTheme } = useTheme();
 
-  const { push } = useRouter();
   const pathname = usePathname();
 
   const userData = status === 'authenticated' ? data.user : { name: '', email: '', image: '' };

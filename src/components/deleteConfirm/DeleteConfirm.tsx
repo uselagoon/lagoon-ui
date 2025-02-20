@@ -96,6 +96,7 @@ export const DeleteConfirm: FC<DeleteProps> = ({
                 required
                 rules={[{ required: true, message: '' }]}
                 name="confirm_text"
+                data-cy='input-confirm'
               >
                 <Input />
               </FormItem>
@@ -111,10 +112,10 @@ export const DeleteConfirm: FC<DeleteProps> = ({
       {contextHolder}
       {!renderAsButton ? (
         <Tooltip placement="bottom" title={`Delete ${deleteType}`}>
-          <DeleteOutlined onClick={openModal} />
+          <DeleteOutlined data-cy="delete" onClick={openModal} />
         </Tooltip>
       ) : (
-        <Button size="middle" danger iconBefore={icon} onClick={openModal} test-id="delete">
+        <Button size="middle" danger iconBefore={icon} onClick={openModal} testId="delete">
           Delete
         </Button>
       )}
@@ -130,8 +131,9 @@ export const DeleteConfirm: FC<DeleteProps> = ({
         confirmLoading={loading}
         confirmDisabled={confirmDisabled}
         dangerConfirm
+        
       >
-        <ConfirmModalWrapper>{modalContent}</ConfirmModalWrapper>
+        <ConfirmModalWrapper data-cy="delete-confirm">{modalContent}</ConfirmModalWrapper>
       </Modal>
     </React.Fragment>
   );

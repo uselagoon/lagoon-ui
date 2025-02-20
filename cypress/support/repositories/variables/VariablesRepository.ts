@@ -1,27 +1,29 @@
 export default class VariablesRepository {
   getVariablesLink() {
-    return cy.getBySel('variablesLink');
+    return cy.getBySel('nav-variables');
   }
 
   getToggleShowButton() {
-    return cy.getBySel('hideShowValues');
+    return cy.getBySel('var-visibility-toggle');
   }
   getAddButton() {
-    return cy.getBySel('addVariable');
+    return cy.getBySel('add-variable');
   }
 
   getEnvDataRows() {
-    return cy.getBySel('environment-row');
+    return cy.getBySel('variable-row');
   }
+
   getVariableToDelete() {
-    return cy.getBySel('environment-row');
+    return cy.getBySel('variable-row');
   }
+
   getDeleteBtn(name: string) {
-    this.getVariableToDelete()
+    return this.getVariableToDelete()
       .contains(name)
-      .parent()
+      .closest('[data-cy="variable-row"]')
       .within(() => {
-        cy.getBySel('varDelete').click();
+        cy.getBySel('delete-button').click();
       });
   }
 }

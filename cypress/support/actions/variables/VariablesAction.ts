@@ -12,28 +12,33 @@ export default class VariablesAction {
   }
 
   doValueToggle() {
-    environment.getEnvDataRows().getBySel('showhide-toggle').click({ multiple: true, force: true });
+    environment.getEnvDataRows().getBySel('toggle').click({ multiple: true, force: true });
   }
 
   doAddVariable(name: string, value: string) {
     environment.getAddButton().first().click();
 
-    cy.get('.react-select__indicator').click({ force: true });
-    cy.get('#react-select-2-option-1').click();
+    cy.getBySel('var-name').focus().type(name);
 
-    cy.getBySel('varName').focus().type(name);
-    cy.getBySel('varValue').focus().type(value);
+    cy.getBySel('select-scope')
+      .click()
+      .find('div')
+      .get('.ant-select-item-option-content')
+      .contains('Runtime')
+      .click({ force: true });
 
-    cy.getBySel('add-variable').click();
+    cy.getBySel('var-value').focus().type(value);
+
+    cy.getBySel('modal-confirm').click();
   }
 
   doDeleteVariable(name: string) {
     environment.getDeleteBtn(name);
-    cy.waitForNetworkIdle('@idle', 500);
-    environment.getDeleteBtn(name);
 
     cy.log('enter the  name and confirm');
-    cy.getBySel('variable-input').type(name);
-    cy.getBySel('delete-button').click();
+
+    cy.getBySel('delete-confirm').type(name);
+
+    cy.getBySel('modal-confirm').click();
   }
 }

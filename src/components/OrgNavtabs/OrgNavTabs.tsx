@@ -23,7 +23,7 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'overview',
             label: (
-              <Link href={`/organizations/${organizationSlug}`}>
+              <Link data-cy="nav-org-overview" href={`/organizations/${organizationSlug}`}>
                 <LinkContentWrapper>Overview</LinkContentWrapper>
               </Link>
             ),
@@ -31,7 +31,7 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'groups',
             label: (
-              <Link href={`/organizations/${organizationSlug}/groups`}>
+              <Link data-cy="nav-groups" href={`/organizations/${organizationSlug}/groups`}>
                 <LinkContentWrapper>Groups</LinkContentWrapper>
               </Link>
             ),
@@ -39,7 +39,7 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'users',
             label: (
-              <Link href={`/organizations/${organizationSlug}/users`}>
+              <Link data-cy="nav-users" href={`/organizations/${organizationSlug}/users`}>
                 <LinkContentWrapper>Users</LinkContentWrapper>
               </Link>
             ),
@@ -47,7 +47,7 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'projects',
             label: (
-              <Link href={`/organizations/${organizationSlug}/projects`}>
+              <Link data-cy="nav-org-projects" href={`/organizations/${organizationSlug}/projects`}>
                 <LinkContentWrapper>Projects</LinkContentWrapper>
               </Link>
             ),
@@ -55,7 +55,7 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'notifications',
             label: (
-              <Link href={`/organizations/${organizationSlug}/notifications`}>
+              <Link data-cy="nav-notifications" href={`/organizations/${organizationSlug}/notifications`}>
                 <LinkContentWrapper>Notifications</LinkContentWrapper>
               </Link>
             ),
@@ -63,7 +63,7 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
           {
             key: 'manage',
             label: (
-              <Link href={`/organizations/${organizationSlug}/manage`}>
+              <Link data-cy="nav-manage" href={`/organizations/${organizationSlug}/manage`}>
                 <LinkContentWrapper>Administration</LinkContentWrapper>
               </Link>
             ),

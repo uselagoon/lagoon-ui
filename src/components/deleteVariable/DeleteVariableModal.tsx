@@ -71,7 +71,7 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
                 label="Variable name"
                 name="variable_name"
               >
-                <Input placeholder="Variable Name" />
+                <Input data-cy="delete-confirm" placeholder="Variable Name" />
               </FormItem>
             </div>
           </FormItemWrapper>
@@ -112,6 +112,7 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
   return (
     <>
       <DeleteVariableButton
+        data-cy="delete-button"
         onClick={async () => {
           let hasError;
           if (onClick) {

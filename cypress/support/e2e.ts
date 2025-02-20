@@ -1,4 +1,6 @@
 import 'cypress-network-idle';
 import 'cypress-real-events';
 
-import './commands';
+import { registerCommands } from './commands';
+
+registerCommands();

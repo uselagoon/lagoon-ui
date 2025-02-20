@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 
 import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { Head2, Head3, Select, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
+import { Head3, Select, Table, TaskTreeSelector, Text } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 import {
@@ -154,7 +154,7 @@ export default function TasksPage({
     <TasksPageWrapper>
       <Head3>Available Tasks</Head3>
       <Text>Run a task on this environment</Text>
-      <div className="selector">
+      <div className="selector" data-cy='task-select'>
         <TaskTreeSelector
           allowClear
           onChange={setSelectedTask}
@@ -175,6 +175,7 @@ export default function TasksPage({
         )}
         resultDropdown={
           <Select
+            data-cy='select-results'
             options={tasksFilterOptions}
             value={tasks_count}
             defaultOpen={false}

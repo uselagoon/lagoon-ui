@@ -83,6 +83,7 @@ export default function BackupsPage({
     <>
       <DeploymentsFilters>
         <Select
+          data-cy="select-results"
           options={backupResultOptions}
           value={results}
           defaultOpen={false}

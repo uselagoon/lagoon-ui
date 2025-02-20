@@ -15,19 +15,19 @@ export default class OverviewRepository {
   }
 
   getfriendlyName() {
-    return this.getElement('friendlyName');
+    return this.getElement('friendly-name');
   }
   getDescription() {
-    return this.getElement('description');
+    return this.getElement('org-description');
   }
   getEditField() {
-    return this.getElement('input-orgName');
+    return this.getElement('edit-input');
   }
   getSubmitButton() {
-    return this.getElement('submit-btn').first();
+    return this.getElement('modal-confirm');
   }
   getCancelButton() {
-    return this.getElement('cancel');
+    return this.getElement('modal-cancel');
   }
 
   getDescEditButton(selector: string) {

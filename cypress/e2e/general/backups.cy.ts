@@ -1,5 +1,6 @@
 import BackupsAction from 'cypress/support/actions/backups/BackupsAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const backups = new BackupsAction();
 
@@ -21,18 +22,18 @@ describe('Backups page', () => {
     backups.doRetrieveBackup();
   });
 
-  it('Changes shown results', () => {
-    cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/deployments`);
+  it('Changes shown backup results', () => {
+    cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/backups`);
 
-    cy.waitForNetworkIdle('@idle', 500);
-    backups.doResultsLimitedchangeCheck(10);
-    cy.waitForNetworkIdle('@idle', 500);
-    backups.doResultsLimitedchangeCheck(25);
-    cy.waitForNetworkIdle('@idle', 500);
-    backups.doResultsLimitedchangeCheck(50);
-    cy.waitForNetworkIdle('@idle', 500);
-    backups.doResultsLimitedchangeCheck(100);
-    cy.waitForNetworkIdle('@idle', 500);
-    backups.doResultsLimitedchangeCheck('all');
+
+    backups.doChangeNumberOfResults(10);
+
+    backups.doChangeNumberOfResults(25);
+
+    backups.doChangeNumberOfResults(50);
+
+    backups.doChangeNumberOfResults(100);
+
+    backups.doChangeNumberOfResults('All');
   });
 });

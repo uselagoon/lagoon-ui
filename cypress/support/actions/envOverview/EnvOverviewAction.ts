@@ -14,7 +14,7 @@ export default class EnvOverviewAction {
   doSourceCheck() {
     environment.getSource().should($anchorTag => {
       expect($anchorTag).to.have.attr('target', '_blank');
-      expect($anchorTag).to.have.attr('href', 'https:////git@example.com/lagoon-demo/tree/main');
+      expect($anchorTag).to.have.attr('href', 'https://example.com/git/lagoon-demo/tree/main');
     });
   }
 
@@ -32,7 +32,9 @@ export default class EnvOverviewAction {
 
   doDeleteEnvironment(branch: string) {
     environment.getDeleteButton().click();
-    cy.getBySel('confirm-input').type(branch);
+
+    environment.getConfirmInput().type(branch);
+
     environment.getDeleteButtonConfirm().click();
 
     cy.wait('@gqldeleteEnvironmentMutation');
@@ -47,7 +49,7 @@ export default class EnvOverviewAction {
 
     const errorMessage = `Unauthorized: You don\'t have permission to "delete:${
       branch === 'main' ? 'production' : 'development'
-    }" on "environment": {"project":18}`;
+    }" on "environment"`;
 
     cy.wait('@gqldeleteEnvironmentMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
@@ -56,8 +58,6 @@ export default class EnvOverviewAction {
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
     });
 
-    const UiError = 'GraphQL error: ' + errorMessage;
-
-    environment.getDeleteInfo().invoke('text').should('eq', UiError);
+    environment.getNotification().should('exist').should('include.text', errorMessage);
   }
 }

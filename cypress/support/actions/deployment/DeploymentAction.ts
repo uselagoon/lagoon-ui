@@ -1,14 +1,29 @@
 import DeploymentRepository from 'cypress/support/repositories/deployment/DeploymentRepository';
 
+import DeploymentsAction from '../deployments/DeploymentsAction';
+
 const deployment = new DeploymentRepository();
+const deployments = new DeploymentsAction();
 
 export default class deploymentAction {
   doCancelDeployment() {
     deployment.getCancelDeploymentBtn().first().click();
 
+    deployment.getConfirmCancelBtn().click();
+
     cy.wait('@gqlcancelDeploymentMutation');
 
-    deployment.getCancelDeploymentBtn().should('have.text', 'Cancellation requested');
+    deployment.getDeploymentRow().first().contains('Cancelled');
+  }
+
+  doFailedCancelDeployment() {
+    deployment.getCancelDeploymentBtn().first().click();
+
+    deployment.getConfirmCancelBtn().click();
+
+    cy.wait('@gqlcancelDeploymentMutation');
+
+    deployment.getNotification().should('exist').should('include.text', 'There was a problem deploying.');
   }
 
   doToggleLogViewer() {
@@ -32,16 +47,6 @@ export default class deploymentAction {
     });
   }
 
-  doFailedCancelDeployment() {
-    deployment.getCancelDeploymentBtn().click();
-
-    cy.wait('@gqlcancelDeploymentMutation');
-
-    deployment
-      .getErrorNotification()
-      .should('exist')
-      .should('include.text', 'There was a problem cancelling deployment.');
-  }
   doLogViewerCheck() {
     cy.get('body').then($body => {
       if ($body.find('.accordion-heading').length > 0) {
@@ -73,7 +78,17 @@ export default class deploymentAction {
       }
     });
   }
+
   navigateToRunningDeployment() {
-    cy.getBySel('deployment-row').getBySel('running').first().click();
+    deployments.doChangeNumberOfResults('All');
+
+    cy.getBySel('deployment-row')
+      .find('span.ant-tag')
+      .contains('Running')
+      .first()
+      .closest('[data-cy="deployment-row"]')
+      .find('a')
+      .first()
+      .click();
   }
 }
