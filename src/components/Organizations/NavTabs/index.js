@@ -1,5 +1,7 @@
 import React from 'react';
 
+import getConfig from 'next/config';
+
 import {
   BellOutlined,
   GlobalOutlined,
@@ -7,6 +9,7 @@ import {
   ReadOutlined,
   SettingOutlined,
   TeamOutlined,
+  UnorderedListOutlined,
 } from '@ant-design/icons';
 import OrgGroupsLink from 'components/link/Organizations/Groups';
 import OrgManageLink from 'components/link/Organizations/Manage';
@@ -14,8 +17,11 @@ import OrgNotificationsLink from 'components/link/Organizations/Notifications';
 import OrganizationLink from 'components/link/Organizations/Organization';
 import OrgProjectsLink from 'components/link/Organizations/Projects';
 import OrgUsersLink from 'components/link/Organizations/Users';
+import OrgVariablesLink from 'components/link/Organizations/Variables';
 
 import { StyledNavigation } from './StyledNavTabs';
+
+const { publicRuntimeConfig } = getConfig();
 
 const OrgNavTabs = ({ activeTab, organization }) => {
   return (
@@ -64,6 +70,14 @@ const OrgNavTabs = ({ activeTab, organization }) => {
           <span className="destination">Projects</span>
         </OrgProjectsLink>
       </li>
+      {publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && (
+        <li className={`variables ${activeTab == 'variables' ? 'active' : ''} linkContainer`} data-cy="envvars-tab">
+          <OrgVariablesLink organizationSlug={organization.name} className="navLink">
+            <UnorderedListOutlined className="icon" />
+            <span className="destination"> Variables</span>
+          </OrgVariablesLink>
+        </li>
+      )}
       <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} linkContainer`}>
         <OrgNotificationsLink
           orgFriendlyName={organization.friendlyName}

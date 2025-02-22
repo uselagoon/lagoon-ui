@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import getConfig from 'next/config';
+
 import {
   BellOutlined,
   GlobalOutlined,
@@ -7,9 +9,16 @@ import {
   ReadOutlined,
   SettingOutlined,
   TeamOutlined,
+  UnorderedListOutlined,
 } from '@ant-design/icons';
 
 import { StyledNavigation } from './StyledNavTabs';
+
+/* eslint-disable-next-line
+  @typescript-eslint/no-unsafe-assignment,
+  @typescript-eslint/no-unsafe-call
+*/
+const { publicRuntimeConfig } = getConfig();
 
 interface NavSkeletonProps {
   activeTab: string;
@@ -42,6 +51,17 @@ const OrgNavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab }) => (
         <span className="destination">Projects</span>
       </a>
     </li>
+    {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && (
+        <li className={`variables ${activeTab == 'variables' ? 'active' : ''} linkContainer`}>
+          <a className="navLink">
+            <UnorderedListOutlined className="icon" />
+            <span className="destination">Variables</span>
+          </a>
+        </li>
+      )
+    }
     <li className={`notifications ${activeTab == 'notifications' ? 'active' : ''} linkContainer`}>
       <a className="navLink">
         <BellOutlined className="icon" />

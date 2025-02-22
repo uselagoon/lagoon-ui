@@ -24,11 +24,13 @@ export const DeleteVariable = ({
   setClear,
   varEnvironment,
   varProject,
+  varOrganization,
   open,
   openModal,
   closeModal,
   envValues,
   prjEnvValues,
+  orgEnvValues,
   loading,
   valueState,
 }) => {
@@ -36,7 +38,7 @@ export const DeleteVariable = ({
     let waitForGQL = setTimeout(() => {
       openModal();
     }, [1000]);
-    if (prjEnvValues || envValues) {
+    if (orgEnvValues || prjEnvValues || envValues) {
       clearTimeout(waitForGQL);
       openModal();
     }
@@ -81,6 +83,7 @@ export const DeleteVariable = ({
                     variables: {
                       input: {
                         name: deleteName,
+                        organization: varOrganization,
                         project: varProject,
                         environment: varEnvironment,
                       },

@@ -173,6 +173,12 @@ app
       });
     });
 
+    server.get('/organizations/:organizationSlug/variables', (req, res) => {
+      app.render(req, res, '/organizations/variables', {
+        organizationSlug: req.params.organizationSlug,
+      });
+    });
+
     server.get('/organizations/:organizationSlug/notifications', (req, res) => {
       app.render(req, res, '/organizations/notifications', {
         organizationSlug: req.params.organizationSlug,
