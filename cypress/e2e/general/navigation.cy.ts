@@ -3,16 +3,13 @@ import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 describe('Navigation tests', () => {
   beforeEach(() => {
     cy.login(Cypress.env('user_owner'), Cypress.env('user_owner'));
+    registerIdleHandler('idle');
 
     cy.visit(Cypress.env('url'));
-
-    registerIdleHandler('idle');
   });
 
   it('Checks navigation to settings, organizations and projects pages', () => {
     context('Navigates from /projects to /settings', () => {
-      
-      cy.waitForNetworkIdle('@idle', 500);
       cy.getBySel('user-name').realHover();
 
       cy.getBySel('nav-settings').click();
@@ -33,13 +30,12 @@ describe('Navigation tests', () => {
     });
 
     context('Navigates from /projects to /account', () => {
-
       cy.waitForNetworkIdle('@idle', 500);
       cy.getBySel('user-name').realHover();
 
       cy.getBySel('nav-account').invoke('removeAttr', 'target').click();
 
-      const redirect = `${Cypress.env('keycloak')}/auth/realms/lagoon/account/`;
+      const redirect = `${Cypress.env('keycloak')}/auth/realms/lagoon/account`;
 
       cy.location('href').should('eq', redirect);
     });

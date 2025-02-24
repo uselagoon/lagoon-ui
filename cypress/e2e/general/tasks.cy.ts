@@ -60,7 +60,7 @@ describe('Tasks page', () => {
     tasks.doLoginLinkTask();
   });
   
-  it.only('Runs maintainer task', () => {
+  it('Runs maintainer task', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/tasks`);
 
     cy.waitForNetworkIdle('@idle', 500);

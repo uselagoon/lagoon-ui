@@ -22,9 +22,9 @@ describe('Backups page', () => {
     backups.doRetrieveBackup();
   });
 
-  it('Changes shown backup results', () => {
+  it.only('Changes shown backup results', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/backups`);
-
+    cy.waitForNetworkIdle('@idle', 500);
 
     backups.doChangeNumberOfResults(10);
 

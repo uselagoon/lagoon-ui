@@ -179,7 +179,7 @@ const InvokeRegisteredTask: FC<Props> = ({ environment, advancedTask, refetch })
         </>
       )) || (
         <Button
-          testId="run-task"
+          testId="task-btn"
           className="task-btn"
           size="middle"
           disabled={(taskArgumentsExist && !argumentVariablesHaveValues) || loading}

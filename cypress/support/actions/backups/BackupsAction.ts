@@ -17,10 +17,13 @@ export default class BackupsAction {
       .should('have.length', 4)
       .each(($row, idx) => {
         if (idx < 3) {
-          cy.wrap($row)
-            .getBySel('download')
-            .should('exist')
-            .contains(/Retrieving ...|Retrieve/);
+          cy.wrap($row).then($el => {
+            const retrieveButton = $el.find('[data-cy="retrieve"]');
+            const retrievingButton = $el.find('[data-cy="retrieving"]');
+
+            // one or the other type of buttons exist
+            expect(retrieveButton.length + retrievingButton.length).to.be.greaterThan(0);
+          });
         }
       });
   }

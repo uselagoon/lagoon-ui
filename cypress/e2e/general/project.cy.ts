@@ -32,7 +32,7 @@ describe('Project page', () => {
     project.doEnvRouteCheck();
   });
 
-  it.only('Creates a dummy environment', () => {
+  it('Creates a dummy environment', () => {
     cy.visit(`${Cypress.env('url')}/projects/lagoon-demo`);
 
     project.doCreateDummyEnv();

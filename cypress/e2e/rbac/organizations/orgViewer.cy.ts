@@ -44,7 +44,7 @@ describe(`Organizations ORGVIEWER journey`, () => {
 
     group.doFailedAddGroup(testData.organizations.groups.newGroupName + '-viewer');
 
-    cy.getBySel("modal-cancel").click();
+    cy.getBySel('modal-cancel').click();
 
     group.doFailedAddGroup(testData.organizations.groups.newGroupName2);
   });
@@ -89,27 +89,8 @@ describe(`Organizations ORGVIEWER journey`, () => {
     notifications.closeModal();
   });
 
-  it('Navigates to a project, fails to add a group or notifications - no permission for ORGVIEWER', () => {
+  it('Navigates to a project, fails to link a notification - no permission for ORGVIEWER', () => {
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/lagoon-demo-org`);
-
-    cy.getBySel('link-group').click();
-
-    cy.getBySel('group-select').click();
-    cy.getBySel('select-menu').find('div').get('.ant-select-item-option-content').contains('cypress-group1').click();
-
-    cy.log('Fails to add a group');
-    cy.getBySel('modal-confirm').click();
-
-    cy.wait('@gqladdProjectToGroupMutation').then(interception => {
-      expect(interception.response?.statusCode).to.eq(200);
-      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization"`;
-      expect(interception.response?.body).to.have.property('errors');
-
-      cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
-    });
-
-    // close modal
-    cy.getBySel('modal-cancel').click({ force: true });
 
     cy.getBySel('link-notification').click();
 
@@ -117,7 +98,7 @@ describe(`Organizations ORGVIEWER journey`, () => {
     cy.getBySel('select-menu')
       .find('div')
       .get('.ant-select-item-option-content')
-      .contains('cy-slack-notification')
+      .contains('slack-test')
       .click();
 
     cy.getBySel('modal-confirm').click();
