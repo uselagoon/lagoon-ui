@@ -1,6 +1,7 @@
 import { testData } from 'cypress/fixtures/variables';
 import NotificationsAction from 'cypress/support/actions/organizations/NotificationsAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const notifications = new NotificationsAction();
 
@@ -26,18 +27,22 @@ describe('Org Notifications page', () => {
 
     notifications.doAddNotification('slack', slackData);
   });
+
   it('Adds Rocketchat notification', () => {
     const rocketData = testData.organizations.notifications.rocketChat;
     notifications.doAddNotification('rocketChat', rocketData);
   });
+
   it('Adds Teams notification', () => {
     const teamsData = testData.organizations.notifications.teams;
     notifications.doAddNotification('teams', teamsData);
   });
+
   it('Adds Email notification', () => {
     const emailData = testData.organizations.notifications.email;
     notifications.doAddNotification('email', emailData);
   });
+
   it('Adds Webhook notification', () => {
     const webhookData = testData.organizations.notifications.webhook;
     notifications.doAddNotification('webhook', webhookData);

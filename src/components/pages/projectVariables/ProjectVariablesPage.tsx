@@ -69,7 +69,7 @@ export default function ProjectVariablesPage({
       <Fragment key="projectVarsError-notification-holder"> {projectVarsError.contextHolder}</Fragment>
       <Head2>Project variables</Head2>
 
-      <Button testId='var-visibility-toggle' size="middle" loading={prjLoading} onClick={handleShowProjectVars}>
+      <Button testId="var-visibility-toggle" size="middle" loading={prjLoading} onClick={handleShowProjectVars}>
         {projectVarsVisible ? 'Hide values' : 'Show values'}
       </Button>
 

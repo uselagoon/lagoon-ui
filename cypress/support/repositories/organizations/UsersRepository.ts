@@ -1,27 +1,36 @@
 export default class UsersRepository {
   getAddUserBtn() {
-    return cy.getBySel('addUser');
+    return cy.getBySel('add-user');
   }
   getAddUserEmail() {
-    return cy.getBySel('addUserEmail');
+    return cy.getBySel('user-email');
   }
-  getAddUserGroup() {
-    cy.get('.react-select__indicator').first().click({ force: true });
-    cy.get('#react-select-2-option-0').click();
+  addUserToGroup() {
+    cy.getBySel('group-select').click();
+    this.getResultMenu()
+      .find('div')
+      .get('.ant-select-item-option-content')
+      .contains('lagoon-demo-organization-group')
+      .click();
   }
-  getAddUserRole() {
-    cy.get('.react-select__indicator').eq(1).click({ force: true });
-    cy.get('#react-select-3-option-0').click();
+  addUserRole() {
+    cy.getBySel('role-select').click();
+
+    this.getResultMenu().find('div').get('.ant-select-item-option-content').contains('Reporter').click();
   }
 
-  getAddUserConfirm() {
-    return cy.getBySel('addUserConfirm');
+  getDeleteBtnByEmail(email: string) {
+    return this.getRows().contains(email).closest('[data-cy="user-row"]').find('[data-cy="delete-dialog"]');
   }
+  getConfirmBtn() {
+    return cy.getBySel('modal-confirm');
+  }
+
   getRows() {
-    return cy.getBySel('table-row');
+    return cy.getBySel('user-row');
   }
 
-  getConfirmDeleteBtn() {
-    return cy.getBySel('confirmDeletion');
+  getResultMenu() {
+    return cy.getBySel('select-menu');
   }
 }

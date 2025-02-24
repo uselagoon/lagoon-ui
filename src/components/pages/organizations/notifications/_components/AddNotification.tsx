@@ -147,7 +147,7 @@ export const AddNotification: FC<AddNotificationProps> = ({ orgId, refetch }) =>
   return (
     <>
       <Tooltip placement="bottom" title="Add a new notification">
-        <CreateButton $variant="small" onClick={openModal}>
+        <CreateButton data-cy="add-notification" $variant="small" onClick={openModal}>
           <PlusOutlined className="icon" /> <span className="text">Add Notification</span>
         </CreateButton>
       </Tooltip>
@@ -170,6 +170,7 @@ export const AddNotification: FC<AddNotificationProps> = ({ orgId, refetch }) =>
               <div className="wrap">
                 <FormItem name="notification_type" label="Select Service" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="notification-type"
                     options={newNotificationOptions}
                     placeholder="Make a selection"
                     defaultOpen={false}
@@ -184,14 +185,14 @@ export const AddNotification: FC<AddNotificationProps> = ({ orgId, refetch }) =>
 
               <div className="wrap">
                 <FormItem name="name" label="Name" rules={[{ required: true, message: '' }]}>
-                  <Input placeholder="Enter notification name" required />
+                  <Input data-cy="notification-name" placeholder="Enter notification name" required />
                 </FormItem>
               </div>
 
               {newNotificationType === 'email' ? (
                 <div className="wrap">
                   <FormItem name="email" label="Email Address" rules={[{ required: true, message: '', type: 'email' }]}>
-                    <Input placeholder="Enter email" required />
+                    <Input data-cy="notification-email" placeholder="Enter email" required />
                   </FormItem>
                 </div>
               ) : null}
@@ -199,7 +200,7 @@ export const AddNotification: FC<AddNotificationProps> = ({ orgId, refetch }) =>
               {newNotificationType && newNotificationType !== 'email' ? (
                 <div className="wrap">
                   <FormItem name="webhook" label="Webhook" rules={[{ required: true, message: '' }]}>
-                    <Input placeholder="Enter Webhook" required />
+                    <Input data-cy="notification-webhook" placeholder="Enter Webhook" required />
                   </FormItem>
                 </div>
               ) : null}
@@ -207,7 +208,7 @@ export const AddNotification: FC<AddNotificationProps> = ({ orgId, refetch }) =>
               {newNotificationType === 'slack' || newNotificationType === 'rocketchat' ? (
                 <div className="wrap">
                   <FormItem name="channel" label="Channel" rules={[{ required: true, message: '' }]}>
-                    <Input placeholder="Enter channel" required />
+                    <Input data-cy="notification-channel" placeholder="Enter channel" required />
                   </FormItem>
                 </div>
               ) : null}

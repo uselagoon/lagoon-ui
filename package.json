@@ -9,6 +9,7 @@
     "dev": "next dev -p 3003",
     "build": "next build",
     "start": "next start -p 3000",
+    "start:cypress": "next start -H 0.0.0.0 -p 3000",
     "lint": "tsc && eslint -- src/",
     "generateTourHash": "node tourHash.js",
     "storybook": "storybook dev -p 6006",

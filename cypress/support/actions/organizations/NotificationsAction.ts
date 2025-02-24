@@ -33,27 +33,17 @@ export default class NotificationsAction {
   doAddNotification(notifType: keyof typeof notifMap, notificationData: NotificationData) {
     const fieldsToFill = notifMap[notifType];
 
-    const optionIndexMap = {
-      slack: 0,
-      rocketChat: 1,
-      email: 2,
-      teams: 3,
-      webhook: 4,
-    };
+    notificationRepo.getAddNotification().click();
 
-    notificationRepo.getAddNotification().click({ force: true });
-    cy.get('.react-select__indicator').click({ force: true });
+    notificationRepo.getNotificationSelect().click();
 
-    // Select the option based on the mapping
-    cy.get(`[id^="react-select-"][id$=-option-${optionIndexMap[notifType]}]`).click();
-
-    // const data = testData.organizations.notifications[notifType];
+    notificationRepo.getNotificationSelectOption(notifType).click();
 
     fieldsToFill.forEach(field => {
-      cy.get(`.input${field.charAt(0).toUpperCase() + field.slice(1)}`).type(notificationData[field]);
+      cy.getBySel(`notification-${field}`).type(notificationData[field as keyof NotificationData] || '');
     });
 
-    cy.getBySel('addNotifBtn').click();
+    cy.getBySel('modal-confirm').click();
 
     cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`);
 
@@ -64,32 +54,24 @@ export default class NotificationsAction {
   doFailedAddNotification(notifType: keyof typeof notifMap, notificationData: NotificationData) {
     const fieldsToFill = notifMap[notifType];
 
-    const optionIndexMap = {
-      slack: 0,
-      rocketChat: 1,
-      email: 2,
-      teams: 3,
-      webhook: 4,
-    };
-
     notificationRepo.getAddNotification().click();
-    cy.get('.react-select__indicator').click({ force: true });
+
+    notificationRepo.getNotificationSelect().click();
 
     // Select the option based on the mapping
-    cy.get(`[id^="react-select-"][id$=-option-${optionIndexMap[notifType]}]`).click();
 
-    // const data = testData.organizations.notifications[notifType];
+    notificationRepo.getNotificationSelectOption(notifType).click();
 
     fieldsToFill.forEach(field => {
-      cy.get(`.input${field.charAt(0).toUpperCase() + field.slice(1)}`).type(notificationData[field]);
+      cy.getBySel(`notification-${field}`).type(notificationData[field as keyof NotificationData] || '');
     });
 
-    cy.getBySel('addNotifBtn').click();
+    cy.getBySel('modal-confirm').click();
 
     cy.wait(`@gqladdNotification${getMutationName(notifType)}Mutation`).then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = `Unauthorized: You don't have permission to "addNotification" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addNotification" on "organization"`;
 
       expect(interception.response?.body).to.have.property('errors');
 
@@ -104,23 +86,24 @@ export default class NotificationsAction {
 
     notificationRepo.getEditBtn(slackName).click();
 
-    cy.getBySel('notification-name').first().type('-edited', { force: true });
-    cy.getBySel('input-webhook').first().type('-edited', { force: true });
+    cy.getBySel('notification-name').first().type('-edited');
+    cy.getBySel('notification-webhook').first().type('-edited');
 
-    cy.getBySel('continueEdit').first().click({ force: true });
+    notificationRepo.getModalConfirm().click();
 
     cy.wait(`@gqlUpdateNotificationSlackMutation`);
 
     cy.getBySel('notification-row').should('include.text', `${slackName}-edited`);
   }
+
   doDeleteNotification(notification: string) {
     notificationRepo.getNotificationDelete(notification).click();
 
-    cy.getBySel('confirmDelete').click();
+    notificationRepo.getModalConfirm().click();
 
     cy.getBySel('notification-row').should('not.have.text', notification);
   }
   closeModal() {
-    cy.getBySel('cancel').click();
+    cy.getBySel('modal-cancel').click();
   }
 }

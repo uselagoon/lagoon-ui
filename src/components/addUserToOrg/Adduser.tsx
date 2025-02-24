@@ -125,7 +125,7 @@ export const AddUser: FC<Props> = props => {
   return (
     <>
       <CreateButton $variant={props.variant} onClick={openModal}>
-        <PlusOutlined className="icon" /> <span className="text">Add user</span>
+        <PlusOutlined data-cy="add-user" className="icon" /> <span className="text">Add user</span>
       </CreateButton>
       <Modal
         title={<EditModalTitle>Add users</EditModalTitle>}
@@ -150,13 +150,14 @@ export const AddUser: FC<Props> = props => {
             <div className="addFields">
               <div className="wrap">
                 <FormItem name="email" label="New user email" rules={[{ required: true, message: '' }]}>
-                  <Input placeholder="Enter email" required />
+                  <Input data-cy="user-email" placeholder="Enter email" required />
                 </FormItem>
               </div>
 
               <div className="wrap">
                 <FormItem name="group" label="Add to a Group" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="group-select"
                     options={groupSelectOptions}
                     placeholder="Select a group"
                     defaultOpen={false}
@@ -171,6 +172,7 @@ export const AddUser: FC<Props> = props => {
               <div className="wrap">
                 <FormItem name="role" label="Add a role" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="role-select"
                     options={orgUserRoleOptions}
                     placeholder="Add a role for this user"
                     defaultOpen={false}

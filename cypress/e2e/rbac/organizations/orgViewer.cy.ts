@@ -3,7 +3,8 @@ import GroupAction from 'cypress/support/actions/organizations/GroupsAction';
 import NotificationsAction from 'cypress/support/actions/organizations/NotificationsAction';
 import OverviewAction from 'cypress/support/actions/organizations/OverviewAction';
 import ProjectsActions from 'cypress/support/actions/organizations/ProjectsActions';
-import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation, aliasQuery } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const overview = new OverviewAction();
 const group = new GroupAction();
@@ -38,13 +39,14 @@ describe(`Organizations ORGVIEWER journey`, () => {
   it('Navigates to groups and fails to create a one - no permission for ORGVIEWER', () => {
     cy.waitForNetworkIdle('@idle', 500);
 
-    cy.get('.groups').click();
+    cy.getBySel('nav-groups').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
-    group.doFailedAddGroup(
-      testData.organizations.groups.newGroupName + '-viewer',
-      testData.organizations.groups.newGroupName2
-    );
+    group.doFailedAddGroup(testData.organizations.groups.newGroupName + '-viewer');
+
+    cy.getBySel("modal-cancel").click();
+
+    group.doFailedAddGroup(testData.organizations.groups.newGroupName2);
   });
 
   it('Navigates to projects and fails to create a new one - no permission for ORGVIEWER', () => {
@@ -55,9 +57,8 @@ describe(`Organizations ORGVIEWER journey`, () => {
 
     cy.waitForNetworkIdle('@idle', 500);
 
-    cy.get('.projects').click();
+    cy.getBySel('nav-org-projects').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/projects');
-    cy.waitForNetworkIdle('@projectsQuery', 1000);
 
     project.doFailedaddProject(testData.organizations.project);
   });
@@ -74,10 +75,8 @@ describe(`Organizations ORGVIEWER journey`, () => {
 
     registerIdleHandler('notificationsQuery');
 
-    cy.waitForNetworkIdle('@idle', 500);
-    cy.get('.notifications').click();
+    cy.getBySel('nav-notifications').click();
     cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/notifications');
-    cy.waitForNetworkIdle('@notificationsQuery', 1000);
 
     const { slack: slackData, email: emailData, webhook: webhookData } = testData.organizations.notifications;
 
@@ -93,35 +92,39 @@ describe(`Organizations ORGVIEWER journey`, () => {
   it('Navigates to a project, fails to add a group or notifications - no permission for ORGVIEWER', () => {
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/lagoon-demo-org`);
 
-    cy.getBySel('addGroupToProject').click();
+    cy.getBySel('link-group').click();
 
-    cy.get('.react-select__indicator').click({ force: true });
-    cy.get('#react-select-2-option-0').click();
+    cy.getBySel('group-select').click();
+    cy.getBySel('select-menu').find('div').get('.ant-select-item-option-content').contains('cypress-group1').click();
 
-    cy.log('Fail to add notifications');
-    cy.getBySel('addGroupToProjectConfirm').click();
+    cy.log('Fails to add a group');
+    cy.getBySel('modal-confirm').click();
 
     cy.wait('@gqladdProjectToGroupMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
-      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization"`;
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
     });
 
     // close modal
-    cy.get('.modal__overlay').click({ force: true });
+    cy.getBySel('modal-cancel').click({ force: true });
 
-    cy.getBySel('addNotificationToProject').click();
+    cy.getBySel('link-notification').click();
 
-    cy.get('[class$=control]').click({ force: true });
-    cy.get('#react-select-3-option-0').click();
+    cy.getBySel('notification-select').click();
+    cy.getBySel('select-menu')
+      .find('div')
+      .get('.ant-select-item-option-content')
+      .contains('cy-slack-notification')
+      .click();
 
-    cy.getBySel('addNotificationToProjectConfirm').click();
+    cy.getBySel('modal-confirm').click();
 
     cy.wait('@gqladdNotificationToProjectMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
-      const errorMessage = `Unauthorized: You don't have permission to "addNotification" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addNotification" on "organization"`;
 
       expect(interception.response?.body).to.have.property('errors');
 

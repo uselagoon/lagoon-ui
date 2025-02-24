@@ -36,7 +36,9 @@ export default class DeploymentsAction {
 
     cy.wait('@gqldeployEnvironmentLatestMutation');
 
-    deployments.getNotification().should('exist').should('include.text', 'There was a problem deploying.');
+    const errorMessage = /Deployment failedUnauthorized: You don't have permission to "deploy:.*" on "environment"/;
+
+    deployments.getNotification().should('exist').invoke('text').should('match', errorMessage);
   }
 
   doChangeNumberOfResults(val: string | number) {

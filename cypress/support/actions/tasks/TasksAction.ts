@@ -7,7 +7,6 @@ export default class TasksAction {
     tasks.getCancelBtn().first().click();
 
     cy.wait('@gqlcancelTaskMutation');
-
   }
 
   doCacheClearTask() {
@@ -39,13 +38,21 @@ export default class TasksAction {
   }
   doFailedDbBackupTask() {
     tasks.getTaskSelector(4).click();
+
+    cy.getBySel('source-env').click();
+
+    cy.getBySel('select-menu')
+      .find('div')
+      .get('.ant-select-item-option-content')
+      .contains('dev')
+      .click({ force: true });
+
     tasks.getRunTaskBtn().click();
 
-    cy.wait('@gqltaskDrushSqlDumpMutation').then(interception => {
+    cy.wait('@gqltaskDrushRsyncFilesMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushSqlDump:production" on "task"';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "drushRsync:source:development" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -63,11 +70,10 @@ export default class TasksAction {
     tasks.getTaskSelector(5).click();
     tasks.getRunTaskBtn().click();
 
-    cy.wait('@gqltaskDrushArchiveDumpMutation').then(interception => {
+    cy.wait('@gqltaskDrushSqlDumpMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushArchiveDump:production" on "task"';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "drushSqlDump:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -75,20 +81,19 @@ export default class TasksAction {
   }
 
   doLoginLinkTask() {
-    tasks.getTaskSelector(6).click();
+    tasks.getTaskSelector(7).click();
     tasks.getRunTaskBtn().click();
 
     tasks.getTaskConfirmed();
   }
   doFailedLoginLinkTask() {
-    tasks.getTaskSelector(6).click();
+    tasks.getTaskSelector(7).click();
     tasks.getRunTaskBtn().click();
 
     cy.wait('@gqltaskDrushUserLoginMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage =
-        'Unauthorized: You don\'t have permission to "drushUserLogin:production" on "task"';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "drushUserLogin:production" on "task"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -111,7 +116,7 @@ export default class TasksAction {
   }
 
   doFailedTaskCancellation() {
-    tasks.getCancelBtn().click();
+    tasks.getCancelBtn().first().click();
 
     cy.wait('@gqlcancelTaskMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);

@@ -170,9 +170,10 @@ describe('DEVELOPER permission test suites', () => {
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'cancelDeployment');
       });
-      cy.waitForNetworkIdle('@idle', 500);
 
       deployment.navigateToRunningDeployment();
+      cy.waitForNetworkIdle('@idle', 2000);
+
       deployment.doFailedCancelDeployment();
     });
   });

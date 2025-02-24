@@ -60,7 +60,7 @@ export default class OverviewAction {
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = 'Unauthorized: You don\'t have permission to "updateOrganization" on "organization": 1';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "updateOrganization" on "organization"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -92,7 +92,7 @@ export default class OverviewAction {
     cy.wait('@gqlupdateOrganizationFriendlyNameMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = 'Unauthorized: You don\'t have permission to "updateOrganization" on "organization": 1';
+      const errorMessage = 'Unauthorized: You don\'t have permission to "updateOrganization" on "organization"';
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });

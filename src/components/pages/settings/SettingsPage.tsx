@@ -47,7 +47,7 @@ const SettingsPage = ({ queryRef }: { queryRef: QueryRef<SettingsData> }) => {
         },
       });
     } catch (err) {
-      console.warn(err);
+      console.error(err);
       trigger({ content: (err as ApolloError).message, title: 'There was a problem deleting SSH key' });
     }
   };
@@ -66,7 +66,7 @@ const SettingsPage = ({ queryRef }: { queryRef: QueryRef<SettingsData> }) => {
         },
       });
     } catch (err) {
-      console.warn(err);
+      console.error(err);
       trigger({ content: (err as ApolloError).message, title: 'There was a problem updating SSH key' });
     }
   };
@@ -87,7 +87,7 @@ const SettingsPage = ({ queryRef }: { queryRef: QueryRef<SettingsData> }) => {
         refetchQueries: [Me],
       });
     } catch (err) {
-      console.warn(err);
+      console.error(err);
       trigger({ content: (err as ApolloError).message, title: 'There was a problem adding a new SSH key' });
     }
   };

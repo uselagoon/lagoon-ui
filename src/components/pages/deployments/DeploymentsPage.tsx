@@ -96,7 +96,7 @@ export default function DeploymentsPage({
 
       <DeploymentsFilters>
         <Select
-          data-cy='select-results'
+          data-cy="select-results"
           options={deploymentResultOptions}
           value={results}
           defaultOpen={false}
@@ -106,7 +106,7 @@ export default function DeploymentsPage({
           }}
         />
         <Select
-          data-cy='select-status'
+          data-cy="select-status"
           options={statusOptions}
           defaultOpen={false}
           value={status}

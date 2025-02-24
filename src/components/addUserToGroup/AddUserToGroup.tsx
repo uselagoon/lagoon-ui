@@ -101,11 +101,11 @@ export const AddUserToGroup: FC<Props> = ({ groupName, variant, refetch }) => {
     <>
       {variant === 'icon' ? (
         <Tooltip placement="bottom" title="Add a user to the group">
-          <UserAddOutlined onClick={openModal} />
+          <UserAddOutlined data-cy="add-user" onClick={openModal} />
         </Tooltip>
       ) : (
         <Tooltip placement="bottom" title="Add a user to the group">
-          <CreateButton $variant="small" onClick={openModal}>
+          <CreateButton data-cy="add-user" $variant="small" onClick={openModal}>
             <PlusOutlined className="icon" /> <span className="text">Add user</span>
           </CreateButton>
         </Tooltip>
@@ -134,13 +134,14 @@ export const AddUserToGroup: FC<Props> = ({ groupName, variant, refetch }) => {
             <div className="addFields">
               <div className="wrap">
                 <FormItem name="email" label="New user email" rules={[{ required: true, message: '' }]}>
-                  <Input placeholder="Enter email" required />
+                  <Input data-cy="user-email" placeholder="Enter email" required />
                 </FormItem>
               </div>
 
               <div className="wrap">
                 <FormItem name="role" label="Add a role" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="user-role"
                     options={orgUserRoleOptions}
                     placeholder="Add a role for this user"
                     defaultOpen={false}

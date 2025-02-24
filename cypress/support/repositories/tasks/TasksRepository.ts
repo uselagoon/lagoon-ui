@@ -32,7 +32,7 @@ export default class TasksRepository {
   }
 
   getRunTaskBtn() {
-    return cy.get('.task-btn');
+    return cy.getBySel('task-btn');
   }
 
   getTaskConfirmed() {

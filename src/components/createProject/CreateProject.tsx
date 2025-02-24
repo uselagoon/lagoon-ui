@@ -108,7 +108,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
   return (
     <>
       <CreateButton $variant={variant} onClick={openModal}>
-        <PlusOutlined className="icon" /> <span className="text">Create a new project</span>
+        <PlusOutlined data-cy="create-project" className="icon" /> <span className="text">Create a new project</span>
       </CreateButton>
       <Modal
         title={<EditModalTitle>Create a project</EditModalTitle>}
@@ -142,7 +142,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
               <section className="addprojectfields">
                 <div className="wrap">
                   <FormItem name="projectName" label="Project name" rules={[{ required: true, message: '' }]}>
-                    <Input placeholder="Enter a project name" required />
+                    <Input data-cy="project-name" placeholder="Enter a project name" required />
                   </FormItem>
                 </div>
 
@@ -163,19 +163,20 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                     }
                     rules={[{ required: true, message: '' }]}
                   >
-                    <Input placeholder="Enter the URL" required />
+                    <Input data-cy="git-url" placeholder="Enter the URL" required />
                   </FormItem>
                 </div>
 
                 <div className="wrap">
                   <FormItem name="prodEnv" label="Production environment" rules={[{ required: true, message: '' }]}>
-                    <Input placeholder="Enter prod environment" required />
+                    <Input data-cy="prod-environment" placeholder="Enter prod environment" required />
                   </FormItem>
                 </div>
 
                 <div className="wrap">
                   <FormItem name="deployTarget" label="Deploy Target" rules={[{ required: true, message: '' }]}>
                     <Select
+                      data-cy="select-scope"
                       options={options}
                       placeholder="Select variable scope"
                       defaultOpen={false}
@@ -219,7 +220,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                       </LabelTooltip>
                     }
                   >
-                    <Input placeholder="Branches" />
+                    <Input data-cy="branches" placeholder="Branches" />
                   </FormItem>
                 </div>
 
@@ -253,7 +254,7 @@ export const CreateProject: FC<Props> = ({ organizationId, options, refetch, var
                       </LabelTooltip>
                     }
                   >
-                    <Input placeholder="Pull requests" />
+                    <Input data-cy="pull-requests" placeholder="Pull requests" />
                   </FormItem>
                 </div>
 

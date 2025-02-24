@@ -6,7 +6,11 @@ export default class ManageAction {
   doAddOrgViewer(viewerUser: string) {
     manageRepo.getAddUserBtn().click();
     manageRepo.getUserEmailField().type(viewerUser);
-    manageRepo.getSubmitBtn().click();
+
+    manageRepo.getUserRoleDropdown().click();
+    manageRepo.getUserViewerRoleOption().click();
+
+    manageRepo.getConfirmBtn().click();
 
     cy.wait('@gqlAddUserToOrganizationMutation');
 
@@ -17,36 +21,36 @@ export default class ManageAction {
   }
 
   doEditOrgViewerToAdmin(user: string) {
-    manageRepo.getUserRows().contains(user).parents('.tableRow').find('.link').click();
+    manageRepo.getUserByRow(user).find('[data-cy="update-user"]').click();
 
     // admin
-    manageRepo.getUserRoleDropdown().click({ force: true });
+    manageRepo.getUserRoleDropdown().click();
     manageRepo.getUserAdminRoleOption().click();
 
-    manageRepo.getUpdateBtn().click();
+    manageRepo.getConfirmBtn().click();
 
     cy.wait('@gqlAddUserToOrganizationMutation');
 
-    manageRepo.getUserRows().contains(user).parents('.tableRow').find(':contains("ORG ADMIN")').should('exist');
+    manageRepo.getUserByRow(user).find('div').contains('admin').should('exist');
   }
 
   doEditOrgViewerToOwner(user: string) {
-    manageRepo.getUserRows().contains(user).parents('.tableRow').find('.link').click();
+    manageRepo.getUserByRow(user).find('[data-cy="update-user"]').click();
 
     // owner
-    manageRepo.getUserRoleDropdown().click({ force: true });
+    manageRepo.getUserRoleDropdown().click();
     manageRepo.getUserOwnerRoleOption().click();
 
-    manageRepo.getUpdateBtn().click();
+    manageRepo.getConfirmBtn().click();
 
     cy.wait('@gqlAddUserToOrganizationMutation');
 
-    manageRepo.getUserRows().contains(user).parents('.tableRow').find(':contains("ORG OWNER")').should('exist');
+    manageRepo.getUserByRow(user).find('div').contains('owner').should('exist');
   }
 
   doDeleteUser(user: string) {
-    manageRepo.getUserRows().contains(user).parents('.tableRow').find("[aria-label='delete']").click();
+    manageRepo.getUserToDelete(user).click();
 
-    manageRepo.getDeleteConfirmBtn().click();
+    manageRepo.getConfirmBtn().click();
   }
 }

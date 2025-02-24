@@ -98,7 +98,7 @@ export const AddGroupToProject: FC<Props> = ({ projectName, groups, refetch }) =
     <>
       <Tooltip placement="bottom" title="Link a group to this project">
         <CreateButton $variant="small" onClick={openModal}>
-          <PlusOutlined className="icon" /> <span className="text">Link group</span>
+          <PlusOutlined data-cy="link-group" className="icon" /> <span className="text">Link group</span>
         </CreateButton>
       </Tooltip>
 
@@ -127,6 +127,7 @@ export const AddGroupToProject: FC<Props> = ({ projectName, groups, refetch }) =
               <div className="wrap">
                 <FormItem name="group" label="Group" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="group-select"
                     options={groupOptions}
                     placeholder="Select a group to link to this project"
                     defaultOpen={false}

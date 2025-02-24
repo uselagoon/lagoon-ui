@@ -133,7 +133,7 @@ export const AddNotificationToProject: FC<Props> = ({
     <>
       <Tooltip placement="bottom" title="Link a notification to this project">
         <CreateButton $variant="small" onClick={openModal}>
-          <PlusOutlined className="icon" /> <span className="text">Link notification</span>
+          <PlusOutlined data-cy="link-notification" className="icon" /> <span className="text">Link notification</span>
         </CreateButton>
       </Tooltip>
 
@@ -162,6 +162,7 @@ export const AddNotificationToProject: FC<Props> = ({
               <div className="wrap">
                 <FormItem name="notification" label="Notification" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="notification-select"
                     options={notificationOptions}
                     placeholder="Select a notification to link"
                     defaultOpen={false}

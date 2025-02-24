@@ -44,7 +44,7 @@ export default class EnvOverviewAction {
 
   doDeleteEnvironmentError(branch: string) {
     environment.getDeleteButton().click();
-    cy.getBySel('confirm-input').type(branch);
+    environment.getConfirmInput().type(branch);
     environment.getDeleteButtonConfirm().click();
 
     const errorMessage = `Unauthorized: You don\'t have permission to "delete:${

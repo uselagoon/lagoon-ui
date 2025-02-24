@@ -168,9 +168,10 @@ describe('GUEST permission test suites', () => {
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'cancelDeployment');
       });
-      cy.waitForNetworkIdle('@idle', 500);
 
       deployment.navigateToRunningDeployment();
+      cy.waitForNetworkIdle('@idle', 2000);
+
       deployment.doFailedCancelDeployment();
     });
   });
@@ -182,10 +183,9 @@ describe('GUEST permission test suites', () => {
 
       cy.waitForNetworkIdle('@idle', 500);
 
-      const errMessage =
-        'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup"';
+      const errMessage = 'Unauthorized: You don\'t have permission to "view" on "backup"';
 
-      cy.get('main').should('exist').find('p').should('exist').and('have.text', errMessage);
+      cy.get('p').should('exist').and('contain', errMessage);
     });
   });
 
@@ -223,7 +223,7 @@ describe('GUEST permission test suites', () => {
       registerIdleHandler('idle');
 
       cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'taskDrushSqlDump');
+        aliasMutation(req, 'taskDrushRsyncFiles');
       });
       cy.waitForNetworkIdle('@idle', 500);
 
@@ -235,7 +235,7 @@ describe('GUEST permission test suites', () => {
       registerIdleHandler('idle');
 
       cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'taskDrushArchiveDump');
+        aliasMutation(req, 'taskDrushSqlDump');
       });
       cy.waitForNetworkIdle('@idle', 500);
 

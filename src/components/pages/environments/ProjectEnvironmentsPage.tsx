@@ -8,10 +8,8 @@ import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
-import { CardView } from './_components/CardView';
 import { TableView } from './_components/TableView';
 import { envFilterValues } from './_components/filterValues';
-import { StyledGridIcon, StyledListIcon, StyledToggle } from './styles';
 
 export default function ProjectEnvironmentsPage({
   queryRef,

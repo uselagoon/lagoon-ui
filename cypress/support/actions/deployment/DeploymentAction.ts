@@ -23,7 +23,9 @@ export default class deploymentAction {
 
     cy.wait('@gqlcancelDeploymentMutation');
 
-    deployment.getNotification().should('exist').should('include.text', 'There was a problem deploying.');
+    const errorMessage = `Unauthorized: You don't have permission to "cancel" on "deployment"`;
+    
+    deployment.getNotification().should('exist').should('include.text', errorMessage);
   }
 
   doToggleLogViewer() {

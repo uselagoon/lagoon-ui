@@ -9,35 +9,33 @@ type ProjectData = {
 };
 export default class ProjectsActions {
   doAddProject(projectData: ProjectData) {
-    projects.getAddBtn().click({ force: true });
-    projects.getName().type(projectData.projectName);
-    projects.getGit().type(projectData.gitUrl);
+    projects.getAddBtn().click();
 
-    projects.getEnv().type(projectData.prodEnv);
-
+    projects.getNameInput().type(projectData.projectName);
+    projects.getGitInput().type(projectData.gitUrl);
+    projects.getEnvInput().type(projectData.prodEnv);
     projects.selectTarget();
 
-    projects.getAddConfirm().click({ force: true });
+    projects.getConfirmBtn().click();
 
     cy.wait('@gqladdProjectToOrganizationMutation');
 
     projects.getProjectRows().contains(projectData.projectName).should('exist');
   }
   doFailedaddProject(projectData: ProjectData) {
-    projects.getAddBtn().click({ force: true });
-    projects.getName().type(projectData.projectName);
-    projects.getGit().type(projectData.gitUrl);
+    projects.getAddBtn().click();
 
-    projects.getEnv().type(projectData.prodEnv);
-
+    projects.getNameInput().type(projectData.projectName);
+    projects.getGitInput().type(projectData.gitUrl);
+    projects.getEnvInput().type(projectData.prodEnv);
     projects.selectTarget();
 
-    projects.getAddConfirm().click({ force: true });
+    projects.getConfirmBtn().click();
 
     cy.wait('@gqladdProjectToOrganizationMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = `Unauthorized: You don't have permission to "addProject" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addProject" on "organization"`;
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -46,13 +44,9 @@ export default class ProjectsActions {
   doDeleteProject(projectName: string) {
     projects.getDeleteBtn(projectName).click();
 
-    cy.get('.highlight')
-      .invoke('text')
-      .then(highlightText => {
-        projects.getDeleteConfirmInput().focus().type(highlightText);
-      });
+    projects.getDeleteConfirm().type(projectName);
 
-    projects.getDeleteConfirm().click();
+    projects.getConfirmBtn().click();
 
     cy.wait('@gqldeleteProjectMutation');
 

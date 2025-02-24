@@ -118,7 +118,7 @@ export const EditUser: FC<Props> = ({ orgId, refetch, user }) => {
   return (
     <>
       <Tooltip placement="bottom" title="Update administrator type">
-        <EditOutlined onClick={openModal} />
+        <EditOutlined data-cy="update-user" onClick={openModal} />
       </Tooltip>
 
       <Modal
@@ -151,6 +151,7 @@ export const EditUser: FC<Props> = ({ orgId, refetch, user }) => {
               <div className="wrap">
                 <FormItem name="role" label="Update a role" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="user-role"
                     options={adminRoleSelect}
                     placeholder="Update a role for this user"
                     defaultOpen={false}

@@ -180,12 +180,9 @@ describe('REPORTER permission test suites', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/lagoon-demo-main/backups`);
       registerIdleHandler('idle');
 
-      cy.waitForNetworkIdle('@idle', 500);
+      const errMessage = 'Unauthorized: You don\'t have permission to "view" on "backup"';
 
-      const errMessage =
-        'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup"';
-
-      cy.get('main').should('exist').find('p').should('exist').and('have.text', errMessage);
+      cy.get('p').should('exist').and('contain', errMessage);
     });
   });
 
@@ -223,7 +220,7 @@ describe('REPORTER permission test suites', () => {
       registerIdleHandler('idle');
 
       cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'taskDrushSqlDump');
+        aliasMutation(req, 'taskDrushRsyncFiles');
       });
       cy.waitForNetworkIdle('@idle', 500);
 
@@ -235,7 +232,7 @@ describe('REPORTER permission test suites', () => {
       registerIdleHandler('idle');
 
       cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'taskDrushArchiveDump');
+        aliasMutation(req, 'taskDrushSqlDump');
       });
       cy.waitForNetworkIdle('@idle', 500);
 

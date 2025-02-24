@@ -35,7 +35,7 @@ export const CancelTaskButton = ({ action, success, loading, error, beforeText, 
 
       {!success && (
         <Tooltip title="Cancel Task" placement="right">
-          <StopOutlined data-cy='cancel-task' onClick={action} disabled={loading || success} />
+          <StopOutlined data-cy="cancel-task" onClick={action} disabled={loading || success} />
         </Tooltip>
       )}
 
@@ -72,7 +72,6 @@ const CancelTask = ({
 
   return (
     <CancelTaskButton
-
       action={cancelTaskMutation}
       success={data && data.cancelDeployment === 'success'}
       loading={loading}

@@ -96,9 +96,9 @@ export const DeleteConfirm: FC<DeleteProps> = ({
                 required
                 rules={[{ required: true, message: '' }]}
                 name="confirm_text"
-                data-cy='input-confirm'
+                data-cy="input-confirm"
               >
-                <Input />
+                <Input data-cy="delete-confirm-input" />
               </FormItem>
             </div>
           </FormItemWrapper>
@@ -131,7 +131,6 @@ export const DeleteConfirm: FC<DeleteProps> = ({
         confirmLoading={loading}
         confirmDisabled={confirmDisabled}
         dangerConfirm
-        
       >
         <ConfirmModalWrapper data-cy="delete-confirm">{modalContent}</ConfirmModalWrapper>
       </Modal>

@@ -89,7 +89,12 @@ export default function DeploymentPage({
           </div>
           <div>
             <Text>View parsed</Text>
-            <Switch data-cy='logviewer-toggle' checked={showParsed} onChange={checked => handleShowParsed(checked)} showLabel={false} />
+            <Switch
+              data-cy="logviewer-toggle"
+              checked={showParsed}
+              onChange={checked => handleShowParsed(checked)}
+              showLabel={false}
+            />
           </div>
 
           {deployment.bulkId ? <Link href={`/bulkdeployment/${deployment.bulkId}`}>View bulk deployment</Link> : null}

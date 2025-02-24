@@ -1,32 +1,45 @@
 export default class ManageRepository {
   getAddUserBtn() {
-    return cy.getBySel('addUserbtn');
+    return cy.getBySel('add-admin');
   }
 
   getUserEmailField() {
-    return cy.getBySel('manageEmail');
+    return cy.getBySel('user-email');
   }
+
   getUserRoleDropdown() {
-    return cy.get('.react-select__indicator');
+    return cy.getBySel('user-role');
   }
 
   getUserAdminRoleOption() {
-    return cy.get('#react-select-2-option-1');
-  }
-  getUserOwnerRoleOption() {
-    return cy.get('#react-select-2-option-2');
+    return cy.get('.ant-select-item-option-content').contains('Admin');
   }
 
-  getSubmitBtn() {
-    return cy.getBySel('addUserConfirm');
+  getUserOwnerRoleOption() {
+    return cy.get('.ant-select-item-option-content').contains('Owner');
   }
-  getUpdateBtn() {
-    return cy.getBySel('updateUser');
+
+  getUserViewerRoleOption() {
+    return cy.get('.ant-select-item-option-content').contains('Viewer');
   }
+
+  getConfirmBtn() {
+    return cy.getBySel('modal-confirm');
+  }
+
   getUserRows() {
-    return cy.getBySel('table-row');
+    return cy.getBySel('admin-row');
   }
-  getDeleteConfirmBtn() {
-    return cy.getBySel('deleteConfirm');
+
+  getResultMenu() {
+    return cy.getBySel('select-menu');
+  }
+
+  getUserByRow(user: string) {
+    return this.getUserRows().contains(user).closest('[data-cy="admin-row"]');
+  }
+
+  getUserToDelete(user: string) {
+    return this.getUserByRow(user).find('[data-cy="delete-dialog"]');
   }
 }

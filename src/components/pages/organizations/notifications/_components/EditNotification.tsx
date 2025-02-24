@@ -103,7 +103,7 @@ export const EditNotification: React.FC<EditNotificationProps> = ({ notification
   return (
     <>
       <Tooltip placement="bottom" title="Edit notification">
-        <EditOutlined onClick={openModal} />
+        <EditOutlined data-cy="edit-notification" onClick={openModal} />
       </Tooltip>
 
       <Modal
@@ -127,7 +127,7 @@ export const EditNotification: React.FC<EditNotificationProps> = ({ notification
                   initialValue={notification.name}
                   rules={[{ required: true, message: '' }]}
                 >
-                  <Input placeholder="Enter notification name" required />
+                  <Input data-cy="notification-name" placeholder="Enter notification name" required />
                 </FormItem>
               </div>
 
@@ -139,7 +139,7 @@ export const EditNotification: React.FC<EditNotificationProps> = ({ notification
                     label="Email Address"
                     rules={[{ required: true, message: '', type: 'email' }]}
                   >
-                    <Input placeholder="Enter email" required />
+                    <Input data-cy="notification-email" placeholder="Enter email" required />
                   </FormItem>
                 </div>
               ) : null}
@@ -152,7 +152,7 @@ export const EditNotification: React.FC<EditNotificationProps> = ({ notification
                     label="Webhook"
                     rules={[{ required: true, message: '' }]}
                   >
-                    <Input placeholder="Enter Webhook" required />
+                    <Input data-cy="notification-webhook" placeholder="Enter Webhook" required />
                   </FormItem>
                 </div>
               ) : null}
@@ -165,7 +165,7 @@ export const EditNotification: React.FC<EditNotificationProps> = ({ notification
                     label="Channel"
                     rules={[{ required: true, message: '' }]}
                   >
-                    <Input placeholder="Enter channel" required />
+                    <Input data-cy="notification-channel" placeholder="Enter channel" required />
                   </FormItem>
                 </div>
               ) : null}

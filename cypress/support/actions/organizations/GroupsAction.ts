@@ -4,34 +4,36 @@ const groupRepo = new GroupsRepository();
 
 export default class GroupAction {
   doAddGroup(newGroup1: string, newGroup2: string) {
-    groupRepo.getAddGroupBtn('addNewGroup').click();
+    groupRepo.getAddGroupBtn().click();
+
     groupRepo.getGroupNameInput().type(newGroup1);
-    groupRepo.getAddGroupSubmitBtn().click();
+    groupRepo.getModalConfirmBtn().click();
 
     cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
-    cy.getBySel('table-row').should('contain', newGroup1);
+
+    groupRepo.getGroupRows().should('contain', newGroup1);
 
     cy.log('Add another');
     cy.reload();
 
-    groupRepo.getAddGroupBtn('addNewGroup').click();
+    groupRepo.getAddGroupBtn().click();
     groupRepo.getGroupNameInput().type(newGroup2);
-    groupRepo.getAddGroupSubmitBtn().click();
+    groupRepo.getModalConfirmBtn().click();
 
     cy.wait(['@gqladdGroupToOrganizationMutation', '@gqlgetOrganizationQuery']);
 
-    cy.getBySel('table-row').should('contain', newGroup2);
+    groupRepo.getGroupRows().should('contain', newGroup2);
   }
 
-  doFailedAddGroup(newGroup1: string, newGroup2: string) {
-    groupRepo.getAddGroupBtn('addNewGroup').click();
+  doFailedAddGroup(newGroup1: string) {
+    groupRepo.getAddGroupBtn().click();
     groupRepo.getGroupNameInput().type(newGroup1);
-    groupRepo.getAddGroupSubmitBtn().click();
+    groupRepo.getModalConfirmBtn().click();
 
     cy.wait('@gqladdGroupToOrganizationMutation').then(interception => {
       expect(interception.response?.statusCode).to.eq(200);
 
-      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization": {"organization":1}`;
+      const errorMessage = `Unauthorized: You don't have permission to "addGroup" on "organization"`;
       expect(interception.response?.body).to.have.property('errors');
 
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -40,52 +42,60 @@ export default class GroupAction {
   doGroupSearch(group1: string, group2: string) {
     cy.log('First group');
     groupRepo.getSearchBar().type(group1);
-    cy.getBySel('table-row').should('contain', group1);
+    groupRepo.getGroupRows().should('contain', group1);
 
     cy.log('No search results');
     groupRepo.getSearchBar().clear().type('does not exist');
-    cy.contains('No groups found').should('be.visible');
+    groupRepo.getEmpty().should('be.visible');
 
     cy.log('Second group');
     groupRepo.getSearchBar().clear().type(group2);
-    cy.getBySel('table-row').should('contain', group2);
+    groupRepo.getGroupRows().should('contain', group2);
   }
   doAddMemberToGroup(userEmail: string, groupToAddTo: string) {
-    groupRepo.getGroupRowSiblings(groupToAddTo).find('[data-cy="adduser"]').click();
+    groupRepo.getAddUserBtn(groupToAddTo).click();
 
-    cy.getBySel('orgUser-email-input').type(userEmail);
+    // name
+    groupRepo.getUserNameInput().type(userEmail);
 
-    cy.get('.react-select__indicator').click({ force: true });
-    cy.get('#react-select-2-option-2').click();
-    cy.getBySel('addUserToGroup').click();
+    // role from a modal
+    groupRepo.getResultSelector().click();
+    groupRepo
+      .getResultMenu()
+      .find('div')
+      .get('.ant-select-item-option-content')
+      .contains('Maintainer')
+      .click({ force: true });
+
+    groupRepo.getModalConfirmBtn().click();
 
     cy.wait(['@gqladdUserToGroupMutation', '@gqlgetOrganizationQuery']);
     cy.waitForNetworkIdle('@groupQuery', 500);
 
     groupRepo
-      .getGroupRowSiblings(groupToAddTo)
-      .find('[data-cy="memberCount"]')
+      .getContainingRow(groupToAddTo)
+      .closest('[data-cy="group-row"]')
+      .find('[data-cy="member-count"]')
       .invoke('text')
       .then(text => {
         const trimmedText = text.trim();
-        expect(trimmedText).to.equal('Members: 1');
+        expect(trimmedText).to.equal('Active Members: 1');
       });
   }
 
   doDeleteGroup(groupName: string) {
-    groupRepo.getDeleteGroupBtn('deleteGroup').first().click();
-    cy.getBySel('confirm').click();
+    groupRepo.getDeleteGroupBtn().first().click();
+    groupRepo.getModalConfirmBtn().click();
 
     cy.intercept('POST', Cypress.env('api')).as('deleteGroup');
     cy.wait('@deleteGroup');
-    cy.waitForNetworkIdle('@groupQuery', 500);
 
-    cy.getBySel('label-text').each($span => {
+    groupRepo.getTotalLabel().each($span => {
       const text = $span.text();
       if (text.includes('0')) {
-        cy.contains('No groups found').should('exist');
+        groupRepo.getEmpty().should('exist');
       } else {
-        cy.getBySel('table-row').should('not.contain', groupName);
+        groupRepo.getGroupRows().should('not.contain', groupName);
       }
     });
   }

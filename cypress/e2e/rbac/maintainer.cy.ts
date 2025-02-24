@@ -83,7 +83,8 @@ describe('MAINTAINER permission test suites', () => {
       cy.wait('@gqladdEnvVariableMutation');
 
       cy.log('check if variable was created');
-      cy.get('.data-table > .data-row').should('contain', name);
+
+      cy.getBySel('variable-row').should('contain', name);
     });
 
     it('Toggles Hide/Show values', () => {
@@ -113,7 +114,7 @@ describe('MAINTAINER permission test suites', () => {
 
       cy.wait('@deleteRequest');
 
-      cy.contains('No Project variables set').should('exist');
+      cy.getBySel('empty').should('exist');
     });
   });
   context('Environment overview', () => {
@@ -206,9 +207,10 @@ describe('MAINTAINER permission test suites', () => {
       cy.intercept('POST', Cypress.env('api'), req => {
         aliasMutation(req, 'cancelDeployment');
       });
-      cy.waitForNetworkIdle('@idle', 500);
+   
 
       deployment.navigateToRunningDeployment();
+      cy.waitForNetworkIdle('@idle', 2000);
       deployment.doCancelDeployment();
     });
   });

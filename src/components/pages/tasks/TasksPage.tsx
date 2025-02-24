@@ -154,7 +154,7 @@ export default function TasksPage({
     <TasksPageWrapper>
       <Head3>Available Tasks</Head3>
       <Text>Run a task on this environment</Text>
-      <div className="selector" data-cy='task-select'>
+      <div className="selector" data-cy="task-select">
         <TaskTreeSelector
           allowClear
           onChange={setSelectedTask}
@@ -175,7 +175,7 @@ export default function TasksPage({
         )}
         resultDropdown={
           <Select
-            data-cy='select-results'
+            data-cy="select-results"
             options={tasksFilterOptions}
             value={tasks_count}
             defaultOpen={false}

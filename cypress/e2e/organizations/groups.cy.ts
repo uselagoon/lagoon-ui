@@ -1,6 +1,7 @@
 import { testData } from 'cypress/fixtures/variables';
 import GroupAction from 'cypress/support/actions/organizations/GroupsAction';
-import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation, aliasQuery } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const group = new GroupAction();
 

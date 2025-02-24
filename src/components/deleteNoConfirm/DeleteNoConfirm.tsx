@@ -70,9 +70,9 @@ const DeleteNoConfirm: FC<DeleteProps> = ({
 
       <Tooltip placement="bottom" title={`${capitalize(deleteType)} ${deleteItemType}`}>
         {deleteType === 'delete' || deleteType === 'remove' ? (
-          <DeleteOutlined onClick={openModal} />
+          <DeleteOutlined data-cy="delete-dialog" onClick={openModal} />
         ) : (
-          <DisconnectOutlined onClick={openModal} />
+          <DisconnectOutlined data-cy="delete-dialog" onClick={openModal} />
         )}
       </Tooltip>
 

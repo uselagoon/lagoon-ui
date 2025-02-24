@@ -109,7 +109,7 @@ export const AddUser: FC<Props> = ({ orgId, refetch, owners }) => {
   return (
     <>
       <Tooltip placement="bottom" title="Add an administrator">
-        <CreateButton $variant="small" onClick={openModal}>
+        <CreateButton data-cy="add-admin" $variant="small" onClick={openModal}>
           <PlusOutlined className="icon" /> <span className="text">Add user</span>
         </CreateButton>
       </Tooltip>
@@ -141,13 +141,14 @@ export const AddUser: FC<Props> = ({ orgId, refetch, owners }) => {
             <div className="addFields">
               <div className="wrap">
                 <FormItem name="email" label="User email" rules={[{ required: true, message: '' }]}>
-                  <Input placeholder="Enter email" required />
+                  <Input data-cy="user-email" placeholder="Enter email" required />
                 </FormItem>
               </div>
 
               <div className="wrap">
                 <FormItem name="role" label="Select a role" rules={[{ required: true, message: '' }]}>
                   <Select
+                    data-cy="user-role"
                     options={adminRoleSelect}
                     placeholder="Select a role for this user"
                     defaultOpen={false}

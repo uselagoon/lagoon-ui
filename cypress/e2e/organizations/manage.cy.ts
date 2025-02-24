@@ -14,14 +14,15 @@ describe('Org Manage page', () => {
     });
   });
 
-  it('Adds a org viewer', () => {
+  it('Adds an org viewer', () => {
     manage.doAddOrgViewer(testData.organizations.manage.user);
   });
-  it('Should upgrade org viewer to admin', () => {
+
+  it('Upgrade org viewer to admin', () => {
     manage.doEditOrgViewerToAdmin(testData.organizations.manage.user);
   });
 
-  it('Should upgrade org admin to owner', () => {
+  it('Upgrade org admin to owner', () => {
     manage.doEditOrgViewerToOwner(testData.organizations.manage.user);
   });
 

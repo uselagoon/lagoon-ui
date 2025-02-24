@@ -1,35 +1,48 @@
 export default class ProjectsRepository {
   getAddBtn() {
-    return cy.getBySel('addNewProject');
+    return cy.getBySel('create-project');
   }
 
-  getAddConfirm() {
-    return cy.getBySel('addProjectConfirm');
+  getConfirmBtn() {
+    return cy.getBySel('modal-confirm');
   }
 
-  getName() {
+  getNameInput() {
     return cy.getBySel('project-name');
   }
-  getGit() {
-    return cy.getBySel('input-git');
+
+  getGitInput() {
+    return cy.getBySel('git-url');
   }
-  getEnv() {
-    return cy.getBySel('input-env');
+
+  getEnvInput() {
+    return cy.getBySel('prod-environment');
+  }
+
+  getProjectRows() {
+    return cy.getBySel('org-project-row');
+  }
+
+  getDeleteBtn(projectName: string) {
+    return this.getProjectRows()
+      .contains(projectName)
+      .closest('[data-cy="org-project-row"]')
+      .find('[data-cy="delete"]');
+  }
+
+  getDeleteConfirm() {
+    return cy.getBySel('delete-confirm-input');
+  }
+
+  getScopeSelector() {
+    return cy.getBySel('select-scope');
+  }
+
+  getResultMenu() {
+    return cy.getBySel('select-menu');
   }
   selectTarget() {
-    cy.get('div[class$=-control]').click({ force: true });
-    cy.get(`[id^="react-select-"][id$=-option-0]`).click();
-  }
-  getProjectRows() {
-    return cy.getBySel('table-row');
-  }
-  getDeleteBtn(projectName: string) {
-    return cy.getBySel('table-row').filter(`:contains(${projectName})`).find('[data-cy=deleteProject]');
-  }
-  getDeleteConfirmInput() {
-    return cy.getBySel('deleteProjectConfirm');
-  }
-  getDeleteConfirm() {
-    return cy.getBySel('deleteConfirm');
+    this.getScopeSelector().click();
+    this.getResultMenu().find('div').get('.ant-select-item-option-content').contains('ui-kubernetes').click();
   }
 }

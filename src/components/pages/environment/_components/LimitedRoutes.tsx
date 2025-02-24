@@ -14,7 +14,7 @@ const LimitedRoutes: FC<Props> = ({ routes }) => {
   const handleExpand = () => setExpanded(true);
 
   return (
-    <RoutesWrapper data-cy='routes'>
+    <RoutesWrapper data-cy="routes">
       {firstFiveRoutes}
 
       {expanded ? otherRoutes : null}

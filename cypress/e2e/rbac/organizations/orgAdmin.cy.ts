@@ -3,7 +3,8 @@ import GroupAction from 'cypress/support/actions/organizations/GroupsAction';
 import NotificationsAction from 'cypress/support/actions/organizations/NotificationsAction';
 import OverviewAction from 'cypress/support/actions/organizations/OverviewAction';
 import ProjectsActions from 'cypress/support/actions/organizations/ProjectsActions';
-import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation, aliasQuery } from 'cypress/utils/aliasQuery';
+import { registerIdleHandler } from 'cypress/utils/registerIdleHandler';
 
 const overview = new OverviewAction();
 const group = new GroupAction();
@@ -47,17 +48,18 @@ orgAdmin.forEach(admin => {
       });
     }
 
-    it('Navigates to groups and creates', () => {
+    it('Navigates to groups, creates groups, adds user', () => {
       cy.waitForNetworkIdle('@idle', 500);
 
       const group1 = testData.organizations.groups.newGroupName;
       const group2 = testData.organizations.groups.newGroupName2;
 
-      cy.get('.groups').click();
+      cy.getBySel('nav-groups').click();
       cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/groups');
 
       group.doAddGroup(group1, group2);
       registerIdleHandler('groupQuery');
+
       group.doAddMemberToGroup(testData.organizations.users.email, group1);
     });
 
@@ -67,11 +69,8 @@ orgAdmin.forEach(admin => {
         aliasMutation(req, 'addProjectToOrganization');
       });
 
-      cy.waitForNetworkIdle('@idle', 500);
-
-      cy.get('.projects').click();
+      cy.getBySel('nav-org-projects').click();
       cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/projects');
-      cy.waitForNetworkIdle('@projectsQuery', 1000);
 
       project.doAddProject(testData.organizations.project);
     });
@@ -88,10 +87,8 @@ orgAdmin.forEach(admin => {
 
       registerIdleHandler('notificationsQuery');
 
-      cy.waitForNetworkIdle('@idle', 500);
-      cy.get('.notifications').click();
+      cy.getBySel('nav-notifications').click();
       cy.location('pathname').should('equal', '/organizations/lagoon-demo-organization/notifications');
-      cy.waitForNetworkIdle('@notificationsQuery', 1000);
 
       const { slack: slackData, email: emailData, webhook: webhookData } = testData.organizations.notifications;
 
@@ -100,28 +97,31 @@ orgAdmin.forEach(admin => {
       notifications.doAddNotification('webhook', webhookData);
     });
 
-    it('Navigates to a project, adds a group and notifications', () => {
+    it('Navigates to a project, links a group and notifications', () => {
       cy.visit(
         `${Cypress.env('url')}/organizations/lagoon-demo-organization/projects/${
           testData.organizations.project.projectName
         }`
       );
 
-      cy.getBySel('addGroupToProject').click();
+      cy.getBySel('link-group').click();
 
-      cy.get('.react-select__indicator').click({ force: true });
-      cy.get('#react-select-2-option-0').click();
+      cy.getBySel('group-select').click();
+      cy.getBySel('select-menu').find('div').get('.ant-select-item-option-content').contains('cypress-group1').click();
 
-      cy.getBySel('addGroupToProjectConfirm').click();
+      cy.getBySel('modal-confirm').click();
 
       cy.log('add notifications');
 
-      cy.getBySel('addNotificationToProject').click();
+      cy.getBySel('link-notification').click();
 
-      cy.get('[class$=control]').click({ force: true });
-      cy.get('#react-select-3-option-0').click();
-
-      cy.getBySel('addNotificationToProjectConfirm').click();
+      cy.getBySel('notification-select').click();
+      cy.getBySel('select-menu')
+        .find('div')
+        .get('.ant-select-item-option-content')
+        .contains('cy-slack-notification')
+        .click();
+      cy.getBySel('modal-confirm').click();
     });
 
     // cleanup
@@ -135,7 +135,7 @@ orgAdmin.forEach(admin => {
       });
 
       cy.waitForNetworkIdle('@idle', 500);
-      cy.get('.groups').click();
+      cy.getBySel('nav-groups').click();
 
       group.doDeleteGroup(testData.organizations.groups.newGroupName);
       cy.wait('@gqldeleteGroupMutation');
@@ -143,16 +143,10 @@ orgAdmin.forEach(admin => {
       group.doDeleteGroup(testData.organizations.groups.newGroupName2);
       cy.wait('@gqldeleteGroupMutation');
 
-      cy.waitForNetworkIdle('@idle', 500);
-      cy.get('.projects').click();
-
-      cy.waitForNetworkIdle('@projectsQuery', 1000);
-
+      cy.getBySel('nav-org-projects').click();
       project.doDeleteProject(testData.organizations.project.projectName);
 
-      cy.get('.notifications').click();
-
-      cy.waitForNetworkIdle('@idle', 500);
+      cy.getBySel('nav-notifications').click();
 
       const {
         webhook: { name: webhooknName },
@@ -161,9 +155,13 @@ orgAdmin.forEach(admin => {
       } = testData.organizations.notifications;
 
       notifications.doDeleteNotification(webhooknName);
-      cy.wait('@gqlremoveNotificationMutation'); // wait for a delete mutation instead
+      cy.wait('@gqlremoveNotificationMutation');
+      cy.wait(1000);
+
       notifications.doDeleteNotification(emailName);
       cy.wait('@gqlremoveNotificationMutation');
+      cy.wait(1000);
+
       notifications.doDeleteNotification(slackName);
     });
   });

@@ -68,7 +68,7 @@ const DrushRsyncFiles: FC<Props> = ({ environment, refetch, allButCurrentEnviron
         <label id="source-env">Source:</label>
 
         <Select
-          data-cy='source-env'
+          data-cy="source-env"
           allowClear
           onClear={() => setSelectedSourceEnv(undefined)}
           placeholder="Select source environment..."

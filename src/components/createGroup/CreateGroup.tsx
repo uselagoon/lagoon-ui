@@ -74,7 +74,7 @@ export const CreateGroup: FC<Props> = ({ organizationId, existingGroupNames, var
 
   return (
     <>
-      <CreateButton $variant={variant} onClick={openModal}>
+      <CreateButton $variant={variant} onClick={openModal} data-cy="add-group">
         <PlusOutlined className="icon" />
         <span className="text">{variant === 'default' ? 'Create a new group' : 'Add new group'}</span>
       </CreateButton>
@@ -95,7 +95,7 @@ export const CreateGroup: FC<Props> = ({ organizationId, existingGroupNames, var
         <EditModalWrapper>
           <div className="wrap">
             <FormItem label="Group name" required>
-              <Input placeholder="Enter name" value={groupName} onChange={handleChange} required />
+              <Input data-cy="group-name" placeholder="Enter name" value={groupName} onChange={handleChange} required />
             </FormItem>
           </div>
 

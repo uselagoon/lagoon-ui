@@ -62,8 +62,8 @@ export const Description: FC<Props> = props => {
       <OrgField className="margin">
         <span className="desc">organization name</span>
         <section className="editField">
-          <span className="name" data-cy='friendly-name'>
-            {name} <EditOutlined data-cy='edit-name' className="edit" onClick={() => setNameModalOpen(true)} />
+          <span className="name" data-cy="friendly-name">
+            {name} <EditOutlined data-cy="edit-name" className="edit" onClick={() => setNameModalOpen(true)} />
           </span>
         </section>
         <EditName orgId={orgId} orgName={name} modalOpen={nameModalOpen} closeModal={closeNameModal} />
@@ -72,8 +72,9 @@ export const Description: FC<Props> = props => {
       <OrgField>
         <span className="desc">description</span>
         <section className="editField">
-          <span className="description" data-cy='org-description'>
-            {description || ' - '} <EditOutlined data-cy='edit-desc' className="edit" onClick={() => setDescModalOpen(true)} />
+          <span className="description" data-cy="org-description">
+            {description || ' - '}{' '}
+            <EditOutlined data-cy="edit-desc" className="edit" onClick={() => setDescModalOpen(true)} />
           </span>
         </section>
         <EditDesc orgId={orgId} orgDesc={description} modalOpen={descModalOpen} closeModal={closeDescModal} />

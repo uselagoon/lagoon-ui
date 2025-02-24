@@ -2,31 +2,53 @@ export default class GroupsRepository {
   getElement(selector: string) {
     return cy.getBySel(selector);
   }
-  getAddGroupBtn(selector: string) {
-    return this.getElement(selector);
+  getAddGroupBtn() {
+    return this.getElement('add-group');
   }
-  getAddUserBtn(selector: string) {
-    return this.getElement(selector);
+  getAddUserBtn(groupToAddTo: string) {
+    return this.getContainingRow(groupToAddTo).closest('[data-cy="group-row"]').find('[data-cy="add-user"]');
   }
-  getDeleteGroupBtn(selector: string) {
-    return this.getElement(selector);
+
+  getDeleteGroupBtn() {
+    return this.getElement('delete-dialog');
   }
-  getSystemGroupCheckbox(selector: string) {
-    return this.getElement(selector);
+
+  getGroupRows() {
+    return this.getElement('group-row');
   }
-  getSorterDropdown(selector: string) {
-    return this.getElement(selector);
+
+  getEmpty() {
+    return this.getElement('empty');
   }
+
   getSearchBar() {
     return this.getElement('search-bar');
   }
+
+  getUserNameInput() {
+    return this.getElement('user-email');
+  }
   getGroupNameInput() {
-    return cy.getBySel('groupName-input');
+    return this.getElement('group-name');
   }
-  getAddGroupSubmitBtn() {
-    return this.getElement('createGroup');
+
+  getModalConfirmBtn() {
+    return this.getElement('modal-confirm');
   }
-  getGroupRowSiblings(groupName: string) {
-    return this.getElement('table-row').contains(groupName).parent().siblings();
+
+  getContainingRow(groupName: string) {
+    return this.getElement('group-row').contains(groupName);
+  }
+
+  getResultSelector() {
+    return cy.getBySel('user-role');
+  }
+
+  getResultMenu() {
+    return cy.getBySel('select-menu');
+  }
+
+  getTotalLabel() {
+    return cy.getBySel('total');
   }
 }

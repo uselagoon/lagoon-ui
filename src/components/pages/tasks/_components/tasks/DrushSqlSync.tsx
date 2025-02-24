@@ -68,7 +68,7 @@ const DrushSqlSync: FC<Props> = ({ environment, refetch, allButCurrentEnvironmen
         <label id="source-env">Source:</label>
 
         <Select
-          data-cy='source-env'
+          data-cy="source-env"
           allowClear
           onClear={() => setSelectedSourceEnv(undefined)}
           placeholder="Select source environment..."

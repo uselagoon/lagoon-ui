@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { ProjectData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/(project-overview)/page';
 import { NewEnvironment } from '@/components/newEnvironment/NewEnvironment';
 import { RoutesWrapper } from '@/components/pages/environment/styles';
-import { getHighestSeverityProblem, makeSafe } from '@/components/utils';
+import { makeSafe } from '@/components/utils';
 import { Table } from '@uselagoon/ui-library';
 
 import { createLinks } from '../../environment/EnvironmentPage';
@@ -56,7 +56,6 @@ export const TableView: FC<Props> = ({ project, projectName, filterString, resul
       name: environment.openshiftProjectName,
       title: environment.name,
       deployType: environment.deployType,
-      status: getHighestSeverityProblem(environment.problems),
       activeRoutes: <RoutesWrapper>{createLinks(routesToUse)}</RoutesWrapper>,
       envType: envType as any,
       last_deployment: environment.updated ?? '',

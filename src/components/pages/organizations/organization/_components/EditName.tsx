@@ -66,7 +66,7 @@ export const EditName: FC<Props> = ({ orgId, orgName, modalOpen, closeModal }) =
         <Form form={editNameForm}>
           <div className="wrap">
             <FormItem name="name" initialValue={orgName} label="ORGANIZATION NAME" required>
-              <Input data-cy='edit-input' />
+              <Input data-cy="edit-input" />
             </FormItem>
           </div>
         </Form>
