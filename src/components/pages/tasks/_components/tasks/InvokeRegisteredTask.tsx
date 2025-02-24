@@ -167,7 +167,7 @@ const InvokeRegisteredTask: FC<Props> = ({ environment, advancedTask, refetch })
             title="Confirm action"
           >
             <Button
-              testId="run-task"
+              testId="task-btn"
               loading={loading}
               className="task-btn"
               size="middle"
