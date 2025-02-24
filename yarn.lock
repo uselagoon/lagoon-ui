@@ -3411,7 +3411,7 @@
 
 "@uselagoon/ui-library@github:uselagoon/ui-library#unstyled-vanilla-theme":
   version "1.1.2"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/856e23ccf22a760fcdb1bbeb7b23c81b07247346"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/12c66d444d6cae70a97515043d0be52151cff923"
   dependencies:
     dayjs "^1.11.13"
     react-highlight-words "^0.20.0"
