@@ -65,6 +65,8 @@ export default gql`
         taskName
         status
         created
+        started
+        completed
         service
         adminOnlyView
       }

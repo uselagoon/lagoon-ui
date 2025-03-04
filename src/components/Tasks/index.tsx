@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import CancelTask from 'components/CancelTask';
 import TaskLink from 'components/link/Task';
+import { getProcessDuration } from 'lib/util';
 import moment from 'moment';
 
 import { StyledTasks, TasksTable } from './StyledTasks';
@@ -13,6 +14,8 @@ interface TasksProps {
     name: string;
     adminOnlyView: boolean;
     created: string;
+    started: string;
+    completed: string;
     service: string;
     status: string;
   }[];
@@ -32,6 +35,7 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, environmentId, projectS
       <label>Created</label>
       <label className="service">Service</label>
       <label className="status">Status</label>
+      <label>Duration</label>
     </div>
     <TasksTable className="data-table" data-cy="tasks-table">
       {!tasks.length && <div className="data-none">No Tasks</div>}
@@ -53,6 +57,7 @@ const Tasks: FC<TasksProps> = ({ tasks, environmentSlug, environmentId, projectS
               <div className={`status ${task.status}`} data-cy={task.status}>
                 <span>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
               </div>
+              <div className="duration">{getProcessDuration(task)} </div>
             </div>
           </TaskLink>
           {['new', 'pending', 'queued', 'running'].includes(task.status) && (

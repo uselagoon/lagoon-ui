@@ -2,36 +2,46 @@ import React from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import { SkeletonWrapper } from 'components/Deployment/StyledDeployment';
+import { FieldWrapper } from 'styles/commonStyles';
 
 import { StyledTask } from './StyledTask';
 
 const TaskSkeleton = () => (
   <StyledTask className="task">
     <div className="details">
-      <div className="field-wrapper created">
+      <FieldWrapper className="created">
         <div>
           <label>Created</label>
           <div className="field">
             <Skeleton />
           </div>
         </div>
-      </div>
-      <div className="field-wrapper service">
+      </FieldWrapper>
+      <FieldWrapper className="service">
         <div>
           <label>Service</label>
           <div className="field">
             <Skeleton />
           </div>
         </div>
-      </div>
-      <div className="field-wrapper status">
+      </FieldWrapper>
+      <FieldWrapper className="status">
         <div>
           <label>Status</label>
           <div className="field">
             <Skeleton />
           </div>
         </div>
-      </div>
+      </FieldWrapper>
+
+      <FieldWrapper className="duration">
+        <div>
+          <label>Duration</label>
+          <div className="field">
+            <Skeleton />
+          </div>
+        </div>
+      </FieldWrapper>
     </div>
 
     <SkeletonTheme baseColor="#222" highlightColor="#9a9a9a">

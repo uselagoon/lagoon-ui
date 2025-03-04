@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
 import CancelDeployment from 'components/CancelDeployment';
-import { getDeploymentDuration } from 'components/Deployment';
 import HoverTag from 'components/HoverTag';
 import BulkDeploymentLink from 'components/link/BulkDeployment';
 import DeploymentLink from 'components/link/Deployment';
+import { getProcessDuration } from 'lib/util';
 import moment from 'moment';
 
 import { StyledDeployments } from './StyledDeployments';
@@ -16,6 +16,8 @@ interface DeploymentsProps {
     bulkId: string;
     status: string;
     created: string;
+    started: string;
+    completed: string;
     buildStep?: string;
   }[];
   environmentSlug: string;
@@ -71,7 +73,7 @@ const Deployments: FC<DeploymentsProps> = ({ deployments, environmentSlug, proje
                   />
                 )}
               </div>
-              <div className="duration">{getDeploymentDuration(deployment)} </div>
+              <div className="duration">{getProcessDuration(deployment)} </div>
             </div>
           </DeploymentLink>
 
