@@ -1,4 +1,4 @@
-import { bp, color } from 'lib/variables';
+import { bp, color, fontSize } from 'lib/variables';
 import styled from 'styled-components';
 
 export const StyledBreadCrumb = styled.div`
@@ -60,5 +60,47 @@ export const StyledBreadcrumbsWrapper = styled.div`
   .breadcrumbs {
     display: flex;
     margin: 0 calc((100vw / 16) * 1);
+  }
+`;
+
+export const StyledCopyWrapper = styled.div`
+  margin-right: 8px;
+
+  .copy-field {
+    display: flex;
+    width: 100%;
+    overflow: visible;
+    transform: translateX(-13px);
+  }
+
+  .copy {
+    background: url('/static/images/copy.svg') center center no-repeat ${props => props.theme.backgrounds.breadCrumbs};
+    background-size: 16px;
+    bottom: 0;
+    height: 34px;
+    position: absolute;
+    right: 20px;
+    width: 40px;
+    top: 10px;
+    transition: all 0.5s;
+
+    &:hover {
+      background-color: ${props => props.theme.backgrounds.sidebar};
+      cursor: pointer;
+    }
+  }
+
+  .copied {
+    background-color: ${props => props.theme.backgrounds.breadCrumbs};
+    ${fontSize(9, 16)};
+    border-radius: 3px;
+    padding: 0 2px;
+    position: absolute;
+    right: 20px;
+    text-transform: uppercase;
+    top: 10px;
+    transition:
+      top 0.5s,
+      opacity 0.75s ease-in;
   }
 `;
