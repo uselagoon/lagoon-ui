@@ -8,6 +8,8 @@ interface Tasks {
     name: string;
     adminOnlyView: boolean;
     created: string;
+    started: string;
+    completed: string;
     service: string;
     status: string;
     id: string;
@@ -24,6 +26,8 @@ type TaskFile = {
 interface Task {
   task: {
     created: string;
+    started: string;
+    completed: string;
     service: string;
     status: string;
     files: TaskFile[];
@@ -45,6 +49,8 @@ export function createTasks(): Tasks {
       name: faker.helpers.arrayElement(['Drush uli', 'Drush cache-clear', 'Drush sql-dump', 'Custom Task']),
       adminOnlyView: faker.datatype.boolean(),
       created: faker.date.anytime().toDateString(),
+      started: faker.date.anytime().toDateString(),
+      completed: faker.date.anytime().toDateString(),
       service: 'cli',
       status: faker.helpers.arrayElement(['Pending', 'In progress', 'Completed']),
       id: faker.string.uuid(),
@@ -87,6 +93,8 @@ export function createTask(): Task {
   return {
     task: {
       created: faker.date.anytime().toDateString(),
+      started: faker.date.anytime().toDateString(),
+      completed: faker.date.anytime().toDateString(),
       service: 'cli',
       status,
       files,

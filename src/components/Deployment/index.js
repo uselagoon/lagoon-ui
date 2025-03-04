@@ -5,21 +5,13 @@ import CancelDeployment from 'components/CancelDeployment';
 import HoverTag from 'components/HoverTag';
 import LogViewer from 'components/LogViewer';
 import BulkDeploymentLink from 'components/link/BulkDeployment';
+import { getProcessDuration } from 'lib/util';
 import moment from 'moment';
-import momentDurationFormatSetup from 'moment-duration-format';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
+import { FieldWrapper } from 'styles/commonStyles';
 
-import { ButtonRow, DeploymentDetails, FieldWrapper } from './StyledDeployment';
-
-export const getDeploymentDuration = deployment => {
-  const deploymentStart = deployment.started || deployment.created;
-  const durationStart = (deploymentStart && moment.utc(deploymentStart)) || moment.utc();
-  const durationEnd = (deployment.completed && moment.utc(deployment.completed)) || moment.utc();
-  const duration = moment.duration(durationEnd - durationStart).format('HH[hr] mm[m] ss[sec]');
-
-  return duration;
-};
+import { ButtonRow, DeploymentDetails } from './StyledDeployment';
 
 const withParseLogsState = withState('checkedParseState', 'setParseStateChecked', true);
 
@@ -64,7 +56,7 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
       <FieldWrapper className="duration">
         <div>
           <label>Duration</label>
-          <div className="field">{getDeploymentDuration(deployment)}</div>
+          <div className="field">{getProcessDuration(deployment)}</div>
         </div>
       </FieldWrapper>
       <FieldWrapper className="logstatus">
@@ -88,6 +80,7 @@ const Deployment = ({ deployment, checkedParseState, changeState }) => (
         </FieldWrapper>
       )}
     </DeploymentDetails>
+
     <ButtonRow>
       {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
         <CancelDeployment deployment={deployment} />

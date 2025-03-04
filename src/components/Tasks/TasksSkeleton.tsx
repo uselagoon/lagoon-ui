@@ -21,6 +21,9 @@ const TasksSkeleton = () => {
         <div className="status">
           <Skeleton />
         </div>
+        <div className="duration">
+          <Skeleton width={'80%'} />
+        </div>
       </div>
       <div className="cancel-button">
         <Skeleton />
@@ -35,6 +38,7 @@ const TasksSkeleton = () => {
         <label>Created</label>
         <label className="service">Service</label>
         <label className="status">Status</label>
+        <label>Duration</label>
       </div>
       <TasksTable className="data-table">
         {[...Array<undefined>(numberOfItems)].map((_, idx) => itemRender(idx))}

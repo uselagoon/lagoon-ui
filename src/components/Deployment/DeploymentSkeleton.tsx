@@ -1,7 +1,9 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { ButtonRow, DeploymentDetails, FieldWrapper, SkeletonWrapper } from './StyledDeployment';
+import { FieldWrapper } from 'styles/commonStyles';
+
+import { ButtonRow, DeploymentDetails, SkeletonWrapper } from './StyledDeployment';
 
 const DeploymentSkeleton = () => (
   <div className="deployment">

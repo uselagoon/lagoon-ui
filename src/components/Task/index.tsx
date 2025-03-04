@@ -2,9 +2,11 @@ import React, { FC } from 'react';
 
 import CancelTask from 'components/CancelTask';
 import LogViewer from 'components/LogViewer';
+import { getProcessDuration } from 'lib/util';
 import moment from 'moment';
+import { FieldWrapper } from 'styles/commonStyles';
 
-import { StyledTask } from './StyledTask';
+import { CancelRow, StyledTask } from './StyledTask';
 
 type TaskFile = {
   id: string;
@@ -16,6 +18,8 @@ interface TaskProps {
     id: string;
     created: string;
     service: string;
+    started: string;
+    completed: string;
     status: string;
     files: TaskFile[];
     logs: string;
@@ -33,39 +37,35 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
   return (
     <StyledTask className="task">
       <div className="details">
-        <div className="field-wrapper created">
+        <FieldWrapper className="created">
           <div>
             <label>Created</label>
             <div className="field">{moment.utc(task.created).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
           </div>
-        </div>
-        <div className="field-wrapper service">
+        </FieldWrapper>
+        <FieldWrapper className="service">
           <div>
             <label>Service</label>
             <div className="field">{task.service}</div>
           </div>
-        </div>
-        <div className={`field-wrapper status ${task.status}`}>
+        </FieldWrapper>
+
+        <FieldWrapper className={`status ${task.status}`}>
           <div>
             <label>Status</label>
             <div className="field">{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</div>
           </div>
+        </FieldWrapper>
 
-          {['new', 'pending', 'queued', 'running'].includes(task.status) && (
-            <div className="cancel-button">
-              <CancelTask
-                task={task}
-                afterText="Cancelled"
-                beforeText="Cancel"
-                environmentId={environmentId}
-                projectId={projectId}
-              />
-            </div>
-          )}
-        </div>
+        <FieldWrapper className="duration">
+          <div>
+            <label>Duration</label>
+            <div className="field">{getProcessDuration(task)}</div>
+          </div>
+        </FieldWrapper>
 
         {task.files.length > 0 && (
-          <div className="field-wrapper files">
+          <FieldWrapper className="files">
             <div>
               <label>Files</label>
               <ul className="field">
@@ -76,9 +76,22 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
                 ))}
               </ul>
             </div>
-          </div>
+          </FieldWrapper>
         )}
+
+        <CancelRow>
+          {['new', 'pending', 'queued', 'running'].includes(task.status) && (
+            <CancelTask
+              task={task}
+              afterText="Cancelled"
+              beforeText="Cancel"
+              environmentId={environmentId}
+              projectId={projectId}
+            />
+          )}
+        </CancelRow>
       </div>
+
       <LogViewer
         logs={task.logs}
         status={task.status}
