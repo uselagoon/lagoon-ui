@@ -28,6 +28,7 @@ const scopeOptions = [
 ];
 
 export const AddVariable = ({
+  varOrganization,
   varProject,
   varEnvironment,
   varValues,
@@ -49,8 +50,10 @@ export const AddVariable = ({
   setClear,
   setEnvironmentErrorAlert,
   setProjectErrorAlert,
+  setOrganizationErrorAlert,
   action,
   loading,
+  orgEnvValues,
   prjEnvValues,
   envValues,
 }) => {
@@ -73,14 +76,20 @@ export const AddVariable = ({
     setUpdateScope(varScope);
   }, [varName, varValue]);
   const handleError = () => {
-    setProjectErrorAlert ? setProjectErrorAlert(true) : setEnvironmentErrorAlert(true);
+    if (setOrganizationErrorAlert) {
+      setOrganizationErrorAlert(true);
+    } else if (setProjectErrorAlert) {
+      setProjectErrorAlert(true);
+    } else {
+      setEnvironmentErrorAlert(true);
+    }
   };
 
   const handlePermissionCheck = () => {
     let waitForGQL = setTimeout(() => {
       openModal();
     }, [1000]);
-    if (prjEnvValues || envValues) {
+    if (orgEnvValues || prjEnvValues || envValues) {
       clearTimeout(waitForGQL);
       openModal();
     }
@@ -193,6 +202,7 @@ export const AddVariable = ({
                         name: updateName ? updateName : inputName,
                         value: updateValue ? updateValue : inputValue,
                         scope: updateScope ? updateScope.toUpperCase() : inputScope,
+                        organization: varOrganization,
                         project: varProject,
                         environment: varEnvironment,
                       },
@@ -224,13 +234,9 @@ export const AddVariable = ({
                         }
                         onClick={showPopconfirm}
                       >
-                        {varTarget === 'Environment'
-                          ? updateVar || varName
-                            ? 'Update environment variable'
-                            : 'Add environment variable'
-                          : updateVar || varName
-                            ? 'Update project variable'
-                            : 'Add project variable'}
+                        {updateVar || varName
+                          ? `Update ${varTarget.toLowerCase()} variable`
+                          : `Add ${varTarget.toLowerCase()} variable`}
                       </ButtonBootstrap>
                     </Popconfirm>
                   );
@@ -242,13 +248,9 @@ export const AddVariable = ({
                       }
                       onClick={addOrUpdateEnvVariableHandler}
                     >
-                      {varTarget === 'Environment'
-                        ? updateVar || varName
-                          ? 'Update environment variable'
-                          : 'Add environment variable'
-                        : updateVar || varName
-                          ? 'Update project variable'
-                          : 'Add project variable'}
+                      {updateVar || varName
+                        ? `Update ${varTarget.toLowerCase()} variable`
+                        : `Add ${varTarget.toLowerCase()} variable`}
                     </ButtonBootstrap>
                   );
                 }

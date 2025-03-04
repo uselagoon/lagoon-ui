@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+import getConfig from 'next/config';
+
 import {
   CheckSquareOutlined,
   ReadOutlined,
@@ -15,6 +17,12 @@ import EnvironmentVariablesLink from 'components/link/EnvironmentVariables';
 import TasksLink from 'components/link/Tasks';
 
 import { StyledNavigation } from './StylednavTabs';
+
+/* eslint-disable-next-line
+  @typescript-eslint/no-unsafe-assignment,
+  @typescript-eslint/no-unsafe-call
+*/
+const { publicRuntimeConfig } = getConfig();
 
 interface NavSkeletonProps {
   activeTab: string;
@@ -48,12 +56,21 @@ const NavTabsSkeleton: FC<NavSkeletonProps> = ({ activeTab, projectName, openshi
         <span className="destination"> Tasks</span>
       </TasksLink>
     </li>
-    <li className={`tasks ${activeTab == 'environmentVariables' ? 'active' : ''} ${'linkContainer'}`}>
-      <EnvironmentVariablesLink environmentSlug={openshiftProjectName} projectSlug={projectName} className="navLink">
-        <UnorderedListOutlined className="icon" />
-        <span className="destination"> Variables</span>
-      </EnvironmentVariablesLink>
-    </li>
+    {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      publicRuntimeConfig.LAGOON_UI_VIEW_ENV_VARIABLES == null && (
+        <li className={`variables ${activeTab == 'variables' ? 'active' : ''} linkContainer`}>
+          <EnvironmentVariablesLink
+            environmentSlug={openshiftProjectName}
+            projectSlug={projectName}
+            className="navLink"
+          >
+            <UnorderedListOutlined className="icon" />
+            <span className="destination"> Variables</span>
+          </EnvironmentVariablesLink>
+        </li>
+      )
+    }
     <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
     <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
     <Skeleton style={{ height: '50px', lineHeight: '0.5' }} />
