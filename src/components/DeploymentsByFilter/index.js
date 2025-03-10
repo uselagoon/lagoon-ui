@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import CancelDeployment from 'components/CancelDeployment';
-import { getDeploymentDuration } from 'components/Deployment';
 import HoverTag from 'components/HoverTag';
 import DeploymentLink from 'components/link/Deployment';
 import DeploymentsLink from 'components/link/Deployments';
 import ProjectLink from 'components/link/Project';
+import { getProcessDuration } from 'lib/util';
 import moment from 'moment';
 
 import useSortableData from '../../lib/withSortedItems';
@@ -203,7 +203,7 @@ const DeploymentsByFilter = ({ deployments }) => {
                   <HoverTag text={deployment.buildStep} maxWidth="160px" tooltipPosition="bottom" />
                 )}
               </div>
-              <div className="duration">{getDeploymentDuration(deployment)}</div>
+              <div className="duration">{getProcessDuration(deployment)}</div>
               <div>
                 {['new', 'pending', 'queued', 'running'].includes(deployment.status) && (
                   <CancelDeployment deployment={deployment} afterText="Cancelled" beforeText="Cancel" />

@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "paths": {
       "components/*": ["src/components/*"],
+      "styles/*": ["src/styles/*"],
       "layouts/*": ["src/layouts/*"],
       "lib/*": ["src/lib/*"],
       "pages/*": ["src/pages/*"]
@@ -23,6 +24,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "styled.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "styled.d.ts", "**/*.ts", "**/*.tsx", "src/styles/commonStyles.js"],
   "exclude": ["node_modules", "**/cypress/**"]
 }

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 export const StyledTask = styled.div`
   .details {
+    padding-inline: 5% 10%;
     width: 100%;
-    padding-top: 48px;
-    margin-inline: 7% 10%;
+    row-gap: 1rem;
     @media ${bp.xs_smallUp} {
       display: flex;
       flex-wrap: wrap;
@@ -13,6 +13,11 @@ export const StyledTask = styled.div`
       position: relative;
       width: 100%;
     }
+
+    @media ${bp.extraWideUp} {
+      padding-top: 48px;
+    }
+
     h3 {
       width: 100%;
       @media ${bp.xs_smallUp} {
@@ -24,142 +29,20 @@ export const StyledTask = styled.div`
         top: 48px;
       }
       @media ${bp.extraWideUp} {
-        margin-left: calc(((-100vw / 16) / 1.25) + 28px);
-        position: initial;
-      }
-    }
-
-    .field-wrapper {
-      .cancel-button {
-        button {
-          margin-right: unset !important;
-        }
-        max-height: 100px;
-        max-width: 120px;
-      }
-      & > div:first-of-type {
-        margin-left: 14px;
-      }
-      &::before {
-        left: calc(((-100vw / 16) * 1.5) - 28px);
-      }
-      @media ${bp.xs_smallUp} {
-        min-width: 50%;
-        position: relative;
-        width: 50%;
-      }
-      @media ${bp.desktopUp} {
-        min-width: 33.33%;
-        min-width: calc(100% / 3);
-        width: 33.33%;
-        width: calc(100% / 3);
-      }
-      @media ${bp.extraWideUp} {
         min-width: 25%;
+        padding-right: 60px;
+        position: initial;
         width: 25%;
       }
-
-      &.created {
-        &::before {
-          background-image: url('/static/images/created.svg');
-          background-size: 17px 16px;
-        }
-      }
-
-      &.command {
-        &::before {
-          background-image: url('/static/images/command.svg');
-          background-size: 16px;
-        }
-      }
-
-      &.service {
-        &::before {
-          background-image: url('/static/images/service.svg');
-          background-size: 16px;
-        }
-      }
-
-      &.status {
-        &::before {
-          background-size: 14px;
-        }
-
-        &.active {
-          &::before {
-            background-image: url('/static/images/in-progress.svg');
-          }
-        }
-
-        &.new {
-          &::before {
-            background-image: url('/static/images/in-progress.svg');
-          }
-        }
-
-        &.pending {
-          &::before {
-            background-image: url('/static/images/in-progress.svg');
-          }
-        }
-
-        &.running {
-          &::before {
-            background-image: url('/static/images/in-progress.svg');
-          }
-        }
-
-        &.failed {
-          &::before {
-            background-image: url('/static/images/failed.svg');
-          }
-        }
-
-        &.cancelled {
-          &::before {
-            background-image: url('/static/images/failed.svg');
-          }
-        }
-
-        &.succeeded {
-          &::before {
-            background-image: url('/static/images/successful.svg');
-          }
-        }
-
-        &.complete {
-          &::before {
-            background-image: url('/static/images/successful.svg');
-          }
-        }
-      }
-
-      & > div {
-        width: 100%;
-      }
-
-      .field {
-        padding-right: calc((100vw / 16) * 1);
-        @media ${bp.extraWideUp} {
-          padding-right: calc((100vw / 16) * 0.5);
-        }
-      }
-
-      &.files {
-        &::before {
-          background-image: url('/static/images/files.svg');
-        }
-
-        ul.field {
-          margin: 0;
-
-          li {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-          }
-        }
-      }
     }
+  }
+`;
+
+export const CancelRow = styled.div`
+  padding-left: 4%;
+  margin-block: 0.5rem;
+  .cancel-button {
+    max-height: 100px;
+    max-width: 120px;
   }
 `;
