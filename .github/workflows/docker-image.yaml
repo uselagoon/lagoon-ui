@@ -6,6 +6,7 @@ on:
       - 'main'
       - 'build-image'
       - 'UI-V2'
+      - 'UI-V2-base'
     tags:
       - 'v*.*.*'
   pull_request:
