@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
@@ -14,7 +14,7 @@ import { getUserMenuItems, navLinks } from '../components/links';
 
 const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: string; logo?: ReactNode }) => {
   const { status, data } = useSession();
-  const { toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   const pathname = usePathname();
 
@@ -22,15 +22,32 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
 
   const { LAGOON_UI_ICON } = useEnvContext();
 
-  const getLogo = () => {
-    // either uses a logo from a prop, runtime env var; if undefined - ui library will default to LagoonLogo;
-    if (logo) return logo;
+  const memoizedLogo = useMemo(() => {
+    const getLogo = () => {
+      // either uses a logo from a prop, runtime env var; if undefined - ui library will default to LagoonLogo;
+      if (logo) return logo;
 
-    if (LAGOON_UI_ICON) {
-      return <img alt="Home" className="icon logo" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
-    }
-    return undefined;
-  };
+      if (LAGOON_UI_ICON) {
+        if (theme === 'dark') {
+          return <img alt="Home" className="icon logo" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
+        }
+
+        // light mode - get the direct `path` children of the <svg> with applied clip-path and #fff fill, replace with #000;
+
+        const decodedSvg = decodeURIComponent(LAGOON_UI_ICON);
+        const modifiedSvg = decodedSvg.replace(
+          /(<path[^>]+clip-path=['"][^'"]+['"][^>]*?)fill:\s*#fff;/g,
+          '$1fill:#000;'
+        );
+        const reEncodedSvg = encodeURIComponent(modifiedSvg);
+
+        return <img alt="Home" className="icon logo" src={`data:image/svg+xml;utf8,${reEncodedSvg}`} />;
+      }
+      return undefined;
+    };
+
+    return getLogo();
+  }, [LAGOON_UI_ICON, theme]);
 
   return (
     <PageContainer
@@ -41,7 +58,7 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
         navLinks,
         currentPath: pathname,
         toggleTheme,
-        logo: getLogo(),
+        logo: memoizedLogo,
       }}
     >
       <ProgressBar

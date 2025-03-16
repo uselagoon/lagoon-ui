@@ -51,13 +51,6 @@ export default function ProblemsPage({
   const dismissedProblems = [] as Problem[];
   return (
     <>
-      <LagoonProblemsOverview
-        problems={problems.length}
-        critical={criticalProblems.length}
-        high={highProblems.length}
-        medium={mediumProblems.length}
-        low={lowProblems.length}
-      />
       <ProblemsWrapper>
         <Collapse
           type="default"

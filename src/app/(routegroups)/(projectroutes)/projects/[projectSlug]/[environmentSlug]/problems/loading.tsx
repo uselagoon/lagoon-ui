@@ -7,7 +7,6 @@ const { ProblemsTable } = Table;
 export default function Loading() {
   return (
     <>
-      <LagoonProblemsOverview skeleton />
       <ProblemsWrapper>
         <Collapse
           type="default"
