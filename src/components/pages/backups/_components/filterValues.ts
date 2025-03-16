@@ -38,8 +38,8 @@ export const statusOptions = [
     value: 'pending',
   },
   {
-    label: 'Unavailable',
-    value: 'unavailable',
+    label: 'Retrievable',
+    value: 'retrievable',
   },
 
   {

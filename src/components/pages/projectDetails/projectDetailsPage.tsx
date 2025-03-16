@@ -42,17 +42,17 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
     {
       key: 'giturl',
       label: 'GIT URL',
-      children: <CopyToClipboard fontSize="1.5rem" type="visible" withToolTip text={project.gitUrl} />,
+      children: <CopyToClipboard fontSize="1.2rem" type="visible" withToolTip text={project.gitUrl} />,
     },
     {
       key: 'branches',
       label: 'BRANCHES ENABLED',
-      children: String(!!project.branches).charAt(0).toUpperCase() + String(!!project.branches).substring(1),
+      children: project.branches,
     },
     {
       key: 'pulls',
       label: 'PULL REQUESTS ENABLED',
-      children: String(!!project.pullrequests).charAt(0).toUpperCase() + String(!!project.pullrequests).substring(1),
+      children: project.pullrequests,
     },
     {
       key: 'dev_envs',

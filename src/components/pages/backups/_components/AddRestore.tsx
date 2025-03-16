@@ -14,7 +14,7 @@ interface AddRestoreButtonProps {
   error?: {
     message: string;
   };
-  type: 'failed' | 'unavailable';
+  type: 'failed' | 'retrievable';
 }
 export const AddRestoreButton: FC<AddRestoreButtonProps> = ({ action, success, loading, error, type }) => {
   const { contextHolder, trigger } = useNotification({
@@ -45,7 +45,7 @@ export const AddRestoreButton: FC<AddRestoreButtonProps> = ({ action, success, l
   );
 };
 
-const AddRestore = ({ backup, type }: { backup: Backup; type: 'failed' | 'unavailable' }) => {
+const AddRestore = ({ backup, type }: { backup: Backup; type: 'failed' | 'retrievable' }) => {
   const [addRestoreMutation, { data, loading, error }] = useMutation(addRestore, {
     onError: err => {
       console.error(err);
