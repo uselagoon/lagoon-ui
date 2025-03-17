@@ -33,6 +33,7 @@ export default gql`
           value
         }
       }
+      idled
     }
   }
 `;

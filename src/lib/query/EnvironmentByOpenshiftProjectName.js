@@ -21,6 +21,7 @@ export default gql`
         problemsUi
         factsUi
       }
+      idled
     }
   }
 `;

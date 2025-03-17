@@ -135,6 +135,20 @@ export const StyledEnvironments = styled.div`
     }
   }
 
+  .idledLabel {
+    ${fontSize(10)};
+    color: ${color.white};
+    background-color: ${color.red} !important;
+    position: absolute;
+    right: 0px;
+    top: 80%;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    padding: 1px 15px 0px 15px;
+  }
+
   label {
     ${fontSize(10)};
     background-color: ${color.lightestGrey};

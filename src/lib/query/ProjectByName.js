@@ -35,6 +35,7 @@ export default gql`
           friendlyName
           cloudRegion
         }
+        idled
       }
     }
   }

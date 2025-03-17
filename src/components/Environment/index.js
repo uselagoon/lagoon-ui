@@ -76,6 +76,7 @@ const Environment = ({ environment }) => {
               environment.environmentType == 'production' &&
               environment.project.standbyProductionEnvironment == environment.name &&
               ' (standby)'}
+            {environment.idled && ' (idled)'}
           </div>
         </div>
       </div>
@@ -118,7 +119,6 @@ const Environment = ({ environment }) => {
           </div>
         </div>
       )}
-
       <div className="field-wrapper routes">
         {environment.project.productionEnvironment &&
           environment.project.standbyProductionEnvironment &&

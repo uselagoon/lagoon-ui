@@ -60,6 +60,9 @@ const Environments = ({ environments = [], project, refresh, environmentCount })
                     <span>Standby</span>
                   </div>
                 )}
+                {environment.idled && (
+                  <label className="idledLabel">{environment.idled && "Idled"}</label>
+                )}
                 <label>Type: {environment.deployType === 'pullrequest' ? 'PR' : environment.deployType}</label>
                 <h4 data-cy="environment-name">{environment.name}</h4>
                 {environment.openshift.friendlyName != null && (
