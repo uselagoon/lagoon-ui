@@ -21,16 +21,15 @@ import { EnvironmentActions, RoutesSection } from './styles';
 dayjs.extend(utc);
 
 // active/standby routes
-export const createLinks = (routes: string | null) =>
-  // just the first two routes
-  routes
-    ?.split(',')
-    .slice(0, 2)
-    .map(route => (
-      <a href={route} target="_blank" key={route}>
-        {route}
-      </a>
-    ));
+export const createLinks = (routes: string | null) => {
+  if (!routes || routes === 'undefined') return;
+
+  return routes.split(',').map(route => (
+    <a href={route} target="_blank" key={route}>
+      {route}
+    </a>
+  ));
+};
 
 export default function EnvironmentPage({
   queryRef,
@@ -174,6 +173,8 @@ export default function EnvironmentPage({
       </EnvironmentActions>
     </>
   );
+
+  console.warn(routes);
   return (
     <>
       <Head3>Environment details</Head3>
