@@ -76,21 +76,25 @@ export default function EnvironmentPage({
       children: environment.environmentType,
       key: 'env_type',
       label: 'Environment type',
+      lowercaseValue: true,
     },
     {
       children: environment.deployType,
       key: 'deployment_type',
       label: 'Deployment Type',
+      lowercaseValue: true,
     },
     {
       children: dayjs.utc(environment.created).local().format('YYYY-MM-DD HH:mm:ss Z'),
       key: 'created',
       label: 'Created',
+      lowercaseValue: true,
     },
     {
       children: dayjs.utc(environment.updated).local().format('YYYY-MM-DD HH:mm:ss Z'),
       key: 'updated',
       label: 'Updated',
+      lowercaseValue: true,
     },
     ...(gitBranchLink
       ? [
@@ -100,6 +104,7 @@ export default function EnvironmentPage({
                 {gitBranchLink}
               </StyledGitLink>
             ),
+            lowercaseValue: true,
             key: 'source',
             label: 'Source',
           },

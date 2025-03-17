@@ -48,6 +48,7 @@ export default function OrganizationPage({
       key: 'org_name',
       label: 'ORG NAME',
       children: organization.name,
+      lowercaseValue: true,
     },
     {
       key: 'groups',
@@ -57,6 +58,7 @@ export default function OrganizationPage({
           Group quota: {groupCount} of {organization.quotaGroup === -1 ? 'unlimited' : organization.quotaGroup}
         </>
       ),
+      capitalizeValue: true,
     },
     {
       key: 'projects',
@@ -67,6 +69,7 @@ export default function OrganizationPage({
           {organization.quotaProject === -1 ? 'unlimited' : organization.quotaProject}
         </>
       ),
+      capitalizeValue: true,
     },
     {
       key: 'notifications',
@@ -77,6 +80,7 @@ export default function OrganizationPage({
           {organization.quotaNotification === -1 ? 'unlimited' : organization.quotaNotification}
         </>
       ),
+      capitalizeValue: true,
     },
     {
       key: 'environments',
@@ -87,9 +91,15 @@ export default function OrganizationPage({
           {organization.quotaEnvironment === -1 ? 'unlimited' : organization.quotaEnvironment}
         </>
       ),
+      capitalizeValue: true,
     },
     ...organization.deployTargets?.map(target => {
-      return { key: `target_${String(target.id)}`, label: 'AVAILABLE DEPLOY TARGET', children: target.name };
+      return {
+        key: `target_${String(target.id)}`,
+        label: 'AVAILABLE DEPLOY TARGET',
+        children: target.name,
+        lowercaseValue: true,
+      };
     }),
   ];
 

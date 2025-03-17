@@ -29,6 +29,7 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
       key: 'created',
       label: 'CREATED',
       children: formattedDate,
+      lowercaseValue: true,
     },
     {
       key: 'origin',
@@ -38,21 +39,25 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
           {gitLink}
         </StyledGitLink>
       ),
+      lowercaseValue: true,
     },
     {
       key: 'giturl',
       label: 'GIT URL',
       children: <CopyToClipboard fontSize="1.2rem" type="visible" withToolTip text={project.gitUrl} />,
+      lowercaseValue: true,
     },
     {
       key: 'branches',
       label: 'BRANCHES ENABLED',
       children: project.branches,
+      lowercaseValue: true,
     },
     {
       key: 'pulls',
       label: 'PULL REQUESTS ENABLED',
       children: project.pullrequests,
+      lowercaseValue: true,
     },
     {
       key: 'dev_envs',
@@ -62,6 +67,7 @@ export default function ProjectDetailsPage(props: ProjectDetailsProps) {
           {developEnvironmentCount} of {project.developmentEnvironmentsLimit}{' '}
         </>
       ),
+      lowercaseValue: true,
     },
   ];
   return <DetailedStats items={detailItems} />;
