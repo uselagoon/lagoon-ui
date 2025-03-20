@@ -32,15 +32,15 @@ interface RootNode {
   nodes: LogNode[];
 }
 
-interface LogViewerProps {
+type LogViewerProps = {
   logs: string | null;
   status: string;
   showParsed: boolean;
   highlightWarnings: boolean;
   showSuccessSteps: boolean;
   forceLastSectionOpen: boolean;
-  logsTarget?: string;
-}
+} & ({ logsTarget: 'task'; taskDuration: string } | { logsTarget: 'deployment'; taskDuration?: never });
+
 const LogViewer: FC<LogViewerProps> = ({
   logs,
   status = 'NA',
@@ -48,14 +48,23 @@ const LogViewer: FC<LogViewerProps> = ({
   highlightWarnings,
   showSuccessSteps,
   forceLastSectionOpen = true,
-  logsTarget = 'Deployments',
+  logsTarget = 'deployment',
+  taskDuration = null,
 }) => (
   <React.Fragment>
     <StyledLogs className="logs">
       {logs !== null ? (
         showParsed ? (
           <div className="log-viewer">
-            {logPreprocessor(logs, status, forceLastSectionOpen, logsTarget, showSuccessSteps, highlightWarnings)}
+            {logPreprocessor(
+              logs,
+              status,
+              forceLastSectionOpen,
+              logsTarget,
+              showSuccessSteps,
+              highlightWarnings,
+              taskDuration
+            )}
           </div>
         ) : (
           <div className="log-viewer with-padding">{logs}</div>
@@ -90,7 +99,8 @@ const logPreprocessor = (
   forceLastSectionOpen = true,
   logsTarget: string,
   showSuccessSteps: boolean,
-  highlightWarnings: boolean
+  highlightWarnings: boolean,
+  taskDuration: string | null
 ) => {
   let ret = null;
 
@@ -98,7 +108,7 @@ const logPreprocessor = (
   let openLastSection = forceLastSectionOpen || shouldLastSectionBeOpen(status);
 
   try {
-    let tokens = logPreprocessorTokenize(logs, logsTarget);
+    let tokens = logPreprocessorTokenize(logs, logsTarget, taskDuration);
     let sectionMetadata = logPreprocessorExtractSectionEndDetails(logs);
     let AST = logPreprocessorProcessParse(tokens, sectionMetadata);
     return logPreprocessorProcessASTToReact(AST, openLastSection, statusBad, showSuccessSteps, highlightWarnings);
@@ -317,7 +327,7 @@ const logPreprocessorExtractSectionEndDetails = (logs: string) => {
           hasWarnings = true;
         }
         if (durationArray) {
-          let payload = [`Duration: ${durationArray[1]}`, hasWarnings];
+          let payload = [`(Duration: ${durationArray[1]})`, hasWarnings];
           if (durationArray?.length == 2) {
             ret.set(stepName, payload);
           }
@@ -328,11 +338,12 @@ const logPreprocessorExtractSectionEndDetails = (logs: string) => {
   return ret;
 };
 
-const logPreprocessorTokenize = (logs: string, logsTarget: string) => {
+const logPreprocessorTokenize = (logs: string, logsTarget: string, taskDuration: string | null) => {
   // tokenize
   const regexp =
     /##############################################\n(BEGIN) (.+)\n##############################################/;
-  const beginningSectionDefaultDetails = logsTarget === 'Deployments' ? 'Build Setup' : 'Task Setup';
+  const beginningSectionDefaultDetails =
+    logsTarget === 'deployment' ? 'Build Setup' : `Task Setup (Duration: ${taskDuration})`;
   // The regex above will split the logs into three separate token types
   // 1. standard blocks of text
   // 2. markers for section starts containing "SECTION" only

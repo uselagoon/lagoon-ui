@@ -1,20 +1,30 @@
 import { FC, startTransition, useReducer } from 'react';
 
-import { env } from 'next-runtime-env';
+import { useEnvContext } from 'next-runtime-env';
 
 import deployEnvironmentBranch from '@/lib/mutation/deployEnvironmentBranch';
 import projectByNameWithDeployKeyQuery from '@/lib/query/projectByNameWithDeployKeyQuery';
 import { ApolloError, useMutation, useQuery } from '@apollo/client';
-import { CopyToClipboard, FormItem, Input, LagoonCard, Text, Tip, useNotification } from '@uselagoon/ui-library';
+import {
+  Collapse,
+  CopyToClipboard,
+  FormItem,
+  Input,
+  LagoonCard,
+  Text,
+  Tip,
+  useNotification,
+} from '@uselagoon/ui-library';
 
 import { ContentWrapper, StepWrapper } from './_components/styles';
 
 type Props = {
   projectName: string;
+  environmentCount: number;
   renderType?: 'card' | 'listItem';
   refetch: () => void;
 };
-export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', refetch }) => {
+export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', refetch, environmentCount }) => {
   const { error, data: deployKeyValue } = useQuery(projectByNameWithDeployKeyQuery, {
     variables: { name: projectName },
   });
@@ -42,11 +52,11 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
 
   if (error) console.error(error);
 
-  const WEBHOOK_URL = env('WEBHOOK_URL');
+  const { WEBHOOK_URL } = useEnvContext();
 
   const webhookURL = WEBHOOK_URL ? WEBHOOK_URL : 'https://webhook-handler.example.com';
 
-  const createModalStep1 = (
+  const createModalStep1 = () => (
     <>
       <StepWrapper>
         <FormItem required rules={[{ required: true, message: '' }]} label="Branch name" name="branch_name">
@@ -57,12 +67,12 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
     </>
   );
 
-  const createModalStep2 = (
+  const createModalStep2 = (withTitle?: boolean) => (
     <>
       <StepWrapper>
-        <Text className="description">Add this project's Deploy Key to your Git service:</Text>
+        {withTitle && <Text className="description">Add this project's Deploy Key to your Git service:</Text>}
         <div data-id="copy">
-          <CopyToClipboard type="hiddenWithIcon" text={dkValue} width={400} />
+          <CopyToClipboard type="hiddenWithIcon" withToolTip text={dkValue} width={372} />
         </div>
       </StepWrapper>
       <Tip
@@ -93,10 +103,10 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
     </>
   );
 
-  const createModalStep3 = (
+  const createModalStep3 = (withTitle?: boolean) => (
     <>
       <StepWrapper>
-        <Text className="description">Add the webhook to your Git service:</Text>
+        {withTitle && <Text className="description">Add the webhook to your Git service:</Text>}
         <div data-id="webhook">
           <CopyToClipboard type="visible" text={webhookURL} />
         </div>
@@ -123,7 +133,43 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
     </>
   );
 
-  const newEnvSteps = [createModalStep1, createModalStep2, createModalStep3];
+  const createModalStepsCollapsed = (
+    <>
+      {createModalStep1()}
+      <div style={{ marginBottom: '2rem' }}></div>
+      <Collapse
+        items={[
+          {
+            children: createModalStep2(),
+            key: 'step2',
+            label: (
+              <>
+                <b>Step 2: </b> Add this project's Deploy Key to your Git service.
+              </>
+            ),
+          },
+          {
+            children: createModalStep3(),
+            key: 'step3',
+            label: (
+              <>
+                <b>Step 3:</b> Add the webhook to your Git service.
+              </>
+            ),
+          },
+        ]}
+        useArrowIcons
+        size="small"
+        type="default"
+        ghost
+      />
+    </>
+  );
+
+  const newEnvironmentModalSteps: JSX.Element[] =
+    environmentCount > 0
+      ? [createModalStepsCollapsed]
+      : [createModalStep1(), createModalStep2(true), createModalStep3(true)];
 
   const createEnvironment = async (fields: Record<string, unknown>) => {
     try {
@@ -152,7 +198,7 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
         loading={loading}
         requiredFormItems={['branch_name']}
         onCreateEnvironment={createEnvironment}
-        steps={newEnvSteps}
+        steps={newEnvironmentModalSteps}
       />
     </>
   );

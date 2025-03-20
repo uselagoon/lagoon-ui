@@ -107,6 +107,7 @@ export default function DeploymentPage({
           highlightWarnings={highlightWarnings}
           showSuccessSteps={showSuccessSteps}
           forceLastSectionOpen={true}
+          logsTarget="deployment"
         />
       </DeploymentTable>
     </>

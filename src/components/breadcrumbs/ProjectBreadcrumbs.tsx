@@ -19,6 +19,7 @@ export const ProjectBreadcrumbs = () => {
           {
             key: projectSlug,
             title: <Link href={`/projects/${projectSlug}`}>{projectSlug}</Link>,
+            copyText: projectSlug,
           },
         ]
       : []),
@@ -28,6 +29,7 @@ export const ProjectBreadcrumbs = () => {
           {
             key: environmentSlug,
             title: <Link href={`/projects/${projectSlug}/${environmentSlug}`}>{environmentSlug}</Link>,
+            copyText: environmentSlug,
           },
         ]
       : []),

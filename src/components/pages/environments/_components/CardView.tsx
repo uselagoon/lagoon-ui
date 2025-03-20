@@ -104,7 +104,7 @@ export const CardView: FC<Props> = ({
             />
           );
         })}
-        <NewEnvironment projectName={projectName} refetch={refetch} />
+        <NewEnvironment projectName={projectName} refetch={refetch} environmentCount={0} />
       </StyledEnvironmentsWrapper>
 
       {environments.length > slicedEnvsByCount.length ? (

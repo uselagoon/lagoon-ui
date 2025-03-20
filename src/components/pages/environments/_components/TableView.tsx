@@ -17,9 +17,18 @@ interface Props {
   filterString: string;
   resultsPerPage: number;
   refetch: () => void;
+  environmentCount: number;
 }
 const { EnvironmentsTable } = Table;
-export const TableView: FC<Props> = ({ project, projectName, filterString, resultsPerPage, refetch }) => {
+
+export const TableView: FC<Props> = ({
+  project,
+  projectName,
+  filterString,
+  resultsPerPage,
+  refetch,
+  environmentCount,
+}) => {
   const pathname = usePathname();
   const { environments } = project;
   const productionEnvironment = project.productionEnvironment;
@@ -64,7 +73,14 @@ export const TableView: FC<Props> = ({ project, projectName, filterString, resul
     };
   });
 
-  const newEnvironmentModal = <NewEnvironment renderType="listItem" projectName={projectName} refetch={refetch} />;
+  const newEnvironmentModal = (
+    <NewEnvironment
+      environmentCount={environmentCount}
+      renderType="listItem"
+      projectName={projectName}
+      refetch={refetch}
+    />
+  );
 
   return (
     <EnvironmentsTable

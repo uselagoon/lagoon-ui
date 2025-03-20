@@ -19,6 +19,7 @@ export const OrgBreadcrumbs = () => {
           {
             key: organizationSlug,
             title: <Link href={`/organizations/${organizationSlug}`}>{organizationSlug}</Link>,
+            copyText: organizationSlug,
           },
         ]
       : []),

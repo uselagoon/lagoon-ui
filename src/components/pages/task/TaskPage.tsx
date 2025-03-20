@@ -4,6 +4,7 @@ import { startTransition, useEffect, useState } from 'react';
 
 import { TaskData } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/tasks/[taskSlug]/page';
 import TaskNotFound from '@/components/errors/TaskNotFound';
+import { getTaskDuration } from '@/components/utils';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Switch, Table, Text } from '@uselagoon/ui-library';
 
@@ -77,6 +78,8 @@ export default function TaskPage({ queryRef, taskName }: { queryRef: QueryRef<Ta
           highlightWarnings={highlightWarnings}
           showSuccessSteps={showSuccessSteps}
           forceLastSectionOpen={true}
+          logsTarget="task"
+          taskDuration={getTaskDuration(currentTask)}
         />
       </TaskTable>
     </>

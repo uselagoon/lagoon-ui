@@ -19,7 +19,7 @@ export const StepWrapper = styled.div`
     text-align: justify !important;
   }
   input {
-    min-width: 30.6875rem !important;
+    max-width: 29.5rem;
   }
   .description {
     font-size: 14px;
@@ -34,12 +34,13 @@ export const StepWrapper = styled.div`
     padding-inline: 1rem;
     border: 1px solid ${props => (props.theme.colorScheme === 'dark' ? '#D9D9D9' : '#000')};
     border-radius: 3px;
+    max-width: 28rem;
   }
   [data-id='webhook'] {
     display: flex;
     justify-content: space-between;
     align-content: center;
-    width: 490px;
+    max-width: 28rem;
     padding-block: 0.35rem;
     margin-top: 0.5rem;
     padding-inline: 1rem;

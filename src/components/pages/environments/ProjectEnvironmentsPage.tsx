@@ -68,6 +68,7 @@ export default function ProjectEnvironmentsPage({
     resultsPerPage: env_count,
     setResultsPerPage: setEnvCount,
     filterString: search || '',
+    environmentCount: project.environments.length,
   };
 
   return (
