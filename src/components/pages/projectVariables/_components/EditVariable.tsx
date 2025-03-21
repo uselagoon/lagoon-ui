@@ -21,14 +21,19 @@ import {
 type Props = {
   currentEnv: Variable;
   refetch: () => void;
-  projectName: string;
 } & (
   | {
       type: 'project';
+      projectName: string;
     }
   | {
       type: 'environment';
       environmentName: string;
+      projectName: string;
+    }
+  | {
+      type: 'organization';
+      orgName: string;
     }
 );
 
@@ -55,15 +60,25 @@ const scopeOptions = [
   },
 ];
 
-export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch, type, ...rest }) => {
+export const EditVariable: FC<Props> = ({ currentEnv, refetch, type, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [addVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
 
   let envName = '';
+  let orgName = '';
+  let projectName = '';
+
+  if (type === 'environment') {
+    projectName = (rest as { projectName: string }).projectName;
+  }
 
   if (type === 'environment') {
     envName = (rest as { environmentName: string }).environmentName;
+  }
+
+  if (type === 'organization') {
+    orgName = (rest as { orgName: string }).orgName;
   }
 
   const getRequiredFieldsValues = () => {
@@ -109,7 +124,7 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch, type
                 label="Variable name"
                 name="variable_name"
               >
-                <Input placeholder="Variable Name" />
+                <Input placeholder="Variable Name" disabled />
               </FormItem>
             </div>
 
@@ -160,8 +175,8 @@ export const EditVariable: FC<Props> = ({ currentEnv, projectName, refetch, type
     return editVariable({
       variables: {
         input: {
-          // conditionally include environment
-          project: projectName,
+          ...(orgName ? { organization: orgName } : {}),
+          ...(projectName ? { project: projectName } : {}),
           ...(envName ? { environment: envName } : {}),
           name,
           scope: scope.toUpperCase(),

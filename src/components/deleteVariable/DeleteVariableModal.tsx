@@ -21,18 +21,23 @@ type Props = {
   currentEnv: Variable;
   refetch: () => void;
   onClick?: () => any;
-  projectName: string;
 } & (
   | {
       type: 'project';
+      projectName: string;
     }
   | {
       type: 'environment';
       environmentName: string;
+      projectName: string;
+    }
+  | {
+      type: 'organization';
+      orgName: string;
     }
 );
 
-export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetch, type, onClick, ...rest }) => {
+export const DeleteVariableModal: FC<Props> = ({ currentEnv, refetch, type, onClick, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
@@ -44,9 +49,19 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
   });
 
   let envName = '';
+  let orgName = '';
+  let projectName = '';
+
+  if (type === 'environment') {
+    projectName = (rest as { projectName: string }).projectName;
+  }
 
   if (type === 'environment') {
     envName = (rest as { environmentName: string }).environmentName;
+  }
+
+  if (type === 'organization') {
+    orgName = (rest as { orgName: string }).orgName;
   }
 
   const modalContent = (
@@ -84,8 +99,8 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
     return deleteVariableMutation({
       variables: {
         input: {
-          // conditionally include environment
-          project: projectName,
+          ...(orgName ? { organization: orgName } : {}),
+          ...(projectName ? { project: projectName } : {}),
           ...(envName ? { environment: envName } : {}),
           name,
         },
@@ -114,11 +129,10 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, projectName, refetc
       <DeleteVariableButton
         data-cy="delete-button"
         onClick={async () => {
-          let hasError;
-          if (onClick) {
-            hasError = await onClick();
+          let permissionResponse = onClick ? await onClick() : {};
+          if (!permissionResponse?.error) {
+            setModalOpen(true);
           }
-          !hasError?.error && setModalOpen(true);
         }}
       >
         <Tooltip placement="bottom" title="Delete variable">

@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, SetStateAction, useState } from 'react';
+import { Fragment, SetStateAction, useCallback, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -171,6 +171,9 @@ export default function EnvironmentVariablesPage({
     return await checkEnvVars();
   };
 
+  const stableAddPermissionCheck = useCallback(() => permissionCheck('add'), []);
+  const stableDeletePermissionCheck = useCallback(() => permissionCheck('delete'), []);
+
   return (
     <>
       <Fragment key="envVarsError-notification-holder">{envVarsError.contextHolder}</Fragment>
@@ -240,7 +243,7 @@ export default function EnvironmentVariablesPage({
         deleteVariableModal={currentVariable => (
           <DeleteVariableModal
             type="environment"
-            onClick={() => permissionCheck('delete')}
+            onClick={() => stableDeletePermissionCheck}
             environmentName={envName}
             currentEnv={currentVariable}
             projectName={projectName}
@@ -249,7 +252,7 @@ export default function EnvironmentVariablesPage({
         )}
         newVariableModal={
           <AddNewVariable
-            onClick={() => permissionCheck('add')}
+            onClick={() => stableAddPermissionCheck}
             type="environment"
             projectName={projectName}
             environmentName={envName}

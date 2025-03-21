@@ -8,14 +8,10 @@ type Props = {
 };
 
 export type EnvVariable = {
-  created: string;
-  downloadUrl: string;
-  file: string;
-  fileId: number | null;
   id: number;
-  service: string;
-  size: string;
-  type: string;
+  name: string;
+  scope: string;
+  value?: string;
 };
 
 type Environment = {

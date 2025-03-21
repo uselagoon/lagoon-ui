@@ -174,7 +174,6 @@ export default function EnvironmentPage({
     </>
   );
 
-  console.warn(routes);
   return (
     <>
       <Head3>Environment details</Head3>

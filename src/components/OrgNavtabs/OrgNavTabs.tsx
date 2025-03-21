@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 
+import { useEnvContext } from 'next-runtime-env';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 
@@ -14,6 +15,9 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
 
   const pathname = usePathname();
 
+  const { LAGOON_UI_VIEW_ENV_VARIABLES } = useEnvContext();
+
+  const showVariablesTab = LAGOON_UI_VIEW_ENV_VARIABLES == null ? true : false;
   return (
     <>
       <Tabs
@@ -52,6 +56,20 @@ export const OrgNavTabs = ({ children }: { children: ReactNode }) => {
               </Link>
             ),
           },
+
+          ...(showVariablesTab
+            ? [
+                {
+                  key: 'variables',
+                  label: (
+                    <Link data-cy="nav-org-variables" href={`/organizations/${organizationSlug}/variables`}>
+                      <LinkContentWrapper>Variables</LinkContentWrapper>
+                    </Link>
+                  ),
+                },
+              ]
+            : []),
+
           {
             key: 'notifications',
             label: (

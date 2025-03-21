@@ -17,13 +17,19 @@ import {
   VariableSteps,
 } from '../pages/projectVariables/_components/styles';
 
-type Props = { onClick?: () => any; refetch: () => void; projectName: string } & (
+type Props = { onClick?: () => any; refetch: () => void } & (
   | {
       type: 'project';
+      projectName: string;
     }
   | {
       type: 'environment';
       environmentName: string;
+      projectName: string;
+    }
+  | {
+      type: 'organization';
+      orgName: string;
     }
 );
 
@@ -50,15 +56,25 @@ const scopeOptions = [
   },
 ];
 
-export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick, ...rest }) => {
+export const AddNewVariable: FC<Props> = ({ type, refetch, onClick, ...rest }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [addVariableForm] = useForm();
   const [confirmDisabled, setConfirmDisabled] = useState(true);
 
   let envName = '';
+  let orgName = '';
+  let projectName = '';
+
+  if (type === 'environment') {
+    projectName = (rest as { projectName: string }).projectName;
+  }
 
   if (type === 'environment') {
     envName = (rest as { environmentName: string }).environmentName;
+  }
+
+  if (type === 'organization') {
+    orgName = (rest as { orgName: string }).orgName;
   }
 
   const getRequiredFieldsValues = () => {
@@ -153,8 +169,8 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, projectName, onClick,
     return addVariable({
       variables: {
         input: {
-          // conditionally include environment
-          project: projectName,
+          ...(orgName ? { organization: orgName } : {}),
+          ...(projectName ? { project: projectName } : {}),
           ...(envName ? { environment: envName } : {}),
           name,
           scope: scope.toUpperCase(),
