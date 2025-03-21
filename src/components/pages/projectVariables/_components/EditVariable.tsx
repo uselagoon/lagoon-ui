@@ -69,7 +69,7 @@ export const EditVariable: FC<Props> = ({ currentEnv, refetch, type, ...rest }) 
   let orgName = '';
   let projectName = '';
 
-  if (type === 'environment') {
+  if (type === 'project') {
     projectName = (rest as { projectName: string }).projectName;
   }
 

@@ -52,7 +52,7 @@ export const DeleteVariableModal: FC<Props> = ({ currentEnv, refetch, type, onCl
   let orgName = '';
   let projectName = '';
 
-  if (type === 'environment') {
+  if (type === 'project') {
     projectName = (rest as { projectName: string }).projectName;
   }
 

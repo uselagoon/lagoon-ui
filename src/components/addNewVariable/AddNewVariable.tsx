@@ -65,7 +65,7 @@ export const AddNewVariable: FC<Props> = ({ type, refetch, onClick, ...rest }) =
   let orgName = '';
   let projectName = '';
 
-  if (type === 'environment') {
+  if (type === 'project') {
     projectName = (rest as { projectName: string }).projectName;
   }
 
