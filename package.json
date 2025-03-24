@@ -59,7 +59,7 @@
     "keycloak-js": "^26.0.7",
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
-    "next": "^14.2.2",
+    "next": "^14.2.25",
     "nprogress": "^0.2.0",
     "object-hash": "^3.0.0",
     "parse-url": "^9.0.1",
