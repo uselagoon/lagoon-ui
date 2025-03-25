@@ -9,16 +9,24 @@ export default gql`
       friendlyName
       quotaProject
       quotaGroup
+      deployTargets {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const orgGroupsAndProjectsQuery = gql`
+  {
+    allOrganizations {
+      id
       groups {
         id
         type
       }
       projects {
         id
-      }
-      deployTargets {
-        id
-        name
       }
     }
   }

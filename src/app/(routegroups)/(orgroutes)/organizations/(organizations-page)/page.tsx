@@ -15,8 +15,8 @@ export type OrgType = {
   friendlyName: string | null;
   quotaProject: number;
   quotaGroup: number;
-  groups: { id: string }[];
-  projects: { id: number }[];
+  groups: { id: string }[] | null;
+  projects: { id: number }[] | null;
   deployTargets: { id: number; name: string }[];
 };
 export type OrgsData = {

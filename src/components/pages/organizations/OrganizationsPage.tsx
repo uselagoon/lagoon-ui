@@ -1,14 +1,51 @@
 'use client';
 
-import { SetStateAction } from 'react';
+import { SetStateAction, useState } from 'react';
 
-import { OrgsData } from '@/app/(routegroups)/(orgroutes)/organizations/(organizations-page)/page';
+import { OrgType, OrgsData } from '@/app/(routegroups)/(orgroutes)/organizations/(organizations-page)/page';
+import { orgGroupsAndProjectsQuery } from '@/lib/query/organizations/allOrganizationsQuery';
+import { useQuery } from '@apollo/client';
 import { LagoonFilter, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 const { OrganizationsTable } = Table;
 
 export default function OrganizationsPage({ organizations }: { organizations: OrgsData['allOrganizations'] }) {
+  const [orgs, setOrgs] = useState<OrgsData['allOrganizations']>(
+    organizations.map(org => ({
+      ...org,
+      groups: null,
+      projects: null,
+    }))
+  );
+
+  useQuery<OrgsData>(orgGroupsAndProjectsQuery, {
+    onCompleted: data => {
+      if (data) {
+        const orgDataMap = data.allOrganizations.reduce((acc: Record<number, OrgType>, orgItem) => {
+          acc[orgItem.id] = orgItem;
+          return acc;
+        }, {});
+
+        const updatedOrgs = organizations.map(org => {
+          const orgData = orgDataMap[org.id];
+
+          if (orgData) {
+            return {
+              ...org,
+              groups: orgData.groups,
+              projects: orgData.projects,
+            };
+          }
+
+          return org;
+        });
+
+        setOrgs(updatedOrgs);
+      }
+    },
+  });
+
   const [{ results, search }, setQuery] = useQueryStates({
     results: {
       defaultValue: 10,
@@ -55,7 +92,7 @@ export default function OrganizationsPage({ organizations }: { organizations: Or
       />
 
       <OrganizationsTable
-        organizations={organizations}
+        organizations={orgs}
         filterString={search}
         resultsPerPage={results}
         basePath="/organizations"
