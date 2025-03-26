@@ -6,10 +6,10 @@ import { CreateGroup } from '@/components/createGroup/CreateGroup';
 import { CreateProject } from '@/components/createProject/CreateProject';
 import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
-import { DetailedStats, Details, Head2 } from '@uselagoon/ui-library';
+import { DetailedStats, Head2 } from '@uselagoon/ui-library';
 
 import { Description } from './_components/Description';
-import { OrgActionsWrapper, OrgDeployTargets } from './_components/styles';
+import { OrgActionsWrapper } from './_components/styles';
 
 type Notification = 'slacks' | 'rocketchats' | 'webhook' | 'teams' | 'emails';
 export default function OrganizationPage({
