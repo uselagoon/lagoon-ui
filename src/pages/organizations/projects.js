@@ -31,16 +31,19 @@ export const PageOrgProjects = ({ router }) => {
     variables: { name: orgName },
     onCompleted: initialData => {
       if (initialData && initialData.organization) {
-        getMoreData({
-          variables: { name: orgName },
-        });
+        getMoreData();
       }
     },
   });
 
-  const [getMoreData, { data: moreData }] = useLazyQuery(OrgProjectsGroupCountQuery);
+  const [getMoreData, { data: moreData, refetch: refetchMore }] = useLazyQuery(OrgProjectsGroupCountQuery, {
+    variables: { name: orgName },
+  });
 
-  const handleRefetch = async () => await refetch({ name: router.query.organizationSlug });
+  const handleRefetch = async () => {
+    await refetch({ name: orgName });
+    refetchMore();
+  };
 
   if (loading) {
     return (
@@ -93,7 +96,7 @@ export const PageOrgProjects = ({ router }) => {
     const mergedProjects = data.organization.projects.map(project => {
       const matchingProject = moreProjectsMap.get(project.id);
 
-      return matchingProject ? { ...project, groupCount: matchingProject.groupCount } : group;
+      return matchingProject ? { ...project, groupCount: matchingProject.groupCount } : project;
     });
     organization.projects = mergedProjects;
   }

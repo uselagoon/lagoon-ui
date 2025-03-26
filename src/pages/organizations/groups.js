@@ -27,16 +27,19 @@ export const PageGroups = ({ router }) => {
     variables: { name: orgName },
     onCompleted: initialData => {
       if (initialData && initialData.organization) {
-        getMoreData({
-          variables: { name: orgName },
-        });
+        getMoreData();
       }
     },
   });
 
-  const [getMoreData, { data: moreData }] = useLazyQuery(OrgGroupMemberCountQuery);
+  const [getMoreData, { data: moreData, refetch: refetchMore }] = useLazyQuery(OrgGroupMemberCountQuery, {
+    variables: { name: orgName },
+  });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(groupName, 10) });
+  const handleRefetch = async () => {
+    await refetch({ id: parseInt(orgName, 10) });
+    refetchMore();
+  };
 
   if (loading) {
     return (
