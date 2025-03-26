@@ -6,7 +6,6 @@ import { OrganizationGroupData } from '@/app/(routegroups)/(orgroutes)/organizat
 import { AddProjectToGroup } from '@/components/addProjectToGroup/AddProjectToGroup';
 import { AddUserToGroup } from '@/components/addUserToGroup/AddUserToGroup';
 import { EditUserRole } from '@/components/editUserRole/EditUserRole';
-import { DisconnectOutlined, EditOutlined } from '@ant-design/icons';
 import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, Head3, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { Tooltip } from 'antd';
