@@ -3,7 +3,7 @@ import deleteProject from '@/lib/mutation/organizations/deleteProject';
 import { useMutation } from '@apollo/client';
 
 type Project = {
-  groupCount: number;
+  groupCount?: number;
   id: number;
   name: string;
 };

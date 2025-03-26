@@ -29,8 +29,6 @@ export default function OrganizationPage({
     return <OrganizationNotFound orgName={orgSlug} />;
   }
 
-  const deployTargets = organization.deployTargets.map(target => <div>{target.name}</div>);
-
   const groupCount = Object.values(organization.groups).filter(group => group.type !== 'project-default-group').length;
 
   const totalNotificationCount = ['slacks', 'rocketchats', 'webhook', 'teams', 'emails'].reduce(

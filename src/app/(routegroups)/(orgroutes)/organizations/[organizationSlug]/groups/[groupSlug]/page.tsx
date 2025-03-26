@@ -1,7 +1,6 @@
 import GroupPage from '@/components/pages/organizations/group/GroupPage';
 import { PreloadQuery, getClient } from '@/lib/apolloClient';
 import groupByNameAndOrganization from '@/lib/query/organizations/groupByNameAndOrganization';
-import organizationByName from '@/lib/query/organizations/organizationByName';
 import organizationIdByName from '@/lib/query/organizations/organizationIdByName';
 import { QueryRef } from '@apollo/client';
 

@@ -1,6 +1,6 @@
 import ManagePage from '@/components/pages/organizations/manage/ManagePage';
 import { PreloadQuery } from '@/lib/apolloClient';
-import organizationByName from '@/lib/query/organizations/organizationByName';
+import organizationByNameManage from '@/lib/query/organizations/organizationByName.manage';
 import { QueryRef } from '@apollo/client';
 
 export type OrgOwner = {
@@ -16,8 +16,6 @@ export type OrgOwner = {
 type Organization = {
   id: number;
   name: string;
-  description: string;
-  friendlyName: string;
   owners: OrgOwner[];
 };
 
@@ -37,7 +35,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function OrgManage({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
   return (
     <PreloadQuery
-      query={organizationByName}
+      query={organizationByNameManage}
       variables={{
         displayName: 'OrganizationManage',
         name: organizationSlug,

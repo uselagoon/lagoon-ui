@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 
 type Group = {
   id: string;
-  memberCount: number;
+  memberCount?: number;
   name: string;
   type: 'null' | 'project-default-group';
 };

@@ -23,21 +23,8 @@ export default gql`
         cloudProvider
         cloudRegion
       }
-      owners {
-        id
-        firstName
-        lastName
-        email
-        owner
-        admin
-        groupRoles {
-          id
-        }
-      }
       projects {
         id
-        name
-        groupCount
       }
       environments {
         id
@@ -45,8 +32,6 @@ export default gql`
       groups {
         id
         name
-        type
-        memberCount
       }
       slacks: notifications(type: SLACK) {
         __typename

@@ -23,7 +23,7 @@ export type OrgOwner = {
 export type OrgProject = {
   id: number;
   name: string;
-  groupCount: number;
+  groupCount?: number;
 };
 
 export type OrgGroup = {

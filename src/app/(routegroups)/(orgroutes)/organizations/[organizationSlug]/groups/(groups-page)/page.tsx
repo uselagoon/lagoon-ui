@@ -1,6 +1,6 @@
 import GroupsPage from '@/components/pages/organizations/groups/GroupsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
-import organizationByName from '@/lib/query/organizations/organizationByName';
+import organizationByNameGroups from '@/lib/query/organizations/organizationByName.groups';
 import { QueryRef } from '@apollo/client';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 export type OrgGroup = {
   id: string;
-  memberCount: number;
+  memberCount?: number;
   name: string;
   type: 'null' | 'project-default-group';
 };
@@ -17,11 +17,6 @@ export type OrgGroup = {
 type Organization = {
   id: number;
   name: string;
-
-  quotaEnvironment: number;
-  quotaGroup: number;
-  quotaNotification: number;
-  quotaProject: number;
   groups: OrgGroup[];
 };
 
@@ -38,7 +33,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function Groups({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
   return (
     <PreloadQuery
-      query={organizationByName}
+      query={organizationByNameGroups}
       variables={{
         displayName: 'Organization',
         name: organizationSlug,

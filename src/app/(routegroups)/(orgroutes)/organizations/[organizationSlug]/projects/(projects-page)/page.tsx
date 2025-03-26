@@ -1,6 +1,6 @@
 import OrgProjectsPage from '@/components/pages/organizations/projects/ProjectsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
-import organizationByName from '@/lib/query/organizations/organizationByName';
+import organizationByNameProjects from '@/lib/query/organizations/organizationByName.projects';
 import { QueryRef } from '@apollo/client';
 
 import { DeployTarget, OrgProject } from '../../(organization-overview)/page';
@@ -13,8 +13,6 @@ export type OrganizationProjectsData = {
   organization: {
     id: number;
     name: string;
-    description: string;
-    friendlyName: string;
     projects: OrgProject[];
     deployTargets: DeployTarget[];
   };
@@ -29,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function Projects({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
   return (
     <PreloadQuery
-      query={organizationByName}
+      query={organizationByNameProjects}
       variables={{
         displayName: 'OrganizationProjects',
         name: organizationSlug,

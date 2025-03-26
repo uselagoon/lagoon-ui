@@ -1,14 +1,15 @@
 'use client';
 
-import { SetStateAction } from 'react';
+import { SetStateAction, useState } from 'react';
 
 import { usePathname } from 'next/navigation';
 
+import { OrgProject } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/(organization-overview)/page';
 import { OrganizationProjectsData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/projects/(projects-page)/page';
 import { CreateProject } from '@/components/createProject/CreateProject';
 import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
-import { DeleteOutlined } from '@ant-design/icons';
-import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
+import { orgProjectGroupCount } from '@/lib/query/organizations/organizationByName.projects';
+import { QueryRef, useQuery, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
@@ -61,6 +62,37 @@ export default function OrgProjectsPage({
     data: { organization },
   } = useReadQuery(queryRef);
 
+  const [orgProjects, setOrgProjects] = useState(organization?.projects || []);
+
+  useQuery<OrganizationProjectsData>(orgProjectGroupCount, {
+    variables: {
+      name: organizationSlug,
+    },
+    onCompleted: data => {
+      if (data && organization) {
+        const projectMap = data.organization.projects.reduce((acc: Record<number, OrgProject>, project) => {
+          acc[project.id] = project;
+          return acc;
+        }, {});
+
+        const updatedOrganizationProjects = organization.projects.map(project => {
+          const dataProject = projectMap[project.id];
+
+          if (dataProject) {
+            return {
+              ...project,
+              groupCount: dataProject.groupCount,
+            };
+          }
+
+          return project;
+        });
+
+        setOrgProjects(updatedOrganizationProjects);
+      }
+    },
+  });
+
   if (!organization) {
     return <OrganizationNotFound orgName={organizationSlug} />;
   }
@@ -86,7 +118,7 @@ export default function OrgProjectsPage({
 
       <OrgProjectsTable
         type="standalone"
-        projects={organization.projects}
+        projects={orgProjects}
         basePath={pathname}
         sortBy={project_sort as 'name_asc' | 'name_desc' | 'groupCount_asc' | 'groupCount_desc'}
         filterString={project_query}

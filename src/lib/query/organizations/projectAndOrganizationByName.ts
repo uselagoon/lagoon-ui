@@ -32,7 +32,6 @@ export default gql`
       groups {
         type
         name
-        memberCount
       }
       slacks: notifications(type: SLACK) {
         __typename

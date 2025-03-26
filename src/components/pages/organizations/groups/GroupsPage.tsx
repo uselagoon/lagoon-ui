@@ -1,15 +1,18 @@
 'use client';
 
-import { SetStateAction } from 'react';
+import { SetStateAction, useState } from 'react';
 
 import { usePathname } from 'next/navigation';
 
-import { OrganizationGroupsData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/groups/(groups-page)/page';
+import {
+  OrgGroup,
+  OrganizationGroupsData,
+} from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/groups/(groups-page)/page';
 import { AddUserToGroup } from '@/components/addUserToGroup/AddUserToGroup';
 import { CreateGroup } from '@/components/createGroup/CreateGroup';
 import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
-import { UserAddOutlined } from '@ant-design/icons';
-import { QueryRef, useQueryRefHandlers, useReadQuery } from '@apollo/client';
+import { orgGroupMemberCount } from '@/lib/query/organizations/organizationByName.groups';
+import { QueryRef, useQuery, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
@@ -72,6 +75,37 @@ export default function GroupsPage({
     data: { organization },
   } = useReadQuery(queryRef);
 
+  const [orgGroups, setOrgGroups] = useState(organization?.groups || []);
+
+  useQuery<OrganizationGroupsData>(orgGroupMemberCount, {
+    variables: {
+      name: organizationSlug,
+    },
+    onCompleted: data => {
+      if (data && organization) {
+        const groupMap = data.organization.groups.reduce((acc: Record<string, OrgGroup>, group) => {
+          acc[group.id] = group;
+          return acc;
+        }, {});
+
+        const updatedOrganizationGroups = organization.groups.map(group => {
+          const dataGroup = groupMap[group.id];
+
+          if (dataGroup) {
+            return {
+              ...group,
+              memberCount: dataGroup.memberCount,
+            };
+          }
+
+          return group;
+        });
+
+        setOrgGroups(updatedOrganizationGroups);
+      }
+    },
+  });
+
   if (!organization) {
     return <OrganizationNotFound orgName={organizationSlug} />;
   }
@@ -103,7 +137,7 @@ export default function GroupsPage({
 
       <OrgGroupsTable
         basePath={pathname}
-        groups={organization.groups}
+        groups={orgGroups}
         sortBy={group_sort as 'name_asc' | 'name_desc' | 'memberCount_asc' | 'memberCount_desc'}
         filterString={group_query}
         showDefaults={showDefaults}

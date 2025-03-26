@@ -3490,7 +3490,7 @@
 
 "@uselagoon/ui-library@github:uselagoon/ui-library#unstyled-vanilla-theme":
   version "1.1.2"
-  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/050412e454f0c14ead616392bd621e9bc4fee72e"
+  resolved "https://codeload.github.com/uselagoon/ui-library/tar.gz/363a3bb7ff787fedbd1c535b4a9550a7f7d9c82c"
   dependencies:
     dayjs "^1.11.13"
     fast-deep-equal "^3.1.3"

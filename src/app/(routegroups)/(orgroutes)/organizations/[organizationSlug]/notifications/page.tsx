@@ -1,6 +1,6 @@
 import NotificationsPage from '@/components/pages/organizations/notifications/NotificationsPage';
 import { PreloadQuery } from '@/lib/apolloClient';
-import organizationByName from '@/lib/query/organizations/organizationByName';
+import organizationByNameNotification from '@/lib/query/organizations/organizationByName.notification';
 import { QueryRef } from '@apollo/client';
 
 export type SlackNotification = {
@@ -30,21 +30,9 @@ export type OrgTeams = {
   channel: string;
 };
 
-export type OrgOwner = {
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  email: string;
-  owner: true | null;
-  admin: true | null;
-  groupRoles: null | { id: string }[];
-};
-
 type Organization = {
   id: number;
   name: string;
-  description: string;
-  friendlyName: string;
   slacks: SlackNotification[];
   rocketchats: OrgRocketChat[];
   teams: OrgTeams[];
@@ -72,7 +60,7 @@ export default async function OrgNotifications({
 }) {
   return (
     <PreloadQuery
-      query={organizationByName}
+      query={organizationByNameNotification}
       variables={{
         displayName: 'OrganizationNotifications',
         name: organizationSlug,
