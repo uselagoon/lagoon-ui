@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgNavTabs from 'components/Organizations/NavTabs';
@@ -13,7 +13,9 @@ import OrgHeader from 'components/Organizations/Orgheader';
 import OrgProjects from 'components/Organizations/Projects';
 import OrgProjectsSkeleton from 'components/Organizations/Projects/OrgProjectsSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
+import OrganizationByNameQuery, {
+  OrgProjectsGroupCountQuery,
+} from 'lib/query/organizations/OrganizationByName.projects';
 
 import { OrganizationsWrapper } from '../../components/Organizations/SharedStyles';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -23,9 +25,21 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the projects page, given the organization id
  */
 export const PageOrgProjects = ({ router }) => {
+  const orgName = router.query.organizationSlug;
+
   const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
-    variables: { name: router.query.organizationSlug },
+    variables: { name: orgName },
+    onCompleted: initialData => {
+      if (initialData && initialData.organization) {
+        getMoreData({
+          variables: { name: orgName },
+        });
+      }
+    },
   });
+
+  const [getMoreData, { data: moreData }] = useLazyQuery(OrgProjectsGroupCountQuery);
+
   const handleRefetch = async () => await refetch({ name: router.query.organizationSlug });
 
   if (loading) {
@@ -71,6 +85,17 @@ export const PageOrgProjects = ({ router }) => {
 
   if (!organization) {
     return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
+  }
+
+  if (moreData?.organization && organization) {
+    const moreProjectsMap = new Map(moreData.organization.projects.map(p => [p.id, p]));
+
+    const mergedProjects = data.organization.projects.map(project => {
+      const matchingProject = moreProjectsMap.get(project.id);
+
+      return matchingProject ? { ...project, groupCount: matchingProject.groupCount } : group;
+    });
+    organization.projects = mergedProjects;
   }
 
   return (

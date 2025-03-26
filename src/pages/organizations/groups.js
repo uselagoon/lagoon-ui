@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import Groups from 'components/Organizations/Groups';
@@ -12,7 +12,7 @@ import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
+import OrganizationByNameQuery, { OrgGroupMemberCountQuery } from 'lib/query/organizations/OrganizationByName.groups';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
@@ -21,11 +21,22 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the groups page, given the openshift project name.
  */
 export const PageGroups = ({ router }) => {
+  const orgName = router.query.organizationSlug;
+
   const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
-    variables: { name: router.query.organizationSlug },
+    variables: { name: orgName },
+    onCompleted: initialData => {
+      if (initialData && initialData.organization) {
+        getMoreData({
+          variables: { name: orgName },
+        });
+      }
+    },
   });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  const [getMoreData, { data: moreData }] = useLazyQuery(OrgGroupMemberCountQuery);
+
+  const handleRefetch = async () => await refetch({ id: parseInt(groupName, 10) });
 
   if (loading) {
     return (
@@ -63,6 +74,16 @@ export const PageGroups = ({ router }) => {
 
   if (!organization) {
     return <OrganizationNotFound variables={{ name: router.query.organizationSlug }} />;
+  }
+
+  if (moreData?.organization && organization) {
+    const moreGroupsMap = new Map(moreData.organization.groups.map(g => [g.id, g]));
+
+    const mergedGroups = data.organization.groups.map(group => {
+      const matchingGroup = moreGroupsMap.get(group.id);
+      return matchingGroup ? { ...group, memberCount: matchingGroup.memberCount } : group;
+    });
+    organization.groups = mergedGroups;
   }
 
   return (

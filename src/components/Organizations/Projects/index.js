@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
+import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
@@ -65,7 +66,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       render: project => {
         return (
           <div className="groups" style={{ fontSize: '13px' }}>
-            Groups: {project.groupCount}
+            Groups: {project?.groupCount !== undefined ? project?.groupCount : <Skeleton height={17} width={20} />}
           </div>
         );
       },

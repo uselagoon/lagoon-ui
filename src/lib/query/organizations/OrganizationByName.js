@@ -33,8 +33,6 @@ export default gql`
       }
       projects {
         id
-        name
-        groupCount
       }
       environments {
         id
@@ -43,7 +41,6 @@ export default gql`
         id
         name
         type
-        memberCount
       }
       slacks: notifications(type: SLACK) {
         __typename

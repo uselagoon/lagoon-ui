@@ -12,7 +12,7 @@ import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import { UsersWrapper } from 'components/Organizations/Users/Styles';
 import UsersSkeleton from 'components/Organizations/Users/UsersSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName.manage';
 
 import Manage from '../../components/Organizations/Manage';
 import QueryError from '../../components/errors/QueryError';

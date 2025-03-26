@@ -12,8 +12,7 @@ import OrgNotifications from 'components/Organizations/Notifications';
 import NotificationsSkeleton from 'components/Organizations/Notifications/NotificationsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationNotificationsByNameQuery from 'lib/query/organizations/OrganizationByName';
-import OrganizationNotificationsByIDQuery from 'lib/query/organizations/OrganizationNotificationsByID';
+import OrganizationNotificationsByNameQuery from 'lib/query/organizations/OrganizationByName.notification';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';

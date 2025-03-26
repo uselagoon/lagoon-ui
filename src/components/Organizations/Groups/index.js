@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
+import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
@@ -87,7 +88,11 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
       width: '15%',
       key: 'members',
       render: i => {
-        return typeof i.memberCount !== 'undefined' && <span data-cy="memberCount">Members: {i.memberCount} </span>;
+        return (
+          <span data-cy="memberCount">
+            Members: {i?.memberCount !== undefined ? i.memberCount : <Skeleton height={17} width={20} />}
+          </span>
+        );
       },
     },
     {

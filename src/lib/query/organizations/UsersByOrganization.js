@@ -42,18 +42,9 @@ export const getOrganizationByName = gql`
     organization: organizationByName(name: $name) {
       id
       name
-      friendlyName
       groups {
         id
         name
-      }
-      owners {
-        id
-        firstName
-        lastName
-        email
-        owner
-        admin
       }
     }
   }
