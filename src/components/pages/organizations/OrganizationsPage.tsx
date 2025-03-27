@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useState } from 'react';
+import { SetStateAction } from 'react';
 
 import { OrgType, OrgsData } from '@/app/(routegroups)/(orgroutes)/organizations/(organizations-page)/page';
 import { orgGroupsAndProjectsQuery } from '@/lib/query/organizations/allOrganizationsQuery';
@@ -11,40 +11,7 @@ import { useQueryStates } from 'nuqs';
 const { OrganizationsTable } = Table;
 
 export default function OrganizationsPage({ organizations }: { organizations: OrgsData['allOrganizations'] }) {
-  const [orgs, setOrgs] = useState<OrgsData['allOrganizations']>(
-    organizations.map(org => ({
-      ...org,
-      groups: null,
-      projects: null,
-    }))
-  );
-
-  useQuery<OrgsData>(orgGroupsAndProjectsQuery, {
-    onCompleted: data => {
-      if (data) {
-        const orgDataMap = data.allOrganizations.reduce((acc: Record<number, OrgType>, orgItem) => {
-          acc[orgItem.id] = orgItem;
-          return acc;
-        }, {});
-
-        const updatedOrgs = organizations.map(org => {
-          const orgData = orgDataMap[org.id];
-
-          if (orgData) {
-            return {
-              ...org,
-              groups: orgData.groups,
-              projects: orgData.projects,
-            };
-          }
-
-          return org;
-        });
-
-        setOrgs(updatedOrgs);
-      }
-    },
-  });
+  const { data: extraOrgsData } = useQuery<OrgsData>(orgGroupsAndProjectsQuery);
 
   const [{ results, search }, setQuery] = useQueryStates({
     results: {
@@ -63,6 +30,35 @@ export default function OrganizationsPage({ organizations }: { organizations: Or
   const setResults = (val: string) => {
     setQuery({ results: Number(val) });
   };
+
+  let orgs: OrgsData['allOrganizations'] = organizations.map(org => ({
+    ...org,
+    groups: null,
+    projects: null,
+  }));
+
+  if (extraOrgsData) {
+    const orgDataMap = extraOrgsData.allOrganizations.reduce((acc: Record<number, OrgType>, orgItem) => {
+      acc[orgItem.id] = orgItem;
+      return acc;
+    }, {});
+
+    const updatedOrgs = organizations.map(org => {
+      const orgData = orgDataMap[org.id];
+
+      if (orgData) {
+        return {
+          ...org,
+          groups: orgData.groups,
+          projects: orgData.projects,
+        };
+      }
+
+      return org;
+    });
+
+    orgs = updatedOrgs;
+  }
 
   return (
     <>

@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useState } from 'react';
+import { SetStateAction } from 'react';
 
 import { usePathname } from 'next/navigation';
 
@@ -75,42 +75,45 @@ export default function GroupsPage({
     data: { organization },
   } = useReadQuery(queryRef);
 
-  const [orgGroups, setOrgGroups] = useState(organization?.groups || []);
+  const pathname = usePathname();
 
-  useQuery<OrganizationGroupsData>(orgGroupMemberCount, {
+  const { data: extraData, refetch: refetchExtra } = useQuery<OrganizationGroupsData>(orgGroupMemberCount, {
     variables: {
       name: organizationSlug,
     },
-    onCompleted: data => {
-      if (data && organization) {
-        const groupMap = data.organization.groups.reduce((acc: Record<string, OrgGroup>, group) => {
-          acc[group.id] = group;
-          return acc;
-        }, {});
-
-        const updatedOrganizationGroups = organization.groups.map(group => {
-          const dataGroup = groupMap[group.id];
-
-          if (dataGroup) {
-            return {
-              ...group,
-              memberCount: dataGroup.memberCount,
-            };
-          }
-
-          return group;
-        });
-
-        setOrgGroups(updatedOrganizationGroups);
-      }
-    },
   });
+
+  const refetchData = async () => {
+    await Promise.all([refetch(), refetchExtra()]);
+  };
 
   if (!organization) {
     return <OrganizationNotFound orgName={organizationSlug} />;
   }
 
-  const pathname = usePathname();
+  let orgGroups = organization.groups;
+
+  if (extraData && orgGroups) {
+    const groupMap = extraData.organization.groups.reduce((acc: Record<string, OrgGroup>, group) => {
+      acc[group.id] = group;
+      return acc;
+    }, {});
+
+    const updatedOrganizationGroups = organization.groups.map(group => {
+      const dataGroup = groupMap[group.id];
+
+      if (dataGroup) {
+        return {
+          ...group,
+          memberCount: dataGroup.memberCount,
+        };
+      }
+
+      return group;
+    });
+
+    orgGroups = updatedOrganizationGroups;
+  }
 
   const existingGroupNames = organization.groups.map(g => g.name);
   return (
@@ -156,7 +159,7 @@ export default function GroupsPage({
         newGroupModal={
           <CreateGroup variant="small" organizationId={organization.id} existingGroupNames={existingGroupNames} />
         }
-        deleteUserModal={group => <DeleteGroup group={group} refetch={refetch} />}
+        deleteUserModal={group => <DeleteGroup group={group} refetch={refetchData} />}
         addUserModal={group => <AddUserToGroup variant="icon" groupName={group.name} refetch={refetch} />}
       />
     </>

@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useState } from 'react';
+import { SetStateAction } from 'react';
 
 import { usePathname } from 'next/navigation';
 
@@ -62,42 +62,45 @@ export default function OrgProjectsPage({
     data: { organization },
   } = useReadQuery(queryRef);
 
-  const [orgProjects, setOrgProjects] = useState(organization?.projects || []);
+  const pathname = usePathname();
 
-  useQuery<OrganizationProjectsData>(orgProjectGroupCount, {
+  const { data: extraData, refetch: refetchExtra } = useQuery<OrganizationProjectsData>(orgProjectGroupCount, {
     variables: {
       name: organizationSlug,
     },
-    onCompleted: data => {
-      if (data && organization) {
-        const projectMap = data.organization.projects.reduce((acc: Record<number, OrgProject>, project) => {
-          acc[project.id] = project;
-          return acc;
-        }, {});
-
-        const updatedOrganizationProjects = organization.projects.map(project => {
-          const dataProject = projectMap[project.id];
-
-          if (dataProject) {
-            return {
-              ...project,
-              groupCount: dataProject.groupCount,
-            };
-          }
-
-          return project;
-        });
-
-        setOrgProjects(updatedOrganizationProjects);
-      }
-    },
   });
+
+  const refetchData = async () => {
+    await Promise.all([refetch(), refetchExtra()]);
+  };
 
   if (!organization) {
     return <OrganizationNotFound orgName={organizationSlug} />;
   }
 
-  const pathname = usePathname();
+  let orgProjects = organization.projects;
+
+  if (extraData && orgProjects) {
+    const projectMap = extraData.organization.projects.reduce((acc: Record<number, OrgProject>, project) => {
+      acc[project.id] = project;
+      return acc;
+    }, {});
+
+    const updatedOrganizationProjects = organization.projects.map(project => {
+      const dataProject = projectMap[project.id];
+
+      if (dataProject) {
+        return {
+          ...project,
+          groupCount: dataProject.groupCount,
+        };
+      }
+
+      return project;
+    });
+
+    orgProjects = updatedOrganizationProjects;
+  }
 
   const deployTargetOptions = organization.deployTargets.map(deploytarget => {
     return { label: deploytarget.name, value: deploytarget.id };
@@ -139,10 +142,10 @@ export default function OrgProjectsPage({
             organizationId={organization.id}
             options={deployTargetOptions}
             variant="small"
-            refetch={refetch}
+            refetch={refetchData}
           />
         }
-        deleteProjectModal={project => <RemoveProject project={project} refetch={refetch} />}
+        deleteProjectModal={project => <RemoveProject project={project} refetch={refetchData} />}
       />
     </>
   );
