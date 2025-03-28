@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
+import { useApolloClient } from '@apollo/react-hooks';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -21,10 +22,19 @@ const DELETE_GROUP = gql`
   }
 `;
 
+const GET_SINGLE_GROUP = gql`
+  query getGroup($name: String!, $organization: Int!) {
+    group: groupByNameAndOrganization(name: $name, organization: $organization) {
+      id
+      memberCount
+    }
+  }
+`;
+
 /**
  * The primary list of groups.
  */
-const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFriendlyName }) => {
+const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFriendlyName, updateGroupData }) => {
   const [modalStates, setModalStates] = useState({
     addUser: {
       open: false,
@@ -35,6 +45,25 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
       current: null,
     },
   });
+  const client = useApolloClient();
+
+  const handleDataChange = async data => {
+    const groupNames = data.map(d => d.name);
+
+    const promises = groupNames.map(name => {
+      return client.query({
+        query: GET_SINGLE_GROUP,
+        variables: { name, organization: organizationId },
+        fetchPolicy: 'no-cache',
+      });
+    });
+
+    const groupsData = await Promise.all(promises);
+
+    const groupsWithMemberCount = groupsData.map(({ data }) => data.group);
+
+    updateGroupData(groupsWithMemberCount);
+  };
 
   const modalAction = (type, modal, current) => {
     const closedState = {
@@ -56,6 +85,10 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
         [modal]: closedState,
       });
     }
+  };
+
+  const onAdduser = async group => {
+    await handleDataChange([group]);
   };
 
   const Columns = [
@@ -117,7 +150,7 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
                 <AddUserToGroup
                   group={i}
                   organizationId={organizationId}
-                  onAddUser={refetch}
+                  onAddUser={() => onAdduser(i)}
                   close={() => modalAction('close', 'addUser')}
                 />
               </Modal>
@@ -213,6 +246,8 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
           numericSortOptions={{ key: 'memberCount', displayName: 'Members' }}
           emptyText="No groups found"
           labelText="Groups"
+          disableShowAllResults
+          onVisibleDataChange={handleDataChange}
         />
         <NewGroup organizationId={organizationId} onGroupAdded={refetch} existingGroupNames={groups.map(g => g.name)} />
       </StyledGroups>
