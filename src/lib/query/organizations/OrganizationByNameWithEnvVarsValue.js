@@ -5,6 +5,7 @@ export default gql`
     organization: organizationByName(name: $name) {
       id
       name
+      friendlyName
       envVariables {
         id
         name

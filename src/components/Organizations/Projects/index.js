@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
+import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useApolloClient } from '@apollo/react-hooks';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -19,7 +21,6 @@ import {
   RemoveModalHeader,
   RemoveModalParagraph,
   TableActions,
-  Tag,
 } from '../SharedStyles';
 import { ProjectDashboard, StyledOrgProjects } from './Styles';
 
@@ -29,15 +30,51 @@ const DELETE_PROJECT = gql`
   }
 `;
 
+const GET_SINGLE_PROJECT = gql`
+  query getOrganization($project: String!) {
+    project: orgProjectByName(name: $project) {
+      id
+      groupCount
+    }
+  }
+`;
+
 /**
  * The primary list of projects.
  */
-const OrgProjects = ({ projects = [], organizationId, organizationName, refresh, deployTargets, orgFriendlyName }) => {
+const OrgProjects = ({
+  projects = [],
+  organizationId,
+  organizationName,
+  refresh,
+  deployTargets,
+  orgFriendlyName,
+  updateProjectData,
+}) => {
   const [modalState, setModalState] = useState({
     open: false,
     current: null,
     confirmValue: '',
   });
+
+  const client = useApolloClient();
+
+  const handleDataChange = async data => {
+    const projectNames = data.map(d => d.name);
+
+    const promises = projectNames.map(name => {
+      return client.query({
+        query: GET_SINGLE_PROJECT,
+        variables: { project: name, id: organizationId },
+        fetchPolicy: 'no-cache',
+      });
+    });
+
+    const projectsData = await Promise.all(promises);
+    const projectsWithGroupCount = projectsData.map(({ data }) => data.project);
+
+    updateProjectData(projectsWithGroupCount);
+  };
 
   const Columns = [
     {
@@ -65,7 +102,7 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
       render: project => {
         return (
           <div className="groups" style={{ fontSize: '13px' }}>
-            Groups: {project.groupCount}
+            Groups: {project?.groupCount !== undefined ? project?.groupCount : <Skeleton height={17} width={20} />}
           </div>
         );
       },
@@ -181,6 +218,8 @@ const OrgProjects = ({ projects = [], organizationId, organizationName, refresh,
         withSorter
         labelText="Projects"
         emptyText="No Projects"
+        disableShowAllResults
+        onVisibleDataChange={handleDataChange}
       />
       <NewProject
         organizationId={organizationId}

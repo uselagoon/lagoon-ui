@@ -36,6 +36,8 @@ interface Props {
   usersTable?: boolean;
   withSorter?: boolean;
   disableUrlMutation?: boolean;
+  disableShowAllResults?: boolean;
+  onVisibleDataChange?: (data: DataType[]) => void;
   defaultViewOptions?: {
     type: 'group' | 'user';
   } & (
@@ -82,17 +84,24 @@ const PaginatedTable: FC<Props> = ({
   labelText,
   limit = 10,
   disableUrlMutation = false,
+  disableShowAllResults = false,
+  onVisibleDataChange,
   rowTestName,
 }) => {
   const params = new URLSearchParams(window.location.search);
 
   // initial qs params.
   const initialPageNumber = params.get('page');
-  const initialLimit = params.get('limit');
   const initialSearchStr = params.get('search');
   const initialSortMethod = params.get('sort');
 
-  const [resultLimit, setResultLimit] = useState<number>((initialLimit && +initialLimit) || limit);
+  let initialLimit = Number(params.get('limit')) || limit;
+
+  if (disableShowAllResults && initialLimit > 100) {
+    initialLimit = 100;
+  }
+
+  const [resultLimit, setResultLimit] = useState<number>(initialLimit);
 
   const [currentPage, setCurrentPage] = useState<number>((initialPageNumber && +initialPageNumber) || 1);
 
@@ -270,7 +279,9 @@ const PaginatedTable: FC<Props> = ({
 
   const resultIndex = (currentPage - 1) * resultLimit;
 
-  const resultsToDisplay = sortedFilteredData.slice(resultIndex, resultIndex + resultLimit);
+  const resultsToDisplay = useMemo(() => {
+    return sortedFilteredData.slice(resultIndex, resultIndex + resultLimit);
+  }, [sortedFilteredData, resultIndex, resultLimit]);
 
   const totalPages = Math.ceil(sortedFilteredData.length / resultLimit);
 
@@ -326,8 +337,13 @@ const PaginatedTable: FC<Props> = ({
   };
 
   const handleResultChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const limit = e.target.value;
-    setResultLimit(+limit);
+    let limitValue = Number(e.target.value) || limit;
+
+    if (disableShowAllResults && limitValue > 100) {
+      limitValue = 100;
+    }
+
+    setResultLimit(limitValue);
   };
 
   const handlePageChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -375,6 +391,12 @@ const PaginatedTable: FC<Props> = ({
     }
     return count;
   }, [defaultViewOptions, unfilteredData]);
+
+  // trigger onVisibleDataChange with currently visible rows
+  useEffect(() => {
+    // resultsToDisplay update is memoized, this is safe.
+    onVisibleDataChange && onVisibleDataChange(resultsToDisplay);
+  }, [resultsToDisplay]);
 
   return (
     <StyledTable className="paginatedTable">
@@ -455,7 +477,7 @@ const PaginatedTable: FC<Props> = ({
             <option value={25}>25</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
-            <option value={sortedFilteredData.length}>All</option>
+            {!disableShowAllResults && <option value={sortedFilteredData.length}>All</option>}
           </select>
         </SelectLimit>
 

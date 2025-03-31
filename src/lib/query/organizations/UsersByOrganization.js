@@ -47,14 +47,6 @@ export const getOrganizationByName = gql`
         id
         name
       }
-      owners {
-        id
-        firstName
-        lastName
-        email
-        owner
-        admin
-      }
     }
   }
 `;

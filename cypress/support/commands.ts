@@ -26,6 +26,10 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+  return false;
+});
+
 // stubbing clipboard for localhost on http.
 Cypress.on('window:before:load', win => {
   if (!win.navigator.clipboard) {

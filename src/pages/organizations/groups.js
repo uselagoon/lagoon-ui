@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -12,7 +12,7 @@ import OrgNavTabs from 'components/Organizations/NavTabs';
 import OrgNavTabsSkeleton from 'components/Organizations/NavTabs/OrgNavTabsSkeleton';
 import { OrganizationsWrapper } from 'components/Organizations/SharedStyles';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName.groups';
 
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
 import QueryError from '../../components/errors/QueryError';
@@ -21,11 +21,42 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the groups page, given the openshift project name.
  */
 export const PageGroups = ({ router }) => {
+  const orgName = router.query.organizationSlug;
+
+  const [orgGroups, setOrgGroups] = useState(data?.organization?.groups || []);
+
   const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
-    variables: { name: router.query.organizationSlug },
+    variables: { name: orgName },
   });
 
-  const handleRefetch = async () => await refetch({ id: parseInt(router.query.organizationSlug, 10) });
+  useEffect(() => {
+    if (data?.organization) {
+      setOrgGroups(data?.organization.groups);
+    }
+  }, [data]);
+
+  const updateGroupData = groupsWithMemberCount => {
+    if (groupsWithMemberCount.length) {
+      const prevGroups = [...orgGroups];
+      const newGroupsMap = new Map(groupsWithMemberCount.map(group => [group.id, group]));
+
+      const updatedGroups = prevGroups.map(group => {
+        const found = newGroupsMap.get(group.id);
+        return found ? { ...group, memberCount: found.memberCount } : group;
+      });
+
+      const groupsChanged = updatedGroups.some((group, index) => group.memberCount !== prevGroups[index]?.memberCount);
+
+      if (groupsChanged) {
+        setOrgGroups(updatedGroups);
+      }
+    }
+  };
+
+  const handleRefetch = async () => {
+    const { data } = await refetch({ id: parseInt(orgName, 10) });
+    setOrgGroups(data?.organization?.groups || []);
+  };
 
   if (loading) {
     return (
@@ -81,12 +112,12 @@ export const PageGroups = ({ router }) => {
         <OrganizationsWrapper>
           <OrgNavTabs activeTab="groups" organization={organization} />
           <Groups
-            onGroupDeleted={handleRefetch}
-            groups={organization.groups}
+            groups={orgGroups}
             organizationId={organization.id}
             organizationName={organization.name}
             orgFriendlyName={organization.friendlyName}
             refetch={handleRefetch}
+            updateGroupData={updateGroupData}
           />
         </OrganizationsWrapper>
       </MainLayout>

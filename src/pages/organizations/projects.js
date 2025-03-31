@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
@@ -13,7 +13,7 @@ import OrgHeader from 'components/Organizations/Orgheader';
 import OrgProjects from 'components/Organizations/Projects';
 import OrgProjectsSkeleton from 'components/Organizations/Projects/OrgProjectsSkeleton';
 import MainLayout from 'layouts/MainLayout';
-import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName';
+import OrganizationByNameQuery from 'lib/query/organizations/OrganizationByName.projects';
 
 import { OrganizationsWrapper } from '../../components/Organizations/SharedStyles';
 import OrganizationNotFound from '../../components/errors/OrganizationNotFound';
@@ -23,10 +23,44 @@ import QueryError from '../../components/errors/QueryError';
  * Displays the projects page, given the organization id
  */
 export const PageOrgProjects = ({ router }) => {
+  const orgName = router.query.organizationSlug;
+
+  const [orgProjects, setOrgProjects] = useState(data?.organization?.projects || []);
+
   const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
-    variables: { name: router.query.organizationSlug },
+    variables: { name: orgName },
   });
-  const handleRefetch = async () => await refetch({ name: router.query.organizationSlug });
+
+  useEffect(() => {
+    if (data?.organization) {
+      setOrgProjects(data?.organization.projects);
+    }
+  }, [data]);
+
+  const updateProjectData = projectsWithGroupCount => {
+    if (projectsWithGroupCount.length) {
+      const prevProjects = [...orgProjects];
+      const newProjectsMap = new Map(projectsWithGroupCount.map(project => [project.id, project]));
+
+      const updatedProjects = prevProjects.map(project => {
+        const found = newProjectsMap.get(project.id);
+        return found ? { ...project, groupCount: found.groupCount } : project;
+      });
+
+      const projectsChanged = updatedProjects.some(
+        (project, index) => project.groupCount !== prevProjects[index]?.groupCount
+      );
+
+      if (projectsChanged) {
+        setOrgProjects(updatedProjects);
+      }
+    }
+  };
+
+  const handleRefetch = async () => {
+    const { data } = await refetch({ name: orgName });
+    setOrgProjects(data?.organization?.projects || []);
+  };
 
   if (loading) {
     return (
@@ -91,11 +125,12 @@ export const PageOrgProjects = ({ router }) => {
           <OrgNavTabs activeTab="projects" organization={organization} />
           <OrgProjects
             refresh={handleRefetch}
-            projects={organization.projects}
+            projects={orgProjects}
             organizationId={organization.id}
             organizationName={organization.name}
             orgFriendlyName={organization.friendlyName}
             deployTargets={organization.deployTargets}
+            updateProjectData={updateProjectData}
           />
         </OrganizationsWrapper>
       </MainLayout>

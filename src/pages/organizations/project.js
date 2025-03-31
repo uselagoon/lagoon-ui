@@ -19,7 +19,6 @@ import ProjectNotificationsSkeleton from 'components/Organizations/ProjectNotifi
 import { OrgProjectWrapper, ProjectDashboard } from 'components/Organizations/Projects/Styles';
 import ProjectLink from 'components/link/Project';
 import MainLayout from 'layouts/MainLayout';
-import ProjectAndOrganizationByID from 'lib/query/organizations/ProjectAndOrganizationByID';
 import ProjectAndOrganizationByName from 'lib/query/organizations/ProjectAndOrganizationByName';
 
 import { OrganizationsWrapper, TableWrapper } from '../../components/Organizations/SharedStyles';
