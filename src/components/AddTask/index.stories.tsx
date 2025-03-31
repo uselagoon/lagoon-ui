@@ -7,6 +7,7 @@ import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
 import AddTask from './index';
 
 const meta: Meta<typeof AddTask> = {
+  //@ts-ignore
   component: AddTask,
   title: 'Components/AddTask',
 };
@@ -29,6 +30,7 @@ const pageEnvironment = {
 
 export const Default: Story = {
   args: {
+    //@ts-ignore
     pageEnvironment,
   },
   parameters: {
@@ -47,10 +49,8 @@ export const Default: Story = {
 
 export const NoCLIService: Story = {
   args: {
-    pageEnvironment: {
-      ...pageEnvironment,
-      services: [],
-    },
+    //@ts-ignore
+    pageEnvironment: { ...pageEnvironment, services: [] },
   },
   parameters: {
     msw: {
