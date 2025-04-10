@@ -5,7 +5,7 @@ import ReactSelect from 'react-select';
 import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -23,6 +23,7 @@ import {
   TableWrapper,
 } from '../SharedStyles';
 import { StyledUser } from './Styles';
+import { MutationFunction, MutationResult } from '@apollo/client';
 
 type Group = {
   id: string;
@@ -79,6 +80,18 @@ interface UserProps {
   refetch: () => void;
   orgFriendlyName: string;
 }
+
+type RemoveUserFromGroupData = {
+  removeUserFromGroup: {
+    email: string;
+    groupId: string;
+  };
+};
+
+type RemoveUserFromGroupVars = {
+  email: string;
+  groupId: string;
+};
 
 /**
  * Displays user information.
@@ -281,15 +294,11 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
               </RemoveModalParagraph>
 
               <Footer>
-                <Mutation<{
-                  removeUserFromGroup: {
-                    email: string;
-                    groupId: string;
-                  };
-                }>
-                  mutation={DELETE_USER_FROM_GROUP}
+                <Mutation<RemoveUserFromGroupData, RemoveUserFromGroupVars>
+                    mutation={DELETE_USER_FROM_GROUP}
                 >
-                  {(removeUserFromGroup, { called, error, data }) => {
+                  {(removeUserFromGroup: MutationFunction<RemoveUserFromGroupData, RemoveUserFromGroupVars>, result: MutationResult<RemoveUserFromGroupData>) => {
+                    const { called, error, data } = result;
                     if (error) {
                       return <div className="error">{error.message}</div>;
                     }

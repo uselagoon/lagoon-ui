@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import ButtonBootstrap from 'react-bootstrap/Button';
 
 import { LoadingOutlined } from '@ant-design/icons';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
+import { useMutation } from '@apollo/client'
 
 import DeleteEnvVariableMutation from '../../lib/mutation/deleteEnvVariableByName';
 import { DeleteVariableButton, DeleteVariableModal } from './StyledDeleteVariable';
@@ -15,25 +15,25 @@ import { DeleteVariableButton, DeleteVariableModal } from './StyledDeleteVariabl
  */
 
 export const DeleteVariable = ({
-  deleteType,
-  deleteName,
-  icon,
-  refresh,
-  inputValue,
-  setInputValue,
-  setClear,
-  varEnvironment,
-  varProject,
-  varOrganization,
-  open,
-  openModal,
-  closeModal,
-  envValues,
-  prjEnvValues,
-  orgEnvValues,
-  loading,
-  valueState,
-}) => {
+                                 deleteType,
+                                 deleteName,
+                                 icon,
+                                 refresh,
+                                 inputValue,
+                                 setInputValue,
+                                 setClear,
+                                 varEnvironment,
+                                 varProject,
+                                 varOrganization,
+                                 open,
+                                 openModal,
+                                 closeModal,
+                                 envValues,
+                                 prjEnvValues,
+                                 orgEnvValues,
+                                 loading,
+                                 valueState,
+                               }) => {
   const handlePermissionCheck = () => {
     let waitForGQL = setTimeout(() => {
       openModal();
@@ -42,6 +42,29 @@ export const DeleteVariable = ({
       clearTimeout(waitForGQL);
       openModal();
     }
+  };
+
+  const [deleteEnvVariableByName, { loading: mutationLoading, error, data }] = useMutation(DeleteEnvVariableMutation, {
+    onCompleted: () => {
+      refresh().then(setClear).then(closeModal);
+    },
+    onError: (error) => {
+      console.error(error);
+      return <div>Unauthorized: You don't have permission to delete this variable.</div>;
+    },
+  });
+
+  const deleteEnvVariableByNameHandler = () => {
+    deleteEnvVariableByName({
+      variables: {
+        input: {
+          name: deleteName,
+          organization: varOrganization,
+          project: varProject,
+          environment: varEnvironment,
+        },
+      },
+    });
   };
 
   return (
@@ -67,42 +90,14 @@ export const DeleteVariable = ({
             <button className="hover-state" onClick={closeModal}>
               cancel
             </button>
-            <Mutation mutation={DeleteEnvVariableMutation}>
-              {(deleteEnvVariableByName, { loading, error, data }) => {
-                if (error) {
-                  console.error(error);
-                  return <div>Unauthorized: You don't have permission to delete this variable.</div>;
-                }
-
-                if (data) {
-                  refresh().then(setClear).then(closeModal);
-                }
-
-                const deleteEnvVariableByNameHandler = () => {
-                  deleteEnvVariableByName({
-                    variables: {
-                      input: {
-                        name: deleteName,
-                        organization: varOrganization,
-                        project: varProject,
-                        environment: varEnvironment,
-                      },
-                    },
-                  });
-                };
-
-                return (
-                  <ButtonBootstrap
-                    data-cy="delete-button"
-                    disabled={inputValue !== deleteName}
-                    className="btn-danger"
-                    onClick={deleteEnvVariableByNameHandler}
-                  >
-                    {loading ? 'Deleting...' : data ? 'Success' : 'Delete'}
-                  </ButtonBootstrap>
-                );
-              }}
-            </Mutation>
+            <ButtonBootstrap
+              data-cy="delete-button"
+              disabled={inputValue !== deleteName}
+              className="btn-danger"
+              onClick={deleteEnvVariableByNameHandler}
+            >
+              {mutationLoading ? 'Deleting...' : data ? 'Success' : 'Delete'}
+            </ButtonBootstrap>
           </div>
         </DeleteVariableModal>
       </Modal>

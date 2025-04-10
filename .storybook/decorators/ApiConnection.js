@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ApolloProvider } from 'react-apollo';
+// import { ApolloProvider } from 'react-apollo';
 
 import getConfig from 'next/config';
 
-import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 import { action } from '@storybook/addon-actions';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
+import { ApolloClient, InMemoryCache, createHttpLink, ApolloProvider } from '@apollo/client';
 
 import { AuthContext } from '../../src/lib/Authenticator';
 
@@ -64,9 +61,7 @@ const withMockAuth = Story => {
   return (
     <AuthContext.Provider value={auth}>
       <ApolloProvider client={client}>
-        <ApolloHooksProvider client={client}>
           <Story />
-        </ApolloHooksProvider>
       </ApolloProvider>
     </AuthContext.Provider>
   );

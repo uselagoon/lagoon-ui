@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 
 import Head from 'next/head';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import SelectFilter from 'components/Filters';
 import getSeverityEnumQuery, { getSourceOptions } from 'components/Filters/helpers';
 import ProblemsByIdentifier from 'components/ProblemsByIdentifier';

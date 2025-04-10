@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Projects from 'components/Projects';
 import ProjectsSkeleton from 'components/Projects/ProjectsSkeleton';
 import MainLayout from 'layouts/MainLayout';

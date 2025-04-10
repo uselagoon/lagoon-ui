@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Mutation } from 'react-apollo';
 
 import { notification } from 'antd';
-import { ApolloError } from 'apollo-client';
+import { ApolloError, MutationFunction, MutationResult } from '@apollo/client';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 
@@ -88,7 +88,7 @@ const CancelTask: FC<CancelTaskProps> = ({
     }}
     onError={(e: ApolloError) => console.error(e.message)}
   >
-    {(cancelTask, { loading, error, data }) => (
+    {(cancelTask: MutationFunction<{ cancelTask: string }>, { loading, error, data }: MutationResult<{ cancelTask: string }>) => (
       <CancelTaskButton
         action={() => {
           void cancelTask();

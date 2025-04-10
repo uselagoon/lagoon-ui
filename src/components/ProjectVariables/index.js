@@ -5,7 +5,7 @@ import Collapse from 'react-bootstrap/Collapse';
 import Image from 'next/image';
 
 import { LoadingOutlined } from '@ant-design/icons';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 import { Tag } from 'antd';
 import { Tooltip } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';

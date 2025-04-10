@@ -6,7 +6,7 @@ import getConfig from 'next/config';
 import Image from 'next/image';
 
 import { CaretRightOutlined } from '@ant-design/icons';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { Collapse } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';

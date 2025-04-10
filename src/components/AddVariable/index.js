@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useMutation } from '@apollo/client';
 import ButtonBootstrap from 'react-bootstrap/Button';
 import ReactSelect from 'react-select';
 
@@ -28,39 +28,40 @@ const scopeOptions = [
 ];
 
 export const AddVariable = ({
-  varOrganization,
-  varProject,
-  varEnvironment,
-  varValues,
-  varTarget,
-  varName,
-  varValue,
-  varScope,
-  refresh,
-  icon,
-  inputName,
-  setInputName,
-  inputValue,
-  setInputValue,
-  inputScope,
-  setInputScope,
-  open,
-  openModal,
-  closeModal,
-  setClear,
-  setEnvironmentErrorAlert,
-  setProjectErrorAlert,
-  setOrganizationErrorAlert,
-  action,
-  loading,
-  orgEnvValues,
-  prjEnvValues,
-  envValues,
-}) => {
+                              varOrganization,
+                              varProject,
+                              varEnvironment,
+                              varValues,
+                              varTarget,
+                              varName,
+                              varValue,
+                              varScope,
+                              refresh,
+                              icon,
+                              inputName,
+                              setInputName,
+                              inputValue,
+                              setInputValue,
+                              inputScope,
+                              setInputScope,
+                              open,
+                              openModal,
+                              closeModal,
+                              setClear,
+                              setEnvironmentErrorAlert,
+                              setProjectErrorAlert,
+                              setOrganizationErrorAlert,
+                              action,
+                              loading,
+                              orgEnvValues,
+                              prjEnvValues,
+                              envValues,
+                            }) => {
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
   const [updateScope, setUpdateScope] = useState(varScope);
   const [openPop, setOpenPop] = useState(false);
+  const [hasCalled, setHasCalled] = useState(false);
   const handleUpdateValue = event => {
     setUpdateValue(event.target.value);
   };
@@ -95,6 +96,53 @@ export const AddVariable = ({
     }
   };
 
+  const handleCloseModal = () => {
+    setHasCalled(false);
+    closeModal();
+  };
+
+  const [addOrUpdateEnvVariableByName, { called, loading: mutationLoading, data, error}] = useMutation(addOrUpdateEnvVariableMutation,
+    {
+      onError: (e) => console.error(e),
+    }
+  );
+
+  const updateVar = useMemo(() => {
+    const vars = varValues.map(varName => varName.name);
+    return vars.includes(inputName);
+  }, [varValues, inputName]);
+
+  useEffect(() => {
+    if (data) {
+      refresh().then(setClear).then(handleCloseModal);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      refresh().then(handleCloseModal).then(handleError);
+    }
+  }, [error]);
+
+  const addOrUpdateEnvVariableHandler = () => {
+    setHasCalled(true);
+    addOrUpdateEnvVariableByName({
+      variables: {
+        input: {
+          name: updateName ? updateName : inputName,
+          value: updateValue ? updateValue : inputValue,
+          scope: updateScope ? updateScope.toUpperCase() : inputScope,
+          organization: varOrganization,
+          project: varProject,
+          environment: varEnvironment,
+        },
+      },
+    });
+    setTimeout(() => {
+      setOpenPop(false);
+    }, 1000);
+  };
+
   return (
     <NewVariable>
       {icon ? (
@@ -110,7 +158,7 @@ export const AddVariable = ({
           <LoadingOutlined />
         </ButtonBootstrap>
       )}
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} variant={'large'}>
+      <Modal isOpen={open} onRequestClose={handleCloseModal} contentLabel={`Confirm`} variant={'large'}>
         <NewVariableModal>
           <div className="variable-target">
             <span className="variable-target">
@@ -165,97 +213,52 @@ export const AddVariable = ({
             ></textarea>
           </div>
           <div className="form-input add-var-btn" data-cy="add-variable">
-            <a href="#" className="hover-state" onClick={closeModal}>
+            <a href="#" className="hover-state" onClick={handleCloseModal}>
               cancel
             </a>
-            <Mutation mutation={addOrUpdateEnvVariableMutation} onError={e => console.error(e)}>
-              {(addOrUpdateEnvVariableByName, { called, error, data, loading }) => {
-                let updateVar = varValues.map(varName => {
-                  return varName.name;
-                });
-                updateVar = updateVar.includes(inputName);
-
-                if (data) {
-                  refresh().then(setClear).then(closeModal);
-                }
-
-                if (error) {
-                  refresh().then(closeModal).then(handleError);
-                }
-
-                if (
-                  (action === 'add' && inputValue !== '') ||
-                  (action === 'edit' && updateValue !== '') ||
-                  (action === 'edit' && inputValue !== '')
-                ) {
-                  if (action === 'edit' && called) {
-                    return <div>Updating variable</div>;
-                  } else if (action === 'add' && called) {
-                    return <div>Adding variable</div>;
+            {(action === 'add' && inputValue === '') ||
+            (action === 'edit' && updateValue === '' && inputValue === '') ? (
+              <Popconfirm
+                title="No value set for this variable."
+                description="Are you sure you want to continue?"
+                open={openPop}
+                onConfirm={addOrUpdateEnvVariableHandler}
+                okButtonProps={{
+                  loading: mutationLoading,
+                }}
+                onCancel={handlePopCancel}
+              >
+                <ButtonBootstrap
+                  disabled={
+                    updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
                   }
+                  onClick={showPopconfirm}
+                >
+                  {hasCalled ? (
+                    action === 'edit' || (updateVar || varName) ? 'Updating variable' : 'Adding variable'
+                  ) : (
+                    (updateVar || varName)
+                      ? `Update ${varTarget.toLowerCase()} variable`
+                      : `Add ${varTarget.toLowerCase()} variable`
+                  )}
+                </ButtonBootstrap>
+              </Popconfirm>
+            ) : (
+              <ButtonBootstrap
+                disabled={
+                  updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
                 }
-
-                const addOrUpdateEnvVariableHandler = () => {
-                  addOrUpdateEnvVariableByName({
-                    variables: {
-                      input: {
-                        name: updateName ? updateName : inputName,
-                        value: updateValue ? updateValue : inputValue,
-                        scope: updateScope ? updateScope.toUpperCase() : inputScope,
-                        organization: varOrganization,
-                        project: varProject,
-                        environment: varEnvironment,
-                      },
-                    },
-                  });
-                  setTimeout(() => {
-                    setOpenPop(false);
-                  }, 1000);
-                };
-
-                if (
-                  (action === 'add' && inputValue === '') ||
-                  (action === 'edit' && updateValue === '' && inputValue === '')
-                ) {
-                  return (
-                    <Popconfirm
-                      title="No value set for this variable."
-                      description="Are you sure you want to continue?"
-                      open={openPop}
-                      onConfirm={addOrUpdateEnvVariableHandler}
-                      okButtonProps={{
-                        loading: loading,
-                      }}
-                      onCancel={handlePopCancel}
-                    >
-                      <ButtonBootstrap
-                        disabled={
-                          updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
-                        }
-                        onClick={showPopconfirm}
-                      >
-                        {updateVar || varName
-                          ? `Update ${varTarget.toLowerCase()} variable`
-                          : `Add ${varTarget.toLowerCase()} variable`}
-                      </ButtonBootstrap>
-                    </Popconfirm>
-                  );
-                } else {
-                  return (
-                    <ButtonBootstrap
-                      disabled={
-                        updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
-                      }
-                      onClick={addOrUpdateEnvVariableHandler}
-                    >
-                      {updateVar || varName
-                        ? `Update ${varTarget.toLowerCase()} variable`
-                        : `Add ${varTarget.toLowerCase()} variable`}
-                    </ButtonBootstrap>
-                  );
-                }
-              }}
-            </Mutation>
+                onClick={addOrUpdateEnvVariableHandler}
+              >
+                {hasCalled ? (
+                  action === 'edit' || (updateVar || varName) ? 'Updating variable' : 'Adding variable'
+                ) : (
+                  (updateVar || varName)
+                    ? `Update ${varTarget.toLowerCase()} variable`
+                    : `Add ${varTarget.toLowerCase()} variable`
+                )}
+              </ButtonBootstrap>
+            )}
           </div>
         </NewVariableModal>
       </Modal>

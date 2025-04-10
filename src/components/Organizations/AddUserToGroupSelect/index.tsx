@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 
 import { NewMember, RoleSelect } from '../AddUserToGroup/Styles';
 import { Footer } from '../SharedStyles';
+import { MutationFunction, MutationResult, ApolloError } from '@apollo/client';
 
 export const ADD_GROUP_MEMBER_MUTATION = gql`
   mutation addUserToGroup($email: String!, $group: String!, $role: GroupRole!, $inviteUser: Boolean) {
@@ -56,6 +57,21 @@ interface Props {
   close: () => void;
   onAddUser: () => Promise<void>;
 }
+type AddGroupMemberData = {
+  addGroupMember: {
+    email: string;
+    role: string;
+    group: string;
+    inviteUser?: boolean;
+  };
+};
+
+type AddGroupMemberVars = {
+  email: string;
+  role: string;
+  group: string;
+  inviteUser?: boolean;
+};
 
 const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState, close, onAddUser }) => {
   const [inviteUser, setInviteUser] = useState(true);
@@ -70,18 +86,12 @@ const AddUserToGroupSelect: FC<Props> = ({ groups, newUserState, setNewUserState
   };
 
   return (
-    <Mutation<{
-      addGroupMember: {
-        email: string;
-        role: string;
-        group: string;
-        inviteUser?: boolean;
-      };
-    }>
+    <Mutation<AddGroupMemberData, AddGroupMemberVars>
       mutation={ADD_GROUP_MEMBER_MUTATION}
-      onError={err => console.error(err)}
+      onError={(err: ApolloError) => console.error(err)}
     >
-      {(addGroupMember, { called, error, data }) => {
+      {(addGroupMember: MutationFunction<AddGroupMemberData, AddGroupMemberVars>, result: MutationResult<AddGroupMemberData>) => {
+        const { called, error, data } = result;
         if (error) {
           return <div>{error.message}</div>;
         }

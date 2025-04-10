@@ -1,19 +1,15 @@
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
+// import { ApolloProvider } from 'react-apollo';
 
 import getConfig from 'next/config';
 
-import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import { onError } from 'apollo-link-error';
-import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
 import { AuthContext } from 'lib/Authenticator';
 import ErrorPage from 'pages/_error.js';
-
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, split, ApolloProvider } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const disableSubscriptions = publicRuntimeConfig.DISABLE_SUBSCRIPTIONS?.toLowerCase() === 'true';
@@ -33,17 +29,16 @@ const ApiConnection = ({ children }) => (
       });
 
       const HttpWebsocketLink = () => {
-        const wsLink = new WebSocketLink({
-          uri: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(/http/, 'ws'),
+        const wsLink = new GraphQLWsLink(createClient({
+          url: publicRuntimeConfig.GRAPHQL_API.replace(/https/, 'wss').replace(/http/, 'ws'),
           options: {
             lazy: disableSubscriptions,
-            reconnect: true,
             connectionParams: {
               authToken: auth.apiToken,
             },
           },
-        });
-        return ApolloLink.split(
+        }));
+        return split(
           ({ query }) => {
             const { kind, operation } = getMainDefinition(query);
             return kind === 'OperationDefinition' && operation === 'subscription';
@@ -65,14 +60,14 @@ const ApiConnection = ({ children }) => (
             if (networkError) console.log('[Network error]', networkError);
           }),
           // Disable websockets when rendering server side.
-          process.browser ? HttpWebsocketLink() : httpLink,
+          typeof window !== 'undefined' ? HttpWebsocketLink() : httpLink,
         ]),
         cache: new InMemoryCache(),
       });
 
       return (
         <ApolloProvider client={client}>
-          <ApolloHooksProvider client={client}>{children}</ApolloHooksProvider>
+          {children}
         </ApolloProvider>
       );
     }}

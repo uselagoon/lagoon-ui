@@ -5,7 +5,7 @@ import ReactSelect from 'react-select';
 import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';

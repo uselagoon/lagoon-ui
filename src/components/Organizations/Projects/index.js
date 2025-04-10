@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
