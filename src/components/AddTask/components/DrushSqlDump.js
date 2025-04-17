@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/client'
 import ReactSelect from 'react-select';
 
 import Button from 'components/Button';
@@ -23,47 +23,45 @@ const taskDrushSqlDump = gql`
   }
 `;
 
-const DrushSqlDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
-  <Mutation
-    mutation={taskDrushSqlDump}
-    onCompleted={onCompleted}
-    onError={onError}
-    variables={{
-      environment: pageEnvironment.id,
-    }}
-  >
-    {(taskDrushSqlDump, { loading, data }) => {
-      if (data) {
-        onNewTask();
-      }
-      return (
+const DrushSqlDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) => {
+    const [drushSqlDump, {loading, data}] = useMutation(taskDrushSqlDump, {
+        variables: {environment: pageEnvironment.id},
+        onCompleted,
+        onError,
+    });
+
+    React.useEffect(() => {
+        if (data) {
+            onNewTask();
+        }
+    }, [data, onNewTask]);
+
+    return (
         <SelectWrapper>
-          <div className="envSelect">
-            <label id="dest-env">Environment:</label>
-            <ReactSelect
-              aria-labelledby="dest-env"
-              name="dest-environment"
-              value={{
-                label: pageEnvironment.name,
-                value: pageEnvironment.id,
-              }}
-              options={[
-                {
-                  label: pageEnvironment.name,
-                  value: pageEnvironment.id,
-                },
-              ]}
-              isDisabled
-              required
-            />
-          </div>
-          <Button testId="task-btn" action={taskDrushSqlDump} disabled={loading}>
-            {loading ? <span className="loader"></span> : 'Run task'}
-          </Button>
+            <div className="envSelect">
+                <label id="dest-env">Environment:</label>
+                <ReactSelect
+                    aria-labelledby="dest-env"
+                    name="dest-environment"
+                    value={{
+                        label: pageEnvironment.name,
+                        value: pageEnvironment.id,
+                    }}
+                    options={[
+                        {
+                            label: pageEnvironment.name,
+                            value: pageEnvironment.id,
+                        },
+                    ]}
+                    isDisabled
+                    required
+                />
+            </div>
+            <Button testId="task-btn" action={drushSqlDump} disabled={loading}>
+                {loading ? <span className="loader"></span> : 'Run task'}
+            </Button>
         </SelectWrapper>
-      );
-    }}
-  </Mutation>
-);
+    );
+};
 
 export default DrushSqlDump;

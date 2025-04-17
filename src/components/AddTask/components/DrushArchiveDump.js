@@ -1,5 +1,5 @@
-import React from 'react';
-import { Mutation } from 'react-apollo';
+import React, {useEffect} from 'react';
+import { useMutation } from '@apollo/client'
 import ReactSelect from 'react-select';
 
 import Button from 'components/Button';
@@ -23,47 +23,45 @@ const taskDrushArchiveDump = gql`
   }
 `;
 
-const DrushArchiveDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) => (
-  <Mutation
-    mutation={taskDrushArchiveDump}
-    onCompleted={onCompleted}
-    onError={onError}
-    variables={{
-      environment: pageEnvironment.id,
-    }}
-  >
-    {(taskDrushArchiveDump, { loading, data }) => {
-      if (data) {
-        onNewTask();
-      }
-      return (
+const DrushArchiveDump = ({ pageEnvironment, onCompleted, onError, onNewTask }) => {
+    const [drushArchiveDump, { loading, data }] = useMutation(taskDrushArchiveDump, {
+        variables: { environment: pageEnvironment.id },
+        onCompleted,
+        onError,
+    });
+
+    useEffect(() => {
+        if (data) {
+            onNewTask();
+        }
+    }, [data, onNewTask]);
+
+    return(
         <SelectWrapper>
-          <div className="envSelect">
-            <label id="dest-env">Environment:</label>
-            <ReactSelect
-              aria-labelledby="dest-env"
-              name="dest-environment"
-              value={{
-                label: pageEnvironment.name,
-                value: pageEnvironment.id,
-              }}
-              options={[
-                {
-                  label: pageEnvironment.name,
-                  value: pageEnvironment.id,
-                },
-              ]}
-              isDisabled
-              required
-            />
-          </div>
-          <Button testId="task-btn" action={taskDrushArchiveDump} disabled={loading}>
-            {loading ? <span className="loader"></span> : 'Run task'}
-          </Button>
+            <div className="envSelect">
+                <label id="dest-env">Environment:</label>
+                <ReactSelect
+                    aria-labelledby="dest-env"
+                    name="dest-environment"
+                    value={{
+                        label: pageEnvironment.name,
+                        value: pageEnvironment.id,
+                    }}
+                    options={[
+                        {
+                            label: pageEnvironment.name,
+                            value: pageEnvironment.id,
+                        },
+                    ]}
+                    isDisabled
+                    required
+                />
+            </div>
+            <Button testId="task-btn" action={drushArchiveDump} disabled={loading}>
+                {loading ? <span className="loader"></span> : 'Run task'}
+            </Button>
         </SelectWrapper>
-      );
-    }}
-  </Mutation>
-);
+    );
+};
 
 export default DrushArchiveDump;

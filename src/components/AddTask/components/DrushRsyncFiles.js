@@ -1,5 +1,5 @@
-import React from 'react';
-import { Mutation } from 'react-apollo';
+import React, {useEffect} from 'react';
+import { useMutation } from '@apollo/client'
 import ReactSelect from 'react-select';
 
 import withLogic from 'components/AddTask/components/logic';
@@ -25,30 +25,38 @@ const taskDrushRsyncFiles = gql`
 `;
 
 const DrushRsyncFiles = ({
-  pageEnvironment,
-  projectEnvironments,
-  selectedSourceEnv,
-  setSelectedSourceEnv,
-  onCompleted,
-  onError,
-  options,
-  getEnvName,
-  onNewTask,
-}) => (
-  <Mutation mutation={taskDrushRsyncFiles} onCompleted={onCompleted} onError={onError}>
-    {(taskDrushRsyncFiles, { loading, called, error, data }) => {
-      if (data) {
-        onNewTask();
-      }
-      return (
-        <SelectWrapper>
-          <div className="warning">
-            Warning! <br />
-            This task replaces files. Be careful to double check the source and destination environment!
-          </div>
-          <div className="envSelect">
-            <label id="source-env">Source:</label>
-            <ReactSelect
+                           pageEnvironment,
+                           selectedSourceEnv,
+                           setSelectedSourceEnv,
+                           onCompleted,
+                           onError,
+                           options,
+                           onNewTask,
+                         }) => {
+  const [drushRsyncFiles, { loading, data }] = useMutation(taskDrushRsyncFiles, {
+    variables: {
+      sourceEnvironment: selectedSourceEnv,
+      destinationEnvironment: pageEnvironment.id,
+    },
+    onCompleted,
+    onError,
+  });
+
+  useEffect(() => {
+    if (data) {
+      onNewTask();
+    }
+  }, [data, onNewTask]);
+
+  return (
+      <SelectWrapper>
+        <div className="warning">
+          Warning! <br/>
+          This task replaces files. Be careful to double check the source and destination environment!
+        </div>
+        <div className="envSelect">
+          <label id="source-env">Source:</label>
+          <ReactSelect
               aria-labelledby="source-env"
               placeholder="Select environment..."
               name="source-environment"
@@ -56,11 +64,11 @@ const DrushRsyncFiles = ({
               onChange={selectedOption => setSelectedSourceEnv(selectedOption.value)}
               options={options}
               required
-            />
-          </div>
-          <div className="envSelect">
-            <label id="dest-env">Destination:</label>
-            <ReactSelect
+          />
+        </div>
+        <div className="envSelect">
+          <label id="dest-env">Destination:</label>
+          <ReactSelect
               aria-labelledby="dest-env"
               name="dest-environment"
               value={{
@@ -75,26 +83,16 @@ const DrushRsyncFiles = ({
               ]}
               isDisabled
               required
-            />
-          </div>
-          <Button
+          />
+        </div>
+        <Button
             testId="task-btn"
-            action={() =>
-              taskDrushRsyncFiles({
-                variables: {
-                  sourceEnvironment: selectedSourceEnv,
-                  destinationEnvironment: pageEnvironment.id,
-                },
-              })
-            }
+            action={drushRsyncFiles}
             disabled={!selectedSourceEnv || loading}
-          >
-            {loading ? <span className="loader"></span> : 'Run task'}
-          </Button>
-        </SelectWrapper>
-      );
-    }}
-  </Mutation>
-);
+        >
+          {loading ? <span className="loader"></span> : 'Run task'}
+        </Button>
+      </SelectWrapper>
+  )};
 
 export default withLogic(DrushRsyncFiles);
