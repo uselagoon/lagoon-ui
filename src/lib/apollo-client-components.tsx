@@ -86,7 +86,29 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
   });
 
   const client = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      // client only fields for deferred individual queries
+      typePolicies: {
+        OrgGroup: {
+          fields: {
+            memberCount: {
+              read(existing) {
+                return existing ?? null;
+              },
+            },
+          },
+        },
+        OrgProject: {
+          fields: {
+            groupCount: {
+              read(existing) {
+                return existing ?? null;
+              },
+            },
+          },
+        },
+      },
+    }),
     link: asyncAuthLink.concat(
       ApolloLink.from([
         errorLink,

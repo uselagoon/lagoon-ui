@@ -8,8 +8,8 @@ import { OrgProject } from '@/app/(routegroups)/(orgroutes)/organizations/[organ
 import { OrganizationProjectsData } from '@/app/(routegroups)/(orgroutes)/organizations/[organizationSlug]/projects/(projects-page)/page';
 import { CreateProject } from '@/components/createProject/CreateProject';
 import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
-import { orgProjectGroupCount } from '@/lib/query/organizations/organizationByName.projects';
-import { QueryRef, useQuery, useQueryRefHandlers, useReadQuery } from '@apollo/client';
+import { GET_SINGLE_PROJECT } from '@/lib/query/organizations/organizationByName.projects';
+import { QueryRef, useApolloClient, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
@@ -29,8 +29,20 @@ export default function OrgProjectsPage({
   const [{ results, project_query, project_sort }, setQuery] = useQueryStates({
     results: {
       defaultValue: undefined,
-      parse: (value: string | undefined) => (value !== undefined ? Number(value) : undefined),
+      parse: (value: string | undefined) => {
+        if (value == undefined || Number.isNaN(value)) {
+          return undefined;
+        }
+
+        const num = Number(value);
+
+        if (num > 100) {
+          return 100;
+        }
+        return num;
+      },
     },
+
     project_sort: {
       defaultValue: null,
       parse: (value: string | undefined) => (value !== undefined ? String(value) : null),
@@ -64,14 +76,48 @@ export default function OrgProjectsPage({
 
   const pathname = usePathname();
 
-  const { data: extraData, refetch: refetchExtra } = useQuery<OrganizationProjectsData>(orgProjectGroupCount, {
-    variables: {
-      name: organizationSlug,
-    },
-  });
+  const client = useApolloClient();
+
+  const batchUpdateProjectData = (projectsWithGroupCount: Array<{ id: string; groupCount: number }>) => {
+    client.cache.batch({
+      update(cache) {
+        projectsWithGroupCount.forEach(project => {
+          const id = client.cache.identify({ __typename: 'OrgProject', id: project.id });
+          cache.modify({
+            id,
+            fields: {
+              groupCount() {
+                return project.groupCount;
+              },
+            },
+          });
+        });
+      },
+    });
+  };
+
+  const queryOnDataChange = async (data: Partial<OrgProject>[]) => {
+    const projectNames = data.map(d => d.name);
+
+    const promises = projectNames.map(name => {
+      return client.query({
+        query: GET_SINGLE_PROJECT,
+        variables: { project: name, id: organization.id },
+        fetchPolicy: 'network-only',
+      });
+    });
+
+    const projectsPromises = await Promise.allSettled(promises);
+
+    const projectsWithGroupCount = projectsPromises
+      .filter(pr => pr.status === 'fulfilled')
+      .map(({ value }) => value.data.project);
+
+    batchUpdateProjectData(projectsWithGroupCount);
+  };
 
   const refetchData = async () => {
-    await Promise.all([refetch(), refetchExtra()]);
+    await Promise.all([refetch()]);
   };
 
   if (!organization) {
@@ -79,28 +125,6 @@ export default function OrgProjectsPage({
   }
 
   let orgProjects = organization.projects;
-
-  if (extraData && orgProjects) {
-    const projectMap = extraData.organization.projects.reduce((acc: Record<number, OrgProject>, project) => {
-      acc[project.id] = project;
-      return acc;
-    }, {});
-
-    const updatedOrganizationProjects = organization.projects.map(project => {
-      const dataProject = projectMap[project.id];
-
-      if (dataProject) {
-        return {
-          ...project,
-          groupCount: dataProject.groupCount,
-        };
-      }
-
-      return project;
-    });
-
-    orgProjects = updatedOrganizationProjects;
-  }
 
   const deployTargetOptions = organization.deployTargets.map(deploytarget => {
     return { label: deploytarget.name, value: deploytarget.id };
@@ -121,6 +145,7 @@ export default function OrgProjectsPage({
 
       <OrgProjectsTable
         type="standalone"
+        onVisibleDataChange={queryOnDataChange}
         projects={orgProjects}
         basePath={pathname}
         sortBy={project_sort as 'name_asc' | 'name_desc' | 'groupCount_asc' | 'groupCount_desc'}

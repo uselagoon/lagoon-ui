@@ -4,10 +4,13 @@ export default gql`
   query getOrganization($name: String!) {
     organization: organizationByName(name: $name) {
       id
+      name
+      friendlyName
       groups {
         id
         name
         type
+        memberCount @client
       }
     }
   }
@@ -19,8 +22,16 @@ export const orgGroupMemberCount = gql`
       id
       groups {
         id
-        memberCount
       }
+    }
+  }
+`;
+
+export const GET_SINGLE_GROUP = gql`
+  query getGroup($name: String!, $organization: Int!) {
+    group: groupByNameAndOrganization(name: $name, organization: $organization) {
+      id
+      memberCount
     }
   }
 `;

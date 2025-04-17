@@ -38,8 +38,4 @@ export const resultsFilterValues = [
     label: '100 results per page',
     value: 100,
   },
-  {
-    label: 'All',
-    value: -1,
-  },
 ];

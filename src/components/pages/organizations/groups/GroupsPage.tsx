@@ -11,8 +11,8 @@ import {
 import { AddUserToGroup } from '@/components/addUserToGroup/AddUserToGroup';
 import { CreateGroup } from '@/components/createGroup/CreateGroup';
 import OrganizationNotFound from '@/components/errors/OrganizationNotFound';
-import { orgGroupMemberCount } from '@/lib/query/organizations/organizationByName.groups';
-import { QueryRef, useQuery, useQueryRefHandlers, useReadQuery } from '@apollo/client';
+import { GET_SINGLE_GROUP } from '@/lib/query/organizations/organizationByName.groups';
+import { QueryRef, useApolloClient, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { Checkbox, LagoonFilter, Select, Table } from '@uselagoon/ui-library';
 import { Tooltip } from 'antd';
 import { useQueryStates } from 'nuqs';
@@ -33,7 +33,18 @@ export default function GroupsPage({
   const [{ results, group_query, group_sort, showDefaults }, setQuery] = useQueryStates({
     results: {
       defaultValue: undefined,
-      parse: (value: string | undefined) => (value !== undefined ? Number(value) : undefined),
+      parse: (value: string | undefined) => {
+        if (value == undefined || Number.isNaN(value)) {
+          return undefined;
+        }
+
+        const num = Number(value);
+
+        if (num > 100) {
+          return 100;
+        }
+        return num;
+      },
     },
     group_sort: {
       defaultValue: null,
@@ -77,14 +88,48 @@ export default function GroupsPage({
 
   const pathname = usePathname();
 
-  const { data: extraData, refetch: refetchExtra } = useQuery<OrganizationGroupsData>(orgGroupMemberCount, {
-    variables: {
-      name: organizationSlug,
-    },
-  });
+  const client = useApolloClient();
 
-  const refetchData = async () => {
-    await Promise.all([refetch(), refetchExtra()]);
+  const batchUpdateGroupData = (groupsWithMemberCount: Array<{ id: string; memberCount: number }>) => {
+    client.cache.batch({
+      update(cache) {
+        groupsWithMemberCount.forEach(group => {
+          const id = client.cache.identify({ __typename: 'OrgGroup', id: group.id });
+          cache.modify({
+            id,
+            fields: {
+              memberCount() {
+                return group.memberCount;
+              },
+            },
+          });
+        });
+      },
+    });
+  };
+
+  const queryOnDataChange = async (data: Partial<OrgGroup>[]) => {
+    const groupNames = data.map(d => d.name);
+
+    const promises = groupNames.map(name => {
+      return client.query({
+        query: GET_SINGLE_GROUP,
+        variables: { name, organization: organization.id },
+        fetchPolicy: 'network-only',
+      });
+    });
+
+    const groupsPromises = await Promise.allSettled(promises);
+
+    const groupsWithMemberCount = groupsPromises
+      .filter(pr => pr.status === 'fulfilled')
+      .map(({ value }) => value.data.group);
+
+    batchUpdateGroupData(groupsWithMemberCount);
+  };
+
+  const onAddUser = async (groupName: string) => {
+    await queryOnDataChange([{ name: groupName }]);
   };
 
   if (!organization) {
@@ -93,29 +138,7 @@ export default function GroupsPage({
 
   let orgGroups = organization.groups;
 
-  if (extraData && orgGroups) {
-    const groupMap = extraData.organization.groups.reduce((acc: Record<string, OrgGroup>, group) => {
-      acc[group.id] = group;
-      return acc;
-    }, {});
-
-    const updatedOrganizationGroups = organization.groups.map(group => {
-      const dataGroup = groupMap[group.id];
-
-      if (dataGroup) {
-        return {
-          ...group,
-          memberCount: dataGroup.memberCount,
-        };
-      }
-
-      return group;
-    });
-
-    orgGroups = updatedOrganizationGroups;
-  }
-
-  const existingGroupNames = organization.groups.map(g => g.name);
+  const existingGroupNames = orgGroups.map(g => g.name);
   return (
     <>
       <LagoonFilter
@@ -139,6 +162,7 @@ export default function GroupsPage({
       </LagoonFilter>
 
       <OrgGroupsTable
+        onVisibleDataChange={queryOnDataChange}
         basePath={pathname}
         groups={orgGroups}
         sortBy={group_sort as 'name_asc' | 'name_desc' | 'memberCount_asc' | 'memberCount_desc'}
@@ -159,8 +183,8 @@ export default function GroupsPage({
         newGroupModal={
           <CreateGroup variant="small" organizationId={organization.id} existingGroupNames={existingGroupNames} />
         }
-        deleteUserModal={group => <DeleteGroup group={group} refetch={refetchData} />}
-        addUserModal={group => <AddUserToGroup variant="icon" groupName={group.name} refetch={refetch} />}
+        deleteUserModal={group => <DeleteGroup group={group} refetch={refetch} />}
+        addUserModal={group => <AddUserToGroup variant="icon" groupName={group.name} onAddUser={onAddUser} />}
       />
     </>
   );

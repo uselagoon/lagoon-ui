@@ -18,6 +18,7 @@ import { orgUserRoleOptions } from '../shared/selectOptions';
 type Props = {
   groupName: string;
   variant: 'button' | 'icon';
+  onAddUser?: (name: string) => void;
   refetch?: () => void;
 };
 
@@ -25,7 +26,7 @@ type Props = {
  * Add user modal for organization groups/group;
  */
 
-export const AddUserToGroup: FC<Props> = ({ groupName, variant, refetch }) => {
+export const AddUserToGroup: FC<Props> = ({ groupName, variant, onAddUser, refetch }) => {
   const [addGroupMemberMutation, { error, loading }] = useMutation(addGroupMember, {
     refetchQueries: ['getOrganization'],
   });
@@ -56,6 +57,7 @@ export const AddUserToGroup: FC<Props> = ({ groupName, variant, refetch }) => {
         },
       });
       startTransition(() => {
+        (onAddUser ?? (() => {}))(groupName);
         (refetch ?? (() => {}))();
       });
       closeModal();

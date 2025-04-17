@@ -13,6 +13,7 @@ export type OrganizationProjectsData = {
   organization: {
     id: number;
     name: string;
+    friendlyName: string;
     projects: OrgProject[];
     deployTargets: DeployTarget[];
   };

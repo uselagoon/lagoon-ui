@@ -5,9 +5,11 @@ export default gql`
     organization: organizationByName(name: $name) {
       id
       name
+      friendlyName
       projects {
         id
         name
+        groupCount @client
       }
       deployTargets {
         id
@@ -25,6 +27,15 @@ export const orgProjectGroupCount = gql`
         id
         groupCount
       }
+    }
+  }
+`;
+
+export const GET_SINGLE_PROJECT = gql`
+  query getOrganization($project: String!) {
+    project: orgProjectByName(name: $project) {
+      id
+      groupCount
     }
   }
 `;

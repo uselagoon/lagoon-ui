@@ -18,6 +18,7 @@ type Organization = {
   id: number;
   name: string;
   groups: OrgGroup[];
+  friendlyName?: string;
 };
 
 export interface OrganizationGroupsData {
