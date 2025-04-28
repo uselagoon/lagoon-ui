@@ -48,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
-    async jwt({ token, account }: { token: JWT; account: Account | null }): Promise<JWT> {
+    async jwt({ token, account }: { token: JWT; account?: Account | null | undefined }): Promise<JWT> {
       if (account) {
         // account is only available the first time this callback is called on a new session (after the user signs in)
         return {
