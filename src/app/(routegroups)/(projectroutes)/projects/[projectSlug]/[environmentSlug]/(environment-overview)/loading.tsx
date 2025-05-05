@@ -1,5 +1,6 @@
 'use client';
 
+import KeyFacts from '@/components/pages/environment/_components/KeyFacts';
 import { EnvironmentActions, RoutesSection } from '@/components/pages/environment/styles';
 import { DetailedStats, Head3, Head4, LoadingSkeleton } from '@uselagoon/ui-library';
 
@@ -32,6 +33,9 @@ export default function Loading() {
     <>
       <Head3>Environment details</Head3>
       <DetailedStats items={environmentDetailSkeletonItems} />
+
+      <Head3>System Details</Head3>
+      <KeyFacts loading />
 
       <EnvironmentActions>
         <Head4>Actions</Head4>

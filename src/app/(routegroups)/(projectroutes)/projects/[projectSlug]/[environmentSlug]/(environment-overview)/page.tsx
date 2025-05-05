@@ -1,4 +1,5 @@
 import EnvironmentPage from '@/components/pages/environment/EnvironmentPage';
+import { keyFactImageType } from '@/constants/keyFactImageMap';
 import { PreloadQuery } from '@/lib/apolloClient';
 import environmentByOpenShiftProjectName from '@/lib/query/environmentByOpenShiftProjectName';
 import { QueryRef } from '@apollo/client';
@@ -6,6 +7,19 @@ import { QueryRef } from '@apollo/client';
 type Props = {
   params: { environmentSlug: string };
 };
+
+export type FactType = {
+  id: number;
+  name: keyFactImageType;
+  value: string;
+  source: string;
+  description: string;
+  keyFact: boolean;
+  type: string;
+  category: string;
+  service: string;
+};
+
 export type EnvironmentData = {
   environment: {
     id: number;
@@ -26,6 +40,7 @@ export type EnvironmentData = {
       problemsUi: number | null;
       factsUi: number | null;
     };
+    facts: FactType[];
   };
 };
 

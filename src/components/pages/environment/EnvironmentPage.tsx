@@ -15,7 +15,9 @@ import gitUrlParse from 'git-url-parse';
 import ActiveStandbyConfirm from '../../activestandbyconfirm/ActiveStandbyConfirm';
 import DeleteConfirm from '../../deleteConfirm/DeleteConfirm';
 import { StyledGitLink } from '../projectDetails/styles';
+import KeyFacts from './_components/KeyFacts';
 import LimitedRoutes from './_components/LimitedRoutes';
+import deduplicateFacts from './_components/deduplicateFacts';
 import { EnvironmentActions, RoutesSection } from './styles';
 
 dayjs.extend(utc);
@@ -69,6 +71,8 @@ export default function EnvironmentPage({
           : `pull/${environment.name.replace(/pr-/i, '')}`
       }`
     : '';
+
+  const keyFacts = deduplicateFacts(environment.facts);
 
   const environmentDetailItems = [
     {
@@ -125,6 +129,10 @@ export default function EnvironmentPage({
   const environmentDetails = (
     <>
       <DetailedStats items={environmentDetailItems} />
+
+      <Head3>System Details</Head3>
+      <KeyFacts keyFacts={keyFacts} />
+
       <EnvironmentActions>
         <Head4>Actions</Head4>
 
