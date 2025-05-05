@@ -76,7 +76,6 @@ const Environment = ({ environment }) => {
 
   const keyFacts = deduplicateFacts(environment.facts);
 
-
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">

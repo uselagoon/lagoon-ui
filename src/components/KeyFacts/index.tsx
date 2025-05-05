@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { keyFactImageType } from '../../constants/keyFactImageMap';
 import FactCard from './FactCard';
 
-export type KeyFact = { name: keyFactImageType; category: string; value: string };
+export type KeyFact = { name: keyFactImageType; category: string; value: string; id: number };
 
 interface Props {
   keyFacts: KeyFact[];
@@ -17,7 +17,7 @@ const KeyFacts: FC<Props> = ({ keyFacts }) => {
       <h5>System Details</h5>
       <section>
         {keyFacts.map(fact => {
-          return <FactCard {...fact} />;
+          return <FactCard key={fact.id} {...fact} />;
         })}
       </section>
     </StyledKeyFacts>
