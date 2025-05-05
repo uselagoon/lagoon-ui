@@ -7,5 +7,9 @@ export default gql`
     value
     source
     description
+    keyFact
+    type
+    category
+    service
   }
 `;
