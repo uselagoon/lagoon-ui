@@ -41,7 +41,6 @@ const Environment = ({ environment }) => {
   const hasFactViewPermission = !factsError?.message?.includes('Unauthorized');
   const environmentFacts = data?.environment?.facts ?? [];
 
-
   let gitUrlParsed;
 
   try {
