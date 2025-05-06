@@ -10,6 +10,7 @@ export default gql`
       started
       completed
       buildLog
+      buildStep
     }
   }
 `;
