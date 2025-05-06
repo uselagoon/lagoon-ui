@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { createTasks, generateEnvironments, seed } from '../../.storybook/mocks/mocks';
 import PageTasks from '../pages/tasks';
@@ -28,6 +28,13 @@ const meta: Meta<typeof PageTasks> = {
 type Story = StoryObj<typeof PageTasks>;
 
 const tasks = createTasks().tasks;
+type TaskType = typeof tasks;
+
+const environment = generateEnvironments();
+
+type ResponseType = {
+  environment: (typeof environment & { tasks: TaskType }) | null;
+};
 
 export const Default: Story = {
   args: {
@@ -36,13 +43,9 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: { ...generateEnvironments(), tasks: tasks },
-            })
-          );
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({ data: { environment: { ...environment, tasks: tasks } } });
         }),
       ],
     },
@@ -56,13 +59,9 @@ export const Empty: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: { ...generateEnvironments(), tasks: [] },
-            })
-          );
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({ data: { environment: { ...environment, tasks: [] } } });
         }),
       ],
     },
@@ -73,8 +72,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -85,8 +84,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },

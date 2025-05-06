@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
 import PageGroup from '../../pages/organizations/group';
@@ -29,16 +29,35 @@ const mockOrganization = getOrganization();
 
 const mockGroup = mockOrganization.groups[0];
 
+type ResponseType = {
+  group: typeof mockGroup;
+  organization: typeof mockOrganization;
+};
+
+type AddMutationResponseType = {
+  addUserToGroup: {};
+};
+type RemoveMutationResponseType = {
+  removeUserFromGroup: {};
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getGroup', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ group: mockGroup, organization: mockOrganization }));
+        graphql.query('getGroup', () => {
+          delay();
+
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              group: mockGroup,
+              organization: mockOrganization,
+            },
+          });
         }),
 
-        graphql.mutation('addUserToGroup', (req, res, ctx) => {
-          const { email, role } = req.variables;
+        graphql.mutation('addUserToGroup', ({ variables }) => {
+          const { email, role } = variables;
 
           // add the new user to the mock
           mockGroup.members.push({
@@ -50,13 +69,25 @@ export const Default: Story = {
               __typename: 'User',
             },
           });
-          return res(ctx.delay(), ctx.data({ addUserToGroup: {} }));
+          delay();
+
+          return HttpResponse.json<{ data: AddMutationResponseType }>({
+            data: {
+              addUserToGroup: {},
+            },
+          });
         }),
 
-        graphql.mutation('removeUserFromGroup', (req, res, ctx) => {
-          const { email } = req.variables;
+        graphql.mutation('removeUserFromGroup', ({ variables }) => {
+          const { email } = variables;
           mockGroup.members = mockGroup.members.filter(g => g.user.email !== email);
-          return res(ctx.delay(), ctx.data({ removeUserFromGroup: {} }));
+
+          delay();
+          return HttpResponse.json<{ data: RemoveMutationResponseType }>({
+            data: {
+              removeUserFromGroup: {},
+            },
+          });
         }),
       ],
     },
@@ -67,8 +98,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },

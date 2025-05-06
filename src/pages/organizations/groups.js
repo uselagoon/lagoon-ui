@@ -23,11 +23,11 @@ import QueryError from '../../components/errors/QueryError';
 export const PageGroups = ({ router }) => {
   const orgName = router.query.organizationSlug;
 
-  const [orgGroups, setOrgGroups] = useState(data?.organization?.groups || []);
-
   const { data, error, loading, refetch } = useQuery(OrganizationByNameQuery, {
     variables: { name: orgName },
   });
+
+  const [orgGroups, setOrgGroups] = useState(data?.organization?.groups || []);
 
   useEffect(() => {
     if (data?.organization) {
