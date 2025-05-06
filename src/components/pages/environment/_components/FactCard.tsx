@@ -21,7 +21,7 @@ const FactCard: FC<KeyFact> = ({ name, category, value }) => {
 };
 
 const StyledCard = styled.div`
-  border: 1px solid ${props => props.theme.UI.borders.cardInverted};
+  border: 1px solid #333;
   display: flex;
   flex-direction: column;
   border-radius: 6px;
@@ -32,6 +32,7 @@ const StyledCard = styled.div`
   img {
     margin-inline: auto;
     margin-bottom: 8px;
+    margin-top: auto;
   }
   span {
     font-size: 12px;
@@ -39,7 +40,9 @@ const StyledCard = styled.div`
     line-height: 22px;
     letter-spacing: -0.24px;
     text-transform: uppercase;
-
+    &.category {
+      margin-bottom: 3px;
+    }
     &.name,
     &.value {
       line-height: 11px;

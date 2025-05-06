@@ -6,7 +6,8 @@ import { EnvironmentData } from '@/app/(routegroups)/(projectroutes)/projects/[p
 import EnvironmentNotFound from '@/components/errors/EnvironmentNotFound';
 import deleteEnvironment from '@/lib/mutation/deleteEnvironment';
 import switchActiveStandby from '@/lib/mutation/switchActiveStandby';
-import { QueryRef, useMutation, useQueryRefHandlers, useReadQuery } from '@apollo/client';
+import environmentByOpenShiftProjectNameWithFacts from '@/lib/query/environmentWIthInsightsAndFacts';
+import { QueryRef, useMutation, useQuery, useQueryRefHandlers, useReadQuery } from '@apollo/client';
 import { DetailedStats, Head3, Head4, Text } from '@uselagoon/ui-library';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -46,6 +47,19 @@ export default function EnvironmentPage({
     data: { environment },
   } = useReadQuery(queryRef);
 
+  const {
+    data: factsData,
+    loading: factsLoading,
+    error: factsError,
+  } = useQuery(environmentByOpenShiftProjectNameWithFacts, {
+    variables: {
+      openshiftProjectName: environmentSlug,
+    },
+  });
+
+  const hasFactViewPermission = !factsError?.message?.includes('Unauthorized');
+  const environmentFacts = factsData?.environment?.facts ?? [];
+
   const router = useRouter();
 
   const [deleteEnvironmentMutation, { data, loading: deleteLoading }] = useMutation(deleteEnvironment);
@@ -72,7 +86,7 @@ export default function EnvironmentPage({
       }`
     : '';
 
-  const keyFacts = deduplicateFacts(environment.facts);
+  const keyFacts = deduplicateFacts(environmentFacts);
 
   const environmentDetailItems = [
     {
@@ -130,8 +144,18 @@ export default function EnvironmentPage({
     <>
       <DetailedStats items={environmentDetailItems} />
 
-      <Head3>System Details</Head3>
-      <KeyFacts keyFacts={keyFacts} />
+      {factsLoading && (
+        <>
+          <Head3>System Details</Head3>
+          <KeyFacts loading />
+        </>
+      )}
+      {hasFactViewPermission && keyFacts.length > 0 && (
+        <>
+          <Head3>System Details</Head3>
+          <KeyFacts keyFacts={keyFacts} />
+        </>
+      )}
 
       <EnvironmentActions>
         <Head4>Actions</Head4>

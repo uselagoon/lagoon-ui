@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import FactCard from './FactCard';
 
-export type KeyFact = { name: keyFactImageType; category: string; value: string; id: number};
+export type KeyFact = { name: keyFactImageType; category: string; value: string; id: number };
 
 type FactsProps = {
   keyFacts: KeyFact[];

@@ -1,4 +1,3 @@
-import FactsFragment from '@/lib/fragment/fact';
 import { gql } from '@apollo/client';
 
 export default gql`
@@ -22,10 +21,6 @@ export default gql`
         problemsUi
         factsUi
       }
-      facts {
-        ...factFields
-      }
     }
   }
-  ${FactsFragment}
 `;
