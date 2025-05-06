@@ -3,12 +3,14 @@ import { Mutation } from 'react-apollo';
 
 import Router from 'next/router';
 
+import { useQuery } from '@apollo/react-hooks';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import DeleteConfirm from 'components/DeleteConfirm';
 import KeyFacts from 'components/KeyFacts';
 import giturlparse from 'git-url-parse';
 import DeleteEnvironmentMutation from 'lib/mutation/DeleteEnvironment';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
+import EnvironmentByOpenshiftProjectNameWithFactsQuery from 'lib/query/EnvironmentByOpenshiftProjectNameWithFacts';
 import moment from 'moment';
 
 import { StyledEnvironmentDetails } from './StyledEnvironment';
@@ -30,6 +32,16 @@ const deduplicateFacts = facts => {
  * Displays the environment information.
  */
 const Environment = ({ environment }) => {
+  const { data, error: factsError } = useQuery(EnvironmentByOpenshiftProjectNameWithFactsQuery, {
+    variables: {
+      openshiftProjectName: environment.openshiftProjectName,
+    },
+  });
+
+  const hasFactViewPermission = !factsError?.message?.includes('Unauthorized');
+  const environmentFacts = data?.environment?.facts ?? [];
+
+
   let gitUrlParsed;
 
   try {
@@ -74,7 +86,7 @@ const Environment = ({ environment }) => {
     Router.push(navigationObject.urlObject, navigationObject.asPath);
   };
 
-  const keyFacts = deduplicateFacts(environment.facts);
+  const keyFacts = deduplicateFacts(environmentFacts);
 
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
@@ -192,7 +204,7 @@ const Environment = ({ environment }) => {
         </div>
       </div>
 
-      <KeyFacts keyFacts={keyFacts} />
+      {hasFactViewPermission && keyFacts.length > 0 && <KeyFacts keyFacts={keyFacts} />}
 
       {environment.project.productionEnvironment &&
         environment.project.standbyProductionEnvironment &&
