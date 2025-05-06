@@ -48,7 +48,6 @@ const preview: Preview = {
         ],
       },
     },
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -93,6 +92,7 @@ const preview: Preview = {
     withButtonOverrides('.themeToggler', 'click', 'Theme toggled'),
     withTourProvider,
     withLoadingSkeletons,
+    //@ts-ignore
     withThemeFromJSXProvider({
       themes: {
         light: lightTheme,

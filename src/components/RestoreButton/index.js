@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'components/Button';
 import Prepare from 'components/RestoreButton/Prepare';
+import { isValidUrl } from 'lib/util';
 
 function humanFileSize(size) {
   var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
@@ -22,8 +23,12 @@ const RestoreButton = ({ backup: { backupId, restore } }) => {
 
   const [isOverflowing, formattedSize] = humanFileSize(restore.restoreSize);
 
+  const { restoreLocation } = restore;
+
+  const downloadURL = isValidUrl(restoreLocation) ? restoreLocation : undefined;
+
   return (
-    <Button variant={`download ${isOverflowing ? 'btn-download-lg' : ''}`} href={restore.restoreLocation}>
+    <Button variant={`download ${isOverflowing ? 'btn-download-lg' : ''}`} href={downloadURL}>
       Download ({formattedSize})
     </Button>
   );
