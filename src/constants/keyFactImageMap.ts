@@ -33,6 +33,8 @@ export const keyFactImageMap = Object.freeze({
 
 export type keyFactImageType = keyof typeof keyFactImageMap;
 
+export const keyFactCategories = ['OS', 'Lagoon', 'Service', 'Language', 'Application', 'Helper'] as const;
+
 const getKeyFactImage = (factName: keyFactImageType) => {
   return keyFactImageMap[factName] ?? '/static/images/keyfacts/default.svg';
 };

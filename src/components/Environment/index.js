@@ -13,12 +13,16 @@ import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
 import EnvironmentByOpenshiftProjectNameWithFactsQuery from 'lib/query/EnvironmentByOpenshiftProjectNameWithFacts';
 import moment from 'moment';
 
+import { keyFactCategories } from '../../constants/keyFactImageMap';
 import { StyledEnvironmentDetails } from './StyledEnvironment';
 
 const deduplicateFacts = facts => {
   const seen = new Set();
 
   const uniqueFacts = facts.filter(fact => {
+    const keyFactAllowed = keyFactCategories.includes(fact.category);
+    if (!keyFactAllowed) return false;
+
     const key = `${fact.name}-${fact.category}-${fact.value}`;
     if (seen.has(key)) return false;
 
