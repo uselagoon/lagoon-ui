@@ -1,9 +1,17 @@
 import { FactType } from '@/app/(routegroups)/(projectroutes)/projects/[projectSlug]/[environmentSlug]/(environment-overview)/page';
+import { keyFactCategories } from '@/constants/keyFactImageMap';
 
-const deduplicateFacts = (facts: FactType[]) => {
+type KeyfactType = Omit<FactType, 'category'> & {
+  category: (typeof keyFactCategories)[number];
+};
+
+const deduplicateFacts = (facts: KeyfactType[]) => {
   const seen = new Set();
 
   const uniqueFacts = facts.filter(fact => {
+    const keyFactAllowed = keyFactCategories.includes(fact.category);
+    if (!keyFactAllowed) return false;
+
     const key = `${fact.name}-${fact.category}-${fact.value}`;
     if (seen.has(key)) return false;
 
@@ -12,4 +20,5 @@ const deduplicateFacts = (facts: FactType[]) => {
   });
   return uniqueFacts;
 };
+
 export default deduplicateFacts;
