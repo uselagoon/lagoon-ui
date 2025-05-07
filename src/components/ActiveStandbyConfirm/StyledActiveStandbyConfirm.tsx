@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const StyledActiveStandbyConfirm = styled.div`
   .margins {
     margin-right: 10px;
+    margin-left: 4rem;
   }
 `;
 
