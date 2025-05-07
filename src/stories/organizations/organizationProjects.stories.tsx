@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
 import { organizationProjects } from '../../../.storybook/mocks/mocks';
@@ -25,30 +25,51 @@ type Story = StoryObj<typeof PageProjects>;
 
 const mockOrganization = getOrganization();
 
+type ResponseType = {
+  organization: typeof mockOrganization;
+};
+
+type RemoveMutationResponseType = {
+  deleteProject: {};
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getOrganization', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ organization: mockOrganization }));
+        graphql.query('getOrganization', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              organization: mockOrganization,
+            },
+          });
         }),
 
-        graphql.mutation('deleteProject', (req, res, ctx) => {
-          const { project } = req.variables;
+        graphql.mutation('deleteProject', ({ variables }) => {
+          const { project } = variables;
 
           mockOrganization.projects = mockOrganization.projects.filter(p => p.name !== project);
 
-          return res(ctx.delay(), ctx.data({ deleteProject: {} }));
+          delay();
+          return HttpResponse.json<{ data: RemoveMutationResponseType }>({
+            data: {
+              deleteProject: {},
+            },
+          });
         }),
 
-        graphql.operation((req, res, ctx) => {
+        graphql.operation(({ variables }) => {
           // unnamed mutation
 
-          const { name } = req.variables;
+          const { name } = variables;
 
           const newProject = organizationProjects(2)[0];
           (newProject.name = name), (mockOrganization.projects = [newProject, ...mockOrganization.projects]);
-          return res(ctx.delay(), ctx.data({}));
+          delay();
+          return HttpResponse.json<{}>({
+            data: {},
+          });
         }),
       ],
     },
@@ -59,8 +80,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },

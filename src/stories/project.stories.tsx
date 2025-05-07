@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { generateProjectInfo, seed } from '../../.storybook/mocks/mocks';
 import PageProject from '../pages/project';
@@ -15,6 +15,12 @@ type Story = StoryObj<typeof PageProject>;
 
 seed();
 
+const projectResponse = generateProjectInfo();
+
+type ResponseType = {
+  project: typeof projectResponse;
+};
+
 export const Default: Story = {
   args: {
     router: { query: { projectName: 'project' } },
@@ -22,8 +28,13 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ project: generateProjectInfo() }));
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              project: projectResponse,
+            },
+          });
         }),
       ],
     },
@@ -34,8 +45,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -45,8 +56,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { MockAllProjects } from '../../.storybook/mocks/api';
 import ProjectsPage from '../pages/projects';
@@ -11,12 +11,23 @@ const meta: Meta<typeof ProjectsPage> = {
 };
 type Story = StoryObj<typeof ProjectsPage>;
 
+const allProjectsResponse = MockAllProjects(123);
+
+type ResponseType = {
+  allProjects: typeof allProjectsResponse;
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('AllProjectsQuery', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ allProjects: MockAllProjects(123) }));
+        graphql.query('AllProjectsQuery', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              allProjects: allProjectsResponse,
+            },
+          });
         }),
       ],
     },
@@ -27,8 +38,13 @@ export const Empty: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('AllProjectsQuery', (_, res, ctx) => {
-          return res(ctx.data({ allProjects: [] }));
+        graphql.query('AllProjectsQuery', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              allProjects: [],
+            },
+          });
         }),
       ],
     },
@@ -39,8 +55,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('AllProjectsQuery', (_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.query('AllProjectsQuery', () => {
+          return delay('infinite');
         }),
       ],
     },
@@ -51,8 +67,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },
