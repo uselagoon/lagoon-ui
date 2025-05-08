@@ -3,19 +3,48 @@ import { Mutation } from 'react-apollo';
 
 import Router from 'next/router';
 
+import { useQuery } from '@apollo/react-hooks';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import DeleteConfirm from 'components/DeleteConfirm';
+import KeyFacts from 'components/KeyFacts';
 import giturlparse from 'git-url-parse';
 import DeleteEnvironmentMutation from 'lib/mutation/DeleteEnvironment';
 import SwitchActiveStandbyMutation from 'lib/mutation/SwitchActiveStandby';
+import EnvironmentByOpenshiftProjectNameWithFactsQuery from 'lib/query/EnvironmentByOpenshiftProjectNameWithFacts';
 import moment from 'moment';
 
+import { keyFactCategories } from '../../constants/keyFactImageMap';
 import { StyledEnvironmentDetails } from './StyledEnvironment';
+
+const deduplicateFacts = facts => {
+  const seen = new Set();
+
+  const uniqueFacts = facts.filter(fact => {
+    const keyFactAllowed = keyFactCategories.includes(fact.category);
+    if (!keyFactAllowed) return false;
+
+    const key = `${fact.name}-${fact.category}-${fact.value}`;
+    if (seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
+  return uniqueFacts;
+};
 
 /**
  * Displays the environment information.
  */
 const Environment = ({ environment }) => {
+  const { data, error: factsError } = useQuery(EnvironmentByOpenshiftProjectNameWithFactsQuery, {
+    variables: {
+      openshiftProjectName: environment.openshiftProjectName,
+    },
+  });
+
+  const hasFactViewPermission = !factsError?.message?.includes('Unauthorized');
+  const environmentFacts = data?.environment?.facts ?? [];
+
   let gitUrlParsed;
 
   try {
@@ -59,6 +88,9 @@ const Environment = ({ environment }) => {
 
     Router.push(navigationObject.urlObject, navigationObject.asPath);
   };
+
+  const keyFacts = deduplicateFacts(environmentFacts);
+
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">
@@ -99,6 +131,7 @@ const Environment = ({ environment }) => {
           <div className="field">{moment.utc(environment.updated).local().format('DD MMM YYYY, HH:mm:ss (Z)')}</div>
         </div>
       </div>
+
       {gitBranchLink ? (
         <div className="field-wrapper source">
           <div>
@@ -173,6 +206,9 @@ const Environment = ({ environment }) => {
           </div>
         </div>
       </div>
+
+      {hasFactViewPermission && keyFacts.length > 0 && <KeyFacts keyFacts={keyFacts} />}
+
       {environment.project.productionEnvironment &&
         environment.project.standbyProductionEnvironment &&
         environment.environmentType == 'production' &&
