@@ -1,6 +1,6 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
+import { useMutation } from '@apollo/client';
 
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
@@ -30,15 +30,27 @@ const customStyles = {
  * Confirms the deletion of the specified name and type.
  */
 export const AddGroupToProject = ({
-  projectName,
-  selectedProject,
-  options,
-  setSelectedProject,
-  open,
-  openModal,
-  closeModal,
-  refresh,
-}) => {
+                                    projectName,
+                                    selectedProject,
+                                    options,
+                                    setSelectedProject,
+                                    open,
+                                    openModal,
+                                    closeModal,
+                                    refresh,
+                                  }) => {
+  const [ addGroupProject, {error, loading}] = useMutation(ADD_GROUP_PROJECT_MUTATION, {
+    variables: {
+      projectName: projectName,
+      groupName: selectedProject?.value,
+    },
+    onError: e => console.error(e),
+    onCompleted: () => {
+      setSelectedProject(null);
+      refresh().then(closeModal);
+    },
+  });
+
   return (
     <StyledNotificationWrapper>
       <div className="margins">
@@ -52,67 +64,49 @@ export const AddGroupToProject = ({
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_GROUP_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupProject, { called, error, data }) => {
-              if (error) {
-                return <div>{error.message}</div>;
-              }
-              if (data) {
-                refresh().then(closeModal);
-              }
-              return (
-                <StyledNotification>
-                  <h4>Link Group</h4>
-                  <label>
-                    Group
-                    <RoleSelect>
-                      <ReactSelect
-                        className="select"
-                        classNamePrefix="react-select"
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
-                          placeholder: base => ({ ...base, fontSize: '16px' }),
-                          menu: base => ({ ...base, fontSize: '16px' }),
-                          option: base => ({ ...base, fontSize: '16px' }),
-                          singleValue: base => ({ ...base, fontSize: '16px' }),
-                        }}
-                        aria-label="Group"
-                        placeholder="Select a group..."
-                        name="group"
-                        value={options.find(o => o.value === selectedProject)}
-                        onChange={selectedOption => setSelectedProject(selectedOption)}
-                        options={options}
-                        required
-                      />
-                    </RoleSelect>
-                  </label>
-                  <Footer>
-                    <Button
-                      disabled={called || selectedProject === null}
-                      testId="addGroupToProjectConfirm"
-                      action={() => {
-                        addGroupProject({
-                          variables: {
-                            projectName: projectName,
-                            groupName: selectedProject.value,
-                          },
-                        });
-                      }}
-                      variant="primary"
-                      loading={called}
-                    >
-                      Add
-                    </Button>
+          {error && <div>{error.message}</div>}
+          <StyledNotification>
+            <h4>Link Group</h4>
+            <label>
+              Group
+              <RoleSelect>
+                <ReactSelect
+                  className="select"
+                  classNamePrefix="react-select"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                    placeholder: base => ({ ...base, fontSize: '16px' }),
+                    menu: base => ({ ...base, fontSize: '16px' }),
+                    option: base => ({ ...base, fontSize: '16px' }),
+                    singleValue: base => ({ ...base, fontSize: '16px' }),
+                  }}
+                  aria-label="Group"
+                  placeholder="Select a group..."
+                  name="group"
+                  value={options.find(o => o.value === selectedProject)}
+                  onChange={selectedOption => setSelectedProject(selectedOption)}
+                  options={options}
+                  required
+                />
+              </RoleSelect>
+            </label>
+            <Footer>
+              <Button
+                disabled={selectedProject === null || loading}
+                testId="addGroupToProjectConfirm"
+                action={addGroupProject}
+                variant="primary"
+                loading={loading}
+              >
+                Add
+              </Button>
 
-                    <Button testId="cancel" variant="ghost" action={() => closeModal()}>
-                      Cancel
-                    </Button>
-                  </Footer>
-                </StyledNotification>
-              );
-            }}
-          </Mutation>
+              <Button testId="cancel" variant="ghost" action={() => closeModal()}>
+                Cancel
+              </Button>
+            </Footer>
+          </StyledNotification>
         </React.Fragment>
       </Modal>
     </StyledNotificationWrapper>

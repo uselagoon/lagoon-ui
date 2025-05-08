@@ -1,7 +1,7 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
-
+import { useMutation } from '@apollo/client';
 import Router from 'next/router';
+import Button from 'components/Button';
 
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
 import DeleteConfirm from 'components/DeleteConfirm';
@@ -26,10 +26,10 @@ const Environment = ({ environment }) => {
 
   const gitBranchLink = gitUrlParsed
     ? `${gitUrlParsed.resource}/${gitUrlParsed.full_name}/${
-        environment.deployType === 'branch'
-          ? `tree/${environment.name}`
-          : `pull/${environment.name.replace(/pr-/i, '')}`
-      }`
+      environment.deployType === 'branch'
+        ? `tree/${environment.name}`
+        : `pull/${environment.name.replace(/pr-/i, '')}`
+    }`
     : '';
 
   const navigateToTasks = () => {
@@ -59,6 +59,30 @@ const Environment = ({ environment }) => {
 
     Router.push(navigationObject.urlObject, navigationObject.asPath);
   };
+
+  const [ switchActiveStandby, { loading: switchLoading, called: switchCalled, error: switchError }] = useMutation(SwitchActiveStandbyMutation, {
+    variables: {
+      input: {
+        project: {
+          name: environment.project.name,
+        }
+      }
+    },
+    onCompleted: navigateToTasks,
+    onError: e => console.error(e),
+  });
+
+  const [ deleteEnvironment, { loading: deleteLoading, error: deleteError, data: deleteData }] = useMutation(DeleteEnvironmentMutation, {
+    variables: {
+      input: {
+        name: environment.name,
+        project: environment.project.name,
+      }
+    },
+    onCompleted: handleEnvironmentDelete,
+    onError: e => console.error(e),
+  });
+
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
       <div className="field-wrapper environmentType">
@@ -129,12 +153,12 @@ const Environment = ({ environment }) => {
               <div className="field">
                 {environment.project.productionRoutes
                   ? environment.project.productionRoutes.split(',').map(route => (
-                      <div key={route}>
-                        <a className="hover-state" target="_blank" href={route}>
-                          {route}
-                        </a>
-                      </div>
-                    ))
+                    <div key={route}>
+                      <a className="hover-state" target="_blank" href={route}>
+                        {route}
+                      </a>
+                    </div>
+                  ))
                   : ''}
               </div>
             </div>
@@ -148,12 +172,12 @@ const Environment = ({ environment }) => {
               <div className="field">
                 {environment.project.standbyRoutes
                   ? environment.project.standbyRoutes.split(',').map(route => (
-                      <div key={route}>
-                        <a className="hover-state" target="_blank" href={route}>
-                          {route}
-                        </a>
-                      </div>
-                    ))
+                    <div key={route}>
+                      <a className="hover-state" target="_blank" href={route}>
+                        {route}
+                      </a>
+                    </div>
+                  ))
                   : ''}
               </div>
             </div>
@@ -163,12 +187,12 @@ const Environment = ({ environment }) => {
           <div className="field" data-cy="routes">
             {environment.routes
               ? environment.routes.split(',').map(route => (
-                  <div key={route}>
-                    <a className="hover-state" target="_blank" href={route}>
-                      {route}
-                    </a>
-                  </div>
-                ))
+                <div key={route}>
+                  <a className="hover-state" target="_blank" href={route}>
+                    {route}
+                  </a>
+                </div>
+              ))
               : ''}
           </div>
         </div>
@@ -177,62 +201,34 @@ const Environment = ({ environment }) => {
         environment.project.standbyProductionEnvironment &&
         environment.environmentType == 'production' &&
         environment.project.standbyProductionEnvironment == environment.name && (
-          <Mutation mutation={SwitchActiveStandbyMutation} onCompleted={navigateToTasks}>
-            {(switchActiveStandby, { loading, called, error, data }) => {
-              const switchActiveBranch = () => {
-                const input = {
-                  project: {
-                    name: environment.project.name,
-                  },
-                };
-
-                switchActiveStandby({ variables: { input } });
-              };
-
-              if (!error && called && loading) {
-                return <div>Switching Standby Environment to Active...</div>;
-              }
-
-              return (
-                <ActiveStandbyConfirm
-                  activeEnvironment={environment.project.productionEnvironment}
-                  standbyEnvironment={environment.project.standbyProductionEnvironment}
-                  onProceed={switchActiveBranch}
-                />
-              );
-            }}
-          </Mutation>
+          <>
+            {switchLoading && switchCalled && !switchError ? (
+              <Button>Switching Standby Environment to Active...</Button>
+            ) : (
+              <ActiveStandbyConfirm
+                activeEnvironment={environment.project.productionEnvironment}
+                standbyEnvironment={environment.project.standbyProductionEnvironment}
+                onProceed={switchActiveStandby}
+              />
+            )}
+          </>
         )}
-      <Mutation
-        mutation={DeleteEnvironmentMutation}
-        onCompleted={handleEnvironmentDelete}
-        onError={e => console.error(e)}
-      >
-        {(deleteEnvironment, { loading, called, error, data }) => {
-          if (error) {
-            return <div>{error.message}</div>;
-          }
+      <>
+        { deleteError ? (
+          <div className="error">
+            <p>{deleteError.message}</p>
+          </div>
+        ) : (
+          <DeleteConfirm
+            deleteType="environment"
+            deleteName={environment.name}
+            loading={deleteLoading}
+            data={deleteData}
+            onDelete={deleteEnvironment}
+          />
+        )}
+      </>
 
-          return (
-            <DeleteConfirm
-              deleteType="environment"
-              deleteName={environment.name}
-              loading={loading}
-              data={data}
-              onDelete={() =>
-                deleteEnvironment({
-                  variables: {
-                    input: {
-                      name: environment.name,
-                      project: environment.project.name,
-                    },
-                  },
-                })
-              }
-            />
-          );
-        }}
-      </Mutation>
     </StyledEnvironmentDetails>
   );
 };

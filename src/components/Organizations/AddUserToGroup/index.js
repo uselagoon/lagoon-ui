@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -46,15 +46,15 @@ export const options = [
  * Adds user to group.
  */
 export const AddUserToGroup = ({
-  group,
-  close,
-  inputValueEmail,
-  setInputValue,
-  selectedRole,
-  setSelectedRole,
-  onAddUser,
-  users,
-}) => {
+                                 group,
+                                 close,
+                                 inputValueEmail,
+                                 setInputValue,
+                                 selectedRole,
+                                 setSelectedRole,
+                                 onAddUser,
+                                 users,
+                               }) => {
   const userAlreadyExists = users && users.find(u => u.user.email === inputValueEmail);
 
   const [inviteUser, setInviteUser] = useState(true);
@@ -64,104 +64,100 @@ export const AddUserToGroup = ({
     setInviteUser(true);
   };
 
+  const [addGroupMember, { loading, error }] = useMutation(ADD_GROUP_MEMBER_MUTATION, {
+    variables: {
+      email: inputValueEmail,
+      group: group?.name,
+      role: selectedRole?.value,
+      inviteUser,
+    },
+    onError: e => console.error(e),
+    onCompleted: () => {
+      onAddUser().then(() => {
+        setInputValue({ target: { value: '' } });
+        closeModal();
+      });
+    },
+  });
+
   return (
-    <Mutation mutation={ADD_GROUP_MEMBER_MUTATION} onError={err => console.error(err)}>
-      {(addGroupMember, { called, error, data }) => {
-        if (error) {
-          return <div>{error.message}</div>;
-        }
-        if (data) {
-          onAddUser().then(() => {
-            setInputValue({ target: { value: '' } });
-            closeModal();
-          });
-        }
-        return (
-          <NewMember>
-            <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
-            <div className="form-box">
-              <label>
-                User Email: <span style={{ color: '#E30000' }}>*</span>
-                <input
-                  className="inputEmail"
-                  data-cy="orgUser-email-input"
-                  type="text"
-                  placeholder="Enter Email"
-                  value={inputValueEmail}
-                  onChange={e => setInputValue({ target: { value: e.target.value.trim() } })}
-                />
-              </label>
-            </div>
+    <>
+      {error ? <div>{error.message}</div> :
+        <NewMember>
+          <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
+          <div className="form-box">
             <label>
-              User Role: <span style={{ color: '#E30000' }}>*</span>
-              <RoleSelect>
-                <ReactSelect
-                  classNamePrefix="react-select"
-                  className="select"
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
-                    placeholder: base => ({ ...base, fontSize: '16px' }),
-                    menu: base => ({ ...base, fontSize: '16px' }),
-                    option: base => ({ ...base, fontSize: '16px' }),
-                    singleValue: base => ({ ...base, fontSize: '16px' }),
-                  }}
-                  aria-label="Role"
-                  placeholder="Select role"
-                  name="role"
-                  value={options.find(o => o.value === selectedRole)}
-                  onChange={selectedOption => setSelectedRole(selectedOption)}
-                  options={options}
-                  required
-                />
-              </RoleSelect>
-            </label>
-            <label className="add-user">
-              Invite user to Lagoon
-              <Tooltip
-                overlayClassName="orgTooltip"
-                title="This will invite the user to Lagoon if the user doesn't exist. If the user already exists, it will just skip the invite."
-                placement="bottom"
-              >
-                <InfoCircleOutlined style={{ fontSize: '1rem' }} />
-              </Tooltip>
+              User Email: <span style={{ color: '#E30000' }}>*</span>
               <input
-                data-cy="inviteUser"
-                className="inputCheckbox"
-                type="checkbox"
-                checked={inviteUser}
-                onChange={() => setInviteUser(!inviteUser)}
+                className="inputEmail"
+                data-cy="orgUser-email-input"
+                type="text"
+                placeholder="Enter Email"
+                value={inputValueEmail}
+                onChange={e => setInputValue({ target: { value: e.target.value.trim() } })}
               />
             </label>
-            <div>
-              <Footer>
-                <Button
-                  testId="addUserToGroup"
-                  disabled={called || inputValueEmail === '' || !selectedRole}
-                  action={() => {
-                    addGroupMember({
-                      variables: {
-                        email: inputValueEmail,
-                        role: selectedRole.value,
-                        group: group.name,
-                        inviteUser,
-                      },
-                    });
-                  }}
-                  variant="primary"
-                  loading={called}
-                >
-                  {userAlreadyExists ? 'Update' : 'Add'}
-                </Button>
-                <Button variant="ghost" action={() => closeModal()}>
-                  Cancel
-                </Button>
-              </Footer>
-            </div>
-          </NewMember>
-        );
-      }}
-    </Mutation>
+          </div>
+          <label>
+            User Role: <span style={{ color: '#E30000' }}>*</span>
+            <RoleSelect>
+              <ReactSelect
+                classNamePrefix="react-select"
+                className="select"
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                  placeholder: base => ({ ...base, fontSize: '16px' }),
+                  menu: base => ({ ...base, fontSize: '16px' }),
+                  option: base => ({ ...base, fontSize: '16px' }),
+                  singleValue: base => ({ ...base, fontSize: '16px' }),
+                }}
+                aria-label="Role"
+                placeholder="Select role"
+                name="role"
+                value={options.find(o => o.value === selectedRole)}
+                onChange={selectedOption => setSelectedRole(selectedOption)}
+                options={options}
+                required
+              />
+            </RoleSelect>
+          </label>
+          <label className="add-user">
+            Invite user to Lagoon
+            <Tooltip
+              overlayClassName="orgTooltip"
+              title="This will invite the user to Lagoon if the user doesn't exist. If the user already exists, it will just skip the invite."
+              placement="bottom"
+            >
+              <InfoCircleOutlined style={{ fontSize: '1rem' }} />
+            </Tooltip>
+            <input
+              data-cy="inviteUser"
+              className="inputCheckbox"
+              type="checkbox"
+              checked={inviteUser}
+              onChange={() => setInviteUser(!inviteUser)}
+            />
+          </label>
+          <div>
+            <Footer>
+              <Button
+                testId="addUserToGroup"
+                disabled={loading || inputValueEmail === '' || !selectedRole}
+                action={addGroupMember}
+                variant="primary"
+                loading={loading}
+              >
+                {userAlreadyExists ? 'Update' : 'Add'}
+              </Button>
+              <Button variant="ghost" action={() => closeModal()}>
+                Cancel
+              </Button>
+            </Footer>
+          </div>
+        </NewMember>
+      }
+    </>
   );
 };
 

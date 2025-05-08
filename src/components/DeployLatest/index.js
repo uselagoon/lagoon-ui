@@ -1,6 +1,5 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
-
+import { useMutation } from '@apollo/client';
 import { notification } from 'antd';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
@@ -17,6 +16,19 @@ const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
  * Button that deploys the latest environment.
  */
 const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
+  const [ deploy, { loading, error, data }] = useMutation(DEPLOY_ENVIRONMENT_LATEST_MUTATION, {
+    variables: {
+      environmentId: environment.id,
+    },
+    onCompleted: (data) => {
+      if (data && data.deployEnvironmentLatest === 'success') {
+        onDeploy();
+      }
+    },
+    onError: e => console.error(e),
+  });
+
+  let success = data && data.deployEnvironmentLatest === 'success';
   let deploymentsEnabled = true;
 
   if (environment.deployType === 'branch' || environment.deployType === 'promote') {
@@ -60,34 +72,18 @@ const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
             {environment.deployType === 'promote' &&
               `Start a new deployment from environment ${environment.project.name}-${environment.deployBaseRef}.`}
           </div>
-          <Mutation
-            onError={e => console.error(e)}
-            mutation={DEPLOY_ENVIRONMENT_LATEST_MUTATION}
-            variables={{
-              environmentId: environment.id,
-            }}
-          >
-            {(deploy, { loading, error, data }) => {
-              const success = data && data.deployEnvironmentLatest === 'success';
-              if (success) {
-                onDeploy();
-              }
-              return (
-                <React.Fragment>
-                  {contextHolder}
-                  <Button action={deploy} disabled={loading} loading={loading} testId="deploy">
-                    Deploy
-                  </Button>
-                  {success && (
-                    <div className="deploy_result" data-cy="deploy_result">
-                      Deployment queued.
-                    </div>
-                  )}
-                  {error && openNotificationWithIcon(error.message)}
-                </React.Fragment>
-              );
-            }}
-          </Mutation>
+          <React.Fragment>
+            {contextHolder}
+            <Button action={deploy} disabled={loading} loading={loading} testId="deploy">
+              Deploy
+            </Button>
+            {success && (
+              <div className="deploy_result" data-cy="deploy_result">
+                Deployment queued.
+              </div>
+            )}
+            {error && openNotificationWithIcon(error.message)}
+          </React.Fragment>
         </React.Fragment>
       )}
     </NewDeployment>

@@ -3,7 +3,7 @@ import React from 'react';
 import { notification } from 'antd';
 import Button from 'components/Button';
 
-export const NewEnvButton = ({ action, loading, error, disabled, data, showSuccess }) => {
+export const NewEnvButton = ({ action, loading, error, disabled, showSuccess }) => {
   const [api, contextHolder] = notification.useNotification();
 
   const openNotificationWithIcon = errorMessage => {
@@ -16,13 +16,13 @@ export const NewEnvButton = ({ action, loading, error, disabled, data, showSucce
     });
   };
   return (
-      <>
-        {contextHolder}
-        <Button testId="create-env" action={action} loading={loading} disabled={disabled} variant="primary">
-          {loading ? 'Creating' : showSuccess ? 'Success' : 'Create'}
-        </Button>
-        {error && openNotificationWithIcon(data.deployEnvironmentBranch)}
-      </>
+    <>
+      {contextHolder}
+      <Button testId="create-env" action={action} loading={loading} disabled={disabled} variant="primary">
+        {loading ? 'Creating' : showSuccess ? 'Success' : 'Create'}
+      </Button>
+      {error && openNotificationWithIcon(error)}
+    </>
   );
 };
 
@@ -33,24 +33,22 @@ const NewEnvironmentButton = ({
   loading,
   error,
   disabled,
-  data,
   showSuccess
 }) => (
-    <NewEnvButton
-        action={() => {
-          deployEnvironmentBranch({
-            variables: {
-              branch: inputBranchName,
-              project: inputProjectName,
-            },
-          });
-        }}
-        loading={loading}
-        error={error}
-        disabled={disabled}
-        data={data}
-        showSuccess={showSuccess}
-    />
+  <NewEnvButton
+    action={() => {
+      deployEnvironmentBranch({
+        variables: {
+          branch: inputBranchName,
+          project: inputProjectName,
+        },
+      });
+    }}
+    loading={loading}
+    error={error}
+    disabled={disabled}
+    showSuccess={showSuccess}
+  />
 );
 
 export default NewEnvironmentButton;

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
-
+import { useMutation } from '@apollo/client';
 import { notification } from 'antd';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
@@ -34,25 +33,23 @@ export const CancelDeploymentButton = ({ action, success, loading, error, before
   );
 };
 
-const CancelDeployment = ({ deployment, beforeText, afterText }) => (
-  <Mutation
-    onError={e => console.error(e)}
-    mutation={CANCEL_DEPLOYMENT_MUTATION}
-    variables={{
+const CancelDeployment = ({ deployment, beforeText, afterText }) => {
+  const [cancelDeploy, { loading, error, data }] = useMutation(CANCEL_DEPLOYMENT_MUTATION, {
+    variables: {
       deploymentId: deployment.id,
-    }}
-  >
-    {(cancelDeploy, { loading, error, data }) => (
-      <CancelDeploymentButton
-        action={cancelDeploy}
-        success={data && data.cancelDeployment === 'success'}
-        loading={loading}
-        error={error}
-        beforeText={beforeText}
-        afterText={afterText}
-      />
-    )}
-  </Mutation>
-);
+    },
+    onError: e => console.error(e),
+  });
+
+  return (
+    <CancelDeploymentButton
+      action={cancelDeploy}
+      success={data && data.cancelDeployment === 'success'}
+      loading={loading}
+      error={error}
+      beforeText={beforeText}
+      afterText={afterText}
+    />
+  )};
 
 export default CancelDeployment;

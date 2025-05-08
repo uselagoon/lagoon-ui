@@ -1,6 +1,5 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
-
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 
@@ -12,24 +11,25 @@ const addRestore = gql`
   }
 `;
 
-const Prepare = ({ backupId }) => (
-  <Mutation mutation={addRestore} variables={{ input: { backupId } }} onError={e => console.error(e)}>
-    {(addRestore, { loading, called, error, data }) => {
-      if (error) {
-        return <Button disabled>Retrieve failed</Button>;
-      }
+const Prepare = ({ backupId }) => {
 
-      if (loading || called) {
-        return <Button disabled>Retrieving ...</Button>;
-      }
+  const [ addRestoreMutation, { loading, called, error }] = useMutation(addRestore, {
+    variables: { input: { backupId } },
+    onError: e => console.error(e),
+  });
 
-      return (
-        <Button testId="retrieve" action={addRestore}>
-          Retrieve
-        </Button>
-      );
-    }}
-  </Mutation>
-);
+  if (error) {
+    return <Button disabled>Retrieve failed</Button>;
+  }
+
+  if (loading || called) {
+    return <Button disabled>Retrieving ...</Button>;
+  }
+  return (
+      <Button testId="retrieve" action={addRestoreMutation}>
+        Retrieve
+      </Button>
+  )
+};
 
 export default Prepare;

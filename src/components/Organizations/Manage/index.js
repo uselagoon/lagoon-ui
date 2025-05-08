@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -42,6 +42,25 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const [selectedUserType, setSelectedUserType] = useState('');
+
+  const [ addUser, { loading: addUserLoading, error: addUserError }] = useMutation(ADD_USER_MUTATION, {
+    onCompleted: () => {
+      setSelectedUser('');
+      refetch().then(closeEditModal);
+    },
+    onError: e => {
+      console.error(e);
+    },
+  });
+
+  const [ removeUserFromOrganization, { loading: removeUserLoading, error: removeUserError }] = useMutation(DELETE_USER, {
+    onCompleted: () => {
+      refetch().then(closeUserModal);
+    },
+    onError: e => {
+      console.error(e);
+    },
+  });
 
   const closeUserModal = () => {
     setSelectedUser('');
@@ -144,80 +163,75 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
               isOpen={editModalOpen && selectedUser === user?.id}
               onRequestClose={closeEditModal}
             >
-              <Mutation mutation={ADD_USER_MUTATION} onError={err => console.error(err)}>
-                {(addUser, { called, error, data }) => {
-                  if (error) {
-                    return <div>{error.message}</div>;
-                  }
-                  if (data) {
-                    setSelectedUser('');
-                    refetch().then(closeEditModal);
-                  }
-                  return (
-                    <NewUser>
-                      <h4>Update user</h4>
-                      <div className="form-box">
-                        <label>
-                          User Email: <span style={{ color: '#E30000' }}></span>
-                          <input className="inputEmail" type="text" value={user.email} disabled />
-                        </label>
-                      </div>
+              { addUserError ?
+                <>
+                  <div>{addUserError?.message}</div>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </>
+                :
+                <NewUser>
+                  <h4>Update user</h4>
+                  <div className="form-box">
+                    <label>
+                      User Email: <span style={{ color: '#E30000' }}></span>
+                      <input className="inputEmail" type="text" value={user.email} disabled />
+                    </label>
+                  </div>
 
-                      <br />
-                      <label>
-                        User Type: <span style={{ color: '#E30000' }}>*</span>
-                        <ReactSelect
-                          classNamePrefix="react-select"
-                          className="select"
-                          menuPortalTarget={document.body}
-                          styles={{
-                            menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
-                            placeholder: base => ({ ...base, fontSize: '16px' }),
-                            menu: base => ({ ...base, fontSize: '16px' }),
-                            option: base => ({ ...base, fontSize: '16px' }),
-                            singleValue: base => ({ ...base, fontSize: '16px' }),
-                          }}
-                          aria-label="Role"
-                          placeholder="Select role"
-                          name="role"
-                          value={userTypeOptions.find(o => o.value === selectedUserType)}
-                          onChange={selectedOption => {
-                            setSelectedUserType(selectedOption.value);
-                          }}
-                          options={userTypeOptions}
-                          required
-                        />
-                      </label>
+                  <br />
+                  <label>
+                    User Type: <span style={{ color: '#E30000' }}>*</span>
+                    <ReactSelect
+                      classNamePrefix="react-select"
+                      className="select"
+                      menuPortalTarget={document.body}
+                      styles={{
+                        menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                        placeholder: base => ({ ...base, fontSize: '16px' }),
+                        menu: base => ({ ...base, fontSize: '16px' }),
+                        option: base => ({ ...base, fontSize: '16px' }),
+                        singleValue: base => ({ ...base, fontSize: '16px' }),
+                      }}
+                      aria-label="Role"
+                      placeholder="Select role"
+                      name="role"
+                      value={userTypeOptions.find(o => o.value === selectedUserType)}
+                      onChange={selectedOption => {
+                        setSelectedUserType(selectedOption.value);
+                      }}
+                      options={userTypeOptions}
+                      required
+                    />
+                  </label>
 
-                      <div>
-                        <Footer>
-                          <Button
-                            testId="updateUser"
-                            disabled={called}
-                            loading={called}
-                            action={() => {
-                              addUser({
-                                variables: {
-                                  email: user.email,
-                                  organization: organization.id,
-                                  ...(selectedUserType === 'admin' && { admin: true }),
-                                  ...(selectedUserType === 'owner' && { owner: true }),
-                                },
-                              });
-                            }}
-                            variant="primary"
-                          >
-                            Update
-                          </Button>
-                          <Button variant="ghost" action={closeEditModal}>
-                            Cancel
-                          </Button>
-                        </Footer>
-                      </div>
-                    </NewUser>
-                  );
-                }}
-              </Mutation>
+                  <div>
+                    <Footer>
+                      <Button
+                        testId="updateUser"
+                        disabled={addUserLoading}
+                        loading={addUserLoading}
+                        action={() => addUser({
+                          variables: {
+                            email: user.email,
+                            organization: organization.id,
+                            ...(selectedUserType === 'admin' && { admin: true }),
+                            ...(selectedUserType === 'owner' && { owner: true }),
+                          },
+                        })
+                        }
+                        variant="primary"
+                      >
+                        Update
+                      </Button>
+                      <Button variant="ghost" action={closeEditModal}>
+                        Cancel
+                      </Button>
+                    </Footer>
+                  </div>
+                </NewUser>
+              }
             </Modal>
 
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Remove user">
@@ -236,42 +250,35 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                 This action will remove user <span>{user.email}</span> from management of the organization{' '}
                 <span>{organizationName}</span>.
               </RemoveModalParagraph>
-
-              <Footer>
-                <Mutation mutation={DELETE_USER}>
-                  {(removeUserFromOrganization, { called, error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
+              { removeUserError ?
+                <>
+                  <div>{removeUserError?.message}</div>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </>
+                :
+                <Footer>
+                  <Button
+                    testId="deleteConfirm"
+                    variant="primary"
+                    loading={removeUserLoading}
+                    disabled={removeUserLoading}
+                    action={() => removeUserFromOrganization({
+                      variables: {
+                        email: user.email,
+                        organization: organization.id,
+                      },
+                    })
                     }
-                    if (data) {
-                      refetch().then(() => {
-                        return setDeleteUserModalOpen(false);
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="deleteConfirm"
-                        variant="primary"
-                        loading={called}
-                        disabled={called}
-                        action={() => {
-                          removeUserFromOrganization({
-                            variables: {
-                              email: user.email,
-                              organization: organization.id,
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeUserModal}>
-                  Cancel
-                </Button>
-              </Footer>
+                  >
+                    Continue
+                  </Button>
+                  <Button variant="ghost" action={closeUserModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              }
             </Modal>
           </TableActions>
         );

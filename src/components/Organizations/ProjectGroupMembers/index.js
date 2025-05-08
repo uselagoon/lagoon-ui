@@ -1,6 +1,5 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
-
+import { useMutation } from '@apollo/client';
 import { EyeOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
@@ -24,14 +23,24 @@ const REMOVE_GROUP_FROM_PROJECT = gql`
  * The primary list of members.
  */
 const ProjectGroupMembers = ({
-  groups = [],
-  organizationId,
-  organizationSlug,
-  projectName,
-  orgGroups,
-  refresh,
-  orgFriendlyName,
-}) => {
+                               groups = [],
+                               organizationId,
+                               organizationSlug,
+                               projectName,
+                               orgGroups,
+                               refresh,
+                               orgFriendlyName,
+                             }) => {
+
+  const [ removeGroupFromProject, { loading, error }] = useMutation(REMOVE_GROUP_FROM_PROJECT, {
+    onCompleted: () => {
+      refresh();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   const Columns = [
     {
       width: '50%',
@@ -88,32 +97,23 @@ const ProjectGroupMembers = ({
 
             {g.type !== 'project-default-group' && (
               <>
+                {error && <div>{error.message}</div>}
                 <div className="remove">
-                  <Mutation mutation={REMOVE_GROUP_FROM_PROJECT}>
-                    {(removeGroupFromProject, { _, called, error }) => {
-                      if (error) {
-                        return <div>{error.message}</div>;
-                      }
-                      return (
-                        <RemoveProjectGroupConfirm
-                          loading={called}
-                          info={{
-                            type: 'group',
-                            deleteName: g.name,
-                            projectName: projectName,
-                          }}
-                          onRemove={() => {
-                            removeGroupFromProject({
-                              variables: {
-                                groupName: g.name,
-                                projectName: projectName,
-                              },
-                            }).then(refresh);
-                          }}
-                        />
-                      );
+                  <RemoveProjectGroupConfirm
+                    loading={loading}
+                    info={{
+                      type: 'group',
+                      deleteName: g.name,
+                      projectName: projectName,
                     }}
-                  </Mutation>
+                    onRemove={() => removeGroupFromProject({
+                      variables: {
+                        groupName: g.name,
+                        projectName: projectName,
+                      },
+                    })
+                    }
+                  />
                 </div>
               </>
             )}
