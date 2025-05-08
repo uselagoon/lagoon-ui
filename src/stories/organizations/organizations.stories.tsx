@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
 import OrganizationsPage from '../../pages/organizations';
@@ -10,12 +10,23 @@ const meta: Meta<typeof OrganizationsPage> = {
 };
 type Story = StoryObj<typeof OrganizationsPage>;
 
+const allOrganizations = [getOrganization()];
+
+type ResponseType = {
+  allOrganizations: typeof allOrganizations;
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ allOrganizations: [getOrganization()] }));
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              allOrganizations,
+            },
+          });
         }),
       ],
     },
@@ -26,8 +37,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },

@@ -3,7 +3,7 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { generateEnvironments, getDeployment, seed } from '../../.storybook/mocks/mocks';
 import PageDeployment from '../pages/deployment';
@@ -15,6 +15,17 @@ const meta: Meta<typeof PageDeployment> = {
 type Story = StoryObj<typeof PageDeployment>;
 
 faker.seed(123);
+
+const environmentResponse = { ...generateEnvironments(123), deployments: [getDeployment(30)] };
+
+type ResponseType = {
+  environment: typeof environmentResponse;
+};
+
+type MutationResponseType = {
+  cancelDeployment: string;
+};
+
 const fakeQueryParams = {
   openshiftProjectName: faker.helpers.arrayElement(['main', 'branch']),
   deploymentName: faker.lorem.slug(),
@@ -25,21 +36,22 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.mutation('cancelDeployment', (_, res, ctx) => {
-          return res(
-            ctx.delay(1000),
-            ctx.data({
+        graphql.mutation('cancelDeployment', () => {
+          delay(1000);
+          return HttpResponse.json<{ data: MutationResponseType }>({
+            data: {
               cancelDeployment: 'success',
-            })
-          );
+            },
+          });
         }),
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: { ...generateEnvironments(123), deployments: [getDeployment(30)] },
-            })
-          );
+
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              environment: environmentResponse,
+            },
+          });
         }),
       ],
     },
@@ -56,8 +68,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -68,8 +80,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },

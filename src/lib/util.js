@@ -31,3 +31,13 @@ export const getProcessDuration = process => {
 
   return duration;
 };
+
+export const isValidUrl = url => {
+  try {
+    const parsed = new URL(url);
+    const safeProtocols = ['https:', 'http:'];
+    return safeProtocols.includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+};

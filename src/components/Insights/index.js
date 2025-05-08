@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import Button from 'components/Button';
 import SelectFilter from 'components/Filters';
+import { isValidUrl } from 'lib/util';
 
 import useSortableData from '../../lib/withSortedItems';
-// import { Icon } from 'semantic-ui-react';
 import { StyledInsights } from './StyledInsights';
 
 const getOptionsFromInsights = (insights, key) => {
@@ -213,16 +213,19 @@ const Insights = ({ insights }) => {
         {sortedItems
           .filter(item => shouldItemBeShown(item))
           .map(insight => {
+            const { id, file, service, type, created, size, downloadUrl } = insight;
+
+            const downloadURL = isValidUrl(downloadUrl) ? downloadUrl : undefined;
+
             return (
-              <div className="data-row row-heading" key={insight.id}>
-                <div className="col col-2">{insight.file}</div>
-                <div className="col col-2">{insight.service}</div>
-                <div className="col col-2">{insight.type}</div>
-                <div className="col col-3">{insight.created}</div>
-                <div className="col col-3">{insight.size}</div>
+              <div className="data-row row-heading" key={id}>
+                <div className="col col-2">{file}</div>
+                <div className="col col-2">{service}</div>
+                <div className="col col-2">{type}</div>
+                <div className="col col-3">{created}</div>
+                <div className="col col-3">{size}</div>
                 <div className="col col-3">
-                  <a href={insight.downloadUrl} target="_blank">
-                    {/* <Icon link name='download'/>Download */}
+                  <a href={downloadURL} target="_blank">
                     <Button>Download</Button>
                   </a>
                 </div>

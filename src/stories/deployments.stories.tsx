@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { generateEnvironments, getDeployment, seed } from '../../.storybook/mocks/mocks';
 import PageDeployments from '../pages/deployments';
@@ -19,20 +19,27 @@ const fakeQueryParams = {
 };
 
 seed();
+
+const environmentResponse = {
+  ...generateEnvironments(123),
+  deployments: [getDeployment(1), getDeployment(115), getDeployment(30), getDeployment(123)],
+};
+type ResponseType = {
+  environment: typeof environmentResponse;
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: {
-                ...generateEnvironments(123),
-                deployments: [getDeployment(1), getDeployment(115), getDeployment(30), getDeployment(123)],
-              },
-            })
-          );
+        graphql.operation(() => {
+          delay();
+
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              environment: environmentResponse,
+            },
+          });
         }),
       ],
     },
@@ -49,8 +56,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -61,8 +68,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },
