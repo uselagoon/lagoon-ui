@@ -94,11 +94,16 @@ const OrgNewProject = ({
         setPullRequests('');
         setBranches('');
         setSelectedDeployTarget({ target: { value: '' } });
-        closeModal();
+        handleModalClose();
       });
     },
     onError: e => console.error(e),
   });
+
+  const handleModalClose = () => {
+    reset();
+    closeModal();
+  }
 
   return (
     <StyledNotificationWrapper>
@@ -111,7 +116,7 @@ const OrgNewProject = ({
           </>
         </Tooltip>
       </div>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
+      <Modal isOpen={open} onRequestClose={handleModalClose} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <>
             <StyledNewProject>
@@ -119,7 +124,7 @@ const OrgNewProject = ({
                 <>
                   <p style={{ display: "inline-block" }}>{error?.message} </p>
                   <div style={{ float: 'right' }}>
-                    <Button variant="ghost" action={closeModal} >
+                    <Button variant="ghost" action={handleModalClose} >
                       Cancel
                     </Button>
                   </div>
@@ -320,7 +325,7 @@ const OrgNewProject = ({
                         Add
                       </Button>
 
-                      <Button action={() => closeModal()} variant="ghost">
+                      <Button action={() => handleModalClose()} variant="ghost">
                         Cancel
                       </Button>
                     </Footer>

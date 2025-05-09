@@ -58,7 +58,7 @@ const OrgProjects = ({
 
   const client = useApolloClient();
 
-  const [deleteProject, { loading, error }] = useMutation(DELETE_PROJECT, {
+  const [deleteProject, { loading, error, reset }] = useMutation(DELETE_PROJECT, {
     variables: {
       project: modalState.current,
     },
@@ -71,7 +71,7 @@ const OrgProjects = ({
   });
 
   const handleModalClose = () => {
-    // reset();
+    reset();
     setModalState({ open: false, current: null })
   }
 

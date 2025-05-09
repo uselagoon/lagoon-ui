@@ -99,11 +99,17 @@ export const NewGroup = ({
     onCompleted: () => {
       onGroupAdded().then(() => {
         setInputValue({ target: { value: '' } });
-        closeModal();
+        handleModalClose();
       });
     },
     onError: e => console.error(e),
   });
+
+  const handleModalClose = () => {
+    reset();
+    setInputValue({ target: { value: '' } });
+    closeModal();
+  }
 
   return (
     <StyledNewGroup>
@@ -116,14 +122,14 @@ export const NewGroup = ({
           </>
         </Tooltip>
       </div>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
+      <Modal isOpen={open} onRequestClose={handleModalClose} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <StyledNotification>
             { error ?
               <>
                 <p style={{ display: "inline-block" }}>{error?.message} </p>
                 <div style={{ float: 'right' }}>
-                  <Button variant="ghost" action={closeModal} >
+                  <Button variant="ghost" action={handleModalClose} >
                     Cancel
                   </Button>
                 </div>
@@ -169,7 +175,7 @@ export const NewGroup = ({
                         Create
                       </Button>
 
-                      <Button variant="ghost" action={() => closeModal()}>
+                      <Button variant="ghost" action={() => handleModalClose()}>
                         Cancel
                       </Button>
 
