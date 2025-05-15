@@ -22,8 +22,8 @@ export const userTypeOptions = userTypes.map(u => {
 });
 
 const DELETE_USER = gql`
-  mutation removeUserFromOrganization($organization: Int!, $email: String!) {
-    removeUserFromOrganization(input: { user: { email: $email }, organization: $organization }) {
+  mutation removeAdminFromOrganization($organization: Int!, $email: String!) {
+    removeAdminFromOrganization(input: { user: { email: $email }, organization: { id: $organization }}) {
       id
     }
   }
@@ -200,8 +200,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                                 variables: {
                                   email: user.email,
                                   organization: organization.id,
-                                  ...(selectedUserType === 'admin' && { admin: true }),
-                                  ...(selectedUserType === 'owner' && { owner: true }),
+                                  role: selectedUserType.toUpperCase(),
                                 },
                               });
                             }}
