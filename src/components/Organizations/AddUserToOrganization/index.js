@@ -13,9 +13,7 @@ import { NewUser } from './Styles';
 
 export const ADD_USER_MUTATION = gql`
   mutation AddAdminToOrganization($email: String!, $organization: Int!, $role: OrganizationRole!) {
-    addAdminToOrganization(
-      input: { user: { email: $email }, organization: { id: $organization}, role: $role }
-    ) {
+    addAdminToOrganization(input: { user: { email: $email }, organization: { id: $organization }, role: $role }) {
       id
     }
   }

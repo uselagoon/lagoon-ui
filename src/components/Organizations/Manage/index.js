@@ -23,7 +23,7 @@ export const userTypeOptions = userTypes.map(u => {
 
 const DELETE_USER = gql`
   mutation removeAdminFromOrganization($organization: Int!, $email: String!) {
-    removeAdminFromOrganization(input: { user: { email: $email }, organization: { id: $organization }}) {
+    removeAdminFromOrganization(input: { user: { email: $email }, organization: { id: $organization } }) {
       id
     }
   }
