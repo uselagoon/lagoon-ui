@@ -8,7 +8,7 @@ export default class ManageAction {
     manageRepo.getUserEmailField().type(viewerUser);
     manageRepo.getSubmitBtn().click();
 
-    cy.wait('@gqlAddUserToOrganizationMutation');
+    cy.wait('@gqlAddAdminToOrganizationMutation');
 
     manageRepo.getUserRows().should($element => {
       const elementText = $element.text();
@@ -25,7 +25,7 @@ export default class ManageAction {
 
     manageRepo.getUpdateBtn().click();
 
-    cy.wait('@gqlAddUserToOrganizationMutation');
+    cy.wait('@gqlAddAdminToOrganizationMutation');
 
     manageRepo.getUserRows().contains(user).parents('.tableRow').find(':contains("ORG ADMIN")').should('exist');
   }
@@ -39,7 +39,7 @@ export default class ManageAction {
 
     manageRepo.getUpdateBtn().click();
 
-    cy.wait('@gqlAddUserToOrganizationMutation');
+    cy.wait('@gqlAddAdminToOrganizationMutation');
 
     manageRepo.getUserRows().contains(user).parents('.tableRow').find(':contains("ORG OWNER")').should('exist');
   }

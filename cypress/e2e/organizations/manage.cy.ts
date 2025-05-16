@@ -10,7 +10,7 @@ describe('Org Manage page', () => {
     cy.visit(`${Cypress.env('url')}/organizations/lagoon-demo-organization/manage`);
 
     cy.intercept('POST', Cypress.env('api'), req => {
-      aliasMutation(req, 'AddUserToOrganization');
+      aliasMutation(req, 'AddAdminToOrganization');
     });
   });
 
