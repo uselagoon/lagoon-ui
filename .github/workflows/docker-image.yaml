@@ -15,16 +15,22 @@ on:
 jobs:
   check-renovate-branch:
     runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
-      - 
-        name: Cancel workflow for renovate branches
-        if: startsWith(github.head_ref, 'renovate/')
+      - name: Check for renovate branch
+        id: skip_check
         run: |
-          echo "This is a renovate PR targeting main. Skipping workflow."
-          exit 0
+          if [[ "${GITHUB_HEAD_REF}" == renovate/* ]]; then
+            echo "This is a renovate PR targeting main. Skipping workflow."
+            echo "should_skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_skip=false" >> $GITHUB_OUTPUT
+          fi
 
   docker:
     needs: check-renovate-branch
+    if: needs.check-renovate-branch.outputs.should_skip == 'false'
     runs-on: ubuntu-latest
     steps:
       -
