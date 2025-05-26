@@ -11,11 +11,20 @@ on:
   pull_request:
     branches:
       - 'main'
-    branches-ignore:
-      - 'renovate/**'
 
 jobs:
+  check-renovate-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Cancel workflow for renovate branches
+        if: startsWith(github.head_ref, 'renovate/')
+        run: |
+          echo "This is a renovate PR targeting main. Skipping workflow."
+          exit 0
+
   docker:
+    needs: check-renovate-branch
     runs-on: ubuntu-latest
     steps:
       -
