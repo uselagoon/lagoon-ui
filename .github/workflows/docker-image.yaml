@@ -11,6 +11,8 @@ on:
   pull_request:
     branches:
       - 'main'
+    branches-ignore:
+      - 'renovate/**'
 
 jobs:
   docker:
