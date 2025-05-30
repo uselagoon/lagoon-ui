@@ -18,7 +18,6 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
   const [isLoading, setIsLoading] = useState(loading);
 
   const [modalOpen, setModalOpen] = useState(false);
-  test12333
   const [editState, setEditState] = useState({
     id: '',
     name: '',
