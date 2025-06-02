@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
 import PageOrganization from '../../pages/organizations/organization';
@@ -23,12 +23,23 @@ const meta: Meta<typeof PageOrganization> = {
 };
 type Story = StoryObj<typeof PageOrganization>;
 
+const organizationResponse = getOrganization();
+
+type ResponseType = {
+  organization: typeof organizationResponse;
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getOrganization', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ organization: getOrganization() }));
+        graphql.query('getOrganization', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              organization: organizationResponse,
+            },
+          });
         }),
       ],
     },
@@ -39,8 +50,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },

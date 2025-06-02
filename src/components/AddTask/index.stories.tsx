@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { MockAllProjects } from '../../../.storybook/mocks/api';
 import { generateEnvironments, seed } from '../../../.storybook/mocks/mocks';
@@ -27,6 +27,11 @@ const pageEnvironment = {
     },
   ],
 };
+const projectByNameResponse = { ...pageEnvironment, environments: MockAllProjects(123)[0].environments };
+
+type ResponseType = {
+  projectByName: typeof projectByNameResponse | {};
+};
 
 export const Default: Story = {
   args: {
@@ -36,11 +41,9 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({ projectByName: { ...pageEnvironment, environments: MockAllProjects(123)[0].environments } })
-          );
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({ data: { projectByName: projectByNameResponse } });
         }),
       ],
     },
@@ -55,8 +58,13 @@ export const NoCLIService: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getProject', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ projectByName: {} }));
+        graphql.query('getProject', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              projectByName: {},
+            },
+          });
         }),
       ],
     },

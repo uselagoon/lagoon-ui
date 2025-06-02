@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { generateEnvironments, generateFact, seed } from '../../.storybook/mocks/mocks';
 import PageFacts from '../pages/facts';
@@ -23,6 +23,10 @@ seed();
 const environment = generateEnvironments(123);
 environment.facts = [generateFact(1), generateFact(2), generateFact(3), generateFact(123)] as any;
 
+type ResponseType = {
+  environment: typeof environment;
+};
+
 export const Default: Story = {
   args: {
     router: {
@@ -33,13 +37,13 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
               environment,
-            })
-          );
+            },
+          });
         }),
       ],
     },
@@ -50,13 +54,13 @@ export const NoFacts: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
+        graphql.operation(() => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
               environment: { ...environment, facts: [] },
-            })
-          );
+            },
+          });
         }),
       ],
     },
@@ -67,8 +71,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -79,8 +83,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },

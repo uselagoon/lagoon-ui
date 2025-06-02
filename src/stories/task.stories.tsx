@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
 import Task from 'components/Task';
 import QueryError from 'components/errors/QueryError';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { createTask, generateEnvironments, seed } from '../../.storybook/mocks/mocks';
 import PageTask from '../pages/task';
@@ -31,17 +31,24 @@ type Story = StoryObj<typeof PageTask>;
 const success = [{ ...createTask().task, status: 'succeeded', name: 'succeeded-task' }];
 const failed = [{ ...createTask().task, status: 'failed', name: 'failed-task' }];
 
+const environmentResponseWithSuccessFulTasks = { ...generateEnvironments(), tasks: success };
+const environmentResponseWithFailedTasks = { ...generateEnvironments(), tasks: failed };
+
+type ResponseType = {
+  environment: typeof environmentResponseWithSuccessFulTasks | typeof environmentResponseWithFailedTasks;
+};
+
 export const Success: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getEnvironment', (_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: { ...generateEnvironments(), tasks: success },
-            })
-          );
+        graphql.query('getEnvironment', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              environment: environmentResponseWithSuccessFulTasks,
+            },
+          });
         }),
       ],
     },
@@ -52,13 +59,13 @@ export const Failed: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getEnvironment', (_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: { ...generateEnvironments(), tasks: failed },
-            })
-          );
+        graphql.query('getEnvironment', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              environment: environmentResponseWithFailedTasks,
+            },
+          });
         }),
       ],
     },
@@ -78,8 +85,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -90,8 +97,8 @@ export const Error: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.status(403));
+        graphql.operation(() => {
+          return new HttpResponse('', { status: 403 });
         }),
       ],
     },

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { generateEnvironments, generateProjectInfo, seed } from '../../.storybook/mocks/mocks';
 import PageEnvironment from '../pages/environment';
@@ -25,6 +25,11 @@ type Story = StoryObj<typeof PageEnvironment>;
 
 seed();
 const environment = generateEnvironments(123);
+
+type ResponseType = {
+  environment: typeof environment | null;
+};
+
 // @ts-ignore
 environment.project = generateProjectInfo();
 
@@ -32,13 +37,8 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment,
-            })
-          );
+        graphql.operation(() => {
+          return HttpResponse.json<{ data: ResponseType }>({ data: { environment } });
         }),
       ],
     },
@@ -49,8 +49,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },
@@ -61,13 +61,10 @@ export const EnvironmentNotFound: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: null,
-            })
-          );
+        graphql.operation(() => {
+          delay();
+
+          return HttpResponse.json<{ data: ResponseType }>({ data: { environment: null } });
         }),
       ],
     },

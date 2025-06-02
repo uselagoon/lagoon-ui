@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { ProblemIdentifier, generateEnvironments } from '../../.storybook/mocks/mocks';
 import PageProblems from '../pages/problems';
@@ -29,6 +27,22 @@ const problemData = Array.from({
   return ProblemIdentifier(idx);
 })[0].problems;
 
+const duplicateProblemsAcrossServices = [
+  { ...problemData[0], service: 'cli' },
+  { ...problemData[0], service: 'php-nginx' },
+  { ...problemData[1], service: 'cli' },
+  { ...problemData[1], service: 'node' },
+  { ...problemData[1], service: 'service' },
+];
+
+const environmentResponse = { ...generateEnvironments(), problems: problemData };
+
+const environmentResponseDuplicateData = { ...generateEnvironments(), problems: duplicateProblemsAcrossServices };
+
+type ResponseType = {
+  environment: typeof environmentResponse;
+};
+
 export const Default: Story = {
   args: {
     router: {
@@ -38,29 +52,18 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getEnvironment', (_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: {
-                ...generateEnvironments(),
-                problems: problemData,
-              },
-            })
-          );
+        graphql.query('getEnvironment', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              environment: environmentResponse,
+            },
+          });
         }),
       ],
     },
   },
 };
-
-const duplicateProblemsAcrossServices = [
-  { ...problemData[0], service: 'cli' },
-  { ...problemData[0], service: 'php-nginx' },
-  { ...problemData[1], service: 'cli' },
-  { ...problemData[1], service: 'node' },
-  { ...problemData[1], service: 'service' },
-];
 
 export const DuplicateData: Story = {
   args: {
@@ -71,16 +74,13 @@ export const DuplicateData: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getEnvironment', (_, res, ctx) => {
-          return res(
-            ctx.delay(),
-            ctx.data({
-              environment: {
-                ...generateEnvironments(),
-                problems: duplicateProblemsAcrossServices,
-              },
-            })
-          );
+        graphql.query('getEnvironment', () => {
+          delay();
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              environment: environmentResponseDuplicateData,
+            },
+          });
         }),
       ],
     },
@@ -91,8 +91,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },

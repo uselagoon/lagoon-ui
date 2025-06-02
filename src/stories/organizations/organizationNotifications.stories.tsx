@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { HttpResponse, delay, graphql } from 'msw';
 
 import { getOrganization } from '../../../.storybook/mocks/api';
 import PageNotifications from '../../pages/organizations/notifications';
@@ -25,16 +25,34 @@ type Story = StoryObj<typeof PageNotifications>;
 
 const mockOrganization = getOrganization();
 
+type ResponseType = {
+  organization: typeof mockOrganization;
+};
+
+type AddMutationResponseType<T extends string> = {
+  [K in T]: {};
+};
+
+type RemoveMutationResponseType = {
+  removeNotification: any;
+};
+
 export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query('getNotifications', (_, res, ctx) => {
-          return res(ctx.delay(), ctx.data({ organization: mockOrganization }));
+        graphql.query('getNotifications', () => {
+          delay();
+
+          return HttpResponse.json<{ data: ResponseType }>({
+            data: {
+              organization: mockOrganization,
+            },
+          });
         }),
 
-        graphql.mutation('addNotificationSlack', (req, res, ctx) => {
-          const { name, channel, webhook } = req.variables;
+        graphql.mutation('addNotificationSlack', ({ variables }) => {
+          const { name, channel, webhook } = variables;
 
           mockOrganization.slacks = [
             {
@@ -46,11 +64,17 @@ export const Default: Story = {
             ...mockOrganization.slacks,
           ];
 
-          return res(ctx.delay(), ctx.data({ addNotificationSlack: {} }));
+          delay();
+
+          return HttpResponse.json<{ data: AddMutationResponseType<'addNotificationSlack'> }>({
+            data: {
+              addNotificationSlack: {},
+            },
+          });
         }),
 
-        graphql.mutation('addNotificationRocketChat', (req, res, ctx) => {
-          const { name, channel, webhook } = req.variables;
+        graphql.mutation('addNotificationRocketChat', ({ variables }) => {
+          const { name, channel, webhook } = variables;
 
           mockOrganization.rocketchats = [
             {
@@ -62,11 +86,16 @@ export const Default: Story = {
             ...mockOrganization.rocketchats,
           ];
 
-          return res(ctx.delay(), ctx.data({ addNotificationRocketChat: {} }));
+          delay();
+          return HttpResponse.json<{ data: AddMutationResponseType<'addNotificationRocketChat'> }>({
+            data: {
+              addNotificationRocketChat: {},
+            },
+          });
         }),
 
-        graphql.mutation('addNotificationEmail', (req, res, ctx) => {
-          const { name, emailAddress } = req.variables;
+        graphql.mutation('addNotificationEmail', ({ variables }) => {
+          const { name, emailAddress } = variables;
 
           mockOrganization.emails = [
             {
@@ -77,11 +106,16 @@ export const Default: Story = {
             ...mockOrganization.emails,
           ];
 
-          return res(ctx.delay(), ctx.data({ addNotificationEmail: {} }));
+          delay();
+          return HttpResponse.json<{ data: AddMutationResponseType<'addNotificationEmail'> }>({
+            data: {
+              addNotificationEmail: {},
+            },
+          });
         }),
 
-        graphql.mutation('addNotificationMicrosoftTeams', (req, res, ctx) => {
-          const { name, webhook } = req.variables;
+        graphql.mutation('addNotificationMicrosoftTeams', ({ variables }) => {
+          const { name, webhook } = variables;
 
           mockOrganization.teams = [
             {
@@ -93,11 +127,16 @@ export const Default: Story = {
             ...mockOrganization.teams,
           ];
 
-          return res(ctx.delay(), ctx.data({ addNotificationMicrosoftTeams: {} }));
+          delay();
+          return HttpResponse.json<{ data: AddMutationResponseType<'addNotificationMicrosoftTeams'> }>({
+            data: {
+              addNotificationMicrosoftTeams: {},
+            },
+          });
         }),
 
-        graphql.mutation('addNotificationWebhook', (req, res, ctx) => {
-          const { name, webhook } = req.variables;
+        graphql.mutation('addNotificationWebhook', ({ variables }) => {
+          const { name, webhook } = variables;
 
           mockOrganization.webhook = [
             {
@@ -108,12 +147,16 @@ export const Default: Story = {
             },
             ...mockOrganization.webhook,
           ];
-
-          return res(ctx.delay(), ctx.data({ addNotificationRocketChat: {} }));
+          delay();
+          return HttpResponse.json<{ data: AddMutationResponseType<'addNotificationRocketChat'> }>({
+            data: {
+              addNotificationRocketChat: {},
+            },
+          });
         }),
 
-        graphql.mutation('removeNotification', (req, res, ctx) => {
-          const { name } = req.variables;
+        graphql.mutation('removeNotification', ({ variables }) => {
+          const { name } = variables;
           const { slacks, rocketchats, teams, webhook, emails } = mockOrganization;
 
           const allNotifications = [slacks, rocketchats, teams, webhook, emails].flat();
@@ -143,10 +186,15 @@ export const Default: Story = {
 
           if (found) {
             modifyByType(found.__typename);
-            return res(ctx.delay(), ctx.data({ removeNotification: found }));
+
+            return HttpResponse.json<{ data: RemoveMutationResponseType }>({
+              data: {
+                removeNotification: found,
+              },
+            });
           }
 
-          return res(ctx.status(400));
+          return new HttpResponse('', { status: 400 });
         }),
       ],
     },
@@ -157,8 +205,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        graphql.operation((_, res, ctx) => {
-          return res(ctx.delay('infinite'));
+        graphql.operation(() => {
+          return delay('infinite');
         }),
       ],
     },

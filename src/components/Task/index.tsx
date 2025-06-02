@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import CancelTask from 'components/CancelTask';
 import LogViewer from 'components/LogViewer';
-import { getProcessDuration } from 'lib/util';
+import { getProcessDuration, isValidUrl } from 'lib/util';
 import moment from 'moment';
 import { FieldWrapper } from 'styles/commonStyles';
 
@@ -74,6 +74,16 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
                     <a href={file.download}>{file.filename}</a>
                   </li>
                 ))}
+
+                {task.files.map(file => {
+                  const { id, filename, download } = file;
+                  const downloadURL = isValidUrl(download) ? download : undefined;
+                  return (
+                    <li key={id}>
+                      <a href={downloadURL}>{filename}</a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </FieldWrapper>

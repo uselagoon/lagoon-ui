@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useGlobals } from '@storybook/client-api';
+import { useGlobals } from '@storybook/preview-api';
 
 import { AppContext } from '../../src/pages/_app';
 
