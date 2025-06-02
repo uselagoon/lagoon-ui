@@ -50,10 +50,10 @@ type User = {
 };
 
 export const getLinkData = (
-    userSlug: string,
-    organizationSlug: string,
-    organizationName: string,
-    orgFriendlyName: string
+  userSlug: string,
+  organizationSlug: string,
+  organizationName: string,
+  orgFriendlyName: string
 ) => ({
   urlObject: {
     pathname: '/organizations/users',
@@ -103,7 +103,7 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
 
   const [updateUser] = useMutation(ADD_GROUP_MEMBER_MUTATION);
 
-  const [ removeUserFromGroup, { called, error } ] = useMutation<RemoveUserFromGroupVars>(DELETE_USER_FROM_GROUP, {
+  const [removeUserFromGroup, { called, error }] = useMutation<RemoveUserFromGroupVars>(DELETE_USER_FROM_GROUP, {
     onCompleted: () => {
       refetch();
     },
@@ -128,10 +128,10 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
     setGroupModalOpen(false);
   };
   const groupLinkData = (
-      groupSlug: string,
-      organizationSlug: string,
-      organizationId: number,
-      orgFriendlyName: string
+    groupSlug: string,
+    organizationSlug: string,
+    organizationId: number,
+    orgFriendlyName: string
   ) => ({
     urlObject: {
       pathname: '/organizations/group',
@@ -147,13 +147,13 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
       render: ({ name, type }: Group) => {
         const linkData = groupLinkData(name, organizationName, organizationId, orgFriendlyName);
         return (
-            <>
-              <Link href={linkData.urlObject} as={linkData.asPath} className="link">
-                {name ? name : <>Group name - </>}
-              </Link>
+          <>
+            <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+              {name ? name : <>Group name - </>}
+            </Link>
 
-              {type === 'project-default-group' && <label className="default-group-label">SYSTEM GROUP</label>}
-            </>
+            {type === 'project-default-group' && <label className="default-group-label">SYSTEM GROUP</label>}
+          </>
         );
       },
     },
@@ -171,12 +171,12 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
         const linkData = groupLinkData(group.name, organizationName, organizationId, orgFriendlyName);
 
         return (
-            <TableActions>
-              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit role">
+          <TableActions>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit role">
               <span
-                  className="link"
-                  onClick={() => {
-                    group.role &&
+                className="link"
+                onClick={() => {
+                  group.role &&
                     setEditModalState({
                       open: true,
                       current: {
@@ -185,137 +185,137 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
                         group: group.name,
                       },
                     });
-                  }}
+                }}
               >
                 <EditOutlined className="view" />
               </span>
 
-                <Modal
-                    contentLabel="edituser"
-                    variant={null}
-                    style={{ content: { width: '50%' } }}
-                    isOpen={editModalState.open}
-                    onRequestClose={closeEditModal}
-                >
-                  <ModalChildren>
-                    <div className="form-box">
-                      <label>
-                        Email:
-                        <input disabled className="inputName" type="text" value={editModalState.current.email} />
-                      </label>
-                    </div>
-                    <label>
-                      User Role: <span style={{ color: '#E30000' }}>*</span>
-                      <RoleSelect>
-                        <ReactSelect
-                            className="select"
-                            menuPortalTarget={document.body}
-                            styles={{
-                              menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
-                              placeholder: base => ({ ...base, fontSize: '16px' }),
-                              menu: base => ({ ...base, fontSize: '16px' }),
-                              option: base => ({ ...base, fontSize: '16px' }),
-                              singleValue: base => ({ ...base, fontSize: '16px' }),
-                            }}
-                            aria-label="Role"
-                            placeholder="Select role"
-                            name="role"
-                            value={options.find(o => o.value === editModalState.current.role)}
-                            onChange={selectedOption => {
-                              const clone = { ...editModalState };
-                              if (selectedOption && selectedOption.value) {
-                                clone.current.role = selectedOption.value;
-                                setEditModalState(clone);
-                              }
-                            }}
-                            options={options}
-                            required
-                        />
-                      </RoleSelect>
-                    </label>
-                  </ModalChildren>
-
-                  <Footer>
-                    <Button
-                        disabled={updatePending}
-                        loading={updatePending}
-                        action={() => {
-                          setUpdatePending(true);
-                          void updateUser({
-                            variables: {
-                              email: editModalState.current.email,
-                              role: editModalState.current.role,
-                              group: editModalState.current.group,
-                            },
-                          })
-                              .then(() => {
-                                closeEditModal();
-                                refetch();
-                              })
-                              .finally(() => setUpdatePending(false));
-                        }}
-                        variant="primary"
-                    >
-                      Update
-                    </Button>
-
-                    <Button variant="ghost" action={closeEditModal}>
-                      Cancel
-                    </Button>
-                  </Footer>
-                </Modal>
-              </Tooltip>
-
-              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View Group">
-                <>
-                  <Link href={linkData.urlObject} as={linkData.asPath} className="link">
-                    <EyeOutlined className="view" />
-                  </Link>
-                </>
-              </Tooltip>
-              <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Unlink Group">
-                <DisconnectOutlined
-                    className="delete"
-                    onClick={() => {
-                      setSelectedGroup(group?.id);
-                      setGroupModalOpen(true);
-                    }}
-                />
-              </Tooltip>
               <Modal
-                  variant="delete"
-                  contentLabel="unlinkuser"
-                  isOpen={groupModalOpen && selectedGroup === group?.id}
-                  onRequestClose={closeGroupModal}
+                contentLabel="edituser"
+                variant={null}
+                style={{ content: { width: '50%' } }}
+                isOpen={editModalState.open}
+                onRequestClose={closeEditModal}
               >
-                <RemoveModalHeader>Are you sure?</RemoveModalHeader>
-                <RemoveModalParagraph>
-                  This action will unlink this user from group <span>{group.name}</span>.
-                </RemoveModalParagraph>
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Email:
+                      <input disabled className="inputName" type="text" value={editModalState.current.email} />
+                    </label>
+                  </div>
+                  <label>
+                    User Role: <span style={{ color: '#E30000' }}>*</span>
+                    <RoleSelect>
+                      <ReactSelect
+                        className="select"
+                        menuPortalTarget={document.body}
+                        styles={{
+                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                          placeholder: base => ({ ...base, fontSize: '16px' }),
+                          menu: base => ({ ...base, fontSize: '16px' }),
+                          option: base => ({ ...base, fontSize: '16px' }),
+                          singleValue: base => ({ ...base, fontSize: '16px' }),
+                        }}
+                        aria-label="Role"
+                        placeholder="Select role"
+                        name="role"
+                        value={options.find(o => o.value === editModalState.current.role)}
+                        onChange={selectedOption => {
+                          const clone = { ...editModalState };
+                          if (selectedOption && selectedOption.value) {
+                            clone.current.role = selectedOption.value;
+                            setEditModalState(clone);
+                          }
+                        }}
+                        options={options}
+                        required
+                      />
+                    </RoleSelect>
+                  </label>
+                </ModalChildren>
 
                 <Footer>
-                  {error && <div className="error">{error.message}</div>}
                   <Button
-                      variant="primary"
-                      disabled={called}
-                      loading={called}
-                      action={() =>
-                          void removeUserFromGroup({
-                            variables: {
-                              email: user?.email,
-                              groupId: group?.id,
-                            },
-                          })
-                      }
+                    disabled={updatePending}
+                    loading={updatePending}
+                    action={() => {
+                      setUpdatePending(true);
+                      void updateUser({
+                        variables: {
+                          email: editModalState.current.email,
+                          role: editModalState.current.role,
+                          group: editModalState.current.group,
+                        },
+                      })
+                        .then(() => {
+                          closeEditModal();
+                          refetch();
+                        })
+                        .finally(() => setUpdatePending(false));
+                    }}
+                    variant="primary"
                   >
-                    Continue
+                    Update
                   </Button>
-                  <Button variant="ghost" action={closeGroupModal}>
+
+                  <Button variant="ghost" action={closeEditModal}>
                     Cancel
                   </Button>
                 </Footer>
               </Modal>
-            </TableActions>
+            </Tooltip>
+
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="View Group">
+              <>
+                <Link href={linkData.urlObject} as={linkData.asPath} className="link">
+                  <EyeOutlined className="view" />
+                </Link>
+              </>
+            </Tooltip>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Unlink Group">
+              <DisconnectOutlined
+                className="delete"
+                onClick={() => {
+                  setSelectedGroup(group?.id);
+                  setGroupModalOpen(true);
+                }}
+              />
+            </Tooltip>
+            <Modal
+              variant="delete"
+              contentLabel="unlinkuser"
+              isOpen={groupModalOpen && selectedGroup === group?.id}
+              onRequestClose={closeGroupModal}
+            >
+              <RemoveModalHeader>Are you sure?</RemoveModalHeader>
+              <RemoveModalParagraph>
+                This action will unlink this user from group <span>{group.name}</span>.
+              </RemoveModalParagraph>
+
+              <Footer>
+                {error && <div className="error">{error.message}</div>}
+                <Button
+                  variant="primary"
+                  disabled={called}
+                  loading={called}
+                  action={() =>
+                    void removeUserFromGroup({
+                      variables: {
+                        email: user?.email,
+                        groupId: group?.id,
+                      },
+                    })
+                  }
+                >
+                  Continue
+                </Button>
+                <Button variant="ghost" action={closeGroupModal}>
+                  Cancel
+                </Button>
+              </Footer>
+            </Modal>
+          </TableActions>
         );
       },
     },
@@ -323,25 +323,25 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
 
   if (!user) return <p style={{ textAlign: 'center' }}>User not found</p>;
   return (
-      <StyledUser>
-        <TableWrapper>
-          <>
-            <PaginatedTable
-                limit={10}
-                data={user.groupRoles}
-                columns={UserColumns}
-                labelText="Groups"
-                emptyText="No groups"
-                defaultViewOptions={{
-                  selected: false,
-                  selectedOnZeroCount: true,
-                  type: 'group',
-                }}
-            />
-            <div className="separator" style={{ margin: '3rem 0' }}></div>
-          </>
-        </TableWrapper>
-      </StyledUser>
+    <StyledUser>
+      <TableWrapper>
+        <>
+          <PaginatedTable
+            limit={10}
+            data={user.groupRoles}
+            columns={UserColumns}
+            labelText="Groups"
+            emptyText="No groups"
+            defaultViewOptions={{
+              selected: false,
+              selectedOnZeroCount: true,
+              type: 'group',
+            }}
+          />
+          <div className="separator" style={{ margin: '3rem 0' }}></div>
+        </>
+      </TableWrapper>
+    </StyledUser>
   );
 };
 

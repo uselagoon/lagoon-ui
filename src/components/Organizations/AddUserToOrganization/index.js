@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 // @TODO: add this once the logic exists
 import withLogic from 'components/Organizations/AddUserToOrganization/logic';
@@ -26,7 +26,7 @@ export const AddUserToOrganization = ({ organization, close, inputValueEmail, se
   const userAlreadyExists = users.find(u => u.email === inputValueEmail);
 
   const [newUserType, setNewUserType] = useState('viewer');
-  const [ addUser, {loading, error}] = useMutation(ADD_USER_MUTATION, {
+  const [addUser, { loading, error }] = useMutation(ADD_USER_MUTATION, {
     variables: {
       email: inputValueEmail,
       organization: organization.id,

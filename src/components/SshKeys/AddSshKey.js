@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client'
 
+import { useMutation } from '@apollo/client';
 import { Space } from 'antd';
 import Button from 'components/Button';
 import Me from 'lib/query/Me';
@@ -8,78 +8,78 @@ import Me from 'lib/query/Me';
 import AddUserSSHPublicKey from '../../lib/mutation/AddUserSSHPublicKey';
 
 const AddSshKey = ({ me: { id, email } }) => {
-    const defaultValues = { sshKeyName: '', sshKey: '' };
-    const [values, setValues] = useState(defaultValues);
+  const defaultValues = { sshKeyName: '', sshKey: '' };
+  const [values, setValues] = useState(defaultValues);
 
-    const [ addUserSSHPublicKeyMutation, { loading, called, error, data } ] = useMutation(AddUserSSHPublicKey, {
-        refetchQueries: [{ query: Me }],
-        onError: e => console.error(e),
+  const [addUserSSHPublicKeyMutation, { loading, called, error, data }] = useMutation(AddUserSSHPublicKey, {
+    refetchQueries: [{ query: Me }],
+    onError: e => console.error(e),
+  });
+
+  const addSshKeyHandler = () => {
+    addUserSSHPublicKeyMutation({
+      variables: {
+        input: {
+          name: values.sshKeyName,
+          publicKey: values.sshKey,
+          user: {
+            id,
+            email,
+          },
+        },
+      },
     });
+    setValues(defaultValues);
+  };
 
-    const addSshKeyHandler = () => {
-        addUserSSHPublicKeyMutation({
-            variables: {
-                input: {
-                    name: values.sshKeyName,
-                    publicKey: values.sshKey,
-                    user: {
-                        id,
-                        email,
-                    },
-                },
-            },
-        });
-        setValues(defaultValues);
-    }
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
 
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setValues({ ...values, [name]: value });
-    };
+  return (
+    <div className="addSshKey">
+      <div className="addNew">
+        <div>
+          <label htmlFor="sshKeyName">SSH Key Name</label>
+          <input
+            data-cy="sshKeyName"
+            id="sshKeyName"
+            name="sshKeyName"
+            className="addSshKeyInput"
+            type="text"
+            value={values.sshKeyName}
+            onChange={handleChange}
+          />
+        </div>
 
-    return (
-        <div className="addSshKey">
-            <div className="addNew">
-                <div>
-                    <label htmlFor="sshKeyName">SSH Key Name</label>
-                    <input
-                        data-cy="sshKeyName"
-                        id="sshKeyName"
-                        name="sshKeyName"
-                        className="addSshKeyInput"
-                        type="text"
-                        value={values.sshKeyName}
-                        onChange={handleChange}
-                    />
-                </div>
+        <div>
+          <label htmlFor="sshKey">SSH Key</label>
+          <textarea
+            data-cy="sshKey"
+            id="sshKey"
+            name="sshKey"
+            className="addSshKeyInput"
+            type="text"
+            onChange={handleChange}
+            value={values.sshKey}
+            placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"
+          />
+        </div>
+        <Space direction="vertical" size="large">
+          <Button
+            loading={!error && called && loading}
+            disabled={!values.sshKey || !values.sshKeyName}
+            action={addSshKeyHandler}
+          >
+            Add
+          </Button>
 
-                <div>
-                    <label htmlFor="sshKey">SSH Key</label>
-                    <textarea
-                        data-cy="sshKey"
-                        id="sshKey"
-                        name="sshKey"
-                        className="addSshKeyInput"
-                        type="text"
-                        onChange={handleChange}
-                        value={values.sshKey}
-                        placeholder="Begins with 'ssh-rsa', 'ssh-ed25519', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521'"
-                    />
-                </div>
-                <Space direction="vertical" size="large">
-                    <Button
-                        loading={!error && called && loading}
-                        disabled={!values.sshKey || !values.sshKeyName}
-                        action={addSshKeyHandler}
-                    >
-                        Add
-                    </Button>
+          {error ? <div className="error">{error.message.replace('GraphQL error:', '').trim()}</div> : ''}
+        </Space>
+      </div>
 
-                    {error ? <div className="error">{error.message.replace('GraphQL error:', '').trim()}</div> : ''}
-                </Space>
-            </div>
-
-            <style jsx>{`
+      <style jsx>{`
         .error {
           color: #e64545;
         }
@@ -108,8 +108,8 @@ const AddSshKey = ({ me: { id, email } }) => {
           font-weight: bold;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default AddSshKey;

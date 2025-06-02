@@ -1,7 +1,7 @@
 import React from 'react';
-import { useMutation } from '@apollo/client'
 import ReactSelect from 'react-select';
 
+import { useMutation } from '@apollo/client';
 import withLogic from 'components/AddTask/components/logic';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
@@ -25,15 +25,15 @@ const taskDrushSqlSync = gql`
 `;
 
 const DrushSqlSync = ({
-                        pageEnvironment,
-                        selectedSourceEnv,
-                        setSelectedSourceEnv,
-                        onCompleted,
-                        onError,
-                        options,
-                        onNewTask,
-                      }) => {
-  const [ sqlSync, { loading, called, error, data }] = useMutation(taskDrushSqlSync, {
+  pageEnvironment,
+  selectedSourceEnv,
+  setSelectedSourceEnv,
+  onCompleted,
+  onError,
+  options,
+  onNewTask,
+}) => {
+  const [sqlSync, { loading, called, error, data }] = useMutation(taskDrushSqlSync, {
     variables: {
       sourceEnvironment: selectedSourceEnv,
       destinationEnvironment: pageEnvironment.id,
@@ -49,50 +49,46 @@ const DrushSqlSync = ({
   }, [data, onNewTask]);
 
   return (
-      <SelectWrapper>
-        <div className="warning">
-          Warning! <br/>
-          This task overwrites databases. Be careful to double check the source and destination environment!
-        </div>
-        <div className="envSelect">
-          <label id="source-env">Source:</label>
-          <ReactSelect
-              aria-labelledby="source-env"
-              placeholder="Select environment..."
-              name="source-environment"
-              value={options.find(o => o.value === selectedSourceEnv)}
-              onChange={selectedOption => setSelectedSourceEnv(selectedOption.value)}
-              options={options}
-              required
-          />
-        </div>
-        <div className="envSelect">
-          <label id="dest-env">Destination:</label>
-          <ReactSelect
-              aria-labelledby="dest-env"
-              name="dest-environment"
-              value={{
-                label: pageEnvironment.name,
-                value: pageEnvironment.id,
-              }}
-              options={[
-                {
-                  label: pageEnvironment.name,
-                  value: pageEnvironment.id,
-                },
-              ]}
-              isDisabled
-              required
-          />
-        </div>
-        <Button
-            testId="task-btn"
-            action={sqlSync}
-            disabled={!selectedSourceEnv || loading}
-        >
-          {loading ? <span className="loader"></span> : 'Run task'}
-        </Button>
-      </SelectWrapper>
+    <SelectWrapper>
+      <div className="warning">
+        Warning! <br />
+        This task overwrites databases. Be careful to double check the source and destination environment!
+      </div>
+      <div className="envSelect">
+        <label id="source-env">Source:</label>
+        <ReactSelect
+          aria-labelledby="source-env"
+          placeholder="Select environment..."
+          name="source-environment"
+          value={options.find(o => o.value === selectedSourceEnv)}
+          onChange={selectedOption => setSelectedSourceEnv(selectedOption.value)}
+          options={options}
+          required
+        />
+      </div>
+      <div className="envSelect">
+        <label id="dest-env">Destination:</label>
+        <ReactSelect
+          aria-labelledby="dest-env"
+          name="dest-environment"
+          value={{
+            label: pageEnvironment.name,
+            value: pageEnvironment.id,
+          }}
+          options={[
+            {
+              label: pageEnvironment.name,
+              value: pageEnvironment.id,
+            },
+          ]}
+          isDisabled
+          required
+        />
+      </div>
+      <Button testId="task-btn" action={sqlSync} disabled={!selectedSourceEnv || loading}>
+        {loading ? <span className="loader"></span> : 'Run task'}
+      </Button>
+    </SelectWrapper>
   );
 };
 

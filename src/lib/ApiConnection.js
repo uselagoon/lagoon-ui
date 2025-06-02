@@ -1,15 +1,15 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import getConfig from 'next/config';
 
+import { ApolloClient, ApolloLink, ApolloProvider, InMemoryCache, split } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { createUploadLink } from 'apollo-upload-client';
+import { createClient } from 'graphql-ws';
 import { AuthContext } from 'lib/Authenticator';
 import ErrorPage from 'pages/_error.js';
-import { ApolloClient, InMemoryCache, ApolloLink, split, ApolloProvider } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
-import { createUploadLink } from 'apollo-upload-client';
 
 const { publicRuntimeConfig } = getConfig();
 const isServer = typeof window === 'undefined';
@@ -40,13 +40,15 @@ const ApiConnection = ({ children }) => {
     const wsUrl = publicRuntimeConfig.GRAPHQL_API.replace(/^http/, 'ws');
     console.log(`Setting up WebSocket connection to: ${wsUrl}`);
 
-    const wsLink = new GraphQLWsLink(createClient({
-      url: wsUrl,
-      connectionParams: {
-        authToken: auth.apiToken,
-      },
-      shouldRetry: () => true,
-    }));
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: wsUrl,
+        connectionParams: {
+          authToken: auth.apiToken,
+        },
+        shouldRetry: () => true,
+      })
+    );
 
     const splitLink = split(
       ({ query }) => {
@@ -60,7 +62,7 @@ const ApiConnection = ({ children }) => {
     const errorLink = onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) =>
-          console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+          console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
         );
       if (networkError) console.error(`[Network error]: ${networkError}`);
     });
@@ -72,18 +74,13 @@ const ApiConnection = ({ children }) => {
         watchQuery: { fetchPolicy: 'cache-and-network' },
       },
     });
-
   }, [auth.authenticated, auth.apiToken]);
 
   if (!client) {
     return <ErrorPage statusCode={401} title="Login Required" errorMessage="Authenticating..." />;
   }
 
-  return (
-    <ApolloProvider client={client}>
-      {children}
-    </ApolloProvider>
-  );
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
 export default ApiConnection;

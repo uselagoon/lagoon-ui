@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import ButtonBootstrap from 'react-bootstrap/Button';
 
 import { LoadingOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import { useMutation } from '@apollo/client'
 
 import DeleteEnvVariableMutation from '../../lib/mutation/deleteEnvVariableByName';
 import { DeleteVariableButton, DeleteVariableModal } from './StyledDeleteVariable';
@@ -15,25 +15,25 @@ import { DeleteVariableButton, DeleteVariableModal } from './StyledDeleteVariabl
  */
 
 export const DeleteVariable = ({
-                                 deleteType,
-                                 deleteName,
-                                 icon,
-                                 refresh,
-                                 inputValue,
-                                 setInputValue,
-                                 setClear,
-                                 varEnvironment,
-                                 varProject,
-                                 varOrganization,
-                                 open,
-                                 openModal,
-                                 closeModal,
-                                 envValues,
-                                 prjEnvValues,
-                                 orgEnvValues,
-                                 loading,
-                                 valueState,
-                               }) => {
+  deleteType,
+  deleteName,
+  icon,
+  refresh,
+  inputValue,
+  setInputValue,
+  setClear,
+  varEnvironment,
+  varProject,
+  varOrganization,
+  open,
+  openModal,
+  closeModal,
+  envValues,
+  prjEnvValues,
+  orgEnvValues,
+  loading,
+  valueState,
+}) => {
   const handlePermissionCheck = () => {
     let waitForGQL = setTimeout(() => {
       openModal();
@@ -48,7 +48,7 @@ export const DeleteVariable = ({
     onCompleted: () => {
       refresh().then(setClear).then(closeModal);
     },
-    onError: (error) => {
+    onError: error => {
       console.error(error);
       return <div>Unauthorized: You don't have permission to delete this variable.</div>;
     },

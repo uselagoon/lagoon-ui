@@ -1,6 +1,8 @@
 import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+
 import getConfig from 'next/config';
+
+import { gql, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';

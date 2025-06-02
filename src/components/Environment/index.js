@@ -1,10 +1,11 @@
 import React from 'react';
-import { useMutation } from '@apollo/client';
-import Router from 'next/router';
-import Button from 'components/Button';
 
+import Router from 'next/router';
+
+import { useMutation } from '@apollo/client';
 import { useQuery } from '@apollo/client';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
+import Button from 'components/Button';
 import DeleteConfirm from 'components/DeleteConfirm';
 import KeyFacts from 'components/KeyFacts';
 import giturlparse from 'git-url-parse';
@@ -91,29 +92,34 @@ const Environment = ({ environment }) => {
 
   const keyFacts = deduplicateFacts(environmentFacts);
 
+  const [switchActiveStandby, { loading: switchLoading, called: switchCalled, error: switchError }] = useMutation(
+    SwitchActiveStandbyMutation,
+    {
+      variables: {
+        input: {
+          project: {
+            name: environment.project.name,
+          },
+        },
+      },
+      onCompleted: navigateToTasks,
+      onError: e => console.error(e),
+    }
+  );
 
-  const [ switchActiveStandby, { loading: switchLoading, called: switchCalled, error: switchError }] = useMutation(SwitchActiveStandbyMutation, {
-    variables: {
-      input: {
-        project: {
-          name: environment.project.name,
-        }
-      }
-    },
-    onCompleted: navigateToTasks,
-    onError: e => console.error(e),
-  });
-
-  const [ deleteEnvironment, { loading: deleteLoading, error: deleteError, data: deleteData }] = useMutation(DeleteEnvironmentMutation, {
-    variables: {
-      input: {
-        name: environment.name,
-        project: environment.project.name,
-      }
-    },
-    onCompleted: handleEnvironmentDelete,
-    onError: e => console.error(e),
-  });
+  const [deleteEnvironment, { loading: deleteLoading, error: deleteError, data: deleteData }] = useMutation(
+    DeleteEnvironmentMutation,
+    {
+      variables: {
+        input: {
+          name: environment.name,
+          project: environment.project.name,
+        },
+      },
+      onCompleted: handleEnvironmentDelete,
+      onError: e => console.error(e),
+    }
+  );
 
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
@@ -250,7 +256,7 @@ const Environment = ({ environment }) => {
           </>
         )}
       <>
-        { deleteError ? (
+        {deleteError ? (
           <div className="error">
             <p>{deleteError.message}</p>
           </div>
@@ -264,7 +270,6 @@ const Environment = ({ environment }) => {
           />
         )}
       </>
-
     </StyledEnvironmentDetails>
   );
 };

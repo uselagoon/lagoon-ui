@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
+
 import Link from 'next/link';
 
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -162,7 +163,8 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                       disabled={loading}
                       loading={loading}
                       variant="primary"
-                      action={() => removeUserFromOrganizationGroups({
+                      action={() =>
+                        removeUserFromOrganizationGroups({
                           variables: {
                             email: user?.email,
                             organization: organization.id,

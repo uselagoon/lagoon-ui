@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 
 import Link from 'next/link';
 
 import { EditOutlined, EnvironmentOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import OrgManageLink from 'components/link/Organizations/Manage';
@@ -53,33 +53,39 @@ const Organization = ({ organization, refetch }) => {
   const [descModalOpen, setDescModalOpen] = useState(false);
   const [description, setDescription] = useState(organization.description);
 
-  const [ updateOrgFriendlyName, { error: updateNameError, loading: updateNameloading }] = useMutation(UPDATE_ORGANIZATION_FRIENDLY_NAME, {
-    variables: {
-      id: organization?.id,
-      friendlyName,
-    },
-    onCompleted: () => {
-      refetch().then(() => {
-        modalAction('close', 'name')();
-        setFriendlyName('');
-      });
-    },
-    onError: e => console.error(e),
-  });
+  const [updateOrgFriendlyName, { error: updateNameError, loading: updateNameloading }] = useMutation(
+    UPDATE_ORGANIZATION_FRIENDLY_NAME,
+    {
+      variables: {
+        id: organization?.id,
+        friendlyName,
+      },
+      onCompleted: () => {
+        refetch().then(() => {
+          modalAction('close', 'name')();
+          setFriendlyName('');
+        });
+      },
+      onError: e => console.error(e),
+    }
+  );
 
-  const [ updateOrgDescription, { error: updateDescError, loading: updateDescLoading }] = useMutation(UPDATE_ORGANIZATION_DESCRIPTION, {
-    variables: {
-      id: organization.id,
-      description,
-    },
-    onCompleted: () => {
-      refetch().then(() => {
-        modalAction('close', 'description')();
-        setDescription('');
-      });
-    },
-    onError: e => console.error(e),
-  });
+  const [updateOrgDescription, { error: updateDescError, loading: updateDescLoading }] = useMutation(
+    UPDATE_ORGANIZATION_DESCRIPTION,
+    {
+      variables: {
+        id: organization.id,
+        description,
+      },
+      onCompleted: () => {
+        refetch().then(() => {
+          modalAction('close', 'description')();
+          setDescription('');
+        });
+      },
+      onError: e => console.error(e),
+    }
+  );
 
   const quotaDisplay = (quota, quotaNumber, quotaLimit, showLink = true) => {
     const pluralName = quota + 's';
@@ -183,8 +189,7 @@ const Organization = ({ organization, refetch }) => {
                   disabled={updateNameloading}
                   loading={updateNameloading}
                   action={() => {
-                    friendlyName &&
-                    updateOrgFriendlyName()
+                    friendlyName && updateOrgFriendlyName();
                   }}
                 >
                   Continue
@@ -234,8 +239,7 @@ const Organization = ({ organization, refetch }) => {
                   disabled={updateDescLoading}
                   loading={updateDescLoading}
                   action={() => {
-                    description &&
-                    updateOrgDescription();
+                    description && updateOrgDescription();
                   }}
                 >
                   Continue
@@ -254,10 +258,10 @@ const Organization = ({ organization, refetch }) => {
             {quotaDisplay(
               'notification',
               organization.slacks.length +
-              organization.rocketchats.length +
-              organization.teams.length +
-              organization.emails.length +
-              organization.webhook.length,
+                organization.rocketchats.length +
+                organization.teams.length +
+                organization.emails.length +
+                organization.webhook.length,
               organization.quotaNotification
             )}
             {quotaDisplay('environment', organization.environments.length, organization.quotaEnvironment, false)}

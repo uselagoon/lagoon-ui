@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import { useMutation } from '@apollo/client';
 
 import { EditOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip, notification } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -84,14 +84,14 @@ export const UPDATE_NOTIFICATION_TEAMS = gql`
  * The primary list of projects.
  */
 const OrgNotifications = ({
-                            slacks = [],
-                            rocketchats = [],
-                            emails = [],
-                            teams = [],
-                            webhooks = [],
-                            refresh,
-                            organizationId,
-                          }) => {
+  slacks = [],
+  rocketchats = [],
+  emails = [],
+  teams = [],
+  webhooks = [],
+  refresh,
+  organizationId,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [valueModalOpen, setValueModalOpen] = useState(false);
 
@@ -305,14 +305,14 @@ const OrgNotifications = ({
       actions: notification => (
         <Fragment key={notification.name}>
           <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-              <span
-                className="link"
-                onClick={() => {
-                  setEditState({ open: true, current: notification, type: 'slack' });
-                }}
-              >
-                <EditOutlined className="edit" />
-              </span>
+            <span
+              className="link"
+              onClick={() => {
+                setEditState({ open: true, current: notification, type: 'slack' });
+              }}
+            >
+              <EditOutlined className="edit" />
+            </span>
           </Tooltip>
 
           {editState.current && editState.current.name === notification.name && (
@@ -364,22 +364,27 @@ const OrgNotifications = ({
                 </div>
               </ModalChildren>
               <Footer>
-                {updateSlackError && <div className="error" style={{color: 'red', marginBottom: '10px'}}>{updateSlackError.message}</div>}
+                {updateSlackError && (
+                  <div className="error" style={{ color: 'red', marginBottom: '10px' }}>
+                    {updateSlackError.message}
+                  </div>
+                )}
                 <Button
                   testId="continueEdit"
                   variant="primary"
                   loading={updateSlackLoading}
                   disabled={updateSlackLoading}
-                  action={() => updateSlackMutation({
-                    variables: {
-                      name: notification.name,
-                      patch: {
-                        ...(editState.updated.name ? { name: editState.updated.name } : {}),
-                        ...(editState.updated.channel ? { channel: editState.updated.channel } : {}),
-                        ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                  action={() =>
+                    updateSlackMutation({
+                      variables: {
+                        name: notification.name,
+                        patch: {
+                          ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                          ...(editState.updated.channel ? { channel: editState.updated.channel } : {}),
+                          ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                        },
                       },
-                    },
-                  })
+                    })
                   }
                 >
                   Continue
@@ -419,11 +424,7 @@ const OrgNotifications = ({
           </Tooltip>
 
           {editState.current && editState.current.name === notification.name && editState.type === 'rocketchat' && (
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open}
-              onRequestClose={closeEditModal}
-            >
+            <Modal style={{ content: { width: '50%' } }} isOpen={editState.open} onRequestClose={closeEditModal}>
               <ModalChildren>
                 <div className="form-box">
                   <label>
@@ -467,22 +468,27 @@ const OrgNotifications = ({
                 </div>
               </ModalChildren>
               <Footer>
-                {updateRocketChatError && <div className="error" style={{color: 'red', marginBottom: '10px'}}>{updateRocketChatError.message}</div>}
+                {updateRocketChatError && (
+                  <div className="error" style={{ color: 'red', marginBottom: '10px' }}>
+                    {updateRocketChatError.message}
+                  </div>
+                )}
                 <Button
                   testId="continueEdit"
                   variant="primary"
                   loading={updateRocketChatLoading}
                   disabled={updateRocketChatLoading}
-                  action={() => updateRocketChatMutation({
-                    variables: {
-                      name: notification.name,
-                      patch: {
-                        ...(editState.updated.name ? { name: editState.updated.name } : {}),
-                        ...(editState.updated.channel ? { channel: editState.updated.channel } : {}),
-                        ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                  action={() =>
+                    updateRocketChatMutation({
+                      variables: {
+                        name: notification.name,
+                        patch: {
+                          ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                          ...(editState.updated.channel ? { channel: editState.updated.channel } : {}),
+                          ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                        },
                       },
-                    },
-                  })
+                    })
                   }
                 >
                   Continue
@@ -517,17 +523,16 @@ const OrgNotifications = ({
       actions: notification => (
         <Fragment key={notification.name}>
           <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-            <span className="link" onClick={() => setEditState({ open: true, current: notification, updated: {}, type: 'email' })}>
+            <span
+              className="link"
+              onClick={() => setEditState({ open: true, current: notification, updated: {}, type: 'email' })}
+            >
               <EditOutlined className="edit" />
             </span>
           </Tooltip>
 
           {editState.current && editState.current.name === notification.name && editState.type === 'email' && (
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open}
-              onRequestClose={closeEditModal}
-            >
+            <Modal style={{ content: { width: '50%' } }} isOpen={editState.open} onRequestClose={closeEditModal}>
               <ModalChildren>
                 <div className="form-box">
                   <label>
@@ -557,23 +562,26 @@ const OrgNotifications = ({
                 </div>
               </ModalChildren>
               <Footer>
-                {updateEmailError && <div className="error" style={{color: 'red', marginBottom: '10px'}}>{updateEmailError.message}</div>}
+                {updateEmailError && (
+                  <div className="error" style={{ color: 'red', marginBottom: '10px' }}>
+                    {updateEmailError.message}
+                  </div>
+                )}
                 <Button
                   testId="continueEdit"
                   loading={updateEmailLoading}
                   disabled={updateEmailLoading || !isValidEmail}
                   variant="primary"
-                  action={() => updateEmailMutation({
-                    variables: {
-                      name: notification.name,
-                      patch: {
-                        ...(editState.updated.name ? { name: editState.updated.name } : {}),
-                        ...(editState.updated.emailAddress
-                          ? { emailAddress: editState.updated.emailAddress }
-                          : {}),
+                  action={() =>
+                    updateEmailMutation({
+                      variables: {
+                        name: notification.name,
+                        patch: {
+                          ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                          ...(editState.updated.emailAddress ? { emailAddress: editState.updated.emailAddress } : {}),
+                        },
                       },
-                    },
-                  })
+                    })
                   }
                 >
                   Continue
@@ -610,19 +618,15 @@ const OrgNotifications = ({
       actions: notification => (
         <Fragment key={notification.name}>
           <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-              <span
-                className="link"
-                onClick={() => setEditState({ open: true, current: notification, updated: {}, type: 'webhook' })}
-              >
-                <EditOutlined className="edit" />
-              </span>
+            <span
+              className="link"
+              onClick={() => setEditState({ open: true, current: notification, updated: {}, type: 'webhook' })}
+            >
+              <EditOutlined className="edit" />
+            </span>
           </Tooltip>
           {editState.current && editState.current.name === notification.name && editState.type === 'webhook' && (
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open}
-              onRequestClose={closeEditModal}
-            >
+            <Modal style={{ content: { width: '50%' } }} isOpen={editState.open} onRequestClose={closeEditModal}>
               <ModalChildren>
                 <div className="form-box">
                   <label>
@@ -652,21 +656,26 @@ const OrgNotifications = ({
                 </div>
               </ModalChildren>
               <Footer>
-                {updateWebhookError && <div className="error" style={{color: 'red', marginBottom: '10px'}}>{updateWebhookError.message}</div>}
+                {updateWebhookError && (
+                  <div className="error" style={{ color: 'red', marginBottom: '10px' }}>
+                    {updateWebhookError.message}
+                  </div>
+                )}
                 <Button
                   testId="continueEdit"
                   loading={updateWebhookLoading}
                   disabled={updateWebhookLoading}
                   variant="primary"
-                  action={() => updateWebhookMutation({
-                    variables: {
-                      name: notification.name,
-                      patch: {
-                        ...(editState.updated.name ? { name: editState.updated.name } : {}),
-                        ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                  action={() =>
+                    updateWebhookMutation({
+                      variables: {
+                        name: notification.name,
+                        patch: {
+                          ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                          ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                        },
                       },
-                    },
-                  })
+                    })
                   }
                 >
                   Continue
@@ -703,16 +712,15 @@ const OrgNotifications = ({
       actions: notification => (
         <Fragment key={notification.name}>
           <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
-              <span className="link" onClick={() => setEditState({ open: true, current: notification, updated: {}, type: 'teams' })}>
-                <EditOutlined className="edit" />
-              </span>
+            <span
+              className="link"
+              onClick={() => setEditState({ open: true, current: notification, updated: {}, type: 'teams' })}
+            >
+              <EditOutlined className="edit" />
+            </span>
           </Tooltip>
           {editState.current && editState.current.name === notification.name && editState.type === 'teams' && (
-            <Modal
-              style={{ content: { width: '50%' } }}
-              isOpen={editState.open}
-              onRequestClose={closeEditModal}
-            >
+            <Modal style={{ content: { width: '50%' } }} isOpen={editState.open} onRequestClose={closeEditModal}>
               <ModalChildren>
                 <div className="form-box">
                   <label>
@@ -742,21 +750,26 @@ const OrgNotifications = ({
                 </div>
               </ModalChildren>
               <Footer>
-                {updateTeamsError && <div className="error" style={{color: 'red', marginBottom: '10px'}}>{updateTeamsError.message}</div>}
+                {updateTeamsError && (
+                  <div className="error" style={{ color: 'red', marginBottom: '10px' }}>
+                    {updateTeamsError.message}
+                  </div>
+                )}
                 <Button
                   testId="continueEdit"
                   loading={updateTeamsLoading}
                   disabled={updateTeamsLoading}
                   variant="primary"
-                  action={() => updateTeamsMutation({
-                    variables: {
-                      name: notification.name,
-                      patch: {
-                        ...(editState.updated.name ? { name: editState.updated.name } : {}),
-                        ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                  action={() =>
+                    updateTeamsMutation({
+                      variables: {
+                        name: notification.name,
+                        patch: {
+                          ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                          ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                        },
                       },
-                    },
-                  })
+                    })
                   }
                 >
                   Continue

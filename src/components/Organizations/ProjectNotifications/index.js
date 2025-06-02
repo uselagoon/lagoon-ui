@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
+
 import { EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
 import OrgNotificationsLink from 'components/link/Organizations/Notifications';
@@ -29,21 +30,21 @@ const REMOVE_NOTIFICATION_FROM_PROJECT = gql`
  * The primary list of members.
  */
 const ProjectNotifications = ({
-                                notifications = [],
-                                organizationSlug,
-                                organizationId,
-                                projectName,
-                                organization,
-                                refresh,
-                              }) => {
+  notifications = [],
+  organizationSlug,
+  organizationId,
+  projectName,
+  organization,
+  refresh,
+}) => {
   const [searchInput, setSearchInput] = useState('');
-  const [ removeNotificationFromProject, { loading, error }] = useMutation(REMOVE_NOTIFICATION_FROM_PROJECT, {
+  const [removeNotificationFromProject, { loading, error }] = useMutation(REMOVE_NOTIFICATION_FROM_PROJECT, {
     onCompleted: () => {
       refresh();
     },
     onError: e => {
       console.error(e);
-    }
+    },
   });
 
   const filteredMembers = notifications.filter(key => {
@@ -82,7 +83,9 @@ const ProjectNotifications = ({
               <label className={notification.type.toLowerCase() + '-group-label'}>{notification.type}</label>
             </div>
             <div className="remove">
-              {error ? <div>{error.message}</div> :
+              {error ? (
+                <div>{error.message}</div>
+              ) : (
                 <TableActions>
                   <Tooltip overlayClassName="orgTooltip" title="Edit" placement="bottom">
                     <>
@@ -94,17 +97,18 @@ const ProjectNotifications = ({
                   <RemoveProjectGroupConfirm
                     loading={loading}
                     info={{ type: 'notification', projectName: projectName, deleteName: notification.name }}
-                    onRemove={() => removeNotificationFromProject({
-                      variables: {
-                        projectName: projectName,
-                        notificationType: notification.type,
-                        notificationName: notification.name,
-                      },
-                    })
+                    onRemove={() =>
+                      removeNotificationFromProject({
+                        variables: {
+                          projectName: projectName,
+                          notificationType: notification.type,
+                          notificationName: notification.name,
+                        },
+                      })
                     }
                   />
                 </TableActions>
-              }
+              )}
             </div>
           </div>
         ))}

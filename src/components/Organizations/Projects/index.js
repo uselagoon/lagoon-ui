@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation, useApolloClient } from '@apollo/client';
 import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useApolloClient, useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -42,14 +42,14 @@ const GET_SINGLE_PROJECT = gql`
  * The primary list of projects.
  */
 const OrgProjects = ({
-                       projects = [],
-                       organizationId,
-                       organizationName,
-                       refresh,
-                       deployTargets,
-                       orgFriendlyName,
-                       updateProjectData,
-                     }) => {
+  projects = [],
+  organizationId,
+  organizationName,
+  refresh,
+  deployTargets,
+  orgFriendlyName,
+  updateProjectData,
+}) => {
   const [modalState, setModalState] = useState({
     open: false,
     current: null,
@@ -72,8 +72,8 @@ const OrgProjects = ({
 
   const handleModalClose = () => {
     reset();
-    setModalState({ open: false, current: null })
-  }
+    setModalState({ open: false, current: null });
+  };
 
   const handleDataChange = async data => {
     const projectNames = data.map(d => d.name);
@@ -182,14 +182,14 @@ const OrgProjects = ({
                   }}
                 />
                 <Footer>
-                  { error ?
+                  {error ? (
                     <>
                       <div className="error">{error.message}</div>
                       <Button variant="ghost" action={handleModalClose}>
                         Cancel
                       </Button>
                     </>
-                    :
+                  ) : (
                     <>
                       <Button
                         testId="deleteConfirm"
@@ -204,7 +204,7 @@ const OrgProjects = ({
                         Cancel
                       </Button>
                     </>
-                  }
+                  )}
                 </Footer>
               </Modal>
             </>

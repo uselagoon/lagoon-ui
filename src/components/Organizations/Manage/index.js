@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -43,7 +43,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
 
   const [selectedUserType, setSelectedUserType] = useState('');
 
-  const [ addUser, { loading: addUserLoading, error: addUserError }] = useMutation(ADD_USER_MUTATION, {
+  const [addUser, { loading: addUserLoading, error: addUserError }] = useMutation(ADD_USER_MUTATION, {
     onCompleted: () => {
       setSelectedUser('');
       refetch().then(closeEditModal);
@@ -53,14 +53,17 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
     },
   });
 
-  const [ removeUserFromOrganization, { loading: removeUserLoading, error: removeUserError }] = useMutation(DELETE_USER, {
-    onCompleted: () => {
-      refetch().then(closeUserModal);
-    },
-    onError: e => {
-      console.error(e);
-    },
-  });
+  const [removeUserFromOrganization, { loading: removeUserLoading, error: removeUserError }] = useMutation(
+    DELETE_USER,
+    {
+      onCompleted: () => {
+        refetch().then(closeUserModal);
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
 
   const closeUserModal = () => {
     setSelectedUser('');
@@ -163,14 +166,14 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
               isOpen={editModalOpen && selectedUser === user?.id}
               onRequestClose={closeEditModal}
             >
-              { addUserError ?
+              {addUserError ? (
                 <>
                   <div>{addUserError?.message}</div>
                   <Button variant="ghost" action={closeEditModal}>
                     Cancel
                   </Button>
                 </>
-                :
+              ) : (
                 <NewUser>
                   <h4>Update user</h4>
                   <div className="form-box">
@@ -212,13 +215,14 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                         testId="updateUser"
                         disabled={addUserLoading}
                         loading={addUserLoading}
-                        action={() => addUser({
-                          variables: {
-                            email: user.email,
-                            organization: organization.id,
-                            role: selectedUserType.toUpperCase(),
-                          },
-                        })
+                        action={() =>
+                          addUser({
+                            variables: {
+                              email: user.email,
+                              organization: organization.id,
+                              role: selectedUserType.toUpperCase(),
+                            },
+                          })
                         }
                         variant="primary"
                       >
@@ -230,7 +234,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                     </Footer>
                   </div>
                 </NewUser>
-              }
+              )}
             </Modal>
 
             <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Remove user">
@@ -249,26 +253,27 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                 This action will remove user <span>{user.email}</span> from management of the organization{' '}
                 <span>{organizationName}</span>.
               </RemoveModalParagraph>
-              { removeUserError ?
+              {removeUserError ? (
                 <>
                   <div>{removeUserError?.message}</div>
                   <Button variant="ghost" action={closeEditModal}>
                     Cancel
                   </Button>
                 </>
-                :
+              ) : (
                 <Footer>
                   <Button
                     testId="deleteConfirm"
                     variant="primary"
                     loading={removeUserLoading}
                     disabled={removeUserLoading}
-                    action={() => removeUserFromOrganization({
-                      variables: {
-                        email: user.email,
-                        organization: organization.id,
-                      },
-                    })
+                    action={() =>
+                      removeUserFromOrganization({
+                        variables: {
+                          email: user.email,
+                          organization: organization.id,
+                        },
+                      })
                     }
                   >
                     Continue
@@ -277,7 +282,7 @@ const Manage = ({ users = [], organization, organizationName, refetch }) => {
                     Cancel
                   </Button>
                 </Footer>
-              }
+              )}
             </Modal>
           </TableActions>
         );

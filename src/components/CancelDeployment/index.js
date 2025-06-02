@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useMutation } from '@apollo/client';
 import { notification } from 'antd';
 import Button from 'components/Button';
@@ -50,6 +51,7 @@ const CancelDeployment = ({ deployment, beforeText, afterText }) => {
       beforeText={beforeText}
       afterText={afterText}
     />
-  )};
+  );
+};
 
 export default CancelDeployment;

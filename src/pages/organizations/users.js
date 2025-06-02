@@ -29,7 +29,7 @@ export const PageUsers = ({ router }) => {
   } = useQuery(getOrganizationByName, {
     variables: { name: router.query.organizationSlug },
     skip: !router.query.organizationSlug,
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (data && data.organization) {
         void getUsers({
           variables: { id: data.organization.id },

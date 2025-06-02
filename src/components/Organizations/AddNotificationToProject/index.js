@@ -1,7 +1,7 @@
 import React from 'react';
-import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -36,15 +36,15 @@ const customStyles = {
  * Confirms the deletion of the specified name and type.
  */
 export const AddNotificationToProject = ({
-                                           projectName,
-                                           selectedProject,
-                                           options,
-                                           setSelectedProject,
-                                           open,
-                                           openModal,
-                                           closeModal,
-                                           refresh,
-                                         }) => {
+  projectName,
+  selectedProject,
+  options,
+  setSelectedProject,
+  open,
+  openModal,
+  closeModal,
+  refresh,
+}) => {
   const [addNotificationToProjectMutation, { loading, error, reset }] = useMutation(ADD_PROJECT_NOTIFICATION_MUTATION, {
     onCompleted: () => {
       setSelectedProject(null);
@@ -53,16 +53,10 @@ export const AddNotificationToProject = ({
     onError: e => {
       console.error(e);
       setSelectedProject(null);
-    }
+    },
   });
 
-  const ops = [
-    ...options.slacks,
-    ...options.rocketchats,
-    ...options.teams,
-    ...options.emails,
-    ...options.webhook,
-  ];
+  const ops = [...options.slacks, ...options.rocketchats, ...options.teams, ...options.emails, ...options.webhook];
 
   const opts = ops.map(group => {
     return {
@@ -74,7 +68,7 @@ export const AddNotificationToProject = ({
   const handleModalClose = () => {
     reset();
     closeModal();
-  }
+  };
 
   return (
     <StyledNotificationWrapper>
@@ -86,8 +80,9 @@ export const AddNotificationToProject = ({
         </Tooltip>
       </div>
       <Modal isOpen={open} onRequestClose={handleModalClose} contentLabel={`Confirm`} style={customStyles}>
-        {error ? <div>{error.message}</div>
-          :
+        {error ? (
+          <div>{error.message}</div>
+        ) : (
           <StyledNotification>
             <h4>Link Notification</h4>
             <label>
@@ -136,7 +131,7 @@ export const AddNotificationToProject = ({
               </Button>
             </Footer>
           </StyledNotification>
-        }
+        )}
       </Modal>
     </StyledNotificationWrapper>
   );

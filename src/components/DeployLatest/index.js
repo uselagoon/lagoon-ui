@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useMutation } from '@apollo/client';
 import { notification } from 'antd';
 import Button from 'components/Button';
@@ -16,11 +17,11 @@ const DEPLOY_ENVIRONMENT_LATEST_MUTATION = gql`
  * Button that deploys the latest environment.
  */
 const DeployLatest = ({ pageEnvironment: environment, onDeploy, ...rest }) => {
-  const [ deploy, { loading, error, data }] = useMutation(DEPLOY_ENVIRONMENT_LATEST_MUTATION, {
+  const [deploy, { loading, error, data }] = useMutation(DEPLOY_ENVIRONMENT_LATEST_MUTATION, {
     variables: {
       environmentId: environment.id,
     },
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (data && data.deployEnvironmentLatest === 'success') {
         onDeploy();
       }

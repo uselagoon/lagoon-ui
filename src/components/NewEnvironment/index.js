@@ -5,7 +5,7 @@ import getConfig from 'next/config';
 import Image from 'next/image';
 
 import { CaretRightOutlined } from '@ant-design/icons';
-import { useQuery, useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client';
 import { Collapse } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -42,24 +42,24 @@ const hashValue = value => {
 };
 
 const NewEnvironment = ({
-                          inputProjectName,
-                          productionEnvironment,
-                          environmentCount,
-                          inputBranchName,
-                          setBranchName,
-                          open,
-                          openModal,
-                          closeModal,
-                          refresh,
-                          setClear,
-                        }) => {
+  inputProjectName,
+  productionEnvironment,
+  environmentCount,
+  inputBranchName,
+  setBranchName,
+  open,
+  openModal,
+  closeModal,
+  refresh,
+  setClear,
+}) => {
   const webhookURL = WEBHOOK_URL ? WEBHOOK_URL : 'https://webhook-handler.example.com';
   let dkValue = '●●●●●●●●●●●●●●●●●●●●●●●●●';
   const [copiedDK, setCopiedDK] = useState(false);
   const [copiedWH, setCopiedWH] = useState(false);
   const [showDKField, setShowDKField] = useState(false);
   const [showEnvType, setShowEnvType] = useState(false);
-  const [apiError, setApiError] = useState("");
+  const [apiError, setApiError] = useState('');
   const [clearState, setClearState] = useState(false);
 
   const errors = ['Skipped', 'Error'];
@@ -74,30 +74,30 @@ const NewEnvironment = ({
   });
 
   const [deployEnvironmentBranch, { loading, data }] = useMutation(deployEnvironmentBranchMutation, {
-    onCompleted: (data) => {
+    onCompleted: data => {
       handleApiError(data);
     },
-    onError: (err) => {
+    onError: err => {
       setApiError(err.message);
       setClear();
     },
   });
 
-  const handleApiError = (data) => {
+  const handleApiError = data => {
     const err = regex.test(data?.deployEnvironmentBranch);
     setApiError(err ? data?.deployEnvironmentBranch : '');
-    setClearState(!err)
+    setClearState(!err);
     if (!err) {
       refresh().then(setClear).then(handleCloseModal);
     }
-  }
+  };
 
   const handleCloseModal = () => {
     setClear();
     setApiError('');
     setClearState(false);
     closeModal();
-  }
+  };
 
   if (deployKeyValue) {
     dkValue = deployKeyValue.project.publicKey;
@@ -270,8 +270,8 @@ const NewEnvironment = ({
             </div>
             <div className="modal-step">
               <span>
-                <b>Step 1: </b>Add the branch you wish to build this environment from. This branch must already
-                exist in your git repository.
+                <b>Step 1: </b>Add the branch you wish to build this environment from. This branch must already exist in
+                your git repository.
               </span>
               <div className="environment-modal">
                 <label>

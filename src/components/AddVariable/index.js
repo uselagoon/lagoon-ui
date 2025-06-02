@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useEffect, useMemo, useState } from 'react';
 import ButtonBootstrap from 'react-bootstrap/Button';
 import ReactSelect from 'react-select';
 
 import { LoadingOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Popconfirm } from 'antd';
 import withLogic from 'components/AddVariable/logic';
 import Button from 'components/Button';
@@ -28,35 +28,35 @@ const scopeOptions = [
 ];
 
 export const AddVariable = ({
-                              varOrganization,
-                              varProject,
-                              varEnvironment,
-                              varValues,
-                              varTarget,
-                              varName,
-                              varValue,
-                              varScope,
-                              refresh,
-                              icon,
-                              inputName,
-                              setInputName,
-                              inputValue,
-                              setInputValue,
-                              inputScope,
-                              setInputScope,
-                              open,
-                              openModal,
-                              closeModal,
-                              setClear,
-                              setEnvironmentErrorAlert,
-                              setProjectErrorAlert,
-                              setOrganizationErrorAlert,
-                              action,
-                              loading,
-                              orgEnvValues,
-                              prjEnvValues,
-                              envValues,
-                            }) => {
+  varOrganization,
+  varProject,
+  varEnvironment,
+  varValues,
+  varTarget,
+  varName,
+  varValue,
+  varScope,
+  refresh,
+  icon,
+  inputName,
+  setInputName,
+  inputValue,
+  setInputValue,
+  inputScope,
+  setInputScope,
+  open,
+  openModal,
+  closeModal,
+  setClear,
+  setEnvironmentErrorAlert,
+  setProjectErrorAlert,
+  setOrganizationErrorAlert,
+  action,
+  loading,
+  orgEnvValues,
+  prjEnvValues,
+  envValues,
+}) => {
   const [updateName, setUpdateName] = useState(varName);
   const [updateValue, setUpdateValue] = useState(varValue);
   const [updateScope, setUpdateScope] = useState(varScope);
@@ -101,9 +101,10 @@ export const AddVariable = ({
     closeModal();
   };
 
-  const [addOrUpdateEnvVariableByName, { called, loading: mutationLoading, data, error}] = useMutation(addOrUpdateEnvVariableMutation,
+  const [addOrUpdateEnvVariableByName, { called, loading: mutationLoading, data, error }] = useMutation(
+    addOrUpdateEnvVariableMutation,
     {
-      onError: (e) => console.error(e),
+      onError: e => console.error(e),
     }
   );
 
@@ -234,29 +235,27 @@ export const AddVariable = ({
                   }
                   onClick={showPopconfirm}
                 >
-                  {hasCalled ? (
-                    action === 'edit' || (updateVar || varName) ? 'Updating variable' : 'Adding variable'
-                  ) : (
-                    (updateVar || varName)
+                  {hasCalled
+                    ? action === 'edit' || updateVar || varName
+                      ? 'Updating variable'
+                      : 'Adding variable'
+                    : updateVar || varName
                       ? `Update ${varTarget.toLowerCase()} variable`
-                      : `Add ${varTarget.toLowerCase()} variable`
-                  )}
+                      : `Add ${varTarget.toLowerCase()} variable`}
                 </ButtonBootstrap>
               </Popconfirm>
             ) : (
               <ButtonBootstrap
-                disabled={
-                  updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''
-                }
+                disabled={updateName ? updateName === '' || updateScope === '' : inputName === '' || inputScope === ''}
                 onClick={addOrUpdateEnvVariableHandler}
               >
-                {hasCalled ? (
-                  action === 'edit' || (updateVar || varName) ? 'Updating variable' : 'Adding variable'
-                ) : (
-                  (updateVar || varName)
+                {hasCalled
+                  ? action === 'edit' || updateVar || varName
+                    ? 'Updating variable'
+                    : 'Adding variable'
+                  : updateVar || varName
                     ? `Update ${varTarget.toLowerCase()} variable`
-                    : `Add ${varTarget.toLowerCase()} variable`
-                )}
+                    : `Add ${varTarget.toLowerCase()} variable`}
               </ButtonBootstrap>
             )}
           </div>

@@ -33,7 +33,7 @@ const NewEnvironmentButton = ({
   loading,
   error,
   disabled,
-  showSuccess
+  showSuccess,
 }) => (
   <NewEnvButton
     action={() => {

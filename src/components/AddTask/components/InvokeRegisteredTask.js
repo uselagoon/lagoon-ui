@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useMutation } from '@apollo/client'
 import ReactSelect from 'react-select';
 
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 import * as R from 'ramda';
@@ -35,17 +35,16 @@ const mutationInvokeRegisteredTask = gql`
 `;
 
 const InvokeRegisteredTask = ({
-                                pageEnvironment,
-                                selectedTask,
-                                advancedTaskArguments,
-                                setAdvancedTaskArguments,
-                                onCompleted,
-                                onError,
-                                isConfirmOpen,
-                                setIsConfirmOpen,
-                                onNewTask,
-                              }) => {
-
+  pageEnvironment,
+  selectedTask,
+  advancedTaskArguments,
+  setAdvancedTaskArguments,
+  onCompleted,
+  onError,
+  isConfirmOpen,
+  setIsConfirmOpen,
+  onNewTask,
+}) => {
   const [invokeRegisteredTask, { loading, data }] = useMutation(mutationInvokeRegisteredTask, {
     variables: {
       environment: pageEnvironment.id,
@@ -56,7 +55,7 @@ const InvokeRegisteredTask = ({
           taskArgs.push({ advancedTaskDefinitionArgumentName: key, value: value });
         }, advancedTaskArguments);
         return taskArgs;
-      })()
+      })(),
     },
     onCompleted,
     onError,
@@ -99,81 +98,81 @@ const InvokeRegisteredTask = ({
   };
 
   return (
-      <StyledRegisteredTasks>
-        <div className="taskArguments">
-          {selectedTask.arguments &&
-              selectedTask.arguments.map((d, index) => {
-                switch (d.type) {
-                  case 'ENVIRONMENT_SOURCE_NAME':
-                  case 'ENVIRONMENT_SOURCE_NAME_EXCLUDE_SELF':
-                    return (
-                        <div key={`env-text-${index}`} className="envSelect">
-                          <label id="source-env">{d.displayName || d.name} :</label>
-                          <ReactSelect
-                              aria-labelledby={d.name}
-                              name={d.name}
-                              placeholder="Select environment..."
-                              value={{
-                                label: R.prop(d.name, advancedTaskArguments),
-                                value: R.prop(d.name, advancedTaskArguments),
-                              }}
-                              onChange={selectedOption => {
-                                setAdvancedTaskArguments({
-                                  ...advancedTaskArguments,
-                                  [d.name]: selectedOption.value,
-                                });
-                              }}
-                              options={d.range.map(opt => ({ label: opt, value: opt }))}
-                          />
-                        </div>
-                    );
-                    break;
+    <StyledRegisteredTasks>
+      <div className="taskArguments">
+        {selectedTask.arguments &&
+          selectedTask.arguments.map((d, index) => {
+            switch (d.type) {
+              case 'ENVIRONMENT_SOURCE_NAME':
+              case 'ENVIRONMENT_SOURCE_NAME_EXCLUDE_SELF':
+                return (
+                  <div key={`env-text-${index}`} className="envSelect">
+                    <label id="source-env">{d.displayName || d.name} :</label>
+                    <ReactSelect
+                      aria-labelledby={d.name}
+                      name={d.name}
+                      placeholder="Select environment..."
+                      value={{
+                        label: R.prop(d.name, advancedTaskArguments),
+                        value: R.prop(d.name, advancedTaskArguments),
+                      }}
+                      onChange={selectedOption => {
+                        setAdvancedTaskArguments({
+                          ...advancedTaskArguments,
+                          [d.name]: selectedOption.value,
+                        });
+                      }}
+                      options={d.range.map(opt => ({ label: opt, value: opt }))}
+                    />
+                  </div>
+                );
+                break;
 
-                  default:
-                    return (
-                        <div key={`env-text-${index}`} className="envText">
-                          <label id="source-env">{d.displayName || d.name} :</label>
-                          <input
-                              type="text"
-                              name={d.name}
-                              value={advancedTaskArguments[d.name]}
-                              onChange={event => {
-                                setAdvancedTaskArguments({
-                                  ...advancedTaskArguments,
-                                  [d.name]: event.target.value,
-                                });
-                              }}
-                          />
-                        </div>
-                    );
-                    break;
-                }
-                return null;
-              })}
-        </div>
-        {(selectedTask.confirmationText && (
-            <CustomTaskConfirm
-                disabled={!argumentVariablesHaveValues}
-                taskText={selectedTask.confirmationText}
-                onProceed={invokeRegisteredTask}
-                open={isConfirmOpen}
-                openModal={() => {
-                  setIsConfirmOpen(true);
-                }}
-                closeModal={() => {
-                  setIsConfirmOpen(false);
-                }}
-            />
-        )) || (
-            <Button
-                testId="task-btn"
-                disabled={(taskArgumentsExist && !argumentVariablesHaveValues) || loading}
-                action={invokeRegisteredTask}
-            >
-              {loading ? <span className="loader"></span> : 'Run task'}
-            </Button>
-        )}
-      </StyledRegisteredTasks>
+              default:
+                return (
+                  <div key={`env-text-${index}`} className="envText">
+                    <label id="source-env">{d.displayName || d.name} :</label>
+                    <input
+                      type="text"
+                      name={d.name}
+                      value={advancedTaskArguments[d.name]}
+                      onChange={event => {
+                        setAdvancedTaskArguments({
+                          ...advancedTaskArguments,
+                          [d.name]: event.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                );
+                break;
+            }
+            return null;
+          })}
+      </div>
+      {(selectedTask.confirmationText && (
+        <CustomTaskConfirm
+          disabled={!argumentVariablesHaveValues}
+          taskText={selectedTask.confirmationText}
+          onProceed={invokeRegisteredTask}
+          open={isConfirmOpen}
+          openModal={() => {
+            setIsConfirmOpen(true);
+          }}
+          closeModal={() => {
+            setIsConfirmOpen(false);
+          }}
+        />
+      )) || (
+        <Button
+          testId="task-btn"
+          disabled={(taskArgumentsExist && !argumentVariablesHaveValues) || loading}
+          action={invokeRegisteredTask}
+        >
+          {loading ? <span className="loader"></span> : 'Run task'}
+        </Button>
+      )}
+    </StyledRegisteredTasks>
   );
 };
 

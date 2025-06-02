@@ -1,6 +1,7 @@
 import React from 'react';
-import { useMutation } from '@apollo/client';
+
 import { EyeOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import RemoveProjectGroupConfirm from 'components/Organizations/RemoveProjectGroupConfirm';
 import OrgGroupsLink from 'components/link/Organizations/Group';
@@ -23,20 +24,19 @@ const REMOVE_GROUP_FROM_PROJECT = gql`
  * The primary list of members.
  */
 const ProjectGroupMembers = ({
-                               groups = [],
-                               organizationId,
-                               organizationSlug,
-                               projectName,
-                               orgGroups,
-                               refresh,
-                               orgFriendlyName,
-                             }) => {
-
-  const [ removeGroupFromProject, { loading, error }] = useMutation(REMOVE_GROUP_FROM_PROJECT, {
+  groups = [],
+  organizationId,
+  organizationSlug,
+  projectName,
+  orgGroups,
+  refresh,
+  orgFriendlyName,
+}) => {
+  const [removeGroupFromProject, { loading, error }] = useMutation(REMOVE_GROUP_FROM_PROJECT, {
     onCompleted: () => {
       refresh();
     },
-    onError: (error) => {
+    onError: error => {
       console.error(error);
     },
   });
@@ -106,12 +106,13 @@ const ProjectGroupMembers = ({
                       deleteName: g.name,
                       projectName: projectName,
                     }}
-                    onRemove={() => removeGroupFromProject({
-                      variables: {
-                        groupName: g.name,
-                        projectName: projectName,
-                      },
-                    })
+                    onRemove={() =>
+                      removeGroupFromProject({
+                        variables: {
+                          groupName: g.name,
+                          projectName: projectName,
+                        },
+                      })
                     }
                   />
                 </div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import withLogic from 'components/Organizations/AddUserToGroup/logic';
@@ -46,15 +46,15 @@ export const options = [
  * Adds user to group.
  */
 export const AddUserToGroup = ({
-                                 group,
-                                 close,
-                                 inputValueEmail,
-                                 setInputValue,
-                                 selectedRole,
-                                 setSelectedRole,
-                                 onAddUser,
-                                 users,
-                               }) => {
+  group,
+  close,
+  inputValueEmail,
+  setInputValue,
+  selectedRole,
+  setSelectedRole,
+  onAddUser,
+  users,
+}) => {
   const userAlreadyExists = users && users.find(u => u.user.email === inputValueEmail);
 
   const [inviteUser, setInviteUser] = useState(true);
@@ -82,7 +82,9 @@ export const AddUserToGroup = ({
 
   return (
     <>
-      {error ? <div>{error.message}</div> :
+      {error ? (
+        <div>{error.message}</div>
+      ) : (
         <NewMember>
           <h4>{userAlreadyExists ? 'Update User' : 'Add User'}</h4>
           <div className="form-box">
@@ -156,7 +158,7 @@ export const AddUserToGroup = ({
             </Footer>
           </div>
         </NewMember>
-      }
+      )}
     </>
   );
 };

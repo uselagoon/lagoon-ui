@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMutation } from '@apollo/client';
 
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -80,18 +80,17 @@ const StyledNewGroup = styled.div`
  * Confirms the deletion of the specified name and type.
  */
 export const NewGroup = ({
-                           existingGroupNames,
-                           onGroupAdded,
-                           disabled,
-                           inputValueGroup,
-                           organizationId,
-                           setInputValue,
-                           open,
-                           openModal,
-                           closeModal,
-                         }) => {
-
-  const [ addGroup, {loading, error, reset} ] = useMutation(ADD_GROUP_MUTATION, {
+  existingGroupNames,
+  onGroupAdded,
+  disabled,
+  inputValueGroup,
+  organizationId,
+  setInputValue,
+  open,
+  openModal,
+  closeModal,
+}) => {
+  const [addGroup, { loading, error, reset }] = useMutation(ADD_GROUP_MUTATION, {
     variables: {
       group: inputValueGroup,
       organization: parseInt(organizationId, 10),
@@ -109,7 +108,7 @@ export const NewGroup = ({
     reset();
     setInputValue({ target: { value: '' } });
     closeModal();
-  }
+  };
 
   return (
     <StyledNewGroup>
@@ -125,16 +124,16 @@ export const NewGroup = ({
       <Modal isOpen={open} onRequestClose={handleModalClose} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
           <StyledNotification>
-            { error ?
+            {error ? (
               <>
-                <p style={{ display: "inline-block" }}>{error?.message} </p>
+                <p style={{ display: 'inline-block' }}>{error?.message} </p>
                 <div style={{ float: 'right' }}>
-                  <Button variant="ghost" action={handleModalClose} >
+                  <Button variant="ghost" action={handleModalClose}>
                     Cancel
                   </Button>
                 </div>
               </>
-              :
+            ) : (
               <>
                 <div className="newMember">
                   <h4>New Group</h4>
@@ -178,12 +177,11 @@ export const NewGroup = ({
                       <Button variant="ghost" action={() => handleModalClose()}>
                         Cancel
                       </Button>
-
                     </Footer>
                   </div>
                 </div>
               </>
-            }
+            )}
           </StyledNotification>
         </React.Fragment>
       </Modal>

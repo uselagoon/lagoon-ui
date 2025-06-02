@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactSelect from 'react-select';
-import { useMutation } from '@apollo/client';
 
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -30,16 +30,16 @@ const customStyles = {
  * Confirms the deletion of the specified name and type.
  */
 export const AddGroupToProject = ({
-                                    projectName,
-                                    selectedProject,
-                                    options,
-                                    setSelectedProject,
-                                    open,
-                                    openModal,
-                                    closeModal,
-                                    refresh,
-                                  }) => {
-  const [ addGroupProject, {error, loading}] = useMutation(ADD_GROUP_PROJECT_MUTATION, {
+  projectName,
+  selectedProject,
+  options,
+  setSelectedProject,
+  open,
+  openModal,
+  closeModal,
+  refresh,
+}) => {
+  const [addGroupProject, { error, loading }] = useMutation(ADD_GROUP_PROJECT_MUTATION, {
     variables: {
       projectName: projectName,
       groupName: selectedProject?.value,

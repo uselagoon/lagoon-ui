@@ -65,15 +65,15 @@ const ADD_GROUP_PROJECT_MUTATION = gql`
  * The primary list of members.
  */
 const GroupMembers = ({
-                        members = [],
-                        groupName,
-                        organizationName,
-                        organizationId,
-                        orgFriendlyName,
-                        orgProjects,
-                        projects,
-                        refetch,
-                      }) => {
+  members = [],
+  groupName,
+  organizationName,
+  organizationId,
+  orgFriendlyName,
+  orgProjects,
+  projects,
+  refetch,
+}) => {
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('');
 
@@ -90,35 +90,44 @@ const GroupMembers = ({
 
   const [updateUser] = useMutation(ADD_GROUP_MEMBER_MUTATION);
 
-  const [removeUserFromGroup, {loading: removeUserLoading, error: removeUserError }] = useMutation(REMOVE_USER_FROM_GROUP, {
-    onCompleted: () => {
-      refetch();
-      setDeleteUserModalOpen(false);
-    },
-    onError: e => {
-      console.error(e);
-    },
-  });
+  const [removeUserFromGroup, { loading: removeUserLoading, error: removeUserError }] = useMutation(
+    REMOVE_USER_FROM_GROUP,
+    {
+      onCompleted: () => {
+        refetch();
+        setDeleteUserModalOpen(false);
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
 
-  const [ removeGroupFromProject, { loading: removeGroupLoading, error: removeGroupError }] = useMutation(REMOVE_GROUP_FROM_PROJECT, {
-    onCompleted: () => {
-      refetch();
-      closeProjectModal();
-    },
-    onError: e => {
-      console.error(e);
-    },
-  });
+  const [removeGroupFromProject, { loading: removeGroupLoading, error: removeGroupError }] = useMutation(
+    REMOVE_GROUP_FROM_PROJECT,
+    {
+      onCompleted: () => {
+        refetch();
+        closeProjectModal();
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
 
-  const [ addGroupToProject, { loading: addGroupLoading, error: addGroupError }] = useMutation(ADD_GROUP_PROJECT_MUTATION, {
-    onCompleted: () => {
-      refetch();
-      closeAddProjectModal();
-    },
-    onError: e => {
-      console.error(e);
-    },
-  });
+  const [addGroupToProject, { loading: addGroupLoading, error: addGroupError }] = useMutation(
+    ADD_GROUP_PROJECT_MUTATION,
+    {
+      onCompleted: () => {
+        refetch();
+        closeAddProjectModal();
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
 
   const filtered = orgProjects.filter(project => {
     return projects.every(p => p.name !== project.name);
@@ -222,17 +231,18 @@ const GroupMembers = ({
                 </Link>
               </>
             </Tooltip>
-            { removeUserError && <div>{removeUserError.message}</div> }
+            {removeUserError && <div>{removeUserError.message}</div>}
             <RemoveUserConfirm
               loading={removeUserLoading}
               removeName={user.email}
               info={{ userEmail: user.email, groupName }}
-              onRemove={() => removeUserFromGroup({
-                variables: {
-                  groupName: groupName,
-                  email: user.email,
-                },
-              })
+              onRemove={() =>
+                removeUserFromGroup({
+                  variables: {
+                    groupName: groupName,
+                    email: user.email,
+                  },
+                })
               }
             />
           </TableActions>
@@ -316,25 +326,26 @@ const GroupMembers = ({
               <RemoveModalParagraph>
                 This action will unlink project <span>{project.name}</span> from group <span>{groupName}</span>.
               </RemoveModalParagraph>
-              { removeGroupError ?
+              {removeGroupError ? (
                 <>
                   <div>{removeGroupError?.message}</div>
                   <Button variant="ghost" action={closeProjectModal}>
                     Cancel
                   </Button>
                 </>
-                :
+              ) : (
                 <Footer>
                   <Button
                     variant="primary"
                     disabled={removeGroupLoading}
                     loading={removeGroupLoading}
-                    action={() => removeGroupFromProject({
-                      variables: {
-                        groupName,
-                        projectName: project.name,
-                      },
-                    })
+                    action={() =>
+                      removeGroupFromProject({
+                        variables: {
+                          groupName,
+                          projectName: project.name,
+                        },
+                      })
                     }
                   >
                     Continue
@@ -343,7 +354,7 @@ const GroupMembers = ({
                     Cancel
                   </Button>
                 </Footer>
-              }
+              )}
             </Modal>
           </TableActions>
         );
@@ -422,14 +433,14 @@ const GroupMembers = ({
           style={{ content: { width: '50%' } }}
           onRequestClose={() => closeAddProjectModal()}
         >
-          { addGroupError ?
+          {addGroupError ? (
             <>
               <div>{addGroupError?.message}</div>
               <Button variant="ghost" action={closeProjectModal}>
                 Cancel
               </Button>
             </>
-            :
+          ) : (
             <>
               <h4>Add Project</h4>
               <label>
@@ -457,12 +468,13 @@ const GroupMembers = ({
               </label>
               <Footer>
                 <Button
-                  action={() => addGroupToProject({
-                    variables: {
-                      projectName: selectedProject,
-                      groupName,
-                    },
-                  })
+                  action={() =>
+                    addGroupToProject({
+                      variables: {
+                        projectName: selectedProject,
+                        groupName,
+                      },
+                    })
                   }
                   disabled={!selectedProject || addGroupLoading}
                   loading={addGroupLoading}
@@ -475,7 +487,7 @@ const GroupMembers = ({
                 </Button>
               </Footer>
             </>
-          }
+          )}
         </Modal>
       </TableWrapper>
 

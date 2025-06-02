@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
@@ -12,8 +13,7 @@ const addRestore = gql`
 `;
 
 const Prepare = ({ backupId }) => {
-
-  const [ addRestoreMutation, { loading, called, error }] = useMutation(addRestore, {
+  const [addRestoreMutation, { loading, called, error }] = useMutation(addRestore, {
     variables: { input: { backupId } },
     onError: e => console.error(e),
   });
@@ -26,10 +26,10 @@ const Prepare = ({ backupId }) => {
     return <Button disabled>Retrieving ...</Button>;
   }
   return (
-      <Button testId="retrieve" action={addRestoreMutation}>
-        Retrieve
-      </Button>
-  )
+    <Button testId="retrieve" action={addRestoreMutation}>
+      Retrieve
+    </Button>
+  );
 };
 
 export default Prepare;

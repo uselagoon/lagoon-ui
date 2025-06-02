@@ -1,10 +1,10 @@
 import React from 'react';
-import { useMutation } from '@apollo/client';
 import ReactSelect from 'react-select';
 
 import Image from 'next/image';
 
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -56,26 +56,26 @@ const customStyles = {
 };
 
 const OrgNewProject = ({
-                         inputProjectName,
-                         inputGitURL,
-                         inputProdEnv,
-                         organizationId,
-                         setProjectName,
-                         setGitURL,
-                         setProdEnv,
-                         options,
-                         selectedDeployTarget,
-                         setSelectedDeployTarget,
-                         open,
-                         openModal,
-                         closeModal,
-                         refresh,
-                       }) => {
+  inputProjectName,
+  inputGitURL,
+  inputProdEnv,
+  organizationId,
+  setProjectName,
+  setGitURL,
+  setProdEnv,
+  options,
+  selectedDeployTarget,
+  setSelectedDeployTarget,
+  open,
+  openModal,
+  closeModal,
+  refresh,
+}) => {
   const [addUserToProject, setAddUserToProject] = React.useState(true);
   const [pullRequests, setPullRequests] = React.useState('');
   const [branches, setBranches] = React.useState('');
 
-  const [ addGroupProject, { loading, error, reset } ] = useMutation(ADD_PROJECT_MUTATION, {
+  const [addGroupProject, { loading, error, reset }] = useMutation(ADD_PROJECT_MUTATION, {
     variables: {
       name: inputProjectName,
       gitUrl: inputGitURL,
@@ -103,7 +103,7 @@ const OrgNewProject = ({
   const handleModalClose = () => {
     reset();
     closeModal();
-  }
+  };
 
   return (
     <StyledNotificationWrapper>
@@ -120,16 +120,16 @@ const OrgNewProject = ({
         <React.Fragment>
           <>
             <StyledNewProject>
-              { error ?
+              {error ? (
                 <>
-                  <p style={{ display: "inline-block" }}>{error?.message} </p>
+                  <p style={{ display: 'inline-block' }}>{error?.message} </p>
                   <div style={{ float: 'right' }}>
-                    <Button variant="ghost" action={handleModalClose} >
+                    <Button variant="ghost" action={handleModalClose}>
                       Cancel
                     </Button>
                   </div>
                 </>
-                :
+              ) : (
                 <>
                   <div className="add-project-header">
                     <span>Add Project</span>
@@ -331,7 +331,7 @@ const OrgNewProject = ({
                     </Footer>
                   </div>
                 </>
-              }
+              )}
             </StyledNewProject>
           </>
         </React.Fragment>
