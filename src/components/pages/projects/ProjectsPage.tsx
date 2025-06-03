@@ -1,7 +1,7 @@
 'use client';
 
 import { ProjectsData } from '@/app/(routegroups)/(projectroutes)/projects/(projects-page)/page';
-import { Table, TableCaption } from '@uselagoon/ui-library';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@uselagoon/ui-library';
 import { useQueryStates } from 'nuqs';
 
 export default function ProjectsPage({ data }: { data: ProjectsData }) {
@@ -24,9 +24,27 @@ export default function ProjectsPage({ data }: { data: ProjectsData }) {
   };
 
   return (
-    <div className="min-h-screen bg-cyan-50 flex justify-center">
-      <Table className="border-red-500">
-        <TableCaption className="text-3xl">Projects</TableCaption>
+    <div className="bg-blue-50">
+      <Table className="w-[50vw] !mx-auto">
+        <TableHeader>
+          <TableCaption className="text-3xl">Projects</TableCaption>
+          <TableRow>
+            <TableHead className="">Project name</TableHead>
+            <TableHead>Creation date</TableHead>
+            <TableHead>Environments</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.allProjects.map(project => {
+            return (
+              <TableRow>
+                <TableCell className="font-medium">{project.name}</TableCell>
+                <TableCell>{project.created}</TableCell>
+                <TableCell>{project.environments.length}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
       </Table>
     </div>
   );

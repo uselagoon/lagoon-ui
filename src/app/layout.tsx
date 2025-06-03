@@ -6,6 +6,7 @@ import RefreshTokenHandler from '@/components/auth/RefreshTokenHandler';
 import Plugins from '@/components/plugins/plugins';
 import PublicRuntimeEnvProvider from '@/contexts/PublicRuntimeEnvProvider';
 import { ApolloClientComponentWrapper } from '@/lib/apollo-client-components';
+import '@uselagoon/ui-library/dist/ui-library.css';
 
 import ClientSessionWrapper from '../components/auth/ClientSessionWrapper';
 import AppProvider from '../contexts/AppContext';
