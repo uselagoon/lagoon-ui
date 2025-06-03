@@ -5,7 +5,7 @@ import organizationIdByName from '@/lib/query/organizations/organizationIdByName
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { organizationSlug: string; groupSlug: string };
+  params: Promise<{ organizationSlug: string; groupSlug: string }>;
 };
 
 type OrgById = {
@@ -45,17 +45,25 @@ export interface OrganizationGroupData {
   group: Group;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.groupSlug} | Group`,
   };
 }
 
-export default async function Group({
-  params: { organizationSlug, groupSlug },
-}: {
-  params: { organizationSlug: string; groupSlug: string };
-}) {
+export default async function Group(
+  props: {
+    params: Promise<{ organizationSlug: string; groupSlug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    organizationSlug,
+    groupSlug
+  } = params;
+
   const client = await getClient();
 
   const { data: organizationData } = await client.query<OrgById>({

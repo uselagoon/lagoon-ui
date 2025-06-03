@@ -6,7 +6,7 @@ import usersByOrganization from '@/lib/query/organizations/usersByOrganization';
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { organizationSlug: string };
+  params: Promise<{ organizationSlug: string }>;
 };
 
 type OrgById = {
@@ -28,13 +28,20 @@ export interface OrganizationUsersData {
   users: User[];
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.organizationSlug} | Organization`,
   };
 }
 
-export default async function Users({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
+export default async function Users(props: { params: Promise<{ organizationSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    organizationSlug
+  } = params;
+
   const client = await getClient();
 
   const { data: organizationData } = await client.query<OrgById>({

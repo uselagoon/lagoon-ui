@@ -2,7 +2,8 @@ import BulkDeploymentsPage from '@/components/pages/bulkDeployments/BulkDeployme
 import { getClient } from '@/lib/apolloClient';
 import deploymensByBulkId from '@/lib/query/deploymensByBulkId';
 
-export async function generateMetadata({ params }: { params: { bulkId: string } }) {
+export async function generateMetadata(props: { params: Promise<{ bulkId: string }> }) {
+  const params = await props.params;
   return {
     title: `Bulk Deployment - ${params.bulkId}`,
   };
@@ -32,10 +33,11 @@ export type BulkDeploymentsData = {
   deploymentsByBulkId: BulkDeployment[];
 };
 type Props = {
-  params: { bulkId: string };
+  params: Promise<{ bulkId: string }>;
 };
 
-export default async function BulkDeployments({ params }: Props) {
+export default async function BulkDeployments(props: Props) {
+  const params = await props.params;
   const client = await getClient();
 
   const { data } = await client.query<BulkDeploymentsData>({

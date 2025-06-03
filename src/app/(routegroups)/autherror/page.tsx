@@ -2,10 +2,10 @@ import Link from 'next/link';
 
 import styles from '../../../styles/error.module.css';
 
-export default function AuthErrorPage(props: { searchParams: { error?: string } }) {
-  const {
-    searchParams: { error },
-  } = props;
+export default async function AuthErrorPage(props: { searchParams: Promise<{ error?: string }> }) {
+  const params = await props.searchParams;
+
+  const { error } = params;
 
   return (
     <section className={styles.authErr}>

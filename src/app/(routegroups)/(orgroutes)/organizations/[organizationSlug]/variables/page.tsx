@@ -21,15 +21,22 @@ export interface OrganizationVariablesData {
 }
 
 type Props = {
-  params: { organizationSlug: string };
+  params: Promise<{ organizationSlug: string }>;
 };
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.organizationSlug} | Variables`,
   };
 }
 
-export default async function OrgVariables({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
+export default async function OrgVariables(props: { params: Promise<{ organizationSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    organizationSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={organizationByNameWithEnvVars}

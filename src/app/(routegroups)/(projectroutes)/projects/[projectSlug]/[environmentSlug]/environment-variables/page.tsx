@@ -4,7 +4,7 @@ import environmentByOpenShiftProjectNameWithEnvVars from '@/lib/query/environmen
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { environmentSlug: string };
+  params: Promise<{ environmentSlug: string }>;
 };
 
 export type EnvVariable = {
@@ -31,17 +31,25 @@ export interface EnvVariablesData {
   environmentVars: Environment;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.environmentSlug} | Environment Variables`,
   };
 }
 
-export default async function EnvironmentVariables({
-  params: { environmentSlug, projectSlug },
-}: {
-  params: { environmentSlug: string; projectSlug: string };
-}) {
+export default async function EnvironmentVariables(
+  props: {
+    params: Promise<{ environmentSlug: string; projectSlug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    environmentSlug,
+    projectSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={environmentByOpenShiftProjectNameWithEnvVars}

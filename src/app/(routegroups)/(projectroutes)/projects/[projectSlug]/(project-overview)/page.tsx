@@ -42,15 +42,22 @@ export interface ProjectData {
 }
 
 type Props = {
-  params: { projectSlug: string };
+  params: Promise<{ projectSlug: string }>;
 };
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.projectSlug} | Project`,
   };
 }
 
-export default async function projectEnvironments({ params: { projectSlug } }: { params: { projectSlug: string } }) {
+export default async function projectEnvironments(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    projectSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={projectEnvironmentsQuery}

@@ -4,7 +4,7 @@ import environmentWithProblems from '@/lib/query/environmentWithProblems';
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { environmentSlug: string };
+  params: Promise<{ environmentSlug: string }>;
 };
 
 enum ProblemSeverityRating {
@@ -53,13 +53,20 @@ export interface ProblemsData {
   environment: Environment;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.environmentSlug} | Problems`,
   };
 }
 
-export default async function Problems({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
+export default async function Problems(props: { params: Promise<{ environmentSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    environmentSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={environmentWithProblems}

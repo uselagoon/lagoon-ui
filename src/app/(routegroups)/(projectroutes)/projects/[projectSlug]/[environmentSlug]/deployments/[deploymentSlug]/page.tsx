@@ -4,7 +4,7 @@ import environmentWithDeployment from '@/lib/query/environmentWithDeployment';
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { environmentSlug: string; projectSlug: string; deploymentSlug: string };
+  params: Promise<{ environmentSlug: string; projectSlug: string; deploymentSlug: string }>;
 };
 
 export type Deployment = {
@@ -35,17 +35,26 @@ export interface DeploymentData {
   environment: Environment;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.deploymentSlug} | Deployment`,
   };
 }
 
-export default async function Deployment({
-  params: { environmentSlug, projectSlug, deploymentSlug },
-}: {
-  params: { environmentSlug: string; projectSlug: string; deploymentSlug: string };
-}) {
+export default async function Deployment(
+  props: {
+    params: Promise<{ environmentSlug: string; projectSlug: string; deploymentSlug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    environmentSlug,
+    projectSlug,
+    deploymentSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={environmentWithDeployment}

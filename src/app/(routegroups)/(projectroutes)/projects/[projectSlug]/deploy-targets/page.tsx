@@ -3,7 +3,8 @@ import ProjectDeployTargetsPage from '@/components/pages/projectDeployTargets/pr
 import { getClient } from '@/lib/apolloClient';
 import projectByNameQuery from '@/lib/query/projectByNameQuery';
 
-export async function generateMetadata({ params }: { params: { projectSlug: string } }) {
+export async function generateMetadata(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
   return {
     title: `${params.projectSlug} | Project`,
   };
@@ -40,7 +41,13 @@ export type ProjectDeployTargetsData = {
   project: ProjectWithDeployTargets;
 };
 
-export default async function projectDeployTargets({ params: { projectSlug } }: { params: { projectSlug: string } }) {
+export default async function projectDeployTargets(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    projectSlug
+  } = params;
+
   const client = await getClient();
 
   const { data } = await client.query<ProjectDeployTargetsData>({

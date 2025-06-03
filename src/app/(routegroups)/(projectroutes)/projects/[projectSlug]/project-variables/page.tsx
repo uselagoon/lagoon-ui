@@ -3,7 +3,8 @@ import { PreloadQuery } from '@/lib/apolloClient';
 import projectVariablesQuery from '@/lib/query/projectVariablesQuery';
 import { QueryRef } from '@apollo/client';
 
-export async function generateMetadata({ params }: { params: { projectSlug: string } }) {
+export async function generateMetadata(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
   return {
     title: `${params.projectSlug} | Project`,
   };
@@ -29,7 +30,13 @@ export interface ProjectEnvironmentsData {
   project: Project;
 }
 
-export default async function projectVariables({ params: { projectSlug } }: { params: { projectSlug: string } }) {
+export default async function projectVariables(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    projectSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={projectVariablesQuery}

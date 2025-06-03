@@ -14,6 +14,7 @@ const LimitedRoutes: FC<Props> = ({ routes }) => {
   const handleExpand = () => setExpanded(true);
 
   return (
+    //@ts-expect-error
     <RoutesWrapper data-cy="routes">
       {firstFiveRoutes}
 

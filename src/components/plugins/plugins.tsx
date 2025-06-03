@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { useEnvContext } from 'next-runtime-env';
 
@@ -20,7 +20,7 @@ type BodyScript = {
 };
 type ScriptDef = HeadScript | BodyScript;
 
-type GeneratedScript = JSX.Element | null;
+type GeneratedScript = ReactNode | null;
 
 const generateElementsForPlugins = (def: ScriptDef, nonce: string): GeneratedScript => {
   if (def.type) {

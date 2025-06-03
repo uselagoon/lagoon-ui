@@ -14,7 +14,7 @@ import {
 } from '../../(organization-overview)/page';
 
 type Props = {
-  params: { organizationSlug: string; projectSlug: string };
+  params: Promise<{ organizationSlug: string; projectSlug: string }>;
 };
 
 type Organization = {
@@ -42,17 +42,25 @@ export interface OrganizationProjectData {
   };
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.projectSlug} | Project`,
   };
 }
 
-export default async function Project({
-  params: { organizationSlug, projectSlug },
-}: {
-  params: { organizationSlug: string; projectSlug: string };
-}) {
+export default async function Project(
+  props: {
+    params: Promise<{ organizationSlug: string; projectSlug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    organizationSlug,
+    projectSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={projectAndOrganizationByName}

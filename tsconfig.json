@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -21,10 +25,17 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/components/*": ["./src/components/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
@@ -35,7 +46,11 @@
     "server.tjs",
     "src/lib/apolloClient.js",
     "src/app/api/auth/[...nextauth]/route.ts",
-    "src/auth.ts"
-, "src/lib/query/projectByNameQuery.js"  ],
-  "exclude": ["node_modules", "**/cypress/**"]
+    "src/auth.ts",
+    "src/lib/query/projectByNameQuery.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/cypress/**"
+  ]
 }

@@ -1,15 +1,6 @@
 import { EditOutlined } from '@ant-design/icons';
-import { Head3, Text } from '@uselagoon/ui-library';
+import { Head3 } from '@uselagoon/ui-library';
 import styled from 'styled-components';
-
-export const EnvironmentNameLabel = styled(Text)`
-  /* font-family: 'AmericaMono-Regular', sans-serif; */
-  /* font-size: 10px !important;
-  font-weight: 400;
-  line-height: 10px;
-  letter-spacing: -0.08em;
-  text-align: left; */
-`;
 
 export const EnvironmentName = styled(Head3)`
   margin-top: 0 !important;
@@ -36,7 +27,6 @@ export const RoutesWrapper = styled.div`
   flex-direction: column;
   gap: 0.45rem;
   font-size: 14px;
-  /* font-family: 'ArabicPro-Regular', sans-serif; */
   a {
     text-decoration: none;
     color: ${props => (props.theme.colorScheme === 'dark' ? '#fff' : '#000')};

@@ -4,7 +4,7 @@ import environmentWithTask from '@/lib/query/environmentWithTask';
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { environmentSlug: string; projectSlug: string; taskSlug: string };
+  params: Promise<{ environmentSlug: string; projectSlug: string; taskSlug: string }>;
 };
 
 export type Task = {
@@ -41,17 +41,26 @@ export interface TaskData {
   environment: Environment;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.taskSlug} | Task`,
   };
 }
 
-export default async function Task({
-  params: { environmentSlug, projectSlug, taskSlug },
-}: {
-  params: { environmentSlug: string; projectSlug: string; taskSlug: string };
-}) {
+export default async function Task(
+  props: {
+    params: Promise<{ environmentSlug: string; projectSlug: string; taskSlug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    environmentSlug,
+    projectSlug,
+    taskSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={environmentWithTask}

@@ -198,6 +198,7 @@ export const NewEnvironment: FC<Props> = ({ projectName, renderType = 'card', re
         loading={loading}
         requiredFormItems={['branch_name']}
         onCreateEnvironment={createEnvironment}
+        //@ts-ignore
         steps={newEnvironmentModalSteps}
       />
     </>

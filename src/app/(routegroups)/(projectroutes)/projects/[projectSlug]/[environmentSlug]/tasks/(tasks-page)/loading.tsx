@@ -8,7 +8,7 @@ export default function Loading() {
   return (
     <TasksPageWrapper>
       <Head3>Available Tasks</Head3>
-      <Text>Run a task on this environment</Text>
+      <Text type="secondary">Run a task on this environment</Text>
       <div className="selector">
         <TaskTreeSelector placeholder="Select a task to run" treeData={[]} />
       </div>

@@ -3,7 +3,8 @@ import ProjectDetailsPage from '@/components/pages/projectDetails/projectDetails
 import { getClient } from '@/lib/apolloClient';
 import projectDetailsQuery from '@/lib/query/projectDetailsQuery';
 
-export async function generateMetadata({ params }: { params: { projectSlug: string } }) {
+export async function generateMetadata(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
   return {
     title: `${params.projectSlug} | Project`,
   };
@@ -30,7 +31,13 @@ export type ProjectDetailsData = {
   project: ProjectWithDetails;
 };
 
-export default async function projectDetails({ params: { projectSlug } }: { params: { projectSlug: string } }) {
+export default async function projectDetails(props: { params: Promise<{ projectSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    projectSlug
+  } = params;
+
   const client = await getClient();
 
   const { data } = await client.query<ProjectDetailsData>({

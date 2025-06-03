@@ -6,7 +6,7 @@ import { QueryRef } from '@apollo/client';
 import { DeployTarget, OrgProject } from '../../(organization-overview)/page';
 
 type Props = {
-  params: { organizationSlug: string };
+  params: Promise<{ organizationSlug: string }>;
 };
 
 export type OrganizationProjectsData = {
@@ -19,13 +19,20 @@ export type OrganizationProjectsData = {
   };
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.organizationSlug} | Organization`,
   };
 }
 
-export default async function Projects({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
+export default async function Projects(props: { params: Promise<{ organizationSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    organizationSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={organizationByNameProjects}

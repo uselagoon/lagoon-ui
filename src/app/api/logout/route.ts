@@ -6,7 +6,7 @@ import { auth } from '../../../auth';
 export async function GET() {
   const session = await auth();
 
-  const csrfTokenValue = cookies().get('authjs.csrf-token')?.value ?? '';
+  const csrfTokenValue = (await cookies()).get('authjs.csrf-token')?.value ?? '';
 
   if (session && session.id_token) {
     const idToken = session.id_token;

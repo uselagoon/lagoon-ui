@@ -45,19 +45,26 @@ export interface OrganizationNotificationData {
 }
 
 type Props = {
-  params: { organizationSlug: string };
+  params: Promise<{ organizationSlug: string }>;
 };
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.organizationSlug} | Notifications`,
   };
 }
 
-export default async function OrgNotifications({
-  params: { organizationSlug },
-}: {
-  params: { organizationSlug: string };
-}) {
+export default async function OrgNotifications(
+  props: {
+    params: Promise<{ organizationSlug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    organizationSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={organizationByNameNotification}

@@ -4,7 +4,7 @@ import environmentWithBackups from '@/lib/query/environmentWithBackups';
 import { QueryRef } from '@apollo/client';
 
 type Props = {
-  params: { environmentSlug: string };
+  params: Promise<{ environmentSlug: string }>;
 };
 
 export type Backup = {
@@ -39,13 +39,20 @@ export interface BackupsData {
   environment: Environment;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   return {
     title: `${params.environmentSlug} | Backups`,
   };
 }
 
-export default async function Backups({ params: { environmentSlug } }: { params: { environmentSlug: string } }) {
+export default async function Backups(props: { params: Promise<{ environmentSlug: string }> }) {
+  const params = await props.params;
+
+  const {
+    environmentSlug
+  } = params;
+
   return (
     <PreloadQuery
       query={environmentWithBackups}
