@@ -4,19 +4,17 @@ import { useSession } from 'next-auth/react';
 import { useEnvContext } from 'next-runtime-env';
 
 import { ApolloLink, HttpLink, ServerError } from '@apollo/client';
-import { ApolloClient, ApolloNextAppProvider, InMemoryCache } from '@apollo/client-integration-nextjs';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { ApolloClient, ApolloNextAppProvider, InMemoryCache } from '@apollo/experimental-nextjs-app-support';
 import { createClient } from 'graphql-ws';
 import manualSignOut from 'utils/manualSignOut';
 
 /*
  * reference: https://www.npmjs.com/package/@apollo/client-integration-nextjs
  */
-
-let clientReference: ApolloClient<unknown>;
 
 /*
   makeclient runs once and persists throughout the entire lifecycle of ApolloNextAppProvider.
@@ -117,9 +115,6 @@ function makeClient(GRAPHQL_API: string, WEBSOCKET_URI: string, disableSubscript
       ])
     ),
   });
-
-  // save reference for global use. (authLink, unused - unstable)
-  clientReference = client;
 
   return client;
 }

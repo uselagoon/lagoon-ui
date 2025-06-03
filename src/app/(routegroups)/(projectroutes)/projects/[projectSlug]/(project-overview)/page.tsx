@@ -46,6 +46,7 @@ type Props = {
 };
 export async function generateMetadata(props: Props) {
   const params = await props.params;
+
   return {
     title: `${params.projectSlug} | Project`,
   };
@@ -55,7 +56,6 @@ export default async function projectEnvironments(props: { params: Promise<{ pro
   const params = await props.params;
 
   const { projectSlug } = params;
-
   return (
     <PreloadQuery
       query={projectEnvironmentsQuery}
