@@ -33,9 +33,7 @@ export interface ProjectEnvironmentsData {
 export default async function projectVariables(props: { params: Promise<{ projectSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    projectSlug
-  } = params;
+  const { projectSlug } = params;
 
   return (
     <PreloadQuery

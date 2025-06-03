@@ -54,16 +54,10 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function OrgNotifications(
-  props: {
-    params: Promise<{ organizationSlug: string }>;
-  }
-) {
+export default async function OrgNotifications(props: { params: Promise<{ organizationSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    organizationSlug
-  } = params;
+  const { organizationSlug } = params;
 
   return (
     <PreloadQuery

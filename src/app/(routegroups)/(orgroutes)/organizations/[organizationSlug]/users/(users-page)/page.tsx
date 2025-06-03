@@ -38,9 +38,7 @@ export async function generateMetadata(props: Props) {
 export default async function Users(props: { params: Promise<{ organizationSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    organizationSlug
-  } = params;
+  const { organizationSlug } = params;
 
   const client = await getClient();
 

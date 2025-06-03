@@ -38,17 +38,12 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function EnvironmentVariables(
-  props: {
-    params: Promise<{ environmentSlug: string; projectSlug: string }>;
-  }
-) {
+export default async function EnvironmentVariables(props: {
+  params: Promise<{ environmentSlug: string; projectSlug: string }>;
+}) {
   const params = await props.params;
 
-  const {
-    environmentSlug,
-    projectSlug
-  } = params;
+  const { environmentSlug, projectSlug } = params;
 
   return (
     <PreloadQuery

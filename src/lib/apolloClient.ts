@@ -1,10 +1,10 @@
 import { env } from 'next-runtime-env';
 
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { registerApolloClient } from '@apollo/client-integration-nextjs';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support';
 // subscsriptions
 import { createClient } from 'graphql-ws';
 

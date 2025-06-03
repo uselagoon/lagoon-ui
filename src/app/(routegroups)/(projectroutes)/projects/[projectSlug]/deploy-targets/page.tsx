@@ -44,9 +44,7 @@ export type ProjectDeployTargetsData = {
 export default async function projectDeployTargets(props: { params: Promise<{ projectSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    projectSlug
-  } = params;
+  const { projectSlug } = params;
 
   const client = await getClient();
 

@@ -48,18 +48,12 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function Task(
-  props: {
-    params: Promise<{ environmentSlug: string; projectSlug: string; taskSlug: string }>;
-  }
-) {
+export default async function Task(props: {
+  params: Promise<{ environmentSlug: string; projectSlug: string; taskSlug: string }>;
+}) {
   const params = await props.params;
 
-  const {
-    environmentSlug,
-    projectSlug,
-    taskSlug
-  } = params;
+  const { environmentSlug, projectSlug, taskSlug } = params;
 
   return (
     <PreloadQuery

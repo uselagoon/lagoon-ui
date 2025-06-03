@@ -42,18 +42,12 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function Deployment(
-  props: {
-    params: Promise<{ environmentSlug: string; projectSlug: string; deploymentSlug: string }>;
-  }
-) {
+export default async function Deployment(props: {
+  params: Promise<{ environmentSlug: string; projectSlug: string; deploymentSlug: string }>;
+}) {
   const params = await props.params;
 
-  const {
-    environmentSlug,
-    projectSlug,
-    deploymentSlug
-  } = params;
+  const { environmentSlug, projectSlug, deploymentSlug } = params;
 
   return (
     <PreloadQuery

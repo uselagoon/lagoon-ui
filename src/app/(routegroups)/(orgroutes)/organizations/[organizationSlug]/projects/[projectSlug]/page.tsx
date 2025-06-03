@@ -49,17 +49,10 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function Project(
-  props: {
-    params: Promise<{ organizationSlug: string; projectSlug: string }>;
-  }
-) {
+export default async function Project(props: { params: Promise<{ organizationSlug: string; projectSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    organizationSlug,
-    projectSlug
-  } = params;
+  const { organizationSlug, projectSlug } = params;
 
   return (
     <PreloadQuery

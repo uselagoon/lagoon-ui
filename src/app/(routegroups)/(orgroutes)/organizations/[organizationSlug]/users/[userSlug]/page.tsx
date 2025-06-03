@@ -33,17 +33,10 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function User(
-  props: {
-    params: Promise<{ organizationSlug: string; userSlug: string }>;
-  }
-) {
+export default async function User(props: { params: Promise<{ organizationSlug: string; userSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    organizationSlug,
-    userSlug
-  } = params;
+  const { organizationSlug, userSlug } = params;
 
   const client = await getClient();
 

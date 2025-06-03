@@ -49,9 +49,7 @@ export async function generateMetadata(props: Props) {
 export default async function Backups(props: { params: Promise<{ environmentSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    environmentSlug
-  } = params;
+  const { environmentSlug } = params;
 
   return (
     <PreloadQuery

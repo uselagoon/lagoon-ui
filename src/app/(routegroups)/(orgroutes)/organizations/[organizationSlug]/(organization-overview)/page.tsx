@@ -104,9 +104,7 @@ export async function generateMetadata(props: Props) {
 export default async function OrgOverview(props: { params: Promise<{ organizationSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    organizationSlug
-  } = params;
+  const { organizationSlug } = params;
 
   return (
     <PreloadQuery

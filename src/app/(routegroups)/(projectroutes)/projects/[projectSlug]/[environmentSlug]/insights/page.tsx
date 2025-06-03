@@ -52,9 +52,7 @@ export async function generateMetadata(props: Props) {
 export default async function Insights(props: { params: Promise<{ environmentSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    environmentSlug
-  } = params;
+  const { environmentSlug } = params;
 
   return (
     <PreloadQuery

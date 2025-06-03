@@ -52,17 +52,10 @@ export async function generateMetadata(props: Props) {
   };
 }
 
-export default async function Group(
-  props: {
-    params: Promise<{ organizationSlug: string; groupSlug: string }>;
-  }
-) {
+export default async function Group(props: { params: Promise<{ organizationSlug: string; groupSlug: string }> }) {
   const params = await props.params;
 
-  const {
-    organizationSlug,
-    groupSlug
-  } = params;
+  const { organizationSlug, groupSlug } = params;
 
   const client = await getClient();
 
