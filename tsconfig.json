@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -25,32 +21,31 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/components/*": ["./src/components/*"]
     },
     "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    // "**/*.ts",
+    // "**/*.tsx",
     ".next/types/**/*.ts",
-    "styled.d.ts",
     "server.tjs",
     "src/lib/apolloClient.js",
     "src/app/api/auth/[...nextauth]/route.ts",
     "src/auth.ts",
-    "src/lib/query/projectByNameQuery.js"
+    "src/lib/query/projectByNameQuery.js",
+    // temp - until ui lib is ready
+    "app/(routegroups)/(projectroutes)/projects/(projects-page)/page.tsx",
+    "app/(routegroups)/(projectroutes)/projects/(projects-page)/loading.tsx"
   ],
   "exclude": [
     "node_modules",
-    "**/cypress/**"
+    "**/cypress/**",
+    // temp - until ui lib is ready
+    "app/(routegroups)",
+    "/components"
   ]
 }

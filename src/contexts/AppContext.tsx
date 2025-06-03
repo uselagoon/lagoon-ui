@@ -7,14 +7,13 @@ import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { useEnvContext } from 'next-runtime-env';
 import { usePathname } from 'next/navigation';
 
-import { Colors, HeaderProps, PageContainer, useTheme } from '@uselagoon/ui-library';
-import { ItemType } from 'antd/es/menu/interface';
+import { useTheme } from '@uselagoon/ui-library';
 
 import { getUserMenuItems, navLinks } from '../components/links';
 
 const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: string; logo?: ReactNode }) => {
   const { status, data } = useSession();
-  const { theme, toggleTheme } = useTheme();
+  // const { theme, toggleTheme } = useTheme();
 
   const pathname = usePathname();
 
@@ -28,9 +27,9 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
       if (logo) return logo;
 
       if (LAGOON_UI_ICON) {
-        if (theme === 'dark') {
-          return <img alt="Home" className="icon logo" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
-        }
+        // if (theme === 'dark') {
+        //   return <img alt="Home" className="icon logo" src={`data:image/svg+xml;utf8,${LAGOON_UI_ICON}`} />;
+        // }
 
         // light mode - get the direct `path` children of the <svg> with applied clip-path and #fff fill, replace with #000;
 
@@ -47,28 +46,13 @@ const AppProvider = ({ children, kcUrl, logo }: { children: ReactNode; kcUrl?: s
     };
 
     return getLogo();
-  }, [LAGOON_UI_ICON, theme]);
+  }, [LAGOON_UI_ICON]);
 
   return (
-    <PageContainer
-      showHeader
-      headerProps={{
-        userInfo: userData as HeaderProps['userInfo'],
-        userDropdownMenu: getUserMenuItems(kcUrl!) as ItemType[],
-        navLinks,
-        currentPath: pathname,
-        toggleTheme,
-        logo: memoizedLogo,
-      }}
-    >
-      <ProgressBar
-        height="2px"
-        color={Colors.lagoonBlue}
-        options={{ showSpinner: false, parent: '.content' }}
-        shallowRouting
-      />
+    <>
+      <ProgressBar height="2px" color="#00FFFF" options={{ showSpinner: false, parent: '.content' }} shallowRouting />
       {children}
-    </PageContainer>
+    </>
   );
 };
 export default AppProvider;

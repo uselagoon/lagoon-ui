@@ -25,12 +25,11 @@
     "cypress:runRbac": "cypress run --config-file cypress/cypress.config.ts --spec 'cypress/e2e/rbac/**/*.cy.ts'"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.4.0",
     "@apollo/client": "^3.13.8",
     "@apollo/experimental-nextjs-app-support": "^0.11.11",
+    "@tailwindcss/postcss": "^4.1.8",
     "@types/git-url-parse": "^9.0.3",
-    "@uselagoon/ui-library": "github:uselagoon/ui-library#unstyled-vanilla-theme",
-    "antd": "^5.20.6",
+    "@uselagoon/ui-library": "github:uselagoon/ui-library#shadcn-tailwind",
     "cryptr": "^6.3.0",
     "cypress-real-events": "^1.14.0",
     "dayjs": "^1.11.13",
@@ -42,9 +41,10 @@
     "next-nprogress-bar": "^2.3.13",
     "next-runtime-env": "^3.3.0",
     "nuqs": "^1.20.0",
+    "postcss": "^8.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "styled-components": "^6.1.13"
+    "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^2.0.2",
