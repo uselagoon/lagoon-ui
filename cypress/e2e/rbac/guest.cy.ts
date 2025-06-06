@@ -8,7 +8,7 @@ import SettingAction from 'cypress/support/actions/settings/SettingsAction';
 import TaskAction from 'cypress/support/actions/task/TaskAction';
 import TasksAction from 'cypress/support/actions/tasks/TasksAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import {aliasMutation, aliasQuery, registerIdleHandler} from 'cypress/utils/aliasQuery';
 
 const project = new ProjectAction();
 
@@ -71,21 +71,19 @@ describe('GUEST permission test suites', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);
 
       registerIdleHandler('idle');
-
-      cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'addEnvVariable');
+      cy.waitForNetworkIdle('@idle', 500);
+      cy.intercept('POST', Cypress.env('api'), (req) => {
+        aliasQuery(req, 'getProject');
       });
 
       const { name, value } = testData.variables[0];
 
-      cy.waitForNetworkIdle('@idle', 500);
+      variable.doAddVariable(name, value, 'guest');
 
-      variable.doAddVariable(name, value);
-
-      cy.wait('@gqladdEnvVariableMutation').then(interception => {
+      cy.wait('@gqlgetProjectQuery').then(interception => {
         expect(interception.response?.statusCode).to.eq(200);
 
-        const errorMessage = 'Unauthorized: You don\'t have permission to "project:add" on "env_var"';
+        const errorMessage = 'Unauthorized: You don\'t have permission to "project:viewValue" on "env_var"';
         expect(interception.response?.body).to.have.property('errors');
 
         cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
@@ -181,7 +179,7 @@ describe('GUEST permission test suites', () => {
 
       cy.waitForNetworkIdle('@idle', 500);
 
-      const errMessage = 'Error: GraphQL error: Unauthorized: You don\'t have permission to "view" on "backup"';
+      const errMessage = 'Unauthorized: You don\'t have permission to "view" on "backup"';
 
       cy.get('main').should('exist').find('p').should('exist').and('have.text', errMessage);
     });

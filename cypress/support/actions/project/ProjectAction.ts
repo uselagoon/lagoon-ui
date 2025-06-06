@@ -54,11 +54,11 @@ export default class ProjectAction {
     project.getSubmitBtn().click();
 
     project
-      .getErrorModal()
+      .getErrorNotification()
       .should('exist')
       .should(
         'include.text',
-        'GraphQL error: Unauthorized: You don\'t have permission to "deploy:development" on "environment"'
+        'Unauthorized: You don\'t have permission to "deploy:development" on "environment"'
       );
   }
 }

@@ -56,8 +56,6 @@ export default class EnvOverviewAction {
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
     });
 
-    const UiError = 'GraphQL error: ' + errorMessage;
-
-    environment.getDeleteInfo().invoke('text').should('eq', UiError);
+    environment.getDeleteInfo().invoke('text').should('eq', errorMessage);
   }
 }
