@@ -56,9 +56,6 @@ export default class ProjectAction {
     project
       .getErrorNotification()
       .should('exist')
-      .should(
-        'include.text',
-        'Unauthorized: You don\'t have permission to "deploy:development" on "environment"'
-      );
+      .should('include.text', 'Unauthorized: You don\'t have permission to "deploy:development" on "environment"');
   }
 }

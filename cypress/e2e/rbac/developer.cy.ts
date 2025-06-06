@@ -8,7 +8,7 @@ import SettingAction from 'cypress/support/actions/settings/SettingsAction';
 import TaskAction from 'cypress/support/actions/task/TaskAction';
 import TasksAction from 'cypress/support/actions/tasks/TasksAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
-import {aliasMutation, aliasQuery, registerIdleHandler} from 'cypress/utils/aliasQuery';
+import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const project = new ProjectAction();
 
@@ -73,7 +73,7 @@ describe('DEVELOPER permission test suites', () => {
 
       registerIdleHandler('idle');
       cy.waitForNetworkIdle('@idle', 500);
-      cy.intercept('POST', Cypress.env('api'), (req) => {
+      cy.intercept('POST', Cypress.env('api'), req => {
         aliasQuery(req, 'getProject');
       });
 

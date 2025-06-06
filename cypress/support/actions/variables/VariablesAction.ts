@@ -19,7 +19,7 @@ export default class VariablesAction {
     environment.getAddButton().first().click();
 
     if (permission === '') {
-      cy.get('.react-select__indicator').click({force: true});
+      cy.get('.react-select__indicator').click({ force: true });
       cy.get('#react-select-2-option-1').click();
 
       cy.getBySel('varName').focus().type(name);
