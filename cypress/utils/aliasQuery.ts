@@ -20,7 +20,7 @@ export const aliasMutation = (req: CyHttpMessages.IncomingHttpRequest, operation
 export const registerIdleHandler = (alias: string) => {
   cy.waitForNetworkIdlePrepare({
     method: 'POST',
-    pattern: '*',
+    pattern: 'http',
     alias,
   });
 };

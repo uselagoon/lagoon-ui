@@ -9,7 +9,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { createUploadLink } from 'apollo-upload-client';
 import { createClient } from 'graphql-ws';
 import { AuthContext } from 'lib/Authenticator';
-import ErrorPage from 'pages/_error.js';
+import ErrorPage from 'pages/_error';
 
 const { publicRuntimeConfig } = getConfig();
 const isServer = typeof window === 'undefined';
@@ -47,6 +47,10 @@ const ApiConnection = ({ children }) => {
           authToken: auth.apiToken,
         },
         shouldRetry: () => true,
+        on: {
+          error: err => console.error('[ws client error]', err),
+          closed: event => console.log('[ws client closed]', event),
+        },
       })
     );
 
