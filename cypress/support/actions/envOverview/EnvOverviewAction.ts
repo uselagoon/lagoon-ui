@@ -14,7 +14,7 @@ export default class EnvOverviewAction {
   doSourceCheck() {
     environment.getSource().should($anchorTag => {
       expect($anchorTag).to.have.attr('target', '_blank');
-      expect($anchorTag).to.have.attr('href', 'https:////git@example.com/lagoon-demo/tree/main');
+      expect($anchorTag).to.have.attr('href', 'https://example.com/git/lagoon-demo/tree/main');
     });
   }
 
