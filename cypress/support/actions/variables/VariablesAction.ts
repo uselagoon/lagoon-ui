@@ -15,16 +15,18 @@ export default class VariablesAction {
     environment.getEnvDataRows().getBySel('showhide-toggle').click({ multiple: true, force: true });
   }
 
-  doAddVariable(name: string, value: string) {
+  doAddVariable(name: string, value: string, permission: string = '') {
     environment.getAddButton().first().click();
 
-    cy.get('.react-select__indicator').click({ force: true });
-    cy.get('#react-select-2-option-1').click();
+    if (permission === '') {
+      cy.get('.react-select__indicator').click({ force: true });
+      cy.get('#react-select-2-option-1').click();
 
-    cy.getBySel('varName').focus().type(name);
-    cy.getBySel('varValue').focus().type(value);
+      cy.getBySel('varName').focus().type(name);
+      cy.getBySel('varValue').focus().type(value);
 
-    cy.getBySel('add-variable').click();
+      cy.getBySel('add-variable').click();
+    }
   }
 
   doDeleteVariable(name: string) {
