@@ -5,6 +5,12 @@ export default gql`
     project: projectByName(name: $name) {
       id
       name
+      organization
+      organizationMetaData {
+        name
+        friendlyName
+        description
+      }
       branches
       pullrequests
       created
