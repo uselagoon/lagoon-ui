@@ -121,12 +121,12 @@ const ProjectDetailsSidebar = ({ project }) => {
             <label>Organization</label>
             <div>
               <OrganizationLink
-                organizationSlug={project.organizationMetaData.name}
-                organizationId={project.organizationMetaData.id}
-                orgFriendlyName={project.organizationMetaData.friendlyName}
+                organizationSlug={project.organizationDetails.name}
+                organizationId={project.organizationDetails.id}
+                orgFriendlyName={project.organizationDetails.friendlyName}
                 className="deployLink deployTargets hover-state"
               >
-                {project.organizationMetaData.friendlyName || project.organizationMetaData.name}
+                {project.organizationDetails.friendlyName || project.organizationDetails.name}
               </OrganizationLink>
             </div>
           </div>

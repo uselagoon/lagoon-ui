@@ -6,10 +6,10 @@ export default gql`
       id
       name
       organization
-      organizationMetaData {
+      organizationDetails {
+        id
         name
         friendlyName
-        description
       }
       branches
       pullrequests
