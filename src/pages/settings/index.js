@@ -15,12 +15,32 @@ import QueryError from '../../components/errors/QueryError';
 import { CommonWrapper } from '../../styles/commonPageStyles';
 
 const UPDATE_USER = gql`
-  mutation updateUser($email: String!, $emailOptIn: Boolean!) {
-    updateUser(input: { user: { email: $email }, patch: { emailOptIn: $emailOptIn } }) {
-      email
-      emailOptIn
+mutation updateUser(
+  $email: String!,
+  $sshKeyChanges: Boolean!,
+  $groupRoleChanges: Boolean!,
+  $organizationRoleChanges: Boolean!
+) {
+  updateUser(
+    input: {
+      user: { email: $email },
+      patch: {
+        emailNotifications: {
+          sshKeyChanges: $sshKeyChanges,
+          groupRoleChanges: $groupRoleChanges,
+          organizationRoleChanges: $organizationRoleChanges
+        }
+      }
+    }
+  ) {
+    email
+    emailNotifications {
+      sshKeyChanges
+      groupRoleChanges
+      organizationRoleChanges
     }
   }
+}
 `;
 
 /**
@@ -33,27 +53,39 @@ const SettingsPage = () => {
   };
   const { data, loading, error, refetch } = useQuery(Me, queryVars);
 
-  const [emailOptIn, setEmailOptIn] = useState(data?.me?.emailOptIn ?? false);
+  const [emailNotifications, setEmailNotifications] = useState({
+  sshKeyChanges: data?.me?.emailNotifications?.sshKeyChanges ?? false,
+  groupRoleChanges: data?.me?.emailNotifications?.groupRoleChanges ?? false,
+  organizationRoleChanges: data?.me?.emailNotifications?.organizationRoleChanges ?? false,
+});
 
   const [updateUser, { loading: updatingOptIn, error: updateOptInError }] = useMutation(UPDATE_USER);
 
   // Sync state when data loads
   useEffect(() => {
-    if (data?.me?.emailOptIn !== undefined) setEmailOptIn(data.me.emailOptIn);
-  }, [data?.me?.emailOptIn]);
+  if (data?.me?.emailNotifications) {
+    setEmailNotifications({
+      sshKeyChanges: data.me.emailNotifications.sshKeyChanges,
+      groupRoleChanges: data.me.emailNotifications.groupRoleChanges,
+      organizationRoleChanges: data.me.emailNotifications.organizationRoleChanges,
+    });
+  }
+}, [data?.me?.emailNotifications]);
 
   const handleRefetch = async () => await refetch(queryVars);
 
-  const handleUpdateUser = async e => {
-    e.preventDefault();
-    await updateUser({
-      variables: {
-        email: data?.me?.email,
-        emailOptIn,
-      },
-    });
-    handleRefetch();
-  };
+const handleUpdateUser = async e => {
+  e.preventDefault();
+  await updateUser({
+    variables: {
+      email: data?.me?.email,
+      sshKeyChanges: emailNotifications.sshKeyChanges,
+      groupRoleChanges: emailNotifications.groupRoleChanges,
+      organizationRoleChanges: emailNotifications.organizationRoleChanges,
+    },
+  });
+  handleRefetch();
+};
 
   if (error) {
     return <QueryError error={error} />;
@@ -72,11 +104,32 @@ const SettingsPage = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={emailOptIn}
-                  onChange={e => setEmailOptIn(e.target.checked)}
-                  style={{ marginRight: '0.5rem' }}
+                  checked={emailNotifications.sshKeyChanges}
+                  onChange={e =>
+                    setEmailNotifications(n => ({ ...n, sshKeyChanges: e.target.checked }))
+                  }
                 />
-                Receive email notifications
+                Email me about SSH key changes
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={emailNotifications.groupRoleChanges}
+                  onChange={e =>
+                    setEmailNotifications(n => ({ ...n, groupRoleChanges: e.target.checked }))
+                  }
+                />
+                Email me about group role changes
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={emailNotifications.organizationRoleChanges}
+                  onChange={e =>
+                    setEmailNotifications(n => ({ ...n, organizationRoleChanges: e.target.checked }))
+                  }
+                />
+                Email me about organization role changes
               </label>
               <Button
                 variant="primary"
