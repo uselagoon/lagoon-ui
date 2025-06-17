@@ -6,11 +6,11 @@ import { useQuery } from '@apollo/react-hooks';
 import MainLayout from 'layouts/MainLayout';
 import Me from 'lib/query/Me';
 
+import EmailPreferences from '../../components/EmailPreferences';
 import SshKeys from '../../components/SshKeys';
 import AddSshKey from '../../components/SshKeys/AddSshKey';
 import QueryError from '../../components/errors/QueryError';
 import { CommonWrapper } from '../../styles/commonPageStyles';
-import EmailPreferences from "../../components/EmailPreferences";
 
 /**
  * Displays the user settings page.

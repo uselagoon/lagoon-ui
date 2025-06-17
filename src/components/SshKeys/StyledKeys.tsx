@@ -38,7 +38,7 @@ export const StyledKeys = styled.div`
       flex-grow: 3.5;
     }
   }
-  
+
   h2.ssh-title {
     margin: 0;
     text-align: left;
@@ -180,5 +180,3 @@ export const StyledKeys = styled.div`
     }
   }
 `;
-
-

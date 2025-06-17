@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import {useMutation} from "@apollo/react-hooks";
-import Button from 'components/Button';
-import { EmailForm, StyledEmailPreferences } from 'components/EmailPreferences/StyledEmailPreferences';
-import gql from "graphql-tag";
 import Skeleton from 'react-loading-skeleton';
 
+import { useMutation } from '@apollo/react-hooks';
+import Button from 'components/Button';
+import { EmailForm, StyledEmailPreferences } from 'components/EmailPreferences/StyledEmailPreferences';
+import gql from 'graphql-tag';
+
 const UPDATE_USER = gql`
-mutation updateUser(
-  $email: String!,
-  $sshKeyChanges: Boolean!,
-  $groupRoleChanges: Boolean!,
-  $organizationRoleChanges: Boolean!
-) {
-  updateUser(
-    input: {
-      user: { email: $email },
-      patch: {
-        emailNotifications: {
-          sshKeyChanges: $sshKeyChanges,
-          groupRoleChanges: $groupRoleChanges,
-          organizationRoleChanges: $organizationRoleChanges
+  mutation updateUser(
+    $email: String!
+    $sshKeyChanges: Boolean!
+    $groupRoleChanges: Boolean!
+    $organizationRoleChanges: Boolean!
+  ) {
+    updateUser(
+      input: {
+        user: { email: $email }
+        patch: {
+          emailNotifications: {
+            sshKeyChanges: $sshKeyChanges
+            groupRoleChanges: $groupRoleChanges
+            organizationRoleChanges: $organizationRoleChanges
+          }
         }
       }
-    }
-  ) {
-    email
-    emailNotifications {
-      sshKeyChanges
-      groupRoleChanges
-      organizationRoleChanges
+    ) {
+      email
+      emailNotifications {
+        sshKeyChanges
+        groupRoleChanges
+        organizationRoleChanges
+      }
     }
   }
-}
 `;
 
 const EmailPreferences = ({ me: { email, emailNotifications: notifications }, loading, handleRefetch }) => {
-
   const [emailNotifications, setEmailNotifications] = useState({
     sshKeyChanges: notifications?.sshKeyChanges ?? false,
     groupRoleChanges: notifications?.groupRoleChanges ?? false,
@@ -49,7 +49,7 @@ const EmailPreferences = ({ me: { email, emailNotifications: notifications }, lo
       groupRoleChanges: emailNotifications?.groupRoleChanges,
       organizationRoleChanges: emailNotifications?.organizationRoleChanges,
     },
-    onCompleted: (data) => {
+    onCompleted: data => {
       setEmailNotifications({
         sshKeyChanges: data?.updateUser?.emailNotifications?.sshKeyChanges,
         groupRoleChanges: data?.updateUser?.emailNotifications?.groupRoleChanges,
@@ -57,8 +57,8 @@ const EmailPreferences = ({ me: { email, emailNotifications: notifications }, lo
       });
       handleRefetch();
     },
-    onError: (error) => {
-      console.error("Update error:", error);
+    onError: error => {
+      console.error('Update error:', error);
     },
   });
 
@@ -96,44 +96,39 @@ const EmailPreferences = ({ me: { email, emailNotifications: notifications }, lo
     },
   ];
 
-  return(
-<StyledEmailPreferences>
-  <h2>Email Preferences</h2>
-  {loading ? <Skeleton count={2} height={100} /> : (
-  <EmailForm onSubmit={handleUpdateUser}>
-    <div className="columns">
-      {notificationOptions.map(option => (
-        <label className="option" key={option.key}>
-          <input
-            type="checkbox"
-            checked={!!emailNotifications[option.key]}
-            onChange={e =>
-              setEmailNotifications(n => ({ ...n, [option.key]: e.target.checked }))
-            }
-          />
-          <div className="option-content">
-            <span className="option-title">{option.title}</span>
-            <span className="option-description">{option.description}</span>
+  return (
+    <StyledEmailPreferences>
+      <h2>Email Preferences</h2>
+      {loading ? (
+        <Skeleton count={2} height={100} />
+      ) : (
+        <EmailForm onSubmit={handleUpdateUser}>
+          <div className="columns">
+            {notificationOptions.map(option => (
+              <label className="option" key={option.key}>
+                <input
+                  type="checkbox"
+                  checked={!!emailNotifications[option.key]}
+                  onChange={e => setEmailNotifications(n => ({ ...n, [option.key]: e.target.checked }))}
+                />
+                <div className="option-content">
+                  <span className="option-title">{option.title}</span>
+                  <span className="option-description">{option.description}</span>
+                </div>
+              </label>
+            ))}
           </div>
-        </label>
-      ))}
-    </div>
-    <div className="button-container">
-    <Button
-      variant="primary"
-      type="submit"
-      disabled={updatingOptIn}
-      loading={updatingOptIn}
-    >
-      {updatingOptIn ? 'Saving...' : 'Update Preferences'}
-    </Button>
-    </div>
-    {updateOptInError && <div className="error">{updateOptInError.message}</div>}
-  </EmailForm>
-  )}
-  <hr />
-</StyledEmailPreferences>
-  )
-}
+          <div className="button-container">
+            <Button variant="primary" type="submit" disabled={updatingOptIn} loading={updatingOptIn}>
+              {updatingOptIn ? 'Saving...' : 'Update Preferences'}
+            </Button>
+          </div>
+          {updateOptInError && <div className="error">{updateOptInError.message}</div>}
+        </EmailForm>
+      )}
+      <hr />
+    </StyledEmailPreferences>
+  );
+};
 
 export default EmailPreferences;

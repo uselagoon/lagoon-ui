@@ -32,7 +32,6 @@ export const EmailForm = styled.form`
     cursor: pointer;
     text-transform: none;
     color: ${props => props.theme.texts.primary};
-
   }
 
   .option-content {
@@ -46,7 +45,7 @@ export const EmailForm = styled.form`
     font-size: 1.1rem;
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     accent-color: #1967d2;
     width: 22px;
     height: 22px;
@@ -59,9 +58,5 @@ export const EmailForm = styled.form`
     margin-inline: 2rem;
     border: 1px solid hotpink;
     flex-basis: 100%;
-  }
-
-  .button-container {
-    margin: 0 auto;
   }
 `;
