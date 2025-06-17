@@ -101,6 +101,7 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
 
   return (
     <StyledKeys>
+      <h2 className="ssh-title">SSH keys</h2>
       <div className="header">
         <label className="name">Name</label>
         <label className="type">Type</label>

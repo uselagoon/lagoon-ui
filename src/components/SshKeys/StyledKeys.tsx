@@ -38,6 +38,11 @@ export const StyledKeys = styled.div`
       flex-grow: 3.5;
     }
   }
+  
+  h2.ssh-title {
+    margin: 0;
+    text-align: left;
+  }
 
   .header {
     padding-right: calc(15% + 8px);
@@ -176,24 +181,4 @@ export const StyledKeys = styled.div`
   }
 `;
 
-export const EmailForm = styled.form`
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
 
-  label {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    gap: 0.5rem;
-  }
-  .error {
-    color: red;
-    margin: 1rem;
-    margin-inline: 2rem;
-    border: 1px solid hotpink;
-    flex-basis: 100%;
-  }
-`;
