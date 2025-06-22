@@ -8,7 +8,7 @@ export default class SettingsRepository {
   }
 
   getSubmitBtn() {
-    return cy.getBySel('sshKey').parent().next();
+    return cy.getBySel('sshKeyButton');
   }
 
   getKeyToDelete() {

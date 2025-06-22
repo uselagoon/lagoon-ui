@@ -70,6 +70,7 @@ const AddSshKey = ({ me: { id, email } }) => {
                   loading={!error && called && loading}
                   disabled={!values.sshKey || !values.sshKeyName}
                   action={addSshKeyHandler}
+                  data-cy="sshKeyButton"
                 >
                   Add
                 </Button>
