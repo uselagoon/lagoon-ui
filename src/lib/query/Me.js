@@ -7,6 +7,11 @@ export default gql`
       firstName
       lastName
       email
+      emailNotifications {
+        sshKeyChanges
+        groupRoleChanges
+        organizationRoleChanges
+      }
       sshKeys {
         id
         name

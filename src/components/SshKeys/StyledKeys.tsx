@@ -39,6 +39,11 @@ export const StyledKeys = styled.div`
     }
   }
 
+  h2.ssh-title {
+    margin: 0;
+    text-align: left;
+  }
+
   .header {
     padding-right: calc(15% + 8px);
     display: flex;
