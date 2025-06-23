@@ -14,7 +14,7 @@ export default class EnvOverviewAction {
   doSourceCheck() {
     environment.getSource().should($anchorTag => {
       expect($anchorTag).to.have.attr('target', '_blank');
-      expect($anchorTag).to.have.attr('href', 'https:////git@example.com/lagoon-demo/tree/main');
+      expect($anchorTag).to.have.attr('href', 'https://example.com/git/lagoon-demo/tree/main');
     });
   }
 
@@ -56,8 +56,6 @@ export default class EnvOverviewAction {
       cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });
     });
 
-    const UiError = 'GraphQL error: ' + errorMessage;
-
-    environment.getDeleteInfo().invoke('text').should('eq', UiError);
+    environment.getDeleteInfo().invoke('text').should('eq', errorMessage);
   }
 }

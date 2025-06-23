@@ -1,7 +1,7 @@
 import { FC, ReactNode, useState } from 'react';
 import ReactSelect, { SingleValue } from 'react-select';
 
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import gql from 'graphql-tag';

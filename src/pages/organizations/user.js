@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import UserBreadcrumb from 'components/Breadcrumbs/Organizations/User';

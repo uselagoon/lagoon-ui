@@ -4,7 +4,7 @@ import getConfig from 'next/config';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Backups from 'components/Backups';
 import BackupsSkeleton from 'components/Backups/BackupsSkeleton';
 import Breadcrumbs from 'components/Breadcrumbs';

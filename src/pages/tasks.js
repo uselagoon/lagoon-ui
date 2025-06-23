@@ -5,7 +5,7 @@ import getConfig from 'next/config';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import AddTask from 'components/AddTask';
 import Breadcrumbs from 'components/Breadcrumbs';
 import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';

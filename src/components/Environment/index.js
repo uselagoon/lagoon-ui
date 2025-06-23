@@ -1,10 +1,11 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
 
 import Router from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import ActiveStandbyConfirm from 'components/ActiveStandbyConfirm';
+import Button from 'components/Button';
 import DeleteConfirm from 'components/DeleteConfirm';
 import KeyFacts from 'components/KeyFacts';
 import giturlparse from 'git-url-parse';
@@ -90,6 +91,35 @@ const Environment = ({ environment }) => {
   };
 
   const keyFacts = deduplicateFacts(environmentFacts);
+
+  const [switchActiveStandby, { loading: switchLoading, called: switchCalled, error: switchError }] = useMutation(
+    SwitchActiveStandbyMutation,
+    {
+      variables: {
+        input: {
+          project: {
+            name: environment.project.name,
+          },
+        },
+      },
+      onCompleted: navigateToTasks,
+      onError: e => console.error(e),
+    }
+  );
+
+  const [deleteEnvironment, { loading: deleteLoading, error: deleteError, data: deleteData }] = useMutation(
+    DeleteEnvironmentMutation,
+    {
+      variables: {
+        input: {
+          name: environment.name,
+          project: environment.project.name,
+        },
+      },
+      onCompleted: handleEnvironmentDelete,
+      onError: e => console.error(e),
+    }
+  );
 
   return (
     <StyledEnvironmentDetails className="details" data-cy="env-details">
@@ -213,62 +243,33 @@ const Environment = ({ environment }) => {
         environment.project.standbyProductionEnvironment &&
         environment.environmentType == 'production' &&
         environment.project.standbyProductionEnvironment == environment.name && (
-          <Mutation mutation={SwitchActiveStandbyMutation} onCompleted={navigateToTasks}>
-            {(switchActiveStandby, { loading, called, error, data }) => {
-              const switchActiveBranch = () => {
-                const input = {
-                  project: {
-                    name: environment.project.name,
-                  },
-                };
-
-                switchActiveStandby({ variables: { input } });
-              };
-
-              if (!error && called && loading) {
-                return <div>Switching Standby Environment to Active...</div>;
-              }
-
-              return (
-                <ActiveStandbyConfirm
-                  activeEnvironment={environment.project.productionEnvironment}
-                  standbyEnvironment={environment.project.standbyProductionEnvironment}
-                  onProceed={switchActiveBranch}
-                />
-              );
-            }}
-          </Mutation>
+          <>
+            {switchLoading && switchCalled && !switchError ? (
+              <Button>Switching Standby Environment to Active...</Button>
+            ) : (
+              <ActiveStandbyConfirm
+                activeEnvironment={environment.project.productionEnvironment}
+                standbyEnvironment={environment.project.standbyProductionEnvironment}
+                onProceed={switchActiveStandby}
+              />
+            )}
+          </>
         )}
-      <Mutation
-        mutation={DeleteEnvironmentMutation}
-        onCompleted={handleEnvironmentDelete}
-        onError={e => console.error(e)}
-      >
-        {(deleteEnvironment, { loading, called, error, data }) => {
-          if (error) {
-            return <div>{error.message}</div>;
-          }
-
-          return (
-            <DeleteConfirm
-              deleteType="environment"
-              deleteName={environment.name}
-              loading={loading}
-              data={data}
-              onDelete={() =>
-                deleteEnvironment({
-                  variables: {
-                    input: {
-                      name: environment.name,
-                      project: environment.project.name,
-                    },
-                  },
-                })
-              }
-            />
-          );
-        }}
-      </Mutation>
+      <>
+        {deleteError ? (
+          <div className="error">
+            <p>{deleteError.message}</p>
+          </div>
+        ) : (
+          <DeleteConfirm
+            deleteType="environment"
+            deleteName={environment.name}
+            loading={deleteLoading}
+            data={deleteData}
+            onDelete={deleteEnvironment}
+          />
+        )}
+      </>
     </StyledEnvironmentDetails>
   );
 };

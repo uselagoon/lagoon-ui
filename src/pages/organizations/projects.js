@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';
 import OrgNavTabs from 'components/Organizations/NavTabs';
