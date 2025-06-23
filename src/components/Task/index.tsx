@@ -69,12 +69,6 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
             <div>
               <label>Files</label>
               <ul className="field">
-                {task.files.map(file => (
-                  <li key={file.id}>
-                    <a href={file.download}>{file.filename}</a>
-                  </li>
-                ))}
-
                 {task.files.map(file => {
                   const { id, filename, download } = file;
                   const downloadURL = isValidUrl(download) ? download : undefined;
