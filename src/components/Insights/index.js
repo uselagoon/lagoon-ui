@@ -6,6 +6,8 @@ import { isValidUrl } from 'lib/util';
 
 import useSortableData from '../../lib/withSortedItems';
 import { StyledInsights } from './StyledInsights';
+import {useLazyQuery} from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
 const getOptionsFromInsights = (insights, key) => {
   let uniqueOptions = insights && new Set(insights.filter(f => f[key]).map(f => f[key]));
@@ -13,7 +15,19 @@ const getOptionsFromInsights = (insights, key) => {
   return insights && [...uniqueOptions].sort();
 };
 
-const Insights = ({ insights }) => {
+const getDownloadURL = gql`
+  query getEnvironment($environmentID: Int!) {
+    environment: environmentById(id: $environmentID) {
+      id
+      insights {
+        id
+        downloadUrl
+      }
+    }
+  }
+`;
+
+const Insights = ({ insights, environmentID }) => {
   const { sortedItems, getClassNamesFor, requestSort } = useSortableData(insights, {
     key: 'id',
     direction: 'ascending',
@@ -24,6 +38,52 @@ const Insights = ({ insights }) => {
 
   const [factTerm, setFactTerm] = useState('');
   const [hasFilter, setHasFilter] = React.useState(false);
+  const [insightDownloads, setInsightDownloads] = useState({});
+  const [targetInsightId, setTargetInsightId] = useState(null);
+
+  const [getInsightsDownload, { loading, error }] = useLazyQuery(getDownloadURL, {
+    variables: {
+      environmentID: environmentID,
+    },
+    fetchPolicy: 'network-only',
+    onCompleted: (data) => {
+      if (!targetInsightId || !data) {
+        setTargetInsightId(null);
+        return;
+      }
+      const allInsights = data.environment?.insights;
+      const targetInsight = allInsights?.find(insight => insight.id === targetInsightId);
+
+      if (targetInsight?.downloadUrl && isValidUrl(targetInsight.downloadUrl)) {
+        const { id, downloadUrl } = targetInsight;
+        setInsightDownloads(prevUrls => ({
+          ...prevUrls,
+          [id]: downloadUrl,
+        }));
+
+        window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        console.error(`Error fetching insights download: ${targetInsightId}`);
+      }
+      setTargetInsightId(null);
+    },
+    onError: (error) => {
+      console.error("Error fetching insights:", error);
+      setTargetInsightId(null);
+    },
+  });
+
+  const handleDownload = (insight) => {
+    if (loading) return;
+    const insightDownload = insightDownloads[insight.id];
+
+    if (insightDownload) {
+      window.open(insightDownload, '_blank', 'noopener,noreferrer');
+    } else {
+      setTargetInsightId(insight.id);
+      getInsightsDownload();
+    }
+  };
 
   const names = getOptionsFromInsights(insights, 'file');
   const types = getOptionsFromInsights(insights, 'type');
@@ -213,9 +273,7 @@ const Insights = ({ insights }) => {
         {sortedItems
           .filter(item => shouldItemBeShown(item))
           .map(insight => {
-            const { id, file, service, type, created, size, downloadUrl } = insight;
-
-            const downloadURL = isValidUrl(downloadUrl) ? downloadUrl : undefined;
+            const { id, file, service, type, created, size } = insight;
 
             return (
               <div className="data-row row-heading" key={id}>
@@ -225,9 +283,7 @@ const Insights = ({ insights }) => {
                 <div className="col col-3">{created}</div>
                 <div className="col col-3">{size}</div>
                 <div className="col col-3">
-                  <a href={downloadURL} target="_blank">
-                    <Button>Download</Button>
-                  </a>
+                  <Button action={() => handleDownload(insight)}>Download</Button>
                 </div>
               </div>
             );
