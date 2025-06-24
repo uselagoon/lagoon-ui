@@ -210,7 +210,7 @@ export const StyledOrgNotifications = styled.div`
   }
   .discord-group-label {
     color: ${color.white};
-    background-color: ${color.lightblue};
+    background-color: #5865f2;
     margin-left: 5px;
     padding: 5px;
     border-radius: 4px;

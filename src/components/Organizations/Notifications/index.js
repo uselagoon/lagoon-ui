@@ -979,7 +979,7 @@ const OrgNotifications = ({
       {contextHolder}
       <PaginatedTable
         limit={10}
-        data={[...slacks, ...emails, ...rocketchats, ...teams, ...webhooks]}
+        data={[...slacks, ...discords, ...emails, ...rocketchats, ...teams, ...webhooks]}
         columns={notificationColumns}
         labelText="Notifications"
         emptyText="No Notifications"

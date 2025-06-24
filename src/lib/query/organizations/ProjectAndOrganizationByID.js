@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import EmailFragment from 'lib/fragment/Email';
 import RocketChatFragment from 'lib/fragment/RocketChat';
 import SlackFragment from 'lib/fragment/Slack';
-import SlackFragment from 'lib/fragment/Discord';
+import DiscordFragment from 'lib/fragment/Discord';
 import TeamsFragment from 'lib/fragment/Teams';
 import WebhookFragment from 'lib/fragment/Webhook';
 
