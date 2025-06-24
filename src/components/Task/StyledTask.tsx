@@ -76,5 +76,3 @@ export const FileDownload = styled.div`
 
 
 `;
-
-

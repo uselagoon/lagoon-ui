@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import { useLazyQuery } from '@apollo/react-hooks';
 import Button from 'components/Button';
 import Prepare from 'components/RestoreButton/Prepare';
+import gql from 'graphql-tag';
 import { isValidUrl } from 'lib/util';
-import {useLazyQuery} from "@apollo/react-hooks";
-import gql from "graphql-tag";
 
 function humanFileSize(size) {
   if (!size) {
@@ -39,7 +39,7 @@ const RestoreButton = ({ backup: { backupId, restore }, environmentID }) => {
       environmentID: environmentID,
     },
     fetchPolicy: 'network-only',
-    onCompleted: (data) => {
+    onCompleted: data => {
       const allBackups = data?.environment?.backups;
       const targetBackup = allBackups.find(b => b.backupId === backupId);
       const restoreData = targetBackup?.restore;
@@ -53,10 +53,10 @@ const RestoreButton = ({ backup: { backupId, restore }, environmentID }) => {
 
         window.open(restoreLocation, '_blank', 'noopener,noreferrer');
       } else {
-        console.error("Error fetching restore");
+        console.error('Error fetching restore');
       }
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Error fetching restore:', error);
     },
   });
@@ -82,11 +82,8 @@ const RestoreButton = ({ backup: { backupId, restore }, environmentID }) => {
     return <p>Error preparing download. Please try again.</p>;
   }
   return (
-    <Button
-      variant={`download ${isOverflowing ? 'btn-download-lg' : ''}`}
-      action={() => handleDownload()}
-    >
-      {loading ? 'Preparing...' : formattedSize ? `Download (${formattedSize})` : "Download"}
+    <Button variant={`download ${isOverflowing ? 'btn-download-lg' : ''}`} action={() => handleDownload()}>
+      {loading ? 'Preparing...' : formattedSize ? `Download (${formattedSize})` : 'Download'}
     </Button>
   );
 };

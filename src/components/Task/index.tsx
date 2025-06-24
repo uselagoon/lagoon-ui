@@ -1,15 +1,15 @@
-import React, {FC, useState} from 'react';
+import React, { FC, useState } from 'react';
 
+import { useLazyQuery } from '@apollo/react-hooks';
+import Button from 'components/Button';
 import CancelTask from 'components/CancelTask';
 import LogViewer from 'components/LogViewer';
+import gql from 'graphql-tag';
 import { getProcessDuration, isValidUrl } from 'lib/util';
 import moment from 'moment';
 import { FieldWrapper } from 'styles/commonStyles';
 
-import { CancelRow, StyledTask, FileDownload } from './StyledTask';
-import gql from "graphql-tag";
-import {useLazyQuery} from "@apollo/react-hooks";
-import Button from "components/Button";
+import { CancelRow, FileDownload, StyledTask } from './StyledTask';
 
 const getTaskFilesDownload = gql`
   query getTask($taskName: String!) {
@@ -62,7 +62,7 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
       taskName: task.taskName,
     },
     fetchPolicy: 'network-only',
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (!targetFileId || !data) {
         setTargetFileId(null);
         return;
@@ -151,8 +151,7 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
                       </li>
                     </FileDownload>
                   );
-                })
-                }
+                })}
               </ul>
             </div>
           </FieldWrapper>

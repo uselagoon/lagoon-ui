@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
+import { useLazyQuery } from '@apollo/react-hooks';
 import Button from 'components/Button';
 import SelectFilter from 'components/Filters';
+import gql from 'graphql-tag';
 import { isValidUrl } from 'lib/util';
 
 import useSortableData from '../../lib/withSortedItems';
 import { StyledInsights } from './StyledInsights';
-import {useLazyQuery} from "@apollo/react-hooks";
-import gql from "graphql-tag";
 
 const getOptionsFromInsights = (insights, key) => {
   let uniqueOptions = insights && new Set(insights.filter(f => f[key]).map(f => f[key]));
@@ -46,7 +46,7 @@ const Insights = ({ insights, environmentID }) => {
       environmentID: environmentID,
     },
     fetchPolicy: 'network-only',
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (!targetInsightId || !data) {
         setTargetInsightId(null);
         return;
@@ -67,13 +67,13 @@ const Insights = ({ insights, environmentID }) => {
       }
       setTargetInsightId(null);
     },
-    onError: (error) => {
-      console.error("Error fetching insights:", error);
+    onError: error => {
+      console.error('Error fetching insights:', error);
       setTargetInsightId(null);
     },
   });
 
-  const handleDownload = (insight) => {
+  const handleDownload = insight => {
     if (loading) return;
     const insightDownload = insightDownloads[insight.id];
 

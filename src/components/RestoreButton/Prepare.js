@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
 
+import { useMutation } from '@apollo/react-hooks';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 
@@ -13,8 +13,8 @@ const addRestoreMutation = gql`
 `;
 
 const Prepare = ({ backupId }) => {
-  const [addRestore, {loading, error, called}] = useMutation(addRestoreMutation, {
-    variables: {input: {backupId}},
+  const [addRestore, { loading, error, called }] = useMutation(addRestoreMutation, {
+    variables: { input: { backupId } },
     onCompleted: () => {
       console.log('Restore added successfully');
     },
