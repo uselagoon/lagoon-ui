@@ -82,6 +82,7 @@ export const PageOrgNotifications = ({ router }) => {
 
           <OrgNotifications
             slacks={organization.slacks}
+            discords={organization.discords}
             emails={organization.emails}
             rocketchats={organization.rocketchats}
             teams={organization.teams}

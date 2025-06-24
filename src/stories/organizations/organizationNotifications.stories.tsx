@@ -135,6 +135,26 @@ export const Default: Story = {
           });
         }),
 
+        graphql.mutation('addNotificationDiscord', ({ variables }) => {
+          const { name, webhook } = variables;
+
+          mockOrganization.webhook = [
+            {
+              name,
+              webhook,
+              channel: '',
+              __typename: 'NotificationDiscord',
+            },
+            ...mockOrganization.webhook,
+          ];
+          delay();
+          return HttpResponse.json<{ data: AddMutationResponseType<'addNotificationRocketChat'> }>({
+            data: {
+              addNotificationRocketChat: {},
+            },
+          });
+        }),
+        
         graphql.mutation('addNotificationWebhook', ({ variables }) => {
           const { name, webhook } = variables;
 
@@ -157,9 +177,9 @@ export const Default: Story = {
 
         graphql.mutation('removeNotification', ({ variables }) => {
           const { name } = variables;
-          const { slacks, rocketchats, teams, webhook, emails } = mockOrganization;
+          const { slacks, discords, rocketchats, teams, webhook, emails } = mockOrganization;
 
-          const allNotifications = [slacks, rocketchats, teams, webhook, emails].flat();
+          const allNotifications = [slacks, discords, rocketchats, teams, webhook, emails].flat();
 
           const found = allNotifications.find(notification => {
             return notification.name === name;
