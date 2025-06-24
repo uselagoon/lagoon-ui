@@ -45,8 +45,8 @@ const backupsData = [
   },
 ] satisfies BackupsProps['backups'];
 
-export const Default = () => <Backups backups={backupsData} />;
+export const Default = () => <Backups backups={backupsData} id={''} />;
 
-export const NoBackups = () => <Backups backups={[]} />;
+export const NoBackups = () => <Backups backups={[]} id={''} />;
 
 export default meta;
