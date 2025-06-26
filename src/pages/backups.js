@@ -186,7 +186,7 @@ export const PageBackups = ({ router }) => {
               If you need a current database or files dump, use the tasks "drush sql-dump" or "drush archive-dump" in
               the new "Tasks" section!
             </div>
-            <Backups backups={environment.backups} />
+            <Backups backups={environment.backups} id={environment.id} />
             <ResultsLimited
               limit={resultLimit}
               changeLimit={setResultLimit}

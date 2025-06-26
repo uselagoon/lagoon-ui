@@ -1,12 +1,28 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
+import { useLazyQuery } from '@apollo/react-hooks';
+import Button from 'components/Button';
 import CancelTask from 'components/CancelTask';
 import LogViewer from 'components/LogViewer';
+import gql from 'graphql-tag';
 import { getProcessDuration, isValidUrl } from 'lib/util';
 import moment from 'moment';
 import { FieldWrapper } from 'styles/commonStyles';
 
-import { CancelRow, StyledTask } from './StyledTask';
+import { CancelRow, FileDownload, StyledTask } from './StyledTask';
+
+const getTaskFilesDownload = gql`
+  query getTask($taskName: String!) {
+    taskByTaskName(taskName: $taskName) {
+      id
+      files {
+        id
+        filename
+        download
+      }
+    }
+  }
+`;
 
 type TaskFile = {
   id: string;
@@ -29,11 +45,63 @@ interface TaskProps {
   environmentId: number;
 }
 
+interface GetTaskFilesDownloadData {
+  taskByTaskName: {
+    files: TaskFile[];
+  };
+}
+
 /**
  * Displays information about an environment task.
  */
 const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
+  const [fileDownloads, setFileDownloads] = useState<Record<string, string>>({});
+  const [targetFileId, setTargetFileId] = useState<string | null>(null);
+  const [getFilesDownload, { loading, error }] = useLazyQuery<GetTaskFilesDownloadData>(getTaskFilesDownload, {
+    variables: {
+      taskName: task.taskName,
+    },
+    fetchPolicy: 'network-only',
+    onCompleted: data => {
+      if (!targetFileId || !data) {
+        setTargetFileId(null);
+        return;
+      }
+      const allFiles = data.taskByTaskName?.files;
+      const targetFile = allFiles?.find(file => file.id === targetFileId);
+
+      if (targetFile?.download && isValidUrl(targetFile.download)) {
+        const { id, download } = targetFile;
+        setFileDownloads(prevUrls => ({
+          ...prevUrls,
+          [id]: download,
+        }));
+        window.open(download, '_blank', 'noopener,noreferrer');
+      } else {
+        console.error(`Error fetching file download: ${targetFileId}`);
+      }
+      setTargetFileId(null);
+    },
+    onError: () => {
+      console.error(error);
+      setTargetFileId(null);
+    },
+  });
+
+  const handleDownload = (fileToDownload: TaskFile) => {
+    if (loading) return;
+    const fileDownload = fileDownloads[fileToDownload.id];
+
+    if (fileDownload) {
+      window.open(fileDownload, '_blank', 'noopener,noreferrer');
+    } else {
+      setTargetFileId(fileToDownload.id);
+      getFilesDownload();
+    }
+  };
+
   if (!task) return <p style={{ textAlign: 'center' }}>Task not found</p>;
+
   return (
     <StyledTask className="task">
       <div className="details">
@@ -70,12 +138,18 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
               <label>Files</label>
               <ul className="field">
                 {task.files.map(file => {
-                  const { id, filename, download } = file;
-                  const downloadURL = isValidUrl(download) ? download : undefined;
+                  const { id, filename } = file;
                   return (
-                    <li key={id}>
-                      <a href={downloadURL}>{filename}</a>
-                    </li>
+                    <FileDownload key={id}>
+                      <li key={id}>
+                        <Button
+                          // @ts-ignore
+                          action={() => handleDownload(file)}
+                        >
+                          {filename}
+                        </Button>
+                      </li>
+                    </FileDownload>
                   );
                 })}
               </ul>

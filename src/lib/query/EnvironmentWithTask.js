@@ -26,7 +26,6 @@ export default gql`
         files {
           id
           filename
-          download
         }
       }
     }
