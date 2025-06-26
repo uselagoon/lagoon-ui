@@ -264,6 +264,7 @@ const Organization = ({ organization, refetch }) => {
             {quotaDisplay(
               'notification',
               organization.slacks.length +
+                organization.discords.length +
                 organization.rocketchats.length +
                 organization.teams.length +
                 organization.emails.length +

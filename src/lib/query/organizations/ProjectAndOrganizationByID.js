@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import EmailFragment from 'lib/fragment/Email';
 import RocketChatFragment from 'lib/fragment/RocketChat';
 import SlackFragment from 'lib/fragment/Slack';
+import DiscordFragment from 'lib/fragment/Discord';
 import TeamsFragment from 'lib/fragment/Teams';
 import WebhookFragment from 'lib/fragment/Webhook';
 
@@ -37,6 +38,10 @@ export default gql`
         __typename
         ...Slack
       }
+      discords: notifications(type: DISCORD) {
+        __typename
+        ...Discord
+      }
       rocketchats: notifications(type: ROCKETCHAT) {
         __typename
         ...RocketChat
@@ -56,6 +61,7 @@ export default gql`
     }
   }
   ${SlackFragment}
+  ${DiscordFragment}
   ${RocketChatFragment}
   ${EmailFragment}
   ${TeamsFragment}

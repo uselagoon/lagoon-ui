@@ -26,6 +26,10 @@ export const PageOrganization = ({ router }) => {
     variables: { name: router.query.organizationSlug },
   });
 
+  console.log("GraphQL loading:", loading);
+  console.log("GraphQL data:", data);
+  console.log("GraphQL error:", error);
+
   const { startTour } = useTourContext();
 
   useEffect(() => {

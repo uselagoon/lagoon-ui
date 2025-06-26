@@ -68,6 +68,7 @@ export const AddNotificationToProject = ({
               }
               var ops = [
                 ...options.slacks,
+                ...options.discords,
                 ...options.rocketchats,
                 ...options.teams,
                 ...options.emails,

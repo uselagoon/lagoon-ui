@@ -10,6 +10,10 @@ export default gql`
         __typename
         ...Slack
       }
+      discords: notifications(type: DISCORD) {
+        __typename
+        ...Discord
+      }
       rocketchats: notifications(type: ROCKETCHAT) {
         __typename
         ...RocketChat
@@ -49,5 +53,9 @@ export default gql`
     webhook
     name
     channel
+  }
+  fragment Discord on NotificationDiscord {
+    webhook
+    name
   }
 `;

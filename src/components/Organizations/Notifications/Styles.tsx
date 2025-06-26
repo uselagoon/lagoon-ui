@@ -208,6 +208,14 @@ export const StyledOrgNotifications = styled.div`
     border-radius: 4px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
   }
+  .discord-group-label {
+    color: ${color.white};
+    background-color: #5865f2;
+    margin-left: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.03);
+  }
   .rocketchat-group-label {
     color: ${color.white};
     background-color: ${color.teal};
