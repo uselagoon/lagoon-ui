@@ -44,7 +44,7 @@ const RestoreButton = ({ backup: { backupId, restore }, environmentID }) => {
       const targetBackup = allBackups.find(b => b.backupId === backupId);
       const restoreData = targetBackup?.restore;
 
-      if (restoreData.restoreLocation && isValidUrl(restoreData.restoreLocation)) {
+      if (restoreData && restoreData.restoreLocation && isValidUrl(restoreData.restoreLocation)) {
         const { restoreLocation } = restoreData;
         setRestoreDownloads(prevUrls => ({
           ...prevUrls,
