@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useMutation } from '@apollo/react-hooks';
 import Button from 'components/Button';
 import { StyledAccount, AccountForm } from 'components/Account/StyledAccount';
@@ -53,7 +54,7 @@ const Account = ({ me: { email, firstName, lastName }, loading, handleRefetch })
       lname: formData.lastName,
     },
     onCompleted: () => {
-      handleRefetch(); // re-fetch user data if needed
+      handleRefetch(); 
     },
     onError: (err) => {
       console.error('Update failed:', err);
@@ -73,49 +74,51 @@ const Account = ({ me: { email, firstName, lastName }, loading, handleRefetch })
     updateUser();
   };
 
-  if (loading) return <p>Loading...</p>;
-
   return (
       <StyledAccount>
           <h2>Your Account</h2>
-          <AccountForm onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>First Name</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="button-container">
-                  <Button variant="primary" type="submit" disabled={updating} loading={updating}>
-                    {updating ? 'Saving...' : 'Update Account'}
-                  </Button>
-              </div>
-              {error && <div className="error">{error.message}</div>}
-          </AccountForm>
+          {loading ? (
+              <Skeleton count={3} height={40} style={{ marginBottom: '1rem' }} />
+          ) : (
+              <AccountForm onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="button-container">
+                      <Button variant="primary" type="submit" disabled={updating} loading={updating}>
+                        {updating ? 'Saving...' : 'Update Account'}
+                      </Button>
+                  </div>
+                  {error && <div className="error">{error.message}</div>}
+              </AccountForm>
+          )}
       </StyledAccount>
   );
 };
