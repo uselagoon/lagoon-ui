@@ -119,9 +119,7 @@ const ProjectDetailsSidebar = ({ project }) => {
         <FieldWrapper className="field-wrapper organization">
           <div>
             <label>Organization</label>
-            <div>
-              {project?.organizationDetails.friendlyName || project?.organizationDetails.name}
-            </div>
+            <div>{project?.organizationDetails.friendlyName || project?.organizationDetails.name}</div>
           </div>
         </FieldWrapper>
       )}
