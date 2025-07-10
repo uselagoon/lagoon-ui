@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import MainLayout from 'layouts/MainLayout';
 import Me from 'lib/query/Me';
 
+import EmailPreferences from '../../components/EmailPreferences';
 import SshKeys from '../../components/SshKeys';
 import AddSshKey from '../../components/SshKeys/AddSshKey';
 import QueryError from '../../components/errors/QueryError';
@@ -34,8 +35,8 @@ const SettingsPage = () => {
       </Head>
       <MainLayout>
         <CommonWrapper>
-          <h2>SSH keys</h2>
           <div className="content">
+            <EmailPreferences me={data?.me || {}} loading={loading} handleRefetch={handleRefetch} />
             <SshKeys me={data?.me || {}} loading={loading} handleRefetch={handleRefetch} />
             <AddSshKey me={data?.me || {}} />
           </div>

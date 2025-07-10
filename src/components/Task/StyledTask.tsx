@@ -46,3 +46,33 @@ export const CancelRow = styled.div`
     max-width: 120px;
   }
 `;
+
+export const FileDownload = styled.div`
+  Button {
+    background: none;
+    border: none;
+    padding: 0 !important;
+    margin: 0;
+    display: inline;
+  
+    color: #497ffa; /* A typical link blue color */
+    text-decoration: none;
+    font-family: inherit; /* Inherit font from parent */
+    font-size: inherit;   /* Inherit font size from parent */
+    text-align: left;     /* Ensure text alignment is correct */
+  
+    /* Interaction styles */
+    cursor: pointer;
+    
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      background-color: transparent;
+    }
+  }
+  
+  
+}
+
+
+`;

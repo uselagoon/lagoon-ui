@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import OrganizationLink from 'components/link/Organizations/Organization';
 import ProjectChildPageLink from 'components/link/ProjectChildPageLink';
 import giturlparse from 'git-url-parse';
 import moment from 'moment';
@@ -111,6 +112,14 @@ const ProjectDetailsSidebar = ({ project }) => {
                 View
               </ProjectChildPageLink>
             </div>
+          </div>
+        </FieldWrapper>
+      )}
+      {project?.organization && (
+        <FieldWrapper className="field-wrapper organization">
+          <div>
+            <label>Organization</label>
+            <div>{project?.organizationDetails.friendlyName || project?.organizationDetails.name}</div>
           </div>
         </FieldWrapper>
       )}

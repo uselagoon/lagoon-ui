@@ -17,9 +17,10 @@ export interface BackupsProps {
       restoreSize?: number;
     };
   }[];
+  id: string;
 }
 
-const Backups: FC<BackupsProps> = ({ backups }) => (
+const Backups: FC<BackupsProps> = ({ backups, id }) => (
   <div className="backups" data-cy="backups">
     <BackupsHeader>
       <label className="source">Source</label>
@@ -36,7 +37,7 @@ const Backups: FC<BackupsProps> = ({ backups }) => (
 
           <div className="backupid">{backup.backupId}</div>
           <div className="download" data-cy="backup-download">
-            <RestoreButton backup={backup} />
+            <RestoreButton backup={backup} environmentID={id} />
           </div>
         </div>
       ))}

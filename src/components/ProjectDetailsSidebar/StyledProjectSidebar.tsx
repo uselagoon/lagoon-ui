@@ -175,6 +175,12 @@ export const FieldWrapper = styled.div`
     }
   }
 
+  &.organization {
+    &:before {
+      background-image: url('/static/images/organization.svg');
+    }
+  }
+
   &.target {
     &:before {
       background-image: url('/static/images/target.svg');

@@ -91,7 +91,7 @@ export const PageInsights = ({ router }) => {
             {environment && (
               <div className="content">
                 {!environment.insights && <p>{`No insights found for '${router.query.environmentSlug}'`}</p>}
-                {environment.insights && <Insights insights={environment.insights} />}
+                {environment.insights && <Insights insights={environment.insights} environmentID={environment.id} />}
               </div>
             )}
           </div>

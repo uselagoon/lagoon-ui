@@ -19,7 +19,6 @@ export default gql`
         restore {
           id
           status
-          restoreLocation
           restoreSize
         }
       }
