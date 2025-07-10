@@ -1,11 +1,10 @@
 import React, { FC, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
 import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -80,6 +79,11 @@ interface UserProps {
   orgFriendlyName: string;
 }
 
+type RemoveUserFromGroupVars = {
+  email: string;
+  groupId: string;
+};
+
 /**
  * Displays user information.
  */
@@ -98,6 +102,15 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
   });
 
   const [updateUser] = useMutation(ADD_GROUP_MEMBER_MUTATION);
+
+  const [removeUserFromGroup, { called, error }] = useMutation<RemoveUserFromGroupVars>(DELETE_USER_FROM_GROUP, {
+    onCompleted: () => {
+      refetch();
+    },
+    onError: error => {
+      console.error(error);
+    },
+  });
 
   const closeEditModal = () => {
     setEditModalState({
@@ -281,40 +294,22 @@ const User: FC<UserProps> = ({ user, organizationName, organizationId, refetch, 
               </RemoveModalParagraph>
 
               <Footer>
-                <Mutation<{
-                  removeUserFromGroup: {
-                    email: string;
-                    groupId: string;
-                  };
-                }>
-                  mutation={DELETE_USER_FROM_GROUP}
+                {error && <div className="error">{error.message}</div>}
+                <Button
+                  variant="primary"
+                  disabled={called}
+                  loading={called}
+                  action={() =>
+                    void removeUserFromGroup({
+                      variables: {
+                        email: user?.email,
+                        groupId: group?.id,
+                      },
+                    })
+                  }
                 >
-                  {(removeUserFromGroup, { called, error, data }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refetch();
-                    }
-                    return (
-                      <Button
-                        variant="primary"
-                        disabled={called}
-                        loading={called}
-                        action={() => {
-                          void removeUserFromGroup({
-                            variables: {
-                              email: user?.email,
-                              groupId: group?.id,
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
+                  Continue
+                </Button>
                 <Button variant="ghost" action={closeGroupModal}>
                   Cancel
                 </Button>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
 
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -48,6 +48,15 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
   const [deleteUserModalOpen, setDeleteUserModalOpen] = useState(false);
 
   const [dynamicUsers, setDynamicUsers] = useState(users);
+
+  const [removeUserFromOrganizationGroups, { error, loading }] = useMutation(DELETE_USER, {
+    onCompleted: () => {
+      refetch().then(() => setDeleteUserModalOpen(false));
+    },
+    onError: error => {
+      console.error(error);
+    },
+  });
 
   const closeUserModal = () => {
     setSelectedUser('');
@@ -146,37 +155,25 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
                     organization, you might not be able to reverse this.
                   </RemoveModalParagraph>
 
+                  {error && <div className="error">{error.message}</div>}
+
                   <Footer>
-                    <Mutation mutation={DELETE_USER}>
-                      {(removeUserFromOrganizationGroups, { called, error, data }) => {
-                        if (error) {
-                          return <div className="error">{error.message}</div>;
-                        }
-                        if (data) {
-                          refetch().then(() => {
-                            return setDeleteUserModalOpen(false);
-                          });
-                        }
-                        return (
-                          <Button
-                            testId="confirmDeletion"
-                            disabled={called}
-                            loading={called}
-                            variant="primary"
-                            action={() => {
-                              removeUserFromOrganizationGroups({
-                                variables: {
-                                  email: user?.email,
-                                  organization: organization.id,
-                                },
-                              });
-                            }}
-                          >
-                            Continue
-                          </Button>
-                        );
-                      }}
-                    </Mutation>
+                    <Button
+                      testId="confirmDeletion"
+                      disabled={loading}
+                      loading={loading}
+                      variant="primary"
+                      action={() =>
+                        removeUserFromOrganizationGroups({
+                          variables: {
+                            email: user?.email,
+                            organization: organization.id,
+                          },
+                        })
+                      }
+                    >
+                      Continue
+                    </Button>
                     <Button variant="ghost" action={closeUserModal}>
                       Cancel
                     </Button>

@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
 import BulkDeploymentBreadcrumb from 'components/Breadcrumbs/BulkDeployment';
 import BulkDeployments from 'components/BulkDeployments';

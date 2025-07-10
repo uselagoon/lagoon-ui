@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 
 import Link from 'next/link';
 
 import { EditOutlined, EnvironmentOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import OrgManageLink from 'components/link/Organizations/Manage';
@@ -52,6 +52,40 @@ const Organization = ({ organization, refetch }) => {
 
   const [descModalOpen, setDescModalOpen] = useState(false);
   const [description, setDescription] = useState(organization.description);
+
+  const [updateOrgFriendlyName, { error: updateNameError, loading: updateNameloading }] = useMutation(
+    UPDATE_ORGANIZATION_FRIENDLY_NAME,
+    {
+      variables: {
+        id: organization?.id,
+        friendlyName,
+      },
+      onCompleted: () => {
+        refetch().then(() => {
+          modalAction('close', 'name')();
+          setFriendlyName('');
+        });
+      },
+      onError: e => console.error(e),
+    }
+  );
+
+  const [updateOrgDescription, { error: updateDescError, loading: updateDescLoading }] = useMutation(
+    UPDATE_ORGANIZATION_DESCRIPTION,
+    {
+      variables: {
+        id: organization.id,
+        description,
+      },
+      onCompleted: () => {
+        refetch().then(() => {
+          modalAction('close', 'description')();
+          setDescription('');
+        });
+      },
+      onError: e => console.error(e),
+    }
+  );
 
   const quotaDisplay = (quota, quotaNumber, quotaLimit, showLink = true) => {
     const pluralName = quota + 's';
@@ -148,38 +182,18 @@ const Organization = ({ organization, refetch }) => {
               </div>
 
               <Footer>
-                <Mutation mutation={UPDATE_ORGANIZATION_FRIENDLY_NAME} onError={e => console.error(e)}>
-                  {(updateOrgFriendlyName, { error, data, called }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refetch().then(() => {
-                        modalAction('close', 'name')();
-                        setFriendlyName('');
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="submit-btn"
-                        variant="primary"
-                        disabled={called}
-                        loading={called}
-                        action={() => {
-                          friendlyName &&
-                            updateOrgFriendlyName({
-                              variables: {
-                                id: organization.id,
-                                friendlyName,
-                              },
-                            });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
+                {updateNameError && <div>{updateNameError.message}</div>}
+                <Button
+                  testId="submit-btn"
+                  variant="primary"
+                  disabled={updateNameloading}
+                  loading={updateNameloading}
+                  action={() => {
+                    friendlyName && updateOrgFriendlyName();
                   }}
-                </Mutation>
+                >
+                  Continue
+                </Button>
                 <Button testId="cancel" variant="ghost" action={modalAction('close', 'name')}>
                   Cancel
                 </Button>
@@ -218,38 +232,18 @@ const Organization = ({ organization, refetch }) => {
                 </label>
               </div>
               <Footer>
-                <Mutation mutation={UPDATE_ORGANIZATION_DESCRIPTION} onError={e => console.error(e)}>
-                  {(updateOrgDescription, { error, data, called }) => {
-                    if (error) {
-                      return <div className="error">{error.message}</div>;
-                    }
-                    if (data) {
-                      refetch().then(() => {
-                        modalAction('close', 'description')();
-                        setDescription('');
-                      });
-                    }
-                    return (
-                      <Button
-                        testId="submit-btn"
-                        variant="primary"
-                        disabled={called}
-                        loading={called}
-                        action={() => {
-                          description &&
-                            updateOrgDescription({
-                              variables: {
-                                id: organization.id,
-                                description,
-                              },
-                            });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
+                {updateDescError && <div>{updateDescError.message}</div>}
+                <Button
+                  testId="submit-btn"
+                  variant="primary"
+                  disabled={updateDescLoading}
+                  loading={updateDescLoading}
+                  action={() => {
+                    description && updateOrgDescription();
                   }}
-                </Mutation>
+                >
+                  Continue
+                </Button>
                 <Button testId="cancel" variant="ghost" action={modalAction('close', 'description')}>
                   Cancel
                 </Button>

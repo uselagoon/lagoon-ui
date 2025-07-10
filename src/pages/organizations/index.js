@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Head from 'next/head';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Organizations from 'components/Organizations/Organizations';
 import OrganizationsSkeleton from 'components/Organizations/Organizations/OrganizationsSkeleton';
 import MainLayout from 'layouts/MainLayout';

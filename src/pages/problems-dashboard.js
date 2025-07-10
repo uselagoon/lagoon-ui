@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Query } from 'react-apollo';
 
 import Head from 'next/head';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import SelectFilter from 'components/Filters';
 import getSeverityEnumQuery, { getSourceOptions } from 'components/Filters/helpers';
 import ProblemsByIdentifier from 'components/ProblemsByIdentifier';
@@ -26,16 +25,17 @@ const ProblemsDashboardPage = () => {
 
   const { data: severities, loading: severityLoading } = useQuery(getSeverityEnumQuery);
   const { data: sources, loading: sourceLoading } = useQuery(getSourceOptions);
+  const { data, loading, error } = useQuery(AllProblemsQuery, {
+    variables: { source, severity, envType },
+  });
 
   const handleEnvTypeChange = envType => setEnvType(envType.value);
-
   const handleSourceChange = source => {
-    let values = (source && source.map(s => s.value)) || [];
+    let values = source?.map(s => s.value) || [];
     setSource(values);
   };
-
   const handleSeverityChange = severity => {
-    let values = (severity && severity.map(s => s.value)) || [];
+    let values = severity?.map(s => s.value) || [];
     setSeverity(values);
   };
 
@@ -48,12 +48,70 @@ const ProblemsDashboardPage = () => {
   };
 
   const groupByProblemIdentifier = problems =>
-    problems &&
-    problems.reduce((arr, problem) => {
+    problems?.reduce((arr, problem) => {
       arr[problem.identifier] = arr[problem.identifier] || [];
       arr[problem.identifier].push(problem);
       return arr;
     }, {});
+
+  const ComposedComponent = R.compose(
+    withQueryLoadingNoHeader,
+    withQueryErrorNoHeader
+  )(({ data: { problems } }) => {
+    const problemsById = groupByProblemIdentifier(problems);
+    const problemIdentifiers = Object.keys(problemsById || {}).map(p => {
+      const problem = problemsById[p][0];
+      return {
+        identifier: p,
+        source: problem.source,
+        severity: problem.severity,
+        problems: problemsById[p],
+      };
+    });
+
+    const critical = problems?.filter(p => p.severity === 'CRITICAL').length || 0;
+    const high = problems?.filter(p => p.severity === 'HIGH').length || 0;
+    const medium = problems?.filter(p => p.severity === 'MEDIUM').length || 0;
+    const low = problems?.filter(p => p.severity === 'LOW').length || 0;
+
+    return (
+      <ProblemsDashBoardWrapper>
+        <div className="content">
+          <div className="overview">
+            <ul className="overview-list">
+              <li className="result">
+                <label>Results: </label>
+                {problems?.length} Problems
+              </li>
+              <li className="result">
+                <label>Critical: </label>
+                {critical}
+              </li>
+              <li className="result">
+                <label>High: </label>
+                {high}
+              </li>
+              <li className="result">
+                <label>Medium: </label>
+                {medium}
+              </li>
+              <li className="result">
+                <label>Low: </label>
+                {low}
+              </li>
+            </ul>
+            <ul className="overview-list">
+              <li className="result">
+                <label>Showing: </label>
+                {envType.charAt(0).toUpperCase() + envType.slice(1).toLowerCase()} environments
+              </li>
+            </ul>
+          </div>
+          <ProblemsByIdentifier problems={problemIdentifiers} />
+        </div>
+      </ProblemsDashBoardWrapper>
+    );
+  });
 
   return (
     <>
@@ -90,80 +148,7 @@ const ProblemsDashboardPage = () => {
             />
           </div>
         </ProblemDashboardFilterWrapper>
-        <Query
-          query={AllProblemsQuery}
-          variables={{
-            source: source,
-            severity: severity,
-            envType: envType,
-          }}
-          displayName="AllProblemsQuery"
-        >
-          {R.compose(
-            withQueryLoadingNoHeader,
-            withQueryErrorNoHeader
-          )(({ data: { problems } }) => {
-            // Group problems by identifier
-            const problemsById = groupByProblemIdentifier(problems) || [];
-            const problemIdentifiers =
-              problemsById &&
-              Object.keys(problemsById).map(p => {
-                const problem = problemsById[p][0];
-
-                return {
-                  identifier: p,
-                  source: problem.source,
-                  severity: problem.severity,
-                  problems: problemsById[p],
-                };
-              }, []);
-
-            const critical = problems && problems.filter(p => p.severity === 'CRITICAL').length;
-            const high = problems && problems.filter(p => p.severity === 'HIGH').length;
-            const medium = problems && problems.filter(p => p.severity === 'MEDIUM').length;
-            const low = problems && problems.filter(p => p.severity === 'LOW').length;
-
-            return (
-              <>
-                <ProblemsDashBoardWrapper>
-                  <div className="content">
-                    <div className="overview">
-                      <ul className="overview-list">
-                        <li className="result">
-                          <label>Results: </label>
-                          {problems && Object.keys(problems).length} Problems
-                        </li>
-                        <li className="result">
-                          <label>Critical: </label>
-                          {critical}
-                        </li>
-                        <li className="result">
-                          <label>High: </label>
-                          {high}
-                        </li>
-                        <li className="result">
-                          <label>Medium: </label>
-                          {medium}
-                        </li>
-                        <li className="result">
-                          <label>Low: </label>
-                          {low}
-                        </li>
-                      </ul>
-                      <ul className="overview-list">
-                        <li className="result">
-                          <label>Showing: </label>
-                          {envType.charAt(0).toUpperCase() + envType.slice(1).toLowerCase()} environments
-                        </li>
-                      </ul>
-                    </div>
-                    <ProblemsByIdentifier problems={problemIdentifiers || []} />
-                  </div>
-                </ProblemsDashBoardWrapper>
-              </>
-            );
-          })}
-        </Query>
+        <ComposedComponent loading={loading} error={error} data={data} />
       </MainLayout>
     </>
   );

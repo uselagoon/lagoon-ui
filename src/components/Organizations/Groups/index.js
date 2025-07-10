@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -46,6 +45,18 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
     },
   });
   const client = useApolloClient();
+
+  const [deleteGroup, { loading, error }] = useMutation(DELETE_GROUP, {
+    variables: {
+      groupName: modalStates.deleteGroup?.current?.name,
+    },
+    onCompleted: () => {
+      refetch().then(() => modalAction('close', 'deleteGroup'));
+    },
+    onError: e => {
+      console.error(e);
+    },
+  });
 
   const handleDataChange = async data => {
     const groupNames = data.map(d => d.name);
@@ -188,40 +199,24 @@ const Groups = ({ groups = [], organizationId, organizationName, refetch, orgFri
                   <RemoveModalParagraph>
                     This action will delete group <span>{i.name}</span> from this organization.
                   </RemoveModalParagraph>
-
-                  <Footer>
-                    <Mutation mutation={DELETE_GROUP} onError={e => console.error(e)}>
-                      {(deleteGroup, { called, error, data }) => {
-                        if (error) {
-                          return <div className="error">{error.message}</div>;
-                        }
-                        if (data) {
-                          refetch().then(() => modalAction('close', 'deleteGroup'));
-                        }
-
-                        return (
-                          <Button
-                            testId="confirm"
-                            variant="primary"
-                            loading={called}
-                            disabled={called}
-                            action={() => {
-                              deleteGroup({
-                                variables: {
-                                  groupName: modalStates.deleteGroup?.current?.name,
-                                },
-                              });
-                            }}
-                          >
-                            Continue
-                          </Button>
-                        );
-                      }}
-                    </Mutation>
-                    <Button variant="ghost" action={() => modalAction('close', 'deleteGroup')}>
-                      Cancel
-                    </Button>
-                  </Footer>
+                  {error ? (
+                    <div className="error">{error.message}</div>
+                  ) : (
+                    <Footer>
+                      <Button
+                        testId="confirm"
+                        variant="primary"
+                        loading={loading}
+                        disabled={loading}
+                        action={deleteGroup}
+                      >
+                        Continue
+                      </Button>
+                      <Button variant="ghost" action={() => modalAction('close', 'deleteGroup')}>
+                        Cancel
+                      </Button>
+                    </Footer>
+                  )}
                 </Modal>
               </>
             )}
