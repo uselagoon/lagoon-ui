@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import Button from 'components/Button';
 import { EmailForm, StyledEmailPreferences } from 'components/EmailPreferences/StyledEmailPreferences';
 import gql from 'graphql-tag';
