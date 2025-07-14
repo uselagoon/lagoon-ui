@@ -119,16 +119,7 @@ const ProjectDetailsSidebar = ({ project }) => {
         <FieldWrapper className="field-wrapper organization">
           <div>
             <label>Organization</label>
-            <div>
-              <OrganizationLink
-                organizationSlug={project.organizationDetails.name}
-                organizationId={project.organizationDetails.id}
-                orgFriendlyName={project.organizationDetails.friendlyName}
-                className="deployLink deployTargets hover-state"
-              >
-                {project.organizationDetails.friendlyName || project.organizationDetails.name}
-              </OrganizationLink>
-            </div>
+            <div>{project?.organizationDetails.friendlyName || project?.organizationDetails.name}</div>
           </div>
         </FieldWrapper>
       )}
