@@ -19,6 +19,12 @@ const REMOVE_NOTIFICATION_SLACK = gql`
   }
 `;
 
+const REMOVE_NOTIFICATION_DISCORD = gql`
+  mutation removeNotification($name: String!) {
+    deleteNotificationDiscord(input: { name: $name })
+  }
+`;
+
 const REMOVE_NOTIFICATION_ROCKETCHAT = gql`
   mutation removeNotification($name: String!) {
     deleteNotificationRocketChat(input: { name: $name })
@@ -46,6 +52,13 @@ const REMOVE_NOTIFICATION_WEBHOOK = gql`
 export const UPDATE_NOTIFICATION_SLACK = gql`
   mutation UpdateNotificationSlack($name: String!, $patch: UpdateNotificationSlackPatchInput) {
     updateNotificationSlack(input: { name: $name, patch: $patch }) {
+      name
+    }
+  }
+`;
+export const UPDATE_NOTIFICATION_DISCORD = gql`
+  mutation UpdateNotificationDiscord($name: String!, $patch: UpdateNotificationDiscordPatchInput) {
+    updateNotificationDiscord(input: { name: $name, patch: $patch }) {
       name
     }
   }
@@ -85,6 +98,7 @@ export const UPDATE_NOTIFICATION_TEAMS = gql`
  */
 const OrgNotifications = ({
   slacks = [],
+  discords = [],
   rocketchats = [],
   emails = [],
   teams = [],
@@ -681,6 +695,130 @@ const OrgNotifications = ({
         );
       },
     },
+    NotificationDiscord: {
+      label: <label className="discord-group-label">DISCORD</label>,
+
+      notifData: notification => {
+        return (
+          <div className="notificationdata">
+            {renderWebbook(notification.webhook, () => {
+              setEditState({ open: false, current: notification });
+            })}
+          </div>
+        );
+      },
+      actions: notification => {
+        return (
+          <Fragment key={notification.name}>
+            <Tooltip overlayClassName="orgTooltip" placement="bottom" title="Edit notification">
+              <span
+                className="link"
+                onClick={() => setEditState({ open: true, current: notification, type: 'discord' })}
+              >
+                <EditOutlined className="edit" />
+              </span>
+            </Tooltip>
+            {editState.current && editState.current.name === notification.name && (
+              <Modal
+                style={{ content: { width: '50%' } }}
+                isOpen={editState.open && editState.type === 'discord'}
+                onRequestClose={closeEditModal}
+              >
+                <ModalChildren>
+                  <div className="form-box">
+                    <label>
+                      Name: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputName"
+                        data-cy="notification-name"
+                        type="text"
+                        placeholder="Enter name"
+                        value={editState.updated?.name || editState.current.name}
+                        onChange={e => handleInputChange(e, 'name')}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="form-box">
+                    <label>
+                      Webhook: <span style={{ color: '#E30000' }}>*</span>
+                      <input
+                        className="inputWebhook"
+                        data-cy="input-webhook"
+                        type="text"
+                        placeholder="Enter Webhook"
+                        value={editState.updated?.webhook || editState.current.webhook}
+                        onChange={e => handleInputChange(e, 'webhook')}
+                      />
+                    </label>
+                  </div>
+                </ModalChildren>
+                <Footer>
+                  <Mutation mutation={UPDATE_NOTIFICATION_DISCORD} onError={e => console.error(e)}>
+                    {(updateDiscord, { called, error, data }) => {
+                      if (error) {
+                        return <div className="error">{error.message}</div>;
+                      }
+                      if (data) {
+                        refresh().then(() => {
+                          closeEditModal();
+                        });
+                      }
+                      return (
+                        <Button
+                          testId="continueEdit"
+                          loading={called}
+                          disabled={called}
+                          variant="primary"
+                          action={() => {
+                            updateDiscord({
+                              variables: {
+                                name: notification.name,
+                                patch: {
+                                  ...(editState.updated.name ? { name: editState.updated.name } : {}),
+                                  ...(editState.updated.webhook ? { webhook: editState.updated.webhook } : {}),
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      );
+                    }}
+                  </Mutation>
+                  <Button variant="ghost" action={closeEditModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              </Modal>
+            )}
+            <Mutation mutation={REMOVE_NOTIFICATION_DISCORD} onError={e => console.error(e)}>
+              {(removeNotification, { called, error, data }) => {
+                if (data) {
+                  refresh();
+                }
+                return (
+                  <RemoveNotificationConfirm
+                    loading={called && !error}
+                    error={error}
+                    openNotificationWithIcon={openNotificationWithIcon}
+                    info={{ name: notification.name }}
+                    onRemove={() =>
+                      removeNotification({
+                        variables: {
+                          name: notification.name,
+                        },
+                      })
+                    }
+                  />
+                );
+              }}
+            </Mutation>
+          </Fragment>
+        );
+      },
+    },
     NotificationMicrosoftTeams: {
       label: <label className="microsoftteams-group-label">TEAMS</label>,
       notifData: notification => {
@@ -841,7 +979,7 @@ const OrgNotifications = ({
       {contextHolder}
       <PaginatedTable
         limit={10}
-        data={[...slacks, ...emails, ...rocketchats, ...teams, ...webhooks]}
+        data={[...slacks, ...discords, ...emails, ...rocketchats, ...teams, ...webhooks]}
         columns={notificationColumns}
         labelText="Notifications"
         emptyText="No Notifications"

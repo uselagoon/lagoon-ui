@@ -23,6 +23,10 @@ const options = [
     value: 'slack',
   },
   {
+    label: 'Discord',
+    value: 'discord',
+  },
+  {
     label: 'RocketChat',
     value: 'rocketchat',
   },
@@ -43,6 +47,14 @@ const options = [
 const ADD_SLACK_NOTIFICATION = gql`
   mutation addNotificationSlack($organization: Int!, $name: String!, $channel: String!, $webhook: String!) {
     addNotificationSlack(input: { organization: $organization, name: $name, channel: $channel, webhook: $webhook }) {
+      id
+    }
+  }
+`;
+
+const ADD_DISCORD_NOTIFICATION = gql`
+  mutation addNotificationDiscord($organization: Int!, $name: String!, $webhook: String!) {
+    addNotificationDiscord(input: { organization: $organization, name: $name, webhook: $webhook }) {
       id
     }
   }
@@ -90,6 +102,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
   const [channel, setChannel] = useState('');
 
   const [addSlack] = useMutation(ADD_SLACK_NOTIFICATION);
+  const [addDiscord] = useMutation(ADD_DISCORD_NOTIFICATION);
   const [addRocketChat] = useMutation(ADD_ROCKETCHAT_NOTIFICATION);
   const [addEmail] = useMutation(ADD_EMAIL_NOTIFICATION);
   const [addTeams] = useMutation(ADD_MICROSOFTTEAMS_NOTIFICATION);
@@ -124,6 +137,15 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
               name: notificationName,
               channel: channel,
               webhook: webhook,
+            },
+          });
+      case 'discord':
+        return () =>
+          addDiscord({
+            variables: {
+              name: notificationName,
+              webhook: webhook,
+              organization: organizationId,
             },
           });
       case 'rocketchat':
@@ -217,6 +239,7 @@ const AddNotification: FC<Props> = ({ modalOpen, organizationId, onNotificationA
         );
       case 'teams':
       case 'webhook':
+      case 'discord':
         return (
           <div className="form-box">
             <label>

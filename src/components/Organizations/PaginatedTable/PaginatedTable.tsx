@@ -174,6 +174,11 @@ const PaginatedTable: FC<Props> = ({
                   ? false
                   : (true && sortByName) || (true && sortByChannel) || (true && sortByWebhook);
 
+              case 'NotificationDiscord':
+                return ['name', '__typename', 'webhook'].includes(item.__typename)
+                  ? false
+                  : (true && sortByName) || (true && sortByWebhook);
+                  
               case 'NotificationRocketChat':
                 return ['name', '__typename', 'webhook', 'channel'].includes(item.__typename)
                   ? false
