@@ -50,13 +50,14 @@ const ApiConnection = ({ children }) => {
           connecting: () => console.log('wsTest: connecting'),
           opened: () => console.log('wsTest: opened'),
           connected: () => console.log('wsTest: connected'),
-          message: (message) => console.log('wsTest: message', message),
+          message: message => console.log('wsTest: message', message),
           error: err => console.error('wsTest: error', err),
-          closed: event => console.log('wsTest: closed', {
-            code: event.code,
-            reason: event.reason,
-            wasClean: event.wasClean
-          }),
+          closed: event =>
+            console.log('wsTest: closed', {
+              code: event.code,
+              reason: event.reason,
+              wasClean: event.wasClean,
+            }),
         },
       })
     );

@@ -11,8 +11,8 @@ export default gql`
       completed
       buildLog
       buildStep
-      priority 
-      bulkId   
+      priority
+      bulkId
       bulkName
       remoteId
       sourceType
