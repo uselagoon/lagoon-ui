@@ -38,8 +38,6 @@ const ApiConnection = ({ children }) => {
     }
 
     const wsUrl = publicRuntimeConfig.GRAPHQL_API.replace(/^http/, 'ws');
-    console.log(`Setting up WebSocket connection to: ${wsUrl}`);
-
     const wsLink = new GraphQLWsLink(
       createClient({
         url: wsUrl,
@@ -48,8 +46,17 @@ const ApiConnection = ({ children }) => {
         },
         shouldRetry: () => true,
         on: {
-          error: err => console.error('[ws client error]', err),
-          closed: event => console.log('[ws client closed]', event),
+          // leaving logging as is for testing - will update prior to merge
+          connecting: () => console.log('wsTest: connecting'),
+          opened: () => console.log('wsTest: opened'),
+          connected: () => console.log('wsTest: connected'),
+          message: (message) => console.log('wsTest: message', message),
+          error: err => console.error('wsTest: error', err),
+          closed: event => console.log('wsTest: closed', {
+            code: event.code,
+            reason: event.reason,
+            wasClean: event.wasClean
+          }),
         },
       })
     );

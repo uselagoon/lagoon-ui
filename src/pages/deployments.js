@@ -127,7 +127,8 @@ export const PageDeployments = ({ router }) => {
     subscribeToMore({
       document: DeploymentsSubscription,
       variables: { environment: environment.id },
-      updateQuery: (prevStore, { subscriptionData }) => {
+      updateQuery: (prevStore, subscriptionResult) => {
+        const { subscriptionData } = subscriptionResult;
         if (!subscriptionData.data) return prevStore;
         const prevDeployments = prevStore.environment.deployments;
         const incomingDeployment = subscriptionData.data.deploymentChanged;

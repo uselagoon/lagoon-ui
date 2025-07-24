@@ -11,6 +11,12 @@ export default gql`
       completed
       buildLog
       buildStep
+      priority 
+      bulkId   
+      bulkName
+      remoteId
+      sourceType
+      sourceUser
     }
   }
 `;
