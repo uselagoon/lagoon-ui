@@ -10,7 +10,13 @@ export default class TaskAction {
 
     cy.get(`[id^="react-select-"][id$=-option-4]`).click();
 
-    cy.getBySel('task-row').getBySel('pending').click();
+    cy.get('body').then(body => {
+      if (body.find('[data-cy="task-row"] [data-cy="pending"]').length > 0) {
+        cy.getBySel('task-row').getBySel('pending').first().click();
+      } else {
+        cy.getBySel('task-row').getBySel('new').first().click();
+      }
+    });
   }
   doCancelTask() {
     task.getCancelBtn().first().click();

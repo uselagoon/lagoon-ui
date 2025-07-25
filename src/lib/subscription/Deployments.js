@@ -9,7 +9,6 @@ export default gql`
       created
       started
       completed
-      buildLog
       buildStep
       priority
       bulkId
