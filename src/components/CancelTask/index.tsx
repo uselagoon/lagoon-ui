@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
-import { Mutation } from 'react-apollo';
 
+import { ApolloError, useMutation } from '@apollo/client';
 import { notification } from 'antd';
-import { ApolloError } from 'apollo-client';
 import Button from 'components/Button';
 import gql from 'graphql-tag';
 
@@ -36,6 +35,10 @@ interface CancelTaskButtonProps {
   beforeText: string;
   afterText: string;
 }
+
+type CancelTask = {
+  cancelTask: string;
+};
 
 export const CancelTaskButton: FC<CancelTaskButtonProps> = ({
   action,
@@ -75,32 +78,28 @@ const CancelTask: FC<CancelTaskProps> = ({
   projectId,
   beforeText = 'Cancel',
   afterText = 'Cancelled',
-}) => (
-  <Mutation<{
-    cancelTask: string;
-  }>
-    mutation={CANCEL_TASK_MUTATION}
-    variables={{
+}) => {
+  const [cancelTask, { loading, error, data }] = useMutation<CancelTask>(CANCEL_TASK_MUTATION, {
+    variables: {
       taskId: task.id,
       taskName: task.taskName,
       environmentId,
       projectId,
-    }}
-    onError={(e: ApolloError) => console.error(e.message)}
-  >
-    {(cancelTask, { loading, error, data }) => (
-      <CancelTaskButton
-        action={() => {
-          void cancelTask();
-        }}
-        success={(data && data.cancelTask === 'success') || false}
-        loading={loading}
-        error={error}
-        beforeText={beforeText}
-        afterText={afterText}
-      />
-    )}
-  </Mutation>
-);
+    },
+    onError: (e: ApolloError) => console.error(e.message),
+  });
+  return (
+    <CancelTaskButton
+      action={() => {
+        void cancelTask();
+      }}
+      success={(data && data.cancelTask === 'success') || false}
+      loading={loading}
+      error={error}
+      beforeText={beforeText}
+      afterText={afterText}
+    />
+  );
+};
 
 export default CancelTask;

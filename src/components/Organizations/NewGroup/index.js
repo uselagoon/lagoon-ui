@@ -1,6 +1,6 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
 
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -90,6 +90,26 @@ export const NewGroup = ({
   openModal,
   closeModal,
 }) => {
+  const [addGroup, { loading, error, reset }] = useMutation(ADD_GROUP_MUTATION, {
+    variables: {
+      group: inputValueGroup,
+      organization: parseInt(organizationId, 10),
+    },
+    onCompleted: () => {
+      onGroupAdded().then(() => {
+        setInputValue({ target: { value: '' } });
+        handleModalClose();
+      });
+    },
+    onError: e => console.error(e),
+  });
+
+  const handleModalClose = () => {
+    reset();
+    setInputValue({ target: { value: '' } });
+    closeModal();
+  };
+
   return (
     <StyledNewGroup>
       <div className="margins">
@@ -101,78 +121,68 @@ export const NewGroup = ({
           </>
         </Tooltip>
       </div>
-      <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles}>
+      <Modal isOpen={open} onRequestClose={handleModalClose} contentLabel={`Confirm`} style={customStyles}>
         <React.Fragment>
-          <Mutation mutation={ADD_GROUP_MUTATION} onError={e => console.error(e)}>
-            {(addGroup, { called, error, data }) => {
-              if (error) {
-                return <div>{error.message}</div>;
-              }
-              if (data) {
-                // hacky
-                onGroupAdded().then(() => {
-                  setInputValue({ target: { value: '' } });
-                  closeModal();
-                });
-              }
-              return (
-                <StyledNotification>
-                  <div className="newMember">
-                    <h4>New Group</h4>
-                    <div className="form-box">
-                      <label>
-                        Group Name: <span style={{ color: '#E30000' }}>*</span>{' '}
-                        <input
-                          className="inputEmail"
-                          data-cy="groupName-input"
-                          type="text"
-                          placeholder="Enter name"
-                          value={inputValueGroup}
-                          onChange={e => {
-                            const newVal = e.target.value;
-                            const allowedChars = /^[a-z0-9-]*$/;
-                            if (!allowedChars.test(newVal)) return;
-                            // recompose wants the whole event
-                            setInputValue(e);
-                          }}
-                        />
-                      </label>
-                    </div>
-                    <div>
-                      <Footer>
-                        <p className="explainer">Please use (a to z) lower case, numbers and - only</p>
-                        <Button
-                          testId="createGroup"
-                          disabled={
-                            called ||
-                            inputValueGroup === '' ||
-                            inputValueGroup.indexOf(' ') > 0 ||
-                            existingGroupNames.includes(inputValueGroup)
-                          }
-                          action={() => {
-                            addGroup({
-                              variables: {
-                                group: inputValueGroup,
-                                organization: parseInt(organizationId, 10),
-                              },
-                            });
-                          }}
-                          variant="primary"
-                          loading={called}
-                        >
-                          Create
-                        </Button>
-
-                        <Button variant="ghost" action={() => closeModal()}>
-                          Cancel
-                        </Button>
-                      </Footer>
-                    </div>
+          <StyledNotification>
+            {error ? (
+              <>
+                <p style={{ display: 'inline-block' }}>{error?.message} </p>
+                <div style={{ float: 'right' }}>
+                  <Button variant="ghost" action={handleModalClose}>
+                    Cancel
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="newMember">
+                  <h4>New Group</h4>
+                  <div className="form-box">
+                    <label>
+                      Group Name: <span style={{ color: '#E30000' }}>*</span>{' '}
+                      <input
+                        className="inputEmail"
+                        data-cy="groupName-input"
+                        type="text"
+                        placeholder="Enter name"
+                        value={inputValueGroup}
+                        onChange={e => {
+                          const newVal = e.target.value;
+                          const allowedChars = /^[a-z0-9-]*$/;
+                          if (!allowedChars.test(newVal)) return;
+                          // recompose wants the whole event
+                          setInputValue(e);
+                        }}
+                      />
+                    </label>
                   </div>
-                </StyledNotification>
-              );
-            }}
-          </Mutation>
+                  <div>
+                    <Footer>
+                      <p className="explainer">Please use (a to z) lower case, numbers and - only</p>
+                      <Button
+                        testId="createGroup"
+                        disabled={
+                          loading ||
+                          inputValueGroup === '' ||
+                          inputValueGroup.indexOf(' ') > 0 ||
+                          existingGroupNames.includes(inputValueGroup)
+                        }
+                        action={addGroup}
+                        variant="primary"
+                        loading={loading}
+                      >
+                        Create
+                      </Button>
+
+                      <Button variant="ghost" action={() => handleModalClose()}>
+                        Cancel
+                      </Button>
+                    </Footer>
+                  </div>
+                </div>
+              </>
+            )}
+          </StyledNotification>
         </React.Fragment>
       </Modal>
     </StyledNewGroup>

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import getConfig from 'next/config';
 import Image from 'next/image';
 
 import { CaretRightOutlined } from '@ant-design/icons';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { Collapse } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -22,7 +21,7 @@ import { StyledAntdCollapse, StyledEnvironmentWrapper, StyledNewEnvironment } fr
 
 const { WEBHOOK_URL } = getConfig().publicRuntimeConfig;
 
-const DEPLOY_ENVIRONMENT_BRANCH_MUTATION = gql`
+const deployEnvironmentBranchMutation = gql`
   mutation ($project: String!, $branch: String!) {
     deployEnvironmentBranch(input: { project: { name: $project }, branchName: $branch })
   }
@@ -58,8 +57,13 @@ const NewEnvironment = ({
   let dkValue = '●●●●●●●●●●●●●●●●●●●●●●●●●';
   const [copiedDK, setCopiedDK] = useState(false);
   const [copiedWH, setCopiedWH] = useState(false);
-  const [showDKField, setShowDKField] = React.useState(false);
-  const [showEnvType, setShowEnvType] = React.useState(false);
+  const [showDKField, setShowDKField] = useState(false);
+  const [showEnvType, setShowEnvType] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const [clearState, setClearState] = useState(false);
+
+  const errors = ['Skipped', 'Error'];
+  const regex = new RegExp(errors.join('|'), 'i');
 
   const {
     loadingDK,
@@ -68,6 +72,32 @@ const NewEnvironment = ({
   } = useQuery(ProjectByNameWithDeployKeyQuery, {
     variables: { name: inputProjectName },
   });
+
+  const [deployEnvironmentBranch, { loading, data }] = useMutation(deployEnvironmentBranchMutation, {
+    onCompleted: data => {
+      handleApiError(data);
+    },
+    onError: err => {
+      setApiError(err.message);
+      setClear();
+    },
+  });
+
+  const handleApiError = data => {
+    const err = regex.test(data?.deployEnvironmentBranch);
+    setApiError(err ? data?.deployEnvironmentBranch : '');
+    setClearState(!err);
+    if (!err) {
+      refresh().then(setClear).then(handleCloseModal);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setClear();
+    setApiError('');
+    setClearState(false);
+    closeModal();
+  };
 
   if (deployKeyValue) {
     dkValue = deployKeyValue.project.publicKey;
@@ -234,87 +264,69 @@ const NewEnvironment = ({
       </div>
       <Modal isOpen={open} onRequestClose={closeModal} contentLabel={`Confirm`} style={customStyles} variant={'medium'}>
         <React.Fragment>
-          <Mutation mutation={DEPLOY_ENVIRONMENT_BRANCH_MUTATION} onError={e => console.error(e)}>
-            {(deployEnvironmentBranch, { loading, error, data }) => {
-              if (error) {
-                return <div>{error.message}</div>;
-              }
-              const errors = ['Skipped', 'Error'];
-              const regex = new RegExp(errors.join('|'), 'i');
-              const err = regex.test(data && data.deployEnvironmentBranch);
-              if (data && !err) {
-                refresh().then(setClear).then(closeModal);
-              }
+          <StyledNewEnvironment>
+            <div className="env-modal-header">
+              <span>Create an Environment</span>
+            </div>
+            <div className="modal-step">
+              <span>
+                <b>Step 1: </b>Add the branch you wish to build this environment from. This branch must already exist in
+                your git repository.
+              </span>
+              <div className="environment-modal">
+                <label>
+                  Branch name: <span style={{ color: '#E30000' }}>*</span>
+                </label>
+                <input
+                  data-cy="branchName"
+                  id="branchName"
+                  className="inputBranch"
+                  type="text"
+                  placeholder="Enter branch name"
+                  value={inputBranchName}
+                  onChange={setBranchName}
+                  onBlur={() => toggleShowEnvType()}
+                />
+              </div>
+            </div>
+            {environmentCount > 0 ? (
+              <StyledAntdCollapse>
+                <Collapse
+                  items={items()}
+                  bordered={false}
+                  expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+                />
+              </StyledAntdCollapse>
+            ) : (
+              [renderStep2('header'), renderStep3('header')]
+            )}
+            <div>
+              <Footer>
+                {showEnvType ? (
+                  <div>
+                    Creating{' '}
+                    <span className="envType">
+                      {productionEnvironment === inputBranchName ? 'Production' : 'Development'}
+                    </span>{' '}
+                    environment: <b>{inputBranchName}</b>
+                  </div>
+                ) : null}
+                <NewEnvironmentButton
+                  disabled={inputBranchName === ''}
+                  deployEnvironmentBranch={deployEnvironmentBranch}
+                  inputBranchName={inputBranchName}
+                  inputProjectName={inputProjectName}
+                  loading={loading}
+                  error={apiError}
+                  showSuccess={clearState}
+                />
 
-              return (
-                <>
-                  <StyledNewEnvironment>
-                    <div className="env-modal-header">
-                      <span>Create an Environment</span>
-                    </div>
-                    <div className="modal-step">
-                      <span>
-                        <b>Step 1: </b>Add the branch you wish to build this environment from. This branch must already
-                        exist in your git repository.
-                      </span>
-                      <div className="environment-modal">
-                        <label>
-                          Branch name: <span style={{ color: '#E30000' }}>*</span>
-                        </label>
-                        <input
-                          data-cy="branchName"
-                          id="branchName"
-                          className="inputBranch"
-                          type="text"
-                          placeholder="Enter branch name"
-                          value={inputBranchName}
-                          onChange={setBranchName}
-                          onBlur={() => toggleShowEnvType()}
-                        />
-                      </div>
-                    </div>
-                    {environmentCount > 0 ? (
-                      <StyledAntdCollapse>
-                        <Collapse
-                          items={items()}
-                          bordered={false}
-                          expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-                        />
-                      </StyledAntdCollapse>
-                    ) : (
-                      [renderStep2('header'), renderStep3('header')]
-                    )}
-                    <div>
-                      <Footer>
-                        {showEnvType ? (
-                          <div>
-                            Creating{' '}
-                            <span className="envType">
-                              {productionEnvironment === inputBranchName ? 'Production' : 'Development'}
-                            </span>{' '}
-                            environment: <b>{inputBranchName}</b>
-                          </div>
-                        ) : null}
-                        <NewEnvironmentButton
-                          disabled={inputBranchName === ''}
-                          deployEnvironmentBranch={deployEnvironmentBranch}
-                          inputBranchName={inputBranchName}
-                          inputProjectName={inputProjectName}
-                          loading={loading}
-                          error={err}
-                          data={data}
-                        />
-
-                        <Button action={() => [setClear(), closeModal()]} variant="ghost">
-                          Cancel
-                        </Button>
-                      </Footer>
-                    </div>
-                  </StyledNewEnvironment>
-                </>
-              );
-            }}
-          </Mutation>
+                <Button action={() => handleCloseModal()} variant="ghost">
+                  Cancel
+                </Button>
+              </Footer>
+            </div>
+          </StyledNewEnvironment>
         </React.Fragment>
       </Modal>
     </StyledEnvironmentWrapper>

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Query } from 'react-apollo';
 
 import getConfig from 'next/config';
 
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -63,13 +62,6 @@ const withOptions = withProps(({ pageEnvironment }) => {
 
   // Remove tasks that are blocklisted.
   options = R.reject(option => R.includes(option.value, publicRuntimeConfig.LAGOON_UI_TASK_BLOCKLIST), options);
-  // Currently all tasks require the environment to have a 'cli' service,
-  // but this can be made dynamic if that changes.
-  // if (
-  //   pageEnvironment.services.findIndex(service => service.name === 'cli') === -1
-  // ) {
-  //   options = [];
-  // }
 
   return { options };
 });
@@ -87,37 +79,31 @@ const withNewTaskHanders = withHandlers({
     },
 });
 
-const withProjectEnvironments = BaseComponent =>
-  class GetProjectEnvironments extends React.Component {
-    query = gql`
-      query getProject($name: String!) {
-        projectByName(name: $name) {
-          id
-          productionEnvironment
-          environments {
-            id
-            name
-            environmentType
-          }
-        }
+const query = gql`
+  query getProject($name: String!) {
+    projectByName(name: $name) {
+      id
+      productionEnvironment
+      environments {
+        id
+        name
+        environmentType
       }
-    `;
-
-    render() {
-      const { pageEnvironment } = this.props;
-      return (
-        <Query query={this.query} variables={{ name: pageEnvironment.project.name }}>
-          {({ loading, error, data }) => {
-            if (loading || error) {
-              return null;
-            }
-            const allEnvironments = data.projectByName.environments;
-
-            return <BaseComponent projectEnvironments={allEnvironments} {...this.props} />;
-          }}
-        </Query>
-      );
     }
-  };
+  }
+`;
+
+const withProjectEnvironments = BaseComponent => props => {
+  const { pageEnvironment } = props;
+  const { loading, error, data } = useQuery(query, {
+    variables: { name: pageEnvironment.project.name },
+  });
+
+  if (loading || error) return null;
+
+  const allEnvironments = data.projectByName.environments;
+
+  return <BaseComponent projectEnvironments={allEnvironments} {...props} />;
+};
 
 export default compose(withSelectedTask, withErrMessage, withNewTaskHanders, withOptions, withProjectEnvironments);

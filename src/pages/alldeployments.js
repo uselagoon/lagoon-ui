@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import DeploymentsByFilterSkeleton from 'components/DeploymentsByFilter/DeploymentsByFilterSkeleton';
 import MainLayout from 'layouts/MainLayout';
 import deploymentsByFilter from 'lib/query/DeploymentsByFilter';

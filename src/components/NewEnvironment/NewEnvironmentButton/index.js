@@ -3,7 +3,7 @@ import React from 'react';
 import { notification } from 'antd';
 import Button from 'components/Button';
 
-export const NewEnvButton = ({ action, loading, error, disabled, data }) => {
+export const NewEnvButton = ({ action, loading, error, disabled, showSuccess }) => {
   const [api, contextHolder] = notification.useNotification();
 
   const openNotificationWithIcon = errorMessage => {
@@ -19,9 +19,9 @@ export const NewEnvButton = ({ action, loading, error, disabled, data }) => {
     <>
       {contextHolder}
       <Button testId="create-env" action={action} loading={loading} disabled={disabled} variant="primary">
-        {loading ? 'Creating' : data ? 'Success' : 'Create'}
+        {loading ? 'Creating' : showSuccess ? 'Success' : 'Create'}
       </Button>
-      {error && openNotificationWithIcon(data.deployEnvironmentBranch)}
+      {error && openNotificationWithIcon(error)}
     </>
   );
 };
@@ -33,7 +33,7 @@ const NewEnvironmentButton = ({
   loading,
   error,
   disabled,
-  data,
+  showSuccess,
 }) => (
   <NewEnvButton
     action={() => {
@@ -47,7 +47,7 @@ const NewEnvironmentButton = ({
     loading={loading}
     error={error}
     disabled={disabled}
-    data={data}
+    showSuccess={showSuccess}
   />
 );
 

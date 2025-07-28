@@ -8,7 +8,7 @@ import SettingAction from 'cypress/support/actions/settings/SettingsAction';
 import TaskAction from 'cypress/support/actions/task/TaskAction';
 import TasksAction from 'cypress/support/actions/tasks/TasksAction';
 import VariablesAction from 'cypress/support/actions/variables/VariablesAction';
-import { aliasMutation, registerIdleHandler } from 'cypress/utils/aliasQuery';
+import { aliasMutation, aliasQuery, registerIdleHandler } from 'cypress/utils/aliasQuery';
 
 const project = new ProjectAction();
 
@@ -71,21 +71,20 @@ describe('DEVELOPER permission test suites', () => {
     it('Fails to add a variable - no permission for DEVELOPER', () => {
       cy.visit(`${Cypress.env('url')}/projects/lagoon-demo/project-variables`);
 
-      cy.intercept('POST', Cypress.env('api'), req => {
-        aliasMutation(req, 'addEnvVariable');
-      });
       registerIdleHandler('idle');
+      cy.waitForNetworkIdle('@idle', 500);
+      cy.intercept('POST', Cypress.env('api'), req => {
+        aliasQuery(req, 'getProject');
+      });
 
       const { name, value } = testData.variables[0];
 
-      cy.waitForNetworkIdle('@idle', 500);
+      variable.doAddVariable(name, value, 'developer');
 
-      variable.doAddVariable(name, value);
-
-      cy.wait('@gqladdEnvVariableMutation').then(interception => {
+      cy.wait('@gqlgetProjectQuery').then(interception => {
         expect(interception.response?.statusCode).to.eq(200);
 
-        const errorMessage = 'Unauthorized: You don\'t have permission to "project:add" on "env_var"';
+        const errorMessage = 'Unauthorized: You don\'t have permission to "project:viewValue" on "env_var"';
         expect(interception.response?.body).to.have.property('errors');
 
         cy.wrap(interception.response?.body.errors[0]).should('deep.include', { message: errorMessage });

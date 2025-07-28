@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 import Button from 'components/Button';
 import SelectFilter from 'components/Filters';
 import gql from 'graphql-tag';

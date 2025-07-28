@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import ReactSelect from 'react-select';
 
 import Link from 'next/link';
 
 import { DisconnectOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -90,6 +89,53 @@ const GroupMembers = ({
   });
 
   const [updateUser] = useMutation(ADD_GROUP_MEMBER_MUTATION);
+
+  const [removeUserFromGroup, { loading: removeUserLoading, error: removeUserError }] = useMutation(
+    REMOVE_USER_FROM_GROUP,
+    {
+      onCompleted: () => {
+        refetch();
+        setDeleteUserModalOpen(false);
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
+
+  const [removeGroupFromProject, { loading: removeGroupLoading, error: removeGroupError }] = useMutation(
+    REMOVE_GROUP_FROM_PROJECT,
+    {
+      onCompleted: () => {
+        refetch();
+        closeProjectModal();
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
+
+  const [addGroupToProject, { loading: addGroupLoading, error: addGroupError }] = useMutation(
+    ADD_GROUP_PROJECT_MUTATION,
+    {
+      onCompleted: () => {
+        refetch();
+        closeAddProjectModal();
+      },
+      onError: e => {
+        console.error(e);
+      },
+    }
+  );
+
+  const filtered = orgProjects.filter(project => {
+    return projects.every(p => p.name !== project.name);
+  });
+
+  const opts = filtered.map(p => {
+    return { label: p.name, value: p.name };
+  });
 
   const closeModal = () => {
     setModalState({ open: false, current: '' });
@@ -185,34 +231,20 @@ const GroupMembers = ({
                 </Link>
               </>
             </Tooltip>
-            <Mutation mutation={REMOVE_USER_FROM_GROUP}>
-              {(removeUserFromGroup, { called, error, data }) => {
-                if (error) {
-                  return <div>{error.message}</div>;
-                }
-                if (data) {
-                  refetch().then(() => setDeleteUserModalOpen(false));
-                }
-
-                return (
-                  <RemoveUserConfirm
-                    loading={called}
-                    removeName={user.email}
-                    info={{ userEmail: user.email, groupName }}
-                    onRemove={() => {
-                      return Promise.resolve(
-                        removeUserFromGroup({
-                          variables: {
-                            groupName: groupName,
-                            email: user.email,
-                          },
-                        })
-                      );
-                    }}
-                  />
-                );
-              }}
-            </Mutation>
+            {removeUserError && <div>{removeUserError.message}</div>}
+            <RemoveUserConfirm
+              loading={removeUserLoading}
+              removeName={user.email}
+              info={{ userEmail: user.email, groupName }}
+              onRemove={() =>
+                removeUserFromGroup({
+                  variables: {
+                    groupName: groupName,
+                    email: user.email,
+                  },
+                })
+              }
+            />
           </TableActions>
         );
       },
@@ -294,39 +326,35 @@ const GroupMembers = ({
               <RemoveModalParagraph>
                 This action will unlink project <span>{project.name}</span> from group <span>{groupName}</span>.
               </RemoveModalParagraph>
-
-              <Footer>
-                <Mutation mutation={REMOVE_GROUP_FROM_PROJECT} onError={e => console.error(e)}>
-                  {(removeGroupFromProject, { called, error, data }) => {
-                    if (error) {
-                      return <div>{error.message}</div>;
+              {removeGroupError ? (
+                <>
+                  <div>{removeGroupError?.message}</div>
+                  <Button variant="ghost" action={closeProjectModal}>
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <Footer>
+                  <Button
+                    variant="primary"
+                    disabled={removeGroupLoading}
+                    loading={removeGroupLoading}
+                    action={() =>
+                      removeGroupFromProject({
+                        variables: {
+                          groupName,
+                          projectName: project.name,
+                        },
+                      })
                     }
-                    if (data) {
-                      refetch().then(closeProjectModal);
-                    }
-                    return (
-                      <Button
-                        variant="primary"
-                        disabled={called}
-                        loading={called}
-                        action={() => {
-                          removeGroupFromProject({
-                            variables: {
-                              groupName,
-                              projectName: project.name,
-                            },
-                          });
-                        }}
-                      >
-                        Continue
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <Button variant="ghost" action={closeProjectModal}>
-                  Cancel
-                </Button>
-              </Footer>
+                  >
+                    Continue
+                  </Button>
+                  <Button variant="ghost" action={closeProjectModal}>
+                    Cancel
+                  </Button>
+                </Footer>
+              )}
             </Modal>
           </TableActions>
         );
@@ -405,73 +433,61 @@ const GroupMembers = ({
           style={{ content: { width: '50%' } }}
           onRequestClose={() => closeAddProjectModal()}
         >
-          <Mutation mutation={ADD_GROUP_PROJECT_MUTATION} onError={e => console.error(e)}>
-            {(addGroupToProject, { called, error, data }) => {
-              if (error) {
-                return <div>{error.message}</div>;
-              }
-              if (data) {
-                refetch().then(closeAddProjectModal);
-              }
-
-              const filtered = orgProjects.filter(project => {
-                return projects.every(p => p.name !== project.name);
-              });
-
-              const opts = filtered.map(p => {
-                return { label: p.name, value: p.name };
-              });
-
-              return (
-                <>
-                  <h4>Add Project</h4>
-                  <label>
-                    Project
-                    <RoleSelect>
-                      <ReactSelect
-                        className="select"
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
-                          placeholder: base => ({ ...base, fontSize: '16px' }),
-                          menu: base => ({ ...base, fontSize: '16px' }),
-                          option: base => ({ ...base, fontSize: '16px' }),
-                          singleValue: base => ({ ...base, fontSize: '16px' }),
-                        }}
-                        aria-label="project"
-                        placeholder="Select a project..."
-                        name="project"
-                        value={opts.find(o => o.value === selectedProject)}
-                        onChange={selectedOption => setSelectedProject(selectedOption.value)}
-                        options={opts}
-                        required
-                      />
-                    </RoleSelect>
-                  </label>
-                  <Footer>
-                    <Button
-                      action={() => {
-                        addGroupToProject({
-                          variables: {
-                            projectName: selectedProject,
-                            groupName,
-                          },
-                        });
-                      }}
-                      disabled={called || !selectedProject}
-                      loading={called}
-                      variant="primary"
-                    >
-                      Add
-                    </Button>
-                    <Button variant="ghost" action={() => closeAddProjectModal()}>
-                      Cancel
-                    </Button>
-                  </Footer>
-                </>
-              );
-            }}
-          </Mutation>
+          {addGroupError ? (
+            <>
+              <div>{addGroupError?.message}</div>
+              <Button variant="ghost" action={closeProjectModal}>
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <>
+              <h4>Add Project</h4>
+              <label>
+                Project
+                <RoleSelect>
+                  <ReactSelect
+                    className="select"
+                    menuPortalTarget={document.body}
+                    styles={{
+                      menuPortal: base => ({ ...base, zIndex: 9999, color: 'black', fontSize: '16px' }),
+                      placeholder: base => ({ ...base, fontSize: '16px' }),
+                      menu: base => ({ ...base, fontSize: '16px' }),
+                      option: base => ({ ...base, fontSize: '16px' }),
+                      singleValue: base => ({ ...base, fontSize: '16px' }),
+                    }}
+                    aria-label="project"
+                    placeholder="Select a project..."
+                    name="project"
+                    value={opts.find(o => o.value === selectedProject)}
+                    onChange={selectedOption => setSelectedProject(selectedOption.value)}
+                    options={opts}
+                    required
+                  />
+                </RoleSelect>
+              </label>
+              <Footer>
+                <Button
+                  action={() =>
+                    addGroupToProject({
+                      variables: {
+                        projectName: selectedProject,
+                        groupName,
+                      },
+                    })
+                  }
+                  disabled={!selectedProject || addGroupLoading}
+                  loading={addGroupLoading}
+                  variant="primary"
+                >
+                  Add
+                </Button>
+                <Button variant="ghost" action={() => closeAddProjectModal()}>
+                  Cancel
+                </Button>
+              </Footer>
+            </>
+          )}
         </Modal>
       </TableWrapper>
 

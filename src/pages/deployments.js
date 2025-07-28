@@ -5,7 +5,7 @@ import getConfig from 'next/config';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
 import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
@@ -127,7 +127,8 @@ export const PageDeployments = ({ router }) => {
     subscribeToMore({
       document: DeploymentsSubscription,
       variables: { environment: environment.id },
-      updateQuery: (prevStore, { subscriptionData }) => {
+      updateQuery: (prevStore, subscriptionResult) => {
+        const { subscriptionData } = subscriptionResult;
         if (!subscriptionData.data) return prevStore;
         const prevDeployments = prevStore.environment.deployments;
         const incomingDeployment = subscriptionData.data.deploymentChanged;

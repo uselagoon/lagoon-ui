@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -58,6 +57,23 @@ const OrgProjects = ({
   });
 
   const client = useApolloClient();
+
+  const [deleteProject, { loading, error, reset }] = useMutation(DELETE_PROJECT, {
+    variables: {
+      project: modalState.current,
+    },
+    onCompleted: () => {
+      refresh().then(() => setModalState({ open: false, current: null }));
+    },
+    onError: e => {
+      console.error(e);
+    },
+  });
+
+  const handleModalClose = () => {
+    reset();
+    setModalState({ open: false, current: null });
+  };
 
   const handleDataChange = async data => {
     const projectNames = data.map(d => d.name);
@@ -165,40 +181,30 @@ const OrgProjects = ({
                     setModalState({ ...modalState, confirmValue: e.target.value });
                   }}
                 />
-
                 <Footer>
-                  <Mutation mutation={DELETE_PROJECT} onError={e => console.error(e)}>
-                    {(deleteProject, { called, error, data }) => {
-                      if (error) {
-                        return <div className="error">{error.message}</div>;
-                      }
-                      if (data) {
-                        refresh().then(() => setModalState({ open: false, current: null }));
-                        return <DeleteButton>Continue</DeleteButton>;
-                      }
-
-                      return (
-                        <Button
-                          testId="deleteConfirm"
-                          variant="primary"
-                          disabled={modalState.confirmValue !== modalState.current || called}
-                          loading={called}
-                          action={() => {
-                            deleteProject({
-                              variables: {
-                                project: modalState.current,
-                              },
-                            });
-                          }}
-                        >
-                          Continue
-                        </Button>
-                      );
-                    }}
-                  </Mutation>
-                  <Button variant="ghost" action={() => setModalState({ open: false, current: null })}>
-                    Cancel
-                  </Button>
+                  {error ? (
+                    <>
+                      <div className="error">{error.message}</div>
+                      <Button variant="ghost" action={handleModalClose}>
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        testId="deleteConfirm"
+                        variant="primary"
+                        disabled={modalState.confirmValue !== modalState.current || loading}
+                        loading={loading}
+                        action={deleteProject}
+                      >
+                        Continue
+                      </Button>
+                      <Button variant="ghost" action={handleModalClose}>
+                        Cancel
+                      </Button>
+                    </>
+                  )}
                 </Footer>
               </Modal>
             </>

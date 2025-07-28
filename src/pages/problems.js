@@ -1,9 +1,9 @@
 import React from 'react';
-import { Query } from 'react-apollo';
 
 import Head from 'next/head';
 import { withRouter } from 'next/router';
 
+import { useQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
 import EnvironmentBreadcrumb from 'components/Breadcrumbs/Environment';
 import ProjectBreadcrumb from 'components/Breadcrumbs/Project';
@@ -21,50 +21,54 @@ import { CommonWrapperWNotification } from '../styles/commonPageStyles';
 /**
  * Displays the problems page, given the name of an openshift project.
  */
-export const PageProblems = ({ router }) => (
-  <>
-    <Head>
-      <title>{`${router.query.openshiftProjectName} | Problems`}</title>
-    </Head>
-    <Query query={EnvironmentWithProblemsQuery} variables={{ openshiftProjectName: router.query.openshiftProjectName }}>
-      {R.compose(
-        withQueryLoading,
-        withQueryError,
-        withEnvironmentRequired
-      )(({ data: { environment } }) => {
-        const problems =
-          environment.problems &&
-          environment.problems.map(problem => {
-            return {
-              ...problem,
-              environment: {
-                id: environment.id,
-                openshiftProjectName: environment.openshiftProjectName,
-                project: environment.project,
-              },
-            };
-          });
+export const PageProblems = ({ router }) => {
+  const { openshiftProjectName } = router.query;
 
-        return (
-          <MainLayout>
-            <Breadcrumbs>
-              <ProjectBreadcrumb projectSlug={environment.project.name} />
-              <EnvironmentBreadcrumb
-                environmentSlug={environment.openshiftProjectName}
-                projectSlug={environment.project.name}
-              />
-            </Breadcrumbs>
-            <CommonWrapperWNotification>
-              <NavTabs activeTab="problems" environment={environment} />
-              <div className="content">
-                <Problems problems={problems} />
-              </div>
-            </CommonWrapperWNotification>
-          </MainLayout>
-        );
-      })}
-    </Query>
-  </>
-);
+  const { loading, error, data } = useQuery(EnvironmentWithProblemsQuery, {
+    variables: { openshiftProjectName },
+  });
+
+  const ComposedComponent = R.compose(
+    withQueryLoading,
+    withQueryError,
+    withEnvironmentRequired
+  )(({ data: { environment } }) => {
+    const problems = (environment.problems || []).map(problem => ({
+      ...problem,
+      environment: {
+        id: environment.id,
+        openshiftProjectName: environment.openshiftProjectName,
+        project: environment.project,
+      },
+    }));
+
+    return (
+      <MainLayout>
+        <Breadcrumbs>
+          <ProjectBreadcrumb projectSlug={environment.project.name} />
+          <EnvironmentBreadcrumb
+            environmentSlug={environment.openshiftProjectName}
+            projectSlug={environment.project.name}
+          />
+        </Breadcrumbs>
+        <CommonWrapperWNotification>
+          <NavTabs activeTab="problems" environment={environment} />
+          <div className="content">
+            <Problems problems={problems} />
+          </div>
+        </CommonWrapperWNotification>
+      </MainLayout>
+    );
+  });
+
+  return (
+    <>
+      <Head>
+        <title>{`${openshiftProjectName} | Problems`}</title>
+      </Head>
+      <ComposedComponent loading={loading} error={error} data={data} />
+    </>
+  );
+};
 
 export default withRouter(PageProblems);

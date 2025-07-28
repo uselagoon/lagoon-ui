@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Mutation } from 'react-apollo';
 import Skeleton from 'react-loading-skeleton';
 
 import InfoCircleTwoTone from '@ant-design/icons/InfoCircleTwoTone';
+import { useMutation } from '@apollo/client';
 import { Col, Modal, Row, Space, Tooltip, notification } from 'antd';
 import Button from 'components/Button';
 import DeleteConfirm from 'components/DeleteConfirm';
@@ -18,12 +18,38 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
   const [isLoading, setIsLoading] = useState(loading);
 
   const [modalOpen, setModalOpen] = useState(false);
-
   const [editState, setEditState] = useState({
     id: '',
     name: '',
     publicKey: '',
   });
+
+  const [updateUserSSHPublicKeyMutation, { loading: updateLoading, error: updateError, data: updateData }] =
+    useMutation(UpdateUserSSHPublicKey, {
+      onCompleted: () => {
+        handleRefetch();
+        closeModal();
+      },
+      onError: e => console.error(e),
+    });
+
+  const [deleteUserSSHPublicKeyMutation, { called: deleteCalled, error: deleteError }] = useMutation(
+    DeleteUserSSHPublicKey,
+    {
+      refetchQueries: [{ query: Me }],
+      onError: () => {
+        console.error(deleteError);
+        return <div>{deleteError}</div>;
+      },
+    }
+  );
+
+  const deleteMessage = key => (
+    <>
+      This action will delete the SSH key <span style={{ color: color.blue, fontWeight: 'bold' }}>{key.name}</span> and
+      cannot be undone.
+    </>
+  );
 
   const closeModal = () => {
     setEditState({ name: '', publicKey: '' });
@@ -58,7 +84,8 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
         </span>
         <br />
         <span>
-          <b>Last Used:</b> {moment.utc(lastUsed).local().format('DD MMM YYYY, HH:mm:ss (Z)')}
+          <b>Last Used:</b>{' '}
+          {lastUsed != null ? moment.utc(lastUsed).local().format('DD MMM YYYY, HH:mm:ss (Z)') : 'Never'}
         </span>
       </>
     );
@@ -152,40 +179,29 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                       footer={() => (
                         <>
                           <Space>
-                            <Mutation mutation={UpdateUserSSHPublicKey} onError={e => console.error(e)}>
-                              {(updateUserSSHPublicKey, { loading, called, error, data }) => {
-                                if (data) {
-                                  handleRefetch();
-                                  closeModal();
+                            <>
+                              {contextHolder}
+                              <Button
+                                loading={updateLoading}
+                                testId="updateKey"
+                                action={() =>
+                                  updateUserSSHPublicKeyMutation({
+                                    variables: {
+                                      input: {
+                                        id: key.id,
+                                        patch: {
+                                          name: editState.name,
+                                          publicKey: editState.publicKey,
+                                        },
+                                      },
+                                    },
+                                  })
                                 }
-
-                                return (
-                                  <>
-                                    {contextHolder}
-                                    <Button
-                                      loading={called || loading}
-                                      testId="updateKey"
-                                      action={() =>
-                                        updateUserSSHPublicKey({
-                                          variables: {
-                                            input: {
-                                              id: key.id,
-                                              patch: {
-                                                name: editState.name,
-                                                publicKey: editState.publicKey,
-                                              },
-                                            },
-                                          },
-                                        })
-                                      }
-                                    >
-                                      Update
-                                    </Button>
-                                    {error && openNotificationWithIcon(error.message)}
-                                  </>
-                                );
-                              }}
-                            </Mutation>
+                              >
+                                Update
+                              </Button>
+                              {updateError && openNotificationWithIcon(updateError.message)}
+                            </>
 
                             <Button variant="white" testId="cancelBtn" action={closeModal}>
                               Cancel
@@ -224,46 +240,23 @@ const SshKeys = ({ me: { id, email, sshKeys: keys }, loading, handleRefetch }) =
                       </Row>
                     </Modal>
                   </div>
-
                   <div className="delete" data-cy="deleteKey">
-                    <Mutation
-                      mutation={DeleteUserSSHPublicKey}
-                      refetchQueries={[{ query: Me }]}
-                      onError={e => console.error(e)}
-                    >
-                      {(deleteUserSSHPublicKey, { loading, called, error, data }) => {
-                        if (error) {
-                          return <div>{error.message}</div>;
-                        }
-
-                        const deleteMessage = (
-                          <>
-                            This action will delete the SSH key{' '}
-                            <span style={{ color: color.blue, fontWeight: 'bold' }}>{key.name}</span> and cannot be
-                            undone.
-                          </>
-                        );
-
-                        return (
-                          <DeleteConfirm
-                            deleteType="SSH Key"
-                            deleteMessage={deleteMessage}
-                            deleteName={key.name}
-                            loading={called}
-                            variant="red"
-                            onDelete={() =>
-                              deleteUserSSHPublicKey({
-                                variables: {
-                                  input: {
-                                    id: key.id,
-                                  },
-                                },
-                              })
-                            }
-                          />
-                        );
-                      }}
-                    </Mutation>
+                    <DeleteConfirm
+                      deleteType="SSH Key"
+                      deleteMessage={deleteMessage(key)}
+                      deleteName={key.name}
+                      loading={deleteCalled}
+                      variant="red"
+                      onDelete={() =>
+                        deleteUserSSHPublicKeyMutation({
+                          variables: {
+                            input: {
+                              id: key.id,
+                            },
+                          },
+                        })
+                      }
+                    />
                   </div>
                 </Space>
               </div>

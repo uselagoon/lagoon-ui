@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { withRouter } from 'next/router';
 
 import { ExportOutlined } from '@ant-design/icons';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { Tooltip } from 'antd';
 import Breadcrumbs from 'components/Breadcrumbs';
 import OrganizationBreadcrumb from 'components/Breadcrumbs/Organizations/Organization';

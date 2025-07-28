@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 import Button from 'components/Button';
 import CancelTask from 'components/CancelTask';
 import LogViewer from 'components/LogViewer';
@@ -96,7 +96,7 @@ const Task: FC<TaskProps> = ({ task, projectId, environmentId }) => {
       window.open(fileDownload, '_blank', 'noopener,noreferrer');
     } else {
       setTargetFileId(fileToDownload.id);
-      getFilesDownload();
+      void getFilesDownload();
     }
   };
 

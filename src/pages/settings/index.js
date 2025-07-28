@@ -2,7 +2,7 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import MainLayout from 'layouts/MainLayout';
 import Me from 'lib/query/Me';
 
