@@ -65,15 +65,9 @@ const HeaderMenu = ({ auth, isOrganizationsPath }) => {
           </Link>,
 
           publicRuntimeConfig.LAGOON_UI_YOUR_ACCOUNT_DISABLED == null && (
-            <Link
-              href={`${publicRuntimeConfig.KEYCLOAK_API}/realms/lagoon/account`}
-              passHref
-              key="account"
-              className="menuitem"
-              data-cy="account"
-            >
-              Your account
-            </Link>
+              <Link key="account" href="/account" prefetch className="menuitem" data-cy="account">
+                Your account
+              </Link>
           ),
           <hr key="lastline" />,
           <a key="logout" data-cy="logout" className="logout" onClick={auth.logout}>
