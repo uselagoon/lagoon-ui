@@ -62,7 +62,7 @@ export const SearchInput = styled.input`
     width: 30%;
   }
   &::placeholder {
-    color: ${color.midGrey};
+    color: ${props => props.theme.placeholder};
   }
   &:focus {
     border: 1px solid ${color.brightBlue};
