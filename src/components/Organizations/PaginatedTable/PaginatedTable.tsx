@@ -119,7 +119,7 @@ const PaginatedTable: FC<Props> = ({
 
     if (defaultViewOptions) {
       if (defaultViewOptions.type === 'group') {
-        filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+        filtered = filtered.filter(dataItem => dataItem.groupType !== 'project-default-group');
       }
       if (defaultViewOptions.type === 'user') {
         filtered = filtered.filter(dataItem => {
@@ -202,7 +202,7 @@ const PaginatedTable: FC<Props> = ({
 
     if (!defaultsSelected) {
       if (defaultViewOptions?.type === 'group') {
-        filtered = filtered.filter(dataItem => dataItem.type !== 'project-default-group');
+        filtered = filtered.filter(dataItem => dataItem.groupType !== 'project-default-group');
       }
       if (defaultViewOptions?.type === 'user') {
         filtered = filtered.filter(dataItem => {
@@ -372,7 +372,7 @@ const PaginatedTable: FC<Props> = ({
 
     if (defaultViewOptions) {
       if (defaultViewOptions?.type === 'group') {
-        count = unfilteredData.filter(dataItem => dataItem.type === 'project-default-group').length;
+        count = unfilteredData.filter(dataItem => dataItem.groupType === 'project-default-group').length;
       }
       if (defaultViewOptions?.type === 'user') {
         count = unfilteredData.filter(dataItem => {
