@@ -51,6 +51,26 @@ export const StyledUsers = styled.section`
       color: #fff;
     }
   }
+  .attr {
+    padding-left: 20px;
+    width: 25%;
+    @media ${bp.xs_smallOnly} {
+      margin-left: 20px;
+    }
+
+    background-position: left 7px;
+    background-repeat: no-repeat;
+    background-size: 10px 10px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: start;
+    @media screen and (max-width: 1300px) {
+      flex-wrap: wrap;
+    }
+    &.check {
+      background-image: url('/static/images/successful.svg');
+    }
+  }
   .view {
     display: flex;
     justify-content: flex-end;
@@ -64,6 +84,7 @@ export const StyledUsers = styled.section`
     width: 5%;
   }
   .groups,
+  .attrs,
   .projects {
     font-family: 'source-code-pro', sans-serif;
     font-size: 1rem;
