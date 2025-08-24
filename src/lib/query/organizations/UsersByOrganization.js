@@ -7,6 +7,8 @@ export default gql`
       firstName
       lastName
       email
+      has2faEnabled
+      isFederatedUser
       groupRoles {
         id
         role

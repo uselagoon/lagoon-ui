@@ -124,7 +124,14 @@ const Users = ({ users = [], organization, organizationId, organizationName, ref
       },
     },
     {
-      width: '25%',
+      width: '15%',
+      key: 'attrs',
+      render: user => {
+        return <div className="attrs">{user.has2faEnabled && (<div class="attr check">2FA</div>)}{user.isFederatedUser && (<div class="attr check">SSO</div>)}</div>;
+      },
+    },
+    {
+      width: '15%',
       key: 'actions',
       render: ({ ...user }) => {
         const linkData = getLinkData(user?.email, organizationId, organizationName, orgFriendlyName);
