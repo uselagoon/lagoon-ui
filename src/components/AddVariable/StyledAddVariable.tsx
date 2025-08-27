@@ -27,6 +27,24 @@ export const NewVariableModal = styled.div`
   .var-modal {
     padding: 10px 0;
   }
+  .warning-container {
+    border: 1px solid ${props => props.theme.texts.primary};
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px auto;
+    border-radius: 5px;
+  }
+  .warning-icon {
+    width: 20px;
+    height: 20px;
+    color: ${props => props.theme.texts.primary};
+  }
+  .warning-text {
+    color: ${props => props.theme.texts.primary};
+    margin: 0 auto;
+  }
   .variable-target {
     text-align: center;
     color: #5f6f7a;
