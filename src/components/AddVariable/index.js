@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ButtonBootstrap from 'react-bootstrap/Button';
 import ReactSelect from 'react-select';
 
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, WarningOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { Popconfirm } from 'antd';
 import withLogic from 'components/AddVariable/logic';
@@ -23,7 +23,7 @@ const scopeOptions = [
   { value: 'CONTAINER_REGISTRY', label: 'CONTAINER_REGISTRY' },
   {
     value: 'INTERNAL_CONTAINER_REGISTRY',
-    label: 'INTERNAL_CONTAINER_REGISTRY',
+    label: 'INTERNAL_CONTAINER_REGISTRY - Deprecated',
   },
 ];
 
@@ -213,6 +213,14 @@ export const AddVariable = ({
               onChange={varValue ? handleUpdateValue : setInputValue}
             ></textarea>
           </div>
+          {inputScope === 'INTERNAL_CONTAINER_REGISTRY' || updateScope === 'INTERNAL_CONTAINER_REGISTRY' ? (
+            <div className="var-modal warning-container">
+              <div className="warning-icon">
+                <WarningOutlined width="50px" />
+              </div>
+              <p className="warning-text">INTERNAL_CONTAINER_REGISTRY scope is deprecated & can no longer be set.</p>
+            </div>
+          ) : null}
           <div className="form-input add-var-btn" data-cy="add-variable">
             <a href="#" className="hover-state" onClick={handleCloseModal}>
               cancel
