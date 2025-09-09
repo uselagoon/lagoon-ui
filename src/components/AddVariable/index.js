@@ -21,10 +21,6 @@ const scopeOptions = [
   { value: 'RUNTIME', label: 'RUNTIME' },
   { value: 'GLOBAL', label: 'GLOBAL' },
   { value: 'CONTAINER_REGISTRY', label: 'CONTAINER_REGISTRY' },
-  {
-    value: 'INTERNAL_CONTAINER_REGISTRY',
-    label: 'INTERNAL_CONTAINER_REGISTRY',
-  },
 ];
 
 export const AddVariable = ({
