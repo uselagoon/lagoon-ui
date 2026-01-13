@@ -1,5 +1,8 @@
 ## Lagoon UI
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11770/badge)](https://www.bestpractices.dev/projects/11770)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/uselagoon/lagoon-ui/badge)](https://securityscorecards.dev/viewer/?uri=github.com/uselagoon/lagoon-ui)
+
 The main user interface and dashboard for [Lagoon](https://github.com/uselagoon/lagoon).
 
 ## Build
