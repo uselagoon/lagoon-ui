@@ -6,6 +6,7 @@ on:
       - 'main'
       - 'build-image'
       - 'UI-V2'
+      - 'yarn-audit-fix'
     tags:
       - 'v*.*.*'
   pull_request:
