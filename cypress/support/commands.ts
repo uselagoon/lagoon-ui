@@ -50,13 +50,11 @@ Cypress.Commands.add('getBySel', (selector: string) => {
 });
 
 Cypress.Commands.add('login', (username: string, password: string) => {
-  cy.session([username, password], () => {
-    cy.visit(Cypress.env('url'));
-    cy.origin(Cypress.env('keycloak'), { args: { username, password } }, ({ username, password }) => {
-      cy.get('#username').type(username);
-      cy.get('#password').type(password);
-      cy.get('#kc-login').click();
-    });
+  cy.visit(Cypress.env('url'));
+  cy.origin(Cypress.env('keycloak'), { args: { username, password } }, ({ username, password }) => {
+    cy.get('#username').type(username);
+    cy.get('#password').type(password);
+    cy.get('#kc-login').click();
   });
 });
 

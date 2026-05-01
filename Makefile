@@ -10,7 +10,7 @@ LAGOON_CORE_IMAGE_TAG=main
 .PHONY: yarn-start-ui
 yarn-start-ui:
 	export GRAPHQL_API=http://localhost:3000/graphql \
-	&& export KEYCLOAK_API=http://localhost:8088/auth \
+	&& export KEYCLOAK_API=http://172.17.0.1:8088/auth \
 	&& yarn install \
     && yarn build \
     && yarn start \
@@ -18,7 +18,7 @@ yarn-start-ui:
 .PHONY: start
 start:
 	export GRAPHQL_API=http://localhost:3000/graphql \
-	&& export KEYCLOAK_API=http://localhost:8088/auth \
+	&& export KEYCLOAK_API=http://172.17.0.1:8088/auth \
 	&& export NODE_ENV=production \
 	&& export NODE_PORT=3003 \
 	&& export LAGOON_UI_TOURS_ENABLED=disabled \
@@ -28,7 +28,7 @@ start:
 .PHONY: start-ui
 start-ui: development-api
 	export GRAPHQL_API=http://localhost:3000/graphql \
-	&& export KEYCLOAK_API=http://localhost:8088/auth \
+	&& export KEYCLOAK_API=http://172.17.0.1:8088/auth \
 	&& export NODE_ENV=production \
 	&& export NODE_PORT=3003 \
 	&& export LAGOON_UI_TOURS_ENABLED=disabled \
@@ -38,7 +38,7 @@ start-ui: development-api
 development-api:
 	export LAGOON_CORE=$$(mktemp -d ./lagoon-core.XXX) \
 	&& export GRAPHQL_API=http://localhost:3000/graphql \
-	&& export KEYCLOAK_API=http://localhost:8088/auth \
+	&& export KEYCLOAK_API=http://172.17.0.1:8088/auth \
 	&& git clone $(CORE_REPO) "$$LAGOON_CORE" \
 	&& cd "$$LAGOON_CORE" \
 	&& git checkout $(CORE_TREEISH) \
