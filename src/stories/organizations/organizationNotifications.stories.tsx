@@ -194,7 +194,7 @@ export const Default: Story = {
             });
           }
 
-          return new HttpResponse('', { status: 400 });
+          return HttpResponse.json({ errors: [{ message: 'Bad request' }] }, { status: 400 });
         }),
       ],
     },
