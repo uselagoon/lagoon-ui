@@ -119,7 +119,7 @@ jobs:
         docker compose -p core-lagoon-ui logs api
 
     - name: Save screenshots on failure
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       # add the line below to store screenshots only on failures
       if: failure()
       with:
@@ -127,7 +127,7 @@ jobs:
         path: cypress/screenshots
         if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
     - name: Save videos on failure
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: failure()
       with:
         name: cypress-videos
