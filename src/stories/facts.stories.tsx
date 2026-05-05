@@ -84,7 +84,7 @@ export const Error: Story = {
     msw: {
       handlers: [
         graphql.operation(() => {
-          return new HttpResponse('', { status: 403 });
+          return HttpResponse.json({ errors: [{ message: 'Forbidden' }] }, { status: 403 });
         }),
       ],
     },
