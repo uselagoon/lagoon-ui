@@ -28,6 +28,10 @@ app
       })
     );
 
+    server.get('/account', (req, res) => {
+      app.render(req, res, '/account');
+    });
+
     server.get('/projects', (req, res) => {
       app.render(req, res, '/projects');
     });
