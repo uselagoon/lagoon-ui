@@ -21,6 +21,9 @@ export const StyledProjectVariablesDetails = styled.div`
     padding-top: 48px;
     width: 100%;
   }
+  @media ${bp.tabletUp} {
+    padding: 48px calc((100vw / 16) * 1) 48px calc(((100vw / 16) * 1.5) + 28px);
+  }
   @media ${bp.extraWideUp} {
     padding-left: calc(((100vw / 16) * 1));
   }

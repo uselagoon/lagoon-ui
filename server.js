@@ -107,6 +107,7 @@ app
     server.get('/projects/:projectSlug/:environmentSlug/environment-variables', (req, res) => {
       app.render(req, res, '/environment-variables', {
         openshiftProjectName: req.params.environmentSlug,
+        projectName: req.params.projectSlug,
       });
     });
 
