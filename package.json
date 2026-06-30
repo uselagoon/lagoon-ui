@@ -82,7 +82,7 @@
     "webpack": "5.89.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
+    "@babel/core": "^7.29.6",
     "@chromatic-com/storybook": "^3",
     "@faker-js/faker": "^8.0.2",
     "@storybook/addon-a11y": "^8.6.12",
