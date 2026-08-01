@@ -84,7 +84,7 @@ jobs:
         yarn start &
 
     - name: Run RBAC Cypress Tests
-      uses: cypress-io/github-action@dace029018fcdf86e0df89a31bc3cfa5b32570d8 # v7.3.0
+      uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
@@ -96,7 +96,7 @@ jobs:
         cypress_url: http://localhost:3003
 
     - name: Run Organization Cypress Tests
-      uses: cypress-io/github-action@dace029018fcdf86e0df89a31bc3cfa5b32570d8 # v7.3.0
+      uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
@@ -108,7 +108,7 @@ jobs:
         cypress_url: http://localhost:3003
 
     - name: Run General Cypress Tests
-      uses: cypress-io/github-action@dace029018fcdf86e0df89a31bc3cfa5b32570d8 # v7.3.0
+      uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
       with:
         config-file: ./cypress/cypress.config.ts
         auto-cancel-after-failures: 1
